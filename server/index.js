@@ -1,17 +1,19 @@
 const express = require('express');
 const app = express();
 var session = require('express-session');
+var cookieParser = require('cookie-parser');
 var CASAuthentication = require('cas-authentication');
 var jwt = require('./lib/jwt');
 
  
 // Set up an Express session, which is required for CASAuthentication. 
-app.use( session({
+app.use(session({
     secret            : 'super secret key',
     resave            : false,
     saveUninitialized : true
 }));
- 
+app.use(cookieParser()); 
+
 // Create a new instance of CASAuthentication. 
 var cas = new CASAuthentication({
     cas_url     : 'https://cas.ucdavis.edu/cas',

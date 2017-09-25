@@ -7,10 +7,7 @@
 
   <Get name="securityHandler">
     <Set name="authenticator">
-      <New class="edu.ucdavis.library.jetty.JwtAuthenticator">
-        <Set name="secret">testtestest</Set>
-        <Set name="issuer">library.ucdavis.edu</Set>
-      </New>
+      <New class="edu.ucdavis.library.jetty.JwtAuthenticator"></New>
     </Set>
   </Get>
 </Configure>

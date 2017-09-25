@@ -1,5 +1,5 @@
 
-version: '2'
+version: '3'
 
 services:
 
@@ -7,9 +7,18 @@ services:
     build: ./fcrepo
     volumes:
       - fedora-data:/fedora-data
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
 
   server:
     build: ./server
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
+      - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
 
   proxy:
     build: ./proxy
