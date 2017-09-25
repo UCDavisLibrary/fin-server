@@ -1,0 +1,31 @@
+
+version: '2'
+
+services:
+
+  fcrepo:
+    build: ./fcrepo
+    volumes:
+      - fedora-data:/fedora-data
+    ports:
+      - 8080:8080
+      - 61613:61613
+
+  server:
+    image: node:8.5
+    volumes:
+      - ./server:/app
+    ports:
+      - 3001:3001
+    command: bash -c "cd /app && node index.js"
+
+
+  proxy:
+    build: ./proxy
+    ports:
+      - 3000:80
+
+
+volumes:
+  fedora-data:
+    driver: local

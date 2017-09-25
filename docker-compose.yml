@@ -1,0 +1,22 @@
+
+version: '2'
+
+services:
+
+  fcrepo:
+    build: ./fcrepo
+    volumes:
+      - fedora-data:/fedora-data
+
+  server:
+    build: ./server
+
+  proxy:
+    build: ./proxy
+    ports:
+      - 3000:80
+
+
+volumes:
+  fedora-data:
+    driver: local

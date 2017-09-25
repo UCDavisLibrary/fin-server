@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+
+<Configure id="fcrepo" class="org.eclipse.jetty.webapp.WebAppContext">
+  <Set name="contextPath">/fcrepo</Set>
+  <Set name="war">/var/lib/jetty/webapps/fcrepo.war</Set>
+
+  <Get name="securityHandler">
+    <Set name="authenticator">
+      <New class="edu.ucdavis.library.jetty.JwtAuthenticator">
+        <Set name="secret">testtestest</Set>
+        <Set name="issuer">library.ucdavis.edu</Set>
+      </New>
+    </Set>
+  </Get>
+</Configure>
