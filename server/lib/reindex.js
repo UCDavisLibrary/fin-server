@@ -36,7 +36,7 @@ async function run() {
 async function crawl(url, indexName) {
   let resp;
 
-  if( url === `${server}${root}acl` ) {
+  if( url === `${config.fcrepo.host}${config.fcrepo.root}acl` ) {
     return console.log('Ignoring ACL');
   }
   
