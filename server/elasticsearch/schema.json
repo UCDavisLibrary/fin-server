@@ -1,0 +1,40 @@
+{
+  "properties" : {
+
+    "@id" : {
+      "type" : "keyword"
+    },
+
+    "created" : {
+      "type" : "date",
+      "format" : "date_optional_time"
+    },
+
+    "createdBy" : {
+      "type" : "keyword"
+    },
+
+    "hasParent" : {
+      "type" : "keyword"
+    },
+
+    "lastModified" : {
+      "type" : "date",
+      "format" : "date_optional_time"
+    },
+
+    "lastModifiedBy" : {
+      "type" : "keyword"
+    },
+
+    "title" : {
+      "type": "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    }
+
+  }
+}

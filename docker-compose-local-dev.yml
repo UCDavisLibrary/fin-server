@@ -28,13 +28,34 @@ services:
       - JWT_TTL=${JWT_TTL}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
 
-
   proxy:
     build: ./proxy
     ports:
       - 3000:80
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    # for docker-compose version 3
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 1g
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - 9200:9200
 
 volumes:
   fedora-data:
+    driver: local
+  es-data:
     driver: local
