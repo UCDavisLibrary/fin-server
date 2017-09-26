@@ -6,9 +6,4 @@ var client = new elasticsearch.Client({
   log: config.log
 });
 
-module.exports = function search(body) {
-  return client.search({
-    index : config.elasticsearch.alias,
-    body : body
-  });
-}
+module.exports = client;

@@ -1,6 +1,16 @@
 
 
 module.exports = {
+
+  server : {
+    url : process.env.UCD_DAMS_URL || 'http://localhost:3000',
+    cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme'
+  },
+
+  cas : {
+    url : process.env.CAS_URL || 'https://cas.ucdavis.edu/cas'
+  },
+
   fcrepo : {
     host : 'http://fcrepo:8080',
     root : '/fcrepo/rest/'

@@ -16,6 +16,8 @@
     "express-session": "^1.15.5",
     "jsonld": "^0.4.12",
     "jsonwebtoken": "^8.0.1",
+    "request": "^2.82.0",
+    "request-promise-native": "^1.0.5",
     "stomp-client": "^0.9.0",
     "superagent": "^3.6.0"
   }
