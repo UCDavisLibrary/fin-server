@@ -5,7 +5,13 @@ var config = require('../config');
 // setting our auth token
 module.exports = (cas) => {
   return (req, res, next) => {
+    // first check cookie
     var token = req.cookies[config.jwt.cookieName];
+
+    if( !token ) {
+      token = req.get('Authizoration');
+      if( token ) token = token.replace(/^Bearer /, '');
+    }
 
     // if valid jwt set in cookie, we are good to go
     if( token && jwt.validate(token) ) {

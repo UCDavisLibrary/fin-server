@@ -19,11 +19,18 @@ services:
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_TTL=${JWT_TTL}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
+    depends_on:
+      - fcrepo
+      - elasticsearch
+      - redis
 
   proxy:
     build: ../../proxy
     ports:
       - 3000:80
+    depends_on:
+      - server
+      - fcrepo
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
@@ -43,9 +50,20 @@ services:
     volumes:
       - es-data:/usr/share/elasticsearch/data
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    depends_on:
+      - fcrepo
+
+  redis:
+    image: redis:3.2
+    volumes:
+      - redis-data:/data
+    depends_on:
+      - fcrepo  
 
 volumes:
   fedora-data:
     driver: local
   es-data:
+    driver: local
+  redis-data:
     driver: local

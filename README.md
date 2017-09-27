@@ -13,3 +13,11 @@ JWT_SECRET=[secret here]
 JWT_ISSUER=[issuer, domain]
 JWT_TTL=[optional, time in seconds, defaults to 1 hour]
 ```
+
+## Linux: Setup max_map_count
+
+```bash
+sudo sysctl -w vm.max_map_count=262144
+```
+
+See here: https://github.com/docker-library/elasticsearch/issues/111

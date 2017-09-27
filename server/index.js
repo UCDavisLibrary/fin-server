@@ -13,6 +13,8 @@ app.use(session({
 }));
 app.use(cookieParser()); 
 
+// wire up stomp connection
+require('./dataSync/fcrepoEventsConnector');
  
 // Unauthenticated clients will be redirected to the CAS login and then back to 
 // this route once authenticated. 
@@ -32,12 +34,7 @@ app.get( '/api', authUtils.cas.block, function ( req, res ) {
  
 // An example of accessing the CAS user session variable. This could be used to 
 // retrieve your own local user records based on authenticated CAS username. 
-app.get( '/api/user', authUtils.cas.block, function ( req, res ) {
-    res.json({ 
-        cas_user: req.session[ cas.session_name ],
-        jwt : jwt.create(req)
-    });
-});
+
  
 // Unauthenticated clients will be redirected to the CAS login and then to the 
 // provided "redirectTo" query parameter once authenticated. 

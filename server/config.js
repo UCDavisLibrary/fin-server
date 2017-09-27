@@ -1,9 +1,18 @@
 
+// host names in docker will be the default, if the dev flag is past
+// localhost will be used and assume all services are running on default port.
+// This allows the NodeJS server to be developed outside the docker env.
+
+var isDev = process.argv.indexOf('--dev') > -1 ? true : false;
+var fcrepoHostname = isDev ? 'localhost' : 'fcrepo';
+var redisHostname = isDev ? 'localhost' : 'redis';
+var esHostname = isDev ? 'localhost' : 'elasticsearch';
+
 
 module.exports = {
 
   server : {
-    url : process.env.UCD_DAMS_URL || 'http://localhost:3000',
+    url : process.env.DAMS_URL || 'http://localhost:3000',
     cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme'
   },
 
@@ -12,8 +21,16 @@ module.exports = {
   },
 
   fcrepo : {
-    host : 'http://fcrepo:8080',
-    root : '/fcrepo/rest/'
+    hostname : fcrepoHostname,
+    host : `http://${fcrepoHostname}:8080`,
+    root : '/fcrepo/rest/',
+    stomp : {
+      port : 61613,
+      topic : '/topic/fedora'
+    },
+    dataSync : [
+      // require('./dataSync/elasticsearch')
+    ]
   },
 
   jwt : {
@@ -56,7 +73,12 @@ module.exports = {
   elasticsearch : {
     alias : 'fcrepo-search',
     recordSchemaType : 'fcrepo-record',
-    host : 'http://elastic:changeme@elasticsearch:9200',
+    host : `http://elastic:changeme@${esHostname}:9200`,
     log : 'error'
+  },
+
+  redis : {
+    host : redisHostname,
+    port : 6379
   }
 }

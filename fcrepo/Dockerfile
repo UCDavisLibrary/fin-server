@@ -9,6 +9,7 @@ RUN wget https://github.com/fcrepo4-exts/fcrepo-webapp-plus/releases/download/fc
 RUN mkdir -p /var/lib/jetty/lib/ext && \
     unzip /var/lib/jetty/webapps/fcrepo.war -d /tmpfcrepo && \
     cp -r /tmpfcrepo/WEB-INF/lib/spring* /var/lib/jetty/lib/ext/ && \
+    cp -r /tmpfcrepo/WEB-INF/lib/modeshape* /var/lib/jetty/lib/ext/ && \
     rm -rf /tmpfcrepo
 
 RUN mkdir -p /fedora-data
@@ -27,7 +28,6 @@ COPY ./fcrepo.xml /var/lib/jetty/webapps/fcrepo.xml
 
 ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
     -Dfcrepo.home=/fedora-data \
-    -Dfcrepo.jms.baseUrl=http://localhost:3000/fcrepo/rest \
     -Dfcrepo.modeshape.configuration=classpath:/config/servlet-auth/repository.json" 
 
 CMD java $JAVA_OPTS  -jar "$JETTY_HOME/start.jar"

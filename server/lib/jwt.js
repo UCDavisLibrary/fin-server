@@ -1,12 +1,11 @@
 var jwt = require('jsonwebtoken');
 var config = require('../config');
 
-var adminList = ['qjhart', 'jrmerz'];
-
 class JwtUtils {
 
-  init(cas) {
+  init(cas, authUtils) {
     this.cas = cas;
+    this.authUtils = authUtils;
   }
 
   createFromCasRequest(req) {
@@ -15,7 +14,7 @@ class JwtUtils {
 
     var username = req.session[this.cas.session_name];
     var admin = false;
-    if( adminList.indexOf(username) > -1 ) {
+    if( this.authUtils.isAdmin(username) ) {
       admin = true;
    }
 
@@ -41,7 +40,8 @@ class JwtUtils {
 
   validate(token) {
     try {
-      var issuer = jwt.verify(token, config.jwt.secret).iss;
+      token = jwt.verify(token, config.jwt.secret);
+      var issuer = token.iss;
       if( issuer !== config.jwt.issuer ) {
         console.log('Invalid JWT Token:', `Invalid issuer: ${issuer}/${config.jwt.issuer}`);
         return false;
@@ -51,7 +51,7 @@ class JwtUtils {
       return false;
     }
 
-    return true;
+    return token;
   }
 }
 
