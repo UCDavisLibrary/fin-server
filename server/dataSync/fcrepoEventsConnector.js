@@ -1,29 +1,82 @@
-var Stomp = require('stomp-client');
+var stompit = require('stompit');
 var config = require('../config');
+
+var connectOptions = {
+  host : config.fcrepo.hostname,
+  port : config.fcrepo.stomp.port,
+  connectHeaders: {
+    host : config.fcrepo.hostname
+  }
+};
+
+var subscribeHeaders = {
+  destination: config.fcrepo.stomp.topic,
+  ack: 'client-individual'
+};
 
 class MessageConsumer {
 
   constructor() {
     this.buffer = new MsgBuffer();
+    this.wait = 1000;
+  }
+
+  connect() {
+    setTimeout(() => {
+      stompit.connect(connectOptions, (error, client) => {
+        if( error ) {
+          this.wait += 1000;
+          return this.connect();
+        }
+
+        this.wait = 1000;
+        this.client = client;
+        this.init();
+      });
+    }, this.wait);
   }
 
   init() {
-    setTimeout(() => {
-      var stompClient = new Stomp(config.fcrepo.hostname, config.fcrepo.stomp.port);
+    if( !this.client ) return;
+    console.log('STOMP client connected');
+
+
+    this.client.subscribe(subscribeHeaders, async (error, message) => {
+      if( error ) {
+        return console.error(error);
+      }
+
+      var headers = message.headers;
+
+      // message must be read before it can be ack'd ...
+      var body = await this.readMessage(message);
+      // console.log(body);
       
-      stompClient.connect((sessionId) => {
-        console.log('connected', sessionId);
+      var id = headers['org.fcrepo.jms.identifier'];
+      console.log(id, headers['org.fcrepo.jms.eventType']);
+      console.log('-------------');
 
-        stompClient.subscribe(config.fcrepo.stomp.topic, (body, headers) => {
-          var id = headers['org.fcrepo.jms.identifier'];
-
-          this.buffer.push(id, () => {
-            console.log('UPDATED', id);
-          });
-        });
-      });
-    }, 20000);
+      setTimeout(() => {
+        this.client.ack(message);
+      }, 2000);
+      
+      
+      // this.buffer.push(id, () => {
+      //   console.log('UPDATED', id);
+      // });
+      
+    });
   }
+
+  readMessage(message) {
+    return new Promise((resolve, reject) => {
+      message.readString('utf-8', function(error, body) {
+        if( error ) reject(error);
+        else resolve(body);
+      });
+    });
+  }
+
 }
 
 class MsgBuffer {
@@ -60,4 +113,4 @@ class MsgBuffer {
 }
 
 var mc = new MessageConsumer();
-mc.init();
+mc.connect();

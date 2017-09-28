@@ -10,6 +10,13 @@ module.exports = (yargs) => {
       yargs => createUserOpts(yargs),
       yargs => createUser(yargs)  
     )
+    // remove local user
+    .command(
+      'remove-local-user', 
+      'Remove a local user', 
+      yargs => removeUserOpts(yargs),
+      yargs => removeUser(yargs)  
+    )
     // update local user
     .command(
       'update-local-user', 
@@ -23,6 +30,13 @@ module.exports = (yargs) => {
       'Get local user info', 
       yargs => getUserOpts(yargs),
       yargs => getUser(yargs)  
+    )
+    // get local user
+    .command(
+      'get-local-users', 
+      'Get local users list', 
+      yargs => yargs,
+      yargs => getUsers()  
     )
     // list admins
     .command(
@@ -41,7 +55,7 @@ module.exports = (yargs) => {
     // remove admin
     .command(
       'remove-admin', 
-      'Add user from admin list', 
+      'Remove user from admin list', 
       yargs => removeAdminOpts(yargs),
       yargs => removeAdmin(yargs)  
     )
@@ -118,6 +132,36 @@ async function getUser(yargs) {
   try {
     var info = await authUtils.getLocalUser(yargs.username);
     console.log(info);
+  } catch(e) {
+    console.error(e.message);
+  }
+  process.exit();
+}
+
+async function getUsers(yargs) {
+  try {
+    var info = await authUtils.getLocalUsers();
+    console.log(info);
+  } catch(e) {
+    console.error(e.message);
+  }
+  process.exit();
+}
+
+/**
+ * Remove User
+ */
+function removeUserOpts(yargs) {
+  return yargs
+    .option('username', {
+      alias: 'u',
+      required : true
+    });
+}
+
+async function removeUser(yargs) {
+  try {
+    await authUtils.removeLocalUser(yargs.username);
   } catch(e) {
     console.error(e.message);
   }

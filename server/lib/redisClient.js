@@ -2,7 +2,7 @@ var redis = require('redis');
 var client = redis.createClient({host: 'redis'});
 var util = require('util');
 
-var promisify = ['get', 'set', 'del'];
+var promisify = ['get', 'set', 'del', 'keys'];
 promisify.forEach(key => client[key] = util.promisify(client[key]));
 
 client.on('error', function (err) {

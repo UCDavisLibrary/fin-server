@@ -9,6 +9,7 @@ class AuthUtils {
 
   constructor() {
     this.ADMIN_LIST_KEY = 'admins';
+    this.USER_KEY_PREFIX = 'user_';
     this.saltRounds = 10;
 
     // Create a new instance of CASAuthentication. 
@@ -30,7 +31,7 @@ class AuthUtils {
   }
 
   async localUserVerification(username, password) {
-    var userinfo = await redis.get(username);
+    var userinfo = await redis.get(this.USER_KEY_PREFIX+username);
     if( !userinfo ) return false;
     userinfo = JSON.parse(userinfo);
     var valid = await bcrypt.compare(password, userinfo.password);
@@ -48,11 +49,11 @@ class AuthUtils {
 
     password = await bcrypt.hash(password, this.saltRounds);
     var userinfo = JSON.stringify({username, password});
-    await redis.set(username, userinfo);
+    await redis.set(this.USER_KEY_PREFIX+username, userinfo);
   }
 
   async updateLocalUser(userinfo, merge = true) {
-    var existingUserInfo = await redis.get(userinfo.username);
+    var existingUserInfo = await redis.get(this.USER_KEY_PREFIX+userinfo.username);
     if( !existingUserInfo ) throw new Error('User does not exist');
 
     if( userinfo.password ) {
@@ -70,8 +71,13 @@ class AuthUtils {
     redis.set(userinfo.username, JSON.stringify(userinfo));
   }
 
+  async getLocalUsers() {
+    var list = await redis.keys(this.USER_KEY_PREFIX+'*');
+    return list.map(user => user.replace(this.USER_KEY_PREFIX, ''));
+  }
+
   async getLocalUser(username) {
-    var userinfo = await redis.get(username);
+    var userinfo = await redis.get(this.USER_KEY_PREFIX+username);
     if( !userinfo ) throw new Error('User does not already exist');
     userinfo = JSON.parse(userinfo);
     if( userinfo.password ) delete userinfo.password;
@@ -79,7 +85,10 @@ class AuthUtils {
   }
 
   async removeLocalUser(username) {
+    var userinfo = await redis.get(this.USER_KEY_PREFIX+username);
+    if( !userinfo ) throw new Error('User does not already exist');
     await redis.del(username);
+    return true;
   }
 
   async loadAdmins() {

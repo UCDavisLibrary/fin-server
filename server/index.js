@@ -51,6 +51,7 @@ app.get( '/logout', authUtils.cas.logout );
  * Register Controllers
  */
 app.use('/search', require('./controllers/search'));
+app.use('/auth', require('./controllers/auth'));
 
 app.listen(3001, () => {
     console.log('ready on port 3001');
