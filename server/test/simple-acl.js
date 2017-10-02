@@ -5,6 +5,7 @@ var path = require('path');
 var fs = require('fs');
 
 var token = jwt.create('simple-acl-bot', true);
+console.log(token);
 
 (async function() {
   await send('acl', path.join(__dirname, 'acl.ttl'));

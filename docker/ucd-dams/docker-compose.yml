@@ -6,7 +6,8 @@ services:
   fcrepo:
     build: ../../fcrepo
     volumes:
-      - fedora-data:/fedora-data
+#      - fedora-data:/fedora-data
+      - fedora-data:/var/lib/jetty/fedora-data
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}

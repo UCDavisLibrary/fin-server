@@ -2,5 +2,5 @@
 
 <> a acl:Authorization;
    acl:accessTo </fcrepo/rest/foo>;
-   acl:agent "jrmerz";
+   acl:agent "qjhart";
    acl:mode acl:Read.
