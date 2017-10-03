@@ -1,33 +1,40 @@
 FROM jetty:9.4.6
 
+ENV FCREPO_HOME=/var/lib/jetty/fedora-data \
+    FCREPO_NAME=fcrepo \
+    FCREPO_VERSION=4.7.4 \
+    FCREPO_WAR=/var/lib/jetty/webapps/fcrepo.war
+
 RUN apt-get update
 RUN apt-get install -y wget unzip
-RUN wget https://github.com/fcrepo4-exts/fcrepo-webapp-plus/releases/download/fcrepo-webapp-plus-4.7.3/fcrepo-webapp-plus-webac-4.7.3.war -O /var/lib/jetty/webapps/fcrepo.war
 
-# HACK for loading spring jars on 'boot'
-# crazy docker issue... need to get to the bottom of it.
-RUN mkdir -p /var/lib/jetty/lib/ext && \
-    unzip /var/lib/jetty/webapps/fcrepo.war -d /tmpfcrepo && \
-    cp -r /tmpfcrepo/WEB-INF/lib/spring* /var/lib/jetty/lib/ext/ && \
-    cp -r /tmpfcrepo/WEB-INF/lib/modeshape* /var/lib/jetty/lib/ext/ && \
-    rm -rf /tmpfcrepo
+# Pre-made webac that currently doesn't work with jetty
+# RUN wget https://github.com/fcrepo4-exts/fcrepo-webapp-plus/releases/download/fcrepo-webapp-plus-4.7.3/fcrepo-webapp-plus-webac-4.7.3.war -O /var/lib/jetty/webapps/fcrepo.war
 
-RUN mkdir -p /fedora-data
-RUN chmod -R a+rw /fedora-data
+# Workaround for broken pre-made war above.
+# going to add files ourselves to base Fedora war
+RUN wget https://github.com/fcrepo4/fcrepo4/releases/download/fcrepo-${FCREPO_VERSION}/fcrepo-webapp-${FCREPO_VERSION}.war -O ${FCREPO_WAR}
 
-COPY ./jars/jetty-jwt-filter.jar /var/lib/jetty/lib/ext/jetty-jwt-filter.jar
-COPY ./jars/java-jwt-3.1.0.jar /var/lib/jetty/lib/ext/java-jwt-3.1.0.jar
-COPY ./jars/jackson-annotations-2.8.4.jar /var/lib/jetty/lib/ext/jackson-annotations-2.8.4.jar
-COPY ./jars/jackson-core-2.8.8.jar /var/lib/jetty/lib/ext/jackson-core-2.8.8.jar
-COPY ./jars/jackson-databind-2.8.8.1.jar /var/lib/jetty/lib/ext/jackson-databind-2.8.8.1.jar
-COPY ./jars/commons-codec-1.10.jar /var/lib/jetty/lib/ext/commons-codec-1.10.jar
-COPY ./jars/slf4j-simple-1.7.25.jar /var/lib/jetty/lib/ext/slf4j-simple-1.7.25.jar
-COPY ./jars/slf4j-api-1.7.25.jar /var/lib/jetty/lib/ext/slf4j-api-1.7.25.jar
+RUN cd /var/lib/jetty/webapps && \
+    unzip ${FCREPO_NAME}.war -d ${FCREPO_NAME} && \
+    rm ${FCREPO_NAME}.war
 
+COPY ./webac-jars/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
+RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
+COPY ./webac-spring-files/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
+RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
+COPY ./web.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/
+# end workaround
+
+# Add files for jetty / cas / jwt authentication
+COPY ./jetty-auth-jars/* /var/lib/jetty/lib/ext/
 COPY ./fcrepo.xml /var/lib/jetty/webapps/fcrepo.xml
 
+RUN mkdir -p ${FCREPO_HOME} && chmod -R a+rw ${FCREPO_HOME}
+VOLUME ["$FCREPO_HOME"]
+
 ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
-    -Dfcrepo.home=/fedora-data \
+    -Dfcrepo.home=${FCREPO_HOME} \
     -Dfcrepo.modeshape.configuration=classpath:/config/servlet-auth/repository.json" 
 
-CMD java $JAVA_OPTS  -jar "$JETTY_HOME/start.jar"
+CMD java $JAVA_OPTS -jar "$JETTY_HOME/start.jar"
