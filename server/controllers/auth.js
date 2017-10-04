@@ -3,16 +3,36 @@ var authUtils = require('../lib/auth');
 var utils = require('./utils');
 var config = require('../config');
 
-router.get('/cas', authUtils.middleware.bounce, (req, res) => {
-  res.redirect(req.session.cas_return_to || '/');
+function hackBounce(req, res, next) {
+  req.url = req.originalUrl;
+  next();
+}
+
+router.get('/cas', hackBounce, authUtils.cas.bounce, (req, res) => {
+  res.redirect('/');
 });
 
-router.get('/cas/user', authUtils.cas.block, function ( req, res ) {
+router.get('/cas/user', authUtils.cas.block, async ( req, res ) => {
+  var newJwt = await authUtils.jwt.createFromCasRequest(req);
+  var isAdmin = await authUtils.isAdmin(req.session[ authUtils.cas.session_name ]);
+
   res.json({ 
-      cas_user: req.session[ cas.session_name ],
-      jwt : authUtils.jwt.createFromCasRequest(req)
+      cas_user: req.session[ authUtils.cas.session_name ],
+      admin : isAdmin,
+      jwt : newJwt
   });
 });
+
+router.get('/login', authUtils.middleware.bounce, (req, res) => {
+  res.redirect('/');
+});
+
+router.get('/logout', (req, res) => {
+  res.clearCookie(config.jwt.cookieName);
+  res.redirect('/auth/cas/logout');
+});
+
+router.get('/cas/logout', authUtils.cas.logout);
 
 router.get('/local', async (req, res) => {
   var username = req.query.username;
@@ -27,7 +47,8 @@ router.get('/local', async (req, res) => {
     res.json(utils.errorResponse(e, 'Unable to verify local user'));
   }
 
-  var token = authUtils.jwt.create(username, authUtils.isAdmin(username));
+  var isAdmin = await authUtils.isAdmin(username);
+  var token = authUtils.jwt.create(username, isAdmin);
 
   res.cookie(
     config.jwt.cookieName, 

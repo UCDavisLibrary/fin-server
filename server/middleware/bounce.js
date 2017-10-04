@@ -17,21 +17,26 @@ module.exports = (cas) => {
     if( token && jwt.validate(token) ) {
       return next();
     }
+    
+    // hack
+    req.url = req.originalUrl;
 
     // otherwise bounce to cas
-    cas.bounce(req, res, () => {
+    cas.bounce(req, res, async () => {
       // after CAS module completes login flow,
       // set JWT cookie and retur
-      setCookie(req, res);
+      await setCookie(req, res);
       next();
     });
   }
 }
 
-function setCookie(req, res) {
+async function setCookie(req, res) {
+  var newJwt = await jwt.createFromCasRequest(req);
+  
   res.cookie(
     config.jwt.cookieName, 
-    jwt.createFromCasRequest(req),
+    newJwt,
     {   
       httpOnly: true
       // domain: 'localhost',

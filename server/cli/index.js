@@ -1,4 +1,9 @@
-var yargs = require('yargs')
+var yargs = require('yargs');
+
+process.on('unhandledRejection', (e) => {
+  console.error(e);
+});
+
 var argv = yargs
   .usage('usage: $0 <command>')
   .command('admin', 'preform admin functions', function (yargs) {

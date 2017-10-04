@@ -2,7 +2,7 @@ var authUtils = require('../lib/auth');
 var config = require('../config');
 
 module.exports = (authUtils) => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     // first check cookie
     var token = req.cookies[config.jwt.cookieName];
 
@@ -13,11 +13,12 @@ module.exports = (authUtils) => {
     
     if( token ) {
       var info = authUtils.jwt.validate(token);
-      if( info && authUtils.isAdmin(info.username) ) {
+      var isAdmin = await authUtils.isAdmin(info.username);
+      if( info &&  isAdmin) {
         return next();
       }
     }
 
     res.sendStatus(401);
   }
-  }
+}

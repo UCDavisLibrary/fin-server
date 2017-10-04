@@ -172,8 +172,8 @@ async function removeUser(yargs) {
  * List admins
  */
 async function listAdmins(yargs) {
-  await authUtils.loadAdmins();
-  console.log(authUtils.admins);
+  var admins = await authUtils.loadAdmins();
+  console.log(admins);
   process.exit();
 }
 

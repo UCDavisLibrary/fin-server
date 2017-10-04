@@ -3,24 +3,30 @@ var config = require('../config');
 
 class JwtUtils {
 
+  /**
+   * Set the cas library and auth utils instance
+   */
   init(cas, authUtils) {
     this.cas = cas;
     this.authUtils = authUtils;
   }
 
-  createFromCasRequest(req) {
+  /**
+   * Create a new JWT from a authenticated CAS request
+   */
+  async createFromCasRequest(req) {
     if( !this.cas.session_name ) return null;
     if( !req.session[ this.cas.session_name ] ) return null;
 
     var username = req.session[this.cas.session_name];
-    var admin = false;
-    if( this.authUtils.isAdmin(username) ) {
-      admin = true;
-   }
+    var admin = await this.authUtils.isAdmin(username);   
 
     return this.create(username, admin);
   }
 
+  /**
+   * Create a new jwt
+   */
   create(username, admin) {
     var user = { username }
 
@@ -38,6 +44,9 @@ class JwtUtils {
     );
   }
 
+  /**
+   * Check if a token is valid
+   */
   validate(token) {
     try {
       token = jwt.verify(token, config.jwt.secret);

@@ -26,8 +26,6 @@ class AuthUtils {
       block : require('../middleware/block'),
       admin : require('../middleware/admin')(this)
     }
-
-    this.loadAdmins();
   }
 
   async localUserVerification(username, password) {
@@ -92,29 +90,35 @@ class AuthUtils {
   }
 
   async loadAdmins() {
-    if( this.admins ) return;
-
     var admins = await redis.get(this.ADMIN_LIST_KEY);
-    this.admins = admins ? JSON.parse(admins) : [];
+    return admins ? JSON.parse(admins) : [];
   }
 
   async addAdmin(username) {
-    if( this.isAdmin(username) ) return false;
-    this.admins.push(username);
-    await redis.set(this.ADMIN_LIST_KEY, JSON.stringify(this.admins));
+    var admins = await this.loadAdmins();
+    if( admins.indexOf(username) > -1 ) return false;
+    
+    admins.push(username);
+    await redis.set(this.ADMIN_LIST_KEY, JSON.stringify(admins));
+
     return true;
   }
 
   async removeAdmin(username) {
-    var index = this.admins.indexOf(username);
+    var admins = await this.loadAdmins();
+    var index = admins.indexOf(username);
     if( index === -1 ) return false;
-    this.admins.splice(index, 1);
-    await redis.set(this.ADMIN_LIST_KEY, JSON.stringify(this.admins));
+
+    admins.splice(index, 1);
+    await redis.set(this.ADMIN_LIST_KEY, JSON.stringify(admins));
+
     return true;
   }
 
-  isAdmin(username) {
-    return this.admins.indexOf(username) > -1;
+  async isAdmin(username) {
+    var admins = await this.loadAdmins();
+
+    return admins.indexOf(username) > -1;
   }
 }
 
