@@ -14,6 +14,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
+      - JWT_VERBOSE=${JWT_VERBOSE}
 
   server:
     image: node:8.5

@@ -46,7 +46,7 @@
 
   <!--Uncomment section below to enable Basic-Authentication-->
   
-  <security-constraint>
+  <!-- <security-constraint>
     <web-resource-collection>
       <web-resource-name>Fedora4</web-resource-name>
       <url-pattern>/*</url-pattern>
@@ -70,6 +70,6 @@
   <login-config>
     <auth-method>BASIC</auth-method>
     <realm-name>fcrepo</realm-name>
-  </login-config>
+  </login-config> -->
  
 </web-app>

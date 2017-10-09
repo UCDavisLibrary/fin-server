@@ -10,6 +10,9 @@ var token = jwt.create('simple-acl-bot', true);
   await send('acl', path.join(__dirname, 'acl.ttl'));
   await send('foo', path.join(__dirname, 'foo.ttl'));
   await send('acl/authz', path.join(__dirname, 'authz.ttl'));
+
+  await send('public', path.join(__dirname, 'public.ttl'));
+  await send('acl/auth_public', path.join(__dirname, 'auth_public.ttl'));
   require('../lib/reindex');
 })()
 
