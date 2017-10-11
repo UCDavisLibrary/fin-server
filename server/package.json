@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
     "cas-authentication": "0.0.8",
     "cookie-parser": "^1.4.3",
     "elasticsearch": "^13.3.1",

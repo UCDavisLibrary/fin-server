@@ -19,6 +19,7 @@ services:
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_TTL=${JWT_TTL}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
+      - DAMS_URL=${DAMS_URL}
     depends_on:
       - fcrepo
       - elasticsearch

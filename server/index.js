@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const session = require('express-session');
+const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const authUtils = require('./lib/auth');
 const config = require('./config');
@@ -12,6 +13,12 @@ app.use(session({
     saveUninitialized : true
 }));
 app.use(cookieParser()); 
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 // wire up stomp connection
 require('./dataSync/fcrepoEventsConnector');

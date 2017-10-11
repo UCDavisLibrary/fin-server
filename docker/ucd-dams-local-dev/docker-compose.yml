@@ -15,6 +15,7 @@ services:
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
       - JWT_VERBOSE=${JWT_VERBOSE}
+      - DAMS_URL=${DAMS_URL}
 
   server:
     image: node:8.5

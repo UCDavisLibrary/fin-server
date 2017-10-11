@@ -10,7 +10,7 @@ module.exports = (authUtils) => {
       token = req.get('Authizoration');
       if( token ) token = token.replace(/^Bearer /, '');
     }
-    
+
     if( token ) {
       var info = authUtils.jwt.validate(token);
       var isAdmin = await authUtils.isAdmin(info.username);

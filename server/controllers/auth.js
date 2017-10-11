@@ -34,9 +34,20 @@ router.get('/logout', (req, res) => {
 
 router.get('/cas/logout', authUtils.cas.logout);
 
-router.get('/local', async (req, res) => {
+router.get('/mint', authUtils.middleware.admin, (req, res) => {
   var username = req.query.username;
-  var password = req.query.password;
+  var isAdmin = req.query.admin ? true : false;
+
+  res.json({
+    jwt : authUtils.jwt.create(username, isAdmin),
+    username : username,
+    admin : isAdmin
+  });
+});
+
+router.post('/local', async (req, res) => {
+  var username = req.body.username;
+  var password = req.body.password;
   var userinfo;
 
   try { 
