@@ -60,11 +60,22 @@ services:
     #       memory: 1g
     volumes:
       - es-data:/usr/share/elasticsearch/data
-      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ../elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - 9200:9200
     depends_on:
       - fcrepo
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.4.1
+    depends_on:
+      - elasticsearch
+    # volumes: 
+    #   - ../kibana.yml:/usr/share/kibana/config/kibana.yml
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    ports:
+      - 5601:5601
   
   redis:
     image: redis:3.2

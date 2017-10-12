@@ -50,7 +50,7 @@ services:
     #       memory: 1g
     volumes:
       - es-data:/usr/share/elasticsearch/data
-      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ../elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     depends_on:
       - fcrepo
 
