@@ -6,7 +6,7 @@ services:
   fcrepo:
     build: ../../fcrepo
     volumes:
-      - fedora-data:/fedora-data
+      - fedora-data:/var/lib/jetty/fedora-data
     ports:
       - 8080:8080
       - 61613:61613
