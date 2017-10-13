@@ -19,6 +19,9 @@ COPY ./*.cfg /opt/karaf/etc/
 # RUN chmod 755 /opt; \
     # sed -i "21s/out/stdout/" /opt/karaf/etc/org.ops4j.pax.logging.cfg;
 
+RUN mkdir -p /opt/karaf/data/log && touch /opt/karaf/data/log/karaf.log
+
 VOLUME ["/opt/karaf/deploy"]
 EXPOSE 1099 8101 44444
-CMD /opt/karaf/bin/karaf
+
+CMD /opt/karaf/bin/start && tail -f /opt/karaf/data/log/karaf.log
