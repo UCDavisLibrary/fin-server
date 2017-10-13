@@ -42,6 +42,16 @@ services:
     depends_on:
       - server
       - fcrepo
+  
+  karafservices:
+    build: ../../karafservices
+    ports:
+      - 1099:1099
+      - 8101:8101 
+      - 44444:44444
+    volumes:
+      - fedora-serialized-data:/data
+    command: tail -f /dev/null
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
@@ -88,6 +98,8 @@ services:
 
 volumes:
   fedora-data:
+    driver: local
+  fedora-serialized-data:
     driver: local
   es-data:
     driver: local
