@@ -51,7 +51,6 @@ services:
       - 44444:44444
     volumes:
       - fedora-serialized-data:/data
-    command: tail -f /dev/null
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
