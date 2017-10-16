@@ -2,14 +2,34 @@ var router = require('express').Router();
 var authUtils = require('../lib/auth');
 var utils = require('./utils');
 var config = require('../config');
+var {URL} = require('url');
 
 function hackBounce(req, res, next) {
   req.url = req.originalUrl;
   next();
 }
 
-router.get('/cas', hackBounce, authUtils.cas.bounce, (req, res) => {
-  res.redirect('/');
+function storeRedirect(req, res, next) {
+  req.session.cliRedirectUrl = req.query.cliRedirectUrl || '';
+  req.session.provideJwt = (req.query.provideJwt === 'true');
+  next();
+}
+
+router.get('/cas', storeRedirect, hackBounce, authUtils.cas.bounce, async (req, res) => {
+  var url = req.session.cliRedirectUrl || '/';
+
+  console.log('/cas', req.session);
+
+  if( req.session.provideJwt ) {
+    var newJwt = await authUtils.jwt.createFromCasRequest(req);
+    url += '?jwt='+newJwt+'&username='+req.session[ authUtils.cas.session_name ];
+  }
+
+  // reset stored redirect information
+  req.session.provideJwt = false;
+  req.session.cliRedirectUrl = '';
+
+  res.redirect(url);
 });
 
 router.get('/cas/user', authUtils.cas.block, async ( req, res ) => {

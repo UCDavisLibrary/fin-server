@@ -10,9 +10,6 @@ RUN wget http://www.gtlib.gatech.edu/pub/apache/karaf/${KARAF_VERSION}/apache-ka
     rm apache-karaf-${KARAF_VERSION}.tar.gz; \
     mkdir /deploy;
 
-# RUN apt-get update \
-#     && apt-get -y install maven
-
 COPY ./*.cfg /opt/karaf/etc/
 
 # TODO: get logging to work (ie pipe to stdout) 
@@ -24,4 +21,4 @@ RUN mkdir -p /opt/karaf/data/log && touch /opt/karaf/data/log/karaf.log
 VOLUME ["/opt/karaf/deploy"]
 EXPOSE 1099 8101 44444
 
-CMD /opt/karaf/bin/start && tail -f /opt/karaf/data/log/karaf.log
+CMD sleep 15 && /opt/karaf/bin/start && tail -f /opt/karaf/data/log/karaf.log
