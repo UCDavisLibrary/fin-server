@@ -12,6 +12,11 @@ RUN wget http://www.gtlib.gatech.edu/pub/apache/karaf/${KARAF_VERSION}/apache-ka
 
 COPY ./*.cfg /opt/karaf/etc/
 
+RUN apt-get update && \
+    apt-get install -y apache2
+RUN a2enmod proxy && a2enmod proxy_http
+COPY ./000-default.conf /etc/apache2/sites-available/
+
 # TODO: get logging to work (ie pipe to stdout) 
 # RUN chmod 755 /opt; \
     # sed -i "21s/out/stdout/" /opt/karaf/etc/org.ops4j.pax.logging.cfg;
@@ -21,4 +26,7 @@ RUN mkdir -p /opt/karaf/data/log && touch /opt/karaf/data/log/karaf.log
 VOLUME ["/opt/karaf/deploy"]
 EXPOSE 1099 8101 44444
 
-CMD sleep 15 && /opt/karaf/bin/start && tail -f /opt/karaf/data/log/karaf.log
+CMD service apache2 start && \
+    sleep 15 && \ 
+    /opt/karaf/bin/start && \
+    tail -f /opt/karaf/data/log/karaf.log
