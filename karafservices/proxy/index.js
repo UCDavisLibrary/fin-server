@@ -12,7 +12,7 @@ function setToken() {
     process.env.JWT_SECRET, 
     {
       issuer: process.env.JWT_ISSUER,
-      expiresIn: process.env.JWT_TTL
+      expiresIn: parseInt(process.env.JWT_TTL)
     }
   );
 }
