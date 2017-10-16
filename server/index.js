@@ -34,7 +34,7 @@ app.get( '/app', authUtils.middleware.bounce, function ( req, res ) {
     res.send( '<html><body>Hello!</body></html>' );
 });
 
-app.get( '/', authUtils.middleware.bounce, function ( req, res ) {
+app.get( '/', function ( req, res ) {
     res.send( '<html><body>Hello!</body></html>' );
 });
  

@@ -30,6 +30,7 @@ services:
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_TTL=${JWT_TTL}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
+      - DAMS_URL=${DAMS_URL}
     depends_on:
       - fcrepo
       - elasticsearch
@@ -49,6 +50,8 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_TTL=${JWT_TTL}
+    extra_hosts:
+      - "${DAMS_HOST}:127.0.0.1"
     ports:
       - 1099:1099
       - 8101:8101 
