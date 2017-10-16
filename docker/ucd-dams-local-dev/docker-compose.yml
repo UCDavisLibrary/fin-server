@@ -45,6 +45,10 @@ services:
   
   karafservices:
     build: ../../karafservices
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
     ports:
       - 1099:1099
       - 8101:8101 
