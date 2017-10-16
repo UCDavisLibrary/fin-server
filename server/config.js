@@ -13,7 +13,8 @@ module.exports = {
 
   server : {
     url : process.env.DAMS_URL || 'http://localhost:3000',
-    cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme'
+    cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme',
+    cookieMaxAge : process.env.SERVER_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 86400 * 30)
   },
 
   cas : {
@@ -79,6 +80,7 @@ module.exports = {
 
   redis : {
     host : redisHostname,
-    port : 6379
+    port : 6379,
+    refreshTokenExpire : (86400 * 30)
   }
 }

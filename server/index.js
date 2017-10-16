@@ -7,9 +7,14 @@ const authUtils = require('./lib/auth');
 const config = require('./config');
  
 // Set up an Express session, which is required for CASAuthentication. 
+const RedisStore = require('connect-redis')(session); 
 app.use(session({
+    store: new RedisStore({
+        host : 'redis'
+    }),
     secret            : config.server.cookieSecret,
     resave            : false,
+    maxAge            : config.server.cookieMaxAge,
     saveUninitialized : true
 }));
 app.use(cookieParser()); 

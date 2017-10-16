@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt');
 var jwt = require('./jwt');
 var config = require('../config');
 var redis = require('./redisClient');
+const crypto = require('crypto');
 
 
 class AuthUtils {
@@ -10,6 +11,7 @@ class AuthUtils {
   constructor() {
     this.ADMIN_LIST_KEY = 'admins';
     this.USER_KEY_PREFIX = 'user_';
+    this.REFRESH_TOKEN_PREFIX = 'rtoken_';
     this.saltRounds = 10;
 
     // Create a new instance of CASAuthentication. 
@@ -26,6 +28,25 @@ class AuthUtils {
       block : require('../middleware/block'),
       admin : require('../middleware/admin')(this)
     }
+  }
+
+  async refreshToken(username) {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(48, async (err, buffer) => {
+        let token = buffer.toString('hex');
+        let key = this.REFRESH_TOKEN_PREFIX+token;
+        redis.set(key, username);
+        redis.expire(key, config.redis.refreshTokenExpire);
+
+        resolve(token);
+      });
+    });
+  }
+
+  async refreshTokenVerification(username, token) {
+    let key = this.REFRESH_TOKEN_PREFIX+token;
+    var keyusername = await redis.get(key);
+    return (keyusername === username);
   }
 
   async localUserVerification(username, password) {

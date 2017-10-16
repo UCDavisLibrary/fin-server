@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
   var token = req.cookies[config.jwt.cookieName];
 
   if( !token ) {
-    token = req.get('Authizoration');
+    token = req.get('Authorization');
     if( token ) token = token.replace(/^Bearer /, '');
   }
 

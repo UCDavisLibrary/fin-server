@@ -18,8 +18,6 @@ function storeRedirect(req, res, next) {
 router.get('/cas', storeRedirect, hackBounce, authUtils.cas.bounce, async (req, res) => {
   var url = req.session.cliRedirectUrl || '/';
 
-  console.log('/cas', req.session);
-
   if( req.session.provideJwt ) {
     var newJwt = await authUtils.jwt.createFromCasRequest(req);
     url += '?jwt='+newJwt+'&username='+req.session[ authUtils.cas.session_name ];
@@ -30,6 +28,50 @@ router.get('/cas', storeRedirect, hackBounce, authUtils.cas.bounce, async (req, 
   req.session.cliRedirectUrl = '';
 
   res.redirect(url);
+});
+
+router.get('/token/create', authUtils.middleware.block, async (req, res) => {
+  var username = req.query.username;
+  if( !username ) return res.json({error: true, message: 'Username required'});
+
+  try {
+    let token = await authUtils.refreshToken(username);
+    res.json({
+      success : true,
+      token : token
+    });
+  } catch(e) {
+    res.json({
+      error: true,
+      message: e.message
+    });
+  }
+});
+
+router.post('/token/verify', async (req, res) => {
+  let username = req.body.username;
+  let token = req.body.token;
+
+  try {
+    let valid = await authUtils.refreshTokenVerification(username, token);
+    if( valid ) {
+      let isAdmin = await authUtils.isAdmin(username);
+      res.json({
+        success : true,
+        jwt : authUtils.jwt.create(username, isAdmin)
+      });
+    } else {
+      res.json({
+        error : true,
+        message: 'Invalid token'
+      });
+    }
+  } catch(e) {
+    res.json({
+      error: true,
+      message: e.message
+    });
+  }
 });
 
 router.get('/cas/user', authUtils.cas.block, async ( req, res ) => {
