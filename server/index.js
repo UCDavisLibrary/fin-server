@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // wire up stomp connection
-require('./dataSync/fcrepoEventsConnector');
+require('./lib/activeMqProxy');
  
 // Unauthenticated clients will be redirected to the CAS login and then back to 
 // this route once authenticated. 

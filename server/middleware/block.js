@@ -1,5 +1,5 @@
-var jwt = require('../lib/jwt');
-var config = require('../config');
+var jwt = require('ucdlib-dams-utils/jwt');
+var config = require('ucdlib-dams-utils/config');
 
 module.exports = (req, res, next) => {
   // first check cookie

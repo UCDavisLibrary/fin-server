@@ -31,6 +31,7 @@ services:
       - JWT_TTL=${JWT_TTL}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
       - DAMS_URL=${DAMS_URL}
+      - ACTIVEMQ_SERVICES=essync
     depends_on:
       - fcrepo
       - elasticsearch
@@ -44,6 +45,16 @@ services:
       - server
       - fcrepo
   
+  essync:
+    # build: ../../activemq/essync
+    image: node:8.5
+    volumes:
+      - ../../activemq/essync:/service
+    depends_on:
+      - server
+      - fcrepo
+    command: node service
+
   # karafservices:
   #   build: ../../karafservices
   #   environment:

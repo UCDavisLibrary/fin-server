@@ -1,0 +1,16 @@
+{
+  "name": "ucdlib-dams-utils",
+  "version": "0.0.3",
+  "description": "Node utils for the UC Davis Library DAMS application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jrmerz@ucdavis.edu",
+  "license": "MIT",
+  "dependencies": {
+    "body": "^5.1.0",
+    "jsonld": "^0.4.12",
+    "jsonwebtoken": "^8.1.0"
+  }
+}

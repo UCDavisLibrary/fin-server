@@ -1,9 +1,9 @@
 var request = require('superagent');
 var elasticsearch = require('elasticsearch');
-var jwt = require('./jwt');
-var jsonld = require('./jsonld');
-var config = require('../config');
-var schema = require('../elasticsearch/schema');
+var jwt = require('ucdlib-dams-utils/jwt');
+var jsonld = require('ucdlib-dams-utils/jsonld');
+var config = require('ucdlib-dams-utils/config');
+var schema = require('./schema');
 
 var client = new elasticsearch.Client({
   host: config.elasticsearch.host,

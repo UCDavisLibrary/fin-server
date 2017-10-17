@@ -1,7 +1,7 @@
 var router = require('express').Router();
 var authUtils = require('../lib/auth');
 var utils = require('./utils');
-var config = require('../config');
+var config = require('ucdlib-dams-utils/config');
 var {URL} = require('url');
 
 function hackBounce(req, res, next) {

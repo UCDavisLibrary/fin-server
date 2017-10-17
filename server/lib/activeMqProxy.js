@@ -1,5 +1,6 @@
-var stompit = require('stompit');
-var config = require('../config');
+const stompit = require('stompit');
+const config = require('ucdlib-dams-utils/config');
+const request = require('request');
 
 var connectOptions = {
   host : config.fcrepo.hostname,
@@ -15,11 +16,6 @@ var subscribeHeaders = {
 };
 
 class MessageConsumer {
-
-  constructor() {
-    this.buffer = new MsgBuffer();
-    this.wait = 1000;
-  }
 
   connect() {
     setTimeout(() => {
@@ -50,21 +46,46 @@ class MessageConsumer {
 
       // message must be read before it can be ack'd ...
       var body = await this.readMessage(message);
-      // console.log(body);
-      
+      if( typeof body === 'string' ) {
+        try {
+          body = JSON.parse(body);
+        } catch(e) {}
+      }
+
       var id = headers['org.fcrepo.jms.identifier'];
       console.log(id, headers['org.fcrepo.jms.eventType']);
       console.log('-------------');
 
-      setTimeout(() => {
-        this.client.ack(message);
-      }, 2000);
-      
-      
-      // this.buffer.push(id, () => {
-      //   console.log('UPDATED', id);
-      // });
-      
+      await this.broadcastToServices(JSON.stringify({
+        type : 'fcrepo-event',
+        payload : {headers, body}
+      }));
+
+      this.client.ack(message);
+    });
+  }
+
+  async broadcastToServices(message) {
+    for( var i = 0; i < config.activemq.services.length; i++ ) {
+      try {
+        await this.broadcastToService(config.activemq.services[i], message);
+      } catch(e) {
+        console.error(e);
+      }
+    }
+  }
+
+  async broadcastToService(service, message) {
+    return new Promise((resolve, reject) => {
+      request({
+        type : 'POST',
+        uri : `http://${service}:3333`,
+        body : message 
+      },
+      (error, response, body) => {
+        if( error ) reject(error);
+        else resolve({response, body});
+      });
     });
   }
 
@@ -77,39 +98,6 @@ class MessageConsumer {
     });
   }
 
-}
-
-class MsgBuffer {
-
-  constructor() {
-    this.lookup = {};
-    this.bufferTime = 2000;
-  }
-
-  push(id, callback) {
-    if( !id ) return;
-
-    if( this.lookup[id] ) {
-      clearTimeout(this.lookup[id].timeoutId);
-      this.lookup[id].timeoutId = setTimeout(() => {
-        this.lookup[id].callback(id);
-        delete this.lookup[id];
-      }, this.bufferTime);
-      return;
-    }
-
-    var item = {
-      id : id,
-      timestamp : Date.now(),
-      timeoutId : setTimeout(() => {
-        this.lookup[id].callback(id);
-        delete this.lookup[id];
-      }, this.bufferTime),
-      callback : callback
-    }
-
-    this.lookup[id] = item;
-  }
 }
 
 var mc = new MessageConsumer();

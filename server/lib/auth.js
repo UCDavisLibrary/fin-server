@@ -1,10 +1,9 @@
 var CASAuthentication = require('cas-authentication');
 var bcrypt = require('bcrypt');
-var jwt = require('./jwt');
-var config = require('../config');
+var jwt = require('ucdlib-dams-utils/jwt');
+var config = require('ucdlib-dams-utils/config');
 var redis = require('./redisClient');
 const crypto = require('crypto');
-
 
 class AuthUtils {
 

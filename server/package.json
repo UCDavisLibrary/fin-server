@@ -24,6 +24,7 @@
     "request-promise-native": "^1.0.5",
     "stompit": "^0.25.0",
     "superagent": "^3.6.0",
+    "ucdlib-dams-utils": "0.0.3",
     "yargs": "^9.0.1"
   }
 }

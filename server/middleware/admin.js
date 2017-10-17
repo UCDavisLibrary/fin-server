@@ -1,5 +1,5 @@
 var authUtils = require('../lib/auth');
-var config = require('../config');
+var config = require('ucdlib-dams-utils/config');
 
 module.exports = (authUtils) => {
   return async (req, res, next) => {
