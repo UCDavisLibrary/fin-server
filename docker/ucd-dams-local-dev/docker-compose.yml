@@ -44,20 +44,20 @@ services:
       - server
       - fcrepo
   
-  karafservices:
-    build: ../../karafservices
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_TTL=${JWT_TTL}
-    extra_hosts:
-      - "${DAMS_HOST}:127.0.0.1"
-    ports:
-      - 1099:1099
-      - 8101:8101 
-      - 44444:44444
-    volumes:
-      - fedora-serialized-data:/data
+  # karafservices:
+  #   build: ../../karafservices
+  #   environment:
+  #     - JWT_SECRET=${JWT_SECRET}
+  #     - JWT_ISSUER=${JWT_ISSUER}
+  #     - JWT_TTL=${JWT_TTL}
+  #   extra_hosts:
+  #     - "${DAMS_HOST}:127.0.0.1"
+  #   ports:
+  #     - 1099:1099
+  #     - 8101:8101 
+  #     - 44444:44444
+  #   volumes:
+  #     - fedora-serialized-data:/data
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
@@ -82,16 +82,16 @@ services:
     depends_on:
       - fcrepo
   
-  kibana:
-    image: docker.elastic.co/kibana/kibana:5.4.1
-    depends_on:
-      - elasticsearch
-    # volumes: 
-    #   - ../kibana.yml:/usr/share/kibana/config/kibana.yml
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-    ports:
-      - 5601:5601
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:5.4.1
+  #   depends_on:
+  #     - elasticsearch
+  #   # volumes: 
+  #   #   - ../kibana.yml:/usr/share/kibana/config/kibana.yml
+  #   environment:
+  #     ELASTICSEARCH_URL: http://elasticsearch:9200
+  #   ports:
+  #     - 5601:5601
   
   redis:
     image: redis:3.2
@@ -99,6 +99,11 @@ services:
       - redis-data:/data
     ports:
       - 6379:6379
+    depends_on:
+      - fcrepo
+
+  loris:
+    build: ../../loris
     depends_on:
       - fcrepo
 
