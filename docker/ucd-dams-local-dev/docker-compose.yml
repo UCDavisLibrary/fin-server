@@ -31,7 +31,7 @@ services:
       - JWT_TTL=${JWT_TTL}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
       - DAMS_URL=${DAMS_URL}
-      - ACTIVEMQ_SERVICES=essync
+      - ACTIVEMQ_SERVICES=essync,serialization
     depends_on:
       - fcrepo
       - elasticsearch
@@ -50,6 +50,20 @@ services:
     image: node:8.5
     volumes:
       - ../../activemq/essync:/service
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
+    depends_on:
+      - server
+      - fcrepo
+    command: node service
+
+  serialization:
+    # build: ../../activemq/serialization
+    image: node:8.5
+    volumes:
+      - ../../activemq/serialization:/service
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}

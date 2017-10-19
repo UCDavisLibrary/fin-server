@@ -50,12 +50,7 @@ class EsSyncMessageServer extends MessageServer {
 
   async getData(path) {
     let isData = await this.isDataFile(path);
-
-    if( isData ) {
-      console.log('Ignoring data file');
-      return null;
-    }
-
+    if( isData ) path += '/fcr:metadata';
     return await this.getCompactJson(path);
   }
 
