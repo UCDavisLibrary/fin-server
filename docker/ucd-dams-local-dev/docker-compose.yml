@@ -50,6 +50,10 @@ services:
     image: node:8.5
     volumes:
       - ../../activemq/essync:/service
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
     depends_on:
       - server
       - fcrepo

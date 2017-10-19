@@ -3,10 +3,9 @@
 // localhost will be used and assume all services are running on default port.
 // This allows the NodeJS server to be developed outside the docker env.
 
-var isDev = process.argv.indexOf('--dev') > -1 ? true : false;
-var fcrepoHostname = isDev ? 'localhost' : 'fcrepo';
-var redisHostname = isDev ? 'localhost' : 'redis';
-var esHostname = isDev ? 'localhost' : 'elasticsearch';
+var fcrepoHostname = 'fcrepo';
+var redisHostname = 'redis';
+var esHostname = 'elasticsearch';
 
 
 module.exports = {

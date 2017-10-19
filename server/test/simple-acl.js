@@ -17,11 +17,11 @@ var token = jwt.create('simple-acl-bot', true);
 })()
 
 async function send(path, file) {
-  console.log('Creating', `${config.fcrepo.host}${config.fcrepo.root}${path}`)
+  console.log('Creating', `${config.fcrepo.host}${config.fcrepo.root}/${path}`)
 
   var options = {
     method: 'DELETE',
-    uri: `${config.fcrepo.host}${config.fcrepo.root}${path}/fcr:tombstone`,
+    uri: `${config.fcrepo.host}${config.fcrepo.root}/${path}/fcr:tombstone`,
     headers : {
       'Authorization': `Bearer ${token}`,
     }
@@ -37,7 +37,7 @@ async function send(path, file) {
 
   var options = {
     method: 'PUT',
-    uri: `${config.fcrepo.host}${config.fcrepo.root}${path}`,
+    uri: `${config.fcrepo.host}${config.fcrepo.root}/${path}`,
     body: fs.createReadStream(file),
     headers : {
       'Authorization': `Bearer ${token}`,
