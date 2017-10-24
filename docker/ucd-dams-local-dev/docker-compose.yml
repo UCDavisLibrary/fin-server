@@ -123,6 +123,15 @@ services:
     depends_on:
       - fcrepo
 
+  trustedproxy:
+    build: ../../trusted-proxy
+    depends_on:
+      - fcrepo
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
+
   loris:
     build: ../../loris
     depends_on:

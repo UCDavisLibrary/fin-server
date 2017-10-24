@@ -53,15 +53,10 @@ class FcrepoProxy {
     }
 
     parts = parts[1].split('/');
-    extensionRequest.extension.name = parts.shift()[0];
-    extensionRequest.extension.path = parts.join('/');
+    extensionRequest.extension.name = parts.shift();
+    extensionRequest.extension.path = parts.length > 0 ? '/'+parts.join('/') : '';
 
-    try {
-      let url = this.getExtensionRequestUrl(extensionRequest, req);
-      proxy.web(req, res, {target : url});
-    } catch(e) {
-      throw e;
-    }
+    this.extensionProxyRequest(extensionRequest, req, res);
   }
 
   fcrepoProxyRequest(req, res) {
@@ -78,24 +73,25 @@ class FcrepoProxy {
    * @param {*} extReq - Extension request object, parsed above
    * @param {*} expReq - Express request object
    */
-  async getExtensionRequestUrl(extReq, expReq) {
+  async extensionProxyRequest(extReq, expReq, res) {
     if( !this.extensions[extReq.extension.name] ) {
-      throw new Error(`Unknown Extension: `+extReq.extension.name);
+      return res.status(400).send(`Unknown Extension: `+extReq.extension.name);
     }
 
     let info = await this.containerInfo(extReq.path, expReq);
     if( !info.access ) {
-      throw new Error('Unauthorized');
+      return res.status(403).send('Unauthorized');
     }
 
     let ext = this.extensions[extReq.extension.name];
     if( ext.onlyBinary && !info.binary ) {
-      throw new Error('Invalid container type');
+      return res.status(400).send('Invalid container type');
     } else if( ext.onlyContainer && info.binary ) {
-      throw new Error('Invalid container type');
+      return res.status(400).send('Invalid container type');
     }
 
-    return ext.proxy(ext.url, extReq.path, extReq.extension.path);
+    let url = ext.proxy(ext.url, extReq.path, extReq.extension.path);
+    proxy.web(expReq, res, {target : url});
   }
 
   /**
@@ -134,7 +130,7 @@ class FcrepoProxy {
       if( !options.headers ) options.headers = {};
       options.headers.Authorization = `Bearer ${token}`;
     }
-    options.uri = `${config.fcrepo.host}${config.fcrepo.root}${options.uri}`;
+    options.uri = `${config.fcrepo.host}${options.uri}`;
 
     return new Promise((resolve, reject) => {
       request(options, (error, response, body) => {
