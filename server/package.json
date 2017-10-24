@@ -16,7 +16,10 @@
     "cookie-parser": "^1.4.3",
     "elasticsearch": "^13.3.1",
     "express": "^4.15.4",
+    "express-bunyan-logger": "^1.3.2",
+    "express-http-proxy": "^1.0.7",
     "express-session": "^1.15.5",
+    "http-proxy": "^1.16.2",
     "jsonld": "^0.4.12",
     "jsonwebtoken": "^8.0.1",
     "redis": "^2.8.0",
@@ -24,7 +27,7 @@
     "request-promise-native": "^1.0.5",
     "stompit": "^0.25.0",
     "superagent": "^3.6.0",
-    "ucdlib-dams-utils": "0.0.3",
+    "ucdlib-dams-utils": "0.0.7",
     "yargs": "^9.0.1"
   }
 }

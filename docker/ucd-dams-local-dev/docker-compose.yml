@@ -21,8 +21,9 @@ services:
     image: node:8.5
     volumes:
       - ../../server:/app
+      - ../services.js:/etc/dams/services.js
     ports:
-      - 3001:3001
+      - 3000:3001
       - 9229:9229
     command: tail -f /dev/null
     environment:
@@ -31,20 +32,11 @@ services:
       - JWT_TTL=${JWT_TTL}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
       - DAMS_URL=${DAMS_URL}
-      - ACTIVEMQ_SERVICES=essync,serialization
     depends_on:
       - fcrepo
       - elasticsearch
       - redis
 
-  proxy:
-    build: ../../proxy
-    ports:
-      - 3000:80
-    depends_on:
-      - server
-      - fcrepo
-  
   essync:
     # build: ../../activemq/essync
     image: node:8.5
@@ -133,6 +125,11 @@ services:
 
   loris:
     build: ../../loris
+    depends_on:
+      - fcrepo
+
+  apixdemo:
+    build: ../../apix-demo
     depends_on:
       - fcrepo
 

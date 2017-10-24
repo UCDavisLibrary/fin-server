@@ -1,0 +1,5 @@
+<> a ldp:DirectContainer, apix:LdpServiceRegistry ;
+  ldp:membershipResource <> ;
+  ldp:hasMemberRelation apix:containsService ;
+  ldp:contains <APIDemo> ;
+  apix:containsService <APIDemo> .

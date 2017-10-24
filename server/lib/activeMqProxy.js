@@ -66,9 +66,10 @@ class MessageConsumer {
   }
 
   async broadcastToServices(message) {
-    for( var i = 0; i < config.activemq.services.length; i++ ) {
+    var services = config.services.activemq;
+    for( var i = 0; i < services.length; i++ ) {
       try {
-        await this.broadcastToService(config.activemq.services[i], message);
+        await this.broadcastToService(services[i], message);
       } catch(e) {
         console.error(e);
       }

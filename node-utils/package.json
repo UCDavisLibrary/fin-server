@@ -1,6 +1,6 @@
 {
   "name": "ucdlib-dams-utils",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "Node utils for the UC Davis Library DAMS application",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "body": "^5.1.0",
+    "bunyan": "^1.8.12",
     "jsonld": "^0.4.12",
     "jsonwebtoken": "^8.1.0",
     "request": "^2.83.0"

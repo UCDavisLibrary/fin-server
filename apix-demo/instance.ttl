@@ -1,0 +1,6 @@
+<APIDemo/instance>
+   ore:describes <#instance> .
+
+<#instance> a apix:ServiceInstance ;
+    apix:hasEndpoint <http://apixdemo:3000/>
+    apix:isServiceInstanceOf <http://library.ucdavis.edu/APIDemo> .

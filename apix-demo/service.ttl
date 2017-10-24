@@ -1,0 +1,3 @@
+<APIDemo> a apix:Service ;
+   rdfs:label “API-X Demo Service” ;
+   apix:canonical <http://library.ucdavis.edu/APIDemo>
