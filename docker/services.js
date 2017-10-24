@@ -9,7 +9,10 @@ module.exports = {
       }
     },
     apixdemo : {
-      url : 'http://apixdemo:3000'
+      url : 'http://apixdemo:3000',
+      proxy : (url, fcPath, extPath) => {
+        return `${url}?fc=${fcPath}&path=${extPath}`;
+      }
     }
   },
 

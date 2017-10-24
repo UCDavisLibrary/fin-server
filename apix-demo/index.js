@@ -4,7 +4,7 @@ const app = express();
 app.get('/', (req, res) => {
   console.log('API-X Reqest!');
   console.log(req.url);
-  console.log(req.body);
+  console.log(req.headers);
 
   res.json({success: true});
 });
