@@ -7,17 +7,9 @@ const Logger = require('ucdlib-dams-utils').logger();
 const config = require('../config');
 
 var proxy = httpProxy.createProxyServer({
-    prependPath: true,
     ignorePath : true
 });
 
-// app.use('/proxy', (req, res) => {
-//   proxy.web(req, res, {
-//     target: target
-//   });
-// });
-
-// todo: test multiple header interaction
 
 const SERVICE_CHAR = '/svc:'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
@@ -30,14 +22,17 @@ class FcrepoProxy {
     this.extensions = config.services.extensions;
     app.use('/fcrepo', this.proxyPathResolver.bind(this));
 
+    proxy.on('proxyRes', (proxyRes, req, res) => {
+      if( !this.isApiRequest(req) ) return;
+      if( this.isServiceRequest(req) ) return;
+      this.appendServiceLinkHeaders(req, proxyRes);
+    });
+
     Logger.debug('Initializing proxy');
   }
 
   async proxyPathResolver(req, res) {
-    // let url = new URL(`http://localhost${req.url}`);
-
-    // not a service url
-    if( !req.originalUrl.match(IS_SERVICE_URL) ) {
+    if( !this.isServiceRequest(req) ) {
       return this.fcrepoProxyRequest(req, res);
     }
 
@@ -59,13 +54,37 @@ class FcrepoProxy {
     this.extensionProxyRequest(extensionRequest, req, res);
   }
 
-  fcrepoProxyRequest(req, res) {
+  async fcrepoProxyRequest(req, res) {
     Logger.debug(`Fcrepo proxy request: http://${config.fcrepo.hostname}:8080${req.originalUrl}`);
 
-    // loop services and append Link headers
+    // lookup and store service link headers
+    req.fcrepoInfo = {links: []};
+
+    let path = req.originalUrl;
+    if( this.isMetadataRequest(req) ) {
+      path = path.replace(/fcr:metadata.*/, '');
+    }
+
+    var info = await this.containerInfo(path, req);
+    if( info.access ) {
+      let ext;
+      for( var name in this.extensions ) {
+        ext = this.extensions[name];
+        if( info.binary && ext.onlyContainer ) continue;
+        if( !info.binary && ext.onlyBinary ) continue;
+        req.fcrepoInfo.links.push(`<${config.server.url}${path}svc:${name}>; rel="service"`);
+      }
+    }
+
     proxy.web(req, res, {
       target : `http://${config.fcrepo.hostname}:8080${req.originalUrl}`
     });
+  }
+
+  appendServiceLinkHeaders(req, res) {
+    let links = res.headers.link ? res.headers.link.split(',') : [];
+    req.fcrepoInfo.links.forEach(link => links.push(link));
+    res.headers.link = links.join(',');
   }
 
   /**
@@ -101,7 +120,7 @@ class FcrepoProxy {
     var token = req.cookies[config.jwt.cookieName] || '';
     
     if( !token ) {
-      token = req.get('Authizoration');
+      token = req.get('Authorization');
       if( token ) token = token.replace(/^Bearer /, '');
     }
 
@@ -138,6 +157,19 @@ class FcrepoProxy {
         else resolve({response, body});
       });
     });
+  }
+
+  isServiceRequest(req) {
+    return req.originalUrl.match(IS_SERVICE_URL);
+  }
+
+  isApiRequest(req) {
+    return (req.originalUrl.indexOf(config.fcrepo.root) === 0)
+  }
+
+  isMetadataRequest(req) {
+    let last = req.originalUrl.replace(/\/$/,'').split('/').pop();
+    return (last === 'fcr:metadata');
   }
 
 }
