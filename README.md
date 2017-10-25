@@ -1,5 +1,11 @@
-# unnamed-ucd-dams
-UC Davis Library DAMS - Fedora Commons based, running in Docker with CAS authentication
+# FIN (Fedora IN docker) Server
+
+The UC Davis Library DAMS Server - 
+ - Fedora Commons based
+ - Runs in Docker
+ - CAS authentication
+ - NodeJS Server and Services
+ - Loris IIIF Service
 
 ## Setup
 
