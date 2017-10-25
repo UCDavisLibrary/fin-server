@@ -2,21 +2,10 @@
 version: '2'
 
 services:
-
-  fcrepo:
-    build: ../../fcrepo
-    volumes:
-      - fedora-data:/var/lib/jetty/fedora-data
-    ports:
-      - 8080:8080
-      - 61613:61613
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
-      - JWT_VERBOSE=${JWT_VERBOSE}
-      - DAMS_URL=${DAMS_URL}
-
+  
+  ###
+  # Font End NodeJS Application Server & Proxy
+  ###
   server:
     image: node:8.5
     volumes:
@@ -37,6 +26,100 @@ services:
       - elasticsearch
       - redis
 
+  ###
+  # Fedora Repository
+  ###
+  fcrepo:
+    build: ../../fcrepo
+    volumes:
+      - fedora-data:/var/lib/jetty/fedora-data
+    ports:
+      - 8080:8080
+      - 61613:61613
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
+      - JWT_VERBOSE=${JWT_VERBOSE}
+      - DAMS_URL=${DAMS_URL}
+
+  ###
+  # Search
+  ###
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    # for docker-compose version 3
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 1g
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+      - ../elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - 9200:9200
+    depends_on:
+      - fcrepo
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.4.1
+    depends_on:
+      - elasticsearch
+    # volumes: 
+    #   - ../kibana.yml:/usr/share/kibana/config/kibana.yml
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+  
+  ###
+  # Session, local user and role store
+  ###
+  redis:
+    image: redis:3.2
+    volumes:
+      - redis-data:/data
+    ports:
+      - 6379:6379
+    depends_on:
+      - fcrepo
+
+  ###
+  # Trusted Proxy for Services
+  ###
+  trustedproxy:
+    build: ../../trusted-proxy
+    depends_on:
+      - fcrepo
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
+
+  ###
+  # API Extension Services
+  ###
+  loris:
+    build: ../../loris
+    depends_on:
+      - fcrepo
+
+  apixdemo:
+    build: ../../apix-demo
+    depends_on:
+      - fcrepo
+  
+  ###
+  # ActiveMQ Services
+  ###
   essync:
     # build: ../../activemq/essync
     image: node:8.5
@@ -79,68 +162,6 @@ services:
   #     - 44444:44444
   #   volumes:
   #     - fedora-serialized-data:/data
-
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
-    environment:
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    mem_limit: 1g
-    # for docker-compose version 3
-    # deploy:
-    #   resources:
-    #     limits:
-    #       memory: 1g
-    volumes:
-      - es-data:/usr/share/elasticsearch/data
-      - ../elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    ports:
-      - 9200:9200
-    depends_on:
-      - fcrepo
-  
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:5.4.1
-  #   depends_on:
-  #     - elasticsearch
-  #   # volumes: 
-  #   #   - ../kibana.yml:/usr/share/kibana/config/kibana.yml
-  #   environment:
-  #     ELASTICSEARCH_URL: http://elasticsearch:9200
-  #   ports:
-  #     - 5601:5601
-  
-  redis:
-    image: redis:3.2
-    volumes:
-      - redis-data:/data
-    ports:
-      - 6379:6379
-    depends_on:
-      - fcrepo
-
-  trustedproxy:
-    build: ../../trusted-proxy
-    depends_on:
-      - fcrepo
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_TTL=${JWT_TTL}
-
-  loris:
-    build: ../../loris
-    depends_on:
-      - fcrepo
-
-  apixdemo:
-    build: ../../apix-demo
-    depends_on:
-      - fcrepo
 
 volumes:
   fedora-data:
