@@ -69,16 +69,17 @@ services:
     depends_on:
       - fcrepo
   
-  kibana:
-    image: docker.elastic.co/kibana/kibana:5.4.1
-    depends_on:
-      - elasticsearch
-    # volumes: 
-    #   - ../kibana.yml:/usr/share/kibana/config/kibana.yml
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-    ports:
-      - 5601:5601
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:5.4.1
+  #   depends_on:
+  #     - elasticsearch
+  #   # volumes: 
+  #   #   - ../kibana.yml:/usr/share/kibana/config/kibana.yml
+  #   environment:
+  #     ELASTICSEARCH_URL: http://elasticsearch:9200
+  #   ports:
+  #     - 5601:5601
+  #   command: bash -c 'sleep 30 && /usr/local/bin/kibana-docker'
   
   ###
   # Session, local user and role store

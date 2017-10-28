@@ -4,7 +4,10 @@
   "description": "",
   "main": "connector.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd client && webpack",
+    "watch": "cd client && webpack --watch",
+    "dist": "cd client && ./build.sh"
   },
   "author": "",
   "license": "ISC",
@@ -23,11 +26,18 @@
     "jsonld": "^0.4.12",
     "jsonwebtoken": "^8.0.1",
     "redis": "^2.8.0",
-    "request": "^2.82.0",
     "request-promise-native": "^1.0.5",
     "stompit": "^0.25.0",
     "superagent": "^3.6.0",
     "ucdlib-dams-utils": "0.0.7",
     "yargs": "^9.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "html-loader": "^0.5.1",
+    "webpack": "^3.8.1"
   }
 }

@@ -40,7 +40,10 @@ class EsSyncMessageServer extends MessageServer {
     });
 
     try {
-      return JSON.parse(body);
+      body = JSON.parse(body);
+      // remove rdf context
+      if( body['@context'] ) delete body['@context']
+      return body;
     } catch(e) {
       console.log('Invalid response from server');
     }

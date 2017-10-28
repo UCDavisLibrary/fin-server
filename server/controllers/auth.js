@@ -85,6 +85,22 @@ router.get('/cas/user', authUtils.cas.block, async ( req, res ) => {
   });
 });
 
+router.get('/user', async ( req, res ) => {
+  let user = req.session[ authUtils.cas.session_name ];
+
+  if( user ) {
+    var isAdmin = await authUtils.isAdmin(req.session[ authUtils.cas.session_name ]);
+    let result = {
+      loggedIn : true,
+      user
+    };
+    if( isAdmin ) result.admin = true;
+    res.json(result);
+  } else {
+    res.json({loggedIn: false});
+  }
+});
+
 router.get('/login', authUtils.middleware.bounce, (req, res) => {
   res.redirect('/');
 });
