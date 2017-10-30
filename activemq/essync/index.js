@@ -1,11 +1,13 @@
 const MessageServer = require('ucdlib-dams-utils/MessageServer');
 const config = require('ucdlib-dams-utils/config');
+const logger = require('ucdlib-dams-utils/logger')('essync');
 const elasticsearch = require('elasticsearch');
 const jwt = require('ucdlib-dams-utils/jwt');
 const request = require('request');
 const {URL} = require('url');
+const utils = require('./utils');
 
-process.on('unhandledRejection', err => console.error(err));
+process.on('unhandledRejection', err => logger.error(err));
 
 class EsSyncMessageServer extends MessageServer {
 
@@ -41,11 +43,12 @@ class EsSyncMessageServer extends MessageServer {
 
     try {
       body = JSON.parse(body);
-      // remove rdf context
-      if( body['@context'] ) delete body['@context']
+      // remove rdf context, fix urls
+      utils.cleanupData(body);
+
       return body;
     } catch(e) {
-      console.log('Invalid response from server');
+      logger.log('Invalid response from server', e);
     }
 
     return null;
@@ -66,7 +69,7 @@ class EsSyncMessageServer extends MessageServer {
                           .split(',')
                           .map(type => type.trim().replace(/.*#/, ''));
 
-    let path = msg.payload.headers['org.fcrepo.jms.identifier'];
+    let path = msg.payload.headers['org.fcrepo.jms.identifier'] || '/';
 
     if( eventTypes.indexOf('ResourceModification') > -1 ||
         eventTypes.indexOf('ResourceCreation') > -1  ) {
@@ -81,24 +84,24 @@ class EsSyncMessageServer extends MessageServer {
   async update(path) {
     let jsonld = await this.getData(path);
     
-    console.log(`Updating: ${path}`);
+    logger.info(`Updating: ${path}`);
     if( !jsonld ) return;
 
     this.esClient.index({
       index : config.elasticsearch.alias,
       type: config.elasticsearch.recordSchemaType,
-      id : path,
+      id : config.server.url+config.fcrepo.root+path,
       body: jsonld
     });
   }
 
   async remove(path) {
-    console.log(`Removing: ${path}`);
+    logger.info(`Removing: ${path}`);
     
     this.esClient.delete({
       index : config.elasticsearch.alias,
       type: config.elasticsearch.recordSchemaType,
-      id: path
+      id: config.server.url+config.fcrepo.root+path
     });
   }
 

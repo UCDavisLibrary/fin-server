@@ -1,6 +1,6 @@
 {
   "name": "ucdlib-dams-utils",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Node utils for the UC Davis Library DAMS application",
   "main": "index.js",
   "scripts": {

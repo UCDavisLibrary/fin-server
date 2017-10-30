@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const Logger = require('ucdlib-dams-utils').logger('ucd-dams-server');
 const session = require('express-session');
 const bodyParser = require('body-parser')
@@ -30,6 +31,7 @@ app.use(session({
 }));
 app.use(cookieParser()); 
 
+// setup http logging
 app.use((req, res, next) => {
     function log() {
         Logger.info(`${res.statusCode} ${req.protocol}/${req.httpVersion} ${req.originalUrl} ${req.get('User-Agent')}`);
@@ -47,44 +49,20 @@ app.use(bodyParser.json());
 // wire up stomp connection
 require('./lib/activeMqProxy');
 const mainProxy = new FcrepoProxy(app);
- 
-// Unauthenticated clients will be redirected to the CAS login and then back to 
-// this route once authenticated. 
-app.get( '/app', authUtils.middleware.bounce, function ( req, res ) {
-    res.send( '<html><body>Hello!</body></html>' );
-});
 
-app.get( '/', function ( req, res ) {
-    res.send( '<html><body>Hello!</body></html>' );
+// setup static routes
+require('./lib/static')({
+    app: app,
+    assetsDir : path.join(__dirname, 'client', config.server.assets),
+    appRoutes : config.server.appRoutes
 });
  
-// Unauthenticated clients will receive a 401 Unauthorized response instead of 
-// the JSON data. 
-app.get( '/api', authUtils.cas.block, function ( req, res ) {
-    res.json( { success: true } );
-});
- 
-// An example of accessing the CAS user session variable. This could be used to 
-// retrieve your own local user records based on authenticated CAS username. 
-
- 
-// Unauthenticated clients will be redirected to the CAS login and then to the 
-// provided "redirectTo" query parameter once authenticated. 
-app.get('/authenticate', authUtils.middleware.bounce, (req, res) => {
-    res.redirect(req.session.cas_return_to);
-});
-
- 
-// This route will de-authenticate the client with the Express server and then 
-// redirect the client to the CAS logout page. 
-app.get( '/logout', authUtils.cas.logout );
-
 /**
  * Register Controllers
  */
-app.use('/search', require('./controllers/search'));
+app.use('/rest', require('./controllers/rest'));
 app.use('/auth', require('./controllers/auth'));
 
 app.listen(3001, () => {
-    console.log('ready on port 3001');
+    Logger.info('server ready on port 3001');
 });

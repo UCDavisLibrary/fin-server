@@ -4,6 +4,8 @@ var jwt = require('ucdlib-dams-utils/jwt');
 var jsonld = require('ucdlib-dams-utils/jsonld');
 var config = require('ucdlib-dams-utils/config');
 var schema = require('./schema');
+var clone = require('clone');
+const utils = require('./utils');
 
 var client = new elasticsearch.Client({
   host: config.elasticsearch.host,
@@ -40,20 +42,22 @@ async function crawl(url, indexName) {
     return console.log('Ignoring ACL');
   }
   
+  let isData = await isDataFile(url);
+  if( isData ) url += '/fcr:metadata';
+
   try {
     resp = await request
                       .get(url)
                       .set('Authorization', `Bearer ${token}`)
-                      .set('Accept', 'application/ld+json')
+                      .set('Accept', 'application/ld+json; profile="http://www.w3.org/ns/json-ld#compacted"')
   } catch(e) {
     console.log('Failed to fetch', url, e.message);
   }
 
-  if( resp.body && resp.body.length > 0 ) {
-    resp = await jsonld.clean(resp.body[0]);
-    await insert(resp, indexName);
+  if( resp.body ) {
+    resp = resp.body;
+    await insert(clone(resp), indexName);
 
-    console.log('Crawled', resp['@id']);
     if( !resp.contains ) return;
 
     if( Array.isArray(resp.contains) ) {
@@ -64,6 +68,14 @@ async function crawl(url, indexName) {
       crawl(resp.contains, indexName);
     }
   }
+}
+
+async function isDataFile(path) {
+  var response = await request.head(path).set('Authorization', `Bearer ${token}`);
+  if( response.headers['content-disposition'] ) {
+    return true;
+  }
+  return false;
 }
 
 async function getCurrentIndexes() {
@@ -86,6 +98,8 @@ async function getCurrentIndexes() {
 
 async function insert(data, index) {
   try {
+    utils.cleanupData(data);
+
     await client.index({
       index : index,
       type: config.elasticsearch.recordSchemaType,

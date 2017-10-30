@@ -17,7 +17,7 @@ class AuthStore extends BaseStore {
 
     this.data = {
       state : this.CUSTOM_STATES.PENDING,
-      user : user
+      user : null
     }
   }
 

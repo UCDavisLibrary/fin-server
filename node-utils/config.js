@@ -30,7 +30,7 @@ module.exports = {
   fcrepo : {
     hostname : fcrepoHostname,
     host : `http://${fcrepoHostname}:8080`,
-    root : '/fcrepo/rest/',
+    root : '/fcrepo/rest',
     stomp : {
       port : 61613,
       topic : '/topic/fedora'

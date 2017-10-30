@@ -78,10 +78,10 @@ class SerializationMessageServer extends MessageServer {
     let isData = await this.isDataFile(fcpath);
 
     if( isData ) {
-      await this.removeFile(fspath);
-      await this.removeFile(fspath+'.ttl');
+      await this.removeFile(fcpath);
+      await this.removeFile(fcpath+'.ttl');
     } else {
-      await this.removeFile(path.join(fspath, 'index.ttl'));
+      await this.removeFile(path.join(fcpath, 'index.ttl'));
     }
   }
 
@@ -94,7 +94,7 @@ class SerializationMessageServer extends MessageServer {
                           .split(',')
                           .map(type => type.trim().replace(/.*#/, ''));
 
-    let fcpath = msg.payload.headers['org.fcrepo.jms.identifier'];
+    let fcpath = msg.payload.headers['org.fcrepo.jms.identifier'] || '/';
 
     if( eventTypes.indexOf('ResourceModification') > -1 ||
         eventTypes.indexOf('ResourceCreation') > -1  ) {
