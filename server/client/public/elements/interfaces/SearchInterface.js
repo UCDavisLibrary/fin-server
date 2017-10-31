@@ -9,4 +9,8 @@ export default subclass =>
       async _search(query) {
         return await this.SearchModel.search(query);
       }
+
+      async _textSearch(txt) {
+        return await this.SearchModel.textSearch(txt, {exec: true});
+      } 
   }

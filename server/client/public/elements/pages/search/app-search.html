@@ -1,0 +1,41 @@
+<style include="shared-styles">
+  h2 {
+    text-align: center;
+  }
+  paper-input {
+    width: 75%;
+    display: inline-block;
+  }
+  .filters {
+    width : 250px;
+  }
+  .results {
+    flex: 1;
+  }
+</style>
+
+<a href="/">Home</a>
+<main>
+  <div>
+    <h2>DAMS Search</h2>
+
+    <div style="display:flex; justify-content: center">
+        <paper-input 
+          id="input" 
+          label="Search using keywords" 
+          on-change="_onInputChange">
+        </paper-input>
+    </div>
+    
+    <div style="display: flex">
+      <div class="filters">
+
+      </div>
+      <div class="results">
+        <template is="dom-repeat" items="[[results]]">
+          <app-search-result data="[[item]]"></app-search-result>
+        </template>
+      </div>
+    </div>
+  </div>
+</main>

@@ -23,10 +23,25 @@
   version "3.0.0-pre.1"
   resolved "https://registry.yarnpkg.com/@polymer/font-roboto/-/font-roboto-3.0.0-pre.1.tgz#3b989a3b7c7d7351d4d816f8136d708512b0bd10"
 
+"@polymer/iron-a11y-announcer@^3.0.0-pre.1":
+  version "3.0.0-pre.1"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-a11y-announcer/-/iron-a11y-announcer-3.0.0-pre.1.tgz#ee08cd850d2880bb19533523a57318b609761aa7"
+  dependencies:
+    "@polymer/polymer" "^3.0.0-pre.1"
+
 "@polymer/iron-a11y-keys-behavior@^3.0.0-pre.1":
   version "3.0.0-pre.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-a11y-keys-behavior/-/iron-a11y-keys-behavior-3.0.0-pre.1.tgz#0b2954d7f6b04d97c9ae69c7f7cb82b9d4efe3e4"
   dependencies:
+    "@polymer/polymer" "^3.0.0-pre.1"
+
+"@polymer/iron-autogrow-textarea@^3.0.0-pre.1":
+  version "3.0.0-pre.1"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-autogrow-textarea/-/iron-autogrow-textarea-3.0.0-pre.1.tgz#d9cf2f40d759acc27e9b70338bb55b35f07c27d3"
+  dependencies:
+    "@polymer/iron-behaviors" "^3.0.0-pre.1"
+    "@polymer/iron-flex-layout" "^3.0.0-pre.1"
+    "@polymer/iron-validatable-behavior" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 
 "@polymer/iron-behaviors@^3.0.0-pre.1":
@@ -77,6 +92,14 @@
   resolved "https://registry.yarnpkg.com/@polymer/iron-iconset-svg/-/iron-iconset-svg-3.0.0-pre.1.tgz#06a03d5796c4280e1fda0edc334de9de1a808f7d"
   dependencies:
     "@polymer/iron-meta" "^3.0.0-pre.1"
+    "@polymer/polymer" "^3.0.0-pre.1"
+
+"@polymer/iron-input@^3.0.0-pre.1":
+  version "3.0.0-pre.1"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-input/-/iron-input-3.0.0-pre.1.tgz#b8e0563353ce101fadb619ed55af84882d19f73d"
+  dependencies:
+    "@polymer/iron-a11y-announcer" "^3.0.0-pre.1"
+    "@polymer/iron-validatable-behavior" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 
 "@polymer/iron-location@^3.0.0-pre.1":
@@ -154,6 +177,18 @@
   dependencies:
     "@polymer/iron-icon" "^3.0.0-pre.1"
     "@polymer/paper-behaviors" "^3.0.0-pre.1"
+    "@polymer/paper-styles" "^3.0.0-pre.1"
+    "@polymer/polymer" "^3.0.0-pre.1"
+
+"@polymer/paper-input@^3.0.0-pre.1":
+  version "3.0.0-pre.1"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-input/-/paper-input-3.0.0-pre.1.tgz#d93ca8f5b70b821be5b19341b60092df7ca16fa8"
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.1"
+    "@polymer/iron-autogrow-textarea" "^3.0.0-pre.1"
+    "@polymer/iron-behaviors" "^3.0.0-pre.1"
+    "@polymer/iron-form-element-behavior" "^3.0.0-pre.1"
+    "@polymer/iron-input" "^3.0.0-pre.1"
     "@polymer/paper-styles" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 

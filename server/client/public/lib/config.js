@@ -1,8 +1,8 @@
 module.exports = {
   // facets to show on left side
   facets : {
-    'color.raw' : {
-      label : 'Color',
+    'hasMimeType' : {
+      label : 'Mime-Type',
       type : 'facet'
     }
     // 'winetype.raw' : {

@@ -12,7 +12,7 @@ import "./utils/Mixin";
 import "./utils/EventMixin"
 
 import "./app-route"
-import "./pages/app-search"
+import "./pages/search/app-search"
 import '../lib'
 import "./shared-styles"
 

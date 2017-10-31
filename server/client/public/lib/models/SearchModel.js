@@ -59,7 +59,14 @@ class SearchModel extends BaseModel {
 
   _addFacetsToBody(body) {
     for( var key in config.facets ) {
-      if( config.facets[key].type === 'range' ) {
+      if( config.facets[key].type === 'facet' ) {
+        body.aggs[key] = {
+          terms : { 
+            field : key,
+            size : 1000
+          }
+        }
+      } else if( config.facets[key].type === 'range' ) {
         body.aggs[key+'-min'] = {
           min : { 
             field : key
@@ -262,13 +269,13 @@ class SearchModel extends BaseModel {
     body.query.bool.must.push({
       multi_match : {
         query : text,
-        fields : ['name', 'section']
+        fields : ['title', 'desciption']
       }
     });
     
     if( options.exec ) {
       this.setPaging(); // reset page
-      this.search(body);
+      return this.search(body);
     }
 
     return body;

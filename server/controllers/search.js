@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
   try {
     res.json(await model.search(req.body));
   } catch(e) {
-    res.json({error: true, message: 'Error with search query', details: errorToDetails(e)});
+    res.json(utils.errorResponse(e, 'Error with search query'));
   }
 });
 

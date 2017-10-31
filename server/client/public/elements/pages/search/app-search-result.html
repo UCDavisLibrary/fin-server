@@ -1,0 +1,25 @@
+<style include="shared-styles"></style>
+
+<paper-material>
+  <h2>[[renderdata.title]]</h2>
+  <div>[[renderdata.description]]</div>
+  <div>ID: [[renderdata.href]]</div>
+
+  <div hidden$="[[!renderdata.filename]]">
+    <div>Download: <a href$="[[renderdata.href]]">[[renderdata.filename]]</a></div>
+    <div>Type: [[renderdata.hasMimeType]], Size: [[renderdata.hasSize]]</div>
+  </div>
+
+  <div hidden$="[[!renderdata.hasParent]]">
+    Parent [[renderdata.hasParent]]
+  </div>
+
+  <div hidden$="[[!renderdata.contains]]"></div>
+    <template is="dom-repeat" items="[[renderdata.contains]]">
+      <div>[[item]]</div>
+    </template>
+  </div>
+
+  <div>Created: [[renderdata.created]] by [[renderdata.createdBy]]</div>
+  <div>Updated: [[renderdata.lastModified]] by [[renderdata.lastModifiedBy]]</div>
+</paper-material>

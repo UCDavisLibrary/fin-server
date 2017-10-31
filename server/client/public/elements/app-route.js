@@ -9,12 +9,18 @@ class AppRoute extends Mixin(PolymerElement)
       .with(EventMixin, AppStateInterface) {
   
   static get template() {
-    return '<app-location></app-location>';
+    return '<app-location url-space-regex="[[appRoutes]]"></app-location>';
   }
 
   static get properties() {
-    route: {
-      type: Object
+    return {
+      route: {
+        type: Object
+      },
+      appRoutes : {
+        type : Object,
+        value : /^(\/$|\/search|\/foo)/i
+      }
     }
   }
 

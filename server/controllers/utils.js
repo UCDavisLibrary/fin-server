@@ -2,10 +2,10 @@
 class ControllerUtils {
 
   errorResponse(e, message) {
+    let details = this.errorToDetails(e);
     return {
       error: true, 
-      message: message, 
-      details: this.errorToDetails(e)
+      message, details
     }
   }
 

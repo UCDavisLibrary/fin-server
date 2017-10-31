@@ -18,6 +18,10 @@
       "type" : "keyword"
     },
 
+    "hasMimeType" : {
+      "type" : "keyword"
+    },
+
     "lastModified" : {
       "type" : "date",
       "format" : "date_optional_time"
