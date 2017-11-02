@@ -1,25 +1,51 @@
-<style include="shared-styles"></style>
+<style include="shared-styles">
+  .download {
+    background: var(--dark-background-color);
+    padding: 10px;
+    margin: 10px;
+  }
+
+  .timestamps {
+    font-size: 12px;
+    font-style: italic;
+    text-align: right;
+    color: var(--secondary-text-color);
+  }
+
+  h2, h4 {
+    margin-bottom: 5px;
+  }
+</style>
 
 <paper-material>
+
   <h2>[[renderdata.title]]</h2>
   <div>[[renderdata.description]]</div>
-  <div>ID: [[renderdata.href]]</div>
 
-  <div hidden$="[[!renderdata.filename]]">
-    <div>Download: <a href$="[[renderdata.href]]">[[renderdata.filename]]</a></div>
+  <div class="download" hidden$="[[!renderdata.filename]]">
+    <div>Download: <a href$="[[renderdata.href]]" target="_blank">[[renderdata.filename]]</a></div>
     <div>Type: [[renderdata.hasMimeType]], Size: [[renderdata.hasSize]]</div>
   </div>
 
-  <div hidden$="[[!renderdata.hasParent]]">
-    Parent [[renderdata.hasParent]]
+  <div class="container-info">
+    <h4>Container Info</h4>
+    <div>ID: <a href$="[[renderdata.href]]" target="_blank">[[renderdata.id]]</a></div>
+    <div hidden$="[[!renderdata.hasParent]]">
+      Parent: <a href$="[[renderdata.hasParent]]" target="_blank">[[renderdata.parentId]]</a>
+    </div>
+    <div hidden$="[[!renderdata.hasChildren]]">
+      Children: <a href$="[[renderdata.href]]" target="_blank">[[renderdata.children]]</a>
+    </div>
   </div>
 
-  <div hidden$="[[!renderdata.contains]]"></div>
-    <template is="dom-repeat" items="[[renderdata.contains]]">
-      <div>[[item]]</div>
-    </template>
+  <div class="timestamps">
+    <div>
+        Created <span hidden$="[[!renderdata.created]]">[[renderdata.created]]</span> 
+        <span hidden$="[[!renderdata.createdBy]]">by [[renderdata.createdBy]]</span> 
+    </div>
+    <div>
+      Updated <span hidden$="[[!renderdata.lastModified]]">[[renderdata.lastModified]]</span>
+      <span hidden$="[[!renderdata.lastModifiedBy]]">by [[renderdata.lastModifiedBy]]</span> 
+    </div>
   </div>
-
-  <div>Created: [[renderdata.created]] by [[renderdata.createdBy]]</div>
-  <div>Updated: [[renderdata.lastModified]] by [[renderdata.lastModifiedBy]]</div>
 </paper-material>

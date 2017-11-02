@@ -8,8 +8,7 @@ import "@polymer/paper-button/paper-button"
 import "@polymer/iron-pages/iron-pages"
 
 // sets globals
-import "./utils/Mixin";
-import "./utils/EventMixin"
+import {Mixin, EventInterface} from "@ucd-lib/cork-app-utils";
 
 import "./app-route"
 import "./pages/search/app-search"
@@ -22,7 +21,7 @@ import template from "./fin-app.html";
 
 
 export class FinApp extends Mixin(PolymerElement)
-  .with(EventMixin, AppStateInterface) {
+  .with(EventInterface, AppStateInterface) {
 
   // Define a string template instead of a `<template>` element.
   static get template() {

@@ -3,10 +3,10 @@ import "@polymer/paper-input/paper-input"
 import template from "./app-search.html";
 
 import "./app-search-result"
-import SearchInterface from '../../interfaces/SearchInterface'
+import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'
 
 export class AppSearch extends Mixin(PolymerElement)
-            .with(EventMixin, SearchInterface) {
+            .with(EventInterface, ElasticSearchInterface) {
 
   // Define a string template instead of a `<template>` element.
   static get template() {
@@ -48,7 +48,7 @@ export class AppSearch extends Mixin(PolymerElement)
    */
   _onSearch(promise) {
     promise
-      .then(r => this._onSearchResponse(r))
+      .then(r => this._onSearchResponse(r.body))
       .catch(e => this._onSearchError(e));
   }
 
@@ -64,6 +64,7 @@ export class AppSearch extends Mixin(PolymerElement)
   }
 
   _onSearchResponse(response) {
+    console.log(response);
     if( !response.hits ) return this.results = [];
     if( !response.hits.hits ) return this.results = [];
     this.results = response.hits.hits.map(item => item._source);

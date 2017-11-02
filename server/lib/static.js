@@ -6,7 +6,7 @@ module.exports = (args) => {
   /**
    * Setup static asset dir
    */
-  args.app.use(express.static(args.assetsDir));
+  args.app.use('/', express.static(args.assetsDir));
 
   /**
    * Setup SPA app routes

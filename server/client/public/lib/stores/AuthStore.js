@@ -1,4 +1,4 @@
-var BaseStore = require('cork-app-utils').BaseStore;
+var {BaseStore} = require('@ucd-lib/cork-app-utils');
 
 class AuthStore extends BaseStore {
 

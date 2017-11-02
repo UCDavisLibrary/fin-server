@@ -1,9 +1,9 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
-import SearchInterface from '../../interfaces/SearchInterface'
+import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'
 import template from './app-facet-filter.html'
 
 class AppFacetFilter extends Mixin(Polymer.Element)
-  .with(EventMixin, SearchInterface) {
+  .with(EventInterface, ElasticSearchInterface) {
 
   static get properties() {
     return {

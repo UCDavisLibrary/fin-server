@@ -1,4 +1,4 @@
-var BaseModel = require('cork-app-utils').BaseModel;
+var {BaseModel} = require('@ucd-lib/cork-app-utils');
 var AuthStore = require('../stores/AuthStore');
 var AuthService = require('../services/AuthService');
 

@@ -15,13 +15,17 @@
     "@polymer/paper-material": "^3.0.0-pre.1",
     "@polymer/paper-styles": "^3.0.0-pre.1",
     "@polymer/polymer": "^3.0.0-pre.1",
+    "@ucd-lib/cork-app-elastic-search": "0.0.1",
+    "@ucd-lib/cork-app-state": "0.0.1",
+    "@ucd-lib/cork-app-utils": "^2.0.0",
     "@webcomponents/webcomponentsjs": "^1.0.12",
-    "cork-app-utils": "UCDavisLibrary/cork-app-utils",
+    "moment": "^2.19.1",
     "query-string": "^5.0.1",
     "request": "^2.83.0"
   },
   "resolutions": {
     "@webcomponents/webcomponentsjs": "1.0.12",
-    "boom": "5.2.0"
+    "boom": "5.2.0",
+    "cork-app-utils": "1.0.5"
   }
 }
