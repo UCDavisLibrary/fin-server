@@ -2,7 +2,9 @@ import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'
 import template from './app-facet-filter.html'
 
-class AppFacetFilter extends Mixin(Polymer.Element)
+import "./app-facet-checkbox"
+
+class AppFacetFilter extends Mixin(PolymerElement)
   .with(EventInterface, ElasticSearchInterface) {
 
   static get properties() {
@@ -30,23 +32,24 @@ class AppFacetFilter extends Mixin(Polymer.Element)
     };
   }
 
+  constructor() {
+    super();
+    this.active = true;
+  }
+
   static get template() {
     return template;
   }
 
-  ready() {
-    super.ready();
-    this._onDefaultSearchUpdate(this._getDefaultSearch());
-  }
-
-  _onDefaultSearchUpdate(e) {
+  _onDefaultEsSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this.buckets = e.payload.aggregations[this.filter].buckets;
   }
 
-  _onSearchUpdate(e) {
+  _onEsSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    var query = e.request.query;
+
+    var query = e.payload.query;
     var activeFilters = [];
 
     if( query && 

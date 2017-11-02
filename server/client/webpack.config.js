@@ -1,4 +1,3 @@
-
 const path = require('path');
 
 module.exports = {
@@ -7,6 +6,10 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public')
+  },
+  target : 'web',
+  resolve : {
+    modules: [path.resolve(__dirname, 'public', 'node_modules')]
   },
   module : {
     rules: [
@@ -20,11 +23,5 @@ module.exports = {
           }
         }
     ]
-  },
-  node: {
-    console: true,
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty'
   }
 };

@@ -3,7 +3,20 @@ import "@polymer/paper-input/paper-input"
 import template from "./app-search.html";
 
 import "./app-search-result"
+import "./app-filter-panel"
 import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'
+import config from "../../../lib/config"
+
+const facetFilters = [];
+for( var key in config.elasticSearch.facets ) {
+  facetFilters.push({
+    label : config.elasticSearch.facets[key].label,
+    type : config.elasticSearch.facets[key].type,
+    isDollar : config.elasticSearch.facets[key].isDollar,
+    filter : key
+  });
+}
+
 
 export class AppSearch extends Mixin(PolymerElement)
             .with(EventInterface, ElasticSearchInterface) {
@@ -18,56 +31,34 @@ export class AppSearch extends Mixin(PolymerElement)
       results : {
         type : Array,
         value : () => []
+      },
+      facetFilters : {
+        type : Array,
+        value : facetFilters
       }
     }
   }
 
   constructor() {
     super();
-    this.search();
+    this._defaultSearch();
   }
 
   _onInputChange() {
-    this._onSearch(
-      this._textSearch(this.$.input.value)
-    );
+    this._textSearch(this.$.input.value)
   }
 
-  search(query) {
-    this._onSearch(
-      this._search(query)
-    );
+  _onDefaultEsSearchUpdate(e) {
+    this._onEsSearchUpdate(e);
   }
 
-  /**
-   * @method
-   * @private
-   * @description Handle a search promise
-   * 
-   * @param {Promise} promise a search promise
-   */
-  _onSearch(promise) {
-    promise
-      .then(r => this._onSearchResponse(r.body))
-      .catch(e => this._onSearchError(e));
-  }
+  _onEsSearchUpdate(e) {
+    if( e.state !== 'loaded' ) return;
 
-  /**
-   * @method
-   * @private
-   * @description called from search catch
-   * 
-   * @param {Error} e search error
-   */
-  _onSearchError(e) {
-    console.error(e);
-  }
-
-  _onSearchResponse(response) {
-    console.log(response);
-    if( !response.hits ) return this.results = [];
-    if( !response.hits.hits ) return this.results = [];
-    this.results = response.hits.hits.map(item => item._source);
+    let payload = e.payload;
+    if( !payload.hits ) return this.results = [];
+    if( !payload.hits.hits ) return this.results = [];
+    this.results = payload.hits.hits.map(item => item._source);
   }
 
 

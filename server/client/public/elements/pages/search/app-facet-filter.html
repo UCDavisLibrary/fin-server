@@ -66,13 +66,13 @@
       <template is="dom-repeat" items="[[buckets]]">
         <div class="filter">
 
-          <wine-search-facet-checkbox
+          <app-facet-checkbox
             type$="[[label]]"
             index$="[[index]]"
             value$="[[item.key]]"
             checked$="[[item.active]]" 
             on-change="_toggleFilter">
-          </wine-search-facet-checkbox>
+          </app-facet-checkbox>
 
           <span class="count">[[item.doc_count]]</span>
         </div>

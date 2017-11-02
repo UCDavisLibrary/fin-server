@@ -29,7 +29,9 @@
     
     <div style="display: flex">
       <div class="filters">
-
+        <template is="dom-repeat" items="[[facetFilters]]">
+          <app-filter-panel parameters="[[item]]"></app-filter-panel>
+        </template>
       </div>
       <div class="results">
         <template is="dom-repeat" items="[[results]]">

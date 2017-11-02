@@ -1,0 +1,14 @@
+<style include="shared-styles">
+  :host {
+    display: block
+  }
+
+  paper-checkbox[checked] .value {
+    color: var(--default-primary-color);
+    font-weight: bold;
+  }
+</style>
+
+<paper-checkbox noink checked="{{checked}}">
+  <span class="value">[[realLabel]]</span>
+</paper-checkbox>

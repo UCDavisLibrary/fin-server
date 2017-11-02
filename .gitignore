@@ -2,3 +2,4 @@ node_modules
 .env
 .vscode
 server/client/public/bundle.js
+server/client/stats.json

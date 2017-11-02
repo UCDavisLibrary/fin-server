@@ -9,6 +9,12 @@ class AuthModel extends BaseModel {
       super();
       this.store = AuthStore;
       this.service = AuthService;
+
+      this.getUser();
+    }
+
+    async getUser() {
+      return await this.service.getUser();
     }
 
 }

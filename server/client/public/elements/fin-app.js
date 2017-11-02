@@ -10,7 +10,6 @@ import "@polymer/iron-pages/iron-pages"
 // sets globals
 import {Mixin, EventInterface} from "@ucd-lib/cork-app-utils";
 
-import "./app-route"
 import "./pages/search/app-search"
 import '../lib'
 import "./shared-styles"

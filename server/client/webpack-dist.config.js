@@ -1,10 +1,15 @@
 const path = require('path');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 var modern = {
     entry: './public/elements/fin-app.js',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
+    },
+    target : 'web',
+    resolve : {
+      modules: [path.resolve(__dirname, 'public', 'node_modules')]
     },
     module : {
         rules: [
@@ -19,12 +24,9 @@ var modern = {
           }
         ]
     },
-    node: {
-      console: true,
-      fs: 'empty',
-      net: 'empty',
-      tls: 'empty'
-    }
+    plugins: [
+      new UglifyJSPlugin()
+    ]
 };
 
 var ie =  {
@@ -33,17 +35,12 @@ var ie =  {
         filename: 'ie-bundle.js',
         path: path.resolve(__dirname, 'dist')
     },
+    target : 'web',
+    resolve : {
+      modules: [path.resolve(__dirname, 'public', 'node_modules')]
+    },
     module : {
       rules: [
-        {
-          test: /\.js$/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['env']
-            }
-          }
-        },
         {
           test: /\.(html)$/,
           use: {
@@ -52,15 +49,21 @@ var ie =  {
                 attrs: false
             }
           }
+        },
+        {
+          test: /\.js$/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['env']
+            }
+          }
         }
       ]
     },
-    node: {
-      console: true,
-      fs: 'empty',
-      net: 'empty',
-      tls: 'empty'
-    }
+    plugins: [
+      new UglifyJSPlugin()
+    ]
 };
 
 module.exports = [modern, ie];
