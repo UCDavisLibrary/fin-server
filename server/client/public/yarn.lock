@@ -232,11 +232,11 @@
     "@webcomponents/shadycss" "^1.0.0"
     "@webcomponents/webcomponentsjs" "^1.0.0"
 
-"@ucd-lib/cork-app-elastic-search@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-elastic-search/-/cork-app-elastic-search-0.0.2.tgz#35858bc7b8a0dec0aa5821f7bf7db1dd5af7567b"
+"@ucd-lib/cork-app-elastic-search@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-elastic-search/-/cork-app-elastic-search-0.0.5.tgz#9b6d8f582a3b29e6a5d617e7abb96d1e99bf16da"
   dependencies:
-    "@ucd-lib/cork-app-utils" "^2.0.1"
+    "@ucd-lib/cork-app-utils" "^2.0.3"
 
 "@ucd-lib/cork-app-state@0.0.3":
   version "0.0.3"
@@ -247,7 +247,7 @@
     "@ucd-lib/cork-app-utils" "^2.0.1"
     query-string "^5.0.1"
 
-"@ucd-lib/cork-app-utils@2.0.2", "@ucd-lib/cork-app-utils@^2.0.1", "@ucd-lib/cork-app-utils@^2.0.2":
+"@ucd-lib/cork-app-utils@2.0.2", "@ucd-lib/cork-app-utils@^2.0.1", "@ucd-lib/cork-app-utils@^2.0.2", "@ucd-lib/cork-app-utils@^2.0.3":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-utils/-/cork-app-utils-2.0.2.tgz#0fa98b3136b98abef8a31bd2de7e22c2a5b536eb"
   dependencies:

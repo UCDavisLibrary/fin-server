@@ -1,0 +1,116 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    position: relative;
+  }
+
+  #hero {
+    min-height: 750px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-image: url('/images/default-home-background.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  h2 {
+    margin: 0px;
+  }
+
+  input {
+    border: none;
+    padding: 15px;
+    display: block;
+    width: 90%;
+  }
+
+  .gradient {
+    opacity: .7;
+    position: absolute;
+    top : 0;
+    left : 0;
+    right : 0;
+    bottom: 0;
+    background-image: url('/images/home-gradient.png');
+    background-size: cover;
+    background-position: center;
+  }
+
+  img {
+    height: 50px;
+    top: 25px;
+    left: 25px;
+    position: absolute;
+    z-index: 5;
+  }
+
+  .content {
+    background: white;
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .content > div {
+    max-width: var(--max-width);
+  }
+
+  .search-box {
+    color: var(--inverse-text-color);
+    z-index: 5;
+  }
+
+  .search-box .main {
+    background-color: rgba(0, 38, 85, .7);
+    padding: 15px;
+  }
+
+  .search-box .footer {
+    background-color: rgba(51, 83, 121, .7);
+    padding: 15px;
+  }
+</style>
+
+<img src="/images/ucd-lib-logo-white.png" />
+<div id="hero">
+  <div class="gradient"></div>
+  <div class="search-box">
+    <div class="main">
+      <h2>UC Davis Library Digital Collections</h2>
+      <div style="margin-bottom: 15px">Explore digitized items from the <a class="gold">UC Davis Library</a> collections.</div>
+      <input type="text" placeholder="Search Keyword(s)">
+    </div>
+    <div class="footer">
+      Featured Image: <a class="italic">foo bar</a>, <a class="italic">baz</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="content">
+  <div>
+    <h1>About Digital Collections</h1>
+    <div>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+         et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit duis. Eget 
+         nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Volutpat sed cras ornare arcu 
+         dui vivamus arcu felis bibendum. Faucibus turpis in eu mi bibendum neque egestas congue. Orci a 
+         scelerisque purus semper eget duis. Quam viverra orci sagittis eu volutpat odio facilisis mauris 
+         sit. Et malesuada fames ac turpis egestas sed tempus urna et. Vel orci porta non pulvinar. Urna 
+         nec tincidunt praesent semper feugiat nibh sed pulvinar. Sagittis aliquam malesuada bibendum 
+         arcu vitae elementum curabitur vitae nunc. Facilisi cras fermentum odio eu feugiat.
+        </p>
+          
+        <p>Et pharetra pharetra massa massa ultricies mi quis hendrerit. Ac orci phasellus egestas tellus 
+          rutrum tellus pellentesque eu tincidunt. Ornare arcu odio ut sem nulla pharetra. Sodales ut eu 
+          sem integer vitae. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Purus 
+          non enim praesent elementum facilisis leo vel fringilla est. Nunc scelerisque viverra mauris in 
+          aliquam. Accumsan in nisl nisi scelerisque eu ultrices vitae auctor eu. Massa sed elementum 
+          tempus egestas. Lectus magna fringilla urna porttitor rhoncus dolor purus.</p>
+    </div>
+    <a>Link to Somewhere</a>
+  </div>
+
+</div>

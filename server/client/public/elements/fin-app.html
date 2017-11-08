@@ -1,6 +1,10 @@
 <style>
-  app-header {
+  :host {
+    display: block;
     background: var(--default-primary-color);
+  }
+  app-header {
+    
   }
   .content {
     display: flex;
@@ -27,28 +31,22 @@
 
 <app-route></app-route>
 
-<app-header reveals>
+<!-- <app-header reveals>
   <app-toolbar>
     <paper-icon-button icon="menu" on-click="toggleDrawer"></paper-icon-button>
     <div main-title>FIN</div>
     <a href="newpage"><paper-icon-button icon="search"></paper-icon-button></a>
     <paper-progress value="10" indeterminate bottom-item></paper-progress>
   </app-toolbar>
-</app-header>
+</app-header> -->
 
-<app-drawer id="drawer" swipe-open></app-drawer>
+<!-- <app-drawer id="drawer" swipe-open></app-drawer> -->
 
 <iron-pages selected="[[page]]" attr-for-selected="id" selected-attribute="active">
-  <div id="home">
-    <div class="content">
-      <div>
-        <paper-material>
-            <h2>Welcome to the UC Davis Library, DAMS</h2>
-        </paper-material>
-        
-        <a href="/search" button><paper-button raised>Search</paper-button></a>
-      </div>
-    </div>
-  </div>
+  <app-home id="home"></app-home>
   <app-search id="search"></app-search>
 </iron-pages>
+
+<div style="display:flex; justify-content:center">
+  <app-footer></app-footer>
+</div>

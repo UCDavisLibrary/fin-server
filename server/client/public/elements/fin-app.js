@@ -10,7 +10,10 @@ import "@polymer/iron-pages/iron-pages"
 // sets globals
 import {Mixin, EventInterface} from "@ucd-lib/cork-app-utils";
 
+import "./pages/home/app-home"
 import "./pages/search/app-search"
+import "./app-footer"
+
 import '../lib'
 import "./shared-styles"
 
@@ -36,14 +39,8 @@ export class FinApp extends Mixin(PolymerElement)
     }
   }
 
-  constructor() {
-    super();
-  }
-
-
   _onAppStateUpdate(e) {
     this.page = e.location.path[0] || 'home';
-    console.log(e.location);
   }
 }
 

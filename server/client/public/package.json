@@ -16,7 +16,7 @@
     "@polymer/paper-material": "^3.0.0-pre.1",
     "@polymer/paper-styles": "^3.0.0-pre.1",
     "@polymer/polymer": "^3.0.0-pre.1",
-    "@ucd-lib/cork-app-elastic-search": "0.0.2",
+    "@ucd-lib/cork-app-elastic-search": "0.0.5",
     "@ucd-lib/cork-app-state": "0.0.3",
     "@ucd-lib/cork-app-utils": "^2.0.2",
     "@webcomponents/webcomponentsjs": "^1.0.12",

@@ -25,26 +25,29 @@
     <custom-style>
       <style>
         html {
-          --default-primary-color : #4db6ac;
-          --light-primary-color   : #82e9de;
-          --dark-primary-color    : #00867d;
+          --default-primary-color : #002655;
+          --light-primary-color   : #335379;
           
-          --default-secondary-color : #64b5f6;
+          --default-secondary-color : #daaa00;
           --light-secondary-color   : #9be7ff;
           --dark-secondary-color    : #2286c3;
 
           --default-background-color : #F5F5F6;
           --dark-background-color    : #E1E2E1;
           --extra-dark-background-color : #616161;
+          --secondary-background-color : var(--default-primary-color);
           
-          --text-primary-color      : rgb(51, 41, 38);
+          --text-primary-color      : black;
           --primary-text-color      : var(--text-primary-color);
-          --secondary-text-color    : #757575;
+          --secondary-text-color    : var(--default-secondary-color);
           --disabled-text-color     : var(--input-border-color);
+          --inverse-text-color      : white;
+
+          --max-width               : 1000px;
         }
         body, html {
           @apply --paper-font-common-base;
-          font-size        : 14px;
+          font-size        : 16px;
           font-weight      : 200;
           margin           : 0;
           padding          : 0;
