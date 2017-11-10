@@ -12,6 +12,12 @@
         display: none !important;
       }
 
+      input, select, button {
+        font-size        : var(--font-size);
+        font-weight      : var(--font-weight);
+        color            : var(--text-primary-color);
+      }
+
       main {
         display: flex;
         justify-content: center;
@@ -44,6 +50,26 @@
 
       a.gold {
         color: var(--default-secondary-color);
+      }
+
+      .text-container {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .text-container > * {
+        max-width: var(--max-text-width);
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .container > * {
+        max-width: var(--max-width);
       }
     </style>
   </template>

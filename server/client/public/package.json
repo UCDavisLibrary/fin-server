@@ -19,6 +19,7 @@
     "@ucd-lib/cork-app-elastic-search": "0.0.5",
     "@ucd-lib/cork-app-state": "0.0.3",
     "@ucd-lib/cork-app-utils": "^2.0.2",
+    "@ucd-lib/fin-search-box": "ucd-fin/fin-search-box",
     "@webcomponents/webcomponentsjs": "^1.0.12",
     "isomorphic-fetch": "^2.2.1",
     "moment": "^2.19.1",

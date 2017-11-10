@@ -6,6 +6,8 @@ import "@polymer/paper-material/paper-material"
 import "@polymer/paper-styles/paper-styles"
 import "@polymer/paper-button/paper-button"
 import "@polymer/iron-pages/iron-pages"
+import "@polymer/iron-icons/iron-icons"
+import "@ucd-lib/fin-icons/fin-icons"
 
 // sets globals
 import {Mixin, EventInterface} from "@ucd-lib/cork-app-utils";
@@ -13,6 +15,7 @@ import {Mixin, EventInterface} from "@ucd-lib/cork-app-utils";
 import "./pages/home/app-home"
 import "./pages/search/app-search"
 import "./app-footer"
+import "./utils/app-header-colorbar"
 
 import '../lib'
 import "./shared-styles"
@@ -21,6 +24,8 @@ import AppStateInterface from "./interfaces/AppStateInterface"
 
 import template from "./fin-app.html";
 
+// allow for lit-html style stuff
+window.html = (str) => str[0];
 
 export class FinApp extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface) {

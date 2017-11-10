@@ -1,13 +1,9 @@
 var router = require('express').Router();
 var authUtils = require('../lib/auth');
 var utils = require('./utils');
-var config = require('ucdlib-dams-utils/config');
+var {config, logger} = require('ucdlib-dams-utils');
 var {URL} = require('url');
-
-function hackBounce(req, res, next) {
-  req.url = req.originalUrl;
-  next();
-}
+logger = logger();
 
 function storeRedirect(req, res, next) {
   req.session.cliRedirectUrl = req.query.cliRedirectUrl || '';
@@ -15,8 +11,9 @@ function storeRedirect(req, res, next) {
   next();
 }
 
-router.get('/cas', storeRedirect, hackBounce, authUtils.cas.bounce, async (req, res) => {
+router.get('/cas', storeRedirect, authUtils.middleware.bounce, async (req, res) => {
   var url = req.session.cliRedirectUrl || '/';
+  logger.info('/auth/cas login request.  redirect=', url);
 
   if( req.session.provideJwt ) {
     var newJwt = await authUtils.jwt.createFromCasRequest(req);
@@ -27,6 +24,7 @@ router.get('/cas', storeRedirect, hackBounce, authUtils.cas.bounce, async (req, 
   req.session.provideJwt = false;
   req.session.cliRedirectUrl = '';
 
+  logger.debug('/auth/cas login response.  redirect=', url);
   res.redirect(url);
 });
 

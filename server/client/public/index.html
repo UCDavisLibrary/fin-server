@@ -43,12 +43,15 @@
           --disabled-text-color     : var(--input-border-color);
           --inverse-text-color      : white;
 
-          --max-width               : 1000px;
+          --max-width               : 1200px;
+          --max-text-width          : 650px;
+          --font-size               : 16px;
+          --font-weight             : 200;
         }
         body, html {
           @apply --paper-font-common-base;
-          font-size        : 16px;
-          font-weight      : 200;
+          font-size        : var(--font-size);
+          font-weight      : var(--font-weight);
           margin           : 0;
           padding          : 0;
           height           : 100%;
