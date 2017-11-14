@@ -1,5 +1,6 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import AppStateInterface from "./interfaces/AppStateInterface"
+import "./auth/app-auth-footer"
 
 import template from "./app-footer.html"
 

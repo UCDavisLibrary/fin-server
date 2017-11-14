@@ -9,6 +9,10 @@ class AppHome extends Mixin(PolymerElement)
   static get template() {
     return template;
   }
+
+  _onSearch(e) {
+    console.log(e);
+  }
   
 }
 

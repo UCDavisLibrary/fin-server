@@ -65,20 +65,6 @@
     background-color: rgba(51, 83, 121, .7);
     padding: 15px;
   }
-
-  fin-search-box {
-    --fin-search-box: {
-      padding : 0 5px;
-      font-size  : var(--font-size);
-      font-weight : var(--font-weight);
-    }
-    --fin-search-box-browse: {
-      color: var(--default-primary-color);
-      background-color: var(--default-secondary-color);
-      font-size  : var(--font-size);
-      font-weight : var(--font-weight);
-    }
-  }
 </style>
 
 <img src="/images/ucd-lib-logo-white.png" />
@@ -87,9 +73,13 @@
   <div class="search-box">
     <div class="main">
       <h2>UC Davis Library Digital Collections</h2>
-      <div style="margin-bottom: 15px">Explore digitized items from the <a class="gold">UC Davis Library</a> collections.</div>
-      <fin-search-box>
-        <span slot="button-content">s</span>
+      <div style="margin-bottom: 15px">
+        Explore digitized items from the 
+        <a class="gold" href="https://library.ucdavis.edu" target="_blank">UC Davis Library</a> 
+        collections.
+      </div>
+      <fin-search-box on-search="_onSearch" placeholder="Search Keyword(s)">
+        <iron-icon icon="fin:search" slot="button-content"></iron-icon>
       </fin-search-box>
     </div>
     <div class="footer">
@@ -103,11 +93,6 @@
   <div>
     <h1>About Digital Collections</h1>
     <div class="text-container">
-      <div>
-        <iron-icon icon="3d-rotation"></iron-icon>
-        <iron-icon icon="fin:blank-multiple"></iron-icon>
-        <iron-icon icon="fin:account"></iron-icon>
-      </div>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
          et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit duis. Eget 
          nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Volutpat sed cras ornare arcu 

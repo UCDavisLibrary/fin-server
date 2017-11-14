@@ -11,56 +11,9 @@
     <!-- IE Code -->
     <script nomodule src="webcomponentsjs/custom-elements-es5-adapter.js"></script>
     <script nomodule src="ie-bundle.js"></script>
-
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-
   </head>
 
   <body>
-    <custom-style>
-      <style>
-        html {
-          --default-primary-color : #002655;
-          --light-primary-color   : #335379;
-          
-          --default-secondary-color : #daaa00;
-          --light-secondary-color   : #9be7ff;
-          --dark-secondary-color    : #2286c3;
-
-          --default-background-color : #F5F5F6;
-          --dark-background-color    : #E1E2E1;
-          --extra-dark-background-color : #616161;
-          --secondary-background-color : var(--default-primary-color);
-          
-          --text-primary-color      : black;
-          --primary-text-color      : var(--text-primary-color);
-          --secondary-text-color    : var(--default-secondary-color);
-          --disabled-text-color     : var(--input-border-color);
-          --inverse-text-color      : white;
-
-          --max-width               : 1200px;
-          --max-text-width          : 650px;
-          --font-size               : 16px;
-          --font-weight             : 200;
-        }
-        body, html {
-          @apply --paper-font-common-base;
-          font-size        : var(--font-size);
-          font-weight      : var(--font-weight);
-          margin           : 0;
-          padding          : 0;
-          height           : 100%;
-          background-color : var(--default-background-color);
-          color            : var(--text-primary-color);
-        }
-      </style>
-    </custom-style>
-
     <fin-app></fin-app>
   </body>
 </html>

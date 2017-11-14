@@ -2,6 +2,9 @@ import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-input/paper-input"
 import template from "./app-search.html";
 
+import "./app-search-header";
+import "./app-search-breadcrumb";
+
 import "./app-search-result"
 import "./app-filter-panel"
 import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'

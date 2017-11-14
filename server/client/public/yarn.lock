@@ -238,24 +238,32 @@
   dependencies:
     "@ucd-lib/cork-app-utils" "^2.0.3"
 
-"@ucd-lib/cork-app-state@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-state/-/cork-app-state-0.0.3.tgz#bd575c7df9c7ad0f40347130d5c5ca45a61a3a9c"
+"@ucd-lib/cork-app-state@0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-state/-/cork-app-state-0.0.7.tgz#782a214474ace5bebedee92935e3b53cfe1fa001"
   dependencies:
     "@polymer/app-route" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
-    "@ucd-lib/cork-app-utils" "^2.0.1"
+    "@ucd-lib/cork-app-utils" "^2.0.3"
     query-string "^5.0.1"
 
-"@ucd-lib/cork-app-utils@2.0.2", "@ucd-lib/cork-app-utils@^2.0.1", "@ucd-lib/cork-app-utils@^2.0.2", "@ucd-lib/cork-app-utils@^2.0.3":
+"@ucd-lib/cork-app-utils@2.0.2", "@ucd-lib/cork-app-utils@^2.0.2", "@ucd-lib/cork-app-utils@^2.0.3":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-utils/-/cork-app-utils-2.0.2.tgz#0fa98b3136b98abef8a31bd2de7e22c2a5b536eb"
   dependencies:
     isomorphic-fetch "^2.2.1"
 
-"@ucd-lib/fin-search-box@ucd-fin/fin-search-box":
+"@ucd-lib/fin-icons@^0.0.1":
   version "0.0.1"
-  resolved "https://codeload.github.com/ucd-fin/fin-search-box/tar.gz/8485754b5470061e53b3b850aa8df9e9adab589e"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-icons/-/fin-icons-0.0.1.tgz#a149f27c9b3191b1fc8a9b2426fd0c9f5b5fb2ab"
+  dependencies:
+    "@polymer/iron-icon" "^3.0.0-pre.1"
+    "@polymer/iron-iconset-svg" "^3.0.0-pre.1"
+    "@polymer/polymer" "^3.0.0-pre.1"
+
+"@ucd-lib/fin-search-box@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-search-box/-/fin-search-box-0.0.2.tgz#f1ec225adf9aa1f2de08741fb3b906e01d922067"
   dependencies:
     "@polymer/polymer" "^3.0.0-pre.1"
 
@@ -303,8 +311,8 @@ isomorphic-fetch@^2.2.1:
     whatwg-fetch ">=0.10.0"
 
 moment@^2.19.1:
-  version "2.19.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
+  version "2.19.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.2.tgz#8a7f774c95a64550b4c7ebd496683908f9419dbe"
 
 node-fetch@^1.0.1:
   version "1.7.3"

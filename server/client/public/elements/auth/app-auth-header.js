@@ -1,0 +1,22 @@
+import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+import AuthInterface from "../interfaces/AuthInterface"
+
+class AppAuthHeader extends Mixin(PolymerElement)
+      .with(EventInterface, AuthInterface) {
+
+  static get template() {
+    return '<iron-icon icon="account"></iron-icon>';
+  }
+
+  constructor() {
+    super();
+    this.active = true;
+  }
+
+  _onAuthUpdate(e) {
+    if( e.user ) this.style.display = 'block';
+    else this.style.display = 'none';
+  }
+}
+
+customElements.define('app-auth-header', AppAuthHeader);

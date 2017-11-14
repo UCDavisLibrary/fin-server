@@ -9,16 +9,21 @@ import "@polymer/iron-pages/iron-pages"
 import "@polymer/iron-icons/iron-icons"
 import "@ucd-lib/fin-icons/fin-icons"
 
-// sets globals
-import {Mixin, EventInterface} from "@ucd-lib/cork-app-utils";
+// sets globals Mixin and EventInterface
+import "@ucd-lib/cork-app-utils";
 
+// styles
+import "./styles/style-properties"
+import "./styles/shared-styles"
+
+// main library
+import '../lib'
+
+// app elements
 import "./pages/home/app-home"
 import "./pages/search/app-search"
 import "./app-footer"
 import "./utils/app-header-colorbar"
-
-import '../lib'
-import "./shared-styles"
 
 import AppStateInterface from "./interfaces/AppStateInterface"
 
