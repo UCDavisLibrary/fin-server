@@ -1,5 +1,7 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+import "@polymer/paper-tabs/paper-tabs"
 
+import template from "./app-filter-panel.html"
 import "./app-facet-filter"
 
 export class AppFilterPanel extends PolymerElement {
@@ -15,7 +17,7 @@ export class AppFilterPanel extends PolymerElement {
   }
 
   static get template() {
-    return ' ';
+    return template;
   }
 
   _render() {
