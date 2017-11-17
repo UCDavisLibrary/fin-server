@@ -1,5 +1,6 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-tabs/paper-tabs"
+import "@ucd-lib/cork-toggle-panel/cork-toggle-panel"
 
 import template from "./app-filter-panel.html"
 import "./app-facet-filter"

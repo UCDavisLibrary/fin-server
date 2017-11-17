@@ -277,6 +277,14 @@
   dependencies:
     isomorphic-fetch "^2.2.1"
 
+"@ucd-lib/cork-toggle-panel@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-toggle-panel/-/cork-toggle-panel-2.0.0.tgz#b45baa21ffeae1266d46ff9c084b382a9b93b6d4"
+  dependencies:
+    "@polymer/iron-icon" "^3.0.0-pre.1"
+    "@polymer/iron-icons" "^3.0.0-pre.1"
+    "@polymer/polymer" "^3.0.0-pre.1"
+
 "@ucd-lib/fin-icons@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@ucd-lib/fin-icons/-/fin-icons-0.0.1.tgz#a149f27c9b3191b1fc8a9b2426fd0c9f5b5fb2ab"
@@ -285,9 +293,9 @@
     "@polymer/iron-iconset-svg" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 
-"@ucd-lib/fin-search-box@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-search-box/-/fin-search-box-0.0.2.tgz#f1ec225adf9aa1f2de08741fb3b906e01d922067"
+"@ucd-lib/fin-search-box@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-search-box/-/fin-search-box-0.0.3.tgz#208f090d00e6908eb584672ae18f7a3f3cabe33c"
   dependencies:
     "@polymer/polymer" "^3.0.0-pre.1"
 

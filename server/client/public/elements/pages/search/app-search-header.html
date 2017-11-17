@@ -21,11 +21,43 @@
   img {
     height: 50px;
   }
+
+  .logo, h2 {
+    display: none;
+  }
+
+  .filler {
+    flex: 1;
+  }
+
+  .logo-sm {
+    margin-right: 10px;
+  }
+
+  @media( min-width: 815px ) {
+    .logo {
+      display: block;
+    }
+    .logo-sm {
+      display: none;
+    }
+  }
+
+  @media( min-width: 700px ) {
+    h2 {
+      display: block;
+    }
+    .filler {
+      display: none;
+    }
+  }
 </style>
 
 <div class="layout">
-  <img src="/images/ucd-lib-logo-white.png" />
+  <img class="logo" src="/images/ucd-lib-logo-white.png" />
+  <img class="logo-sm" src="/images/ucd-lib-logo-white-sm.png" />
   <h2>Digital Collections</h2>
+  <div class="filler"></div>
   <fin-search-box on-search="_onSearch" placeholder="Search Keyword(s)">
     <iron-icon icon="fin:search" slot="button-content"></iron-icon>
   </fin-search-box>

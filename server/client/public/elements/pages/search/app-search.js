@@ -4,6 +4,7 @@ import template from "./app-search.html";
 
 import "./app-search-header";
 import "./app-search-breadcrumb";
+import "./app-search-results-panel"
 
 import "./app-search-result"
 import "./app-filter-panel"
@@ -38,6 +39,10 @@ export class AppSearch extends Mixin(PolymerElement)
       facetFilters : {
         type : Array,
         value : facetFilters
+      },
+      drawerOpen : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -62,8 +67,12 @@ export class AppSearch extends Mixin(PolymerElement)
     if( !payload.hits ) return this.results = [];
     if( !payload.hits.hits ) return this.results = [];
     this.results = payload.hits.hits.map(item => item._source);
+    console.log(this.results);
   }
 
+  _toggleDrawer() {
+    this.drawerOpen = !this.drawerOpen;
+  }
 
 }
 
