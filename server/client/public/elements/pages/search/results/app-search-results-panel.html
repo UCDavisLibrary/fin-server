@@ -10,6 +10,20 @@
     align-items: center;
   }
 
+  select {
+    margin-left: 20px;
+    border: 1px solid var(--light-background-color);
+    border-radius: 0;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    padding: 5px 30px 5px 10px;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');
+  }
+
   .masonry {
     margin: 10px;
     position: relative;
@@ -18,8 +32,6 @@
   .masonry .item {
     display: block;
     position: absolute;
-    padding: 10px;
-    background-color: orange;
     visibility: hidden;
     will-change: top, left;
     transition: all 500ms ease-out;
@@ -32,7 +44,7 @@
   .list .item {
     padding: 10px;
     margin-bottom: 15px;
-    background-color: orange;
+    background-color: #daaa00;
     height: 250px;
   }
 
@@ -81,7 +93,7 @@
 
 <div class="masonry" id="layout" hidden$="[[isListLayout]]">
   <template is="dom-repeat" items="[[results]]">
-    <div class="item" style$="[[item.css]]">[[item.count]]</div>
+    <app-search-grid-result data="[[item]]" class="item"></app-search-grid-result>
   </template>
 </div>
 

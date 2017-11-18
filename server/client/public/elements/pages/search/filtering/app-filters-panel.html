@@ -1,0 +1,53 @@
+<style>
+  :host {
+    background-color: var(--light-background-color);
+  }
+  paper-tabs {
+    --paper-tabs-selection-bar: {
+      border-bottom: 3px solid var(--default-primary-color);
+    }
+  }
+  paper-tab {
+    --paper-tab-content-unselected : {    
+      text-transform: uppercase;
+      color: var(--text-disabled);
+    }
+    --paper-tab-content : {
+      text-transform: uppercase;
+      color: var(--default-primary-color);
+    }
+  }
+
+  #filters {
+    margin-left: 10px;
+  }
+
+  app-filter-panel {
+    border-bottom: 1px solid var(--medium-background-color);
+  }
+</style>
+
+<img src="" hidden$="[[!collectionMode]]" id="collectionImg" />
+
+<paper-tabs 
+  noink 
+  selected="{{selectedTab}}" 
+  attr-for-selected="id" 
+  hidden$="[[!collectionMode]]">
+  
+  <paper-tab id="info">Information</paper-tab>
+  <paper-tab id="filters">Filters</paper-tab>
+</paper-tabs>
+
+<iron-pages 
+  selected="[[selectedTab]]"   
+  attr-for-selected="id" 
+  selected-attribute="active">
+  <div id="filters">
+    <template is="dom-repeat" items="[[facetFilters]]">
+      <app-filter-panel filter="[[item]]"></app-filter-panel>
+    </template>
+  </div>
+  <app-collection-info-panel id="info"></app-collection-info-panel>
+</iron-pages>
+

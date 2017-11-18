@@ -1,5 +1,5 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
-import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'
+import ElasticSearchInterface from '../../../interfaces/ElasticSearchInterface'
 import template from './app-facet-filter.html'
 
 import "./app-facet-checkbox"

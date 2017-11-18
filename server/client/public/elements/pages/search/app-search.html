@@ -3,7 +3,7 @@
     display: block;
   }
   .search-container {
-    background-color: white;
+    background-color: var(--super-light-background-color);
     min-height: 500px;
     display: flex;
   }
@@ -11,11 +11,11 @@
     margin: 15px;
     flex: 1;
   }
-  app-filter-panel {
+  app-filters-panel {
     width: 350px;
   }
 
-  #drawer app-filter-panel {
+  #drawer app-filters-panel {
     width: 300px;
   }
   
@@ -80,15 +80,15 @@
 <div style="position: relative">
   <div id="outerDrawer">
     <div id="drawer" open$="[[drawerOpen]]">
-        <app-filter-panel></app-filter-panel>
+        <app-filters-panel></app-filters-panel>
     </div>
     <div id="drawer-background" open$="[[drawerOpen]]" on-click="_toggleDrawer"></div>
   </div>
 
   <div class="search-container">
-    <app-filter-panel id="desktop-filter-panel"></app-filter-panel>
+    <app-filters-panel id="desktop-filter-panel"></app-filters-panel>
     <div class="search-content">
-      <app-search-results-panel on-toggle-drawer="_toggleDrawer"></app-search-results-panel>
+      <app-search-results-panel id="resultsPanel" on-toggle-drawer="_toggleDrawer" ></app-search-results-panel>
     </div>
   </div>
 </div>

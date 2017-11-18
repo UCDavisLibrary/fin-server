@@ -8,12 +8,13 @@
       --light-secondary-color   : #9be7ff;
       --dark-secondary-color    : #2286c3;
 
+      --medium-background-color : #B2BDCF;
       --light-background-color : #D6DCE6;
+      --super-light-background-color: #f3f3f3;
     
       --text-primary-color      : black;
       --primary-text-color      : var(--text-primary-color);
       --secondary-text-color    : var(--default-secondary-color);
-      --disabled-text-color     : var(--input-border-color);
       --inverse-text-color      : white;
       --text-disabled           : #808080;
 
@@ -22,21 +23,28 @@
       --font-size               : 16px;
       --font-size-sm            : 14px;
       --font-weight             : 400;
+      --font-weight-heavy       : 700;
 
       --layout-sm               : 768px;
 
       /**
-        * Custom mixins
-        */
-        --fin-search-box-select: {
-          font-size: var(--font-size);
-          font-weight: var(--font-weight);
-          color: var(--default-primary-color);
-          background-color: var(--default-secondary-color);
-        }
-        --fin-search-box-input: {
+      * Custom mixins
+      */
+      --fin-search-box-select: {
         font-size: var(--font-size);
-        }
+        font-weight: var(--font-weight);
+        color: var(--default-primary-color);
+        background-color: var(--default-secondary-color);
+      }
+      --fin-search-box-input: {
+        font-size: var(--font-size);
+      }
+      --cork-drop-down-arrow-color: var(--default-primary-color);
+      --cork-toggle-panel-label : {
+        padding: 10px 0;
+        color: var(--default-primary-color);
+        font-weight: var(--font-weight-heavy);
+      }
     }
     body, html {
       @apply --paper-font-common-base;

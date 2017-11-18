@@ -5,6 +5,8 @@
 
   .filter {
     padding: 4px 5px;
+    display: flex;
+    align-items: center;
   }
   .filter a {
     display: inline-block;
@@ -39,8 +41,9 @@
   }
 
   .count {
-    color: var(--secondary-text-color);
-    float: right;
+    color: var(--text-disabled);
+    flex: 1;
+    text-align: right;
   }
 
   .overflow {
@@ -59,24 +62,21 @@
   }
 </style>
 
-<div>
-  <div>[[label]]</div>      
-  <div class="overflow">
-    <div>
-      <template is="dom-repeat" items="[[buckets]]">
-        <div class="filter">
+<div class="overflow">
+  <div>
+    <template is="dom-repeat" items="[[buckets]]">
+      <div class="filter">
 
-          <app-facet-checkbox
-            type$="[[label]]"
-            index$="[[index]]"
-            value$="[[item.key]]"
-            checked$="[[item.active]]" 
-            on-change="_toggleFilter">
-          </app-facet-checkbox>
+        <app-facet-checkbox
+          type$="[[label]]"
+          index$="[[index]]"
+          value$="[[item.key]]"
+          checked$="[[item.active]]" 
+          on-change="_toggleFilter">
+        </app-facet-checkbox>
 
-          <span class="count">[[item.doc_count]]</span>
-        </div>
-      </template>
-    </div>
+        <div class="count">[[item.doc_count]]</div>
+      </div>
+    </template>
   </div>
 </div>

@@ -36,6 +36,11 @@ export class AppNormalCheckbox extends PolymerElement {
     return label || value;
   }
 
+  _onClick() {
+    this.checked = !this.checked;
+    this.dispatchEvent(new CustomEvent('change', {bubbles: true, composed: true}));
+  }
+
 }
 
 window.customElements.define('app-normal-checkbox', AppNormalCheckbox);

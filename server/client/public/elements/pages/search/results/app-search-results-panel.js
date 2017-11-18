@@ -1,5 +1,8 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 
+import "./app-search-grid-result"
+import "./app-search-list-result"
+
 import template from './app-search-results-panel.html'
 
 class AppSearchResultsPanel extends PolymerElement {
@@ -96,23 +99,25 @@ class AppSearchResultsPanel extends PolymerElement {
   _resize() {
     if( this.isListLayout ) return;
 
-    let firstDiv = this.$.layout.querySelector('div');
+    let firstDiv = this.$.layout.querySelector('app-search-grid-result');
     if( !firstDiv ) return;
 
     let ew = this.offsetWidth;
     let w = firstDiv.offsetWidth + this.masonryMargin;
 
     let numCols = Math.max(Math.floor(ew / w), 1);
+    // this makes sure columns are centered
+    let leftOffset = Math.floor((ew - numCols * w) / 2);
 
     let colHeights = [];
     for( var i = 0; i < numCols; i++ ) colHeights.push(0);
 
-    let eles = this.$.layout.querySelectorAll('div');
+    let eles = this.$.layout.querySelectorAll('app-search-grid-result');
     for( let i = 0; i < eles.length; i++ ) {
       let col = this._findMinCol(colHeights);
       let cheight = colHeights[col];
 
-      eles[i].style.left = (col * w) + 'px';
+      eles[i].style.left = (leftOffset + col * w) + 'px';
       eles[i].style.top = colHeights[col] + 'px';
       eles[i].style.visibility = 'visible';
 

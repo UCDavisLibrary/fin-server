@@ -2,9 +2,9 @@ import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-material/paper-material"
 import moment from "moment"
 
-import template from "./app-search-result.html";
+import template from "./app-search-list-result.html";
 
-export class AppSearchResult extends PolymerElement {
+export class AppSearchListResult extends PolymerElement {
 
 
   static get template() {
@@ -65,4 +65,4 @@ export class AppSearchResult extends PolymerElement {
   }
 }
 
-customElements.define('app-search-result', AppSearchResult);
+customElements.define('app-search-list-result', AppSearchListResult);

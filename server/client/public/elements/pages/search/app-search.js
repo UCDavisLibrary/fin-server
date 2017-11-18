@@ -4,23 +4,10 @@ import template from "./app-search.html";
 
 import "./app-search-header";
 import "./app-search-breadcrumb";
-import "./app-search-results-panel"
+import "./results/app-search-results-panel"
+import "./filtering/app-filters-panel"
 
-import "./app-search-result"
-import "./app-filter-panel"
 import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'
-import config from "../../../lib/config"
-
-const facetFilters = [];
-for( var key in config.elasticSearch.facets ) {
-  facetFilters.push({
-    label : config.elasticSearch.facets[key].label,
-    type : config.elasticSearch.facets[key].type,
-    isDollar : config.elasticSearch.facets[key].isDollar,
-    filter : key
-  });
-}
-
 
 export class AppSearch extends Mixin(PolymerElement)
             .with(EventInterface, ElasticSearchInterface) {
@@ -35,10 +22,6 @@ export class AppSearch extends Mixin(PolymerElement)
       results : {
         type : Array,
         value : () => []
-      },
-      facetFilters : {
-        type : Array,
-        value : facetFilters
       },
       drawerOpen : {
         type : Boolean,
@@ -67,7 +50,8 @@ export class AppSearch extends Mixin(PolymerElement)
     if( !payload.hits ) return this.results = [];
     if( !payload.hits.hits ) return this.results = [];
     this.results = payload.hits.hits.map(item => item._source);
-    console.log(this.results);
+
+    this.$.resultsPanel.render(this.results);
   }
 
   _toggleDrawer() {

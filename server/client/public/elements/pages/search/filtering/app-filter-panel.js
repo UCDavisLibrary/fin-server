@@ -9,7 +9,7 @@ export class AppFilterPanel extends PolymerElement {
 
   static get properties() {
     return {
-      parameters : {
+      filter : {
         type : Object,
         value : null,
         observer : '_render'
@@ -22,15 +22,15 @@ export class AppFilterPanel extends PolymerElement {
   }
 
   _render() {
-    if( !this.parameters ) return;
+    if( !this.filter ) return;
 
     this.innerHTML = '';
-    var ele = document.createElement('app-'+this.parameters.type+'-filter');
-    ele.label = this.parameters.label;
-    ele.filter = this.parameters.filter;
-    ele.isDollar = this.parameters.isDollar;
+    var ele = document.createElement('app-'+this.filter.type+'-filter');
+    ele.label = this.filter.label;
+    ele.filter = this.filter.filter;
+    ele.isDollar = this.filter.isDollar;
     
-    this.shadowRoot.appendChild(ele);
+    this.$.filters.appendChild(ele);
   }
 
 }
