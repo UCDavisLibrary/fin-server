@@ -53,6 +53,13 @@
     border-right: 1px solid var(--light-background-color);
   }
 
+  cork-pagination {
+    display: inline-block;
+
+    --cork-color : var(--default-primary-color);
+    --cork-background-color : var(--default-secondary-color);
+  }
+
   paper-icon-button[disabled] {
     color: var(--light-background-color);
   }
@@ -86,6 +93,7 @@
       <option>50</option>
       <option>20</option>
       <option>10</option>
+      <option>2</option>
     </select>
   </div>
   <div style="margin-left: 10px; font-style:italic">Items per page</div>
@@ -101,4 +109,13 @@
   <template is="dom-repeat" items="[[results]]">
     <app-search-list-result data="[[item]]"></app-search-list-result>
   </template>
+</div>
+
+<div style="text-align:center">
+  <cork-pagination 
+    total-results="[[total]]" 
+    items-per-page="[[numPerPage]]"
+    current-index="[[currentIndex]]"
+    on-nav="_onPaginationNav">
+  </cork-pagination>
 </div>

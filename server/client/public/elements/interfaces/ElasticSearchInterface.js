@@ -8,4 +8,10 @@ module.exports = subclass =>
       let query = this.ElasticSearchModel.getSearch().query;
       return await this.ElasticSearchModel.search(query);
     }
+
+    async _setSearchStartIndex(index) {
+      this.ElasticSearchModel.from = index;
+      let query = this.ElasticSearchModel.getSearch().query;
+      return await this.ElasticSearchModel.search(query);
+    }
   }

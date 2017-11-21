@@ -256,9 +256,9 @@
     "@webcomponents/shadycss" "^1.0.0"
     "@webcomponents/webcomponentsjs" "^1.0.0"
 
-"@ucd-lib/cork-app-elastic-search@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-elastic-search/-/cork-app-elastic-search-0.0.5.tgz#9b6d8f582a3b29e6a5d617e7abb96d1e99bf16da"
+"@ucd-lib/cork-app-elastic-search@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-elastic-search/-/cork-app-elastic-search-0.0.6.tgz#22f52154e8f525f99ea9cb55b97ea18682f88e89"
   dependencies:
     "@ucd-lib/cork-app-utils" "^2.0.3"
 
@@ -276,6 +276,14 @@
   resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-utils/-/cork-app-utils-2.0.4.tgz#5baf247e6085f1b369bfdbe943ddb0181de3d36c"
   dependencies:
     isomorphic-fetch "^2.2.1"
+
+"@ucd-lib/cork-pagination@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-pagination/-/cork-pagination-2.0.0.tgz#3d76cbd5f9c41256327719a1f3eff4f3f745a037"
+  dependencies:
+    "@polymer/iron-icons" "^3.0.0-pre.1"
+    "@polymer/paper-icon-button" "^3.0.0-pre.1"
+    "@polymer/polymer" "^3.0.0-pre.1"
 
 "@ucd-lib/cork-toggle-panel@2.0.0":
   version "2.0.0"

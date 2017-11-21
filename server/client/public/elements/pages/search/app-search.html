@@ -80,7 +80,7 @@
 <div style="position: relative">
   <div id="outerDrawer">
     <div id="drawer" open$="[[drawerOpen]]">
-        <app-filters-panel></app-filters-panel>
+      <app-filters-panel></app-filters-panel>
     </div>
     <div id="drawer-background" open$="[[drawerOpen]]" on-click="_toggleDrawer"></div>
   </div>
@@ -91,7 +91,8 @@
       <app-search-results-panel 
         id="resultsPanel" 
         on-toggle-drawer="_toggleDrawer" 
-        on-page-size-change="_onPageSizeChange">
+        on-page-size-change="_onPageSizeChange"
+        on-page-change="_onPaginationChange">
       </app-search-results-panel>
     </div>
   </div>

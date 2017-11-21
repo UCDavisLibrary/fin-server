@@ -48,6 +48,7 @@ export class AppSearch extends Mixin(PolymerElement)
   _onEsSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
+    let currentIndex = e.query.from;
     let payload = e.payload;
     let total = 0;
     if( !payload.hits ) return this.results = [];
@@ -56,10 +57,10 @@ export class AppSearch extends Mixin(PolymerElement)
     if( !payload.hits.hits ) return this.results = [];
     this.results = payload.hits.hits.map(item => item._source);
 
-    this.$.resultsPanel.render(this.results, total, e.query.size);
+    this.$.resultsPanel.render(this.results, total, e.query.size, currentIndex);
   }
 
-    /**
+  /**
    * @method _onPageSizeChange
    * @description fired when then user selects a new page size
    * 
@@ -67,6 +68,16 @@ export class AppSearch extends Mixin(PolymerElement)
    */
   _onPageSizeChange(e) {
     this._setSearchPageSize(e.detail);
+  }
+
+  /**
+   * @method _onPaginationChange
+   * @description fired when pagination button is clicked
+   * 
+   * @param {Object} e 
+   */
+  _onPaginationChange(e) {
+    this._setSearchStartIndex(e.detail.startIndex);
   }
 
   _toggleDrawer() {

@@ -1,4 +1,5 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+import "@ucd-lib/cork-pagination"
 
 import "./app-search-grid-result"
 import "./app-search-list-result"
@@ -38,6 +39,14 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
       total : {
         type : Number,
         value : 0
+      },
+      numPerPage : {
+        type : Number,
+        value : 1
+      },
+      currentIndex : {
+        type : Number,
+        value : 0
       }
     }
   }
@@ -64,10 +73,12 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    * 
    * @param {Array} results results to render
    */
-  render(results, total, numPerPage) {
+  render(results, total, numPerPage, currentIndex) {
     this.results = results;
     this.total = total;
+    this.numPerPage = numPerPage;
     this.$.numPerPage.value = numPerPage;
+    this.currentIndex = currentIndex;
 
     requestAnimationFrame(() => this._resize());
   }
@@ -167,6 +178,12 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
   _onPageSizeChange() {
     this.dispatchEvent(new CustomEvent('page-size-change', {
       detail : parseInt(this.$.numPerPage.value)
+    }));
+  }
+
+  _onPaginationNav(e) {
+    this.dispatchEvent(new CustomEvent('page-change', {
+      detail : e.detail
     }));
   }
 
