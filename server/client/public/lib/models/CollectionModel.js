@@ -13,7 +13,9 @@ class CollectionModel extends BaseModel {
       this.register('CollectionModel');
     }
 
-
+    overview() {
+      return this.service.overview();
+    }
 
 }
 

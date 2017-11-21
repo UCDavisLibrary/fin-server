@@ -2,6 +2,7 @@
   :host {
     display: block;
     position: relative;
+    background: white;
   }
 
   #hero {
@@ -65,6 +66,46 @@
     background-color: rgba(51, 83, 121, .7);
     padding: 15px;
   }
+
+  .collection-outer {
+    display: flex;
+    justify-content: center;
+  }
+
+  .collections {
+    max-width: var(--max-width);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 75px 20px;
+    border-bottom: 1px solid var(--light-background-color);
+  }
+
+  .collections > div {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 320px;
+    width: 320px;
+    margin: 15px;
+    position: relative;
+  }
+
+  .collections > div:hover {
+    cursor: pointer;
+    margin: 13px;
+    border: 2px solid var(--default-primary-color);
+  }
+
+  .collections > div > div {
+    position: absolute;
+    padding: 15px;
+    color: var(--default-secondary-color);
+    background-color: rgba(0, 38, 85, .7);
+    left : 0;
+    bottom : 25px;
+    font-weight: var(--font-weight-heavy);
+  }
 </style>
 
 <img src="/images/ucd-lib-logo-white.png" />
@@ -89,6 +130,17 @@
 
 </div>
 <app-header-colorbar height="15"></app-header-colorbar>
+
+<div class="collection-outer">
+  <div class="collections">
+    <template is="dom-repeat" items="[[highlightedCollections]]">
+      <div style="background-image:url('[[item.thumbnail]]')">
+        <div>[[item.title]]</div>
+      </div>
+    </template>
+  </div>
+</div>
+
 <div class="container">
   <div>
     <h1>About Digital Collections</h1>

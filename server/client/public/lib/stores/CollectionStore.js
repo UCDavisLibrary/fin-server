@@ -18,7 +18,8 @@ class CollectionStore extends BaseStore {
 
     this.events = {
       COLLECTION_UPDATE : 'collection-update',
-      SELECTED_COLLECTION_UPDATE : 'selected-collection-update'
+      SELECTED_COLLECTION_UPDATE : 'selected-collection-update',
+      COLLECTION_OVERVIEW_UPDATE : 'collection-overview-update'
     }
   }
 
@@ -54,6 +55,31 @@ class CollectionStore extends BaseStore {
     this.emit(this.events.COLLECTION_UPDATE, this.data.byId[state.id]);
   }
 
+  setCollectionOverviewLoading(promise) {
+    this._setCollectionOverviewState({
+      state: this.STATE.LOADING, 
+      request : promise
+    });
+  }
+
+  setCollectionOvreviewLoaded(payload) {
+    this._setCollectionOverviewState({
+      state: this.STATE.LOADED,   
+      payload
+    });
+  }
+
+  setCollectionOverviewError(error) {
+    this._setCollectionOverviewState({
+      state: this.STATE.ERROR,   
+      error
+    });
+  }
+
+  _setCollectionOverviewState(state) {
+    this.data.overview = state;
+    this.emit(this.events.COLLECTION_OVERVIEW_UPDATE, this.data.overview);
+  }
 
 }
 
