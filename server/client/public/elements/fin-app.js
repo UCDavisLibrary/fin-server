@@ -26,6 +26,7 @@ import "./app-footer"
 import "./utils/app-header-colorbar"
 
 import AppStateInterface from "./interfaces/AppStateInterface"
+import AuthInterface from "./interfaces/AuthInterface"
 
 import template from "./fin-app.html";
 
@@ -33,7 +34,7 @@ import template from "./fin-app.html";
 window.html = (str) => str[0];
 
 export class FinApp extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface) {
+  .with(EventInterface, AppStateInterface, AuthInterface) {
 
   // Define a string template instead of a `<template>` element.
   static get template() {
@@ -47,6 +48,11 @@ export class FinApp extends Mixin(PolymerElement)
         value : 'home'
       }
     }
+  }
+
+  constructor() {
+    super();
+    this.active = true;
   }
 
   _onAppStateUpdate(e) {

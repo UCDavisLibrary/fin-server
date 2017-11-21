@@ -7,6 +7,9 @@ class ElasticSearchModelImpl extends ElasticSearchModel {
 
   constructor() {
     super();
+
+    this.size = 20;
+
     this.service = ElasticSearchService;
     this.store = ElasticSearchStore;
     this.config = config.elasticSearch;

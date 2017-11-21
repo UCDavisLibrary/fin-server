@@ -35,10 +35,12 @@ export class AppSearch extends Mixin(PolymerElement)
     this._defaultSearch();
   }
 
-  _onInputChange() {
-    this._textSearch(this.$.input.value)
-  }
-
+  /**
+   * @method _onDefaultEsSearchUpdate
+   * @description fired when then default search updates
+   * 
+   * @param {Object} e 
+   */
   _onDefaultEsSearchUpdate(e) {
     this._onEsSearchUpdate(e);
   }
@@ -47,11 +49,24 @@ export class AppSearch extends Mixin(PolymerElement)
     if( e.state !== 'loaded' ) return;
 
     let payload = e.payload;
+    let total = 0;
     if( !payload.hits ) return this.results = [];
+    else total = payload.hits.total;
+
     if( !payload.hits.hits ) return this.results = [];
     this.results = payload.hits.hits.map(item => item._source);
 
-    this.$.resultsPanel.render(this.results);
+    this.$.resultsPanel.render(this.results, total, e.query.size);
+  }
+
+    /**
+   * @method _onPageSizeChange
+   * @description fired when then user selects a new page size
+   * 
+   * @param {Object} e 
+   */
+  _onPageSizeChange(e) {
+    this._setSearchPageSize(e.detail);
   }
 
   _toggleDrawer() {

@@ -80,9 +80,9 @@
     type="list">
   </paper-icon-button>
   <div class="spacer"></div>
-  <div style="flex:1; font-style:italic; padding-left: 10px">XXXX results found</div>
+  <div style="flex:1; font-style:italic; padding-left: 10px">[[total]] results found</div>
   <div>
-    <select>
+    <select id="numPerPage" on-change="_onPageSizeChange">
       <option>50</option>
       <option>20</option>
       <option>10</option>
@@ -99,6 +99,6 @@
 
 <div class="list" hidden$="[[!isListLayout]]">
   <template is="dom-repeat" items="[[results]]">
-    <div class="item">[[item.count]]</div>
+    <app-search-list-result data="[[item]]"></app-search-list-result>
   </template>
 </div>

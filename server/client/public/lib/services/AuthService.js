@@ -6,9 +6,15 @@ class AuthSerivce extends BaseService {
   constructor() {
     super();
     this.store = AuthStore;
+    this.initAuthRequested = false;
   }
 
   async getUser() {
+    if( this.initAuthRequested ) {
+      return this.store.data;
+    }
+    this.initAuthRequested = true;
+
     return this.request({
       url : '/auth/user',
       onLoad : result => {

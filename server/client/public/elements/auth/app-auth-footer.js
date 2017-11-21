@@ -14,6 +14,10 @@ class AppAuthFooter extends Mixin(PolymerElement)
       loggedIn : {
         type : Boolean,
         value : false
+      },
+      user : {
+        type : Object,
+        value : () => {}
       }
     }
   }
@@ -21,6 +25,15 @@ class AppAuthFooter extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+  }
+
+  _onAuthUpdate(e) {
+    if( e.state === 'loggedIn' ) {
+      this.user = e.user;
+      this.loggedIn = true;
+    } else {
+      this.loggedIn = false;
+    }
   }
 }
 

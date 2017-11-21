@@ -5,7 +5,7 @@ class AppAuthHeader extends Mixin(PolymerElement)
       .with(EventInterface, AuthInterface) {
 
   static get template() {
-    return '<iron-icon icon="account"></iron-icon>';
+    return '<iron-icon icon="fin:account" style="width: 40px; height:40px"></iron-icon>';
   }
 
   constructor() {
@@ -14,7 +14,7 @@ class AppAuthHeader extends Mixin(PolymerElement)
   }
 
   _onAuthUpdate(e) {
-    if( e.user ) this.style.display = 'block';
+    if( e.state === 'loggedIn') this.style.display = 'block';
     else this.style.display = 'none';
   }
 }

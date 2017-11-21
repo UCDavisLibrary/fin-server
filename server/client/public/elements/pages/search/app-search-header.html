@@ -5,6 +5,10 @@
     color: var(--inverse-text-color);
     padding: 15px;
   }
+
+  app-auth-header {
+    margin-left: 10px;
+  }
   
   .layout {
     display: flex;
@@ -14,8 +18,15 @@
   h2 {
     flex: 1;
     padding-left: 20px;
-    color: var(--default-secondary-color);
     margin: 0;
+  }
+  h2 a {
+    color: var(--default-secondary-color);
+    text-decoration: none;
+  }
+  h2 a:visited {
+    color: var(--default-secondary-color);
+    text-decoration: none;
   }
 
   img {
@@ -56,9 +67,9 @@
 <div class="layout">
   <img class="logo" src="/images/ucd-lib-logo-white.png" />
   <img class="logo-sm" src="/images/ucd-lib-logo-white-sm.png" />
-  <h2>Digital Collections</h2>
+  <h2><a href="/">Digital Collections</a></h2>
   <div class="filler"></div>
-  <fin-search-box on-search="_onSearch" placeholder="Search Keyword(s)">
+  <fin-search-box id="searchInput" on-search="_onSearch" placeholder="Search Keyword(s)">
     <iron-icon icon="fin:search" slot="button-content"></iron-icon>
   </fin-search-box>
   <app-auth-header></app-auth-header>

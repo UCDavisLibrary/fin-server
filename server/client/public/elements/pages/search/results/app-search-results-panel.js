@@ -2,10 +2,12 @@ import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 
 import "./app-search-grid-result"
 import "./app-search-list-result"
+import ElasticSearchInterface from "../../../interfaces/ElasticSearchInterface"
 
 import template from './app-search-results-panel.html'
 
-class AppSearchResultsPanel extends PolymerElement {
+class AppSearchResultsPanel extends Mixin(PolymerElement)
+      .with(EventInterface, ElasticSearchInterface) {
 
   static get properties() {
     return {
@@ -29,6 +31,13 @@ class AppSearchResultsPanel extends PolymerElement {
       isListLayout : {
         type : Boolean,
         value : false
+      },
+      /**
+       * UI display of total results
+       */
+      total : {
+        type : Number,
+        value : 0
       }
     }
   }
@@ -39,18 +48,14 @@ class AppSearchResultsPanel extends PolymerElement {
 
   constructor() {
     super();
+    this.active = true;
 
     this.resizeTimer = -1;
     window.addEventListener('resize', () => this._resizeAsync());
+  }
 
-    var results = [];
-    for( var i = 0; i < 20; i++ ) {
-      results.push({
-        count : i,
-        css : 'width: 250px; height:' + (200 + (Math.random() * 300)) + 'px'
-      });
-    }
-    this.render(results);
+  loading() {
+
   }
 
   /**
@@ -59,8 +64,11 @@ class AppSearchResultsPanel extends PolymerElement {
    * 
    * @param {Array} results results to render
    */
-  render(results) {
+  render(results, total, numPerPage) {
     this.results = results;
+    this.total = total;
+    this.$.numPerPage.value = numPerPage;
+
     requestAnimationFrame(() => this._resize());
   }
 
@@ -154,6 +162,12 @@ class AppSearchResultsPanel extends PolymerElement {
    */
   _onToggleDrawer() {
     this.dispatchEvent(new CustomEvent('toggle-drawer'));
+  }
+
+  _onPageSizeChange() {
+    this.dispatchEvent(new CustomEvent('page-size-change', {
+      detail : parseInt(this.$.numPerPage.value)
+    }));
   }
 
 }

@@ -10,11 +10,19 @@ class AuthModel extends BaseModel {
       this.store = AuthStore;
       this.service = AuthService;
 
-      this.getUser();
+      this.register('AuthModel');
     }
 
     async getUser() {
       return await this.service.getUser();
+    }
+
+    login() {
+      window.location = '/auth/login';
+    }
+
+    logout() {
+      window.location = '/auth/logout'
     }
 
 }

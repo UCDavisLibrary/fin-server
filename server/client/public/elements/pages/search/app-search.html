@@ -88,7 +88,11 @@
   <div class="search-container">
     <app-filters-panel id="desktop-filter-panel"></app-filters-panel>
     <div class="search-content">
-      <app-search-results-panel id="resultsPanel" on-toggle-drawer="_toggleDrawer" ></app-search-results-panel>
+      <app-search-results-panel 
+        id="resultsPanel" 
+        on-toggle-drawer="_toggleDrawer" 
+        on-page-size-change="_onPageSizeChange">
+      </app-search-results-panel>
     </div>
   </div>
 </div>
