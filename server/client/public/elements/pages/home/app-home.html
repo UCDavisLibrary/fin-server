@@ -119,7 +119,11 @@
         <a class="gold" href="https://library.ucdavis.edu" target="_blank">UC Davis Library</a> 
         collections.
       </div>
-      <fin-search-box on-search="_onSearch" placeholder="Search Keyword(s)">
+      <fin-search-box 
+        id="searchBox" 
+        on-search="_onSearch" 
+        on-browse="_onBrowse"
+        placeholder="Search Keyword(s)">
         <iron-icon icon="fin:search" slot="button-content"></iron-icon>
       </fin-search-box>
     </div>
@@ -134,7 +138,7 @@
 <div class="collection-outer">
   <div class="collections">
     <template is="dom-repeat" items="[[highlightedCollections]]">
-      <div style="background-image:url('[[item.thumbnail]]')">
+      <div style="background-image:url('[[item.thumbnail]]')" data-id$="[[item.id]]" on-click="_onCollectionClicked">
         <div>[[item.title]]</div>
       </div>
     </template>

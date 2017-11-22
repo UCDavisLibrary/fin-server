@@ -17,6 +17,10 @@ class CollectionModel extends BaseModel {
       return this.service.overview();
     }
 
+    select(id) {
+      this.store.setSelectedCollection(id);
+    }
+
 }
 
 module.exports = new CollectionModel();

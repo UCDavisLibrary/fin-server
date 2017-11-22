@@ -2,8 +2,10 @@ import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-tabs/paper-tabs"
 import "@polymer/iron-pages/iron-pages"
 import "./app-filter-panel"
+import "../app-collection-info-panel"
 
 import ElasticSearchInterface from "../../../interfaces/ElasticSearchInterface"
+import CollectionInterface from "../../../interfaces/CollectionInterface"
 
 import template from "./app-filters-panel.html"
 
@@ -21,7 +23,7 @@ for( var key in config.elasticSearch.facets ) {
 
 
 class AppFiltersPanel extends Mixin(PolymerElement)
-      .with(EventInterface, ElasticSearchInterface) {
+      .with(EventInterface, ElasticSearchInterface, CollectionInterface) {
   
   static get template() {
     return template;
@@ -39,11 +41,35 @@ class AppFiltersPanel extends Mixin(PolymerElement)
         type : String,
         value : 'filters'
       },
+
+      selectedCollection : {
+        type : Object,
+        value : () => {}
+      },
+
       collectionMode : {
         type : Boolean,
-        value : true
+        value : false
       }
     }
+  }
+
+  constructor() {
+    super();
+    this.active = true;
+  }
+
+  _onSelectedCollectionUpdate(selected) {
+    if( !selected ) {
+      this.selectedTab = 'filters';
+      this.collectionMode = false;
+      return;
+    } 
+
+    
+    this.collectionMode = true;
+    this.selectedCollection = selected;
+    this.selectedTab = 'info';
   }
 }
 

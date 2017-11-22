@@ -27,6 +27,7 @@ import "./utils/app-header-colorbar"
 
 import AppStateInterface from "./interfaces/AppStateInterface"
 import AuthInterface from "./interfaces/AuthInterface"
+import CollectionInterface from "./interfaces/CollectionInterface"
 
 import template from "./fin-app.html";
 
@@ -34,7 +35,7 @@ import template from "./fin-app.html";
 window.html = (str) => str[0];
 
 export class FinApp extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface, AuthInterface) {
+  .with(EventInterface, AppStateInterface, AuthInterface, CollectionInterface) {
 
   // Define a string template instead of a `<template>` element.
   static get template() {
@@ -55,8 +56,15 @@ export class FinApp extends Mixin(PolymerElement)
     this.active = true;
   }
 
+  ready() {
+    super.ready();
+    this._getCollectionOverview();
+  }
+
   _onAppStateUpdate(e) {
-    this.page = e.location.path[0] || 'home';
+    let page = e.location.path[0] || 'home';
+    if( page !== this.page ) window.scrollTo(0, 0);
+    this.page = page;
   }
 }
 

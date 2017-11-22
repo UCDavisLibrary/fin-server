@@ -6,9 +6,7 @@ class CollectionStore extends BaseStore {
     super();
 
     this.data = {
-      selected : {
-        state : this.STATE.INIT
-      },
+      selected : null,
       byId : {},
       // should include the overview state
       overview : {
@@ -23,9 +21,14 @@ class CollectionStore extends BaseStore {
     }
   }
 
-  setSelectedCollection(collection) {
+  setSelectedCollection(id) {
+    let collection = null;
+    this.data.overview.payload.forEach(c => {
+      if( c.id === id ) collection = c;
+    })
+
     this.data.selected = collection;
-    this.semit(this.events.SELECTED_COLLECTION_UPDATE, this.data.selected);
+    this.emit(this.events.SELECTED_COLLECTION_UPDATE, this.data.selected);
   }
 
   setCollectionLoading(id, promise) {
@@ -63,6 +66,16 @@ class CollectionStore extends BaseStore {
   }
 
   setCollectionOvreviewLoaded(payload) {
+    payload.forEach(item => {
+      item.thumbnail = '/images/stub/'+item.thumbnail
+    });
+
+    payload.sort((a,b) => {
+      if( a.title > b.title ) return 1;
+      if( a.title < b.title ) return -1;
+      return 0;
+    });
+
     this._setCollectionOverviewState({
       state: this.STATE.LOADED,   
       payload

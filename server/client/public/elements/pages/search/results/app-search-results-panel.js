@@ -4,11 +4,12 @@ import "@ucd-lib/cork-pagination"
 import "./app-search-grid-result"
 import "./app-search-list-result"
 import ElasticSearchInterface from "../../../interfaces/ElasticSearchInterface"
+import AppStateInterface from "../../../interfaces/AppStateInterface"
 
 import template from './app-search-results-panel.html'
 
 class AppSearchResultsPanel extends Mixin(PolymerElement)
-      .with(EventInterface, ElasticSearchInterface) {
+      .with(EventInterface, ElasticSearchInterface, AppStateInterface) {
 
   static get properties() {
     return {
@@ -40,10 +41,12 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
         type : Number,
         value : 0
       },
+
       numPerPage : {
         type : Number,
         value : 1
       },
+      
       currentIndex : {
         type : Number,
         value : 0
@@ -61,6 +64,11 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
 
     this.resizeTimer = -1;
     window.addEventListener('resize', () => this._resizeAsync());
+  }
+
+  _onAppStateUpdate(e) {
+    if( e.location.path[0] !== 'search') return;
+    this._resizeAsync();
   }
 
   loading() {

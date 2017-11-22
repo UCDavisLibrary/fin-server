@@ -27,21 +27,42 @@ class AppHome extends Mixin(PolymerElement)
     this.active = true;
   }
 
-  ready() {
-    super.ready();
-    this._getCollectionOverview();
-  }
-
   _onCollectionOverviewUpdate(e) {
     if( e.state !== 'loaded' ) return;
     let overview = e.payload;
 
     let arr = [];
+    let browse = {};
+
+    overview.sort((a,b) => {
+      if( a.title > b.title ) return 1;
+      if( a.title < b.title ) return -1;
+      return 0;
+    });
+
     overview.forEach(item => {
-      item.thumbnail = '/images/stub/'+item.thumbnail;
+      browse[item.id] = item.title;
       if( item.highlighted ) arr.push(item);
     });
+
+    this.$.searchBox.browse = browse;
     this.highlightedCollections = arr;
+  }
+
+  _onBrowse(e) {
+    let id = e.detail;
+    this.$.searchBox.browseValue = 'Browse';
+    this._onCollectionSelected(id);
+  }
+
+  _onCollectionClicked(e) {
+    let id = e.currentTarget.getAttribute('data-id');
+    this._onCollectionSelected(id);
+  }
+
+  _onCollectionSelected(id) {
+    this._selectCollection(id);
+    this._setWindowLocation('/search');
   }
 
   _onSearch(e) {

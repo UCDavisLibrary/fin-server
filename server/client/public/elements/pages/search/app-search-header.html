@@ -69,7 +69,11 @@
   <img class="logo-sm" src="/images/ucd-lib-logo-white-sm.png" />
   <h2><a href="/">Digital Collections</a></h2>
   <div class="filler"></div>
-  <fin-search-box id="searchInput" on-search="_onSearch" placeholder="Search Keyword(s)">
+  <fin-search-box 
+    id="searchInput" 
+    on-search="_onSearch" 
+    on-browse="_onBrowse"
+    placeholder="Search Keyword(s)">
     <iron-icon icon="fin:search" slot="button-content"></iron-icon>
   </fin-search-box>
   <app-auth-header></app-auth-header>

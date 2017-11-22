@@ -32,6 +32,9 @@
   .menu.horizontal li:last-child {
     border-right: none;
   }
+  .menu a {
+    cursor: pointer;
+  }
 
   .logo {
     display: inline-block;
@@ -89,9 +92,9 @@
     <div role="navigation"><!-- col start -->
       <h2>Digital Collections</h2>
       <ul class="menu">
-        <li><a>Amerine's Wine Collection</a></li>
-        <li><a>The Eastman Collection</a></li>            
-        <li><a>The Slater Collection</a></li>
+        <template is="dom-repeat" items="[[collections]]">
+          <li><a on-click="_onBrowseCollection" data-id$="[[item.id]]">[[item.title]]</a></li>
+        </template>
       </ul>
     </div><!-- col end -->
 

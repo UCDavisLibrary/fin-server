@@ -32,6 +32,7 @@ export class AppSearch extends Mixin(PolymerElement)
 
   constructor() {
     super();
+    this.active = true;
     this._defaultSearch();
   }
 

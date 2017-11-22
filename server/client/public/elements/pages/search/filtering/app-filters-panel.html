@@ -1,4 +1,4 @@
-<style>
+<style include="shared-styles">
   :host {
     background-color: var(--light-background-color);
   }
@@ -22,12 +22,25 @@
     margin-left: 10px;
   }
 
+  h2 {
+    margin: 5px 10px;
+    color: var(--default-primary-color);
+  }
+
   app-filter-panel {
     border-bottom: 1px solid var(--medium-background-color);
   }
+
+  .thumbnail {
+    background-size: cover;
+    background-position: center center;
+    height: 200px;
+  }
 </style>
 
-<img src="" hidden$="[[!collectionMode]]" id="collectionImg" />
+<div class="thumbnail" 
+      style="background-image: url('[[selectedCollection.thumbnail]]')"
+      hidden$="[[!collectionMode]]"></div>
 
 <paper-tabs 
   noink 
@@ -38,6 +51,8 @@
   <paper-tab id="info">Information</paper-tab>
   <paper-tab id="filters">Filters</paper-tab>
 </paper-tabs>
+
+<h2 hidden$="[[collectionMode]]">Filters</h2>
 
 <iron-pages 
   selected="[[selectedTab]]"   
