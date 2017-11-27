@@ -1,5 +1,5 @@
-var elasticsearch = require('elasticsearch');
-var config = require('ucdlib-dams-utils/config');
+const elasticsearch = require('elasticsearch');
+const {config} = require('@ucd-lib/fin-node-utils');
 
 var client = new elasticsearch.Client({
   host: config.elasticsearch.host,

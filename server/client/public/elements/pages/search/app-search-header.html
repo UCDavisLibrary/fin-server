@@ -10,15 +10,18 @@
     margin-left: 10px;
   }
   
+  fin-search-box {
+    flex: 1;
+  }
+
   .layout {
     display: flex;
     align-items: center;
   }
   
   h2 {
-    flex: 1;
-    padding-left: 20px;
     margin: 0;
+    white-space: nowrap;
   }
   h2 a {
     color: var(--default-secondary-color);
@@ -34,18 +37,20 @@
   }
 
   .logo, h2 {
+    padding-right: 20px;
     display: none;
   }
 
   .filler {
-    flex: 1;
+    flex: .25;
+    display: none;
   }
 
   .logo-sm {
     margin-right: 10px;
   }
 
-  @media( min-width: 815px ) {
+  @media( min-width: 700px ) {
     .logo {
       display: block;
     }
@@ -54,12 +59,15 @@
     }
   }
 
-  @media( min-width: 700px ) {
+  @media( min-width: 815px ) {
     h2 {
       display: block;
     }
+  }
+
+  @media( min-width: 1100px ) {
     .filler {
-      display: none;
+      display: block;
     }
   }
 </style>

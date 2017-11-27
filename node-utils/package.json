@@ -1,7 +1,7 @@
 {
-  "name": "ucdlib-dams-utils",
+  "name": "@ucd-lib/fin-node-utils",
   "version": "0.0.8",
-  "description": "Node utils for the UC Davis Library DAMS application",
+  "description": "Node utils for the FIN (UC Davis Library DAMS) Server",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

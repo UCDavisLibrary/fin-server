@@ -1,7 +1,7 @@
 const stompit = require('stompit');
-const config = require('ucdlib-dams-utils/config');
-const logger = require('ucdlib-dams-utils/logger')();
+const {config, logger} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
+const Logger = logger();
 
 
 var connectOptions = {
@@ -36,7 +36,7 @@ class MessageConsumer {
 
   init() {
     if( !this.client ) return;
-    logger.info('STOMP client connected');
+    Logger.info('STOMP client connected');
 
 
     this.client.subscribe(subscribeHeaders, async (error, message) => {
@@ -55,7 +55,7 @@ class MessageConsumer {
       }
 
       var id = headers['org.fcrepo.jms.identifier'];
-      logger.debug('ActiveMQ Event', id, headers['org.fcrepo.jms.eventType']);
+      Logger.debug('ActiveMQ Event', id, headers['org.fcrepo.jms.eventType']);
 
       await this.broadcastToServices(JSON.stringify({
         type : 'fcrepo-event',
@@ -72,7 +72,7 @@ class MessageConsumer {
       try {
         await this.broadcastToService(services[i], message);
       } catch(e) {
-        logger.error(e);
+        Logger.error(e);
       }
     }
   }

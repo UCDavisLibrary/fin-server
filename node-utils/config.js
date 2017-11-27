@@ -46,11 +46,13 @@ module.exports = {
   },
 
   elasticsearch : {
-    alias : 'fcrepo-search',
-    recordSchemaType : 'fcrepo-record',
-    collections : {
+    record : {
+      alias : 'fcrepo-records',
+      schemaType : 'fcrepo-record'
+    },
+    collection : {
       alias : 'fcrepo-collections',
-      recordSchemaType : 'fcrepo-collection',
+      schemaType : 'fcrepo-collection',
     },
     host : `http://elastic:changeme@${esHostname}:9200`,
     log : 'error'

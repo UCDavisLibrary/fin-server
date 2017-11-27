@@ -3,7 +3,8 @@ const httpProxy = require('http-proxy');
 const {URL} = require('url');
 const request = require('request');
 
-const Logger = require('ucdlib-dams-utils').logger();
+const {logger} = require('@ucd-lib/fin-node-utils');
+const Logger = logger();
 const config = require('../config');
 
 var proxy = httpProxy.createProxyServer({

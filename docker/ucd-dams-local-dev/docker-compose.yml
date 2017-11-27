@@ -7,7 +7,7 @@ services:
   # Font End NodeJS Application Server & Proxy
   ###
   server:
-    image: node:8.5
+    build: ../../server
     volumes:
       - ../../server:/app
       - ../services.js:/etc/dams/services.js

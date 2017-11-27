@@ -1,5 +1,4 @@
-var jwt = require('ucdlib-dams-utils/jwt');
-var config = require('ucdlib-dams-utils/config');
+const {jwt, config} = require('@ucd-lib/fin-node-utils');
 
 // wrapper for case bounce
 // setting our auth token

@@ -6,7 +6,7 @@ class SearchModel {
 
   search(body = {}) {
     return es.search({
-      index : config.elasticsearch.alias,
+      index : config.elasticsearch.record.alias,
       body : body
     });
   }

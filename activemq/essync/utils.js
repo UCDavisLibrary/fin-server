@@ -1,4 +1,5 @@
-const config = require('ucdlib-dams-utils/config');
+const {config} = require('@ucd-lib/fin-node-utils');
+const {URL} = require('url');
 
 function cleanupData(data) {
   if( data['@context'] ) delete data['@context'];
@@ -12,15 +13,45 @@ function cleanupData(data) {
       data[key] = cleanUrl(re, data[key]);
     }
   }
+
+  return data;
 }
 
 function cleanUrl(re, value) {
-  if( value.match(re) ) {
+  if( typeof value === 'string' && value.match(re) ) {
     return value.replace(re, config.server.url);
-  } 
+  }
   return value;
 }
 
+function isCollection(types) {
+  for( let i = 0; i < types.length; i++ ) {
+    if( types[i].match(/:Collection$/) ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function isDotPath(path) {
+  if( path.match(/http/) ) {
+    let urlInfo = new URL(path);
+    path = urlInfo.pathname;
+  }
+  
+  path = path.split('/');
+  for( var i = 0; i < path.length; i++ ) {
+    if( path[i].match(/^\./) ) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+
 module.exports = {
-  cleanupData
+  cleanupData,
+  isCollection,
+  isDotPath
 }

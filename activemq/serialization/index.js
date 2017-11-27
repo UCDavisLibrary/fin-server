@@ -1,6 +1,4 @@
-const MessageServer = require('ucdlib-dams-utils/MessageServer');
-const config = require('ucdlib-dams-utils/config');
-const jwt = require('ucdlib-dams-utils/jwt');
+const {jwt, config, MessageServer} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
 const {URL} = require('url');
 const fs = require('fs-extra');

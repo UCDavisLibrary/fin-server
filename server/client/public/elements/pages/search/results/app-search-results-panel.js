@@ -146,7 +146,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
 
       eles[i].style.left = (leftOffset + col * w) + 'px';
       eles[i].style.top = colHeights[col] + 'px';
-      eles[i].style.visibility = 'visible';
+      // eles[i].style.visibility = 'visible';
 
       colHeights[col] += eles[i].offsetHeight + this.masonryMargin;
     }

@@ -1,9 +1,9 @@
 var router = require('express').Router();
 var authUtils = require('../lib/auth');
 var utils = require('./utils');
-var {config, logger} = require('ucdlib-dams-utils');
+const {config, logger} = require('@ucd-lib/fin-node-utils');
 var {URL} = require('url');
-logger = logger();
+const Logger = logger();
 
 function storeRedirect(req, res, next) {
   req.session.cliRedirectUrl = req.query.cliRedirectUrl || '';
@@ -13,7 +13,7 @@ function storeRedirect(req, res, next) {
 
 router.get('/cas', storeRedirect, authUtils.middleware.bounce, async (req, res) => {
   var url = req.session.cliRedirectUrl || '/';
-  logger.info('/auth/cas login request.  redirect=', url);
+  Logger.info('/auth/cas login request.  redirect=', url);
 
   if( req.session.provideJwt ) {
     var newJwt = await authUtils.jwt.createFromCasRequest(req);
@@ -24,7 +24,7 @@ router.get('/cas', storeRedirect, authUtils.middleware.bounce, async (req, res) 
   req.session.provideJwt = false;
   req.session.cliRedirectUrl = '';
 
-  logger.debug('/auth/cas login response.  redirect=', url);
+  Logger.debug('/auth/cas login response.  redirect=', url);
   res.redirect(url);
 });
 

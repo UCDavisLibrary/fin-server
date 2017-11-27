@@ -11,7 +11,7 @@
   }
 
   select {
-    margin-left: 20px;
+    margin-left: 10px;
     border: 1px solid var(--light-background-color);
     border-radius: 0;
     -webkit-appearance: none;
@@ -32,7 +32,9 @@
   .masonry .item {
     display: block;
     position: absolute;
-    visibility: hidden;
+    /* visibility: hidden; */
+    top : 25px;
+    left: 25px;
     will-change: top, left;
     transition: all 500ms ease-out;
   }
@@ -53,6 +55,20 @@
     border-right: 1px solid var(--light-background-color);
   }
 
+  .desktop-total {
+    font-style: italic; 
+    padding-left: 10px;
+    display: none;
+  }
+
+  .mobile-total {
+    font-style: italic; 
+  }
+
+  .filler {
+    flex: 1;
+  }
+
   cork-pagination {
     display: inline-block;
 
@@ -68,11 +84,19 @@
     paper-icon-button[icon="menu"] {
       display: none;
     }
+    .desktop-total {
+      display: block;
+    }
+    .mobile-total {
+      display: none;
+    }
   }
 </style>
 
 <div class="header">
   <paper-icon-button icon="menu" on-click="_onToggleDrawer"></paper-icon-button>
+  <div class="desktop-total">[[total]] results found</div>
+  <div class="filler"></div>
   <paper-icon-button 
     icon="fin:grid" 
     disabled$="[[!isListLayout]]"
@@ -87,7 +111,6 @@
     type="list">
   </paper-icon-button>
   <div class="spacer"></div>
-  <div style="flex:1; font-style:italic; padding-left: 10px">[[total]] results found</div>
   <div>
     <select id="numPerPage" on-change="_onPageSizeChange">
       <option>50</option>
@@ -97,6 +120,8 @@
   </div>
   <div style="margin-left: 10px; font-style:italic">Items per page</div>
 </div>
+
+<div class="mobile-total">[[total]] results found</div>
 
 <div class="masonry" id="layout" hidden$="[[isListLayout]]">
   <template is="dom-repeat" items="[[results]]">
