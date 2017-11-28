@@ -1,26 +1,35 @@
 <style include="shared-styles">
   :host {
     display: block;
-    width: 250px;
+    width: var(--grid-cell-width);
     background-color: white;
   }
   .img {
     height: 250px;
-    width: 250px;
+    width: var(--grid-cell-width);
     background-size: cover;
     background-color: white;
     background-position: center center;
   }
 </style>
 
-<div style="background-image: url('[[imgUrl]]')" hidden$="[[!imgUrl]]" class="img" ></div>
+<div style="background-image: url('[[imgUrl]]')" hidden$="[[!isImage]]" class="img" ></div>
 
 <div style="padding: 15px">
   <div>[[collectionName]]</div>
 
-  <h4><a >[[title]]</a></h4>
+  <h4><a>[[title]]</a></h4>
 
   <div>[[description]]</div>
 
-  <div>[[year]]</div>
+  <template is="dom-repeat" items="[[creator]]">
+    <app-search-result-creator label="[[item]]"></app-search-result-creator>
+  </template>
+
+  <div style="display:flex">
+    <div style="flex:1">[[year]]</div>
+    <div>
+      <iron-icon icon="fin:image" hidden$="[[!isImage]]"></iron-icon>
+    </div>
+  </div>
 </div>

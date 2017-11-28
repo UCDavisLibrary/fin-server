@@ -23,8 +23,6 @@ class EsReindexer {
    * @returns {Promise}
    */
   async run() {
-    console.time('reindex');
-
     // make sure indexer has fresh token
     indexer.generateToken();
 
@@ -52,14 +50,12 @@ class EsReindexer {
     await this.dropIndexes(oldRecordIndexes);
     Logger.info('Removing old collection indexes', oldCollectionIndexes);
     await this.dropIndexes(oldCollectionIndexes);
-
-    console.timeEnd('reindex');
   }
 
   /**
    * @method crawl
    * @description crawl a specific url.  This is a recursive function that will insert
-   * the url via the indexer (index.js EsSyncMessageServer) then if the jsonld has
+   * the url via the indexer then if the jsonld has
    * a 'contains' attribute, child containers will be crawled recursively.
    * 
    * @param {String} url - url of fcrepo to crawl
@@ -70,11 +66,7 @@ class EsReindexer {
   async crawl(url, recordIndex, collectionIndex) {
     let urlInfo = new URL(url);
 
-
-    if( utils.isDotPath(url) ) {
-      console.log('ignoring dot path:', url);
-      return;
-    }
+    if( utils.isDotPath(url) ) return;
 
     let body = await indexer.getContainer(url, false);
     if( !body ) return;

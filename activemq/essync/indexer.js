@@ -28,7 +28,7 @@ class EsIndexer {
    */
   async update(jsonld, recordIndex, collectionIndex) {
     if( typeof jsonld === 'string') {
-      jsonld = await this.getContainer(path);
+      jsonld = await this.getContainer(jsonld);
     }
 
     if( !jsonld ) return;
@@ -39,8 +39,6 @@ class EsIndexer {
     // only index binary and collections
     if( jsonld['@type'].indexOf('fedora:Binary') > -1  ) {
       Logger.info(`ES Indexer updating binary container: ${id}`);
-
-      console.log(jsonld)
 
       return this.esClient.index({
         index : recordIndex || config.elasticsearch.record.alias,
@@ -69,28 +67,28 @@ class EsIndexer {
    * @returns {Promise}
    */
   async remove(path) {
-    let jsonld = await this.getContainer(path);
-    
-    if( !jsonld ) return;
-    if( !jsonld['@types'] ) return;
+    // so we no longer have reference to item... 
+    // going to just try record first, if that fails
+    // then try collection
 
-    // only index binary and collections
-    if( jsonld['@types'].indexOf('fedora:Binary') > -1  ) {
-      Logger.info(`ES Indexer removing binary container: ${path}`);
-
-      return this.esClient.delete({
+    // first try record collection
+    try {
+      await this.esClient.delete({
         index : config.elasticsearch.record.alias,
         type: config.elasticsearch.record.schemaType,
         id : config.server.url+config.fcrepo.root+path,
       });
-    } else if ( this.isCollection(jsonld['@types']) ) {
-      Logger.info(`ES Indexer removing collection container: ${path}`);
-
-      return this.esClient.delete({
-        index : config.elasticsearch.collection.alias,
-        type: config.elasticsearch.collection.schemaType,
-        id : config.server.url+config.fcrepo.root+path,
-      });
+      Logger.info(`ES Indexer removing binary container: ${id}`);
+    } catch(e) {
+      // otherwise, try collection
+      try {
+        await this.esClient.delete({
+          index : config.elasticsearch.collection.alias,
+          type: config.elasticsearch.collection.schemaType,
+          id : config.server.url+config.fcrepo.root+path,
+        });
+        Logger.info(`ES Indexer removing collection container: ${id}`);
+      } catch(e) {}
     }
   }
 
@@ -109,7 +107,7 @@ class EsIndexer {
       uri: path,
       headers : {
         Accept: 'application/ld+json; profile="http://www.w3.org/ns/json-ld#compacted"',
-        Prefer: 'return=representation; include="http://fedora.info/definitions/v4/repository#InboundResources"'
+        // Prefer: 'return=representation; omit="http://fedora.info/definitions/v4/repository#InboundResources"'
       }
     });
 
@@ -119,7 +117,14 @@ class EsIndexer {
         body = body['@graph'];
       }
       if( Array.isArray(body) ) {
-        body = body[0];
+        for( var i = 0; i < body.length; i++ ) {
+          if( body[i]['@id'].indexOf(path) > -1 ) {
+            body = body[i];
+            break;
+          }
+        }
+        // not found
+        if( Array.isArray(body) ) body = {};
       }
 
       // remove rdf context, fix urls
