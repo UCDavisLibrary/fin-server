@@ -40,6 +40,8 @@ class EsIndexer {
     if( jsonld['@type'].indexOf('fedora:Binary') > -1  ) {
       Logger.info(`ES Indexer updating binary container: ${id}`);
 
+      console.log(jsonld)
+
       return this.esClient.index({
         index : recordIndex || config.elasticsearch.record.alias,
         type: config.elasticsearch.record.schemaType,
@@ -106,7 +108,8 @@ class EsIndexer {
       type : 'GET',
       uri: path,
       headers : {
-        Accept: 'application/ld+json; profile="http://www.w3.org/ns/json-ld#compacted"'
+        Accept: 'application/ld+json; profile="http://www.w3.org/ns/json-ld#compacted"',
+        Prefer: 'return=representation; include="http://fedora.info/definitions/v4/repository#InboundResources"'
       }
     });
 

@@ -82,13 +82,17 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    * @param {Array} results results to render
    */
   render(results, total, numPerPage, currentIndex) {
-    this.results = results;
-    this.total = total;
-    this.numPerPage = numPerPage;
-    this.$.numPerPage.value = numPerPage;
-    this.currentIndex = currentIndex;
+    this.results = [];
 
-    requestAnimationFrame(() => this._resize());
+    requestAnimationFrame(() => {
+      this.results = results;
+      this.total = total;
+      this.numPerPage = numPerPage;
+      this.$.numPerPage.value = numPerPage;
+      this.currentIndex = currentIndex;
+
+      requestAnimationFrame(() => this._resize());
+    });
   }
 
   /**

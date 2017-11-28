@@ -52,7 +52,7 @@ export default class AppSearchResult extends PolymerElement {
     this.title = this.data.title || 'Untitled Container';
 
     if( this._isImg(this.data.hasMimeType) ) {
-      this.imgUrl = this.data['@id']+'/250,/full/0/default.png'
+      this.imgUrl = this.data['@id']+'/svc:iiif/full/,290/0/default.png'
     } else {
       this.imgUrl = '';
     }
