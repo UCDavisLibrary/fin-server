@@ -65,9 +65,10 @@ class CollectionStore extends BaseStore {
     });
   }
 
-  setCollectionOvreviewLoaded(payload) {
+  setCollectionOverviewLoaded(payload) {
     payload.forEach(item => {
-      item.thumbnail = '/images/stub/'+item.thumbnail
+      item.id = item['@id'];
+      this.data.byId[item.id] = item;
     });
 
     payload.sort((a,b) => {

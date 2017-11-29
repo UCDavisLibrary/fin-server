@@ -30,8 +30,6 @@ class AppHome extends Mixin(PolymerElement)
   _onCollectionOverviewUpdate(e) {
     if( e.state !== 'loaded' ) return;
     let overview = e.payload;
-
-    let arr = [];
     let browse = {};
 
     overview.sort((a,b) => {
@@ -42,11 +40,11 @@ class AppHome extends Mixin(PolymerElement)
 
     overview.forEach(item => {
       browse[item.id] = item.title;
-      if( item.highlighted ) arr.push(item);
+      item.thumbnail = item.previewImage+'/svc:iiif/full/,320/0/default.png'
     });
 
     this.$.searchBox.browse = browse;
-    this.highlightedCollections = arr;
+    this.highlightedCollections = overview;
   }
 
   _onBrowse(e) {

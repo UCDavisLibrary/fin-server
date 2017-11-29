@@ -33,11 +33,13 @@ class EsIndexer {
 
     if( !jsonld ) return;
     if( !jsonld['@type'] ) return;
-  
+
+    jsonld = utils.cleanupData(jsonld);
+
     let id = jsonld['@id'];
 
     // only index binary and collections
-    if( jsonld['@type'].indexOf('fedora:Binary') > -1  ) {
+    if( utils.isBinary(jsonld['@type']) ) {
       Logger.info(`ES Indexer updating binary container: ${id}`);
 
       return this.esClient.index({
@@ -101,18 +103,19 @@ class EsIndexer {
    * 
    * @returns {Promise} resolves to json data on success or null if failed
    */
-  async getCompactJson(path, clean = true) {
+  async getCompactJson(path) {
     var {response, body} = await this.request({
       type : 'GET',
       uri: path,
       headers : {
-        Accept: 'application/ld+json; profile="http://www.w3.org/ns/json-ld#compacted"',
-        // Prefer: 'return=representation; omit="http://fedora.info/definitions/v4/repository#InboundResources"'
+        Accept: 'application/ld+json; profile="http://www.w3.org/ns/json-ld#compacted"'
       }
     });
 
     try {
       body = JSON.parse(body);
+      let context = body['@context'];
+
       if( body['@graph'] ) {
         body = body['@graph'];
       }
@@ -126,9 +129,7 @@ class EsIndexer {
         // not found
         if( Array.isArray(body) ) body = {};
       }
-
-      // remove rdf context, fix urls
-      if( clean ) utils.cleanupData(body);
+      body['@context'] = context;
 
       return body;
     } catch(e) {
@@ -148,10 +149,10 @@ class EsIndexer {
    * 
    * @returns {Promise}
    */
-  async getContainer(path, clean) {
+  async getContainer(path) {
     let isBinary = await this.isBinaryContainer(path);
     if( isBinary ) path += '/fcr:metadata';
-    return await this.getCompactJson(path, clean);
+    return await this.getCompactJson(path);
   }
 
   /**

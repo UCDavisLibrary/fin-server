@@ -15,7 +15,7 @@ class CollectionService extends BaseService {
       url : `${this.baseUrl}/overview`,
       checkCached : () => this.store.data.overview,
       onLoading : request => this.store.setCollectionOverviewLoading(request),
-      onLoad : result => this.store.setCollectionOvreviewLoaded(result.body),
+      onLoad : result => this.store.setCollectionOverviewLoaded(result.body),
       onError : e => this.store.setCollectionOverviewError(e)
     });
   }

@@ -68,10 +68,10 @@ class EsReindexer {
 
     if( utils.isDotPath(url) ) return;
 
-    let body = await indexer.getContainer(url, false);
+    let body = await indexer.getContainer(url);
     if( !body ) return;
     
-    await indexer.update(utils.cleanupData(clone(body)), recordIndex, collectionIndex);
+    await indexer.update(clone(body), recordIndex, collectionIndex);
 
     if( !body.contains ) return;
 

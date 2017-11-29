@@ -1,8 +1,10 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import moment from "moment"
 import "./app-search-result-creator"
+import CollectionInterface from "../../../interfaces/CollectionInterface"
 
-export default class AppSearchResult extends PolymerElement {
+export default class AppSearchResult extends Mixin(PolymerElement)
+  .with(EventInterface, CollectionInterface) {
 
   static get properties() {
     return {
@@ -57,9 +59,11 @@ export default class AppSearchResult extends PolymerElement {
     if( !data['@id'] ) return;
     
     this.collectionName = this.data.memberOf || '';
-  if( this.collectionName ) this.collectionName = this.collectionName.replace(/.*\//, '');
+    if( this.collectionName ) {
+      this.collectionName = this._getCollection(this.collectionName).title;
+    }
 
-    this.title = this.data.title || 'Untitled Container';
+    this.title = this.data.title || '';
 
     if( this._isImg(this.data.hasMimeType) ) {
       this.imgUrl = this.data['@id']+'/svc:iiif/full/,290/0/default.png'

@@ -13,4 +13,8 @@ class CollectionInterface extends subclass {
     this.CollectionModel.select(id);
   }
 
+  _getCollection(id) {
+    return this.CollectionModel.get(id);
+  }
+
 }

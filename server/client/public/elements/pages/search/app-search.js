@@ -8,9 +8,10 @@ import "./results/app-search-results-panel"
 import "./filtering/app-filters-panel"
 
 import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'
+import CollectionInterface from '../../interfaces/CollectionInterface'
 
 export class AppSearch extends Mixin(PolymerElement)
-            .with(EventInterface, ElasticSearchInterface) {
+            .with(EventInterface, ElasticSearchInterface, CollectionInterface) {
 
   // Define a string template instead of a `<template>` element.
   static get template() {
@@ -34,6 +35,15 @@ export class AppSearch extends Mixin(PolymerElement)
     super();
     this.active = true;
     this._defaultSearch();
+  }
+
+  /**
+   * @method _onCollectionOverviewUpdate
+   * @description CollectionInterface, fired when the collection overview updates
+   * TODO: we should not preform a search untill this is fired 
+   */
+  _onCollectionOverviewUpdate(e) {
+    if( e.state === 'loaded' ) this._defaultSearch();
   }
 
   /**
