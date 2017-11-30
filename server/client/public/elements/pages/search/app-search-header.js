@@ -44,7 +44,7 @@ class AppSearchHeader extends Mixin(PolymerElement)
   }
 
   _onSearch(e) {
-    this._textSearch(e.detail);
+    this._esSetTextFilter(e.detail);
   }
 
 }

@@ -64,8 +64,7 @@ class AppHome extends Mixin(PolymerElement)
   }
 
   _onSearch(e) {
-    this._textSearch(e.detail);
-    this._setWindowLocation('/search');
+    this._esSetTextFilter(e.detail);
   }
   
 }

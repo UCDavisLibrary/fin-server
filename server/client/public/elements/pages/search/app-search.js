@@ -7,19 +7,24 @@ import "./app-search-breadcrumb";
 import "./results/app-search-results-panel"
 import "./filtering/app-filters-panel"
 
+import AppStateInterface from '../../interfaces/AppStateInterface'
 import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'
 import CollectionInterface from '../../interfaces/CollectionInterface'
 
 export class AppSearch extends Mixin(PolymerElement)
-            .with(EventInterface, ElasticSearchInterface, CollectionInterface) {
+            .with(EventInterface, ElasticSearchInterface, CollectionInterface, AppStateInterface) {
 
-  // Define a string template instead of a `<template>` element.
   static get template() {
     return template;
   }
 
   static get properties() {
     return {
+      visible : {
+        type : Boolean,
+        value : false,
+        observer : '_onVisibleUpdate'
+      },
       results : {
         type : Array,
         value : () => []
@@ -27,6 +32,10 @@ export class AppSearch extends Mixin(PolymerElement)
       drawerOpen : {
         type : Boolean,
         value : false
+      },
+      firstLoad : {
+        type : Boolean,
+        value : true
       }
     }
   }
@@ -34,7 +43,39 @@ export class AppSearch extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
-    this._defaultSearch();
+  }
+
+  /**
+   * @description AppStateInterface, fired when state updates
+   * @param {*} e 
+   */
+  _onAppStateUpdate(e) {
+    this.appState = e;
+  }
+
+  /**
+   * @method _onVisibleUpdate
+   * @description fired when iron-pages sets this page to visible.  We need to see if this is 
+   * the first time we are loading.  if so, see if we need to search.  search is required
+   * if this is the first load and there is a query document in url path 
+   */
+  _onVisibleUpdate() {
+
+    if( !this.visible ) return;
+
+    if( this.firstLoad ) {
+      this.firstLoad = false;
+
+      let searchUrlParts = this.appState.location.path;
+      let query;
+      if( searchUrlParts.length > 1 ) {
+        query = this._fromUrlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
+      } else {
+        query = this._getAppSearchDocument();
+      }
+
+      this._esSearch(query);
+    }
   }
 
   /**
@@ -43,19 +84,25 @@ export class AppSearch extends Mixin(PolymerElement)
    * TODO: we should not preform a search untill this is fired 
    */
   _onCollectionOverviewUpdate(e) {
-    if( e.state === 'loaded' ) this._defaultSearch();
+    if( e.state === 'loaded' ) this._esDefaultSearch();
   }
 
+  // /**
+  //  * @method _onDefaultEsSearchUpdate
+  //  * @description ElasticSearchInterface, fired when then default search updates
+  //  * 
+  //  * @param {Object} e 
+  //  */
+  // _onDefaultEsSearchUpdate(e) {
+  //   this._onEsSearchUpdate(e);
+  // }
+
   /**
-   * @method _onDefaultEsSearchUpdate
-   * @description fired when then default search updates
+   * @method _onEsSearchUpdate
+   * @description ElasticSearchInterface, fired when search updates
    * 
    * @param {Object} e 
    */
-  _onDefaultEsSearchUpdate(e) {
-    this._onEsSearchUpdate(e);
-  }
-
   _onEsSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
@@ -78,7 +125,8 @@ export class AppSearch extends Mixin(PolymerElement)
    * @param {Object} e 
    */
   _onPageSizeChange(e) {
-    this._setSearchPageSize(e.detail);
+    let offset = this._getAppSearchDocument().offset;
+    this._esSetPaging(offset, e.detail);
   }
 
   /**
@@ -88,7 +136,7 @@ export class AppSearch extends Mixin(PolymerElement)
    * @param {Object} e 
    */
   _onPaginationChange(e) {
-    this._setSearchStartIndex(e.detail.startIndex);
+    this._esSetPaging(e.detail.startIndex);
   }
 
   _toggleDrawer() {

@@ -44,12 +44,13 @@ class AppFacetFilter extends Mixin(PolymerElement)
   _onDefaultEsSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this.buckets = e.payload.aggregations[this.filter].buckets;
+    this._updateActiveFilters();
   }
 
   _onEsSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
-    var query = e.payload.query;
+    var query = e.query.query;
     var activeFilters = [];
 
     if( query && 
@@ -65,8 +66,15 @@ class AppFacetFilter extends Mixin(PolymerElement)
       }
     }
 
+    this.activeFilters = activeFilters;
+    this._updateActiveFilters();
+  }
+
+  _updateActiveFilters() {
+    if( !this.activeFilters ) return;
+
     this.buckets = this.buckets.map(item => {
-      item.active = (activeFilters.indexOf(item.key) > -1) ? true : false;
+      item.active = (this.activeFilters.indexOf(item.key) > -1) ? true : false;
       return Object.assign({}, item);
     });
   }
@@ -78,12 +86,12 @@ class AppFacetFilter extends Mixin(PolymerElement)
 
   appendFilter(e) {
     var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
-    this._appendSearchFilter(this.filter, item.key);
+    this._esAppendKeywordFilter(this.filter, item.key);
   }
 
   removeFilter(e) {
     var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
-    this._removeSearchFilter(this.filter, item.key);
+    this._esRemoveKeywordFilter(this.filter, item.key);
   }
 
 }
