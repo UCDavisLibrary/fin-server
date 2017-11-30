@@ -16,23 +16,47 @@
     background-color: white;
     background-position: center center;
   }
+
+  .collection-name {
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    color: var(--gray-text);
+  }
+
+  .year {
+    color: var(--gray-text);
+    flex: 1;
+  }
+
+  .footer {
+    display : flex; 
+    align-items : center; 
+    margin-top : 10px;
+  }
+
+  h4 {
+    margin: 10px 0;
+    color: var(--default-primary-color);
+  }
+
+  iron-icon {
+    color: var(--default-primary-color);
+  }
 </style>
 
 <div style="background-image: url('[[imgUrl]]')" hidden$="[[!isImage]]" class="img" ></div>
 
 <div style="padding: 15px">
-  <div>[[collectionName]]</div>
+  <div class="collection-name">[[collectionName]]</div>
 
-  <h4><a>[[title]]</a></h4>
-
-  <div>[[description]]</div>
+  <h4>[[title]]</h4>
 
   <template is="dom-repeat" items="[[creator]]">
     <app-search-result-creator label="[[item]]"></app-search-result-creator>
   </template>
 
-  <div style="display:flex">
-    <div style="flex:1">[[year]]</div>
+  <div class="footer">
+    <div class="year">[[year]]</div>
     <div>
       <iron-icon icon="fin:image" hidden$="[[!isImage]]"></iron-icon>
     </div>

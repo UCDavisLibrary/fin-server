@@ -1,26 +1,80 @@
 <style include="shared-styles">
   :host {
     display: block;
-    height: 225px;
     background-color: white;
     margin: 10px;
+  }
+
+  .img {
+    height: 250px;
+    width: var(--grid-cell-width);
+    background-size: cover;
+    background-color: white;
+    background-position: center center;
+  }
+
+  .collection-name {
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    color: var(--gray-text);
+  }
+
+  .year {
+    color: var(--gray-text);
+    flex: 1;
+  }
+
+  .spacer {
+    flex: 1;
+  }
+
+  .footer {
+    display : flex; 
+    align-items : center; 
+    margin-top : 10px;
   }
 
   .layout {
     display: flex;
   }
+
+  h4 {
+    margin: 10px 0;
+    color: var(--default-primary-color);
+  }
+
+  iron-icon {
+    color: var(--default-primary-color);
+  }
+
+  .flex-vertical {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 </style>
 
 <div class="layout">
-  <img src="[[imgUrl]]" hidden$="[[!imgUrl]]" />
+    <div style="background-image: url('[[imgUrl]]')" hidden$="[[!isImage]]" class="img" ></div>
 
   <div style="padding: 15px; flex: 1">
-    <div>[[collectionName]]</div>
+    <div class="flex-vertical">
+      <div class="collection-name">[[collectionName]]</div>
+      
+      <h4>[[title]]</h4>
+    
+      <template is="dom-repeat" items="[[creator]]">
+        <app-search-result-creator label="[[item]]"></app-search-result-creator>
+      </template>
+      
+      <div class="spacer"></div>
 
-    <h4><a >[[title]]</a></h4>
-
-    <div>[[description]]</div>
-
-    <div>[[year]]</div>
+      <div class="footer">
+        <div class="year">[[year]]</div>
+        <div>
+          <iron-icon icon="fin:image" hidden$="[[!isImage]]"></iron-icon>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

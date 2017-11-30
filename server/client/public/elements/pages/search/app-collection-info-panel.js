@@ -12,9 +12,17 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
 
   static get properties() {
     return {
-      collection : {
-        type : Object,
-        value : () => {}
+      description : {
+        type : String,
+        value : ''
+      },
+      coverage : {
+        type : String,
+        value : ''
+      },
+      subject : {
+        type : String,
+        value : ''
       }
     }
   }
@@ -25,7 +33,23 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
   }
 
   _onSelectedCollectionUpdate(selected) {
-    this.collection = selected;
+    if( !selected ) return;
+
+    this.description = selected.description || '';
+
+    if( selected['dc:subject'] ) {
+      this.subject = selected['dc:subject'].join(', ');
+    } else if( selected.subject ) {
+      this.subject = selected.subject.join(', ');
+    } else {
+      this.subject = '';
+    }
+
+    if( selected.coverage ) {
+      this.coverage = selected.coverage.join(', ');
+    } else {
+      this.coverage = '';
+    }
   }
 
 }
