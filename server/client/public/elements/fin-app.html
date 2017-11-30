@@ -29,22 +29,12 @@
   }
 </style>
 
-<app-route></app-route>
-
-<!-- <app-header reveals>
-  <app-toolbar>
-    <paper-icon-button icon="menu" on-click="toggleDrawer"></paper-icon-button>
-    <div main-title>FIN</div>
-    <a href="newpage"><paper-icon-button icon="search"></paper-icon-button></a>
-    <paper-progress value="10" indeterminate bottom-item></paper-progress>
-  </app-toolbar>
-</app-header> -->
-
-<!-- <app-drawer id="drawer" swipe-open></app-drawer> -->
+<app-route app-routes="[[appRoutes]]"></app-route>
 
 <iron-pages selected="[[page]]" attr-for-selected="id" selected-attribute="visible">
   <app-home id="home"></app-home>
   <app-search id="search"></app-search>
+  <app-record id="record"></app-record>
 </iron-pages>
 
 <div style="display:flex; justify-content:center">

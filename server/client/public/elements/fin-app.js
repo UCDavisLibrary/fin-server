@@ -22,6 +22,7 @@ import '../lib'
 // app elements
 import "./pages/home/app-home"
 import "./pages/search/app-search"
+import "./pages/record/app-record"
 import "./app-footer"
 import "./utils/app-header-colorbar"
 
@@ -48,6 +49,10 @@ export class FinApp extends Mixin(PolymerElement)
       page : {
         type : String,
         value : 'home'
+      },
+      appRoutes : {
+        type : Array,
+        value : () => ['search', 'record']
       }
     }
   }

@@ -263,9 +263,9 @@
     "@ucd-lib/cork-app-utils" "^2.0.3"
     clone "^2.1.1"
 
-"@ucd-lib/cork-app-state@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-state/-/cork-app-state-0.0.7.tgz#782a214474ace5bebedee92935e3b53cfe1fa001"
+"@ucd-lib/cork-app-state@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-state/-/cork-app-state-0.0.10.tgz#92387997b71f333eebfe58eff91f6e017a556030"
   dependencies:
     "@polymer/app-route" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"

@@ -13,6 +13,18 @@ class ElasticSearchModelImpl extends ElasticSearchModel {
     this.store.config = config.elasticSearch;
   }
 
+  /**
+   * @method get
+   * @description load a record by id from elastic search
+   * 
+   * @param {String} id record id
+   * 
+   * @returns {Promise} resolves to record
+   */
+  async get(id) {
+    return this.service.get(id);
+  }
+
 }
 
 module.exports = new ElasticSearchModelImpl();

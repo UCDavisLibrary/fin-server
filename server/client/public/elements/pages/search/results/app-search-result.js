@@ -2,9 +2,10 @@ import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import moment from "moment"
 import "./app-search-result-creator"
 import CollectionInterface from "../../../interfaces/CollectionInterface"
+import AppStateInterface from "../../../interfaces/AppStateInterface"
 
 export default class AppSearchResult extends Mixin(PolymerElement)
-  .with(EventInterface, CollectionInterface) {
+  .with(EventInterface, AppStateInterface, CollectionInterface) {
 
   static get properties() {
     return {
@@ -12,6 +13,10 @@ export default class AppSearchResult extends Mixin(PolymerElement)
         type : Object,
         value : () => {},
         observer : '_onDataUpdate'
+      },
+      fetchId : {
+        type : String,
+        value : ''
       },
       isImage : {
         type : Boolean,
@@ -46,7 +51,21 @@ export default class AppSearchResult extends Mixin(PolymerElement)
 
   constructor() {
     super();
+
+    this.baseUrl = window.location.protocol+'//'+window.location.host+'/fcrepo/rest';
     this.momentFormat = 'YYYY';
+  }
+
+  ready() {
+    super.ready();
+    this.addEventListener('click', this._onClick);
+  }
+
+  /**
+   * Fired when this element is clicked
+   */
+  _onClick() {
+    this._setWindowLocation('/record'+this.fetchId);
   }
 
   _isImg(mimeType) {
@@ -58,6 +77,8 @@ export default class AppSearchResult extends Mixin(PolymerElement)
     let data = Object.assign({}, this.data);
     if( !data['@id'] ) return;
     
+    this.fetchId = data['@id'].replace(this.baseUrl, '');   
+
     this.collectionName = this.data.memberOf || '';
     if( this.collectionName ) {
       this.collectionName = this._getCollection(this.collectionName).title;
