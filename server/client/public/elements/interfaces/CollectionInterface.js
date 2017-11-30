@@ -9,12 +9,12 @@ class CollectionInterface extends subclass {
     return this.CollectionModel.overview();
   }
 
-  _selectCollection(id) {
-    this.CollectionModel.select(id);
-  }
-
   _getCollection(id) {
     return this.CollectionModel.get(id);
+  }
+
+  _getCollectionByShortId(shortId) {
+    return this.CollectionModel.getByShortId(shortId);
   }
 
 }

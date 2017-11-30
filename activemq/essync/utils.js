@@ -8,6 +8,10 @@ const fcrepoHostRe = new RegExp('^'+config.fcrepo.host);
 function cleanupData(data) {
   let context = extractContextRe(data);
 
+  /**
+   * Some custom FIN bits here...
+   * TODO: figure out best stratedgy for this
+   */
   // set a preview image...
   if( !data.previewImage && data.hasMember ) {
     if( Array.isArray(data.hasMember) && data.hasMember.length > 0 ) {
@@ -16,6 +20,13 @@ function cleanupData(data) {
       data.previewImage = data.hasMember;
     }
   }
+  // set short ids
+  data.shortId = getShortId(data['@id']);
+  if( data.memberOf ) {
+    data.shortIdMemberOf = getShortId(data.memberOf); 
+  }
+
+
 
   REMOVE_ATTRS.forEach(attr => {
     if( data[attr] ) delete data[attr];
@@ -25,6 +36,10 @@ function cleanupData(data) {
   data = cleanAttributes(data, context, true);
 
   return data;
+}
+
+function getShortId(id) {
+  return new URL(id.replace(/\/$/, '')).pathname.split('/').pop();
 }
 
 function cleanAttributes(obj, context, root) {

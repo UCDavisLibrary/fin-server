@@ -1,4 +1,4 @@
-<style>
+<style include="shared-styles">
   :host {
     display: block;
     height: 36px;
@@ -18,6 +18,17 @@
   .layout > div {
     margin: 0 5px;
   }
+
+  iron-icon {
+    cursor: pointer;
+  }
 </style>
 
-<div class="layout" id="layout"></div>
+<div class="layout" hidden$="[[!selected]]">
+  <div><a href="/">Collections</a></div>
+  <div>&gt;</div>
+  <div>
+    <iron-icon icon="clear" on-click="_removeSelectedCollection"></iron-icon>
+    {{selected.title}}
+  </div>
+</div>

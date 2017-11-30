@@ -23,16 +23,19 @@ class AppSearchHeader extends Mixin(PolymerElement)
 
     let browse = {};
     overview.forEach(item => {
-      browse[item.id] = item.title;
+      browse[item.shortId] = item.title;
     });
 
     this.$.searchInput.browse = browse;
   }
 
   _onBrowse(e) {
-    let id = e.detail;
+    let shortId = e.detail;
+    if( !shortId || shortId === 'Browse' ) {
+      return this._esRemoveKeywordFilter('shortIdMemberOf');
+    }
     this.$.searchInput.browseValue = 'Browse';
-    this._selectCollection(id);
+    this._esSetKeywordFilter('shortIdMemberOf', shortId);
   }
 
   _onEsSearchUpdate(e) {

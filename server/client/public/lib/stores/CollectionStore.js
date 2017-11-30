@@ -8,6 +8,7 @@ class CollectionStore extends BaseStore {
     this.data = {
       selected : null,
       byId : {},
+      byShortId : {},
       // should include the overview state
       overview : {
         state : this.STATE.INIT
@@ -15,47 +16,15 @@ class CollectionStore extends BaseStore {
     }
 
     this.events = {
-      COLLECTION_UPDATE : 'collection-update',
       SELECTED_COLLECTION_UPDATE : 'selected-collection-update',
       COLLECTION_OVERVIEW_UPDATE : 'collection-overview-update'
     }
   }
 
-  setSelectedCollection(id) {
-    let collection = null;
-    this.data.overview.payload.forEach(c => {
-      if( c.id === id ) collection = c;
-    })
-
-    this.data.selected = collection;
+  setSelectedCollection(selected) {
+    if( this.data.selected === selected ) return;
+    this.data.selected = selected;
     this.emit(this.events.SELECTED_COLLECTION_UPDATE, this.data.selected);
-  }
-
-  setCollectionLoading(id, promise) {
-    this._setCollectionState({
-      state: this.STATE.LOADING, 
-      id: id,
-      request : promise
-    });
-  }
-
-  setCollectionLoaded(id, payload) {
-    this._setCollectionState({
-      state: this.STATE.LOADED,   
-      id, payload
-    });
-  }
-
-  setCollectionError(id, error) {
-    this._setCollectionState({
-      state: this.STATE.ERROR,   
-      id, error
-    });
-  }
-
-  _setCollectionState(state) {
-    this.data.byId[state.id] = state;
-    this.emit(this.events.COLLECTION_UPDATE, this.data.byId[state.id]);
   }
 
   setCollectionOverviewLoading(promise) {
@@ -69,6 +38,7 @@ class CollectionStore extends BaseStore {
     payload.forEach(item => {
       item.id = item['@id'];
       this.data.byId[item.id] = item;
+      this.data.byShortId[item.shortId] = item;
     });
 
     payload.sort((a,b) => {

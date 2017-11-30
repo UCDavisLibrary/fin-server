@@ -6,6 +6,14 @@ module.exports = {
       'hasMimeType' : {
         label : 'Mime-Type',
         type : 'facet'
+      },
+      'dc:creator' : {
+        label : 'Creator',
+        type : 'facet'
+      },
+      'dc:subject' : {
+        label : 'Subject',
+        type : 'facet'
       }
       // 'winetype.raw' : {
       //   label : 'Wine Type',

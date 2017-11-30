@@ -5,6 +5,22 @@
       "type" : "keyword"
     },
 
+    "shortId" : {
+      "type" : "keyword" 
+    },
+
+    "shortIdMemberOf" : {
+      "type" : "keyword" 
+    },
+
+    "dc:subject" : {
+      "type" : "keyword"
+    },
+
+    "dc:creator" : {
+      "type" : "keyword"
+    },
+
     "created" : {
       "type" : "date",
       "format" : "date_optional_time"

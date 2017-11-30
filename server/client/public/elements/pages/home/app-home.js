@@ -39,7 +39,7 @@ class AppHome extends Mixin(PolymerElement)
     });
 
     overview.forEach(item => {
-      browse[item.id] = item.title;
+      browse[item.shortId] = item.title;
       item.thumbnail = item.previewImage+'/svc:iiif/full/,320/0/default.png'
     });
 
@@ -47,24 +47,43 @@ class AppHome extends Mixin(PolymerElement)
     this.highlightedCollections = overview;
   }
 
+  /**
+   * @method _onBrowse
+   * @description called from the search box browse button
+   */
   _onBrowse(e) {
-    let id = e.detail;
+    let shortId = e.detail;
+    if( !shortId || shortId === 'Browse' ) {
+      return this._esRemoveKeywordFilter('shortIdMemberOf');
+    }
     this.$.searchBox.browseValue = 'Browse';
-    this._onCollectionSelected(id);
+    this._onCollectionSelected(shortId);
   }
 
+  /**
+   * @method _onSearch
+   * @description called from the search box button is clicked or
+   * the enter key is hit.  set the text filter
+   */
+  _onSearch(e) {
+    this._esSetTextFilter(e.detail);
+  }
+
+  /**
+   * @method _onCollectionClicked
+   * @description called when collection img on home page is clicked 
+   */
   _onCollectionClicked(e) {
     let id = e.currentTarget.getAttribute('data-id');
     this._onCollectionSelected(id);
   }
 
+  /**
+   * @method _onCollectionSelected
+   * @description filter based on a collection using short ids.
+   */
   _onCollectionSelected(id) {
-    this._selectCollection(id);
-    this._setWindowLocation('/search');
-  }
-
-  _onSearch(e) {
-    this._esSetTextFilter(e.detail);
+    this._esSetKeywordFilter('shortIdMemberOf', id);
   }
   
 }
