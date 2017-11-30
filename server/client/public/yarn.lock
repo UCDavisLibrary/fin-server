@@ -256,11 +256,12 @@
     "@webcomponents/shadycss" "^1.0.0"
     "@webcomponents/webcomponentsjs" "^1.0.0"
 
-"@ucd-lib/cork-app-elastic-search@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-elastic-search/-/cork-app-elastic-search-0.0.6.tgz#22f52154e8f525f99ea9cb55b97ea18682f88e89"
+"@ucd-lib/cork-app-elastic-search@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-elastic-search/-/cork-app-elastic-search-0.1.1.tgz#ecb5ae17900ba633e6fa7661fbb48f652835fa75"
   dependencies:
     "@ucd-lib/cork-app-utils" "^2.0.3"
+    clone "^2.1.1"
 
 "@ucd-lib/cork-app-state@0.0.7":
   version "0.0.7"
