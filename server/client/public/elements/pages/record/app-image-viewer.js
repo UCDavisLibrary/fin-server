@@ -15,6 +15,10 @@ export default class AppImageViewer extends PolymerElement {
       bounds : {
         type : Array,
         value : null
+      },
+      formats : {
+        type : Array,
+        value : () => ['png', 'jpg', 'webp']
       }
     }
   }
@@ -31,10 +35,10 @@ export default class AppImageViewer extends PolymerElement {
     return new Promise((resolve, reject) => {
       var img = new Image();
       img.onload = () => {
-        this.bounds = [
-          [0,0],
-          [img.naturalHeight, img.naturalWidth]
-        ];
+        let res = [img.naturalHeight, img.naturalWidth];
+        console.log(res);
+        this.dispatchEvent(new CustomEvent('resolution-resolved', {detail: res.slice(0)}));
+        this.bounds = [[0,0], res];
         resolve();
       };
       img.src = url;

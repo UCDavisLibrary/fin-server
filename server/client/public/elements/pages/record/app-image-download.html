@@ -1,0 +1,51 @@
+<style include="shared-styles">
+  button {
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    color : var(--default-primary-color);
+    background-color: var(--medium-background-color);
+    width: 35px;
+    height: 35px;
+    font-weight: var(--font-weight-heavy);
+    margin: 4px;
+  }
+  button[selected] {
+    background : var(--default-primary-color);
+    color : var(--default-secondary-color);
+  }
+  .info {
+    margin: 10px 0;
+    font-size: var(--font-size-sm);
+  }
+  a {
+    display: inline-block;
+    padding: 8px;
+    color : var(--default-primary-color);
+    background-color : var(--default-secondary-color);
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-heavy);
+  }
+</style>
+
+<div>
+  <template is="dom-repeat" items="[[sizes]]">
+    <button index$="[[index]]" selected$="[[item.selected]]" on-click="_onSizeSelected">[[item.label]]</button>
+  </template>
+
+  <span>Format</span> 
+  <select id="format" on-change="_onFormatSelected">
+    <template is="dom-repeat" items="[[formats]]">
+      <option value="[[item]]">[[item]]</option>
+    </template>
+  </select>
+</div>
+<div class="info">
+  [[resolutionTitle]] | [[resolution]] <span hidden$="[[!defaultImage]]">| [[size]]</span>
+</div>
+
+<a href="[[href]]" download target="_blank">
+  <iron-icon icon="file-download"></iron-icon>
+  Download
+</a>

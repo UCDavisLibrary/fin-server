@@ -15,7 +15,17 @@
   }
 
   .label {
+    font-weight: var(--font-weight-heavy);
     color: var(--default-primary-color);
+  }
+
+  .section {
+    margin-bottom: 15px;
+  }
+  .section.bordered {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--medium-background-color);
   }
 
   .overview {
@@ -27,32 +37,65 @@
     flex : 1;
     padding : 0 10px;
   }
+
+  .type-date-collection {
+    display: flex;
+    align-items: center;
+  }
 </style>
 
 
 <app-search-header></app-search-header>
 <app-search-breadcrumb></app-search-breadcrumb>
 
-<app-image-viewer id="imageViewer"></app-image-viewer>
+<app-image-viewer id="imageViewer" on-resolution-resolved="_onResolutionResolved"></app-image-viewer>
 
 <div class="container top">
   <div class="overview">
     <div>
       <h3>[[title]]</h3>
 
-      <div hidden$="[[!description]]">
+      <div class="section type-date-collection">
+        <div style="flex:.75">
+          <div class="label">Resource Type</div>
+          <div>[[resourceType]]</div>
+        </div>
+        <div style="flex:.5">
+          <div class="label">Date</div>
+          <div>[[date]]</div>
+        </div>
+        <div style="flex:1">
+          <div class="label">Collection</div>
+          <div>[[collectionName]]</div>
+        </div>
+      </div>
+
+      <div hidden$="[[!description]]" class="section">
         <div class="label">Description</div>
         <div>[[description]]</div>
       </div>
     </div>
     <div>
-      <div style="display: flex">
+      <div style="display: flex" class="section bordered">
         <span class="label">Permalink</span>
         <input style="flex:1" id="link" type="text" />
         <button>Copy</button>
       </div>
 
-      <div class="label">Download Options</div>
+      <div class="section bordered">
+        <div class="label">Download Options</div>
+        <app-image-download id="download"></app-image-download>
+      </div>
+
+      <div hidden$="[[!rights]]">
+        <div class="label">Use Permission</div>
+        <div><a href="[[rights]]" target="_block">Rights</a></div>
+      </div>
+
     </div>
-  </div>
+  </div><!-- end overview -->
+</div>
+
+<div class="container">
+
 </div>

@@ -25,6 +25,7 @@
     "@ucd-lib/fin-icons": "^0.0.1",
     "@ucd-lib/fin-search-box": "^0.0.3",
     "@webcomponents/webcomponentsjs": "^1.0.12",
+    "bytes": "^3.0.0",
     "clone": "^2.1.1",
     "isomorphic-fetch": "^2.2.1",
     "leaflet": "^1.2.0",
