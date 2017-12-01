@@ -19,6 +19,7 @@ class ElasticSearchStoreImpl extends ElasticSearchStore {
   }
 
   setRecordLoaded(id, payload) {
+    payload._source.id = payload._source['@id'];
     this._setRecordState({
       state: this.STATE.LOADED,   
       payload, id

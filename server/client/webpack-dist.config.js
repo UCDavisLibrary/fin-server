@@ -21,12 +21,13 @@ var modern = {
                   attrs: false
               }
             }
+          },
+          {
+            test: /\.css$/,
+            use: [ 'to-string-loader', 'css-loader' ]
           }
         ]
-    },
-    plugins: [
-      new UglifyJSPlugin()
-    ]
+    }
 };
 
 var ie =  {
@@ -49,6 +50,10 @@ var ie =  {
                 attrs: false
             }
           }
+        },
+        {
+          test: /\.css$/,
+          use: [ 'to-string-loader', 'css-loader' ]
         },
         {
           test: /\.js$/,

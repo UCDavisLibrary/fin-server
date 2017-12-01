@@ -21,6 +21,17 @@ module.exports = {
               attrs: false
             }
           }
+        },
+        {
+          test: /\.css$/,
+          use: [ 'to-string-loader', 'css-loader' ]
+        },
+        {
+          test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+          loader: 'url-loader',
+          options: {
+            limit: 10000
+          }
         }
     ]
   }

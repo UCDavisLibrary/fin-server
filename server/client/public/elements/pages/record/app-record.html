@@ -3,10 +3,56 @@
     display: block;
     background-color: var(--super-light-background-color);
   }
+
+  .container.top {
+    padding: 20px 0;
+    background-color: var(--light-background-color);
+  }
+
+  h3 {
+    margin: 0 0 10px 0;
+    color: var(--default-primary-color);
+  }
+
+  .label {
+    color: var(--default-primary-color);
+  }
+
+  .overview {
+    display: flex; 
+    width: 100%;
+  }
+
+  .overview > div {
+    flex : 1;
+    padding : 0 10px;
+  }
 </style>
 
 
 <app-search-header></app-search-header>
 <app-search-breadcrumb></app-search-breadcrumb>
 
-record
+<app-image-viewer id="imageViewer"></app-image-viewer>
+
+<div class="container top">
+  <div class="overview">
+    <div>
+      <h3>[[title]]</h3>
+
+      <div hidden$="[[!description]]">
+        <div class="label">Description</div>
+        <div>[[description]]</div>
+      </div>
+    </div>
+    <div>
+      <div style="display: flex">
+        <span class="label">Permalink</span>
+        <input style="flex:1" id="link" type="text" />
+        <button>Copy</button>
+      </div>
+
+      <div class="label">Download Options</div>
+    </div>
+  </div>
+</div>

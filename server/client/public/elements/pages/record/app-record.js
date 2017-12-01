@@ -1,6 +1,8 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-record.html"
 
+import "./app-image-viewer"
+
 import AppStateInterface from "../../interfaces/AppStateInterface"
 import ElasticSearchInterface from "../../interfaces/ElasticSearchInterface"
 
@@ -14,6 +16,10 @@ export default class AppRecord extends Mixin(PolymerElement)
   static get properties() {
     return {
       currentRecordId : {
+        type : String,
+        value : ''
+      },
+      title : {
         type : String,
         value : ''
       }
@@ -37,7 +43,13 @@ export default class AppRecord extends Mixin(PolymerElement)
 
   _onEsRecordUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    console.log(e);
+    this.record = e.payload._source;
+
+    this.$.imageViewer.render(this.record.id);
+
+    this.title = this.record.title || '';
+    this.description = this.record.description || '';
+    this.$.link.value = window.location.href;
   }
 
 }
