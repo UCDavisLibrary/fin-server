@@ -27,6 +27,24 @@
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-heavy);
   }
+  select {
+    margin-left: 20px;
+    border: none;
+    background-color: white;
+    border-radius: 0;
+    height: 35px;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    padding: 5px 30px 5px 10px;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');
+    @apply --fin-search-box-select;
+  }
+  select option {
+    text-transform: uppercase;
+  }
 </style>
 
 <div>
@@ -34,7 +52,6 @@
     <button index$="[[index]]" selected$="[[item.selected]]" on-click="_onSizeSelected">[[item.label]]</button>
   </template>
 
-  <span>Format</span> 
   <select id="format" on-change="_onFormatSelected">
     <template is="dom-repeat" items="[[formats]]">
       <option value="[[item]]">[[item]]</option>

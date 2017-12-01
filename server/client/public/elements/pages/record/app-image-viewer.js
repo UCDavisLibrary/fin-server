@@ -36,7 +36,6 @@ export default class AppImageViewer extends PolymerElement {
       var img = new Image();
       img.onload = () => {
         let res = [img.naturalHeight, img.naturalWidth];
-        console.log(res);
         this.dispatchEvent(new CustomEvent('resolution-resolved', {detail: res.slice(0)}));
         this.bounds = [[0,0], res];
         resolve();

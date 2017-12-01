@@ -9,6 +9,25 @@
     background-color: var(--light-background-color);
   }
 
+  input {
+    padding: 0 0 0 5px;
+    display: block;
+    border: none;
+    height: 38px;
+  }
+
+  button {
+    height: 38px;
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-heavy);
+    background-color: var(--default-secondary-color);
+    color: var(--default-primary-color);
+    border-radius: 0;
+    border: none;
+    cursor: pointer;
+  }
+
   h3 {
     margin: 0 0 10px 0;
     color: var(--default-primary-color);
@@ -42,9 +61,23 @@
     display: flex;
     align-items: center;
   }
+
+  .resource-type {
+    text-transform: capitalize;
+  }
+  .resource-type iron-icon {
+    color: var(--default-primary-color);
+  }
+
+  paper-toast {
+    --paper-toast-background-color: var(--default-secondary-color);
+    --paper-toast-color: var(--default-primary-color);
+  }
+
 </style>
 
 
+<paper-toast id="copyToast">Link Copied to Clipboard</paper-toast>
 <app-search-header></app-search-header>
 <app-search-breadcrumb></app-search-breadcrumb>
 
@@ -58,7 +91,10 @@
       <div class="section type-date-collection">
         <div style="flex:.75">
           <div class="label">Resource Type</div>
-          <div>[[resourceType]]</div>
+          <div class="resource-type">
+            <iron-icon icon="fin:[[resourceType]]"></iron-icon>
+            [[resourceType]]
+          </div>
         </div>
         <div style="flex:.5">
           <div class="label">Date</div>
@@ -76,10 +112,13 @@
       </div>
     </div>
     <div>
-      <div style="display: flex" class="section bordered">
-        <span class="label">Permalink</span>
+      <div style="display: flex; align-items: center" class="section bordered">
+        <span class="label" style="padding-right: 10px; display:inline-block">Permalink</span>
         <input style="flex:1" id="link" type="text" />
-        <button>Copy</button>
+        <button on-click="_copyLink">
+          <iron-icon icon="content-copy"></iron-icon>
+          Copy
+        </button>
       </div>
 
       <div class="section bordered">
@@ -89,7 +128,11 @@
 
       <div hidden$="[[!rights]]">
         <div class="label">Use Permission</div>
-        <div><a href="[[rights]]" target="_block">Rights</a></div>
+        <div>
+          <a href="[[rights]]" target="_block">
+            <iron-icon icon="link"></iron-icon> Link
+          </a>
+        </div>
       </div>
 
     </div>

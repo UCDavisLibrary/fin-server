@@ -59,6 +59,12 @@
     "@polymer/iron-validatable-behavior" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 
+"@polymer/iron-fit-behavior@^3.0.0-pre.1":
+  version "3.0.0-pre.1"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-fit-behavior/-/iron-fit-behavior-3.0.0-pre.1.tgz#4a20576cd26d1c461840bd1efcdd3949c5375f85"
+  dependencies:
+    "@polymer/polymer" "^3.0.0-pre.1"
+
 "@polymer/iron-flex-layout@^3.0.0-pre.1":
   version "3.0.0-pre.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-flex-layout/-/iron-flex-layout-3.0.0-pre.1.tgz#46738316b52fe2858bf4fb207176366b1657457f"
@@ -127,6 +133,15 @@
   version "3.0.0-pre.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-meta/-/iron-meta-3.0.0-pre.1.tgz#809f5717a8eb80062fee6039ccd5fafe4875ca85"
   dependencies:
+    "@polymer/polymer" "^3.0.0-pre.1"
+
+"@polymer/iron-overlay-behavior@^3.0.0-pre.1":
+  version "3.0.0-pre.1"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-overlay-behavior/-/iron-overlay-behavior-3.0.0-pre.1.tgz#33c85769ee3b24340b57d2bd2e345248642b5090"
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.1"
+    "@polymer/iron-fit-behavior" "^3.0.0-pre.1"
+    "@polymer/iron-resizable-behavior" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 
 "@polymer/iron-pages@^3.0.0-pre.1":
@@ -247,6 +262,15 @@
     "@polymer/paper-behaviors" "^3.0.0-pre.1"
     "@polymer/paper-icon-button" "^3.0.0-pre.1"
     "@polymer/paper-styles" "^3.0.0-pre.1"
+    "@polymer/polymer" "^3.0.0-pre.1"
+
+"@polymer/paper-toast@^3.0.0-pre.1":
+  version "3.0.0-pre.1"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-toast/-/paper-toast-3.0.0-pre.1.tgz#680fe4c990713b2dcce373a600dad859fbc45deb"
+  dependencies:
+    "@polymer/iron-a11y-announcer" "^3.0.0-pre.1"
+    "@polymer/iron-fit-behavior" "^3.0.0-pre.1"
+    "@polymer/iron-overlay-behavior" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 
 "@polymer/polymer@^3.0.0-pre.1":

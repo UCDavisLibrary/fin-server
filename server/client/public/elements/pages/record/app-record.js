@@ -1,7 +1,10 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+import "@polymer/paper-toast/paper-toast"
+
 import template from "./app-record.html"
 import moment from "moment"
 import bytes from "bytes"
+
 import "./app-image-viewer"
 import "./app-image-download"
 
@@ -83,7 +86,9 @@ export default class AppRecord extends Mixin(PolymerElement)
   }
 
   _onEsRecordUpdate(e) {
+    if( e.id !== this.currentRecordId ) return;
     if( e.state !== 'loaded' ) return;
+
     this.record = e.payload._source;
 
     this.resolution = '';
@@ -108,6 +113,12 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.mimeType = this.record.hasMimeType || '';
 
     this.rights = this.record.rights || '';
+  }
+
+  _copyLink() {
+    this.$.link.select();
+    document.execCommand("Copy");
+    this.$.copyToast.open();
   }
 
 }
