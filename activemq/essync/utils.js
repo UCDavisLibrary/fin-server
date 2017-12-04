@@ -78,10 +78,14 @@ function cleanStringValue(value, context, debug) {
     }
   }
 
-  if( value.match(fcrepoHostRe) ) {
-    return value.replace(fcrepoHostRe, config.server.url);
+  return replaceInternalUrl(value);
+}
+
+function replaceInternalUrl(url, altUrl) {
+  if( url.match(fcrepoHostRe) ) {
+    return url.replace(fcrepoHostRe, altUrl || config.server.url);
   }
-  return value;
+  return url;
 }
 
 /**
@@ -148,5 +152,6 @@ module.exports = {
   cleanupData,
   isCollection,
   isDotPath,
-  isBinary
+  isBinary,
+  replaceInternalUrl
 }

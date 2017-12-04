@@ -129,6 +129,20 @@ class EsIndexer {
         // not found
         if( Array.isArray(body) ) body = {};
       }
+
+      // grab the resolution from iiif
+      if( body.type === 'image' ) {
+        try {
+          let imgUrl = utils.replaceInternalUrl(body['@id'], 'http://server:3001')+'/svc:iiif/info.json';
+          var result = await this.request({
+            type : 'GET',
+            uri: imgUrl
+          });
+          result = JSON.parse(result.body);
+          body['imageResolution'] = [result.width, result.height];
+        } catch(e) {}
+      }
+
       body['@context'] = context;
 
       return body;

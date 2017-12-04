@@ -10,7 +10,6 @@
     margin: -2px 0 0 -2px;
   }
   .img {
-    height: 250px;
     width: var(--grid-cell-width);
     background-size: cover;
     background-color: white;
@@ -44,7 +43,7 @@
   }
 </style>
 
-<div style="background-image: url('[[imgUrl]]')" hidden$="[[!isImage]]" class="img" ></div>
+<div style="background-image: url('[[imgUrl]]');height:[[imgHeight]]px" hidden$="[[!isImage]]" class="img" ></div>
 
 <div style="padding: 15px">
   <div class="collection-name">[[collectionName]]</div>

@@ -87,7 +87,16 @@ export default class AppSearchResult extends Mixin(PolymerElement)
     this.title = this.data.title || '';
 
     if( this._isImg(this.data.hasMimeType) ) {
-      this.imgUrl = this.data['@id']+'/svc:iiif/full/,290/0/default.png'
+      if( this.data.imageResolution ) {
+        let ratio = this.data.imageResolution[1] / this.data.imageResolution[0];
+        this.imgHeight = Math.floor(250 * ratio);
+        this.imgUrl = `${this.data['@id']}/svc:iiif/full/,${this.imgHeight+40}/0/default.png`;
+      } else {
+        this.imgHeight = 250;
+        this.imgUrl = this.data['@id']+'/svc:iiif/full/,290/0/default.png';
+      }
+
+      
       this.isImage = true;
     } else {
       this.imgUrl = '';
