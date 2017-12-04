@@ -11,7 +11,10 @@
   }
   
   fin-search-box {
-    flex: 1;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 525px;
   }
 
   .layout {
@@ -77,13 +80,15 @@
   <img class="logo-sm" src="/images/ucd-lib-logo-white-sm.png" />
   <h2><a href="/">Digital Collections</a></h2>
   <div class="filler"></div>
-  <fin-search-box 
-    id="searchInput" 
-    on-search="_onSearch" 
-    on-browse="_onBrowse"
-    placeholder="Search Keyword(s)">
-    <iron-icon icon="fin:search" slot="button-content"></iron-icon>
-  </fin-search-box>
+  <div style="flex:1; text-align:right">
+    <fin-search-box 
+      id="searchInput" 
+      on-search="_onSearch" 
+      on-browse="_onBrowse"
+      placeholder="Search Keyword(s)">
+      <iron-icon icon="fin:search" slot="button-content"></iron-icon>
+    </fin-search-box>
+  </div>
   <app-auth-header></app-auth-header>
 </div>
 
