@@ -1,5 +1,7 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-image-viewer.html"
+
+import "@polymer/paper-spinner/paper-spinner-lite"
 import leaflet from "leaflet"
 import leafletCss from "leaflet/dist/leaflet.css"
 
@@ -19,6 +21,10 @@ export default class AppImageViewer extends PolymerElement {
       formats : {
         type : Array,
         value : () => ['png', 'jpg', 'webp']
+      },
+      loading : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -32,12 +38,14 @@ export default class AppImageViewer extends PolymerElement {
    * @returns {Promise} resolves when image is loaded and bounds array has been set
    */
   _loadImage(url) {
+    this.loading = true;
     return new Promise((resolve, reject) => {
       var img = new Image();
       img.onload = () => {
         let res = [img.naturalHeight, img.naturalWidth];
         this.dispatchEvent(new CustomEvent('resolution-resolved', {detail: res.slice(0)}));
         this.bounds = [[0,0], res];
+        this.loading = false;
         resolve();
       };
       img.src = url;
@@ -57,7 +65,7 @@ export default class AppImageViewer extends PolymerElement {
       minZoom: -4,
       dragging :  !L.Browser.mobile,
       scrollWheelZoom : false,
-      touchZoom : false
+      touchZoom : true
     });
 
     L.imageOverlay(url, this.bounds).addTo(this.viewer);

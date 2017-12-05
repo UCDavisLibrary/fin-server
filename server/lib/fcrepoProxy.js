@@ -26,11 +26,11 @@ class FcrepoProxy {
     // listen for proxy responses, if the request is not a /fcrepo request
     // and not a service request, append the service link headers.
     proxy.on('proxyRes', (proxyRes, req, res) => {
+      Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
+
       if( !this.isApiRequest(req) ) return;
       if( this.isServiceRequest(req) ) return;
       this.appendServiceLinkHeaders(req, proxyRes);
-
-      Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
     });
 
     Logger.debug('Initializing proxy');
@@ -44,6 +44,11 @@ class FcrepoProxy {
    * @param {Object} res http response object
    */
   async proxyPathResolver(req, res) {
+    req.timer = {
+      time : Date.now(),
+      label : `${req.method} ${req.originalUrl}`
+    }
+
     // if this is not a service request, preform basic fcrepo proxy request
     if( !this.isServiceRequest(req) ) {
       return this.fcrepoProxyRequest(req, res);
@@ -104,10 +109,6 @@ class FcrepoProxy {
       req.fcrepoInfo.links.push(`<${config.server.url}${path}svc:${name}>; rel="service"`);
     }
 
-    req.timer = {
-      time : Date.now(),
-      label : `${req.method} ${url}`
-    }
     proxy.web(req, res, {
       target : url
     });

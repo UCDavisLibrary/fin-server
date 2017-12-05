@@ -28,19 +28,19 @@
     font-weight: var(--font-weight-heavy);
   }
   select {
-    margin-left: 20px;
     border: none;
     background-color: white;
     border-radius: 0;
-    height: 35px;
+    margin-right: 15px;
+    height: 40px;
     -webkit-appearance: none;
     -webkit-border-radius: 0px;
     padding: 5px 30px 5px 10px;
     background-position: right 10px center;
-    background-size: 16px 16px;
+    background-size: 10px 6px;
     background-repeat: no-repeat;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');
-    @apply --fin-search-box-select;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2IiB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojZGFhYTAwO308L3N0eWxlPjwvZGVmcz48Zz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMCAwIDEwIDAgNSA2IDAgMCIvPjwvZz48L3N2Zz4=');
+    @apply --fin-search-box-select-inverse;
   }
   select option {
     text-transform: uppercase;
@@ -52,17 +52,21 @@
     <button index$="[[index]]" selected$="[[item.selected]]" on-click="_onSizeSelected">[[item.label]]</button>
   </template>
 
-  <select id="format" on-change="_onFormatSelected">
-    <template is="dom-repeat" items="[[formats]]">
-      <option value="[[item]]">[[item]]</option>
-    </template>
-  </select>
+  
 </div>
 <div class="info">
   [[resolutionTitle]] | [[resolution]] <span hidden$="[[!defaultImage]]">| [[size]]</span>
 </div>
 
-<a href="[[href]]" download target="_blank">
-  <iron-icon icon="file-download"></iron-icon>
-  Download
-</a>
+<div style="display:flex; align-items: center">
+  <select id="format" on-change="_onFormatSelected">
+    <template is="dom-repeat" items="[[formats]]">
+      <option value="[[item]]">[[item]]</option>
+    </template>
+  </select>
+
+  <a href="[[href]]" download target="_blank">
+    <iron-icon icon="file-download"></iron-icon>
+    Download
+  </a>
+</div>
