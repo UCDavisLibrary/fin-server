@@ -11,6 +11,7 @@ process.on('unhandledRejection', err => Logger.error(err));
 class EsIndexer {
   
   constructor() {
+    this.name = 'essync-indexer';
     this.esClient = new elasticsearch.Client({
       host: config.elasticsearch.host,
       log: config.elasticsearch.log

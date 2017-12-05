@@ -23,20 +23,33 @@ class FcrepoProxy {
     this.extensions = config.services.extensions;
     app.use('/fcrepo', this.proxyPathResolver.bind(this));
 
+    // listen for proxy responses, if the request is not a /fcrepo request
+    // and not a service request, append the service link headers.
     proxy.on('proxyRes', (proxyRes, req, res) => {
       if( !this.isApiRequest(req) ) return;
       if( this.isServiceRequest(req) ) return;
       this.appendServiceLinkHeaders(req, proxyRes);
+
+      Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
     });
 
     Logger.debug('Initializing proxy');
   }
 
+  /**
+   * @method proxyPathResolver
+   * @description start method for handling proxy requests
+   * 
+   * @param {Object} req http request object 
+   * @param {Object} res http response object
+   */
   async proxyPathResolver(req, res) {
+    // if this is not a service request, preform basic fcrepo proxy request
     if( !this.isServiceRequest(req) ) {
       return this.fcrepoProxyRequest(req, res);
     }
 
+    // otherwise we have a service request
     // parse the incoming request path
     let parts = req.originalUrl.split(SERVICE_CHAR);
 
@@ -55,8 +68,14 @@ class FcrepoProxy {
     this.extensionProxyRequest(extensionRequest, req, res);
   }
 
+  /**
+   * @method fcrepoProxyRequest
+   * @description main method for handling /fcrepo proxy requests
+   */
   async fcrepoProxyRequest(req, res) {
-    Logger.debug(`Fcrepo proxy request: http://${config.fcrepo.hostname}:8080${req.originalUrl}`);
+    let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
+    Logger.debug(`Fcrepo proxy request: ${url}`);
+
 
     // lookup and store service link headers
     req.fcrepoInfo = {links: []};
@@ -66,23 +85,37 @@ class FcrepoProxy {
       path = path.replace(/fcr:metadata.*/, '');
     }
 
-    var info = await this.containerInfo(path, req);
-    if( info.access ) {
-      let ext;
-      for( var name in this.extensions ) {
-        ext = this.extensions[name];
-        if( info.binary && ext.onlyContainer ) continue;
-        if( !info.binary && ext.onlyBinary ) continue;
-        req.fcrepoInfo.links.push(`<${config.server.url}${path}svc:${name}>; rel="service"`);
-      }
+    // var info = await this.containerInfo(path, req);
+    // if( info.access ) {
+    //   let ext;
+    //   for( var name in this.extensions ) {
+    //     ext = this.extensions[name];
+    //     if( info.binary && ext.onlyContainer ) continue;
+    //     if( !info.binary && ext.onlyBinary ) continue;
+    //     req.fcrepoInfo.links.push(`<${config.server.url}${path}svc:${name}>; rel="service"`);
+    //   }
+    // }
+
+    for( var name in this.extensions ) {
+      let ext = this.extensions[name];
+      // TODO: implement me
+      // if( info.binary && ext.onlyContainer ) continue;
+      // if( !info.binary && ext.onlyBinary ) continue;
+      req.fcrepoInfo.links.push(`<${config.server.url}${path}svc:${name}>; rel="service"`);
     }
 
+    req.timer = {
+      time : Date.now(),
+      label : `${req.method} ${url}`
+    }
     proxy.web(req, res, {
-      target : `http://${config.fcrepo.hostname}:8080${req.originalUrl}`
+      target : url
     });
   }
 
   appendServiceLinkHeaders(req, res) {
+    if( res.statusCode < 200 || res.statusCode >= 300 ) return;
+
     let links = res.headers.link ? res.headers.link.split(',') : [];
     req.fcrepoInfo.links.forEach(link => links.push(link));
     res.headers.link = links.join(',');
@@ -115,7 +148,8 @@ class FcrepoProxy {
   }
 
   /**
-   * Get container info including; access information, container type
+   * @method containerInfo
+   * @description Get container info including; access information, container type
    */
   async containerInfo(path, req) {
     var token = req.cookies[config.jwt.cookieName] || '';
@@ -143,7 +177,9 @@ class FcrepoProxy {
   }
 
   /**
-   * Request promise wrapper and authorization wrapper
+   * @method _request
+   * @private
+   * @description Request promise wrapper and authorization wrapper
    */
   _request(options, token) {
     if( token ) {
@@ -160,14 +196,35 @@ class FcrepoProxy {
     });
   }
 
+  /**
+   * @method isServiceRequest
+   * @description does the given request have a originalUrl that matches a service request url?
+   * 
+   * @param {Object} req http request object
+   * @returns {Boolean} 
+   */
   isServiceRequest(req) {
     return req.originalUrl.match(IS_SERVICE_URL);
   }
 
+  /**
+   * @method isApiRequest
+   * @description is this request a /fcrepo request?
+   * 
+   * @param {Object} req http request object
+   * @returns {Boolean} 
+   */
   isApiRequest(req) {
     return (req.originalUrl.indexOf(config.fcrepo.root) === 0)
   }
 
+  /**
+   * @method isMetadataRequest
+   * @description is this request a metadata /fcr:metadata request
+   * 
+   * @param {Object} req http request object
+   * @returns {Boolean} 
+   */
   isMetadataRequest(req) {
     let last = req.originalUrl.replace(/\/$/,'').split('/').pop();
     return (last === 'fcr:metadata');

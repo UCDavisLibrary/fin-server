@@ -24,6 +24,7 @@ class EsReindexer {
    * @returns {Promise}
    */
   async run() {
+    // set to false to disable time profiling
     timeProfile.enable = true;
     timeProfile.profileStart('reindex');
 
