@@ -7,6 +7,7 @@ const utils = require('./utils');
 const indexer = require('./indexer');
 const Logger = logger('essync');
 const {URL} = require('url');
+const timeProfile = require('./timeProfile');
 
 class EsReindexer {
 
@@ -23,6 +24,10 @@ class EsReindexer {
    * @returns {Promise}
    */
   async run() {
+    timeProfile.enable = true;
+    timeProfile.profileStart('reindex');
+
+
     // make sure indexer has fresh token
     indexer.generateToken();
 
@@ -50,6 +55,9 @@ class EsReindexer {
     await this.dropIndexes(oldRecordIndexes);
     Logger.info('Removing old collection indexes', oldCollectionIndexes);
     await this.dropIndexes(oldCollectionIndexes);
+
+    timeProfile.profileEnd('reindex');
+    timeProfile.print();
   }
 
   /**

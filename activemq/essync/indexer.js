@@ -3,6 +3,7 @@ const elasticsearch = require('elasticsearch');
 const request = require('request');
 const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const Logger = logger('essync');
+const timeProfile = require('./timeProfile');
 
 // everything depends on indexer, so placing this here...
 process.on('unhandledRejection', err => Logger.error(err));
@@ -42,21 +43,25 @@ class EsIndexer {
     if( utils.isBinary(jsonld['@type']) ) {
       Logger.info(`ES Indexer updating binary container: ${id}`);
 
-      return this.esClient.index({
+      timeProfile.profileStart('ES Insert');
+      await this.esClient.index({
         index : recordIndex || config.elasticsearch.record.alias,
         type: config.elasticsearch.record.schemaType,
         id : id,
         body: jsonld
       });
+      timeProfile.profileEnd('ES Insert');
     } else if ( utils.isCollection(jsonld['@type']) ) {
       Logger.info(`ES Indexer updating collection container: ${id}`);
 
-      return this.esClient.index({
+      timeProfile.profileStart('ES Insert');
+      await this.esClient.index({
         index : collectionIndex || config.elasticsearch.collection.alias,
         type: config.elasticsearch.collection.schemaType,
         id : id,
         body: jsonld
       });
+      timeProfile.profileEnd('ES Insert');
     }
   }
 
@@ -75,20 +80,24 @@ class EsIndexer {
 
     // first try record collection
     try {
+      timeProfile.profileStart('ES Delete');
       await this.esClient.delete({
         index : config.elasticsearch.record.alias,
         type: config.elasticsearch.record.schemaType,
         id : config.server.url+config.fcrepo.root+path,
       });
+      timeProfile.profileEnd('ES Delete');
       Logger.info(`ES Indexer removing binary container: ${id}`);
     } catch(e) {
       // otherwise, try collection
       try {
+        timeProfile.profileStart('ES Delete');
         await this.esClient.delete({
           index : config.elasticsearch.collection.alias,
           type: config.elasticsearch.collection.schemaType,
           id : config.server.url+config.fcrepo.root+path,
         });
+        timeProfile.profileEnd('ES Delete');
         Logger.info(`ES Indexer removing collection container: ${id}`);
       } catch(e) {}
     }
@@ -104,6 +113,7 @@ class EsIndexer {
    * @returns {Promise} resolves to json data on success or null if failed
    */
   async getCompactJson(path) {
+    timeProfile.profileStart('getCompactJson');
     var {response, body} = await this.request({
       type : 'GET',
       uri: path,
@@ -111,6 +121,7 @@ class EsIndexer {
         Accept: 'application/ld+json; profile="http://www.w3.org/ns/json-ld#compacted"'
       }
     });
+    timeProfile.profileEnd('getCompactJson');
 
     try {
       body = JSON.parse(body);
@@ -133,11 +144,13 @@ class EsIndexer {
       // grab the resolution from iiif
       if( body.type === 'image' ) {
         try {
+          timeProfile.profileStart('get iiif resolution');
           let imgUrl = utils.replaceInternalUrl(body['@id'], 'http://server:3001')+'/svc:iiif/info.json';
           var result = await this.request({
             type : 'GET',
             uri: imgUrl
           });
+          timeProfile.profileEnd('get iiif resolution');
           result = JSON.parse(result.body);
           body['imageResolution'] = [result.width, result.height];
         } catch(e) {}
@@ -178,10 +191,12 @@ class EsIndexer {
    * @returns {Promise} resolves to boolean
    */
   async isBinaryContainer(path) {
+    timeProfile.profileStart('isBinaryContainer');
     var {response, body} = await this.request({
       type : 'HEAD',
       uri : path
     });
+    timeProfile.profileEnd('isBinaryContainer');
 
     if( response.headers['content-disposition'] ) {
       return true;
@@ -212,8 +227,10 @@ class EsIndexer {
       options.uri = `${config.fcrepo.host}${config.fcrepo.root}${options.uri}`;
     }
 
+    let t = Date.now();
     return new Promise((resolve, reject) => {
       request(options, (error, response, body) => {
+        timeProfile.log.push(`${Date.now()-t}ms ${options.type || 'GET'} ${options.uri}`);
         if( error ) reject(error);
         else resolve({response, body});
       });

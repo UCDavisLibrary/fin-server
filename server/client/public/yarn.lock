@@ -326,9 +326,9 @@
     "@polymer/iron-iconset-svg" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 
-"@ucd-lib/fin-search-box@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-search-box/-/fin-search-box-0.0.4.tgz#df0bca78b48745db2aadd756d2f7f8beec72c498"
+"@ucd-lib/fin-search-box@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-search-box/-/fin-search-box-0.0.5.tgz#8444ddbeed56b67627e3c9bc309d63302b342b0e"
   dependencies:
     "@polymer/polymer" "^3.0.0-pre.1"
 

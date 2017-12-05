@@ -54,7 +54,10 @@ export default class AppImageViewer extends PolymerElement {
 
     this.viewer = L.map(this.$.viewer, {
       crs: L.CRS.Simple,
-      minZoom: -4
+      minZoom: -4,
+      dragging :  !L.Browser.mobile,
+      scrollWheelZoom : false,
+      touchZoom : false
     });
 
     L.imageOverlay(url, this.bounds).addTo(this.viewer);

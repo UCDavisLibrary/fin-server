@@ -55,7 +55,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    # mem_limit: 1g
     # for docker-compose version 3
     # deploy:
     #   resources:

@@ -33,7 +33,8 @@ COPY ./fcrepo.xml /var/lib/jetty/webapps/fcrepo.xml
 RUN mkdir -p ${FCREPO_HOME} && chmod -R a+rw ${FCREPO_HOME}
 VOLUME ["$FCREPO_HOME"]
 
-ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
+ENV JAVA_OPTS=" -Xmx2048m \
+    -Dfile.encoding=UTF-8 \
     -Dfcrepo.home=${FCREPO_HOME} \
     -Dfcrepo.modeshape.configuration=classpath:/config/servlet-auth/repository.json" 
 
