@@ -16,8 +16,10 @@
     height: 38px;
   }
 
-  button {
+  #copyButton {
+    white-space: nowrap;
     height: 38px;
+    width: 85px;
     text-transform: uppercase;
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-heavy);
@@ -26,6 +28,14 @@
     border-radius: 0;
     border: none;
     cursor: pointer;
+  }
+  #copyButton[active] {
+    text-align: center;
+    background-color: var(--default-primary-color);
+    color: var(--default-secondary-color);
+  }
+  #copyButton[active] span {
+    display: none;
   }
 
   h3 {
@@ -80,10 +90,13 @@
     --paper-toast-color: var(--default-primary-color);
   }
 
+  #link {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
 </style>
 
-
-<paper-toast id="copyToast">Link Copied to Clipboard</paper-toast>
 <app-search-header></app-search-header>
 <app-search-breadcrumb></app-search-breadcrumb>
 
@@ -120,10 +133,12 @@
     <div>
       <div style="display: flex; align-items: center" class="section bordered">
         <span class="label" style="padding-right: 10px; display:inline-block">Permalink</span>
-        <input style="flex:1" id="link" type="text" />
-        <button on-click="_copyLink">
-          <iron-icon icon="content-copy"></iron-icon>
-          Copy
+        <div style="flex:1">
+          <input id="link" type="text" />
+        </div>
+        <button on-click="_copyLink" id="copyButton">
+          <iron-icon icon="content-copy" id="copyIcon"></iron-icon>
+          <span>Copy</span>
         </button>
       </div>
 

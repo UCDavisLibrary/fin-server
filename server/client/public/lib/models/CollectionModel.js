@@ -32,7 +32,11 @@ class CollectionModel extends BaseModel {
      * 
      * @param {String} id id of the collection
      */
-    get(id) {
+    async get(id) {
+      if( this.store.data.overview.state === 'loading' ) {
+        await this.store.data.overview.request;
+      }
+
       return this.store.data.byId[id];
     }
 

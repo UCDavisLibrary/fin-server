@@ -9,7 +9,7 @@ class CollectionInterface extends subclass {
     return this.CollectionModel.overview();
   }
 
-  _getCollection(id) {
+  async _getCollection(id) {
     return this.CollectionModel.get(id);
   }
 

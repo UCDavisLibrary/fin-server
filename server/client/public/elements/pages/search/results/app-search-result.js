@@ -73,18 +73,13 @@ export default class AppSearchResult extends Mixin(PolymerElement)
     return mimeType.match(/^image/i) ? true : false;
   }
 
-  _onDataUpdate() {
+  async _onDataUpdate() {
     let data = Object.assign({}, this.data);
     if( !data['@id'] ) return;
     
     this.fetchId = data['@id'].replace(this.baseUrl, '');   
 
-    this.collectionName = this.data.memberOf || '';
-    if( this.collectionName ) {
-      this.collectionName = this._getCollection(this.collectionName).title;
-    }
-
-    this.title = this.data.title || '';
+    this.title = this.data.title || this.data.identifier || '';
 
     if( this._isImg(this.data.hasMimeType) ) {
       if( this.data.imageResolution ) {
@@ -114,6 +109,12 @@ export default class AppSearchResult extends Mixin(PolymerElement)
       this.creator = data.creator;
     } else {
       this.creator = [data.creator || ''];
+    }
+
+    this.collectionName = this.data.memberOf || '';
+    if( this.collectionName ) {
+      let collection = await this._getCollection(this.collectionName);
+      this.collectionName = collection.title;
     }
   }
 

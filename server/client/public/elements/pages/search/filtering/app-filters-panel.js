@@ -39,7 +39,7 @@ class AppFiltersPanel extends Mixin(PolymerElement)
       },
       selectedTab : {
         type : String,
-        value : 'filters'
+        value : ''
       },
 
       selectedCollection : {
@@ -69,7 +69,11 @@ class AppFiltersPanel extends Mixin(PolymerElement)
     
     this.collectionMode = true;
     this.selectedCollection = selected;
-    this.selectedTab = 'info';
+    if( !this.selectedTab ) this.selectedTab = 'info';
+  }
+
+  _removeCollectionFilter() {
+    this._esRemoveKeywordFilter('shortIdMemberOf');
   }
 }
 

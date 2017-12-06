@@ -10,9 +10,17 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
 
   static get properties() {
     return {
-      selected : {
+      collection : {
         type : Object,
         value : null
+      },
+      record : {
+        type : Object,
+        value : null
+      },
+      title : {
+        type : String,
+        value : ''
       }
     }
   }
@@ -26,38 +34,48 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
     this.active = true;
   }
 
+  ready() {
+    super.ready();
+    this.$.layout.style.width = (window.innerWidth-55)+'px';
+    window.addEventListener('resize', () => {
+      this.$.layout.style.width = (window.innerWidth-55)+'px';
+    });
+  }
+
   /**
    * @method _onAppStateUpdate
    * @description listen to app state update events and if this is a record, set record collection
    * as the current collection
    */
-  _onAppStateUpdate(e) {
+  async _onAppStateUpdate(e) {
+    if( e.location.path[0] === 'search' ) {
+      this.lastSearch = e.location.pathname;
+      return;
+    }
+
     if( e.location.path[0] !== 'record' ) return;
 
     let path = e.location.path.slice(0);
     path.splice(0, 1);
     this.currentRecordId = '/'+path.join('/');
 
-    this._esGetRecord(this.currentRecordId);
-  }
+    this.record = await this._esGetRecord(this.currentRecordId);
+    this.record = this.record.payload._source;
 
-  _onEsRecordUpdate(e) {
-    if( e.id !== this.currentRecordId ) return;
-    if( e.state !== 'loaded' ) return;
-
-    if( e.payload._source.memberOf ) {
-      this.selected = this._getCollection(e.payload._source.memberOf);
+    if( this.record.memberOf ) {
+      this.collection = await this._getCollection(this.record.memberOf);
     } else {
-      this.selected = null;
+      this.collection = null;
     }
   }
 
-  /**
-   * @method _removeSelectedCollection
-   * @description called when clear icon is clicked
-   */
-  _removeSelectedCollection() {
-    this._esRemoveKeywordFilter('shortIdMemberOf');
+  _onSearchClicked() {
+    this._setWindowLocation(this.lastSearch || '/search');
+  }
+
+  _onCollectionClicked() {
+    this._esClearFilters();
+    this._esSetKeywordFilter('shortIdMemberOf', this.collection.shortId);
   }
 
   /**
@@ -65,7 +83,8 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * @description CollectionInterface, fired when selected collection updates
    */
   _onSelectedCollectionUpdate(e) {
-    this.selected = e;
+    this.collection = e;
+    this.record = null;
   }
 
 }

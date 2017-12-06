@@ -10,14 +10,16 @@ class CollectionService extends BaseService {
     this.baseUrl = '/rest/collections';
   }
 
-  overview() {
-    return this.request({
+  async overview() {
+    await this.request({
       url : `${this.baseUrl}/overview`,
       checkCached : () => this.store.data.overview,
       onLoading : request => this.store.setCollectionOverviewLoading(request),
       onLoad : result => this.store.setCollectionOverviewLoaded(result.body),
       onError : e => this.store.setCollectionOverviewError(e)
     });
+
+    return this.store.data.overview;
   }
 
 }

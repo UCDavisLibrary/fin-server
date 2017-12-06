@@ -9,14 +9,16 @@ class ElasticSearchServiceImpl extends ElasticSearchService {
     this.baseUrl = '/rest/record'
   }
 
-  get(id) {
-    return this.request({
+  async get(id) {
+    await this.request({
       url : `${this.baseUrl}${id}`,
       checkCached : () => this.store.data.byId[id],
       onLoading : request => this.store.setRecordLoading(id, request),
       onLoad : result => this.store.setRecordLoaded(id, result.body),
       onError : e => this.store.setRecordError(id, e)
     });
+
+    return this.store.data.byId[id];
   }
 }
 

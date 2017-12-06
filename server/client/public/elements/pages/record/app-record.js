@@ -1,5 +1,4 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
-import "@polymer/paper-toast/paper-toast"
 
 import template from "./app-record.html"
 import moment from "moment"
@@ -85,7 +84,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     });
   }
 
-  _onEsRecordUpdate(e) {
+  async _onEsRecordUpdate(e) {
     if( e.id !== this.currentRecordId ) return;
     if( e.state !== 'loaded' ) return;
 
@@ -98,11 +97,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.description = this.record.description || '';
     this.$.link.value = window.location.href;
 
-    this.collectionName = this.record.memberOf || '';
-    if( this.collectionName ) {
-      this.collectionName = this._getCollection(this.collectionName).title;
-    }
-
     this.date = this.record.created ? 
                   moment(this.record.created).format(this.momentFormat) :
                   '';
@@ -113,12 +107,25 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.mimeType = this.record.hasMimeType || '';
 
     this.rights = this.record.rights || '';
+
+    this.collectionName = this.record.memberOf || '';
+    if( this.collectionName ) {
+      let collection = await this._getCollection(this.collectionName);
+      this.collectionName = collection.title;
+    }
+
   }
 
   _copyLink() {
     this.$.link.select();
     document.execCommand("Copy");
-    this.$.copyToast.open();
+
+    this.$.copyIcon.icon = 'check';
+    this.$.copyButton.setAttribute('active', 'active');
+    setTimeout(() => {
+      this.$.copyIcon.icon = 'content-copy';
+      this.$.copyButton.removeAttribute('active', 'active');
+    }, 3000);
   }
 
 }

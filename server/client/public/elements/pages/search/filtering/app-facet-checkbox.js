@@ -64,7 +64,7 @@ class AppFacetCheckbox extends PolymerElement {
 
   _onValueChange() {
     if( !this.ele ) return;
-    this.ele.setAttribute('value', value);
+    this.ele.setAttribute('value', this.value);
   }
 
 }

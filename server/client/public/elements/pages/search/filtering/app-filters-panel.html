@@ -36,6 +36,17 @@
     background-position: center center;
     height: 200px;
   }
+
+  .label {
+    padding: 10px 0;
+    color: var(--default-primary-color);
+    font-weight: var(--font-weight-heavy);
+  }
+
+  .collection-filter {
+    padding: 4px 5px;
+    border-bottom: 1px solid var(--medium-background-color);
+  }
 </style>
 
 <div class="thumbnail" 
@@ -59,6 +70,17 @@
   attr-for-selected="id" 
   selected-attribute="active">
   <div id="filters">
+
+    <div hidden$="[[!collectionMode]]" class="label">Collection</div>
+    <div hidden$="[[!collectionMode]]" class="collection-filter">
+      <app-facet-checkbox 
+        type="collection" 
+        value="[[selectedCollection.title]]" 
+        checked="[[collectionMode]]"
+        on-click="_removeCollectionFilter">
+      </app-facet-checkbox>
+    </div>
+
     <template is="dom-repeat" items="[[facetFilters]]">
       <app-filter-panel filter="[[item]]"></app-filter-panel>
     </template>

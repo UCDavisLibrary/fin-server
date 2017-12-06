@@ -13,6 +13,8 @@
     align-items: center;
     height: 36px;
     padding: 0 15px;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .layout > div {
@@ -22,13 +24,18 @@
   iron-icon {
     cursor: pointer;
   }
+
+  a {
+    cursor: pointer;
+  }
 </style>
 
-<div class="layout" hidden$="[[!selected]]">
-  <div><a href="/">Collections</a></div>
-  <div>&gt;</div>
-  <div>
-    <iron-icon icon="clear" on-click="_removeSelectedCollection"></iron-icon>
-    {{selected.title}}
-  </div>
+<div class="layout" hidden$="[[!selected]]" id="layout">
+  <div><a on-click="_onSearchClicked">Search</a></div>
+  
+  <div hidden$="[[!collection]]">&gt;</div>
+  <div hidden$="[[!collection]]"><a on-click="_onCollectionClicked">[[collection.title]]</a></div>
+
+  <div hidden$="[[!record]]">&gt;</div>
+  <div hidden$="[[!record]]">Item</div>
 </div>
