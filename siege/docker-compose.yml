@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  siege:
+    image: ucd-lib/siege
+    build: ./siege
+    command: --delay=1 --concurrent=3 --no-prser --time=1m --file=/siege/tags.urls
+#    command:
+    volumes:
+       - ./:/siege
