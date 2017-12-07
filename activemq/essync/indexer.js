@@ -4,6 +4,7 @@ const request = require('request');
 const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const Logger = logger('essync');
 const timeProfile = require('./timeProfile');
+const fs = require('fs');
 
 // everything depends on indexer, so placing this here...
 process.on('unhandledRejection', err => Logger.error(err));
@@ -36,7 +37,7 @@ class EsIndexer {
     if( !jsonld ) return;
     if( !jsonld['@type'] ) return;
 
-    jsonld = utils.cleanupData(jsonld);
+    jsonld = await utils.cleanupData(jsonld, this);
 
     let id = jsonld['@id'];
 
@@ -151,9 +152,22 @@ class EsIndexer {
             type : 'GET',
             uri: imgUrl
           });
-          timeProfile.profileEnd('get iiif resolution');
           result = JSON.parse(result.body);
           body['imageResolution'] = [result.width, result.height];
+          timeProfile.profileEnd('get iiif resolution');
+
+          // grab 16x16 base64 encoded thumbnail
+          imgUrl = utils.replaceInternalUrl(body['@id'], 'http://server:3001')+'/svc:iiif/full/8,/0/default.png';
+          result = await this.request({
+            type : 'GET',
+            encoding : null,
+            uri: imgUrl
+          });
+
+          body['imageTinyThumbnail'] = 'data:image/png;base64,'+new Buffer(result.body).toString('base64');
+
+
+          
         } catch(e) {}
       }
 

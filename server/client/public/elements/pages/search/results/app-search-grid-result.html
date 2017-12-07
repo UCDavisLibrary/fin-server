@@ -12,8 +12,11 @@
   .img {
     width: var(--grid-cell-width);
     background-size: cover;
-    background-color: white;
+    background-color: transparent;
     background-position: center center;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   .collection-name {
@@ -43,7 +46,11 @@
   }
 </style>
 
-<div style="background-image: url('[[imgUrl]]');height:[[imgHeight]]px" hidden$="[[!isImage]]" class="img" ></div>
+<div hidden$="[[!isImage]]" style="position: relative; width: 250px; height:[[imgHeight]]px">
+  <div style="background-image: url('[[imgThumbail]]');height:[[imgHeight]]px" class="img" ></div>
+  <div style="background-image: url('[[imgUrl]]');height:[[imgHeight]]px" class="img"></div>
+</div>
+
 
 <div style="padding: 15px">
   <div class="collection-name">[[collectionName]]</div>

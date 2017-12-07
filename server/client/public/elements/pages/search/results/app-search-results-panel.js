@@ -71,10 +71,6 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
     this._resizeAsync();
   }
 
-  loading() {
-
-  }
-
   /**
    * @method render
    * @description render results of search query

@@ -5,7 +5,7 @@ const REMOVE_ATTRS = ['contains', 'accessControl', '@context',
 'hasMember', 'hasParent', 'linkHint', 'hasMessageDigest', 'hasFixityService'];
 const fcrepoHostRe = new RegExp('^'+config.fcrepo.host);
 
-function cleanupData(data) {
+async function cleanupData(data, indexer) {
   let context = extractContextRe(data);
 
   /**
@@ -19,7 +19,19 @@ function cleanupData(data) {
     } else {
       data.previewImage = data.hasMember;
     }
+
+    // grab 16x16 base64 encoded thumbnail preview image
+    let imgUrl = replaceInternalUrl(data.previewImage, 'http://server:3001')+'/svc:iiif/full/8,/0/default.png';
+    let result = await indexer.request({
+      type : 'GET',
+      encoding : null,
+      uri: imgUrl
+    });
+    data.previewImageTinyThumbnail = 'data:image/png;base64,'+new Buffer(result.body).toString('base64');
   }
+
+
+
   // set short ids
   data.shortId = getShortId(data['@id']);
   if( data.memberOf ) {

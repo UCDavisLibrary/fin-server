@@ -22,12 +22,13 @@
   #drawer {
     position: absolute;
     top: 0;
-    left: -310px;
+    left: -335px;
     bottom: 0;
     background: white;
     width: 300px;
     z-index: 10;
     transition: left 300ms ease-out;
+    background-color: var(--light-background-color);
   }
 
   @keyframes fadeIn {
@@ -80,7 +81,7 @@
 <div style="position: relative">
   <div id="outerDrawer">
     <div id="drawer" open$="[[drawerOpen]]">
-      <app-filters-panel></app-filters-panel>
+      <app-filters-panel on-toggle-drawer="_toggleDrawer"></app-filters-panel>
     </div>
     <div id="drawer-background" open$="[[drawerOpen]]" on-click="_toggleDrawer"></div>
   </div>

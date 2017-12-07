@@ -91,6 +91,11 @@ export default class AppSearchResult extends Mixin(PolymerElement)
         this.imgUrl = this.data['@id']+'/svc:iiif/full/,290/0/default.png';
       }
 
+      if( this.data.imageTinyThumbnail ) {
+        this.imgThumbail = this.data.imageTinyThumbnail;
+      } else {
+        this.imgThumbail = '';
+      }
       
       this.isImage = true;
     } else {

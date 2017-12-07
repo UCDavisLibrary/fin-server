@@ -59,19 +59,40 @@ class AppFiltersPanel extends Mixin(PolymerElement)
     this.active = true;
   }
 
+  ready() {
+    super.ready();
+    this._onSelectedCollectionUpdate();
+  }
+
+  /**
+   * @method _onSelectedCollectionUpdate
+   * @description CollectionInterface, render the iron-pages and current collection
+   */
   _onSelectedCollectionUpdate(selected) {
     if( !selected ) {
       this.selectedTab = 'filters';
       this.collectionMode = false;
       return;
     } 
-
     
     this.collectionMode = true;
     this.selectedCollection = selected;
     if( !this.selectedTab ) this.selectedTab = 'info';
   }
 
+  /**
+   * @method _fireToggleDrawer
+   * @description called from toggle button, dispatches event for app-search to handle hiding drawer;
+   */
+  _fireToggleDrawer() {
+    this.dispatchEvent(new CustomEvent('toggle-drawer'));
+  }
+
+  /**
+   * @method _removeCollectionFilter
+   * @description fired from hard coded collection filter checkbox.  Remove
+   * collection filter when clicked
+   */
   _removeCollectionFilter() {
     this._esRemoveKeywordFilter('shortIdMemberOf');
   }

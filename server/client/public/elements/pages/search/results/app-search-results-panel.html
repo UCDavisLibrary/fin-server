@@ -8,6 +8,7 @@
     font-size: var(--font-size-sm);
     display: flex;
     align-items: center;
+    margin-left: -15px;
   }
 
   select {
@@ -76,12 +77,32 @@
     --cork-background-color : var(--default-secondary-color);
   }
 
-  paper-icon-button[disabled] {
+  .drawer-toggle {
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    font-weight: var(--font-weight-heavy);
+    color: var(--default-primary-color);
+    background-color: var(--light-background-color);
+  }
+  .drawer-toggle > span {
+    padding : 0 10px;
+  }
+  .drawer-toggle iron-icon {
+    background-color: var(--default-secondary-color);
+  }
+
+  .drawer-toggle[disabled] {
     color: var(--light-background-color);
   }
 
   @media( min-width: 975px ) {
-    paper-icon-button[icon="menu"] {
+    .header {
+      margin-left: 0px;
+    }
+    .drawer-toggle {
       display: none;
     }
     .desktop-total {
@@ -94,7 +115,10 @@
 </style>
 
 <div class="header">
-  <paper-icon-button icon="menu" on-click="_onToggleDrawer"></paper-icon-button>
+  <div class="drawer-toggle" on-click="_onToggleDrawer">
+    <span>Info / Filters</span>
+    <iron-icon icon="add"></iron-icon>
+  </div>
   <div class="desktop-total">[[total]] results found</div>
   <div class="filler"></div>
   <paper-icon-button 
