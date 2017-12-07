@@ -85,6 +85,12 @@
   .drawer-toggle iron-icon {
     background-color: var(--default-secondary-color);
   }
+
+  @media(min-width: 975px) {
+    .outer-drawer-toggle {
+      display: none;
+    }
+  }
 </style>
 
 <div class="outer-drawer-toggle" spacer$="[[!collectionMode]]" on-click="_fireToggleDrawer">
