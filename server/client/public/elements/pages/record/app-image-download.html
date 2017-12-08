@@ -51,9 +51,8 @@
   <template is="dom-repeat" items="[[sizes]]">
     <button index$="[[index]]" selected$="[[item.selected]]" on-click="_onSizeSelected">[[item.label]]</button>
   </template>
-
-  
 </div>
+
 <div class="info">
   [[resolutionTitle]] | [[resolution]] <span hidden$="[[!defaultImage]]">| [[size]]</span>
 </div>

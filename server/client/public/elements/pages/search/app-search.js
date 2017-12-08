@@ -52,7 +52,7 @@ export class AppSearch extends Mixin(PolymerElement)
   _onAppStateUpdate(e) {
     this.appState = e;
 
-    if( e.location.popstate ) {
+    if( e.location.path[0] === 'search' && e.location.popstate ) {
       this._searchFromAppState();
     }
   }

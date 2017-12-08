@@ -56,10 +56,9 @@
     border-right: 1px solid var(--light-background-color);
   }
 
-  .desktop-total {
+  .total {
     font-style: italic; 
     padding-left: 10px;
-    display: none;
   }
 
   .mobile-total {
@@ -86,6 +85,10 @@
     font-weight: var(--font-weight-heavy);
     color: var(--default-primary-color);
     background-color: var(--light-background-color);
+    border-radius: 0;
+    border: 0;
+    padding: 0;
+    margin-left: -15px;
   }
   .drawer-toggle > span {
     padding : 0 10px;
@@ -98,29 +101,30 @@
     color: var(--light-background-color);
   }
 
+  .header {
+    display : none;
+  }
+
+  .mobile-header .row2 {
+    display: flex;
+    align-items: center;
+  }
+
   @media( min-width: 975px ) {
     .header {
-      margin-left: 0px;
+      display: flex;
     }
-    .drawer-toggle {
-      display: none;
-    }
-    .desktop-total {
-      display: block;
-    }
-    .mobile-total {
+    .mobile-header {
       display: none;
     }
   }
 </style>
 
 <div class="header">
-  <div class="drawer-toggle" on-click="_onToggleDrawer">
-    <span>Info / Filters</span>
-    <iron-icon icon="add"></iron-icon>
-  </div>
-  <div class="desktop-total">[[total]] results found</div>
+  <div class="total">[[total]] results found</div>
+  
   <div class="filler"></div>
+  
   <paper-icon-button 
     icon="fin:grid" 
     disabled$="[[!isListLayout]]"
@@ -135,6 +139,7 @@
     type="list">
   </paper-icon-button>
   <div class="spacer"></div>
+  
   <div>
     <select id="numPerPage" on-change="_onPageSizeChange">
       <option>50</option>
@@ -145,7 +150,46 @@
   <div style="margin-left: 10px; font-style:italic">Items per page</div>
 </div>
 
-<div class="mobile-total">[[total]] results found</div>
+<div class="mobile-header">
+  <div>
+    <div style="display:inline-block">
+      <button class="drawer-toggle" on-click="_onToggleDrawer">
+        <span>Info / Filters</span>
+        <iron-icon icon="add"></iron-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="total">[[total]] results</div>
+
+    <div class="filler"></div>
+    
+    <paper-icon-button 
+      icon="fin:grid" 
+      disabled$="[[!isListLayout]]"
+      on-click="_onLayoutToggle" 
+      type="masonry">
+    </paper-icon-button>
+    <div class="spacer"></div>
+    <paper-icon-button 
+      icon="fin:list" 
+      disabled$="[[isListLayout]]"
+      on-click="_onLayoutToggle" 
+      type="list">
+    </paper-icon-button>
+    <div class="spacer"></div>
+    
+    <div>
+      <select id="numPerPageM" on-change="_onPageSizeChange">
+        <option>50</option>
+        <option>20</option>
+        <option>10</option>
+      </select>
+    </div>
+    <div style="margin-left: 10px; font-style:italic">per page</div>
+  </div>
+</div>
 
 <div class="masonry" id="layout" hidden$="[[isListLayout]]">
   <template is="dom-repeat" items="[[results]]">

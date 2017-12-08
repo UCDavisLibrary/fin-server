@@ -43,7 +43,6 @@ export default class AppImageViewer extends PolymerElement {
       var img = new Image();
       img.onload = () => {
         let res = [img.naturalHeight, img.naturalWidth];
-        this.dispatchEvent(new CustomEvent('resolution-resolved', {detail: res.slice(0)}));
         this.bounds = [[0,0], res];
         this.loading = false;
         resolve();
@@ -52,6 +51,12 @@ export default class AppImageViewer extends PolymerElement {
     });
   }
 
+  /**
+   * @method render
+   * @description render leaflet canvas based on fedora id
+   * 
+   * @param {String} id record id (uri)
+   */
   async render(id) {
     let url = id+'/svc:iiif/full/full/0/default.png';
     if( this.currentUrl === url ) return;

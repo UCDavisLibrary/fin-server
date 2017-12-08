@@ -24,6 +24,7 @@
   }
 
   h2 {
+    display: none;
     margin: 15px 10px;
     color: var(--default-primary-color);
   }
@@ -69,7 +70,7 @@
     font-size: var(--font-size-sm);
     position: absolute;
     z-index: 15;
-    top : 23px;
+    top : 15px;
     right: -24px;
     cursor: pointer;
     text-transform: uppercase;
@@ -78,6 +79,9 @@
     font-weight: var(--font-weight-heavy);
     color: var(--default-primary-color);
     background-color: var(--light-background-color);
+    border-radius: 0;
+    border: 0;
+    padding: 0;
   }
   .drawer-toggle > span {
     padding : 0 10px;
@@ -87,17 +91,22 @@
   }
 
   @media(min-width: 975px) {
+    h2 {
+      display: block;
+    }
     .outer-drawer-toggle {
       display: none;
     }
   }
 </style>
 
+<h2>Filters</h2>
+
 <div class="outer-drawer-toggle" spacer$="[[!collectionMode]]" on-click="_fireToggleDrawer">
-  <div class="drawer-toggle">
+  <button class="drawer-toggle">
     <span><span hidden$="[[!collectionMode]]">Info / </span>Filters</span>
     <iron-icon icon="close"></iron-icon>
-  </div>
+  </button>
 </div>
 <div class="thumbnail-root"  hidden$="[[!collectionMode]]">
   <div class="thumbnail" style="background-image: url('[[selectedCollection.previewImageTinyThumbnail]]')"></div>

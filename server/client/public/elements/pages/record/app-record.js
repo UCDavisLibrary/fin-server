@@ -75,15 +75,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     this._esGetRecord(this.currentRecordId);
   }
 
-  _onResolutionResolved(e) {
-    this.$.download.render({
-      resolution : e.detail,
-      mimeType : this.mimeType,
-      size : this.record.hasSize ? parseInt(this.record.hasSize) : 0,
-      url : this.record.id
-    });
-  }
-
   async _onEsRecordUpdate(e) {
     if( e.id !== this.currentRecordId ) return;
     if( e.state !== 'loaded' ) return;
@@ -107,6 +98,13 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.mimeType = this.record.hasMimeType || '';
 
     this.rights = this.record.rights || '';
+
+    this.$.download.render({
+      resolution : this.record.imageResolution,
+      mimeType : this.mimeType,
+      size : this.record.hasSize ? parseInt(this.record.hasSize) : 0,
+      url : this.record.id
+    });
 
     this.collectionName = this.record.memberOf || '';
     if( this.collectionName ) {
