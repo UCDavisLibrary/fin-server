@@ -66,3 +66,21 @@ Finally, run the initialization script
 ```bash
 $ cd /fin-example-repository && ./initialize
 ```
+
+*Note if you are running a local FIN server on your machine (localhost), you will need to 
+reset the FIN CLI host after login, since localhost will point to container.  The steps
+for a localhost FIN server init are as follows:
+
+```bash
+docker-compose exec server bash
+node /app/cli admin add-admin -u [username]
+fin config set host $DAMS_URL
+fin login --headless 
+git clone https://github.com/UCDavisLibrary/fin-example-repository.git
+
+# so this is the additional step.  It sets the 'host' to the localhost port
+# the fin server is running on inside the container.
+fin config set host http://localhost:3001
+
+cd /fin-example-repository && ./initialize
+```
