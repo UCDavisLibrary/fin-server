@@ -113,10 +113,10 @@ services:
     depends_on:
       - fcrepo
 
-  apixdemo:
-    build: ../../apix-demo
-    depends_on:
-      - fcrepo
+  # apixdemo:
+  #   build: ../../apix-demo
+  #   depends_on:
+  #     - fcrepo
   
   ###
   # ActiveMQ Services

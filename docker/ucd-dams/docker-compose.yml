@@ -3,15 +3,6 @@ version: '2'
 
 services:
 
-  fcrepo:
-    build: ../../fcrepo
-    volumes:
-      - fedora-data:/var/lib/jetty/fedora-data
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
-
   server:
     build: ../../server
     environment:
@@ -24,14 +15,19 @@ services:
       - fcrepo
       - elasticsearch
       - redis
-
-  proxy:
-    build: ../../proxy
     ports:
-      - 3000:80
-    depends_on:
-      - server
-      - fcrepo
+      - 3000:3001
+
+  fcrepo:
+    build: ../../fcrepo
+    volumes:
+      - fedora-data:/var/lib/jetty/fedora-data
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
+      - JWT_VERBOSE=${JWT_VERBOSE}
+      - DAMS_URL=${DAMS_URL}
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
@@ -42,7 +38,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    # mem_limit: 1g
     # for docker-compose version 3
     # deploy:
     #   resources:
@@ -61,8 +57,48 @@ services:
     depends_on:
       - fcrepo  
 
+  trustedproxy:
+    build: ../../trusted-proxy
+    depends_on:
+      - fcrepo
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
+
+  loris:
+    build: ../../loris
+    depends_on:
+      - fcrepo
+
+  essync:
+    build: ../../activemq/essync
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
+      - DAMS_URL=${DAMS_URL}
+    depends_on:
+      - server
+      - fcrepo
+    command: node service
+
+  serialization:
+    build: ../../activemq/serialization
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
+      - DAMS_URL=${DAMS_URL}
+    depends_on:
+      - server
+      - fcrepo
+    command: node service
+
 volumes:
   fedora-data:
+    driver: local
+  fedora-serialized-data:
     driver: local
   es-data:
     driver: local

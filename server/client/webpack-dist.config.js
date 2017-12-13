@@ -25,6 +25,13 @@ var modern = {
           {
             test: /\.css$/,
             use: [ 'to-string-loader', 'css-loader' ]
+          },
+          {
+            test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+            loader: 'url-loader',
+            options: {
+              limit: 10000
+            }
           }
         ]
     }
@@ -56,6 +63,13 @@ var ie =  {
           use: [ 'to-string-loader', 'css-loader' ]
         },
         {
+          test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+          loader: 'url-loader',
+          options: {
+            limit: 10000
+          }
+        },
+        {
           test: /\.js$/,
           use: {
             loader: 'babel-loader',
@@ -65,10 +79,10 @@ var ie =  {
           }
         }
       ]
-    },
-    plugins: [
-      new UglifyJSPlugin()
-    ]
+    }
+    // ,plugins: [
+    //   new UglifyJSPlugin()
+    // ]
 };
 
 module.exports = [modern, ie];

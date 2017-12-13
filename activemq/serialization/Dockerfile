@@ -1,6 +1,6 @@
 FROM node:8.5
 
-RUN mkdir /service
+RUN mkdir -p /service
 COPY ./* /service/
 RUN cd /service && npm install 
 
