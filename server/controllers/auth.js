@@ -103,6 +103,13 @@ router.get('/login', authUtils.middleware.bounce, (req, res) => {
   res.redirect('/');
 });
 
+router.get('/login-shell', authUtils.middleware.bounce, async (req, res) => {
+  let username = req.session[ authUtils.cas.session_name ];
+  let isAdmin = await authUtils.isAdmin(username);
+
+  res.redirect('/jwt.html?jwt='+authUtils.jwt.create(username, isAdmin));
+});
+
 router.get('/logout', (req, res) => {
   res.clearCookie(config.jwt.cookieName);
   res.redirect('/auth/cas/logout');

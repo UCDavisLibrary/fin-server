@@ -55,6 +55,10 @@ class JwtUtils {
         console.log('Invalid JWT Token:', `Invalid issuer: ${issuer}/${config.jwt.issuer}`);
         return false;
       }
+      if( !token.username ) {
+        console.log('Invalid JWT Token:', `No username provided`);
+        return false;
+      }
     } catch(e) {
       console.log('Invalid JWT Token:', e.message);
       return false;

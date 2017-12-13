@@ -2,10 +2,10 @@ FROM node:8.5
 
 RUN apt-get update
 RUN apt-get install -y git jq
-RUN git clone https://github.com/UCDavisLibrary/fin-cli
-RUN cd fin-cli && npm install -g
+RUN npm install -g @ucd-lib/fin-cli@0.0.8
 
 COPY ./ /app
+RUN echo '{"basePath":"/fcrepo/rest"}' > /root/.fccli
 
 RUN cd /app && npm install 
 

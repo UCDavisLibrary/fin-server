@@ -9,5 +9,6 @@ mkdir dist/images
 cp -r public/images dist/
 
 cp public/index.html dist/
+cp public/jwt.html dist/
 
 webpack --config webpack-dist.config.js

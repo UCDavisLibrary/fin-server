@@ -1,8 +1,14 @@
 
 version: '2'
 
+###
+# Prod
+###
 services:
 
+  ###
+  # Font End NodeJS Application Server & Proxy
+  ###
   server:
     build: ../../server
     volumes:
@@ -13,6 +19,7 @@ services:
       - JWT_TTL=${JWT_TTL}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
       - DAMS_URL=${DAMS_URL}
+      - DAMS_ENV=prod
     depends_on:
       - fcrepo
       - elasticsearch
@@ -20,6 +27,9 @@ services:
     ports:
       - 3000:3001
 
+  ###
+  # Fedora Repository
+  ###
   fcrepo:
     build: ../../fcrepo
     volumes:
@@ -31,6 +41,9 @@ services:
       - JWT_VERBOSE=${JWT_VERBOSE}
       - DAMS_URL=${DAMS_URL}
 
+  ###
+  # Search
+  ###
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
     environment:
@@ -40,18 +53,15 @@ services:
       memlock:
         soft: -1
         hard: -1
-    # mem_limit: 1g
-    # for docker-compose version 3
-    # deploy:
-    #   resources:
-    #     limits:
-    #       memory: 1g
     volumes:
       - es-data:/usr/share/elasticsearch/data
       - ../elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     depends_on:
       - fcrepo
 
+  ###
+  # Session, local user and role store
+  ###
   redis:
     image: redis:3.2
     volumes:
@@ -59,6 +69,9 @@ services:
     depends_on:
       - fcrepo  
 
+  ###
+  # Trusted Proxy for Services
+  ###
   trustedproxy:
     build: ../../trusted-proxy
     depends_on:
@@ -68,11 +81,17 @@ services:
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_TTL=${JWT_TTL}
 
+  ###
+  # API Extension Services
+  ###
+
+  # iiif server
   loris:
     build: ../../loris
     depends_on:
       - fcrepo
 
+  # elastic search indexer
   essync:
     build: ../../activemq/essync
     environment:
@@ -85,6 +104,7 @@ services:
       - fcrepo
     command: node service
 
+  # file system serialization
   serialization:
     build: ../../activemq/serialization
     environment:

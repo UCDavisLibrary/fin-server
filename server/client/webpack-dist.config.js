@@ -1,5 +1,5 @@
 const path = require('path');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 var modern = {
     entry: './public/elements/fin-app.js',
@@ -74,7 +74,7 @@ var ie =  {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['env']
+              presets: ['babel-preset-env']
             }
           }
         }

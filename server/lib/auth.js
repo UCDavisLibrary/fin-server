@@ -28,6 +28,16 @@ class AuthUtils {
     }
   }
 
+  getJwtFromRequest(req) {
+    let token = req.cookies[config.jwt.cookieName];
+    if( token ) return token;
+    
+    token = req.get('Authizoration');
+    if( token ) return token.replace(/^Bearer /, '');
+
+    return null;
+  }
+
   async refreshToken(username) {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(48, async (err, buffer) => {

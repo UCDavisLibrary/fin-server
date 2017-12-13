@@ -1,6 +1,9 @@
 
 version: '2'
 
+###
+# Dev
+###
 services:
   
   ###
@@ -21,6 +24,7 @@ services:
       - JWT_TTL=${JWT_TTL}
       - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
       - DAMS_URL=${DAMS_URL}
+      - DAMS_ENV=dev
     depends_on:
       - fcrepo
       - elasticsearch
@@ -122,7 +126,6 @@ services:
   # ActiveMQ Services
   ###
   essync:
-    # build: ../../activemq/essync
     image: node:8.5
     volumes:
       - ../../activemq/essync:/service
@@ -137,7 +140,6 @@ services:
     command: node service
 
   serialization:
-    # build: ../../activemq/serialization
     image: node:8.5
     volumes:
       - ../../activemq/serialization:/service
