@@ -1,8 +1,9 @@
-var request = require('superagent');
-var elasticsearch = require('elasticsearch');
+const request = require('superagent');
+const elasticsearch = require('elasticsearch');
 const {jwt, config, logger} = require('@ucd-lib/fin-node-utils');
-var schema = require('./schema');
-var clone = require('clone');
+const schemaRecord = require('./schema-record');
+const schemaCollection = require('./schema-collection');
+const clone = require('clone');
 const utils = require('./utils');
 const indexer = require('./indexer');
 const Logger = logger('essync');
@@ -41,8 +42,8 @@ class EsReindexer {
     Logger.info('Found indexes', oldRecordIndexes, oldCollectionIndexes);
 
     Logger.info('Creating new index');
-    var newRecordIndexName = await this.createIndex(recordConfig.alias, recordConfig.schemaType);
-    var newCollectionIndexName = await this.createIndex(colConfig.alias, colConfig.schemaType);
+    var newRecordIndexName = await indexer.createIndex(recordConfig.alias, recordConfig.schemaType, schemaRecord);
+    var newCollectionIndexName = await indexer.createIndex(colConfig.alias, colConfig.schemaType, schemaCollection);
     Logger.info('New index created', newRecordIndexName, newCollectionIndexName);
     
     Logger.info('Crawling fedora and populating Index');
@@ -168,33 +169,6 @@ class EsReindexer {
     }
   }
 
-  /**
-   * @method createIndex
-   * @description create new new index with a unique name based on alias name
-   * 
-   * @param {String} alias alias name to base index name off of
-   * @param {String} schemaType schema name for objects in index
-   * 
-   * @returns {Promise} resolves to string, new index name
-   */
-  async createIndex(alias, schemaType) {
-    var newIndexName = `${alias}-${Date.now()}`;
-
-    try {
-      await indexer.esClient.indices.create({
-        index: newIndexName,
-        body : {
-          mappings : {
-            [schemaType] : schema
-          }
-        }
-      });
-    } catch(e) {
-      throw e;
-    }
-
-    return newIndexName;
-  }
 }
 
 const reindexer = new EsReindexer();

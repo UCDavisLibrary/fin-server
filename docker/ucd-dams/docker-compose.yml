@@ -102,6 +102,7 @@ services:
     depends_on:
       - server
       - fcrepo
+      - elasticsearch
     command: node service
 
   # file system serialization
@@ -115,6 +116,7 @@ services:
     depends_on:
       - server
       - fcrepo
+      - elasticsearch
     command: node service
 
 volumes:

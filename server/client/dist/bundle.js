@@ -17006,7 +17006,7 @@ module.exports = {
         label : 'Creator',
         type : 'facet'
       },
-      'dc:subject' : {
+      'dc:subject_raw' : {
         label : 'Subject',
         type : 'facet'
       }

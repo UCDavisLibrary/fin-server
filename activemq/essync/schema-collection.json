@@ -9,16 +9,13 @@
       "type" : "keyword" 
     },
 
-    "shortIdMemberOf" : {
-      "type" : "keyword" 
-    },
-
-    "dc:subject" : {
-      "type" : "keyword"
-    },
-
-    "dc:creator" : {
-      "type" : "keyword"
+    "subject" : {
+      "type" : "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
     },
 
     "created" : {
@@ -27,14 +24,6 @@
     },
 
     "createdBy" : {
-      "type" : "keyword"
-    },
-
-    "hasParent" : {
-      "type" : "keyword"
-    },
-
-    "hasMimeType" : {
       "type" : "keyword"
     },
 
@@ -48,6 +37,28 @@
     },
 
     "title" : {
+      "type": "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
+    "description" : {
+      "type": "text"
+    },
+
+    "coverage" : {
+      "type": "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
+    "creator" : {
       "type": "text",
       "fields": {
         "raw": { 

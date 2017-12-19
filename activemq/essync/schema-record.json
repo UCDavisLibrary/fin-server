@@ -1,0 +1,65 @@
+{
+  "properties" : {
+
+    "@id" : {
+      "type" : "keyword"
+    },
+
+    "shortId" : {
+      "type" : "keyword" 
+    },
+
+    "shortIdMemberOf" : {
+      "type" : "keyword" 
+    },
+
+    "dc:subject" : {
+      "type" : "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
+    "dc:creator" : {
+      "type" : "keyword"
+    },
+
+    "created" : {
+      "type" : "date",
+      "format" : "date_optional_time"
+    },
+
+    "createdBy" : {
+      "type" : "keyword"
+    },
+
+    "hasParent" : {
+      "type" : "keyword"
+    },
+
+    "hasMimeType" : {
+      "type" : "keyword"
+    },
+
+    "lastModified" : {
+      "type" : "date",
+      "format" : "date_optional_time"
+    },
+
+    "lastModifiedBy" : {
+      "type" : "keyword"
+    },
+
+    "title" : {
+      "type": "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    }
+
+  }
+}

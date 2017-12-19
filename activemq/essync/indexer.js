@@ -1,6 +1,8 @@
 const utils = require('./utils');
 const elasticsearch = require('elasticsearch');
 const request = require('request');
+const schemaRecord = require('./schema-record');
+const schemaCollection = require('./schema-collection');
 const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const Logger = logger('essync');
 const timeProfile = require('./timeProfile');
@@ -17,6 +19,40 @@ class EsIndexer {
       host: config.elasticsearch.host,
       log: config.elasticsearch.log
     });
+
+    this.init();
+
+  }
+
+  isConnected() {
+    return new Promise((resolve, reject) => {
+      this._isConnected(0, resolve, reject);
+    });
+  }
+
+  async _isConnected(count, resolve, reject) {
+    if( count === 5 ) return reject('Unable to connect to Elastic Search');
+    setTimeout(async () => {
+      try {
+        await this.esClient.ping({requestTimeout: 5000});
+        resolve();
+      } catch(e) {
+        count++;
+        this._isConnected(count, resolve, reject);
+      }
+      // grrrrr just waiting a bit for es to start
+    }, 20000 + (1000 * count));
+  }
+
+  async init() {
+    await this.isConnected();
+
+    Logger.info('Connected to Elastic Search');
+
+    let recordConfig = config.elasticsearch.record;
+    let colConfig = config.elasticsearch.collection;
+    await this.ensureIndex(recordConfig.alias, recordConfig.schemaType, schemaRecord);
+    await this.ensureIndex(colConfig.alias, colConfig.schemaType, schemaCollection);
   }
 
   /**
@@ -103,6 +139,46 @@ class EsIndexer {
         Logger.info(`ES Indexer removing collection container: ${id}`);
       } catch(e) {}
     }
+  }
+
+  async ensureIndex(alias, schemaName, schema) {
+    let exits = await this.esClient.indices.existsAlias({name: alias});
+    if( exits ) return;
+
+    Logger.info(`No alias exists: ${alias}, creating...`);
+
+    let indexName = await this.createIndex(alias, schemaName, schema);
+    await this.esClient.indices.putAlias({index: indexName, name: alias});
+    
+    Logger.info(`Index ${indexName} created pointing at alias ${alias}`);
+  }
+
+  /**
+   * @method createIndex
+   * @description create new new index with a unique name based on alias name
+   * 
+   * @param {String} alias alias name to base index name off of
+   * @param {String} schemaName schema name for objects in index
+   * 
+   * @returns {Promise} resolves to string, new index name
+   */
+  async createIndex(alias, schemaName, schema) {
+    var newIndexName = `${alias}-${Date.now()}`;
+
+    try {
+      await this.esClient.indices.create({
+        index: newIndexName,
+        body : {
+          mappings : {
+            [schemaName] : schema
+          }
+        }
+      });
+    } catch(e) {
+      throw e;
+    }
+
+    return newIndexName;
   }
 
   /**
