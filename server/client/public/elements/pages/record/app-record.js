@@ -6,10 +6,32 @@ import bytes from "bytes"
 
 import "./app-image-viewer"
 import "./app-image-download"
+import "./app-record-metadata-layout"
 
 import AppStateInterface from "../../interfaces/AppStateInterface"
 import ElasticSearchInterface from "../../interfaces/ElasticSearchInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
+
+
+const lorem = 'Lorem ipsum dolor sit amet cons ectetuer adipiscing elit sed et diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam';
+const citeText = [
+  {
+    label : 'MLA',
+    text : lorem
+  },
+  {
+    label : 'APA',
+    text : lorem
+  },
+  {
+    label : 'Chicago / Turabian',
+    text : lorem
+  },
+  {
+    label : 'Harvard',
+    text : lorem
+  }
+];
 
 export default class AppRecord extends Mixin(PolymerElement)
       .with(EventInterface, AppStateInterface, ElasticSearchInterface, CollectionInterface) {
@@ -55,6 +77,14 @@ export default class AppRecord extends Mixin(PolymerElement)
       rights : {
         type : String,
         value : ''
+      },
+      metadata : {
+        type : Array,
+        value : () => []
+      },
+      cite : {
+        type : Array,
+        value : () => citeText
       }
     }
   }
@@ -85,6 +115,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.imageViewer.render(this.record.id);
 
     this.title = this.record.title || '';
+
     this.description = this.record.description || '';
     this.$.link.value = window.location.href;
 
@@ -112,6 +143,28 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.collectionName = collection.title;
     }
 
+    this._updateMetadataRows();
+  }
+
+  _updateMetadataRows() {
+    let metadata = [];
+
+    this._addMetadataRow(metadata, 'title', 'Item Name');
+    this._addMetadataRow(metadata, 'collectionName', 'Collection');
+    this._addMetadataRow(metadata, 'date', 'Date');
+
+    this._addMetadataRow(metadata, 'resourceType', 'Resource Type');
+
+    console.log(metadata);
+    this.metadata = metadata;
+  }
+
+  _addMetadataRow(metadata, attr, label) {
+    if( !this[attr] ) return;
+    metadata.push({
+      attr: label || attr, 
+      value: this[attr]
+    });
   }
 
   _copyLink() {

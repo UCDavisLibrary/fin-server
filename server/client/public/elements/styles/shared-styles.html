@@ -8,6 +8,22 @@
         margin: 10px;
       }
 
+      paper-tabs {
+        --paper-tabs-selection-bar: {
+          border-bottom: 3px solid var(--default-primary-color);
+        }
+      }
+      paper-tab {
+        --paper-tab-content-unselected : {    
+          text-transform: uppercase;
+          color: var(--text-disabled);
+        }
+        --paper-tab-content : {
+          text-transform: uppercase;
+          color: var(--default-primary-color);
+        }
+      }
+
       [hidden] {
         display: none !important;
       }
@@ -70,6 +86,8 @@
 
       .container > * {
         max-width: var(--max-width);
+        width: 100%;
+        justify-content: center;
       }
 
       fin-search-box > iron-icon {

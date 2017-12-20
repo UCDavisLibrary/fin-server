@@ -16,7 +16,7 @@
     height: 38px;
   }
 
-  #copyButton {
+  .copyButton {
     white-space: nowrap;
     height: 38px;
     width: 85px;
@@ -29,12 +29,12 @@
     border: none;
     cursor: pointer;
   }
-  #copyButton[active] {
+  .copyButton[active] {
     text-align: center;
     background-color: var(--default-primary-color);
     color: var(--default-secondary-color);
   }
-  #copyButton[active] span {
+  .copyButton[active] span {
     display: none;
   }
 
@@ -67,12 +67,6 @@
     padding : 0 10px;
   }
 
-  @media( max-width: 768px ) {
-    .overview {
-      display: block;
-    }
-  }
-
   .type-date-collection {
     display: flex;
     align-items: center;
@@ -93,6 +87,43 @@
   #link {
     width: 100%;
     box-sizing: border-box;
+  }
+
+  .metadata-row {
+    display: flex;
+    margin: 30px 20px;
+  }
+  .metadata-row .attr {
+    flex: 0.25;
+    color: var(--default-primary-color);
+    font-weight: var(--font-weight-heavy); 
+  }
+  .metadata-row .value {
+    flex: 0.75;
+  }
+
+  .cite-container {
+    padding: 15px 0;
+    margin: 0 15px;
+    border-bottom: 1px dashed var(--medium-background-color);
+    display: flex;
+  }
+  .cite-container .label {
+    flex: 0.25;
+    color: var(--default-primary-color);
+    font-weight: var(--font-weight-heavy); 
+  }
+  .cite-container .text {
+    flex: 0.75;
+  }
+
+  @media( max-width: 768px ) {
+    .overview {
+      display: block;
+    }
+    .cite-container {
+      display: block;
+    }
   }
 
 </style>
@@ -136,7 +167,7 @@
         <div style="flex:1">
           <input id="link" type="text" />
         </div>
-        <button on-click="_copyLink" id="copyButton">
+        <button on-click="_copyLink" id="copyButton" class="copyButton">
           <iron-icon icon="content-copy" id="copyIcon"></iron-icon>
           <span>Copy</span>
         </button>
@@ -161,5 +192,29 @@
 </div>
 
 <div class="container">
-
+  <app-record-metadata-layout>
+    <div slot="left">
+      <template is="dom-repeat" items="[[metadata]]">
+        <div class="metadata-row">
+          <div class="attr">[[item.attr]]</div>
+          <div class="value">[[item.attr]]</div>
+        </div>
+      </template>
+    </div>
+    
+    <div slot="right">
+      <template is="dom-repeat" items="[[cite]]">
+        <div class="cite-container">
+          <div class="label">[[item.label]]</div>
+          <div class="text">
+            <div style="padding-bottom: 10px">[[item.text]]</div>
+            <button on-click="_copyLink" id="copyButton" class="copyButton">
+              <iron-icon icon="content-copy" id="copyIcon"></iron-icon>
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+      </template>
+    </div>
+  </app-record-metadata-layout>
 </div>
