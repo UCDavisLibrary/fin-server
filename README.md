@@ -32,6 +32,18 @@ sudo sysctl -w vm.max_map_count=262144
 
 See here: https://github.com/docker-library/elasticsearch/issues/111
 
+## Adding Administrators
+
+Addministrators are users that access the fedora component with webac disabled. This allows access to all parts of the fedora
+repositry.  You probably want to add a new administrator to your system.  This is accomplished with this command
+
+```bash
+USER=quinn
+docker-compose exec server node app/cli admin add-admin -u $USER
+```
+
+This will give the user `quinn` admin access to the system.  By default, using the command-line tool `fin login quinn` will automatically add administrative privildges.  In the future `fin login quinn` will only authenticate the user quinn, where access is still via the fedora's webac rules, and `fin login --admin quinn` will create an administrative token. 
+
 # Example Data
 
 You can initialize the FIN instance with [sample data](https://github.com/UCDavisLibrary/fin-example-repository/) by running the following from
