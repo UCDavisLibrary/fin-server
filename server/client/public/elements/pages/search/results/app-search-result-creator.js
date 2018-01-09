@@ -21,6 +21,11 @@ export default class AppSearchResultCreator extends PolymerElement {
     }
   }
 
+  /**
+   * @method _onLabelUpdate
+   * @description fired when label updates.  This element detects if the creator
+   * is an external link or a string label.  Then renders a link
+   */
   _onLabelUpdate() {
     if( this.label.match(/^http/i) ) this.link = true;
     else this.link = false;

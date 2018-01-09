@@ -69,10 +69,18 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
     }
   }
 
+  /**
+   * @method _onSearchClicked
+   * @description bound to search anchor tag click event.  nav to search
+   */
   _onSearchClicked() {
     this._setWindowLocation(this.lastSearch || '/search');
   }
 
+  /**
+   * @method _onCollectionClicked
+   * @description bound to collection anchor tag click event.  start a collection query
+   */
   _onCollectionClicked() {
     this._esClearFilters();
     this._esSetKeywordFilter('shortIdMemberOf', this.collection.shortId);

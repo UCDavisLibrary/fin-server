@@ -21,10 +21,14 @@ class AuthStore extends BaseStore {
     }
   }
 
+  getUser() {
+    return this.data;
+  }
+
   setUser(user) {
     this.data = {
       user : user,
-      state: user.isAnonymous ? this.CUSTOM_STATES.NOT_LOGGED_IN : this.CUSTOM_STATES.LOGGED_IN
+      state: user.loggedIn ? this.CUSTOM_STATES.LOGGED_IN : this.CUSTOM_STATES.NOT_LOGGED_IN
     };
     this.emit(this.events.AUTH_UPDATE, this.data);
   }

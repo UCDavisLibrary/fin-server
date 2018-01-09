@@ -13,6 +13,10 @@ class AppAuthHeader extends Mixin(PolymerElement)
     this.active = true;
   }
 
+  /**
+   * @method _onAuthUpdate
+   * @description from AuthInterface. called whenever auth state changes
+   */
   _onAuthUpdate(e) {
     if( e.state === 'loggedIn') this.style.display = 'block';
     else this.style.display = 'none';

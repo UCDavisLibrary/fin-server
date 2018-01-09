@@ -52,11 +52,7 @@ require('./lib/activeMqProxy');
 const mainProxy = new FcrepoProxy(app);
 
 // setup static routes
-require('./lib/static')({
-    app: app,
-    assetsDir : path.join(__dirname, 'client', config.server.assets),
-    appRoutes : config.server.appRoutes
-});
+require('./lib/static')(app);
  
 /**
  * Register Controllers

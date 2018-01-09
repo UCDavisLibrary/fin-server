@@ -27,6 +27,12 @@ class AppHome extends Mixin(PolymerElement)
     this.active = true;
   }
 
+  /**
+   * @method _onCollectionOverviewUpdate
+   * @description from CollectionInterface, called when the collection overview is loaded
+   * 
+   * @param {Object} e 
+   */
   _onCollectionOverviewUpdate(e) {
     if( e.state !== 'loaded' ) return;
     let overview = e.payload;

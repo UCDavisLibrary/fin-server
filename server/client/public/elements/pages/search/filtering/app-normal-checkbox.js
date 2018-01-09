@@ -32,10 +32,23 @@ export class AppNormalCheckbox extends PolymerElement {
     return template;
   }
 
+  /**
+   * @method _realLabel
+   * @description render label
+   * 
+   * @param {String} value 
+   * @param {String} label 
+   */
   _realLabel(value, label) {
     return label || value;
   }
 
+  /**
+   * @method _onClick
+   * @description called when div wrapper is clicked
+   * 
+   * TODO: add aria checkbox role
+   */
   _onClick() {
     this.checked = !this.checked;
     this.dispatchEvent(new CustomEvent('change', {bubbles: true, composed: true}));

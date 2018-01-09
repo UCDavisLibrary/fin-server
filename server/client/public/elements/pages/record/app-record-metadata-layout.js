@@ -34,6 +34,11 @@ export default class AppRecordMetadataLayout extends PolymerElement {
     }
   }
 
+  /**
+   * @method _updateVisiblePanels
+   * @description called when `mobile` or `selectedTab` property is updated
+   * Set the correct panel to display.
+   */
   _updateVisiblePanels() {
     this.showRight = true;
     this.showLeft = true;

@@ -1,5 +1,8 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element";
 
+/**
+ * This is the rainbow color bar at the top of a page.  Just a style element.
+ */
 class AppHeaderColorbar extends PolymerElement {
 
   static get properties() {
@@ -37,11 +40,19 @@ class AppHeaderColorbar extends PolymerElement {
     this.fippedImageUrl = '/images/header-colorbar-flipped.png';
   }
 
+  /**
+   * @method _updateHeight
+   * @description called when `height` property is changed.
+   */
   _updateHeight() {
     if( this.height > 36 ) this.height = 36;
     this.style.height = this.height+'px';
   }
 
+  /**
+   * @method _flip
+   * @description called when `flipped` property is changed.
+   */
   _flip() {
     if( this.flipped ) this.style.backgroundImage = `url('${this.fippedImageUrl}')`;
     else this.style.backgroundImage = `url('${this.imageUrl}')`;

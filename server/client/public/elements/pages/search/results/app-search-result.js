@@ -62,17 +62,28 @@ export default class AppSearchResult extends Mixin(PolymerElement)
   }
 
   /**
-   * Fired when this element is clicked
+   * @method _onClick
+   * @description Fired when this element is clicked
    */
   _onClick() {
     this._setWindowLocation('/record'+this.fetchId);
   }
 
+  /**
+   * @method _isImg
+   * @description helper method to sniff if mimetype is image
+   * 
+   * @param {String} mimeType 
+   */
   _isImg(mimeType) {
     if( !mimeType ) return false;
     return mimeType.match(/^image/i) ? true : false;
   }
 
+  /**
+   * @method _onDataUpdate
+   * @description fired when `data` property updates.  Set UI properties.
+   */
   async _onDataUpdate() {
     let data = Object.assign({}, this.data);
     if( !data['@id'] ) return;

@@ -95,6 +95,12 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.momentFormat = 'YYYY';
   }
 
+  /**
+   * @method _onAppStateUpdate
+   * @description from AppStateInterface, called when happ state updates
+   * 
+   * @param {*} e 
+   */
   _onAppStateUpdate(e) {
     if( e.location.path[0] !== 'record' ) return;
 
@@ -105,6 +111,12 @@ export default class AppRecord extends Mixin(PolymerElement)
     this._esGetRecord(this.currentRecordId);
   }
 
+  /**
+   * @method _onEsRecordUpdate
+   * @description from ElasticSearchInterface, called when search state updates
+   * 
+   * @param {Object} e 
+   */
   async _onEsRecordUpdate(e) {
     if( e.id !== this.currentRecordId ) return;
     if( e.state !== 'loaded' ) return;
@@ -146,6 +158,10 @@ export default class AppRecord extends Mixin(PolymerElement)
     this._updateMetadataRows();
   }
 
+  /**
+   * @method _updateMetadataRows
+   * @description update metadata table
+   */
   _updateMetadataRows() {
     let metadata = [];
 
@@ -155,10 +171,17 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     this._addMetadataRow(metadata, 'resourceType', 'Resource Type');
 
-    console.log(metadata);
     this.metadata = metadata;
   }
 
+  /**
+   * @method _addMetadataRow
+   * @description update metadata table row
+   * 
+   * @param {Array} metadata 
+   * @param {String} attr 
+   * @param {String} label 
+   */
   _addMetadataRow(metadata, attr, label) {
     if( !this[attr] ) return;
     metadata.push({
@@ -167,12 +190,18 @@ export default class AppRecord extends Mixin(PolymerElement)
     });
   }
 
+  /**
+   * @method _copyLink
+   * @description bound to click event on button.  Copy text to clipboard
+   * show UI interaction.
+   */
   _copyLink() {
     this.$.link.select();
     document.execCommand("Copy");
 
     this.$.copyIcon.icon = 'check';
     this.$.copyButton.setAttribute('active', 'active');
+
     setTimeout(() => {
       this.$.copyIcon.icon = 'content-copy';
       this.$.copyButton.removeAttribute('active', 'active');

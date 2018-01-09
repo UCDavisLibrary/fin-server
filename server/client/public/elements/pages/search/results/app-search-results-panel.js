@@ -66,6 +66,12 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
     window.addEventListener('resize', () => this._resizeAsync());
   }
 
+  /**
+   * @method _onAppStateUpdate
+   * @description from AppStateInterface, called when app state updates
+   * 
+   * @param {Object} e 
+   */
   _onAppStateUpdate(e) {
     if( e.location.path[0] !== 'search') return;
     this._resizeAsync();
@@ -183,12 +189,22 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
     this.dispatchEvent(new CustomEvent('toggle-drawer'));
   }
 
+  /**
+   * @method _onPageSizeChange
+   * @description bound to select box change event, dispatch event to parent
+   * alerting new page size
+   */
   _onPageSizeChange() {
     this.dispatchEvent(new CustomEvent('page-size-change', {
       detail : parseInt(this.$.numPerPage.value)
     }));
   }
 
+  /**
+   * @method _onPaginationNav
+   * @description bound to scork-pagination `nav` event, dispatch event to parent
+   * alerting to new page 
+   */
   _onPaginationNav(e) {
     this.dispatchEvent(new CustomEvent('page-change', {
       detail : e.detail

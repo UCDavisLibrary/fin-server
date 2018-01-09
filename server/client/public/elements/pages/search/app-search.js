@@ -151,6 +151,11 @@ export class AppSearch extends Mixin(PolymerElement)
     this._esSetPaging(e.detail.startIndex);
   }
 
+  /**
+   * @method _toggleDrawer
+   * @description toggles the drawer state.  Listens to 
+   * toggle-drawer event from app-search-results-panel
+   */
   _toggleDrawer() {
     this.drawerOpen = !this.drawerOpen;
   }

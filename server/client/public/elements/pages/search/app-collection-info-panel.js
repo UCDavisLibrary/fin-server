@@ -32,6 +32,13 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
     this.active = true;
   }
 
+  /**
+   * @method _onSelectedCollectionUpdate
+   * @description from CollectionInterface, called when a collection is selected.
+   * This is done by setting a collection filter.
+   * 
+   * @param {Object} selected currently selected collection 
+   */
   _onSelectedCollectionUpdate(selected) {
     if( !selected ) return;
 

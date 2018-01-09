@@ -7,10 +7,7 @@ module.exports = subclass =>
 
     ready() {
       super.ready();
-
-      this.AuthModel.getUser()
-        .then(e => this.AuthModel.store.data)
-        .catch(e => console.error(e));
+      this._onAuthUpdate(this.AuthModel.store.getUser());
     }
 
     _onAuthUpdate(e) {

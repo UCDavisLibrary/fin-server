@@ -52,7 +52,7 @@ export class FinApp extends Mixin(PolymerElement)
       },
       appRoutes : {
         type : Array,
-        value : () => ['search', 'record']
+        value : () => APP_CONFIG.appRoutes
       }
     }
   }
@@ -64,9 +64,17 @@ export class FinApp extends Mixin(PolymerElement)
 
   ready() {
     super.ready();
-    this._getCollectionOverview();
+
+    // set initial user state
+    this.AuthModel.store.setUser(APP_CONFIG.user);
+
+    this._getCollectionOverview(); // from CollectionInterface
   }
 
+  /**
+   * @method _onAppStateUpdate
+   * @description AppStateInterface
+   */
   _onAppStateUpdate(e) {
     let page = e.location.path[0] || 'home';
     if( page === this.page ) return;
