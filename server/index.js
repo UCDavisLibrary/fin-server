@@ -22,6 +22,7 @@ const app = express();
 // Set up an Express session, which is required for CASAuthentication. 
 const RedisStore = require('connect-redis')(session); 
 app.use(session({
+    name : 'fin-sid',
     store: new RedisStore({
         host : 'redis'
     }),

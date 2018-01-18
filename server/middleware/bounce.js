@@ -36,7 +36,7 @@ module.exports = (cas) => {
 
 async function setCookie(req, res) {
   var newJwt = await jwt.createFromCasRequest(req);
-  
+
   res.cookie(
     config.jwt.cookieName, 
     newJwt,

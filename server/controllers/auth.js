@@ -5,26 +5,25 @@ const {config, logger} = require('@ucd-lib/fin-node-utils');
 var {URL} = require('url');
 const Logger = logger();
 
-function storeRedirect(req, res, next) {
-  req.session.cliRedirectUrl = req.query.cliRedirectUrl || '';
-  req.session.provideJwt = (req.query.provideJwt === 'true');
-  next();
-}
+router.get('/cas', authUtils.middleware.bounce, async (req, res) => {
 
-router.get('/cas', storeRedirect, authUtils.middleware.bounce, async (req, res) => {
-  var url = req.session.cliRedirectUrl || '/';
-  Logger.info('/auth/cas login request.  redirect=', url);
+  var url = '/';
+  var searchParams;
 
-  if( req.session.provideJwt ) {
+  if( req.session.cas_return_to ) {
+    searchParams = new URL('http://localhost'+req.session.cas_return_to).searchParams;
+  }
+ 
+  if( searchParams.get('cliRedirectUrl') ) {
+    url = searchParams.get('cliRedirectUrl');
+  }
+
+  if( searchParams.get('provideJwt') === 'true') {
     var newJwt = await authUtils.jwt.createFromCasRequest(req);
     url += '?jwt='+newJwt+'&username='+req.session[ authUtils.cas.session_name ];
   }
 
-  // reset stored redirect information
-  req.session.provideJwt = false;
-  req.session.cliRedirectUrl = '';
-
-  Logger.debug('/auth/cas login response.  redirect=', url);
+  Logger.info('/auth/cas login request.  redirect='+url);
   res.redirect(url);
 });
 
@@ -84,15 +83,14 @@ router.get('/cas/user', authUtils.cas.block, async ( req, res ) => {
 });
 
 router.get('/user', async ( req, res ) => {
-  let user = req.session[ authUtils.cas.session_name ];
+  let user = authUtils.getUserFromRequest(req);
 
   if( user ) {
-    var isAdmin = await authUtils.isAdmin(req.session[ authUtils.cas.session_name ]);
     let result = {
       loggedIn : true,
-      user
+      username : user.username
     };
-    if( isAdmin ) result.admin = true;
+    if( user.admin ) result.admin = true;
     res.json(result);
   } else {
     res.json({loggedIn: false});
@@ -112,7 +110,8 @@ router.get('/login-shell', authUtils.middleware.bounce, async (req, res) => {
 
 router.get('/logout', (req, res) => {
   res.clearCookie(config.jwt.cookieName);
-  res.redirect('/auth/cas/logout');
+  req.session.destroy();
+  res.redirect('/');
 });
 
 router.get('/cas/logout', authUtils.cas.logout);

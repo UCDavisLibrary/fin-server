@@ -38,6 +38,12 @@ class AuthUtils {
     return null;
   }
 
+  getUserFromRequest(req) {
+    let token = this.getJwtFromRequest(req);
+    if( !token ) return null;
+    return jwt.validate(token);
+  }
+
   async refreshToken(username) {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(48, async (err, buffer) => {

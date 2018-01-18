@@ -17,15 +17,14 @@ module.exports = (app) => {
     isRoot : true,
     appRoutes : config.server.appRoutes,
     getConfig : async (req, res) => {
-      let user = req.session[ authUtils.cas.session_name ];
+      let user = authUtils.getUserFromRequest(req);
 
       if( user ) {
-        var isAdmin = await authUtils.isAdmin(req.session[ authUtils.cas.session_name ]);
         let result = {
           loggedIn : true,
-          user
+          username : user.username
         };
-        if( isAdmin ) result.admin = true;
+        if( user.admin ) result.admin = true;
         user = result;
       } else {
         user = {loggedIn: false}
@@ -42,12 +41,4 @@ module.exports = (app) => {
    * Setup static asset dir
    */
   app.use(express.static(assetsDir));
-
-  
-  // args.appRoutes.forEach(route => {
-  //   args.app.use(`/${route}*`, (req, res) => {
-  //     res.set('Content-Type', 'text/html');
-  //     res.send(fs.readFileSync(path.join(args.assetsDir, 'index.html')));
-  //   });
-  // });
 }
