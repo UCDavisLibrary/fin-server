@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ucd-lib/fin-node-utils": "0.0.8",
+    "@ucd-lib/fin-node-utils": "0.0.10",
     "@ucd-lib/spa-router-middleware": "0.0.1",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
