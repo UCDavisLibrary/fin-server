@@ -101,7 +101,7 @@ services:
   # Trusted Proxy for Services
   ###
   trustedproxy:
-    build: ../../trusted-proxy
+    build: ../../services/trusted-proxy
     depends_on:
       - fcrepo
     environment:
@@ -113,7 +113,7 @@ services:
   # API Extension Services
   ###
   loris:
-    build: ../../loris
+    build: ../../services/loris
     depends_on:
       - fcrepo
 
@@ -128,7 +128,7 @@ services:
   essync:
     image: node:8.5
     volumes:
-      - ../../activemq/essync:/service
+      - ../../services/essync:/service
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -143,7 +143,7 @@ services:
   serialization:
     image: node:8.5
     volumes:
-      - ../../activemq/serialization:/service
+      - ../../services/serialization:/service
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}

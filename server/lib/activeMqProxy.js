@@ -2,6 +2,7 @@ const stompit = require('stompit');
 const {config, logger} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
 const Logger = logger();
+const EventEmitter = require('events');
 
 
 var connectOptions = {
@@ -17,7 +18,7 @@ var subscribeHeaders = {
   ack: 'client-individual'
 };
 
-class MessageConsumer {
+class MessageConsumer extends EventEmitter {
 
   connect() {
     setTimeout(() => {
@@ -57,39 +58,34 @@ class MessageConsumer {
       var id = headers['org.fcrepo.jms.identifier'];
       Logger.debug('ActiveMQ Event', id, headers['org.fcrepo.jms.eventType']);
 
-      await this.broadcastToServices(JSON.stringify({
+      this.broadcast({
         type : 'fcrepo-event',
         payload : {headers, body}
-      }));
-
-      this.client.ack(message);
-    });
-  }
-
-  async broadcastToServices(message) {
-    var services = config.services.activemq;
-    for( var i = 0; i < services.length; i++ ) {
-      try {
-        await this.broadcastToService(services[i], message);
-      } catch(e) {
-        Logger.error(e);
-      }
-    }
-  }
-
-  async broadcastToService(service, message) {
-    return new Promise((resolve, reject) => {
-      request({
-        type : 'POST',
-        uri : `http://${service}:3333`,
-        body : message 
-      },
-      (error, response, body) => {
-        if( error ) reject(error);
-        else resolve({response, body});
       });
+
+      // TODO: do we need to ack?
+      // this.client.ack(message);
     });
   }
+
+  broadcast(message) {
+    // send via JS events
+    this.emit('fcrepo-event', {headers, body});
+  }
+
+  // async broadcastToService(service, message) {
+  //   return new Promise((resolve, reject) => {
+  //     request({
+  //       type : 'POST',
+  //       uri : `http://${service}:3333`,
+  //       body : message 
+  //     },
+  //     (error, response, body) => {
+  //       if( error ) reject(error);
+  //       else resolve({response, body});
+  //     });
+  //   });
+  // }
 
   readMessage(message) {
     return new Promise((resolve, reject) => {
@@ -104,3 +100,5 @@ class MessageConsumer {
 
 var mc = new MessageConsumer();
 mc.connect();
+
+module.exports = mc;

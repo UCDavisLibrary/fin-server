@@ -6,6 +6,7 @@ const request = require('request');
 const {logger} = require('@ucd-lib/fin-node-utils');
 const Logger = logger();
 const config = require('../config');
+const serviceModel = require('../models/services');
 
 var proxy = httpProxy.createProxyServer({
     ignorePath : true
@@ -20,7 +21,6 @@ const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 class FcrepoProxy {
 
   constructor(app) {
-    this.extensions = config.services.extensions;
     app.use('/fcrepo', this.proxyPathResolver.bind(this));
 
     // listen for proxy responses, if the request is not a /fcrepo request
@@ -29,8 +29,8 @@ class FcrepoProxy {
       Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
 
       if( !this.isApiRequest(req) ) return;
-      if( this.isServiceRequest(req) ) return;
-      this.appendServiceLinkHeaders(req, proxyRes);
+      if( serviceModel.isServiceRequest(req) ) return;
+      serviceModel.appendServiceLinkHeaders(req, proxyRes);
     });
 
     Logger.debug('Initializing proxy');
@@ -50,27 +50,15 @@ class FcrepoProxy {
     }
 
     // if this is not a service request, preform basic fcrepo proxy request
-    if( !this.isServiceRequest(req) ) {
+    if( !serviceModel.isServiceRequest(req) ) {
       return this.fcrepoProxyRequest(req, res);
     }
 
     // otherwise we have a service request
     // parse the incoming request path
-    let parts = req.originalUrl.split(SERVICE_CHAR);
+    let serviceRequest = serviceModel.parseServiceRequest(req);
 
-    let extensionRequest = {
-      path : parts[0],
-      extension : {
-        name : '',
-        path : ''
-      }
-    }
-
-    parts = parts[1].split('/');
-    extensionRequest.extension.name = parts.shift();
-    extensionRequest.extension.path = parts.length > 0 ? '/'+parts.join('/') : '';
-
-    this.extensionProxyRequest(extensionRequest, req, res);
+    this.serviceProxyRequest(serviceRequest, req, res);
   }
 
   /**
@@ -90,24 +78,7 @@ class FcrepoProxy {
       path = path.replace(/fcr:metadata.*/, '');
     }
 
-    // var info = await this.containerInfo(path, req);
-    // if( info.access ) {
-    //   let ext;
-    //   for( var name in this.extensions ) {
-    //     ext = this.extensions[name];
-    //     if( info.binary && ext.onlyContainer ) continue;
-    //     if( !info.binary && ext.onlyBinary ) continue;
-    //     req.fcrepoInfo.links.push(`<${config.server.url}${path}svc:${name}>; rel="service"`);
-    //   }
-    // }
-
-    for( var name in this.extensions ) {
-      let ext = this.extensions[name];
-      // TODO: implement me
-      // if( info.binary && ext.onlyContainer ) continue;
-      // if( !info.binary && ext.onlyBinary ) continue;
-      req.fcrepoInfo.links.push(`<${config.server.url}${path}svc:${name}>; rel="service"`);
-    }
+    serviceModel.setServiceLinkHeaders(req.fcrepoInfo.links, path);
 
     proxy.web(req, res, {
       target : url
@@ -124,27 +95,28 @@ class FcrepoProxy {
 
   /**
    * 
-   * @param {*} extReq - Extension request object, parsed above
+   * @param {*} svcReq - Service request object, parsed above
    * @param {*} expReq - Express request object
    */
-  async extensionProxyRequest(extReq, expReq, res) {
-    if( !this.extensions[extReq.extension.name] ) {
-      return res.status(400).send(`Unknown Extension: `+extReq.extension.name);
+  async serviceProxyRequest(svcReq, expReq, res) {
+    if( !serviceModel.services[svcReq.name] ) {
+      return res.status(400).send(`Unknown Extension: `+svcReq.name);
     }
 
-    let info = await this.containerInfo(extReq.path, expReq);
+    let info = await this.containerInfo(svcReq.fcPath, expReq);
     if( !info.access ) {
       return res.status(403).send('Unauthorized');
     }
 
-    let ext = this.extensions[extReq.extension.name];
-    if( ext.onlyBinary && !info.binary ) {
-      return res.status(400).send('Invalid container type');
-    } else if( ext.onlyContainer && info.binary ) {
-      return res.status(400).send('Invalid container type');
-    }
+    let service = serviceModel.services[svcReq.name];
+    // TODO
+    // if( ext.onlyBinary && !info.binary ) {
+    //   return res.status(400).send('Invalid container type');
+    // } else if( ext.onlyContainer && info.binary ) {
+    //   return res.status(400).send('Invalid container type');
+    // }
 
-    let url = ext.proxy(ext.url, extReq.path, extReq.extension.path);
+    let url = service.renderUrlTemplate(svcReq.fcPath, svcReq.svcPath);
     proxy.web(expReq, res, {target : url});
   }
 
@@ -195,17 +167,6 @@ class FcrepoProxy {
         else resolve({response, body});
       });
     });
-  }
-
-  /**
-   * @method isServiceRequest
-   * @description does the given request have a originalUrl that matches a service request url?
-   * 
-   * @param {Object} req http request object
-   * @returns {Boolean} 
-   */
-  isServiceRequest(req) {
-    return req.originalUrl.match(IS_SERVICE_URL);
   }
 
   /**

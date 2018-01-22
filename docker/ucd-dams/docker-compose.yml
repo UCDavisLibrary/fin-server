@@ -17,7 +17,6 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_TTL=${JWT_TTL}
-      - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
       - DAMS_URL=${DAMS_URL}
       - DAMS_ENV=prod
     depends_on:
@@ -37,9 +36,10 @@ services:
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_COOKIE_NAME=${JWT_COOKIE_NAME}
       - JWT_VERBOSE=${JWT_VERBOSE}
       - DAMS_URL=${DAMS_URL}
+    ports:
+      - 61613:61613 #STOMP
 
   ###
   # Search
@@ -73,7 +73,7 @@ services:
   # Trusted Proxy for Services
   ###
   trustedproxy:
-    build: ../../trusted-proxy
+    build: ../../services/trusted-proxy
     depends_on:
       - fcrepo
     environment:
@@ -87,13 +87,13 @@ services:
 
   # iiif server
   loris:
-    build: ../../loris
+    build: ../../services/loris
     depends_on:
       - fcrepo
 
   # elastic search indexer
   essync:
-    build: ../../activemq/essync
+    build: ../../services/essync
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -107,7 +107,7 @@ services:
 
   # file system serialization
   serialization:
-    build: ../../activemq/serialization
+    build: ../../services/serialization
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
