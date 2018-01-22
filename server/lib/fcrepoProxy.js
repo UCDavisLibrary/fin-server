@@ -30,7 +30,7 @@ class FcrepoProxy {
 
       if( !this.isApiRequest(req) ) return;
       if( serviceModel.isServiceRequest(req) ) return;
-      serviceModel.appendServiceLinkHeaders(req, proxyRes);
+      this.appendServiceLinkHeaders(req, proxyRes);
     });
 
     Logger.debug('Initializing proxy');

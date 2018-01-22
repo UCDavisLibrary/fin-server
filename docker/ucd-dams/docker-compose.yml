@@ -12,7 +12,7 @@ services:
   server:
     build: ../../server
     volumes:
-      - ../services.js:/etc/dams/services.js
+      - ../default-services.js:/etc/dams/default-services.js
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}

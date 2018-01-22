@@ -13,7 +13,7 @@ services:
     build: ../../server
     volumes:
       - ../../server:/app
-      - ../services.js:/etc/dams/services.js
+      - ../default-services.js:/etc/dams/default-services.js
     ports:
       - 3000:3001
       - 9229:9229

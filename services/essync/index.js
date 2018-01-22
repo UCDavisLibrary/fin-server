@@ -1,1 +1,1 @@
-require('./message-server')
+require('./message-server');

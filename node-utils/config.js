@@ -1,11 +1,8 @@
 const fs = require('fs');
 
-let services = {
-  extensions : {},
-  activemq : []
-}
-if( fs.existsSync('/etc/dams/services.js') ) {
-  services = require('/etc/dams/services.js');
+let defaultServices = [];
+if( fs.existsSync('/etc/dams/default-services.js') ) {
+  defaultServices = require('/etc/dams/default-services.js');
 }
 
 var fcrepoHostname = 'fcrepo';
@@ -21,7 +18,7 @@ module.exports = {
     cookieMaxAge : process.env.SERVER_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 86400 * 30)
   },
 
-  services : services,
+  defaultServices : defaultServices,
 
   cas : {
     url : process.env.CAS_URL || 'https://cas.ucdavis.edu/cas'

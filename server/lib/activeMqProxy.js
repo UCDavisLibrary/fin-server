@@ -1,4 +1,4 @@
-const stompit = require('stompit');
+const stompit = require('stompit'); // http://gdaws.github.io/node-stomp/api/channel/
 const {config, logger} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
 const Logger = logger();
@@ -66,11 +66,13 @@ class MessageConsumer extends EventEmitter {
       // TODO: do we need to ack?
       // this.client.ack(message);
     });
+
+
   }
 
   broadcast(message) {
     // send via JS events
-    this.emit('fcrepo-event', {headers, body});
+    this.emit('fcrepo-event', message);
   }
 
   // async broadcastToService(service, message) {

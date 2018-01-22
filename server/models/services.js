@@ -3,6 +3,7 @@ const {logger} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
 const config = require('../config');
 const activeMqProxy = require('../lib/activeMqProxy');
+const Logger = logger();
 
 const SERVICE_CHAR = '/svc:'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
@@ -10,17 +11,54 @@ const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 class ServiceModel {
 
   constructor() {
+    this.reloadTimer = -1;
     this.services = {};
-    activeMqProxy.on('fcrepo-event', e => this._onFcrepoEvent(e));
-    this.reload();
+    this.SERVICE_ROOT = api.getBaseUrl({path : api.service.ROOT});
+    this.init();
   }
 
-  async reload() {
+  /**
+   * @method init
+   * @description ensure the default services are added to server
+   */
+  async init() {
+    // make sure our root service container is in place
     await api.service.init();
-    this.SERVICE_ROOT = api.getBaseUrl({path : api.service.ROOT});
 
+    // ensure all default services
+    for( var i = 0; i < config.defaultServices.length; i++ ) {
+      let service = config.defaultServices[i];
+
+      var {response} = await api.head({
+        path : '/'+api.service.ROOT+'/'+service.name
+      });
+      if( response.statusCode !== 404 ) continue;
+
+      await api.service.create(service);
+    }
+
+    // reload all service definitions
+    await this.reload();
+
+    // list for service definition updates
+    activeMqProxy.on('fcrepo-event', e => this._onFcrepoEvent(e));
+  }
+
+  /**
+   * @method reload
+   * @description reload all services from root service container
+   */
+  async reload() {
     let list = await api.service.list();
-    list.forEach(service => this.services[name] = new ServiceDefinition(service));
+    list.forEach(service => this.services[service.name] = new ServiceDefinition(service));
+  }
+
+  bufferedReload() {
+    if( this.reloadTimer !== -1 ) clearTimeout(this.reloadTimer);
+    this.reloadTimer = setTimeout(() => {
+      this.reloadTimer = -1;
+      this.reload();
+    }, 1000);
   }
 
   /**
@@ -61,8 +99,13 @@ class ServiceModel {
   
 
   _onFcrepoEvent(event) {
-    // TODO: if update to a service, reload services
-    console.log(event);
+    let id = event.payload.headers['org.fcrepo.jms.identifier'];
+
+    // this is a service update, reload services
+    if( id.indexOf('/'+api.service.ROOT) === 0 ) {
+      this.bufferedReload();
+      return;
+    }
 
     for( let key in this.services ) {
       let service = this.services[key];
@@ -73,7 +116,7 @@ class ServiceModel {
   }
 
   _sendHttpNotification(name, url, event) {
-    logger.debug(`Sending HTTP webhook notifiction to service ${name} ${url}`);
+    Logger.info(`Sending HTTP webhook notifiction to service ${name} ${url}`);
     request({
       type : 'POST',
       uri : url,
@@ -83,7 +126,7 @@ class ServiceModel {
       body : JSON.stringify(event)
     },
     (error, response, body) => {
-      if( error ) logger.error(`Failed to send HTTP notification to service ${name} ${url}`, error);
+      if( error ) Logger.error(`Failed to send HTTP notification to service ${name} ${url}`, error);
     });
   }
 
@@ -102,10 +145,10 @@ class ServiceDefinition {
   }
 
   set frame(val) {
-    if( typeof val === 'string' ) {
+    if( val && typeof val === 'string' ) {
       val = JSON.parse(val);
     }
-    this._frame = value;
+    this._frame = val;
   }
 
   get frame() {
