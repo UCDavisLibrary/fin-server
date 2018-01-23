@@ -69,16 +69,13 @@ class FcrepoProxy {
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
     Logger.debug(`Fcrepo proxy request: ${url}`);
 
-
-    // lookup and store service link headers
-    req.fcrepoInfo = {links: []};
-
     let path = req.originalUrl;
     if( this.isMetadataRequest(req) ) {
       path = path.replace(/fcr:metadata.*/, '');
     }
 
-    serviceModel.setServiceLinkHeaders(req.fcrepoInfo.links, path);
+    // store for serivce headers
+    req.fcPath = path;
 
     proxy.web(req, res, {
       target : url
@@ -88,9 +85,16 @@ class FcrepoProxy {
   appendServiceLinkHeaders(req, res) {
     if( res.statusCode < 200 || res.statusCode >= 300 ) return;
 
-    let links = res.headers.link ? res.headers.link.split(',') : [];
-    req.fcrepoInfo.links.forEach(link => links.push(link));
-    res.headers.link = links.join(',');
+    let types = [];
+    let clinks = [];
+    if( res.headers && res.headers.link ) {
+      let links = api.parseLinkHeader(res.headers.link);
+      if( links.type ) types = links.type.map(link => link.url);
+      clinks = res.headers.link.split(',')
+    }
+  
+    serviceModel.setServiceLinkHeaders(clinks, req.fcPath, types);
+    res.headers.link = clinks.join(',');
   }
 
   /**

@@ -89,18 +89,33 @@ class ServiceModel {
    * 
    * @param {Array} links array of current links
    * @param {String} fcPath current fedora container path
+   * @param {Array} types current links for path
    */
-  setServiceLinkHeaders(links, fcPath) {
+  setServiceLinkHeaders(links, fcPath, types) {
+    fcPath = fcPath.replace(/\/^/, '');
+
     for( var id in this.services ) {
       let service = this.services[id];
-      if( service.type !== 'ProxyService' ) continue;
-      if( !service.urlTemplate ) continue;
+      if( service.type === api.service.TYPES.WEBHOOK ) continue;
+      if( service.type === api.service.TYPES.PROXY && !service.urlTemplate ) continue;
 
-      // TODO: only append service links if the service supports to container type
+      if( !this._supportedTypeInType(service.supportedTypes, types) ) {
+        return;
+      }
 
-      links.push(`<${config.server.url}${fcPath}svc:${id}>; rel="service"`);
+      links.push(`<${config.server.url}${fcPath}/svc:${id}>; rel="service"`);
     }
   }
+
+  _supportedTypeInType(supportedTypes, types) {
+    if( !supportedTypes.length ) return true;
+
+    for( var i = 0; i < supportedTypes.length; i++ ) {
+      if( types.indexOf(supportedTypes[i]) > -1 ) return true;
+    }
+    return false;
+  }
+
 
   /**
    * @method parseServiceRequest
@@ -235,6 +250,7 @@ class ServiceDefinition {
     this.urlTemplate = data.urlTemplate || '';
     this.title = data.title || '';
     this.description = data.description || '';
+    this.supportedTypes = data.supportedTypes || [];
     this.id = data.id || '';
   }
 

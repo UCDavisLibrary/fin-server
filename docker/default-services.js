@@ -21,6 +21,7 @@ module.exports = [
     id : 'iiif',
     description : 'International Image Interoperability Framework Service',
     type : 'ProxyService',
+    supportedType : 'http://www.w3.org/ns/ldp#NonRDFSource',
     urlTemplate : 'http://loris:5004{{fcPath}}{{svcPath}}'
   },
   {
@@ -39,6 +40,7 @@ module.exports = [
     id : 'demo-frame-service',
     description : 'A demo of the frame service',
     type : 'FrameService',
+    supportedType : 'http://www.w3.org/ns/ldp#Container',
     frame : testFrame
   }
 ];
