@@ -1,6 +1,7 @@
 const api = require('@ucd-lib/fin-node-api');
 const {logger} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
+const {URL} = require('url');
 const config = require('../config');
 const activeMqProxy = require('../lib/activeMqProxy');
 const Logger = logger();
@@ -47,12 +48,18 @@ class ServiceModel {
   /**
    * @method reload
    * @description reload all services from root service container
+   * 
+   * @return {Promise}
    */
   async reload() {
     let list = await api.service.list();
-    list.forEach(service => this.services[service.name] = new ServiceDefinition(service));
+    list.forEach(service => this.services[service.id] = new ServiceDefinition(service));
   }
 
+  /**
+   * @method bufferedReload
+   * @description just like reload but buffers request for 1 sec
+   */
   bufferedReload() {
     if( this.reloadTimer !== -1 ) clearTimeout(this.reloadTimer);
     this.reloadTimer = setTimeout(() => {
@@ -72,15 +79,34 @@ class ServiceModel {
     return req.originalUrl.match(IS_SERVICE_URL);
   }
 
-  setServiceLinkHeaders(links, path) {
-    for( var name in this.services ) {
-      let service = this.services[name];
+  /**
+   * @method setServiceLinkHeaders
+   * @description given an array of links and the current fcPath, append on the link headers
+   * 
+   * @param {Array} links array of current links
+   * @param {String} fcPath current fedora container path
+   */
+  setServiceLinkHeaders(links, fcPath) {
+    for( var id in this.services ) {
+      let service = this.services[id];
       if( service.type !== 'ProxyService' ) continue;
       if( !service.urlTemplate ) continue;
-      links.push(`<${config.server.url}${path}svc:${name}>; rel="service"`);
+
+      // TODO: only append service links if the service supports to container type
+
+      links.push(`<${config.server.url}${fcPath}svc:${id}>; rel="service"`);
     }
   }
 
+  /**
+   * @method parseServiceRequest
+   * @description given a ExpressJS Request object, parse out the service parameters.  These are of 
+   * the form: http://my-host.org/[fcPath]/svc:[name]/[svcPath]
+   * 
+   * @param {Object} req Express Request
+   * 
+   * @returns {Object} 
+   */
   parseServiceRequest(req) {
     let parts = req.originalUrl.split(SERVICE_CHAR);
 
@@ -97,7 +123,15 @@ class ServiceModel {
     return serviceRequest
   }
   
-
+  /**
+   * @method _onFcrepoEvent
+   * @description called from event listener on activeMqProxy.  called whenever
+   * a 'fcrepo-event' is emitted.  These come from ActiveMQ events.  Either reloads
+   * service definitions if .service path, ignore is .[name] path or sends HTTP
+   * webhook notification
+   * 
+   * @param {Object} event
+   */
   _onFcrepoEvent(event) {
     let id = event.payload.headers['org.fcrepo.jms.identifier'];
 
@@ -107,6 +141,9 @@ class ServiceModel {
       return;
     }
 
+    // TODO: check for dot paths, we don't send those
+    if( this._isDotPath(id) ) return;
+
     for( let key in this.services ) {
       let service = this.services[key];
       if( !service.webhook ) continue;
@@ -115,8 +152,13 @@ class ServiceModel {
     }
   }
 
+  /**
+   * @method _sendHttpNotification
+   * @description send a HTTP webhook notification.  we don't really care about the response
+   * unless there is an error, then log it.
+   */
   _sendHttpNotification(name, url, event) {
-    Logger.info(`Sending HTTP webhook notifiction to service ${name} ${url}`);
+    Logger.debug(`Sending HTTP webhook notifiction to service ${name} ${url}`);
     request({
       type : 'POST',
       uri : url,
@@ -127,7 +169,35 @@ class ServiceModel {
     },
     (error, response, body) => {
       if( error ) Logger.error(`Failed to send HTTP notification to service ${name} ${url}`, error);
+      if( !api.isSuccess(response.statusCode) ) {
+        Logger.error(`Failed to send HTTP notification to service ${name} ${url}`, response.statusCode, response.body);
+      }
     });
+  }
+  
+  /**
+   * @method _isDotPath
+   * @description check to see if there is a folder name that starts with a dot.
+   * if so, it's a dot path
+   * 
+   * @param {String} path url path to check
+   * 
+   * @returns {Boolean} 
+   */
+  _isDotPath(path) {
+    if( path.match(/^http/i) ) {
+      let urlInfo = new URL(path);
+      path = urlInfo.pathname;
+    }
+    
+    path = path.split('/');
+    for( var i = 0; i < path.length; i++ ) {
+      if( path[i].match(/^\./) ) {
+        return true;
+      }
+    }
+    
+    return false;
   }
 
 }

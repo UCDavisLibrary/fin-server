@@ -5,7 +5,7 @@ module.exports = [
     name : 'iiif',
     description : 'International Image Interoperability Framework Service',
     type : 'ProxyService',
-    urlTemplate : 'http://loris:5004{{fcPath}{{svcPath}}'
+    urlTemplate : 'http://loris:5004{{fcPath}}{{svcPath}}'
   },
   {
     name : 'essync',
