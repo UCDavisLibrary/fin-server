@@ -2,7 +2,7 @@ const express = require('express');
 const httpProxy = require('http-proxy');
 const {URL} = require('url');
 const request = require('request');
-
+const api = require('@ucd-lib/fin-node-api');
 const {logger} = require('@ucd-lib/fin-node-utils');
 const Logger = logger();
 const config = require('../config');
@@ -116,8 +116,32 @@ class FcrepoProxy {
     //   return res.status(400).send('Invalid container type');
     // }
 
-    let url = service.renderUrlTemplate(svcReq.fcPath, svcReq.svcPath);
-    proxy.web(expReq, res, {target : url});
+    if( service.type === api.service.TYPES.FRAME ) {
+      try {
+        let fcPath = svcReq.fcPath.replace(api.getConfig().basePath, '');
+        let framed = await serviceModel.renderFrame(service.id, fcPath);
+        res.json(framed);
+      } catch(e) {
+        res.status(500).send({
+          error : true,
+          message : 'Unable to render from frame service '+service.id,
+          details : {
+            message : e.message,
+            stack : e.stack
+          },
+          frame : service.frame
+        });
+      }
+      
+    } else if( service.type === api.service.TYPES.FRAME ) {
+      let url = service.renderUrlTemplate(svcReq.fcPath, svcReq.svcPath);
+      proxy.web(expReq, res, {target : url});
+    } else {
+      res.status(500).json({
+        error : true,
+        message : 'Unsupported service type for request: '+serivce.type
+      })
+    }
   }
 
   /**

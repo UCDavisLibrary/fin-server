@@ -1,22 +1,44 @@
 // default services.
 // the service model will ensure these are added
+
+let testFrame = {
+  "@context": {
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "title" : {
+      "@id": "dc:title"
+    },
+    "description" : {
+      "@id": "dc:description"
+    }
+  },
+  "@explicit": true,
+  "title": {},
+  "description": {}
+}
+
 module.exports = [
   {
-    name : 'iiif',
+    id : 'iiif',
     description : 'International Image Interoperability Framework Service',
     type : 'ProxyService',
     urlTemplate : 'http://loris:5004{{fcPath}}{{svcPath}}'
   },
   {
-    name : 'essync',
+    id : 'essync',
     description : 'Update Elastic Search indexes when fedora updates',
     type : 'WebhookService',
     webhook : 'http://essync:3333'
   },
   {
-    name : 'serialization',
+    id : 'serialization',
     description : 'Serializes all fedora data to filesystem',
     type : 'WebhookService',
     webhook : 'http://serialization:3333'
+  },
+  { 
+    id : 'demo-frame-service',
+    description : 'A demo of the frame service',
+    type : 'FrameService',
+    frame : testFrame
   }
 ];

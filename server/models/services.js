@@ -4,7 +4,11 @@ const request = require('request');
 const {URL} = require('url');
 const config = require('../config');
 const activeMqProxy = require('../lib/activeMqProxy');
+const jsonld = require('jsonld');
+const util = require('util');
 const Logger = logger();
+
+jsonld.frame = util.promisify(jsonld.frame);
 
 const SERVICE_CHAR = '/svc:'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
@@ -31,7 +35,7 @@ class ServiceModel {
       let service = config.defaultServices[i];
 
       var {response} = await api.head({
-        path : '/'+api.service.ROOT+'/'+service.name
+        path : '/'+api.service.ROOT+'/'+service.id
       });
       if( response.statusCode !== 404 ) continue;
 
@@ -119,8 +123,28 @@ class ServiceModel {
     parts = parts[1].split('/');
     serviceRequest.name = parts.shift();
     serviceRequest.svcPath = parts.length > 0 ? '/'+parts.join('/') : '';
-  
+
     return serviceRequest
+  }
+
+  /**
+   * @method renderFrame
+   * @description render a json-ld frame service
+   */
+  async renderFrame(service, path) {
+    if( !this.services[service] ) throw new Error('Unknown service: '+service);
+    if( !this.services[service].frame ) throw new Error(`Serivce ${service} has no registered frame`);
+    let frame = this.services[service].frame;
+
+    let {response} = await api.get({
+      path: path,
+      headers : {Accept : api.RDF_FORMATS.JSON_LD}
+    });
+    if( response.statusCode !== 200 ) throw new Error(response.statusCode+' '+response.body);
+
+    let container = JSON.parse(response.body);
+    console.log(JSON.stringify(container));
+    return await jsonld.frame(container, frame);
   }
   
   /**
@@ -141,7 +165,7 @@ class ServiceModel {
       return;
     }
 
-    // TODO: check for dot paths, we don't send those
+    // check for dot paths, we don't send those
     if( this._isDotPath(id) ) return;
 
     for( let key in this.services ) {
@@ -174,7 +198,7 @@ class ServiceModel {
       }
     });
   }
-  
+
   /**
    * @method _isDotPath
    * @description check to see if there is a folder name that starts with a dot.
@@ -211,7 +235,7 @@ class ServiceDefinition {
     this.urlTemplate = data.urlTemplate || '';
     this.title = data.title || '';
     this.description = data.description || '';
-    this.name = data.name || '';
+    this.id = data.id || '';
   }
 
   set frame(val) {
