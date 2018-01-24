@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
 var config = require('./config');
+const logger = require('./logger')();
 
 class JwtUtils {
 
@@ -52,15 +53,15 @@ class JwtUtils {
       token = jwt.verify(token, config.jwt.secret);
       var issuer = token.iss;
       if( issuer !== config.jwt.issuer ) {
-        console.log('Invalid JWT Token:', `Invalid issuer: ${issuer}/${config.jwt.issuer}`);
+        logger.info('Invalid JWT Token:', `Invalid issuer: ${issuer}/${config.jwt.issuer}`);
         return false;
       }
       if( !token.username ) {
-        console.log('Invalid JWT Token:', `No username provided`);
+        logger.info('Invalid JWT Token:', `No username provided`);
         return false;
       }
     } catch(e) {
-      console.log('Invalid JWT Token:', e.message);
+      logger.info('Invalid JWT Token:', e.message);
       return false;
     }
 

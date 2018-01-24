@@ -16,9 +16,11 @@ router.get('/cas', authUtils.middleware.bounce, async (req, res) => {
  
   if( searchParams.get('cliRedirectUrl') ) {
     url = searchParams.get('cliRedirectUrl');
+  } else if( req.query.cliRedirectUrl ) {
+    url = req.query.cliRedirectUrl;
   }
 
-  if( searchParams.get('provideJwt') === 'true') {
+  if( searchParams.get('provideJwt') === 'true' || req.query.provideJwt === 'true') {
     var newJwt = await authUtils.jwt.createFromCasRequest(req);
     url += '?jwt='+newJwt+'&username='+req.session[ authUtils.cas.session_name ];
   }

@@ -1,4 +1,5 @@
-const {jwt, config} = require('@ucd-lib/fin-node-utils');
+const {jwt, config, logger} = require('@ucd-lib/fin-node-utils');
+const Logger = logger();
 
 // wrapper for case bounce
 // setting our auth token
@@ -17,6 +18,7 @@ module.exports = (cas) => {
 
       // if valid jwt set in cookie, we are good to go
       if( token && jwt.validate(token) ) {
+        Logger.debug('Auth middleware: valid token, allow user to proceed');
         return next();
       }
     }
@@ -25,7 +27,10 @@ module.exports = (cas) => {
     req.url = req.originalUrl;
 
     // otherwise bounce to cas
+    Logger.debug('Auth middleware: redirecting to CAS');
     cas.bounce(req, res, async () => {
+      Logger.debug('Auth middleware: CAS redirection complete, continuting');
+
       // after CAS module completes login flow,
       // set JWT cookie and retur
       await setCookie(req, res);

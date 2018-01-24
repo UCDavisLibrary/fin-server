@@ -137,13 +137,13 @@ class FcrepoProxy {
         });
       }
       
-    } else if( service.type === api.service.TYPES.FRAME ) {
+    } else if( service.type === api.service.TYPES.PROXY ) {
       let url = service.renderUrlTemplate(svcReq.fcPath, svcReq.svcPath);
       proxy.web(expReq, res, {target : url});
     } else {
       res.status(500).json({
         error : true,
-        message : 'Unsupported service type for request: '+serivce.type
+        message : 'Unsupported service type for request: '+service.type
       })
     }
   }
