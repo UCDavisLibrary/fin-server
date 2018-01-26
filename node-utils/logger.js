@@ -17,7 +17,7 @@ module.exports = (name) => {
   if( logger ) return logger;
 
   logger = bunyan.createLogger({
-    name: name,
+    name: name || 'fin-server-generic',
     level: config.server.loglevel || 'info',
     streams: [
       // Log to the console
