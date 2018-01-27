@@ -158,7 +158,6 @@ class ServiceModel {
     if( response.statusCode !== 200 ) throw new Error(response.statusCode+' '+response.body);
 
     let container = JSON.parse(response.body);
-    console.log(JSON.stringify(container));
     return await jsonld.frame(container, frame);
   }
   

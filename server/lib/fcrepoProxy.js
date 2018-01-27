@@ -156,6 +156,12 @@ class FcrepoProxy {
 
     if( service.type === api.service.TYPES.FRAME ) {
       try {
+        // if this is a binary resource w/ describedBy, make the call to described by
+        let describedBy = info.links.describedby || [];
+        if( describedBy.length ) {
+          svcReq.fcPath = new URL(describedBy[0].url).pathname;
+        }
+
         let fcPath = svcReq.fcPath.replace(api.getConfig().basePath, '');
         let framed = await serviceModel.renderFrame(service.id, fcPath);
         res.json(framed);
@@ -199,16 +205,23 @@ class FcrepoProxy {
       uri : path
     }, token);
 
+    let links = {};
+    if( response.headers.link ) {
+      links = api.parseLinkHeader(response.headers.link);
+    }
+
     if( response.statusCode >= 300 ) {
-      return {
-        access : false
-      }
+      return {access : false}
     }
 
     if( response.headers['content-disposition'] ) {
-      return {access: true, binary: true};
+      return {
+        access: true, 
+        binary: true,
+        links 
+      };
     }
-    return {access: true, binary: false};
+    return {access: true, binary: false, links};
   }
 
   /**
