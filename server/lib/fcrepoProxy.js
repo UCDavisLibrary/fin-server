@@ -21,6 +21,12 @@ const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 class FcrepoProxy {
 
   constructor(app) {
+    this.CORS_HEADERS = {
+      ['Access-Control-Allow-Methods'] : 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      ['Access-Control-Allow-Headers'] : 'authorization, cookie, content-type',
+      ['Access-Control-Allow-Credentials'] : 'true'
+    }
+
     app.use('/fcrepo', this.proxyPathResolver.bind(this));
 
     // listen for proxy responses, if the request is not a /fcrepo request
@@ -28,12 +34,34 @@ class FcrepoProxy {
     proxy.on('proxyRes', (proxyRes, req, res) => {
       Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
 
+      // for now, open everything
+      this.setCors(req, proxyRes);
+
       if( !this.isApiRequest(req) ) return;
       if( serviceModel.isServiceRequest(req) ) return;
       this.appendServiceLinkHeaders(req, proxyRes);
     });
 
     Logger.debug('Initializing proxy');
+  }
+
+  setCors(req, res) {
+    let origin = '*';
+    if( req.headers.referer ) {
+      origin = new URL(req.headers.referer).origin;
+    }
+
+    if( res.set ) {
+      for( var key in this.CORS_HEADERS ) {
+        res.set(key, this.CORS_HEADERS[key]);
+      }
+      res.set('Access-Control-Allow-Origin', origin);
+    } else {
+      for( var key in this.CORS_HEADERS ) {
+        res.headers[key] = this.CORS_HEADERS[key];
+      }
+      res.headers['Access-Control-Allow-Origin'] = origin;
+    }
   }
 
   /**
@@ -47,6 +75,12 @@ class FcrepoProxy {
     req.timer = {
       time : Date.now(),
       label : `${req.method} ${req.originalUrl}`
+    }
+
+    // trying to sniff out browser preflight options request for cors
+    if( req.method === 'OPTIONS' && req.headers['access-control-request-headers'] ) {
+      this.setCors(req, res);
+      return res.status(200).send();
     }
 
     // if this is not a service request, preform basic fcrepo proxy request
