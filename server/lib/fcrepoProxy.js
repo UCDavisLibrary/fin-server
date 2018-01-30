@@ -16,8 +16,10 @@ var proxy = httpProxy.createProxyServer({
 const SERVICE_CHAR = '/svc:'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 
-
-// Link: <http://archive.example.org/services/foo/svc:list>; rel=”service”
+/**
+ * @class FcrepoProxy
+ * @description main class the interacts with fcrepo and handles service requests
+ */
 class FcrepoProxy {
 
   constructor(app) {

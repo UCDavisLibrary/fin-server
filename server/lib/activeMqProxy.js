@@ -1,4 +1,4 @@
-const stompit = require('stompit'); // http://gdaws.github.io/node-stomp/api/channel/
+const stompit = require('stompit'); // docs: http://gdaws.github.io/node-stomp/api/channel/
 const {config, logger} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
 const Logger = logger();
@@ -18,6 +18,14 @@ var subscribeHeaders = {
   ack: 'client-individual'
 };
 
+const ACTIVE_MQ_HEADER_ID = 'org.fcrepo.jms.identifier';
+const ACTIVE_MQ_HEADER_EVENT = 'org.fcrepo.jms.eventType';
+
+/**
+ * @class MessageConsumer
+ * @description connects to activemq via STOMP protocol and emits
+ * messages via nodejs events
+ */
 class MessageConsumer extends EventEmitter {
 
   connect() {
@@ -35,6 +43,10 @@ class MessageConsumer extends EventEmitter {
     }, this.wait);
   }
 
+  /**
+   * @method init
+   * @description connect to activemq via STOMP
+   */
   init() {
     if( !this.client ) return;
     Logger.info('STOMP client connected');
@@ -55,8 +67,8 @@ class MessageConsumer extends EventEmitter {
         } catch(e) {}
       }
 
-      var id = headers['org.fcrepo.jms.identifier'];
-      Logger.debug('ActiveMQ Event', id, headers['org.fcrepo.jms.eventType']);
+      var id = headers[ACTIVE_MQ_HEADER_ID];
+      Logger.debug('ActiveMQ Event', id, headers[ACTIVE_MQ_HEADER_EVENT]);
 
       this.broadcast({
         type : 'fcrepo-event',
@@ -66,29 +78,27 @@ class MessageConsumer extends EventEmitter {
       // TODO: do we need to ack?
       // this.client.ack(message);
     });
-
-
   }
 
+  /**
+   * @method message
+   * @description broadcast activemq message via event bus to internal modules
+   * 
+   * @param {Object} message
+   */
   broadcast(message) {
     // send via JS events
     this.emit('fcrepo-event', message);
   }
 
-  // async broadcastToService(service, message) {
-  //   return new Promise((resolve, reject) => {
-  //     request({
-  //       type : 'POST',
-  //       uri : `http://${service}:3333`,
-  //       body : message 
-  //     },
-  //     (error, response, body) => {
-  //       if( error ) reject(error);
-  //       else resolve({response, body});
-  //     });
-  //   });
-  // }
-
+  /**
+   * @method readMessage
+   * @description read a activemq message
+   * 
+   * @param {Object} message activemq message
+   * 
+   * @returns {Promise} resolves to activemq message
+   */
   readMessage(message) {
     return new Promise((resolve, reject) => {
       message.readString('utf-8', function(error, body) {

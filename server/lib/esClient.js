@@ -1,3 +1,5 @@
+// global connection to elastic search client
+
 const elasticsearch = require('elasticsearch');
 const {config} = require('@ucd-lib/fin-node-utils');
 

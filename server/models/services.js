@@ -7,11 +7,13 @@ const activeMqProxy = require('../lib/activeMqProxy');
 const jsonld = require('jsonld');
 const util = require('util');
 const Logger = logger();
+const jwt = require('jsonwebtoken');
 
 jsonld.frame = util.promisify(jsonld.frame);
 
 const SERVICE_CHAR = '/svc:'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
+const ACTIVE_MQ_HEADER_ID = 'org.fcrepo.jms.identifier';
 
 class ServiceModel {
 
@@ -25,6 +27,8 @@ class ServiceModel {
   /**
    * @method init
    * @description ensure the default services are added to server
+   * 
+   * @returns {Promise}
    */
   async init() {
     // make sure our root service container is in place
@@ -107,6 +111,16 @@ class ServiceModel {
     }
   }
 
+  /**
+   * @method _supportedTypeInType
+   * @description given a list of supported types of a serivce, is on of
+   * the fcrepo container types in the list
+   * 
+   * @param {Array} supportedTypes types the service supports
+   * @param {Array} types list of types for the container
+   * 
+   * @return {Boolean}
+   */
   _supportedTypeInType(supportedTypes, types) {
     if( !supportedTypes.length ) return true;
 
@@ -124,7 +138,7 @@ class ServiceModel {
    * 
    * @param {Object} req Express Request
    * 
-   * @returns {Object} 
+   * @returns {Object} service request information object
    */
   parseServiceRequest(req) {
     let parts = req.originalUrl.split(SERVICE_CHAR);
@@ -145,6 +159,11 @@ class ServiceModel {
   /**
    * @method renderFrame
    * @description render a json-ld frame service
+   * 
+   * @param {String} service service name
+   * @param {String} path fcrepo path to render
+   * 
+   * @returns {Promise} resolves to framed json-ld
    */
   async renderFrame(service, path) {
     if( !this.services[service] ) throw new Error('Unknown service: '+service);
@@ -171,7 +190,7 @@ class ServiceModel {
    * @param {Object} event
    */
   _onFcrepoEvent(event) {
-    let id = event.payload.headers['org.fcrepo.jms.identifier'];
+    let id = event.payload.headers[ACTIVE_MQ_HEADER_ID];
 
     // this is a service update, reload services
     if( id.indexOf('/'+api.service.ROOT) === 0 ) {
@@ -194,20 +213,29 @@ class ServiceModel {
    * @method _sendHttpNotification
    * @description send a HTTP webhook notification.  we don't really care about the response
    * unless there is an error, then log it.
+   * 
+   * @param {String} name service name
+   * @param {String} url webhook url to post to
+   * @param {Object} event event payload
+   * @param {String} secret optional.  service secret to encrypt auth token with
    */
-  _sendHttpNotification(name, url, event) {
+  _sendHttpNotification(name, url, event, secret) {
     Logger.debug(`Sending HTTP webhook notifiction to service ${name} ${url}`);
+
+    let token = jwt.sign({issuer: config.jwt.issuer, type: 'proxy-service'}, secret || config.jwt.secret);
+
     request({
       type : 'POST',
       uri : url,
       headers : {
+        'Authorization' : `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
       body : JSON.stringify(event)
     },
     (error, response, body) => {
-      if( error ) Logger.error(`Failed to send HTTP notification to service ${name} ${url}`, error);
-      if( !api.isSuccess(response.statusCode) ) {
+      if( error ) return Logger.error(`Failed to send HTTP notification to service ${name} ${url}`, error);
+      if( !api.isSuccess(response) ) {
         Logger.error(`Failed to send HTTP notification to service ${name} ${url}`, response.statusCode, response.body);
       }
     });
