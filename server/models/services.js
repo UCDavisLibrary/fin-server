@@ -33,6 +33,7 @@ class ServiceModel {
   async init() {
     // make sure our root service container is in place
     await api.service.init();
+    let list = await api.service.list();
 
     // ensure all default services
     for( var i = 0; i < config.defaultServices.length; i++ ) {
@@ -41,7 +42,12 @@ class ServiceModel {
       var {response} = await api.head({
         path : '/'+api.service.ROOT+'/'+service.id
       });
-      if( response.statusCode !== 404 ) continue;
+      if( response.statusCode === 200 ) {
+        await api.delete({
+          path: '/'+api.service.ROOT+'/'+service.id,
+          permanent: true
+        })
+      }
 
       await api.service.create(service);
     }
@@ -49,7 +55,7 @@ class ServiceModel {
     // reload all service definitions
     await this.reload();
 
-    // list for service definition updates
+    // listen for service definition updates
     activeMqProxy.on('fcrepo-event', e => this._onFcrepoEvent(e));
   }
 
@@ -170,10 +176,18 @@ class ServiceModel {
     if( !this.services[service].frame ) throw new Error(`Serivce ${service} has no registered frame`);
     let frame = this.services[service].frame;
 
-    let {response} = await api.get({
-      path: path,
+    let options = {
+      path : path,
       headers : {Accept : api.RDF_FORMATS.JSON_LD}
-    });
+    }
+
+    // if we are not in development and running on localhost
+    if( !config.server.url.match(/(localhost|127.0.0.1)/) ) {
+      // we want the id's to have to correct host representation
+      options.host = config.server.url;
+    }
+
+    let {response} = await api.get(options);
     if( response.statusCode !== 200 ) throw new Error(response.statusCode+' '+response.body);
 
     let container = JSON.parse(response.body);

@@ -140,7 +140,7 @@ class FcrepoProxy {
    */
   async serviceProxyRequest(svcReq, expReq, res) {
     if( !serviceModel.services[svcReq.name] ) {
-      return res.status(400).send(`Unknown Extension: `+svcReq.name);
+      return res.status(400).send(`Unknown Service: `+svcReq.name);
     }
 
     let info = await this.containerInfo(svcReq.fcPath, expReq);

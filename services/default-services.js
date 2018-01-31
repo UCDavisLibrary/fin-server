@@ -1,21 +1,6 @@
 // default services.
 // the service model will ensure these are added
 
-let testFrame = {
-  "@context": {
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "title" : {
-      "@id": "dc:title"
-    },
-    "description" : {
-      "@id": "dc:description"
-    }
-  },
-  "@explicit": true,
-  "title": {},
-  "description": {}
-}
-
 module.exports = [
   {
     id : 'iiif',
@@ -26,21 +11,29 @@ module.exports = [
   },
   {
     id : 'essync',
-    description : 'Update Elastic Search indexes when fedora updates',
+    title : 'Elastic Search Sync',
+    description : 'Notify Elastic Search indexer when fedora updates',
     type : 'WebhookService',
     webhook : 'http://essync:3333'
+  },
+  {
+    id : 'es-record-frame',
+    title : 'Elastic Search - Collection Record Frame',
+    description : 'Used for updating Elastic Search indexes when fedora updates',
+    type : 'FrameService',
+    frame : require('./frames/es-record.json')
+  },
+  {
+    id : 'es-collection-frame',
+    title : 'Elastic Search - Collection Frame',
+    description : 'Used for updating Search indexes when fedora updates',
+    type : 'FrameService',
+    frame : require('./frames/es-collection.json')
   },
   {
     id : 'serialization',
     description : 'Serializes all fedora data to filesystem',
     type : 'WebhookService',
     webhook : 'http://serialization:3333'
-  },
-  { 
-    id : 'demo-frame-service',
-    description : 'A demo of the frame service',
-    type : 'FrameService',
-    supportedType : 'http://www.w3.org/ns/ldp#Container',
-    frame : testFrame
   }
 ];
