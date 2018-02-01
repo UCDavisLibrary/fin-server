@@ -52,3 +52,7 @@ the /docker/ucd-dams dir:
 ```bash
 $ docker-compose exec server node app/cli example
 ```
+
+# Services
+
+[See service README](services/README.md)
