@@ -108,12 +108,13 @@ class ServiceModel {
       let service = this.services[id];
       if( service.type === api.service.TYPES.WEBHOOK ) continue;
       if( service.type === api.service.TYPES.PROXY && !service.urlTemplate ) continue;
+      if( service.type === api.service.TYPES.EXTERNAL && !service.urlTemplate ) continue;
 
       if( !this._supportedTypeInType(service.supportedTypes, types) ) {
-        return;
+        continue;
       }
 
-      links.push(`<${config.server.url}${fcPath}/svc:${id}>; rel="service"`);
+      links.push(`<${config.server.url}${fcPath}/svc:${id}>; rel="service" type="${service.type}"`);
     }
   }
 
@@ -150,6 +151,7 @@ class ServiceModel {
     let parts = req.originalUrl.split(SERVICE_CHAR);
 
     let serviceRequest = {
+      fcUrl : config.server.url+req.originalUrl.replace(new RegExp(SERVICE_CHAR+'.*'), ''),
       fcPath : parts[0],
       name : '',
       svcPath : ''
@@ -306,10 +308,12 @@ class ServiceDefinition {
     return this._frame;
   }
 
-  renderUrlTemplate(fcPath = '', svcPath = '') {
-    return this.urlTemplate
-               .replace(/{{fcPath}}/g, fcPath)
-               .replace(/{{svcPath}}/g, svcPath)
+  renderUrlTemplate(params) {
+    let url = this.urlTemplate;
+    for( var key in params ) {
+      url = url.replace(new RegExp(`{{${key}}}`, 'g'), params[key]);
+    }
+    return url.replace(/{{.*}}/g, '');
   }
 
 }

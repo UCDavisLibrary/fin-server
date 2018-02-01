@@ -6,6 +6,8 @@ const api = require('@ucd-lib/fin-node-api');
 const {logger} = require('@ucd-lib/fin-node-utils');
 const Logger = logger();
 const config = require('../config');
+const auth = require('../lib/auth');
+const querystring = require('querystring');
 const serviceModel = require('../models/services');
 
 var proxy = httpProxy.createProxyServer({
@@ -15,6 +17,11 @@ var proxy = httpProxy.createProxyServer({
 
 const SERVICE_CHAR = '/svc:'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
+const CORS_HEADERS = {
+  ['Access-Control-Allow-Methods'] : 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+  ['Access-Control-Allow-Headers'] : 'authorization, cookie, content-type',
+  ['Access-Control-Allow-Credentials'] : 'true'
+}
 
 /**
  * @class FcrepoProxy
@@ -23,12 +30,6 @@ const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 class FcrepoProxy {
 
   constructor(app) {
-    this.CORS_HEADERS = {
-      ['Access-Control-Allow-Methods'] : 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      ['Access-Control-Allow-Headers'] : 'authorization, cookie, content-type',
-      ['Access-Control-Allow-Credentials'] : 'true'
-    }
-
     app.use('/fcrepo', this.proxyPathResolver.bind(this));
 
     // listen for proxy responses, if the request is not a /fcrepo request
@@ -54,13 +55,13 @@ class FcrepoProxy {
     }
 
     if( res.set ) {
-      for( var key in this.CORS_HEADERS ) {
-        res.set(key, this.CORS_HEADERS[key]);
+      for( var key in CORS_HEADERS ) {
+        res.set(key, CORS_HEADERS[key]);
       }
       res.set('Access-Control-Allow-Origin', origin);
     } else {
-      for( var key in this.CORS_HEADERS ) {
-        res.headers[key] = this.CORS_HEADERS[key];
+      for( var key in CORS_HEADERS ) {
+        res.headers[key] = CORS_HEADERS[key];
       }
       res.headers['Access-Control-Allow-Origin'] = origin;
     }
@@ -92,9 +93,7 @@ class FcrepoProxy {
 
     // otherwise we have a service request
     // parse the incoming request path
-    let serviceRequest = serviceModel.parseServiceRequest(req);
-
-    this.serviceProxyRequest(serviceRequest, req, res);
+    this.serviceProxyRequest(serviceModel.parseServiceRequest(req), req, res);
   }
 
   /**
@@ -134,9 +133,12 @@ class FcrepoProxy {
   }
 
   /**
+   * @method serviceProxyRequest
+   * @description handle a service request
    * 
    * @param {*} svcReq - Service request object, parsed above
    * @param {*} expReq - Express request object
+   * @param {*} res - Express response object
    */
   async serviceProxyRequest(svcReq, expReq, res) {
     if( !serviceModel.services[svcReq.name] ) {
@@ -149,13 +151,8 @@ class FcrepoProxy {
     }
 
     let service = serviceModel.services[svcReq.name];
-    // TODO
-    // if( ext.onlyBinary && !info.binary ) {
-    //   return res.status(400).send('Invalid container type');
-    // } else if( ext.onlyContainer && info.binary ) {
-    //   return res.status(400).send('Invalid container type');
-    // }
 
+    // run the frame service
     if( service.type === api.service.TYPES.FRAME ) {
       try {
         // if this is a binary resource w/ describedBy, make the call to described by
@@ -178,10 +175,18 @@ class FcrepoProxy {
           frame : service.frame
         });
       }
-      
+    
+    // run the proxy service
     } else if( service.type === api.service.TYPES.PROXY ) {
-      let url = service.renderUrlTemplate(svcReq.fcPath, svcReq.svcPath);
+      let url = service.renderUrlTemplate({fcPath : svcReq.fcPath, svcPath: svcReq.svcPath});
       proxy.web(expReq, res, {target : url});
+
+    // run the external service
+  } else if( service.type === api.service.TYPES.EXTERNAL ) {
+    let token = auth.getJwtFromRequest(expReq);
+    let url = service.renderUrlTemplate({fcUrl: querystring.escape(svcReq.fcUrl), token});
+    res.redirect(url);
+
     } else {
       res.status(500).json({
         error : true,

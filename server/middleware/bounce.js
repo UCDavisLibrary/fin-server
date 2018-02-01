@@ -1,6 +1,7 @@
 const {jwt, config, logger} = require('@ucd-lib/fin-node-utils');
 const Logger = logger();
 
+// 86400
 // wrapper for case bounce
 // setting our auth token
 module.exports = (cas) => {
@@ -11,8 +12,9 @@ module.exports = (cas) => {
       // first check cookie
       var token = req.cookies[config.jwt.cookieName];
 
+      
       if( !token ) {
-        token = req.get('Authizoration');
+        token = req.get('Authorization');
         if( token ) token = token.replace(/^Bearer /, '');
       }
 
@@ -22,6 +24,8 @@ module.exports = (cas) => {
         return next();
       }
     }
+
+    res.clearCookie(config.jwt.cookieName);
     
     // hack
     req.url = req.originalUrl;
