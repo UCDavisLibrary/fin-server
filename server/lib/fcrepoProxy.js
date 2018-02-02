@@ -19,7 +19,8 @@ const SERVICE_CHAR = '/svc:'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 const CORS_HEADERS = {
   ['Access-Control-Allow-Methods'] : 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-  ['Access-Control-Allow-Headers'] : 'authorization, cookie, content-type',
+  ['Access-Control-Expose-Headers'] : 'content-type, link, content-disposition, content-length',
+  ['Access-Control-Allow-Headers'] : 'authorization, cookie, content-type, prefer',
   ['Access-Control-Allow-Credentials'] : 'true'
 }
 
