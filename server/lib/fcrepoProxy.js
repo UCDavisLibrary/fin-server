@@ -19,7 +19,7 @@ const SERVICE_CHAR = '/svc:'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 const CORS_HEADERS = {
   ['Access-Control-Allow-Methods'] : 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-  ['Access-Control-Expose-Headers'] : 'content-type, link, content-disposition, content-length',
+  ['Access-Control-Expose-Headers'] : 'content-type, link, content-disposition, content-length, pragma, expires, cache-control',
   ['Access-Control-Allow-Headers'] : 'authorization, cookie, content-type, prefer, slug, cache-control',
   ['Access-Control-Allow-Credentials'] : 'true'
 }
@@ -40,6 +40,11 @@ class FcrepoProxy {
 
       // for now, open everything
       this.setCors(req, proxyRes);
+
+      // turn off cache for browser support
+      proxyRes.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+      proxyRes.headers['Expires'] = '0';
+      proxyRes.headers['Pragma'] = 'no-cache';
 
       if( !this.isApiRequest(req) ) return;
       if( serviceModel.isServiceRequest(req) ) return;
