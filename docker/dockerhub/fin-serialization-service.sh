@@ -9,5 +9,5 @@ cd $DIR/../../services/serialization
 TAG_VERSION=$(node -e "console.log(require('./package.json').version)")
 
 echo "Creating docker image $ORG/$IMAGE_NAME:$TAG_VERSION"
-docker build -t $ORG/$IMAGE_NAME .
-docker push $ORG/$IMAGE_NAME
+docker build -t $ORG/$IMAGE_NAME:$TAG_VERSION .
+docker push $ORG/$IMAGE_NAME:$TAG_VERSION
