@@ -8,6 +8,7 @@ const Logger = logger();
 const config = require('../config');
 const auth = require('../lib/auth');
 const querystring = require('querystring');
+const jwt = require('jsonwebtoken');
 const serviceModel = require('../models/services');
 
 var proxy = httpProxy.createProxyServer({
@@ -16,7 +17,10 @@ var proxy = httpProxy.createProxyServer({
 
 
 const SERVICE_CHAR = '/svc:'
+const AUTHENTICATION_SERVICE_CHAR = '/auth'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
+const IS_AUTHENTICATION_SERVICE_URL = new RegExp('^'+AUTHENTICATION_SERVICE_CHAR, 'i');
+
 const CORS_HEADERS = {
   ['Access-Control-Allow-Methods'] : 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
   ['Access-Control-Expose-Headers'] : 'content-type, link, content-disposition, content-length, pragma, expires, cache-control',
@@ -32,11 +36,14 @@ class FcrepoProxy {
 
   constructor(app) {
     app.use('/fcrepo', this.proxyPathResolver.bind(this));
+    app.use(/\/auth.*/i, this.proxyAuthenticationService.bind(this));
 
     // listen for proxy responses, if the request is not a /fcrepo request
     // and not a service request, append the service link headers.
     proxy.on('proxyRes', (proxyRes, req, res) => {
-      Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
+      if( req.timer ) {
+        Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
+      }
 
       // for now, open everything
       this.setCors(req, proxyRes);
@@ -46,8 +53,16 @@ class FcrepoProxy {
       proxyRes.headers['Expires'] = '0';
       proxyRes.headers['Pragma'] = 'no-cache';
 
+      if( serviceModel.isAuthenticationServiceRequest(req) ) {
+        if( proxyRes.headers['x-fin-authorized-agent'] ) {
+          this.handleAuthenticationSuccess(req, proxyRes);
+        }
+        return;
+      }
+
       if( !this.isApiRequest(req) ) return;
       if( serviceModel.isServiceRequest(req) ) return;
+      
       this.appendServiceLinkHeaders(req, proxyRes);
     });
 
@@ -138,6 +153,29 @@ class FcrepoProxy {
     res.headers.link = clinks.join(',');
   }
 
+  handleAuthenticationSuccess(req, res) {
+    let payload = {username: res.headers['x-fin-authorized-agent']};
+    if( auth.isAdmin(payload.username) ) payload.admin = true;
+
+    let token = jwt.sign(
+      payload, 
+      config.jwt.secret, 
+      {
+        issuer: config.jwt.issuer,
+        expiresIn: config.jwt.ttl
+      }
+    );
+
+    let url = req.query.cliRedirectUrl || '/';
+    if( req.query.provideJwt === 'true') {
+      url += '?jwt='+token+'&username='+payload.username;
+    }
+
+    res.statusCode = 302;
+    res.headers['location'] = url;
+    res.headers['set-cookie'] = config.jwt.cookieName+'='+token+'; Path=/; HttpOnly';
+  }
+
   /**
    * @method serviceProxyRequest
    * @description handle a service request
@@ -188,10 +226,10 @@ class FcrepoProxy {
       proxy.web(expReq, res, {target : url});
 
     // run the external service
-  } else if( service.type === api.service.TYPES.EXTERNAL ) {
-    let token = auth.getJwtFromRequest(expReq);
-    let url = service.renderUrlTemplate({fcUrl: querystring.escape(svcReq.fcUrl), token});
-    res.redirect(url);
+    } else if( service.type === api.service.TYPES.EXTERNAL ) {
+      let token = auth.getJwtFromRequest(expReq);
+      let url = service.renderUrlTemplate({fcUrl: querystring.escape(svcReq.fcUrl), token});
+      res.redirect(url);
 
     } else {
       res.status(500).json({
@@ -199,6 +237,34 @@ class FcrepoProxy {
         message : 'Unsupported service type for request: '+service.type
       })
     }
+  }
+
+  // run the authentication service
+  proxyAuthenticationService(req, res) {
+    let parts = req.originalUrl.replace(AUTHENTICATION_SERVICE_CHAR+'/', '').split('/');
+    let serviceName = parts.shift();
+    let service = serviceModel.services[serviceName];
+
+    if( !service ) {
+      return res.status(404).send();
+    }
+
+    let path = req.originalUrl;
+    if( path.match(/^http/i) ) {
+      let urlInfo = new URL(path);
+      path = urlInfo.pathname;
+    }
+    path = path.replace(AUTHENTICATION_SERVICE_CHAR+'/'+service.id, '');
+
+    Logger.info(`AuthenticationService proxy request: ${req.originalUrl} -> ${service.url+path}`);
+
+    proxy.web(req, res, {
+      target : service.url+path,
+      headers : {
+        'X-ORIGINAL-PATH' : req.originalUrl
+      },
+      ignorePath : true
+    });
   }
 
   /**

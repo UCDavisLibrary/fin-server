@@ -35,5 +35,11 @@ module.exports = [
     description : 'Serializes all fedora data to filesystem',
     type : 'WebhookService',
     webhook : 'http://serialization:3333'
+  },
+  {
+    id : 'cas',
+    description : 'UCD CAS authentication service',
+    type : 'AuthenticationService',
+    url : 'http://cas:8000'
   }
 ];

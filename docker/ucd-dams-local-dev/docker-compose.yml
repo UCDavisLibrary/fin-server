@@ -156,6 +156,22 @@ services:
       - elasticsearch
     command: node service
 
+  cas:
+    image: node:8
+    volumes:
+      - ../../services/cas:/service
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
+      - DAMS_URL=${DAMS_URL}
+    depends_on:
+      - server
+      - fcrepo
+      - elasticsearch
+    #command: node service
+    command : bash -c 'tail -f /dev/null'
+
   # karafservices:
   #   build: ../../karafservices
   #   environment:

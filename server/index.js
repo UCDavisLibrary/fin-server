@@ -62,6 +62,12 @@ setInterval(() => {
   api.setConfig({jwt: jwt.create(SERVER_USERNAME, true)})
 }, 6*60*60*1000);
 
+/**
+ * Register Controllers
+ */
+app.use('/rest', require('./controllers/rest'));
+app.use('/auth', require('./controllers/auth'));
+
 // wire up stomp connection
 require('./lib/activeMqProxy');
 const FcrepoProxy = require('./lib/fcrepoProxy');
@@ -70,11 +76,7 @@ const mainProxy = new FcrepoProxy(app);
 // setup static routes
 require('./lib/static')(app);
  
-/**
- * Register Controllers
- */
-app.use('/rest', require('./controllers/rest'));
-app.use('/auth', require('./controllers/auth'));
+
 
 app.listen(3001, () => {
   Logger.info('server ready on port 3001');

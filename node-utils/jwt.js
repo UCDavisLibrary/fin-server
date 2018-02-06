@@ -5,27 +5,6 @@ const logger = require('./logger')();
 class JwtUtils {
 
   /**
-   * Set the cas library and auth utils instance
-   */
-  init(cas, authUtils) {
-    this.cas = cas;
-    this.authUtils = authUtils;
-  }
-
-  /**
-   * Create a new JWT from a authenticated CAS request
-   */
-  async createFromCasRequest(req) {
-    if( !this.cas.session_name ) return null;
-    if( !req.session[ this.cas.session_name ] ) return null;
-
-    var username = req.session[this.cas.session_name];
-    var admin = await this.authUtils.isAdmin(username);   
-
-    return this.create(username, admin);
-  }
-
-  /**
    * Create a new jwt
    */
   create(username, admin) {

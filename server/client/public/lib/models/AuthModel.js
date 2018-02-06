@@ -18,7 +18,7 @@ class AuthModel extends BaseModel {
     }
 
     login() {
-      window.location = '/auth/login';
+      window.location = '/auth/cas/login';
     }
 
     logout() {

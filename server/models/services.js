@@ -12,7 +12,9 @@ const jwt = require('jsonwebtoken');
 jsonld.frame = util.promisify(jsonld.frame);
 
 const SERVICE_CHAR = '/svc:'
+const AUTHENTICATION_SERVICE_CHAR = '^/auth'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
+const IS_AUTHENTICATION_SERVICE_URL = new RegExp(AUTHENTICATION_SERVICE_CHAR, 'i');
 const ACTIVE_MQ_HEADER_ID = 'org.fcrepo.jms.identifier';
 
 class ServiceModel {
@@ -42,6 +44,7 @@ class ServiceModel {
       var {response} = await api.head({
         path : '/'+api.service.ROOT+'/'+service.id
       });
+
       if( response.statusCode === 200 ) {
         await api.delete({
           path: '/'+api.service.ROOT+'/'+service.id,
@@ -94,6 +97,17 @@ class ServiceModel {
   }
 
   /**
+   * @method isAuthenticationServiceRequest
+   * @description does the given request have a originalUrl that matches a authentication service request url?
+   * 
+   * @param {Object} req http request object
+   * @returns {Boolean} 
+   */
+  isAuthenticationServiceRequest(req) {
+    return req.originalUrl.match(IS_AUTHENTICATION_SERVICE_URL);
+  }
+
+  /**
    * @method setServiceLinkHeaders
    * @description given an array of links and the current fcPath, append on the link headers
    * 
@@ -107,6 +121,7 @@ class ServiceModel {
     for( var id in this.services ) {
       let service = this.services[id];
       if( service.type === api.service.TYPES.WEBHOOK ) continue;
+      if( service.type === api.service.TYPES.AUTHENTICATION ) continue;
       if( service.type === api.service.TYPES.PROXY && !service.urlTemplate ) continue;
       if( service.type === api.service.TYPES.EXTERNAL && !service.urlTemplate ) continue;
 
@@ -291,10 +306,24 @@ class ServiceDefinition {
     this.webhook = data.webhook || '';
     this.frame = data.frame || '';
     this.urlTemplate = data.urlTemplate || '';
+    this.url = data.url || '';
     this.title = data.title || '';
     this.description = data.description || '';
     this.supportedTypes = data.supportedTypes || [];
     this.id = data.id || '';
+
+    // let a authentication service know it's url
+    if( this.type === api.service.TYPES.AUTHENTICATION ) {
+      request(
+        this.url+'/_init',
+        {qs : {
+            basePath: '/auth/'+this.id
+        }},
+        (error, response, body) => {
+          // noop
+        }
+      );
+    }
   }
 
   set frame(val) {

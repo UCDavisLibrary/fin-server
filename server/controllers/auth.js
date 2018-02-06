@@ -5,29 +5,6 @@ const {config, logger} = require('@ucd-lib/fin-node-utils');
 var {URL} = require('url');
 const Logger = logger();
 
-router.get('/cas', authUtils.middleware.bounce, async (req, res) => {
-
-  var url = '/';
-  var searchParams;
-
-  if( req.session.cas_return_to ) {
-    searchParams = new URL('http://localhost'+req.session.cas_return_to).searchParams;
-  }
- 
-  if( searchParams.get('cliRedirectUrl') ) {
-    url = searchParams.get('cliRedirectUrl');
-  } else if( req.query.cliRedirectUrl ) {
-    url = req.query.cliRedirectUrl;
-  }
-
-  if( searchParams.get('provideJwt') === 'true' || req.query.provideJwt === 'true') {
-    var newJwt = await authUtils.jwt.createFromCasRequest(req);
-    url += '?jwt='+newJwt+'&username='+req.session[ authUtils.cas.session_name ];
-  }
-
-  Logger.info('/auth/cas login request.  redirect='+url);
-  res.redirect(url);
-});
 
 router.get('/token/create', authUtils.middleware.block, async (req, res) => {
   var username = req.query.username;
@@ -73,16 +50,6 @@ router.post('/token/verify', async (req, res) => {
   }
 });
 
-router.get('/cas/user', authUtils.cas.block, async ( req, res ) => {
-  var newJwt = await authUtils.jwt.createFromCasRequest(req);
-  var isAdmin = await authUtils.isAdmin(req.session[ authUtils.cas.session_name ]);
-
-  res.json({ 
-      cas_user: req.session[ authUtils.cas.session_name ],
-      admin : isAdmin,
-      jwt : newJwt
-  });
-});
 
 router.get('/user', async ( req, res ) => {
   let user = authUtils.getUserFromRequest(req);
@@ -99,24 +66,17 @@ router.get('/user', async ( req, res ) => {
   }
 });
 
-router.get('/login', authUtils.middleware.bounce, (req, res) => {
-  res.redirect('/');
-});
-
-router.get('/login-shell', authUtils.middleware.bounce, async (req, res) => {
-  let username = req.session[ authUtils.cas.session_name ];
-  let isAdmin = await authUtils.isAdmin(username);
-
-  res.redirect('/jwt.html?jwt='+authUtils.jwt.create(username, isAdmin));
-});
-
 router.get('/logout', (req, res) => {
-  res.clearCookie(config.jwt.cookieName);
+  if( req.cookies ) {
+    for( var key in req.cookies ) {
+      res.clearCookie(key);
+    }
+  }
+  
   req.session.destroy();
   res.redirect('/');
 });
 
-router.get('/cas/logout', authUtils.cas.logout);
 
 router.get('/mint', authUtils.middleware.admin, (req, res) => {
   var username = req.query.username;

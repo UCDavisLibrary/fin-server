@@ -1,4 +1,3 @@
-var CASAuthentication = require('cas-authentication');
 var bcrypt = require('bcrypt');
 var {config, jwt} = require('@ucd-lib/fin-node-utils');
 var redis = require('./redisClient');
@@ -12,17 +11,10 @@ class AuthUtils {
     this.REFRESH_TOKEN_PREFIX = 'rtoken_';
     this.saltRounds = 10;
 
-    // Create a new instance of CASAuthentication. 
-    this.cas = new CASAuthentication({
-      cas_url     : config.cas.url,
-      service_url : config.server.url
-    });
-
     this.jwt = jwt;
     jwt.init(this.cas, this);
    
     this.middleware = {
-      bounce : require('../middleware/bounce')(this.cas),
       block : require('../middleware/block'),
       admin : require('../middleware/admin')(this)
     }
