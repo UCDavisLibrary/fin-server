@@ -1,4 +1,4 @@
-FROM node:8.5
+FROM node:8
 
 RUN mkdir -p /service
 COPY ./* /service/

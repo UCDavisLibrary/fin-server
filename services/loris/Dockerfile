@@ -63,5 +63,7 @@ WORKDIR /opt/loris/loris
 RUN sed -i -- 's/localhost/0.0.0.0/g' webapp.py
 RUN sed -i 's/app = create_app(debug=True)/app = create_app(debug=False, config_file_path=conf_fp)/g' webapp.py
 
+RUN apt-get clean
+
 EXPOSE 5004
 CMD ["python", "webapp.py"]
