@@ -2,25 +2,23 @@ const {logger, config} = require('@ucd-lib/fin-node-utils');
 var CASAuthentication = require('cas-authentication');
 Logger = logger();
 
-let cas = null;
-let basePath = null;
+let cas = new CASAuthentication({
+  cas_url     : config.cas.url,
+  service_url : config.server.url
+});
+
 
 function init(app) {
 
-  app.get('/_init', (req, res) => {
-    basePath = req.query.basePath;
-
-    Logger.info('CAS Service: using a base path of '+basePath);
-    cas = new CASAuthentication({
-      cas_url     : config.cas.url,
-      service_url : config.server.url+basePath
-    });
-  });
+  // app.get('/_init', (req, res) => {
+  //   let servicePath = req.query.servicePath;
+  // });
 
   app.get('/login', (req, res) => {
     Logger.info('CAS Service: starting CAS redirection');
 
-    req.query.returnTo = basePath+'/login';
+    req.query.returnTo = config.server.url + req.get('x-fin-original-path');
+    cas.service_url = config.server.url + req.get('x-fin-service-path');
 
     cas.bounce(req, res, async () => {
       Logger.info('CAS Service: CAS redirection complete');

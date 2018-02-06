@@ -1,6 +1,5 @@
 const express = require('express');
 const {logger, config} = require('@ucd-lib/fin-node-utils');
-const bodyParser = require('body-parser');
 const session = require('express-session');
 const Logger = logger('cas-service');
 
@@ -29,9 +28,6 @@ app.use((req, res, next) => {
   });
   next();
 });
-
-// parse application/json req body
-app.use(bodyParser.json());
 
 require('./controller')(app);
 

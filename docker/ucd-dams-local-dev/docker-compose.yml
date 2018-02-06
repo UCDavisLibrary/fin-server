@@ -169,8 +169,7 @@ services:
       - server
       - fcrepo
       - elasticsearch
-    #command: node service
-    command : bash -c 'tail -f /dev/null'
+    command: node service
 
   # karafservices:
   #   build: ../../karafservices

@@ -317,7 +317,7 @@ class ServiceDefinition {
       request(
         this.url+'/_init',
         {qs : {
-            basePath: '/auth/'+this.id
+          servicePath: '/auth/'+this.id
         }},
         (error, response, body) => {
           // noop

@@ -55,12 +55,7 @@ router.get('/user', async ( req, res ) => {
   let user = authUtils.getUserFromRequest(req);
 
   if( user ) {
-    let result = {
-      loggedIn : true,
-      username : user.username
-    };
-    if( user.admin ) result.admin = true;
-    res.json(result);
+    res.json(user);
   } else {
     res.json({loggedIn: false});
   }

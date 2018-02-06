@@ -1,24 +1,23 @@
-var authUtils = require('../lib/auth');
-const {config} = require('@ucd-lib/fin-node-utils');
+const {config, jwt} = require('@ucd-lib/fin-node-utils');
+const auth = require('../lib/auth');
 
-module.exports = (authUtils) => {
-  return async (req, res, next) => {
-    // first check cookie
-    var token = req.cookies[config.jwt.cookieName];
+/**
+ * Only allow admin users
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+module.exports = async (req, res, next) => {
+  let token = auth.getJwtFromRequest(req);
 
-    if( !token ) {
-      token = req.get('Authizoration');
-      if( token ) token = token.replace(/^Bearer /, '');
+  if( token ) {
+    let user = jwt.validate(token);
+    if( user ) {
+      let isAdmin = await auth.isAdmin(user.username);
+      if( isAdmin) return next();
     }
-
-    if( token ) {
-      var info = authUtils.jwt.validate(token);
-      var isAdmin = await authUtils.isAdmin(info.username);
-      if( info &&  isAdmin) {
-        return next();
-      }
-    }
-
-    res.sendStatus(401);
   }
+
+  res.sendStatus(401);
 }

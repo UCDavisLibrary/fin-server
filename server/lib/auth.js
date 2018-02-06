@@ -16,7 +16,7 @@ class AuthUtils {
    
     this.middleware = {
       block : require('../middleware/block'),
-      admin : require('../middleware/admin')(this)
+      admin : require('../middleware/admin')
     }
   }
 

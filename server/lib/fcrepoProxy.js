@@ -261,7 +261,8 @@ class FcrepoProxy {
     proxy.web(req, res, {
       target : service.url+path,
       headers : {
-        'X-ORIGINAL-PATH' : req.originalUrl
+        'X-FIN-ORIGINAL-PATH' : req.originalUrl,
+        'X-FIN-SERVICE-PATH' : AUTHENTICATION_SERVICE_CHAR+'/'+service.id
       },
       ignorePath : true
     });
