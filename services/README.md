@@ -1,6 +1,6 @@
 # Fin Services
 
-Currently Fin has four types of services.
+Currently Fin has five types of services.
 
 - ProxyService
   - A passthrough proxy service that proxies a HTTP request to a external service
