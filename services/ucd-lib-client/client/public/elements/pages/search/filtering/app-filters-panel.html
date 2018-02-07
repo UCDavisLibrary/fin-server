@@ -1,0 +1,133 @@
+<style include="shared-styles">
+  :host {
+    background-color: var(--light-background-color);
+    position: relative;
+  }
+
+  #filters {
+    margin-left: 10px;
+  }
+
+  h2 {
+    display: none;
+    margin: 15px 10px;
+    color: var(--default-primary-color);
+  }
+
+  app-filter-panel {
+    border-bottom: 1px solid var(--medium-background-color);
+  }
+
+  .thumbnail {
+    background-size: cover;
+    background-position: center center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .thumbnail-root {
+    position: relative;
+    height: 200px;
+  }
+
+  .label {
+    padding: 10px 0;
+    color: var(--default-primary-color);
+    font-weight: var(--font-weight-heavy);
+  }
+
+  .collection-filter {
+    padding: 4px 5px;
+    border-bottom: 1px solid var(--medium-background-color);
+  }
+
+  .outer-drawer-toggle {
+    position: relative;
+  }
+  .outer-drawer-toggle[spacer] {
+    height: 50px;
+  }
+
+  .drawer-toggle {
+    font-size: var(--font-size-sm);
+    position: absolute;
+    z-index: 15;
+    top : 15px;
+    right: -24px;
+    cursor: pointer;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    font-weight: var(--font-weight-heavy);
+    color: var(--default-primary-color);
+    background-color: var(--light-background-color);
+    border-radius: 0;
+    border: 0;
+    padding: 0;
+  }
+  .drawer-toggle > span {
+    padding : 0 10px;
+  }
+  .drawer-toggle iron-icon {
+    background-color: var(--default-secondary-color);
+  }
+
+  @media(min-width: 975px) {
+    h2 {
+      display: block;
+    }
+    .outer-drawer-toggle {
+      display: none;
+    }
+  }
+</style>
+
+<h2>Filters</h2>
+
+<div class="outer-drawer-toggle" spacer$="[[!collectionMode]]" on-click="_fireToggleDrawer">
+  <button class="drawer-toggle">
+    <span><span hidden$="[[!collectionMode]]">Info / </span>Filters</span>
+    <iron-icon icon="close"></iron-icon>
+  </button>
+</div>
+<div class="thumbnail-root"  hidden$="[[!collectionMode]]">
+  <div class="thumbnail" style="background-image: url('[[selectedCollection.previewImageTinyThumbnail]]')"></div>
+  <div class="thumbnail" style="background-image: url('[[selectedCollection.thumbnail]]')"></div> 
+</div>
+
+<paper-tabs 
+  noink 
+  selected="{{selectedTab}}" 
+  attr-for-selected="id" 
+  hidden$="[[!collectionMode]]">
+  
+  <paper-tab id="info">Information</paper-tab>
+  <paper-tab id="filters">Filters</paper-tab>
+</paper-tabs>
+
+<iron-pages 
+  selected="[[selectedTab]]"   
+  attr-for-selected="id" 
+  selected-attribute="active">
+  <div id="filters">
+
+    <div hidden$="[[!collectionMode]]" class="label">Collection</div>
+    <div hidden$="[[!collectionMode]]" class="collection-filter">
+      <app-facet-checkbox 
+        type="collection" 
+        value="[[selectedCollection.title]]" 
+        checked="[[collectionMode]]"
+        on-click="_removeCollectionFilter">
+      </app-facet-checkbox>
+    </div>
+
+    <template is="dom-repeat" items="[[facetFilters]]">
+      <app-filter-panel filter="[[item]]"></app-filter-panel>
+    </template>
+  </div>
+  <app-collection-info-panel id="info"></app-collection-info-panel>
+</iron-pages>
+

@@ -1,0 +1,70 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    width: var(--grid-cell-width);
+    background-color: white;
+    cursor: pointer;
+  }
+  :host(:hover) {
+    border: 2px solid var(--default-secondary-color);
+    margin: -2px 0 0 -2px;
+  }
+  .img {
+    width: var(--grid-cell-width);
+    background-size: cover;
+    background-color: transparent;
+    background-position: center center;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .collection-name {
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    color: var(--gray-text);
+  }
+
+  .year {
+    color: var(--gray-text);
+    flex: 1;
+  }
+
+  .footer {
+    display : flex; 
+    align-items : center; 
+    margin-top : 10px;
+  }
+
+  h4 {
+    margin: 10px 0;
+    color: var(--default-primary-color);
+  }
+
+  iron-icon {
+    color: var(--default-primary-color);
+  }
+</style>
+
+<div hidden$="[[!isImage]]" style="position: relative; width: 250px; height:[[imgHeight]]px">
+  <div style="background-image: url('[[imgThumbail]]');height:[[imgHeight]]px" class="img" ></div>
+  <div style="background-image: url('[[imgUrl]]');height:[[imgHeight]]px" class="img"></div>
+</div>
+
+
+<div style="padding: 15px">
+  <div class="collection-name">[[collectionName]]</div>
+
+  <h4>[[title]]</h4>
+
+  <template is="dom-repeat" items="[[creator]]">
+    <app-search-result-creator label="[[item]]"></app-search-result-creator>
+  </template>
+
+  <div class="footer">
+    <div class="year">[[year]]</div>
+    <div>
+      <iron-icon icon="fin:image" hidden$="[[!isImage]]"></iron-icon>
+    </div>
+  </div>
+</div>

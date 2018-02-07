@@ -1,0 +1,31 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    padding: 15px;
+  }
+  h3 {
+    color: var(--default-primary-color);
+    margin: 5px 0;
+  }
+  .section {
+    margin-bottom: 20px;
+  }
+</style>
+
+<div class="section" hidden$="[[!description]]">
+  <h3>Description</h3>
+  <div>[[description]]</div>
+</div>
+
+<div class="section" hidden$="[[!subject]]">
+  <h3>Subject</h3>
+  <div>[[subject]]</div>
+</div>
+
+<div class="section" hidden$="[[!coverage]]">
+  <h3>Coverage</h3>
+  <div>[[coverage]]</div>
+</div>
+
+
+<div>[[collection.description]]</div>

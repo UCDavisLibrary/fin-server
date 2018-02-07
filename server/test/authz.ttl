@@ -1,6 +1,0 @@
-@prefix acl: <http://www.w3.org/ns/auth/acl#>.
-
-<> a acl:Authorization;
-   acl:accessTo </fcrepo/rest/foo>;
-   acl:agent "jrmerz";
-   acl:mode acl:Read.

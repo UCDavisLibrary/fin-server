@@ -1,0 +1,37 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+  }
+
+  .layout {
+    display: flex;
+  }
+  .layout > * {
+    flex : 1;
+  }
+
+  h2 {
+    border-bottom: 1px solid var(--medium-background-color);
+    color: var(--default-primary-color);
+    padding-bottom: 10px;
+  }
+</style>
+
+<iron-media-query query="(max-width: 900px)" query-matches="{{mobile}}"></iron-media-query>
+
+
+<paper-tabs selected="{{selectedTab}}" hidden$="[[!mobile]]">
+  <paper-tab>Item Data</paper-tab>
+  <paper-tab>Cite Item</paper-tab>
+</paper-tabs>
+
+<div class="layout">
+  <div hidden$="[[!showLeft]]">
+    <h2>Item Data</h2>
+    <slot name="left"></slot>
+  </div>
+  <div hidden$="[[!showRight]]">
+      <h2>Cite this Item</h2>
+    <slot name="right"></slot>
+  </div>
+</div>

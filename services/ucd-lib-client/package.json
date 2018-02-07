@@ -1,0 +1,35 @@
+{
+  "name": "ucd-lib-client",
+  "version": "0.1.0",
+  "description": "UI client application for UCD Library DAMS",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jrmerz@ucdavis.edu",
+  "license": "MIT",
+  "dependencies": {
+    "@ucd-lib/fin-node-utils": "0.0.12",
+    "@ucd-lib/spa-router-middleware": "0.0.1",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "elasticsearch": "^14.1.0",
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^0.28.9",
+    "html-loader": "^0.5.5",
+    "to-string-loader": "^1.1.5",
+    "uglifyjs-webpack-plugin": "^1.1.8",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-bundle-analyzer": "^2.10.0"
+  }
+}

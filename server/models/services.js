@@ -1,8 +1,7 @@
 const api = require('@ucd-lib/fin-node-api');
-const {logger} = require('@ucd-lib/fin-node-utils');
+const {logger, config} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
 const {URL} = require('url');
-const config = require('../config');
 const activeMqProxy = require('../lib/activeMqProxy');
 const jsonld = require('jsonld');
 const util = require('util');
@@ -33,6 +32,8 @@ class ServiceModel {
    * @returns {Promise}
    */
   async init() {
+    this.clientService = null;
+
     // make sure our root service container is in place
     await api.service.init();
     let list = await api.service.list();
@@ -70,7 +71,12 @@ class ServiceModel {
    */
   async reload() {
     let list = await api.service.list();
-    list.forEach(service => this.services[service.id] = new ServiceDefinition(service));
+    list.forEach(service => {
+      this.services[service.id] = new ServiceDefinition(service)
+      if( service.type === api.service.TYPES.CLIENT ) {
+        this.clientService = this.services[service.id];
+      }
+    });
   }
 
   /**
@@ -122,6 +128,7 @@ class ServiceModel {
       let service = this.services[id];
       if( service.type === api.service.TYPES.WEBHOOK ) continue;
       if( service.type === api.service.TYPES.AUTHENTICATION ) continue;
+      if( service.type === api.service.TYPES.CLIENT ) continue;
       if( service.type === api.service.TYPES.PROXY && !service.urlTemplate ) continue;
       if( service.type === api.service.TYPES.EXTERNAL && !service.urlTemplate ) continue;
 

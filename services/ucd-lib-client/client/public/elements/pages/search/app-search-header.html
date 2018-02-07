@@ -1,0 +1,94 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    background-color: var(--default-primary-color);
+    color: var(--inverse-text-color);
+    padding: 15px;
+  }
+
+  app-auth-header {
+    margin-left: 10px;
+  }
+  
+  fin-search-box {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 525px;
+  }
+
+  .layout {
+    display: flex;
+    align-items: center;
+  }
+  
+  h2 {
+    margin: 0;
+    white-space: nowrap;
+  }
+  h2 a {
+    color: var(--default-secondary-color);
+    text-decoration: none;
+  }
+  h2 a:visited {
+    color: var(--default-secondary-color);
+    text-decoration: none;
+  }
+
+  img {
+    height: 50px;
+  }
+
+  .logo, h2 {
+    padding-right: 20px;
+    display: none;
+  }
+
+  .filler {
+    flex: .25;
+    display: none;
+  }
+
+  .logo-sm {
+    margin-right: 10px;
+  }
+
+  @media( min-width: 700px ) {
+    .logo {
+      display: block;
+    }
+    .logo-sm {
+      display: none;
+    }
+  }
+
+  @media( min-width: 815px ) {
+    h2 {
+      display: block;
+    }
+  }
+
+  @media( min-width: 1100px ) {
+    .filler {
+      display: block;
+    }
+  }
+</style>
+
+<div class="layout">
+  <img class="logo" src="/images/ucd-lib-logo-white.png" />
+  <img class="logo-sm" src="/images/ucd-lib-logo-white-sm.png" />
+  <h2><a href="/">Digital Collections</a></h2>
+  <div class="filler"></div>
+  <div style="flex:1; text-align:right">
+    <fin-search-box 
+      id="searchInput" 
+      on-search="_onSearch" 
+      on-browse="_onBrowse"
+      placeholder="Search Keyword(s)">
+      <iron-icon icon="fin:search" slot="button-content"></iron-icon>
+    </fin-search-box>
+  </div>
+  <app-auth-header></app-auth-header>
+</div>
+

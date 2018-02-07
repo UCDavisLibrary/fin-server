@@ -1,0 +1,70 @@
+<custom-style>
+  <style>
+    html {
+      --default-primary-color : #002655;
+      --light-primary-color   : #335379;
+      
+      --default-secondary-color : #daaa00;
+      --light-secondary-color   : #9be7ff;
+      --dark-secondary-color    : #2286c3;
+
+      --medium-background-color : #B2BDCF;
+      --light-background-color : #D6DCE6;
+      --super-light-background-color: #f3f3f3;
+    
+      --text-primary-color      : black;
+      --primary-text-color      : var(--text-primary-color);
+      --secondary-text-color    : var(--default-secondary-color);
+      --inverse-text-color      : white;
+      --gray-text               : #8B8B8B;
+      --text-disabled           : var(--gray-text);
+
+      --max-width               : 1200px;
+      --max-text-width          : 650px;
+      --font-size               : 16px;
+      --font-size-sm            : 14px;
+      --font-weight             : 400;
+      --font-weight-heavy       : 700;
+
+      --layout-sm               : 768px;
+      --grid-cell-width         : 250px;
+
+     /**
+      * Custom mixins
+      */
+      --fin-search-box-select: {
+        font-size: var(--font-size);
+        font-weight: var(--font-weight);
+        color: var(--default-primary-color);
+        background-color: var(--default-secondary-color);
+        width: 100px;
+      }
+      --fin-search-box-select-inverse: {
+        @apply(--fin-search-box-select);
+        color: var(--default-secondary-color);
+        background-color: var(--default-primary-color);
+      }
+      --fin-search-box-input: {
+        font-size: var(--font-size);
+      }
+      --cork-drop-down-arrow-color: var(--default-primary-color);
+      --cork-toggle-panel-label : {
+        padding: 10px 0;
+        color: var(--default-primary-color);
+        font-weight: var(--font-weight-heavy);
+      }
+    }
+    body, html {
+      /* @apply --paper-font-common-base; */
+      font-family: "proxima-nova","Montserrat","Lucida Grande","Lucida Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size        : var(--font-size);
+      font-weight      : var(--font-weight);
+      line-height      : calc(var(--font-size) * 1.625);
+      margin           : 0;
+      padding          : 0;
+      height           : 100%;
+      background-color : var(--default-background-color);
+      color            : var(--text-primary-color);
+    }
+  </style>
+</custom-style>

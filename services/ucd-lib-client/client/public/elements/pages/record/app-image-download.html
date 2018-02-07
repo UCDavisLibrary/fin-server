@@ -1,0 +1,71 @@
+<style include="shared-styles">
+  button {
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    color : var(--default-primary-color);
+    background-color: var(--medium-background-color);
+    width: 35px;
+    height: 35px;
+    font-weight: var(--font-weight-heavy);
+    margin: 4px;
+  }
+  button[selected] {
+    background : var(--default-primary-color);
+    color : var(--default-secondary-color);
+  }
+  .info {
+    margin: 10px 0;
+    font-size: var(--font-size-sm);
+  }
+  a {
+    display: inline-block;
+    padding: 8px;
+    color : var(--default-primary-color);
+    background-color : var(--default-secondary-color);
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-heavy);
+  }
+  select {
+    border: none;
+    background-color: white;
+    border-radius: 0;
+    margin-right: 15px;
+    height: 40px;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    padding: 5px 30px 5px 10px;
+    background-position: right 10px center;
+    background-size: 10px 6px;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2IiB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojZGFhYTAwO308L3N0eWxlPjwvZGVmcz48Zz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMCAwIDEwIDAgNSA2IDAgMCIvPjwvZz48L3N2Zz4=');
+    @apply --fin-search-box-select-inverse;
+  }
+  select option {
+    text-transform: uppercase;
+  }
+</style>
+
+<div>
+  <template is="dom-repeat" items="[[sizes]]">
+    <button index$="[[index]]" selected$="[[item.selected]]" on-click="_onSizeSelected">[[item.label]]</button>
+  </template>
+</div>
+
+<div class="info">
+  [[resolutionTitle]] | [[resolution]] <span hidden$="[[!defaultImage]]">| [[size]]</span>
+</div>
+
+<div style="display:flex; align-items: center">
+  <select id="format" on-change="_onFormatSelected">
+    <template is="dom-repeat" items="[[formats]]">
+      <option value="[[item]]">[[item]]</option>
+    </template>
+  </select>
+
+  <a href="[[href]]" download target="_blank">
+    <iron-icon icon="file-download"></iron-icon>
+    Download
+  </a>
+</div>

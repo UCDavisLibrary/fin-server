@@ -41,5 +41,11 @@ module.exports = [
     description : 'UCD CAS authentication service',
     type : 'AuthenticationService',
     url : 'http://cas:8000'
+  },
+  {
+    id : 'ucd-lib-client',
+    description : 'UCD Library DAMS Client UI',
+    type : 'ClientService',
+    url : 'http://ucd-lib-client:8000'
   }
 ];

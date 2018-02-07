@@ -171,6 +171,21 @@ services:
       - elasticsearch
     command: node service
 
+  ucd-lib-client:
+    image: node:8
+    volumes:
+      - ../../services/ucd-lib-client:/service
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
+      - DAMS_URL=${DAMS_URL}
+    depends_on:
+      - server
+      - fcrepo
+      - elasticsearch
+    command: node service
+
   # karafservices:
   #   build: ../../karafservices
   #   environment:

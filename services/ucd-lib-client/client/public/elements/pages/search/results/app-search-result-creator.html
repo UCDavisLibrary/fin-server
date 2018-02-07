@@ -1,0 +1,15 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+  }
+  .text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(var(--grid-cell-width) - 30px);
+    color: var(--gray-text);
+  }
+</style>
+
+<a class="text" hidden="[[!link]]" href="[[label]]" target="_blank">[[label]]</a>
+<div class="text" hidden="[[link]]">[[label]]</div>

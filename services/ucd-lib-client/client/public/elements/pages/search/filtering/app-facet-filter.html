@@ -1,0 +1,82 @@
+<style include="shared-styles">
+  :host {
+    display: block
+  }
+
+  .filter {
+    padding: 4px 5px;
+    display: flex;
+    align-items: center;
+  }
+  .filter a {
+    display: inline-block;
+    cursor: pointer;
+    color: black;
+    transition: color 250ms ease-out, transform 250ms ease-out;
+    transform: scale(1);
+  }
+  .filter a span {
+    color: var(--default-primary-color);
+  }
+  .filter a:hover {
+    transform: scale(1.5);
+    color: var(--default-primary-color);
+  }
+
+  .active-filter {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 14px;
+    background: var(--primary-text-color);
+    padding: 5px;
+    border-radius: 3px;
+    margin: 3px;
+  }
+
+  .active-filter:hover {
+    color: var(--default-primary-color);
+    background: #ccc;
+  }
+
+  .count {
+    color: var(--text-disabled);
+    flex: 1;
+    text-align: right;
+  }
+
+  .overflow {
+    overflow: auto;
+    max-height: 200px;
+  }
+
+  paper-checkbox[active] .key {
+    color: var(--default-primary-color);
+    font-weight: bold;
+  }
+
+  paper-checkbox[disabled] .key {
+    color: var(--secondary-text-color);
+    font-style: italic;
+  }
+</style>
+
+<div class="overflow">
+  <div>
+    <template is="dom-repeat" items="[[buckets]]">
+      <div class="filter">
+
+        <app-facet-checkbox
+          type$="[[label]]"
+          index$="[[index]]"
+          value$="[[item.key]]"
+          checked$="[[item.active]]" 
+          on-change="_toggleFilter">
+        </app-facet-checkbox>
+
+        <div class="count">[[item.doc_count]]</div>
+      </div>
+    </template>
+  </div>
+</div>

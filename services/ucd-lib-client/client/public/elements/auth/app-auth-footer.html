@@ -1,0 +1,28 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    color: var(--inverse-text-color);
+  }
+  a {
+    color: var(--inverse-text-color);
+    cursor: pointer;
+  }
+  .icon-container {
+    display: flex;
+    align-items: center;
+  }
+</style>
+
+<div hidden$="[[!loggedIn]]">
+  <div>Logged in as:</div>
+  <div class="icon-container">
+    <iron-icon icon="fin:account"></iron-icon>&nbsp;&nbsp;
+    <div>[[user.username]]</div>
+  </div>
+  <div>
+    <a on-click="_logout" class="gold">Log Out</a>
+  </div>
+</div>
+<div hidden$="[[loggedIn]]">
+  <a on-click="_login">Login</a>
+</div>

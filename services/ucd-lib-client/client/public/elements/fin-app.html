@@ -1,0 +1,42 @@
+<style>
+  :host {
+    display: block;
+    background: var(--default-primary-color);
+  }
+  app-header {
+    
+  }
+  .content {
+    display: flex;
+    justify-content: center;
+  }
+  .content > div {
+    max-width: 1000px;
+    min-width: 300px;
+  }
+  paper-material {
+    background: white;
+    display: block;
+    padding: 10px;
+    margin: 10px;
+  }
+  paper-button {
+    background: white;
+  }
+  a[button] {
+    text-decoration: none;
+    color: var(--primary-text-color);
+  }
+</style>
+
+<app-route app-routes="[[appRoutes]]"></app-route>
+
+<iron-pages selected="[[page]]" attr-for-selected="id" selected-attribute="visible">
+  <app-home id="home"></app-home>
+  <app-search id="search"></app-search>
+  <app-record id="record"></app-record>
+</iron-pages>
+
+<div style="display:flex; justify-content:center">
+  <app-footer></app-footer>
+</div>

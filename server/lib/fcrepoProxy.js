@@ -3,9 +3,8 @@ const httpProxy = require('http-proxy');
 const {URL} = require('url');
 const request = require('request');
 const api = require('@ucd-lib/fin-node-api');
-const {logger} = require('@ucd-lib/fin-node-utils');
+const {logger, config} = require('@ucd-lib/fin-node-utils');
 const Logger = logger();
-const config = require('../config');
 const auth = require('../lib/auth');
 const querystring = require('querystring');
 const jwt = require('jsonwebtoken');
@@ -37,6 +36,7 @@ class FcrepoProxy {
   constructor(app) {
     app.use('/fcrepo', this.proxyPathResolver.bind(this));
     app.use(/\/auth.*/i, this.proxyAuthenticationService.bind(this));
+    app.use('*', this.proxyClientService.bind(this));
 
     // listen for proxy responses, if the request is not a /fcrepo request
     // and not a service request, append the service link headers.
@@ -266,6 +266,19 @@ class FcrepoProxy {
       },
       ignorePath : true
     });
+  }
+
+  proxyClientService(req, res) {
+    if( !serviceModel.clientService ) {
+      return res.status(400).send('No ClientService registered');
+    }
+
+    try {
+      proxy.web(req, res, {target : serviceModel.clientService.url+req.originalUrl});
+    } catch(e) {
+      Logger.error('Failed to proxy to ClientService: '+serviceModel.clientService.id, e);
+      res.status(400);
+    }
   }
 
   /**

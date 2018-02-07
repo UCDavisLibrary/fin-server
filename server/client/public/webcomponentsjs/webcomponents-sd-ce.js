@@ -1,1 +1,0 @@
-../node_modules/@webcomponents/webcomponentsjs/webcomponents-sd-ce.js
