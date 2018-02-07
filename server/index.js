@@ -5,7 +5,6 @@ const Logger = logger('fin-server');
 const session = require('express-session');
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
-const authUtils = require('./lib/auth');
 const api = require('@ucd-lib/fin-node-api');
 
 // used for JWT
@@ -41,7 +40,6 @@ app.use((req, res, next) => {
 });
 
 
-
 // wire up fin api for server
 api.setConfig({
   host: config.fcrepo.host,
@@ -69,7 +67,7 @@ const mainProxy = new FcrepoProxy(app);
 /**
  * Register Auth Controller
  * 
- * Body parsers will mess up proxy, ALWAYS use them after the proxy
+ * IMPORTANT: Body parsers will mess up proxy, ALWAYS register them after the proxy
  */
 
 // parse application/x-www-form-urlencoded req body

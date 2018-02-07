@@ -1,6 +1,6 @@
 const {logger, config} = require('@ucd-lib/fin-node-utils');
-var CASAuthentication = require('cas-authentication');
-Logger = logger();
+const CASAuthentication = require('cas-authentication');
+const Logger = logger();
 
 let cas = new CASAuthentication({
   cas_url     : config.cas.url,

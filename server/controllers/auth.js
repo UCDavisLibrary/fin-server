@@ -1,8 +1,8 @@
-var router = require('express').Router();
-var authUtils = require('../lib/auth');
-var utils = require('./utils');
-const {config, logger} = require('@ucd-lib/fin-node-utils');
-var {URL} = require('url');
+const router = require('express').Router();
+const authUtils = require('../lib/auth');
+const utils = require('./utils');
+const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
+const {URL} = require('url');
 const Logger = logger();
 
 
@@ -34,7 +34,7 @@ router.post('/token/verify', async (req, res) => {
       let isAdmin = await authUtils.isAdmin(username);
       res.json({
         success : true,
-        jwt : authUtils.jwt.create(username, isAdmin)
+        jwt : jwt.create(username, isAdmin)
       });
     } else {
       res.json({
@@ -52,7 +52,7 @@ router.post('/token/verify', async (req, res) => {
 
 
 router.get('/user', async ( req, res ) => {
-  let user = authUtils.getUserFromRequest(req);
+  let user = jwt.getUserFromRequest(req);
 
   if( user ) {
     res.json(user);
@@ -72,42 +72,15 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-
 router.get('/mint', authUtils.middleware.admin, (req, res) => {
   var username = req.query.username;
   var isAdmin = req.query.admin ? true : false;
 
   res.json({
-    jwt : authUtils.jwt.create(username, isAdmin),
+    jwt : jwt.create(username, isAdmin),
     username : username,
     admin : isAdmin
   });
-});
-
-router.post('/local', async (req, res) => {
-  var username = req.body.username;
-  var password = req.body.password;
-  var userinfo;
-
-  try { 
-    var valid = await authUtils.localUserVerification(username, password);
-    if( !valid ) return res.send({error: true, message: 'Unable to verify local user'});
-    userinfo = await authUtils.getLocalUser(username);
-  } catch(e) {
-    res.json(utils.errorResponse(e, 'Unable to verify local user'));
-  }
-
-  var isAdmin = await authUtils.isAdmin(username);
-  var token = authUtils.jwt.create(username, isAdmin);
-
-  res.cookie(
-    config.jwt.cookieName, 
-    token,
-    {httpOnly: true}
-  );
-
-  userinfo.jwt = token;
-  res.json(userinfo);
 });
 
 

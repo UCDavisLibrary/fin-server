@@ -12,7 +12,7 @@ Currently Fin has five types of services.
 - FrameService
   - A JSON-LD service that returns a framed JSON-LD response based on the fcrepo path of the service.
 - ExternalSerivce
-  - A external service will send a HTTP 302 redirect to a external service.  The url of the redirect will include the current Fin url (host and path) as well as a auth token if the user is logged in.  The external service can then request data and make updates to Fin on the users behalf.  YOU SHOULD HAVE TRUST IN ALL REGISTERED EXTERNAL SERVICES.
+  - A external service will send a HTTP 302 redirect to a external service.  The url of the redirect will include the current Fin url (host and fcrepo path) as well as a auth token if the user is logged in.  The external service can then request data and make updates to Fin on the users behalf.  YOU SHOULD HAVE TRUST IN ALL REGISTERED EXTERNAL SERVICES.
 - AuthenticationService
   - A authentication service will act a lot like a proxy service with all request to a root service path being redirect to the authentication service.  So a AuthenticationService with name **cas** will send all requests to /auth/cas/* to the service. The service should walk the user through it's login flow and eventually respond with a authorized agent.  When the fin server sees the agent it will mint a new JWT token for the given agent/username.
 

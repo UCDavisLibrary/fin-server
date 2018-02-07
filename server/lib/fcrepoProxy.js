@@ -35,8 +35,8 @@ class FcrepoProxy {
 
   constructor(app) {
     app.use('/fcrepo', this.proxyPathResolver.bind(this));
-    app.use(/\/auth.*/i, this.proxyAuthenticationService.bind(this));
-    app.use('*', this.proxyClientService.bind(this));
+    app.use(/^\/auth\/(?!token|user|logout|mint).*/i, this.proxyAuthenticationService.bind(this));
+    app.use(/^\/(?!auth).*/, this.proxyClientService.bind(this));
 
     // listen for proxy responses, if the request is not a /fcrepo request
     // and not a service request, append the service link headers.
