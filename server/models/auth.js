@@ -1,20 +1,13 @@
 var bcrypt = require('bcrypt');
 var {config, jwt} = require('@ucd-lib/fin-node-utils');
-var redis = require('./redisClient');
+var redis = require('../lib/redisClient');
 const crypto = require('crypto');
 
-class AuthUtils {
+class AuthModel {
 
   constructor() {
     this.ADMIN_LIST_KEY = 'admins';
-    this.REFRESH_TOKEN_PREFIX = 'rtoken_';
-
-    this.jwt = jwt;
-   
-    this.middleware = {
-      block : require('../middleware/block'),
-      admin : require('../middleware/admin')
-    }
+    this.REFRESH_TOKEN_PREFIX = 'rtoken:';
   }
 
   /**
@@ -117,4 +110,4 @@ class AuthUtils {
   }
 }
 
-module.exports = new AuthUtils();
+module.exports = new AuthModel();

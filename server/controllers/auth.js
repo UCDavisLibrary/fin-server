@@ -1,17 +1,18 @@
 const router = require('express').Router();
-const authUtils = require('../lib/auth');
+const model = require('../models/auth');
+const middleware = require('./middleware');
 const utils = require('./utils');
 const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const {URL} = require('url');
 const Logger = logger();
 
 
-router.get('/token/create', authUtils.middleware.block, async (req, res) => {
+router.get('/token/create', middleware.block, async (req, res) => {
   var username = req.query.username;
   if( !username ) return res.json({error: true, message: 'Username required'});
 
   try {
-    let token = await authUtils.refreshToken(username);
+    let token = await model.refreshToken(username);
     res.json({
       success : true,
       token : token
@@ -29,9 +30,9 @@ router.post('/token/verify', async (req, res) => {
   let token = req.body.token;
 
   try {
-    let valid = await authUtils.refreshTokenVerification(username, token);
+    let valid = await model.refreshTokenVerification(username, token);
     if( valid ) {
-      let isAdmin = await authUtils.isAdmin(username);
+      let isAdmin = await model.isAdmin(username);
       res.json({
         success : true,
         jwt : jwt.create(username, isAdmin)
@@ -72,7 +73,7 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-router.get('/mint', authUtils.middleware.admin, (req, res) => {
+router.get('/mint', middleware.admin, (req, res) => {
   var username = req.query.username;
   var isAdmin = req.query.admin ? true : false;
 

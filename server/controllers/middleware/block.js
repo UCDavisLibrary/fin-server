@@ -1,11 +1,10 @@
-const {jwt, config} = require('@ucd-lib/fin-node-utils');
-const auth = require('../lib/auth');
+const {jwt} = require('@ucd-lib/fin-node-utils');
 
 /**
  * Block user if not logged in
  */
 module.exports = (req, res, next) => {
-  let token = auth.getJwtFromRequest(req);
+  let token = jwt.getJwtFromRequest(req);
 
   // if valid jwt set in cookie, we are good to go
   if( token && jwt.validate(token) ) {

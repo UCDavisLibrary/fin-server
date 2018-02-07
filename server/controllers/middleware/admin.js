@@ -1,5 +1,5 @@
 const {config, jwt} = require('@ucd-lib/fin-node-utils');
-const auth = require('../lib/auth');
+const auth = require('../../models/auth');
 
 /**
  * Only allow admin users
@@ -9,7 +9,7 @@ const auth = require('../lib/auth');
  * @param {*} next 
  */
 module.exports = async (req, res, next) => {
-  let token = auth.getJwtFromRequest(req);
+  let token = jwt.getJwtFromRequest(req);
 
   if( token ) {
     let user = jwt.validate(token);

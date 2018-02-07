@@ -28,6 +28,12 @@ const ACTIVE_MQ_HEADER_EVENT = 'org.fcrepo.jms.eventType';
  */
 class MessageConsumer extends EventEmitter {
 
+  constructor() {
+    super();
+    this.connect();
+  }
+
+
   connect() {
     setTimeout(() => {
       stompit.connect(connectOptions, (error, client) => {
@@ -110,7 +116,4 @@ class MessageConsumer extends EventEmitter {
 
 }
 
-var mc = new MessageConsumer();
-mc.connect();
-
-module.exports = mc;
+module.exports = new MessageConsumer();

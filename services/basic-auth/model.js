@@ -5,7 +5,7 @@ var redis = require('./lib/redisClient');
 class AuthModel {
   
   constructor() {
-    this.USER_KEY_PREFIX = 'user_';
+    this.USER_KEY_PREFIX = 'user:';
     this.saltRounds = 10;
   }
 

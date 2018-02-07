@@ -2,24 +2,27 @@ const express = require('express');
 const httpProxy = require('http-proxy');
 const {URL} = require('url');
 const request = require('request');
-const api = require('@ucd-lib/fin-node-api');
-const {logger, config} = require('@ucd-lib/fin-node-utils');
-const Logger = logger();
-const auth = require('../lib/auth');
 const querystring = require('querystring');
-const jwt = require('jsonwebtoken');
-const serviceModel = require('../models/services');
+const api = require('@ucd-lib/fin-node-api');
+const {logger, config, jwt} = require('@ucd-lib/fin-node-utils');
 
+const authModel = require('./auth');
+const serviceModel = require('./services');
+
+const Logger = logger();
 var proxy = httpProxy.createProxyServer({
     ignorePath : true
 });
 
-
+// Proxy|Frame|External service delimiter
 const SERVICE_CHAR = '/svc:'
+// AuthenticationService path
 const AUTHENTICATION_SERVICE_CHAR = '/auth'
+// regex for above
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 const IS_AUTHENTICATION_SERVICE_URL = new RegExp('^'+AUTHENTICATION_SERVICE_CHAR, 'i');
 
+// cors headers we attach to every response....
 const CORS_HEADERS = {
   ['Access-Control-Allow-Methods'] : 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
   ['Access-Control-Expose-Headers'] : 'content-type, link, content-disposition, content-length, pragma, expires, cache-control',
@@ -28,48 +31,86 @@ const CORS_HEADERS = {
 }
 
 /**
- * @class FcrepoProxy
- * @description main class the interacts with fcrepo and handles service requests
+ * @class ProxyModel
+ * @description main class the interacts with outside world and handles service requests
  */
-class FcrepoProxy {
+class ProxyModel {
 
-  constructor(app) {
-    app.use('/fcrepo', this.proxyPathResolver.bind(this));
-    app.use(/^\/auth\/(?!token|user|logout|mint).*/i, this.proxyAuthenticationService.bind(this));
-    app.use(/^\/(?!auth).*/, this.proxyClientService.bind(this));
+  constructor() {
+    Logger.debug('Initializing proxy');
 
     // listen for proxy responses, if the request is not a /fcrepo request
     // and not a service request, append the service link headers.
-    proxy.on('proxyRes', (proxyRes, req, res) => {
-      if( req.timer ) {
-        Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
-      }
-
-      // for now, open everything
-      this.setCors(req, proxyRes);
-
-      // turn off cache for browser support
-      proxyRes.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
-      proxyRes.headers['Expires'] = '0';
-      proxyRes.headers['Pragma'] = 'no-cache';
-
-      if( serviceModel.isAuthenticationServiceRequest(req) ) {
-        if( proxyRes.headers['x-fin-authorized-agent'] ) {
-          this.handleAuthenticationSuccess(req, proxyRes);
-        }
-        return;
-      }
-
-      if( !this.isApiRequest(req) ) return;
-      if( serviceModel.isServiceRequest(req) ) return;
-      
-      this.appendServiceLinkHeaders(req, proxyRes);
-    });
-
-    Logger.debug('Initializing proxy');
+    proxy.on('proxyRes', this._onProxyResponse.bind(this));
   }
 
-  setCors(req, res) {
+  /**
+   * @method bind
+   * @description bind proxy to express endpoints
+   * 
+   * @param {Object} app express instance
+   */
+  bind(app) {
+    // handle ALL /fcrepo requests
+    app.use('/fcrepo', this._fcRepoPathResolver.bind(this));
+    // handle AuthenticationService requests. Do not handle Fin auth endpoints
+    // of /auth/token /auth/user /auth/logout /auth/mint, these are reserved
+    app.use(/^\/auth\/(?!token|user|logout|mint).*/i, this._proxyAuthenticationService.bind(this));
+    // send all requests that are not /fcrepo or /auth to the ClientService
+    // fcrepo is really handled above but reads a little better to add... :/
+    app.use(/^\/(?!auth|fcrepo).*/, this._proxyClientService.bind(this));
+  }
+
+  /**
+   * @method _onProxyResponse
+   * @description called whenever a proxy request is completed
+   * 
+   * @param {Object} proxyRes response from proxy request
+   * @param {Object} req express request
+   * @param {Object} res express response
+   */
+  _onProxyResponse(proxyRes, req, res) {
+    if( req.timer ) {
+      Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
+    }
+
+    // for now, open everything
+    this._setCors(req, proxyRes);
+
+    // turn off cache for browser support
+    // this fixes bug when browser changes Accept: [format] headers.  The header
+    // does not invalidate browser cache and cause bad response
+    proxyRes.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+    proxyRes.headers['Expires'] = '0';
+    proxyRes.headers['Pragma'] = 'no-cache';
+
+    // if this is a AuthenticationService request AND the proxy response has 
+    // x-fin-authorized-agent header, hijack response and finish Fin auth flow
+    if( serviceModel.isAuthenticationServiceRequest(req) ) {
+      if( proxyRes.headers['x-fin-authorized-agent'] ) {
+        this._handleAuthenticationSuccess(req, proxyRes);
+      }
+      return;
+    }
+
+    // this is not fcrepo request, there is nothing left for us to do
+    if( !this._isFcrepoRequest(req) ) return;
+
+    // if this was a fin fcrepo /svc: request, we are done
+    if( serviceModel.isServiceRequest(req) ) return;
+    
+    // we had a true fcrepo request, append appropriate fin service link headers
+    this._appendServiceLinkHeaders(req, proxyRes);
+  }
+
+  /**
+   * @method _setCors
+   * @description set cors headers for response
+   * 
+   * @param {Object} req express request
+   * @param {Object} res express response
+   */
+  _setCors(req, res) {
     let origin = '*';
     if( req.headers.referer ) {
       origin = new URL(req.headers.referer).origin;
@@ -89,19 +130,20 @@ class FcrepoProxy {
   }
 
   /**
-   * @method proxyPathResolver
-   * @description start method for handling proxy requests
+   * @method _fcRepoPathResolver
+   * @description start method for handling fcrepo proxy requests
    * 
-   * @param {Object} req http request object 
-   * @param {Object} res http response object
+   * @param {Object} req express request object 
+   * @param {Object} res http-proxy response object
    */
-  async proxyPathResolver(req, res) {
+  async _fcRepoPathResolver(req, res) {
     req.timer = {
       time : Date.now(),
       label : `${req.method} ${req.originalUrl}`
     }
 
     // trying to sniff out browser preflight options request for cors
+    // fcrepo sees this as a normal options request and doesn't handle correctly
     if( req.method === 'OPTIONS' && req.headers['access-control-request-headers'] ) {
       this.setCors(req, res);
       return res.status(200).send();
@@ -109,24 +151,27 @@ class FcrepoProxy {
 
     // if this is not a service request, preform basic fcrepo proxy request
     if( !serviceModel.isServiceRequest(req) ) {
-      return this.fcrepoProxyRequest(req, res);
+      return this._fcrepoProxyRequest(req, res);
     }
 
     // otherwise we have a service request
     // parse the incoming request path
-    this.serviceProxyRequest(serviceModel.parseServiceRequest(req), req, res);
+    this._serviceProxyRequest(serviceModel.parseServiceRequest(req), req, res);
   }
 
   /**
    * @method fcrepoProxyRequest
    * @description main method for handling /fcrepo proxy requests
+   * 
+   * @param {Object} req express request object 
+   * @param {Object} res http-proxy response object
    */
-  async fcrepoProxyRequest(req, res) {
+  async _fcrepoProxyRequest(req, res) {
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
     Logger.debug(`Fcrepo proxy request: ${url}`);
 
     let path = req.originalUrl;
-    if( this.isMetadataRequest(req) ) {
+    if( this._isMetadataRequest(req) ) {
       path = path.replace(/fcr:metadata.*/, '');
     }
 
@@ -138,9 +183,17 @@ class FcrepoProxy {
     });
   }
 
-  appendServiceLinkHeaders(req, res) {
-    if( res.statusCode < 200 || res.statusCode >= 300 ) return;
+  /**
+   * @method _appendServiceLinkHeaders
+   * @description append service link headers to a fcrepo proxy response
+   * 
+   * @param {Object} req express request object 
+   * @param {Object} res http-proxy response object
+   */
+  _appendServiceLinkHeaders(req, res) {
+    if( !api.isSuccess(res) ) return;
 
+    // parse out current link headers
     let types = [];
     let clinks = [];
     if( res.headers && res.headers.link ) {
@@ -153,47 +206,55 @@ class FcrepoProxy {
     res.headers.link = clinks.join(',');
   }
 
-  handleAuthenticationSuccess(req, res) {
-    let payload = {username: res.headers['x-fin-authorized-agent']};
-    if( auth.isAdmin(payload.username) ) payload.admin = true;
+  /**
+   * @method _handleAuthenticationSuccess
+   * @description handle a AuthenticationService response that has the x-fin-authorized-agent
+   * header.  Extract the agent (username) and mint a new token.  Finally, redirect user to
+   * root or provided redirect path.  Optionally, provide jwt token in query param if requested.
+   * 
+   * @param {Object} req Express request
+   * @param {Object} res http-proxy response
+   */
+  _handleAuthenticationSuccess(req, res) {
+    // mint token
+    let username = res.headers['x-fin-authorized-agent']
+    let token = jwt.create(username, authModel.isAdmin(username));
 
-    let token = jwt.sign(
-      payload, 
-      config.jwt.secret, 
-      {
-        issuer: config.jwt.issuer,
-        expiresIn: config.jwt.ttl
-      }
-    );
-
-    let url = req.query.cliRedirectUrl || '/';
+    // set redirect url
+    let url = req.query.cliRedirectUrl || req.query.redirectUrl || '/';
     if( req.query.provideJwt === 'true') {
       url += '?jwt='+token+'&username='+payload.username;
     }
 
+    // hijack response, setting redirect to desired location
     res.statusCode = 302;
     res.headers['location'] = url;
     res.headers['set-cookie'] = config.jwt.cookieName+'='+token+'; Path=/; HttpOnly';
   }
 
   /**
-   * @method serviceProxyRequest
-   * @description handle a service request
+   * @method _serviceProxyRequest
+   * @description handles proxy requests for FrameService, ProxyService and ExternalSerivce
+   * requests. First checks requesting agent has access via a head request.
    * 
    * @param {*} svcReq - Service request object, parsed above
    * @param {*} expReq - Express request object
    * @param {*} res - Express response object
    */
-  async serviceProxyRequest(svcReq, expReq, res) {
+  async _serviceProxyRequest(svcReq, expReq, res) {
+    // check this is even a valid service name
     if( !serviceModel.services[svcReq.name] ) {
       return res.status(400).send(`Unknown Service: `+svcReq.name);
     }
 
-    let info = await this.containerInfo(svcReq.fcPath, expReq);
+    // check the requesting agent has access, if so, get information about
+    // this container from the fcrepo link headers
+    let info = await this._getContainerAccessAndInfo(svcReq.fcPath, expReq);
     if( !info.access ) {
       return res.status(403).send('Unauthorized');
     }
 
+    // grab the service definition
     let service = serviceModel.services[svcReq.name];
 
     // run the frame service
@@ -227,10 +288,11 @@ class FcrepoProxy {
 
     // run the external service
     } else if( service.type === api.service.TYPES.EXTERNAL ) {
-      let token = auth.getJwtFromRequest(expReq);
+      let token = jwt.getJwtFromRequest(expReq);
       let url = service.renderUrlTemplate({fcUrl: querystring.escape(svcReq.fcUrl), token});
       res.redirect(url);
 
+    // unknown service type
     } else {
       res.status(500).json({
         error : true,
@@ -239,16 +301,28 @@ class FcrepoProxy {
     }
   }
 
-  // run the authentication service
-  proxyAuthenticationService(req, res) {
+  /**
+   * @method _proxyAuthenticationService
+   * @description handle a AuthenticationService request.  Find the service from the service
+   * model, create the X-FIN-ORIGINAL-PATH and X-FIN-SERVICE-PATH headers, proxy request
+   * with new headers
+   * 
+   * @param {Object} req Express request
+   * @param {Object} res http-proxy response
+   */
+  _proxyAuthenticationService(req, res) {
+    // find the service name and lookup service in service model
     let parts = req.originalUrl.replace(AUTHENTICATION_SERVICE_CHAR+'/', '').split('/');
     let serviceName = parts.shift();
     let service = serviceModel.services[serviceName];
 
+    // no service found
     if( !service ) {
       return res.status(404).send();
     }
 
+    // strip /auth/[service-name] from request path.  This new path is where we will
+    // send proxy request
     let path = req.originalUrl;
     if( path.match(/^http/i) ) {
       let urlInfo = new URL(path);
@@ -258,6 +332,7 @@ class FcrepoProxy {
 
     Logger.info(`AuthenticationService proxy request: ${req.originalUrl} -> ${service.url+path}`);
 
+    // send proxy request to new path, including reference headers to original request path
     proxy.web(req, res, {
       target : service.url+path,
       headers : {
@@ -268,7 +343,15 @@ class FcrepoProxy {
     });
   }
 
-  proxyClientService(req, res) {
+  /**
+   * @method _proxyClientService
+   * @description Handle request to the client service.  this is basically any request
+   * that is not to /auth/* or /fcrepo/*.  This is a strait forward passthrough proxy.
+   * 
+   * @param {Object} req Express request
+   * @param {Object} res http-proxy response
+   */
+  _proxyClientService(req, res) {
     if( !serviceModel.clientService ) {
       return res.status(400).send('No ClientService registered');
     }
@@ -282,31 +365,37 @@ class FcrepoProxy {
   }
 
   /**
-   * @method containerInfo
-   * @description Get container info including; access information, container type
+   * @method _getContainerAccessAndInfo
+   * @description Get container info including; agent access information, container type
+   * 
+   * @param {String} path path to container
+   * @param {Object} req express request
+   * 
+   * @returns {Object}
    */
-  async containerInfo(path, req) {
-    var token = req.cookies[config.jwt.cookieName] || '';
-    
-    if( !token ) {
-      token = req.get('Authorization');
-      if( token ) token = token.replace(/^Bearer /, '');
-    }
+  async _getContainerAccessAndInfo(path, req) {
+    var token = jwt.getJwtFromRequest(req);
 
+    // make a head request to get fcrepo statusCode and link headers
     var {response, body} = await this._request({
       type : 'HEAD',
       uri : path
     }, token);
 
+    // if we don't get a 200 range status code from fcrepo, 
+    // requesting agent does not have access to this container
+    if( !api.isSuccess(response) ) {
+      return {access : false}
+    }
+
+    // parse the link headers, used by following operations
     let links = {};
     if( response.headers.link ) {
       links = api.parseLinkHeader(response.headers.link);
     }
 
-    if( response.statusCode >= 300 ) {
-      return {access : false}
-    }
-
+    // if we have a content-disposition header, we are a binary
+    // TODO: should we check the couple standard type headers fcrepo includes in the links?
     if( response.headers['content-disposition'] ) {
       return {
         access: true, 
@@ -314,6 +403,8 @@ class FcrepoProxy {
         links 
       };
     }
+
+    // we are not a binary container
     return {access: true, binary: false, links};
   }
 
@@ -338,13 +429,13 @@ class FcrepoProxy {
   }
 
   /**
-   * @method isApiRequest
+   * @method _isFcrepoRequest
    * @description is this request a /fcrepo request?
    * 
    * @param {Object} req http request object
    * @returns {Boolean} 
    */
-  isApiRequest(req) {
+  _isFcrepoRequest(req) {
     return (req.originalUrl.indexOf(config.fcrepo.root) === 0)
   }
 
@@ -355,11 +446,11 @@ class FcrepoProxy {
    * @param {Object} req http request object
    * @returns {Boolean} 
    */
-  isMetadataRequest(req) {
+  _isMetadataRequest(req) {
     let last = req.originalUrl.replace(/\/$/,'').split('/').pop();
     return (last === 'fcr:metadata');
   }
 
 }
 
-module.exports = FcrepoProxy;
+module.exports = new ProxyModel();

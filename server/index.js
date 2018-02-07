@@ -52,17 +52,11 @@ setInterval(() => {
   api.setConfig({jwt: jwt.create(SERVER_USERNAME, true)})
 }, 6*60*60*1000);
 
-
-/**
- * Wire up stomp connection
- */
-require('./lib/activeMqProxy');
-
 /**
  * Wire up main proxy
  */
-const FcrepoProxy = require('./lib/fcrepoProxy');
-const mainProxy = new FcrepoProxy(app);
+const proxy = require('./models/proxy');
+proxy.bind(app);
 
 /**
  * Register Auth Controller
