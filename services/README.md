@@ -1,6 +1,6 @@
 # Fin Services
 
-Currently Fin has five types of services.
+Currently Fin has six types of services.
 
 - ClientService
   - A passthrough proxy service that proxies all requests to the client service.  The exceptions are /auth and /fcrepo which are reserved.  The client service is where you register your main client UI.
