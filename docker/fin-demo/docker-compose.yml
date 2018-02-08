@@ -16,7 +16,7 @@ services:
   # Font End NodeJS Application Server
   ###
   server:
-    image: ucdlib/fin-server
+    image: ucdlib/fin-server:1.0.2
     volumes:
       - ./frames:/etc/fin/frames
       - ./default-services.js:/etc/fin/default-services.js
@@ -34,7 +34,7 @@ services:
   # Fedora Repository
   ###
   fcrepo:
-    build: ucdlib/fin-fcrepo
+    image: ucdlib/fin-fcrepo:v1.0.0
     volumes:
       - fedora-data:/var/lib/jetty/fedora-data
     environment:
@@ -54,7 +54,7 @@ services:
   # UC DAMS Client UI
   ###
   ucd-lib-client:
-    image: ucdlib/fin-ucd-lib-client
+    image: ucdlib/fin-ucd-lib-client:0.1.0
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -86,7 +86,7 @@ services:
   # required for loris service
   ###
   trustedproxy:
-    image: ucdlib/fin-trusted-proxy
+    image: ucdlib/fin-trusted-proxy:1.0.0
     depends_on:
       - elasticsearch
     environment:
@@ -97,7 +97,7 @@ services:
   # IIIF Service
   ###
   loris:
-    image: ucdlib/fin-loris-service
+    image: ucdlib/fin-loris-service:v0.0.1
     depends_on:
       - server
 
@@ -106,7 +106,7 @@ services:
   # ES Indexer
   ###
   essync:
-    image: ucdlib/fin-essync-service
+    image: ucdlib/fin-essync-service:0.1.0
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -118,7 +118,7 @@ services:
   # Serialize Fcrepo to disk
   ###
   serialization:
-    image: ucdlib/fin-serialization-service
+    image: ucdlib/fin-serialization-service:1.0.0
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -130,7 +130,7 @@ services:
   # CAS AuthenticationService
   ###
   cas:
-    image: ucdlib/fin-cas-service
+    image: ucdlib/fin-cas-service:0.0.1
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -142,7 +142,7 @@ services:
   # Basic Username/Password AuthenticationService
   ###
   basic-auth:
-    image: ucdlib/fin-basic-auth
+    image: ucdlib/fin-basic-auth:0.0.1
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
