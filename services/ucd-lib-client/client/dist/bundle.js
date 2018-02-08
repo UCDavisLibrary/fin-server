@@ -4590,7 +4590,7 @@ return hooks;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_legacy_legacy_element_mixin_js__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_legacy_legacy_element_mixin_js__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_legacy_templatizer_behavior_js__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_elements_dom_bind_js__ = __webpack_require__(203);
@@ -4993,7 +4993,7 @@ module.exports = {
   BaseService : __webpack_require__(230),
   Mixin : __webpack_require__(232),
   EventInterface : __webpack_require__(233),
-  fetch : __webpack_require__(59)
+  fetch : __webpack_require__(60)
 }
 
 /***/ }),
@@ -5609,7 +5609,7 @@ document.head.appendChild($_documentContainer);
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const {AppStateInterface} = __webpack_require__(45);
+const {AppStateInterface} = __webpack_require__(46);
 
 module.exports = subclass => 
   class AppStateInterfaceImpl extends Mixin(subclass).with(AppStateInterface) {
@@ -5956,7 +5956,7 @@ const IronControlState = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
@@ -7967,7 +7967,7 @@ module.exports = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_mixin_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_case_map_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_style_gather_js__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_style_gather_js__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_resolve_url_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__elements_dom_module_js__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__property_effects_js__ = __webpack_require__(32);
@@ -12729,6 +12729,64 @@ const IronResizableBehavior = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_selector_iron_selectable_js__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
+
+
+
+
+Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Polymer */])({
+  _template: `
+    <style>
+      :host {
+        display: block;
+      }
+
+      :host > ::slotted(:not(.iron-selected)) {
+        display: none !important;
+      }
+    </style>
+
+    <slot></slot>
+`,
+
+  is: 'iron-pages',
+
+  behaviors: [
+    __WEBPACK_IMPORTED_MODULE_1__iron_resizable_behavior_iron_resizable_behavior_js__["a" /* IronResizableBehavior */],
+    __WEBPACK_IMPORTED_MODULE_2__iron_selector_iron_selectable_js__["a" /* IronSelectableBehavior */]
+  ],
+
+  properties: {
+
+    // as the selected page is the only one visible, activateEvent
+    // is both non-sensical and problematic; e.g. in cases where a user
+    // handler attempts to change the page and the activateEvent
+    // handler immediately changes it back
+    activateEvent: {
+      type: String,
+      value: null
+    }
+
+  },
+
+  observers: [
+    '_selectedPageChanged(selected)'
+  ],
+
+  _selectedPageChanged: function(selected, old) {
+    this.async(this.notifyResize);
+  }
+});
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selection_js__ = __webpack_require__(224);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_case_map_js__ = __webpack_require__(13);
@@ -13130,12 +13188,12 @@ const IronSelectableBehavior = {
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_icon_iron_icon_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(44);
 
 
 const $_documentContainer = document.createElement('div');
@@ -13459,7 +13517,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13620,12 +13678,12 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -13866,7 +13924,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EventEmitter = __webpack_require__(228).EventEmitter;
@@ -13930,18 +13988,18 @@ class MasterController extends EventEmitter {
 module.exports = new MasterController();
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  AppStateInterface : __webpack_require__(61),
+  AppStateInterface : __webpack_require__(62),
   AppStateModel : __webpack_require__(242),
   AppStateStore : __webpack_require__(243),
   'app-route' : __webpack_require__(244)
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {ElasticSearchStore} = __webpack_require__(29);
@@ -13989,7 +14047,7 @@ class ElasticSearchStoreImpl extends ElasticSearchStore {
 module.exports = new ElasticSearchStoreImpl();
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports) {
 
 module.exports = subclass => 
@@ -14001,10 +14059,7 @@ module.exports = subclass =>
 
     ready() {
       super.ready();
-
-      this.AuthModel.getUser()
-        .then(e => this.AuthModel.store.data)
-        .catch(e => console.error(e));
+      this._onAuthUpdate(this.AuthModel.store.getUser());
     }
 
     _onAuthUpdate(e) {
@@ -14025,7 +14080,7 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14074,7 +14129,596 @@ const PaperInkyFocusBehavior = [
 
 
 /***/ }),
-/* 49 */
+/* 50 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_icon_iron_icon_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_icon_button_paper_icon_button_js__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_styles_color_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(295);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__iron_menu_behavior_iron_menu_behavior_js__ = __webpack_require__(188);
+
+
+
+
+
+
+
+
+
+
+
+
+Object(__WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__["a" /* Polymer */])({
+  _template: `
+    <style>
+      :host {
+        @apply --layout;
+        @apply --layout-center;
+
+        height: 48px;
+        font-size: 14px;
+        font-weight: 500;
+        overflow: hidden;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+
+        /* NOTE: Both values are needed, since some phones require the value to be \`transparent\`. */
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-tap-highlight-color: transparent;
+
+        @apply --paper-tabs;
+      }
+
+      :host-context([dir=rtl]) {
+        @apply --layout-horizontal-reverse;
+      }
+
+      #tabsContainer {
+        position: relative;
+        height: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        @apply --layout-flex-auto;
+        @apply --paper-tabs-container;
+      }
+
+      #tabsContent {
+        height: 100%;
+        -moz-flex-basis: auto;
+        -ms-flex-basis: auto;
+        flex-basis: auto;
+        @apply --paper-tabs-content;
+      }
+
+      #tabsContent.scrollable {
+        position: absolute;
+        white-space: nowrap;
+      }
+
+      #tabsContent:not(.scrollable),
+      #tabsContent.scrollable.fit-container {
+        @apply --layout-horizontal;
+      }
+
+      #tabsContent.scrollable.fit-container {
+        min-width: 100%;
+      }
+
+      #tabsContent.scrollable.fit-container > ::slotted(*) {
+        /* IE - prevent tabs from compressing when they should scroll. */
+        -ms-flex: 1 0 auto;
+        -webkit-flex: 1 0 auto;
+        flex: 1 0 auto;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .not-visible {
+        opacity: 0;
+        cursor: default;
+      }
+
+      paper-icon-button {
+        width: 48px;
+        height: 48px;
+        padding: 12px;
+        margin: 0 4px;
+      }
+
+      #selectionBar {
+        position: absolute;
+        height: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-bottom: 2px solid var(--paper-tabs-selection-bar-color, var(--paper-yellow-a100));
+          -webkit-transform: scale(0);
+        transform: scale(0);
+          -webkit-transform-origin: left center;
+        transform-origin: left center;
+          transition: -webkit-transform;
+        transition: transform;
+
+        @apply --paper-tabs-selection-bar;
+      }
+
+      #selectionBar.align-bottom {
+        top: 0;
+        bottom: auto;
+      }
+
+      #selectionBar.expand {
+        transition-duration: 0.15s;
+        transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
+      }
+
+      #selectionBar.contract {
+        transition-duration: 0.18s;
+        transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+      }
+
+      #tabsContent > ::slotted(:not(#selectionBar)) {
+        height: 100%;
+      }
+    </style>
+
+    <paper-icon-button icon="paper-tabs:chevron-left" class\$="[[_computeScrollButtonClass(_leftHidden, scrollable, hideScrollButtons)]]" on-up="_onScrollButtonUp" on-down="_onLeftScrollButtonDown" tabindex="-1"></paper-icon-button>
+
+    <div id="tabsContainer" on-track="_scroll" on-down="_down">
+      <div id="tabsContent" class\$="[[_computeTabsContentClass(scrollable, fitContainer)]]">
+        <div id="selectionBar" class\$="[[_computeSelectionBarClass(noBar, alignBottom)]]" on-transitionend="_onBarTransitionEnd"></div>
+        <slot></slot>
+      </div>
+    </div>
+
+    <paper-icon-button icon="paper-tabs:chevron-right" class\$="[[_computeScrollButtonClass(_rightHidden, scrollable, hideScrollButtons)]]" on-up="_onScrollButtonUp" on-down="_onRightScrollButtonDown" tabindex="-1"></paper-icon-button>
+`,
+
+  is: 'paper-tabs',
+
+  behaviors: [
+    __WEBPACK_IMPORTED_MODULE_4__iron_resizable_behavior_iron_resizable_behavior_js__["a" /* IronResizableBehavior */],
+    __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__["a" /* IronMenubarBehavior */]
+  ],
+
+  properties: {
+    /**
+     * If true, ink ripple effect is disabled. When this property is changed,
+     * all descendant `<paper-tab>` elements have their `noink` property
+     * changed to the new value as well.
+     */
+    noink: {
+      type: Boolean,
+      value: false,
+      observer: '_noinkChanged'
+    },
+
+    /**
+     * If true, the bottom bar to indicate the selected tab will not be shown.
+     */
+    noBar: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * If true, the slide effect for the bottom bar is disabled.
+     */
+    noSlide: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * If true, tabs are scrollable and the tab width is based on the label width.
+     */
+    scrollable: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * If true, tabs expand to fit their container. This currently only applies when
+     * scrollable is true.
+     */
+    fitContainer: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * If true, dragging on the tabs to scroll is disabled.
+     */
+    disableDrag: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * If true, scroll buttons (left/right arrow) will be hidden for scrollable tabs.
+     */
+    hideScrollButtons: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * If true, the tabs are aligned to bottom (the selection bar appears at the top).
+     */
+    alignBottom: {
+      type: Boolean,
+      value: false
+    },
+
+    selectable: {
+      type: String,
+      value: 'paper-tab'
+    },
+
+    /**
+     * If true, tabs are automatically selected when focused using the
+     * keyboard.
+     */
+    autoselect: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * The delay (in milliseconds) between when the user stops interacting
+     * with the tabs through the keyboard and when the focused item is
+     * automatically selected (if `autoselect` is true).
+     */
+    autoselectDelay: {
+      type: Number,
+      value: 0
+    },
+
+    _step: {
+      type: Number,
+      value: 10
+    },
+
+    _holdDelay: {
+      type: Number,
+      value: 1
+    },
+
+    _leftHidden: {
+      type: Boolean,
+      value: false
+    },
+
+    _rightHidden: {
+      type: Boolean,
+      value: false
+    },
+
+    _previousTab: {
+      type: Object
+    }
+  },
+
+  hostAttributes: {
+    role: 'tablist'
+  },
+
+  listeners: {
+    'iron-resize': '_onTabSizingChanged',
+    'iron-items-changed': '_onTabSizingChanged',
+    'iron-select': '_onIronSelect',
+    'iron-deselect': '_onIronDeselect'
+  },
+
+  keyBindings: {
+    'left:keyup right:keyup': '_onArrowKeyup'
+  },
+
+  created: function() {
+    this._holdJob = null;
+    this._pendingActivationItem = undefined;
+    this._pendingActivationTimeout = undefined;
+    this._bindDelayedActivationHandler = this._delayedActivationHandler.bind(this);
+    this.addEventListener('blur', this._onBlurCapture.bind(this), true);
+  },
+
+  ready: function() {
+    this.setScrollDirection('y', this.$.tabsContainer);
+  },
+
+  detached: function() {
+    this._cancelPendingActivation();
+  },
+
+  _noinkChanged: function(noink) {
+    var childTabs = Object(__WEBPACK_IMPORTED_MODULE_10__polymer_lib_legacy_polymer_dom_js__["a" /* dom */])(this).querySelectorAll('paper-tab');
+    childTabs.forEach(noink ? this._setNoinkAttribute : this._removeNoinkAttribute);
+  },
+
+  _setNoinkAttribute: function(element) {
+    element.setAttribute('noink', '');
+  },
+
+  _removeNoinkAttribute: function(element) {
+    element.removeAttribute('noink');
+  },
+
+  _computeScrollButtonClass: function(hideThisButton, scrollable, hideScrollButtons) {
+    if (!scrollable || hideScrollButtons) {
+      return 'hidden';
+    }
+
+    if (hideThisButton) {
+      return 'not-visible';
+    }
+
+    return '';
+  },
+
+  _computeTabsContentClass: function(scrollable, fitContainer) {
+    return scrollable ? 'scrollable' + (fitContainer ? ' fit-container' : '') : ' fit-container';
+  },
+
+  _computeSelectionBarClass: function(noBar, alignBottom) {
+    if (noBar) {
+      return 'hidden';
+    } else if (alignBottom) {
+      return 'align-bottom';
+    }
+
+    return '';
+  },
+
+  // TODO(cdata): Add `track` response back in when gesture lands.
+
+  _onTabSizingChanged: function() {
+    this.debounce('_onTabSizingChanged', function() {
+      this._scroll();
+      this._tabChanged(this.selectedItem);
+    }, 10);
+  },
+
+  _onIronSelect: function(event) {
+    this._tabChanged(event.detail.item, this._previousTab);
+    this._previousTab = event.detail.item;
+    this.cancelDebouncer('tab-changed');
+  },
+
+  _onIronDeselect: function(event) {
+    this.debounce('tab-changed', function() {
+      this._tabChanged(null, this._previousTab);
+      this._previousTab = null;
+    // See polymer/polymer#1305
+    }, 1);
+  },
+
+  _activateHandler: function() {
+    // Cancel item activations scheduled by keyboard events when any other
+    // action causes an item to be activated (e.g. clicks).
+    this._cancelPendingActivation();
+
+    __WEBPACK_IMPORTED_MODULE_11__iron_menu_behavior_iron_menu_behavior_js__["b" /* IronMenuBehaviorImpl */]._activateHandler.apply(this, arguments);
+  },
+
+  /**
+   * Activates an item after a delay (in milliseconds).
+   */
+  _scheduleActivation: function(item, delay) {
+    this._pendingActivationItem = item;
+    this._pendingActivationTimeout = this.async(
+        this._bindDelayedActivationHandler, delay);
+  },
+
+  /**
+   * Activates the last item given to `_scheduleActivation`.
+   */
+  _delayedActivationHandler: function() {
+    var item = this._pendingActivationItem;
+    this._pendingActivationItem = undefined;
+    this._pendingActivationTimeout = undefined;
+    item.fire(this.activateEvent, null, {
+      bubbles: true,
+      cancelable: true
+    });
+  },
+
+  /**
+   * Cancels a previously scheduled item activation made with
+   * `_scheduleActivation`.
+   */
+  _cancelPendingActivation: function() {
+    if (this._pendingActivationTimeout !== undefined) {
+      this.cancelAsync(this._pendingActivationTimeout);
+      this._pendingActivationItem = undefined;
+      this._pendingActivationTimeout = undefined;
+    }
+  },
+
+  _onArrowKeyup: function(event) {
+    if (this.autoselect) {
+      this._scheduleActivation(this.focusedItem, this.autoselectDelay);
+    }
+  },
+
+  _onBlurCapture: function(event) {
+    // Cancel a scheduled item activation (if any) when that item is
+    // blurred.
+    if (event.target === this._pendingActivationItem) {
+      this._cancelPendingActivation();
+    }
+  },
+
+  get _tabContainerScrollSize () {
+    return Math.max(
+      0,
+      this.$.tabsContainer.scrollWidth -
+        this.$.tabsContainer.offsetWidth
+    );
+  },
+
+  _scroll: function(e, detail) {
+    if (!this.scrollable) {
+      return;
+    }
+
+    var ddx = (detail && -detail.ddx) || 0;
+    this._affectScroll(ddx);
+  },
+
+  _down: function(e) {
+    // go one beat async to defeat IronMenuBehavior
+    // autorefocus-on-no-selection timeout
+    this.async(function() {
+      if (this._defaultFocusAsync) {
+        this.cancelAsync(this._defaultFocusAsync);
+        this._defaultFocusAsync = null;
+      }
+    }, 1);
+  },
+
+  _affectScroll: function(dx) {
+    this.$.tabsContainer.scrollLeft += dx;
+
+    var scrollLeft = this.$.tabsContainer.scrollLeft;
+
+    this._leftHidden = scrollLeft === 0;
+    this._rightHidden = scrollLeft === this._tabContainerScrollSize;
+  },
+
+  _onLeftScrollButtonDown: function() {
+    this._scrollToLeft();
+    this._holdJob = setInterval(this._scrollToLeft.bind(this), this._holdDelay);
+  },
+
+  _onRightScrollButtonDown: function() {
+    this._scrollToRight();
+    this._holdJob = setInterval(this._scrollToRight.bind(this), this._holdDelay);
+  },
+
+  _onScrollButtonUp: function() {
+    clearInterval(this._holdJob);
+    this._holdJob = null;
+  },
+
+  _scrollToLeft: function() {
+    this._affectScroll(-this._step);
+  },
+
+  _scrollToRight: function() {
+    this._affectScroll(this._step);
+  },
+
+  _tabChanged: function(tab, old) {
+    if (!tab) {
+      // Remove the bar without animation.
+      this.$.selectionBar.classList.remove('expand');
+      this.$.selectionBar.classList.remove('contract');
+      this._positionBar(0, 0);
+      return;
+    }
+
+    var r = this.$.tabsContent.getBoundingClientRect();
+    var w = r.width;
+    var tabRect = tab.getBoundingClientRect();
+    var tabOffsetLeft = tabRect.left - r.left;
+
+    this._pos = {
+      width: this._calcPercent(tabRect.width, w),
+      left: this._calcPercent(tabOffsetLeft, w)
+    };
+
+    if (this.noSlide || old == null) {
+      // Position the bar without animation.
+      this.$.selectionBar.classList.remove('expand');
+      this.$.selectionBar.classList.remove('contract');
+      this._positionBar(this._pos.width, this._pos.left);
+      return;
+    }
+
+    var oldRect = old.getBoundingClientRect();
+    var oldIndex = this.items.indexOf(old);
+    var index = this.items.indexOf(tab);
+    var m = 5;
+
+    // bar animation: expand
+    this.$.selectionBar.classList.add('expand');
+
+    var moveRight = oldIndex < index;
+    var isRTL = this._isRTL;
+    if (isRTL) {
+      moveRight = !moveRight;
+    }
+
+    if (moveRight) {
+      this._positionBar(this._calcPercent(tabRect.left + tabRect.width - oldRect.left, w) - m,
+          this._left);
+    } else {
+      this._positionBar(this._calcPercent(oldRect.left + oldRect.width - tabRect.left, w) - m,
+          this._calcPercent(tabOffsetLeft, w) + m);
+    }
+
+    if (this.scrollable) {
+      this._scrollToSelectedIfNeeded(tabRect.width, tabOffsetLeft);
+    }
+  },
+
+  _scrollToSelectedIfNeeded: function(tabWidth, tabOffsetLeft) {
+    var l = tabOffsetLeft - this.$.tabsContainer.scrollLeft;
+    if (l < 0) {
+      this.$.tabsContainer.scrollLeft += l;
+    } else {
+      l += (tabWidth - this.$.tabsContainer.offsetWidth);
+      if (l > 0) {
+        this.$.tabsContainer.scrollLeft += l;
+      }
+    }
+  },
+
+  _calcPercent: function(w, w0) {
+    return 100 * w / w0;
+  },
+
+  _positionBar: function(width, left) {
+    width = width || 0;
+    left = left || 0;
+
+    this._width = width;
+    this._left = left;
+    this.transform(
+        'translateX(' + left + '%) scaleX(' + (width / 100) + ')',
+        this.$.selectionBar);
+  },
+
+  _onBarTransitionEnd: function(e) {
+    var cl = this.$.selectionBar.classList;
+    // bar animation: expand -> contract
+    if (cl.contains('expand')) {
+      cl.remove('expand');
+      cl.add('contract');
+      this._positionBar(this._pos.width, this._pos.left);
+    // bar animation done
+    } else if (cl.contains('contract')) {
+      cl.remove('contract');
+    }
+  }
+});
+
+
+/***/ }),
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14172,20 +14816,20 @@ function _cssFromModuleImports(module) {
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_apply_shim_js__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_element_mixin_js__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_gesture_event_listeners_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_gesture_event_listeners_js__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_import_href_js__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_render_status_js__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__ = __webpack_require__(199);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_gestures_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_gestures_js__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils_debounce_js__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_async_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__utils_path_js__ = __webpack_require__(20);
@@ -15123,7 +15767,7 @@ const LegacyElementMixin = Object(__WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__[
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15441,7 +16085,7 @@ function gatherStyleText(element) {
 }
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15465,7 +16109,7 @@ const templateMap = {};
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15518,13 +16162,13 @@ function documentWait(callback) {
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export CustomStyleProvider */
 /* unused harmony export CustomStyleInterfaceInterface */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__document_wait_js__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__document_wait_js__ = __webpack_require__(55);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -15686,14 +16330,14 @@ let CustomStyleInterfaceInterface;
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_gestures_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_gestures_js__ = __webpack_require__(58);
 
 
 
@@ -15734,7 +16378,7 @@ const GestureEventListeners = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16569,7 +17213,7 @@ const remove = removeListener;
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16840,65 +17484,7 @@ function equals(currentValue, previousValue) {
 
 
 /***/ }),
-/* 58 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_selector_iron_selectable_js__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
-
-
-
-
-Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Polymer */])({
-  _template: `
-    <style>
-      :host {
-        display: block;
-      }
-
-      :host > ::slotted(:not(.iron-selected)) {
-        display: none !important;
-      }
-    </style>
-
-    <slot></slot>
-`,
-
-  is: 'iron-pages',
-
-  behaviors: [
-    __WEBPACK_IMPORTED_MODULE_1__iron_resizable_behavior_iron_resizable_behavior_js__["a" /* IronResizableBehavior */],
-    __WEBPACK_IMPORTED_MODULE_2__iron_selector_iron_selectable_js__["a" /* IronSelectableBehavior */]
-  ],
-
-  properties: {
-
-    // as the selected page is the only one visible, activateEvent
-    // is both non-sensical and problematic; e.g. in cases where a user
-    // handler attempts to change the page and the activateEvent
-    // handler immediately changes it back
-    activateEvent: {
-      type: String,
-      value: null
-    }
-
-  },
-
-  observers: [
-    '_selectedPageChanged(selected)'
-  ],
-
-  _selectedPageChanged: function(selected, old) {
-    this.async(this.notifyResize);
-  }
-});
-
-
-/***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // the whatwg-fetch polyfill installs the fetch() function
@@ -16910,7 +17496,7 @@ module.exports = self.fetch.bind(self);
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseStore} = __webpack_require__(6);
@@ -16936,10 +17522,14 @@ class AuthStore extends BaseStore {
     }
   }
 
+  getUser() {
+    return this.data;
+  }
+
   setUser(user) {
     this.data = {
       user : user,
-      state: user.isAnonymous ? this.CUSTOM_STATES.NOT_LOGGED_IN : this.CUSTOM_STATES.LOGGED_IN
+      state: user.loggedIn ? this.CUSTOM_STATES.LOGGED_IN : this.CUSTOM_STATES.NOT_LOGGED_IN
     };
     this.emit(this.events.AUTH_UPDATE, this.data);
   }
@@ -16958,7 +17548,7 @@ class AuthStore extends BaseStore {
 module.exports = new AuthStore();
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports) {
 
 module.exports = subclass => 
@@ -16990,7 +17580,7 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -17045,7 +17635,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseStore} = __webpack_require__(6);
@@ -17120,7 +17710,7 @@ class CollectionStore extends BaseStore {
 module.exports = new CollectionStore();
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17198,13 +17788,13 @@ const IronFormElementBehavior = {
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export IronValidatableBehaviorMeta */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(43);
 
 
 let IronValidatableBehaviorMeta = null;
@@ -17300,7 +17890,7 @@ const IronValidatableBehavior = {
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17336,13 +17926,13 @@ const PaperInputAddonBehavior = {
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_icon_iron_icon_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_default_theme_js__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
@@ -17467,7 +18057,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17543,17 +18133,28 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
   }
 
   /**
-   * Fired when this element is clicked
+   * @method _onClick
+   * @description Fired when this element is clicked
    */
   _onClick() {
     this._setWindowLocation('/record'+this.fetchId);
   }
 
+  /**
+   * @method _isImg
+   * @description helper method to sniff if mimetype is image
+   * 
+   * @param {String} mimeType 
+   */
   _isImg(mimeType) {
     if( !mimeType ) return false;
     return mimeType.match(/^image/i) ? true : false;
   }
 
+  /**
+   * @method _onDataUpdate
+   * @description fired when `data` property updates.  Set UI properties.
+   */
   async _onDataUpdate() {
     let data = Object.assign({}, this.data);
     if( !data['@id'] ) return;
@@ -17609,7 +18210,7 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17687,7 +18288,7 @@ return af;
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17834,7 +18435,7 @@ return ar;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17898,7 +18499,7 @@ return arDz;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17962,7 +18563,7 @@ return arKw;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18093,7 +18694,7 @@ return arLy;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18158,7 +18759,7 @@ return arMa;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18268,7 +18869,7 @@ return arSa;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18332,7 +18933,7 @@ return arTn;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18442,7 +19043,7 @@ return az;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18581,7 +19182,7 @@ return be;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18676,7 +19277,7 @@ return bg;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18740,7 +19341,7 @@ return bm;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18864,7 +19465,7 @@ return bn;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18988,7 +19589,7 @@ return bo;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19101,7 +19702,7 @@ return br;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19249,7 +19850,7 @@ return bs;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19342,7 +19943,7 @@ return ca;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19519,7 +20120,7 @@ return cs;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19587,7 +20188,7 @@ return cv;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19673,7 +20274,7 @@ return cy;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19738,7 +20339,7 @@ return da;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19821,7 +20422,7 @@ return de;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19905,7 +20506,7 @@ return deAt;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19988,7 +20589,7 @@ return deCh;
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20093,7 +20694,7 @@ return dv;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20198,7 +20799,7 @@ return el;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20270,7 +20871,7 @@ return enAu;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20338,7 +20939,7 @@ return enCa;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20410,7 +21011,7 @@ return enGb;
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20482,7 +21083,7 @@ return enIe;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20554,7 +21155,7 @@ return enNz;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20632,7 +21233,7 @@ return eo;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20729,7 +21330,7 @@ return es;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20825,7 +21426,7 @@ return esDo;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20913,7 +21514,7 @@ return esUs;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20998,7 +21599,7 @@ return et;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21069,7 +21670,7 @@ return eu;
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21181,7 +21782,7 @@ return fa;
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21293,7 +21894,7 @@ return fi;
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21358,7 +21959,7 @@ return fo;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21446,7 +22047,7 @@ return fr;
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21525,7 +22126,7 @@ return frCa;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21608,7 +22209,7 @@ return frCh;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21688,7 +22289,7 @@ return fy;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21769,7 +22370,7 @@ return gd;
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21851,7 +22452,7 @@ return gl;
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21978,7 +22579,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22107,7 +22708,7 @@ return gu;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22211,7 +22812,7 @@ return he;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22340,7 +22941,7 @@ return hi;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22490,7 +23091,7 @@ return hr;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22604,7 +23205,7 @@ return hu;
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22704,7 +23305,7 @@ return hyAm;
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22792,7 +23393,7 @@ return id;
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22924,7 +23525,7 @@ return is;
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22999,7 +23600,7 @@ return it;
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23084,7 +23685,7 @@ return ja;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23172,7 +23773,7 @@ return jv;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23266,7 +23867,7 @@ return ka;
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23358,7 +23959,7 @@ return kk;
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23421,7 +24022,7 @@ return km;
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23552,7 +24153,7 @@ return kn;
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23640,7 +24241,7 @@ return ko;
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23733,7 +24334,7 @@ return ky;
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23875,7 +24476,7 @@ return lb;
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23950,7 +24551,7 @@ return lo;
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24072,7 +24673,7 @@ return lt;
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24174,7 +24775,7 @@ return lv;
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24290,7 +24891,7 @@ return me;
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24359,7 +24960,7 @@ return mi;
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24454,7 +25055,7 @@ return mk;
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24540,7 +25141,7 @@ return ml;
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24704,7 +25305,7 @@ return mr;
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24791,7 +25392,7 @@ return ms;
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24879,7 +25480,7 @@ return msMy;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24980,7 +25581,7 @@ return my;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25048,7 +25649,7 @@ return nb;
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25176,7 +25777,7 @@ return ne;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25269,7 +25870,7 @@ return nl;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25362,7 +25963,7 @@ return nlBe;
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25427,7 +26028,7 @@ return nn;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25556,7 +26157,7 @@ return paIn;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25685,7 +26286,7 @@ return pl;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25755,7 +26356,7 @@ return pt;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25822,7 +26423,7 @@ return ptBr;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25902,7 +26503,7 @@ return ro;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26090,7 +26691,7 @@ return ru;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26193,7 +26794,7 @@ return sd;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26259,7 +26860,7 @@ return se;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26335,7 +26936,7 @@ return si;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26490,7 +27091,7 @@ return sk;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26657,7 +27258,7 @@ return sl;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26732,7 +27333,7 @@ return sq;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26847,7 +27448,7 @@ return sr;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26962,7 +27563,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27056,7 +27657,7 @@ return ss;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27130,7 +27731,7 @@ return sv;
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27194,7 +27795,7 @@ return sw;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27329,7 +27930,7 @@ return ta;
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27423,7 +28024,7 @@ return te;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27496,7 +28097,7 @@ return tet;
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27568,7 +28169,7 @@ return th;
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27635,7 +28236,7 @@ return tlPh;
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27760,7 +28361,7 @@ return tlh;
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27855,7 +28456,7 @@ return tr;
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27951,7 +28552,7 @@ return tzl;
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28014,7 +28615,7 @@ return tzm;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28077,7 +28678,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28233,7 +28834,7 @@ return uk;
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28337,7 +28938,7 @@ return ur;
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28400,7 +29001,7 @@ return uz;
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28463,7 +29064,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28547,7 +29148,7 @@ return vi;
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28620,7 +29221,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28685,7 +29286,7 @@ return yo;
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28801,7 +29402,7 @@ return zhCn;
 
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28911,7 +29512,7 @@ return zhHk;
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29020,595 +29621,6 @@ return zhTw;
 
 
 /***/ }),
-/* 187 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_icon_iron_icon_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(293);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_icon_button_paper_icon_button_js__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_styles_color_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(295);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(296);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__iron_menu_behavior_iron_menu_behavior_js__ = __webpack_require__(188);
-
-
-
-
-
-
-
-
-
-
-
-
-Object(__WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__["a" /* Polymer */])({
-  _template: `
-    <style>
-      :host {
-        @apply --layout;
-        @apply --layout-center;
-
-        height: 48px;
-        font-size: 14px;
-        font-weight: 500;
-        overflow: hidden;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -webkit-user-select: none;
-        user-select: none;
-
-        /* NOTE: Both values are needed, since some phones require the value to be \`transparent\`. */
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-        -webkit-tap-highlight-color: transparent;
-
-        @apply --paper-tabs;
-      }
-
-      :host-context([dir=rtl]) {
-        @apply --layout-horizontal-reverse;
-      }
-
-      #tabsContainer {
-        position: relative;
-        height: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-        @apply --layout-flex-auto;
-        @apply --paper-tabs-container;
-      }
-
-      #tabsContent {
-        height: 100%;
-        -moz-flex-basis: auto;
-        -ms-flex-basis: auto;
-        flex-basis: auto;
-        @apply --paper-tabs-content;
-      }
-
-      #tabsContent.scrollable {
-        position: absolute;
-        white-space: nowrap;
-      }
-
-      #tabsContent:not(.scrollable),
-      #tabsContent.scrollable.fit-container {
-        @apply --layout-horizontal;
-      }
-
-      #tabsContent.scrollable.fit-container {
-        min-width: 100%;
-      }
-
-      #tabsContent.scrollable.fit-container > ::slotted(*) {
-        /* IE - prevent tabs from compressing when they should scroll. */
-        -ms-flex: 1 0 auto;
-        -webkit-flex: 1 0 auto;
-        flex: 1 0 auto;
-      }
-
-      .hidden {
-        display: none;
-      }
-
-      .not-visible {
-        opacity: 0;
-        cursor: default;
-      }
-
-      paper-icon-button {
-        width: 48px;
-        height: 48px;
-        padding: 12px;
-        margin: 0 4px;
-      }
-
-      #selectionBar {
-        position: absolute;
-        height: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        border-bottom: 2px solid var(--paper-tabs-selection-bar-color, var(--paper-yellow-a100));
-          -webkit-transform: scale(0);
-        transform: scale(0);
-          -webkit-transform-origin: left center;
-        transform-origin: left center;
-          transition: -webkit-transform;
-        transition: transform;
-
-        @apply --paper-tabs-selection-bar;
-      }
-
-      #selectionBar.align-bottom {
-        top: 0;
-        bottom: auto;
-      }
-
-      #selectionBar.expand {
-        transition-duration: 0.15s;
-        transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
-      }
-
-      #selectionBar.contract {
-        transition-duration: 0.18s;
-        transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
-      }
-
-      #tabsContent > ::slotted(:not(#selectionBar)) {
-        height: 100%;
-      }
-    </style>
-
-    <paper-icon-button icon="paper-tabs:chevron-left" class\$="[[_computeScrollButtonClass(_leftHidden, scrollable, hideScrollButtons)]]" on-up="_onScrollButtonUp" on-down="_onLeftScrollButtonDown" tabindex="-1"></paper-icon-button>
-
-    <div id="tabsContainer" on-track="_scroll" on-down="_down">
-      <div id="tabsContent" class\$="[[_computeTabsContentClass(scrollable, fitContainer)]]">
-        <div id="selectionBar" class\$="[[_computeSelectionBarClass(noBar, alignBottom)]]" on-transitionend="_onBarTransitionEnd"></div>
-        <slot></slot>
-      </div>
-    </div>
-
-    <paper-icon-button icon="paper-tabs:chevron-right" class\$="[[_computeScrollButtonClass(_rightHidden, scrollable, hideScrollButtons)]]" on-up="_onScrollButtonUp" on-down="_onRightScrollButtonDown" tabindex="-1"></paper-icon-button>
-`,
-
-  is: 'paper-tabs',
-
-  behaviors: [
-    __WEBPACK_IMPORTED_MODULE_4__iron_resizable_behavior_iron_resizable_behavior_js__["a" /* IronResizableBehavior */],
-    __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__["a" /* IronMenubarBehavior */]
-  ],
-
-  properties: {
-    /**
-     * If true, ink ripple effect is disabled. When this property is changed,
-     * all descendant `<paper-tab>` elements have their `noink` property
-     * changed to the new value as well.
-     */
-    noink: {
-      type: Boolean,
-      value: false,
-      observer: '_noinkChanged'
-    },
-
-    /**
-     * If true, the bottom bar to indicate the selected tab will not be shown.
-     */
-    noBar: {
-      type: Boolean,
-      value: false
-    },
-
-    /**
-     * If true, the slide effect for the bottom bar is disabled.
-     */
-    noSlide: {
-      type: Boolean,
-      value: false
-    },
-
-    /**
-     * If true, tabs are scrollable and the tab width is based on the label width.
-     */
-    scrollable: {
-      type: Boolean,
-      value: false
-    },
-
-    /**
-     * If true, tabs expand to fit their container. This currently only applies when
-     * scrollable is true.
-     */
-    fitContainer: {
-      type: Boolean,
-      value: false
-    },
-
-    /**
-     * If true, dragging on the tabs to scroll is disabled.
-     */
-    disableDrag: {
-      type: Boolean,
-      value: false
-    },
-
-    /**
-     * If true, scroll buttons (left/right arrow) will be hidden for scrollable tabs.
-     */
-    hideScrollButtons: {
-      type: Boolean,
-      value: false
-    },
-
-    /**
-     * If true, the tabs are aligned to bottom (the selection bar appears at the top).
-     */
-    alignBottom: {
-      type: Boolean,
-      value: false
-    },
-
-    selectable: {
-      type: String,
-      value: 'paper-tab'
-    },
-
-    /**
-     * If true, tabs are automatically selected when focused using the
-     * keyboard.
-     */
-    autoselect: {
-      type: Boolean,
-      value: false
-    },
-
-    /**
-     * The delay (in milliseconds) between when the user stops interacting
-     * with the tabs through the keyboard and when the focused item is
-     * automatically selected (if `autoselect` is true).
-     */
-    autoselectDelay: {
-      type: Number,
-      value: 0
-    },
-
-    _step: {
-      type: Number,
-      value: 10
-    },
-
-    _holdDelay: {
-      type: Number,
-      value: 1
-    },
-
-    _leftHidden: {
-      type: Boolean,
-      value: false
-    },
-
-    _rightHidden: {
-      type: Boolean,
-      value: false
-    },
-
-    _previousTab: {
-      type: Object
-    }
-  },
-
-  hostAttributes: {
-    role: 'tablist'
-  },
-
-  listeners: {
-    'iron-resize': '_onTabSizingChanged',
-    'iron-items-changed': '_onTabSizingChanged',
-    'iron-select': '_onIronSelect',
-    'iron-deselect': '_onIronDeselect'
-  },
-
-  keyBindings: {
-    'left:keyup right:keyup': '_onArrowKeyup'
-  },
-
-  created: function() {
-    this._holdJob = null;
-    this._pendingActivationItem = undefined;
-    this._pendingActivationTimeout = undefined;
-    this._bindDelayedActivationHandler = this._delayedActivationHandler.bind(this);
-    this.addEventListener('blur', this._onBlurCapture.bind(this), true);
-  },
-
-  ready: function() {
-    this.setScrollDirection('y', this.$.tabsContainer);
-  },
-
-  detached: function() {
-    this._cancelPendingActivation();
-  },
-
-  _noinkChanged: function(noink) {
-    var childTabs = Object(__WEBPACK_IMPORTED_MODULE_10__polymer_lib_legacy_polymer_dom_js__["a" /* dom */])(this).querySelectorAll('paper-tab');
-    childTabs.forEach(noink ? this._setNoinkAttribute : this._removeNoinkAttribute);
-  },
-
-  _setNoinkAttribute: function(element) {
-    element.setAttribute('noink', '');
-  },
-
-  _removeNoinkAttribute: function(element) {
-    element.removeAttribute('noink');
-  },
-
-  _computeScrollButtonClass: function(hideThisButton, scrollable, hideScrollButtons) {
-    if (!scrollable || hideScrollButtons) {
-      return 'hidden';
-    }
-
-    if (hideThisButton) {
-      return 'not-visible';
-    }
-
-    return '';
-  },
-
-  _computeTabsContentClass: function(scrollable, fitContainer) {
-    return scrollable ? 'scrollable' + (fitContainer ? ' fit-container' : '') : ' fit-container';
-  },
-
-  _computeSelectionBarClass: function(noBar, alignBottom) {
-    if (noBar) {
-      return 'hidden';
-    } else if (alignBottom) {
-      return 'align-bottom';
-    }
-
-    return '';
-  },
-
-  // TODO(cdata): Add `track` response back in when gesture lands.
-
-  _onTabSizingChanged: function() {
-    this.debounce('_onTabSizingChanged', function() {
-      this._scroll();
-      this._tabChanged(this.selectedItem);
-    }, 10);
-  },
-
-  _onIronSelect: function(event) {
-    this._tabChanged(event.detail.item, this._previousTab);
-    this._previousTab = event.detail.item;
-    this.cancelDebouncer('tab-changed');
-  },
-
-  _onIronDeselect: function(event) {
-    this.debounce('tab-changed', function() {
-      this._tabChanged(null, this._previousTab);
-      this._previousTab = null;
-    // See polymer/polymer#1305
-    }, 1);
-  },
-
-  _activateHandler: function() {
-    // Cancel item activations scheduled by keyboard events when any other
-    // action causes an item to be activated (e.g. clicks).
-    this._cancelPendingActivation();
-
-    __WEBPACK_IMPORTED_MODULE_11__iron_menu_behavior_iron_menu_behavior_js__["b" /* IronMenuBehaviorImpl */]._activateHandler.apply(this, arguments);
-  },
-
-  /**
-   * Activates an item after a delay (in milliseconds).
-   */
-  _scheduleActivation: function(item, delay) {
-    this._pendingActivationItem = item;
-    this._pendingActivationTimeout = this.async(
-        this._bindDelayedActivationHandler, delay);
-  },
-
-  /**
-   * Activates the last item given to `_scheduleActivation`.
-   */
-  _delayedActivationHandler: function() {
-    var item = this._pendingActivationItem;
-    this._pendingActivationItem = undefined;
-    this._pendingActivationTimeout = undefined;
-    item.fire(this.activateEvent, null, {
-      bubbles: true,
-      cancelable: true
-    });
-  },
-
-  /**
-   * Cancels a previously scheduled item activation made with
-   * `_scheduleActivation`.
-   */
-  _cancelPendingActivation: function() {
-    if (this._pendingActivationTimeout !== undefined) {
-      this.cancelAsync(this._pendingActivationTimeout);
-      this._pendingActivationItem = undefined;
-      this._pendingActivationTimeout = undefined;
-    }
-  },
-
-  _onArrowKeyup: function(event) {
-    if (this.autoselect) {
-      this._scheduleActivation(this.focusedItem, this.autoselectDelay);
-    }
-  },
-
-  _onBlurCapture: function(event) {
-    // Cancel a scheduled item activation (if any) when that item is
-    // blurred.
-    if (event.target === this._pendingActivationItem) {
-      this._cancelPendingActivation();
-    }
-  },
-
-  get _tabContainerScrollSize () {
-    return Math.max(
-      0,
-      this.$.tabsContainer.scrollWidth -
-        this.$.tabsContainer.offsetWidth
-    );
-  },
-
-  _scroll: function(e, detail) {
-    if (!this.scrollable) {
-      return;
-    }
-
-    var ddx = (detail && -detail.ddx) || 0;
-    this._affectScroll(ddx);
-  },
-
-  _down: function(e) {
-    // go one beat async to defeat IronMenuBehavior
-    // autorefocus-on-no-selection timeout
-    this.async(function() {
-      if (this._defaultFocusAsync) {
-        this.cancelAsync(this._defaultFocusAsync);
-        this._defaultFocusAsync = null;
-      }
-    }, 1);
-  },
-
-  _affectScroll: function(dx) {
-    this.$.tabsContainer.scrollLeft += dx;
-
-    var scrollLeft = this.$.tabsContainer.scrollLeft;
-
-    this._leftHidden = scrollLeft === 0;
-    this._rightHidden = scrollLeft === this._tabContainerScrollSize;
-  },
-
-  _onLeftScrollButtonDown: function() {
-    this._scrollToLeft();
-    this._holdJob = setInterval(this._scrollToLeft.bind(this), this._holdDelay);
-  },
-
-  _onRightScrollButtonDown: function() {
-    this._scrollToRight();
-    this._holdJob = setInterval(this._scrollToRight.bind(this), this._holdDelay);
-  },
-
-  _onScrollButtonUp: function() {
-    clearInterval(this._holdJob);
-    this._holdJob = null;
-  },
-
-  _scrollToLeft: function() {
-    this._affectScroll(-this._step);
-  },
-
-  _scrollToRight: function() {
-    this._affectScroll(this._step);
-  },
-
-  _tabChanged: function(tab, old) {
-    if (!tab) {
-      // Remove the bar without animation.
-      this.$.selectionBar.classList.remove('expand');
-      this.$.selectionBar.classList.remove('contract');
-      this._positionBar(0, 0);
-      return;
-    }
-
-    var r = this.$.tabsContent.getBoundingClientRect();
-    var w = r.width;
-    var tabRect = tab.getBoundingClientRect();
-    var tabOffsetLeft = tabRect.left - r.left;
-
-    this._pos = {
-      width: this._calcPercent(tabRect.width, w),
-      left: this._calcPercent(tabOffsetLeft, w)
-    };
-
-    if (this.noSlide || old == null) {
-      // Position the bar without animation.
-      this.$.selectionBar.classList.remove('expand');
-      this.$.selectionBar.classList.remove('contract');
-      this._positionBar(this._pos.width, this._pos.left);
-      return;
-    }
-
-    var oldRect = old.getBoundingClientRect();
-    var oldIndex = this.items.indexOf(old);
-    var index = this.items.indexOf(tab);
-    var m = 5;
-
-    // bar animation: expand
-    this.$.selectionBar.classList.add('expand');
-
-    var moveRight = oldIndex < index;
-    var isRTL = this._isRTL;
-    if (isRTL) {
-      moveRight = !moveRight;
-    }
-
-    if (moveRight) {
-      this._positionBar(this._calcPercent(tabRect.left + tabRect.width - oldRect.left, w) - m,
-          this._left);
-    } else {
-      this._positionBar(this._calcPercent(oldRect.left + oldRect.width - tabRect.left, w) - m,
-          this._calcPercent(tabOffsetLeft, w) + m);
-    }
-
-    if (this.scrollable) {
-      this._scrollToSelectedIfNeeded(tabRect.width, tabOffsetLeft);
-    }
-  },
-
-  _scrollToSelectedIfNeeded: function(tabWidth, tabOffsetLeft) {
-    var l = tabOffsetLeft - this.$.tabsContainer.scrollLeft;
-    if (l < 0) {
-      this.$.tabsContainer.scrollLeft += l;
-    } else {
-      l += (tabWidth - this.$.tabsContainer.offsetWidth);
-      if (l > 0) {
-        this.$.tabsContainer.scrollLeft += l;
-      }
-    }
-  },
-
-  _calcPercent: function(w, w0) {
-    return 100 * w / w0;
-  },
-
-  _positionBar: function(width, left) {
-    width = width || 0;
-    left = left || 0;
-
-    this._width = width;
-    this._left = left;
-    this.transform(
-        'translateX(' + left + '%) scaleX(' + (width / 100) + ')',
-        this.$.selectionBar);
-  },
-
-  _onBarTransitionEnd: function(e) {
-    var cl = this.$.selectionBar.classList;
-    // bar animation: expand -> contract
-    if (cl.contains('expand')) {
-      cl.remove('expand');
-      cl.add('contract');
-      this._positionBar(this._pos.width, this._pos.left);
-    // bar animation done
-    } else if (cl.contains('contract')) {
-      cl.remove('contract');
-    }
-  }
-});
-
-
-/***/ }),
 /* 188 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -29617,7 +29629,7 @@ Object(__WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selector_iron_multi_selectable_js__ = __webpack_require__(294);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_selector_iron_selectable_js__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_selector_iron_selectable_js__ = __webpack_require__(41);
 
 
 
@@ -30208,8 +30220,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_paper_material_paper_material__ = __webpack_require__(216);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_paper_styles_paper_styles__ = __webpack_require__(218);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_paper_button_paper_button__ = __webpack_require__(220);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_iron_pages_iron_pages__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_iron_icons_iron_icons__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_iron_pages_iron_pages__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_iron_icons_iron_icons__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ucd_lib_fin_icons_fin_icons__ = __webpack_require__(225);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ucd_lib_cork_app_utils__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ucd_lib_cork_app_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__ucd_lib_cork_app_utils__);
@@ -30220,17 +30232,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_home_app_home__ = __webpack_require__(262);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_search_app_search__ = __webpack_require__(266);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_record_app_record__ = __webpack_require__(312);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__app_footer__ = __webpack_require__(328);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__utils_app_header_colorbar__ = __webpack_require__(332);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__app_footer__ = __webpack_require__(332);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__utils_app_header_colorbar__ = __webpack_require__(336);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__interfaces_AppStateInterface__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__fin_app_html__ = __webpack_require__(333);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__fin_app_html__ = __webpack_require__(337);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__fin_app_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__fin_app_html__);
 
 
@@ -30286,7 +30298,7 @@ class FinApp extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_
       },
       appRoutes : {
         type : Array,
-        value : () => ['search', 'record']
+        value : () => APP_CONFIG.appRoutes
       }
     }
   }
@@ -30298,9 +30310,17 @@ class FinApp extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_
 
   ready() {
     super.ready();
-    this._getCollectionOverview();
+
+    // set initial user state
+    this.AuthModel.store.setUser(APP_CONFIG.user);
+
+    this._getCollectionOverview(); // from CollectionInterface
   }
 
+  /**
+   * @method _onAppStateUpdate
+   * @description AppStateInterface
+   */
   _onAppStateUpdate(e) {
     let page = e.location.path[0] || 'home';
     if( page === this.page ) return;
@@ -31852,12 +31872,12 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_apply_shim_js__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_template_map_js__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_util_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_template_map_js__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_util_js__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_apply_shim_utils_js__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_document_wait_js__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_document_wait_js__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_common_utils_js__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_custom_style_interface_js__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_custom_style_interface_js__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_style_settings_js__ = __webpack_require__(33);
 /**
 @license
@@ -32059,7 +32079,7 @@ window.ShadyCSS.ApplyShim = applyShim;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_util_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_util_js__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_regex_js__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utils_js__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__css_parse_js__ = __webpack_require__(34);
@@ -32605,7 +32625,7 @@ function isUnscopedStyle(style) {
 /* unused harmony export startValidating */
 /* harmony export (immutable) */ __webpack_exports__["b"] = startValidatingTemplate;
 /* unused harmony export elementsAreInvalid */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_map_js__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_map_js__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__css_parse_js__ = __webpack_require__(34);
 /**
 @license
@@ -32861,7 +32881,7 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FlattenedNodesObserver; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__array_splice_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__array_splice_js__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(7);
 
 
@@ -33107,7 +33127,7 @@ class FlattenedNodesObserver {
 
 "use strict";
 /* unused harmony export mixinBehaviors */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__legacy_element_mixin_js__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__legacy_element_mixin_js__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__elements_dom_module_js__ = __webpack_require__(31);
 
 
@@ -33527,7 +33547,7 @@ let Templatizer = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_property_effects_js__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_mutable_data_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_gesture_event_listeners_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_gesture_event_listeners_js__ = __webpack_require__(57);
 
 
 
@@ -34625,7 +34645,7 @@ customElements.define(DomIf.is, DomIf);
 /* unused harmony export ArraySelector */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_element_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_array_splice_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_array_splice_js__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_element_mixin_js__ = __webpack_require__(30);
 
 
@@ -35044,7 +35064,7 @@ customElements.define(ArraySelector.is, ArraySelector);
 "use strict";
 /* unused harmony export CustomStyle */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_custom_style_interface_js__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_style_gather_js__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_style_gather_js__ = __webpack_require__(51);
 
 
 
@@ -35139,7 +35159,7 @@ window.customElements.define('custom-style', CustomStyle);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_custom_style_interface_js__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_custom_style_interface_js__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_common_utils_js__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_settings_js__ = __webpack_require__(33);
 /**
@@ -38007,7 +38027,7 @@ IronSelection.prototype = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_iron_icon_iron_icon__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_iconset_svg_iron_iconset_svg__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_iconset_svg_iron_iconset_svg__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html__ = __webpack_require__(226);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__fin_icons_html__);
 
@@ -38029,7 +38049,7 @@ module.exports = "<iron-iconset-svg name=\"fin\" size=\"24\">\n  <svg>\n    <def
 /* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MasterController = __webpack_require__(44);
+var MasterController = __webpack_require__(45);
 
 /**
  * @class BaseModel
@@ -38422,7 +38442,7 @@ function isUndefined(arg) {
 /* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MasterController = __webpack_require__(44);
+var MasterController = __webpack_require__(45);
 
 /**
  * @class BaseStore
@@ -38515,7 +38535,7 @@ module.exports = BaseStore;
 /***/ (function(module, exports, __webpack_require__) {
 
 // help: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-const fetch = __webpack_require__(59);
+const fetch = __webpack_require__(60);
 
 /**
  * @class BaseService
@@ -39247,7 +39267,7 @@ module.exports = Mixin;
 
 const {Debouncer} = __webpack_require__(14);
 const Async = __webpack_require__(7);
-const MasterController = __webpack_require__(44);
+const MasterController = __webpack_require__(45);
 
 /**
  * @mixin EventInterface
@@ -39593,7 +39613,7 @@ document.head.appendChild(styleWrapper);
 /* 235 */
 /***/ (function(module, exports) {
 
-module.exports = "<custom-style>\n  <style>\n    html {\n      --default-primary-color : #002655;\n      --light-primary-color   : #335379;\n      \n      --default-secondary-color : #daaa00;\n      --light-secondary-color   : #9be7ff;\n      --dark-secondary-color    : #2286c3;\n\n      --medium-background-color : #B2BDCF;\n      --light-background-color : #D6DCE6;\n      --super-light-background-color: #f3f3f3;\n    \n      --text-primary-color      : black;\n      --primary-text-color      : var(--text-primary-color);\n      --secondary-text-color    : var(--default-secondary-color);\n      --inverse-text-color      : white;\n      --gray-text               : #8B8B8B;\n      --text-disabled           : var(--gray-text);\n\n      --max-width               : 1200px;\n      --max-text-width          : 650px;\n      --font-size               : 16px;\n      --font-size-sm            : 14px;\n      --font-weight             : 400;\n      --font-weight-heavy       : 700;\n\n      --layout-sm               : 768px;\n      --grid-cell-width         : 250px;\n\n     /**\n      * Custom mixins\n      */\n      --fin-search-box-select: {\n        font-size: var(--font-size);\n        font-weight: var(--font-weight);\n        color: var(--default-primary-color);\n        background-color: var(--default-secondary-color);\n        width: 100px;\n      }\n      --fin-search-box-select-inverse: {\n        @apply(--fin-search-box-select);\n        color: var(--default-secondary-color);\n        background-color: var(--default-primary-color);\n      }\n      --fin-search-box-input: {\n        font-size: var(--font-size);\n      }\n      --cork-drop-down-arrow-color: var(--default-primary-color);\n      --cork-toggle-panel-label : {\n        padding: 10px 0;\n        color: var(--default-primary-color);\n        font-weight: var(--font-weight-heavy);\n      }\n    }\n    body, html {\n      /* @apply --paper-font-common-base; */\n      font-family: \"proxima-nova\",\"Montserrat\",\"Lucida Grande\",\"Lucida Sans\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\n      font-size        : var(--font-size);\n      font-weight      : var(--font-weight);\n      margin           : 0;\n      padding          : 0;\n      height           : 100%;\n      background-color : var(--default-background-color);\n      color            : var(--text-primary-color);\n    }\n  </style>\n</custom-style>";
+module.exports = "<custom-style>\n  <style>\n    html {\n      --default-primary-color : #002655;\n      --light-primary-color   : #335379;\n      \n      --default-secondary-color : #daaa00;\n      --light-secondary-color   : #9be7ff;\n      --dark-secondary-color    : #2286c3;\n\n      --medium-background-color : #B2BDCF;\n      --light-background-color : #D6DCE6;\n      --super-light-background-color: #f3f3f3;\n    \n      --text-primary-color      : black;\n      --primary-text-color      : var(--text-primary-color);\n      --secondary-text-color    : var(--default-secondary-color);\n      --inverse-text-color      : white;\n      --gray-text               : #8B8B8B;\n      --text-disabled           : var(--gray-text);\n\n      --max-width               : 1200px;\n      --max-text-width          : 650px;\n      --font-size               : 16px;\n      --font-size-sm            : 14px;\n      --font-weight             : 400;\n      --font-weight-heavy       : 700;\n\n      --layout-sm               : 768px;\n      --grid-cell-width         : 250px;\n\n     /**\n      * Custom mixins\n      */\n      --fin-search-box-select: {\n        font-size: var(--font-size);\n        font-weight: var(--font-weight);\n        color: var(--default-primary-color);\n        background-color: var(--default-secondary-color);\n        width: 100px;\n      }\n      --fin-search-box-select-inverse: {\n        @apply(--fin-search-box-select);\n        color: var(--default-secondary-color);\n        background-color: var(--default-primary-color);\n      }\n      --fin-search-box-input: {\n        font-size: var(--font-size);\n      }\n      --cork-drop-down-arrow-color: var(--default-primary-color);\n      --cork-toggle-panel-label : {\n        padding: 10px 0;\n        color: var(--default-primary-color);\n        font-weight: var(--font-weight-heavy);\n      }\n    }\n    body, html {\n      /* @apply --paper-font-common-base; */\n      font-family: \"proxima-nova\",\"Montserrat\",\"Lucida Grande\",\"Lucida Sans\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\n      font-size        : var(--font-size);\n      font-weight      : var(--font-weight);\n      line-height      : calc(var(--font-size) * 1.625);\n      margin           : 0;\n      padding          : 0;\n      height           : 100%;\n      background-color : var(--default-background-color);\n      color            : var(--text-primary-color);\n    }\n  </style>\n</custom-style>";
 
 /***/ }),
 /* 236 */
@@ -39612,7 +39632,7 @@ document.head.appendChild(styleWrapper);
 /* 237 */
 /***/ (function(module, exports) {
 
-module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n      paper-material {\n        background: white;\n        display: block;\n        padding: 10px;\n        margin: 10px;\n      }\n\n      [hidden] {\n        display: none !important;\n      }\n\n      input, select, button {\n        font-size        : var(--font-size);\n        font-weight      : var(--font-weight);\n        color            : var(--text-primary-color);\n      }\n\n      main {\n        display: flex;\n        justify-content: center;\n      }\n\n      main > * {\n        max-width: 1000px;\n        width: 100%;\n      }\n\n      ul.menu {\n        list-style: none;\n        margin: 0;\n        padding: 0;\n      }\n\n      ul.menu.horizontal {\n        display: flex;\n      }\n\n      a {\n        text-decoration: none;\n        color: var(--default-primary-color);\n      }\n\n      a.italic {\n        color: var(--default-secondary-color);\n        font-style: italic;\n      }\n\n      a.gold {\n        color: var(--default-secondary-color);\n      }\n\n      .text-container {\n        display: flex;\n        flex-direction: column;\n      }\n      \n      .text-container > * {\n        max-width: var(--max-text-width);\n      }\n\n      .container {\n        display: flex;\n        justify-content: center;\n        flex-direction: column;\n        align-items: center;\n      }\n\n      .container > * {\n        max-width: var(--max-width);\n      }\n\n      fin-search-box > iron-icon {\n        color: var(--default-secondary-color);\n      }\n    </style>\n  </template>\n</dom-module>";
+module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n      paper-material {\n        background: white;\n        display: block;\n        padding: 10px;\n        margin: 10px;\n      }\n\n      paper-tabs {\n        --paper-tabs-selection-bar: {\n          border-bottom: 3px solid var(--default-primary-color);\n        }\n      }\n      paper-tab {\n        --paper-tab-content-unselected : {    \n          text-transform: uppercase;\n          color: var(--text-disabled);\n        }\n        --paper-tab-content : {\n          text-transform: uppercase;\n          color: var(--default-primary-color);\n        }\n      }\n\n      [hidden] {\n        display: none !important;\n      }\n\n      input, select, button {\n        font-size        : var(--font-size);\n        font-weight      : var(--font-weight);\n        color            : var(--text-primary-color);\n      }\n\n      main {\n        display: flex;\n        justify-content: center;\n      }\n\n      main > * {\n        max-width: 1000px;\n        width: 100%;\n      }\n\n      ul.menu {\n        list-style: none;\n        margin: 0;\n        padding: 0;\n      }\n\n      ul.menu.horizontal {\n        display: flex;\n      }\n\n      a {\n        text-decoration: none;\n        color: var(--default-primary-color);\n      }\n\n      a.italic {\n        color: var(--default-secondary-color);\n        font-style: italic;\n      }\n\n      a.gold {\n        color: var(--default-secondary-color);\n      }\n\n      .text-container {\n        display: flex;\n        flex-direction: column;\n      }\n      \n      .text-container > * {\n        max-width: var(--max-text-width);\n      }\n\n      .container {\n        display: flex;\n        justify-content: center;\n        flex-direction: column;\n        align-items: center;\n      }\n\n      .container > * {\n        max-width: var(--max-width);\n        width: 100%;\n        justify-content: center;\n      }\n\n      fin-search-box > iron-icon {\n        color: var(--default-secondary-color);\n      }\n    </style>\n  </template>\n</dom-module>";
 
 /***/ }),
 /* 238 */
@@ -39630,7 +39650,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseModel} = __webpack_require__(6);
-var AuthStore = __webpack_require__(60);
+var AuthStore = __webpack_require__(61);
 var AuthService = __webpack_require__(240);
 
 
@@ -39649,7 +39669,7 @@ class AuthModel extends BaseModel {
     }
 
     login() {
-      window.location = '/auth/login';
+      window.location = '/auth/cas/login';
     }
 
     logout() {
@@ -39665,7 +39685,7 @@ module.exports = new AuthModel();
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
-const AuthStore = __webpack_require__(60);
+const AuthStore = __webpack_require__(61);
 
 class AuthSerivce extends BaseService {
 
@@ -39701,7 +39721,7 @@ module.exports = new AuthSerivce();
 /* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var {AppStateModel} = __webpack_require__(45);
+var {AppStateModel} = __webpack_require__(46);
 var AppStateStore = __webpack_require__(253);
 
 class AppStateModelImpl extends AppStateModel {
@@ -39824,7 +39844,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string__ = __webpack_require__(249);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_query_string__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__);
 
 
@@ -39860,13 +39880,10 @@ class AppRoute extends Object(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_util
     super();
     // register the app-route element with the model
     this.AppStateModel.setLocationElement(this);
+
+    this._onLocationChange();
     window.addEventListener('location-changed', () => this._onLocationChangeAsync());
     window.addEventListener('popstate', () => this._onLocationChangeAsync(true));
-  }
-
-  ready() {
-    super.ready();
-    this._onLocationChange();
   }
 
   /**
@@ -39875,13 +39892,7 @@ class AppRoute extends Object(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_util
    * @param {String} location 
    */
   setWindowLocation(location) {
-    // if we have an event that sets this history state from a popstate, it kills
-    // the back button so we need to check for it.
-    if( history.state && history.state.location === location ) {
-      return;
-    }
-
-    window.history.pushState({location}, '', location);
+    window.history.pushState(null, null, location);
     this._onLocationChangeAsync();
   }
 
@@ -41045,7 +41056,7 @@ module.exports = function (encodedURI) {
 /* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const {AppStateStore} = __webpack_require__(45);
+const {AppStateStore} = __webpack_require__(46);
 module.exports = new AppStateStore();
 
 /***/ }),
@@ -41053,9 +41064,9 @@ module.exports = new AppStateStore();
 /***/ (function(module, exports, __webpack_require__) {
 
 var {ElasticSearchModel} = __webpack_require__(29);
-const ElasticSearchStore = __webpack_require__(46);
+const ElasticSearchStore = __webpack_require__(47);
 const ElasticSearchService = __webpack_require__(259);
-var config = __webpack_require__(62);
+var config = __webpack_require__(63);
 
 class ElasticSearchModelImpl extends ElasticSearchModel {
 
@@ -41919,7 +41930,7 @@ module.exports = ElasticSearchStore;
 /***/ (function(module, exports, __webpack_require__) {
 
 const {ElasticSearchService} = __webpack_require__(29);
-const ElasticSearchStore = __webpack_require__(46);
+const ElasticSearchStore = __webpack_require__(47);
 
 class ElasticSearchServiceImpl extends ElasticSearchService {
   constructor() {
@@ -41949,10 +41960,10 @@ module.exports = new ElasticSearchServiceImpl();
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
-const CollectionStore = __webpack_require__(63);
+const CollectionStore = __webpack_require__(64);
 const CollectionService = __webpack_require__(261);
 // it's ok to import other stores & services, just not models
-const ElasticSearchStore = __webpack_require__(46);
+const ElasticSearchStore = __webpack_require__(47);
 
 class CollectionModel extends BaseModel {
   
@@ -42029,7 +42040,7 @@ module.exports = new CollectionModel();
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
-const CollectionStore = __webpack_require__(63);
+const CollectionStore = __webpack_require__(64);
 
 class CollectionService extends BaseService {
 
@@ -42100,6 +42111,12 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
     this.active = true;
   }
 
+  /**
+   * @method _onCollectionOverviewUpdate
+   * @description from CollectionInterface, called when the collection overview is loaded
+   * 
+   * @param {Object} e 
+   */
   _onCollectionOverviewUpdate(e) {
     if( e.state !== 'loaded' ) return;
     let overview = e.payload;
@@ -42440,6 +42457,11 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
     this._esSetPaging(e.detail.startIndex);
   }
 
+  /**
+   * @method _toggleDrawer
+   * @description toggles the drawer state.  Listens to 
+   * toggle-drawer event from app-search-results-panel
+   */
   _toggleDrawer() {
     this.drawerOpen = !this.drawerOpen;
   }
@@ -42456,7 +42478,7 @@ customElements.define('app-search', AppSearch);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_input_iron_input_js__ = __webpack_require__(268);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_behavior_js__ = __webpack_require__(270);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_input_char_counter_js__ = __webpack_require__(271);
@@ -42648,7 +42670,7 @@ Object(__WEBPACK_IMPORTED_MODULE_7__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_announcer_iron_a11y_announcer_js__ = __webpack_require__(269);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -43580,7 +43602,7 @@ const PaperInputBehavior = [
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_typography_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_input_addon_behavior_js__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_input_addon_behavior_js__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -44242,7 +44264,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_typography_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_addon_behavior_js__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_addon_behavior_js__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -44345,6 +44367,12 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
     this.active = true;
   }
 
+  /**
+   * @method _onCollectionOverviewUpdate
+   * @description from CollectionInferface, called when overview collection loads
+   * 
+   * @param {Object} e 
+   */
   _onCollectionOverviewUpdate(e) {
     if( e.state !== 'loaded' ) return;
     let overview = e.payload;
@@ -44357,6 +44385,13 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
     this.$.searchInput.browse = browse;
   }
 
+  /**
+   * @method _onBrowse
+   * @description bound to fin-search-box `browse` event.  Called when user
+   * selects a specific collection to browse
+   * 
+   * @param {Object} e 
+   */
   _onBrowse(e) {
     let shortId = e.detail;
     if( !shortId || shortId === 'Browse' ) {
@@ -44366,16 +44401,29 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
     this._esSetKeywordFilter('shortIdMemberOf', shortId);
   }
 
+  /**
+   * @method _onSearch
+   * @description bound to fin-search-box `search` event.  called when user
+   * hits enter or clicked the search icon.  start a text search
+   * 
+   * @param {Object} e
+   */
+  _onSearch(e) {
+    this._esSetTextFilter(e.detail);
+  }
+
+  /**
+   * @method _onEsSearchUpdate
+   * @description from ElasticSearchInterface, called when search state updates
+   * 
+   * @param {*} e 
+   */
   _onEsSearchUpdate(e) {
     try {
       this.$.searchInput.value = e.query.query.bool.must[0].multi_match.query;
     } catch(e) {
       this.$.searchInput.value = '';
     }
-  }
-
-  _onSearch(e) {
-    this._esSetTextFilter(e.detail);
   }
 
 }
@@ -44387,7 +44435,7 @@ customElements.define('app-search-header', AppSearchHeader);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__);
 
 
@@ -44404,6 +44452,10 @@ class AppAuthHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_p
     this.active = true;
   }
 
+  /**
+   * @method _onAuthUpdate
+   * @description from AuthInterface. called whenever auth state changes
+   */
   _onAuthUpdate(e) {
     if( e.state === 'loggedIn') this.style.display = 'block';
     else this.style.display = 'none';
@@ -44503,10 +44555,18 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
     }
   }
 
+  /**
+   * @method _onSearchClicked
+   * @description bound to search anchor tag click event.  nav to search
+   */
   _onSearchClicked() {
     this._setWindowLocation(this.lastSearch || '/search');
   }
 
+  /**
+   * @method _onCollectionClicked
+   * @description bound to collection anchor tag click event.  start a collection query
+   */
   _onCollectionClicked() {
     this._esClearFilters();
     this._esSetKeywordFilter('shortIdMemberOf', this.collection.shortId);
@@ -44613,6 +44673,12 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
     window.addEventListener('resize', () => this._resizeAsync());
   }
 
+  /**
+   * @method _onAppStateUpdate
+   * @description from AppStateInterface, called when app state updates
+   * 
+   * @param {Object} e 
+   */
   _onAppStateUpdate(e) {
     if( e.location.path[0] !== 'search') return;
     this._resizeAsync();
@@ -44730,12 +44796,22 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
     this.dispatchEvent(new CustomEvent('toggle-drawer'));
   }
 
+  /**
+   * @method _onPageSizeChange
+   * @description bound to select box change event, dispatch event to parent
+   * alerting new page size
+   */
   _onPageSizeChange() {
     this.dispatchEvent(new CustomEvent('page-size-change', {
       detail : parseInt(this.$.numPerPage.value)
     }));
   }
 
+  /**
+   * @method _onPaginationNav
+   * @description bound to scork-pagination `nav` event, dispatch event to parent
+   * alerting to new page 
+   */
   _onPaginationNav(e) {
     this.dispatchEvent(new CustomEvent('page-change', {
       detail : e.detail
@@ -44752,8 +44828,8 @@ customElements.define('app-search-results-panel', AppSearchResultsPanel);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_icon_button_paper_icon_button__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_icon_button_paper_icon_button__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__ = __webpack_require__(282);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__);
 
@@ -44945,7 +45021,7 @@ module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #root {\n   
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__ = __webpack_require__(288);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__);
 
@@ -44994,242 +45070,242 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 69,
-	"./af.js": 69,
-	"./ar": 70,
-	"./ar-dz": 71,
-	"./ar-dz.js": 71,
-	"./ar-kw": 72,
-	"./ar-kw.js": 72,
-	"./ar-ly": 73,
-	"./ar-ly.js": 73,
-	"./ar-ma": 74,
-	"./ar-ma.js": 74,
-	"./ar-sa": 75,
-	"./ar-sa.js": 75,
-	"./ar-tn": 76,
-	"./ar-tn.js": 76,
-	"./ar.js": 70,
-	"./az": 77,
-	"./az.js": 77,
-	"./be": 78,
-	"./be.js": 78,
-	"./bg": 79,
-	"./bg.js": 79,
-	"./bm": 80,
-	"./bm.js": 80,
-	"./bn": 81,
-	"./bn.js": 81,
-	"./bo": 82,
-	"./bo.js": 82,
-	"./br": 83,
-	"./br.js": 83,
-	"./bs": 84,
-	"./bs.js": 84,
-	"./ca": 85,
-	"./ca.js": 85,
-	"./cs": 86,
-	"./cs.js": 86,
-	"./cv": 87,
-	"./cv.js": 87,
-	"./cy": 88,
-	"./cy.js": 88,
-	"./da": 89,
-	"./da.js": 89,
-	"./de": 90,
-	"./de-at": 91,
-	"./de-at.js": 91,
-	"./de-ch": 92,
-	"./de-ch.js": 92,
-	"./de.js": 90,
-	"./dv": 93,
-	"./dv.js": 93,
-	"./el": 94,
-	"./el.js": 94,
-	"./en-au": 95,
-	"./en-au.js": 95,
-	"./en-ca": 96,
-	"./en-ca.js": 96,
-	"./en-gb": 97,
-	"./en-gb.js": 97,
-	"./en-ie": 98,
-	"./en-ie.js": 98,
-	"./en-nz": 99,
-	"./en-nz.js": 99,
-	"./eo": 100,
-	"./eo.js": 100,
-	"./es": 101,
-	"./es-do": 102,
-	"./es-do.js": 102,
-	"./es-us": 103,
-	"./es-us.js": 103,
-	"./es.js": 101,
-	"./et": 104,
-	"./et.js": 104,
-	"./eu": 105,
-	"./eu.js": 105,
-	"./fa": 106,
-	"./fa.js": 106,
-	"./fi": 107,
-	"./fi.js": 107,
-	"./fo": 108,
-	"./fo.js": 108,
-	"./fr": 109,
-	"./fr-ca": 110,
-	"./fr-ca.js": 110,
-	"./fr-ch": 111,
-	"./fr-ch.js": 111,
-	"./fr.js": 109,
-	"./fy": 112,
-	"./fy.js": 112,
-	"./gd": 113,
-	"./gd.js": 113,
-	"./gl": 114,
-	"./gl.js": 114,
-	"./gom-latn": 115,
-	"./gom-latn.js": 115,
-	"./gu": 116,
-	"./gu.js": 116,
-	"./he": 117,
-	"./he.js": 117,
-	"./hi": 118,
-	"./hi.js": 118,
-	"./hr": 119,
-	"./hr.js": 119,
-	"./hu": 120,
-	"./hu.js": 120,
-	"./hy-am": 121,
-	"./hy-am.js": 121,
-	"./id": 122,
-	"./id.js": 122,
-	"./is": 123,
-	"./is.js": 123,
-	"./it": 124,
-	"./it.js": 124,
-	"./ja": 125,
-	"./ja.js": 125,
-	"./jv": 126,
-	"./jv.js": 126,
-	"./ka": 127,
-	"./ka.js": 127,
-	"./kk": 128,
-	"./kk.js": 128,
-	"./km": 129,
-	"./km.js": 129,
-	"./kn": 130,
-	"./kn.js": 130,
-	"./ko": 131,
-	"./ko.js": 131,
-	"./ky": 132,
-	"./ky.js": 132,
-	"./lb": 133,
-	"./lb.js": 133,
-	"./lo": 134,
-	"./lo.js": 134,
-	"./lt": 135,
-	"./lt.js": 135,
-	"./lv": 136,
-	"./lv.js": 136,
-	"./me": 137,
-	"./me.js": 137,
-	"./mi": 138,
-	"./mi.js": 138,
-	"./mk": 139,
-	"./mk.js": 139,
-	"./ml": 140,
-	"./ml.js": 140,
-	"./mr": 141,
-	"./mr.js": 141,
-	"./ms": 142,
-	"./ms-my": 143,
-	"./ms-my.js": 143,
-	"./ms.js": 142,
-	"./my": 144,
-	"./my.js": 144,
-	"./nb": 145,
-	"./nb.js": 145,
-	"./ne": 146,
-	"./ne.js": 146,
-	"./nl": 147,
-	"./nl-be": 148,
-	"./nl-be.js": 148,
-	"./nl.js": 147,
-	"./nn": 149,
-	"./nn.js": 149,
-	"./pa-in": 150,
-	"./pa-in.js": 150,
-	"./pl": 151,
-	"./pl.js": 151,
-	"./pt": 152,
-	"./pt-br": 153,
-	"./pt-br.js": 153,
-	"./pt.js": 152,
-	"./ro": 154,
-	"./ro.js": 154,
-	"./ru": 155,
-	"./ru.js": 155,
-	"./sd": 156,
-	"./sd.js": 156,
-	"./se": 157,
-	"./se.js": 157,
-	"./si": 158,
-	"./si.js": 158,
-	"./sk": 159,
-	"./sk.js": 159,
-	"./sl": 160,
-	"./sl.js": 160,
-	"./sq": 161,
-	"./sq.js": 161,
-	"./sr": 162,
-	"./sr-cyrl": 163,
-	"./sr-cyrl.js": 163,
-	"./sr.js": 162,
-	"./ss": 164,
-	"./ss.js": 164,
-	"./sv": 165,
-	"./sv.js": 165,
-	"./sw": 166,
-	"./sw.js": 166,
-	"./ta": 167,
-	"./ta.js": 167,
-	"./te": 168,
-	"./te.js": 168,
-	"./tet": 169,
-	"./tet.js": 169,
-	"./th": 170,
-	"./th.js": 170,
-	"./tl-ph": 171,
-	"./tl-ph.js": 171,
-	"./tlh": 172,
-	"./tlh.js": 172,
-	"./tr": 173,
-	"./tr.js": 173,
-	"./tzl": 174,
-	"./tzl.js": 174,
-	"./tzm": 175,
-	"./tzm-latn": 176,
-	"./tzm-latn.js": 176,
-	"./tzm.js": 175,
-	"./uk": 177,
-	"./uk.js": 177,
-	"./ur": 178,
-	"./ur.js": 178,
-	"./uz": 179,
-	"./uz-latn": 180,
-	"./uz-latn.js": 180,
-	"./uz.js": 179,
-	"./vi": 181,
-	"./vi.js": 181,
-	"./x-pseudo": 182,
-	"./x-pseudo.js": 182,
-	"./yo": 183,
-	"./yo.js": 183,
-	"./zh-cn": 184,
-	"./zh-cn.js": 184,
-	"./zh-hk": 185,
-	"./zh-hk.js": 185,
-	"./zh-tw": 186,
-	"./zh-tw.js": 186
+	"./af": 70,
+	"./af.js": 70,
+	"./ar": 71,
+	"./ar-dz": 72,
+	"./ar-dz.js": 72,
+	"./ar-kw": 73,
+	"./ar-kw.js": 73,
+	"./ar-ly": 74,
+	"./ar-ly.js": 74,
+	"./ar-ma": 75,
+	"./ar-ma.js": 75,
+	"./ar-sa": 76,
+	"./ar-sa.js": 76,
+	"./ar-tn": 77,
+	"./ar-tn.js": 77,
+	"./ar.js": 71,
+	"./az": 78,
+	"./az.js": 78,
+	"./be": 79,
+	"./be.js": 79,
+	"./bg": 80,
+	"./bg.js": 80,
+	"./bm": 81,
+	"./bm.js": 81,
+	"./bn": 82,
+	"./bn.js": 82,
+	"./bo": 83,
+	"./bo.js": 83,
+	"./br": 84,
+	"./br.js": 84,
+	"./bs": 85,
+	"./bs.js": 85,
+	"./ca": 86,
+	"./ca.js": 86,
+	"./cs": 87,
+	"./cs.js": 87,
+	"./cv": 88,
+	"./cv.js": 88,
+	"./cy": 89,
+	"./cy.js": 89,
+	"./da": 90,
+	"./da.js": 90,
+	"./de": 91,
+	"./de-at": 92,
+	"./de-at.js": 92,
+	"./de-ch": 93,
+	"./de-ch.js": 93,
+	"./de.js": 91,
+	"./dv": 94,
+	"./dv.js": 94,
+	"./el": 95,
+	"./el.js": 95,
+	"./en-au": 96,
+	"./en-au.js": 96,
+	"./en-ca": 97,
+	"./en-ca.js": 97,
+	"./en-gb": 98,
+	"./en-gb.js": 98,
+	"./en-ie": 99,
+	"./en-ie.js": 99,
+	"./en-nz": 100,
+	"./en-nz.js": 100,
+	"./eo": 101,
+	"./eo.js": 101,
+	"./es": 102,
+	"./es-do": 103,
+	"./es-do.js": 103,
+	"./es-us": 104,
+	"./es-us.js": 104,
+	"./es.js": 102,
+	"./et": 105,
+	"./et.js": 105,
+	"./eu": 106,
+	"./eu.js": 106,
+	"./fa": 107,
+	"./fa.js": 107,
+	"./fi": 108,
+	"./fi.js": 108,
+	"./fo": 109,
+	"./fo.js": 109,
+	"./fr": 110,
+	"./fr-ca": 111,
+	"./fr-ca.js": 111,
+	"./fr-ch": 112,
+	"./fr-ch.js": 112,
+	"./fr.js": 110,
+	"./fy": 113,
+	"./fy.js": 113,
+	"./gd": 114,
+	"./gd.js": 114,
+	"./gl": 115,
+	"./gl.js": 115,
+	"./gom-latn": 116,
+	"./gom-latn.js": 116,
+	"./gu": 117,
+	"./gu.js": 117,
+	"./he": 118,
+	"./he.js": 118,
+	"./hi": 119,
+	"./hi.js": 119,
+	"./hr": 120,
+	"./hr.js": 120,
+	"./hu": 121,
+	"./hu.js": 121,
+	"./hy-am": 122,
+	"./hy-am.js": 122,
+	"./id": 123,
+	"./id.js": 123,
+	"./is": 124,
+	"./is.js": 124,
+	"./it": 125,
+	"./it.js": 125,
+	"./ja": 126,
+	"./ja.js": 126,
+	"./jv": 127,
+	"./jv.js": 127,
+	"./ka": 128,
+	"./ka.js": 128,
+	"./kk": 129,
+	"./kk.js": 129,
+	"./km": 130,
+	"./km.js": 130,
+	"./kn": 131,
+	"./kn.js": 131,
+	"./ko": 132,
+	"./ko.js": 132,
+	"./ky": 133,
+	"./ky.js": 133,
+	"./lb": 134,
+	"./lb.js": 134,
+	"./lo": 135,
+	"./lo.js": 135,
+	"./lt": 136,
+	"./lt.js": 136,
+	"./lv": 137,
+	"./lv.js": 137,
+	"./me": 138,
+	"./me.js": 138,
+	"./mi": 139,
+	"./mi.js": 139,
+	"./mk": 140,
+	"./mk.js": 140,
+	"./ml": 141,
+	"./ml.js": 141,
+	"./mr": 142,
+	"./mr.js": 142,
+	"./ms": 143,
+	"./ms-my": 144,
+	"./ms-my.js": 144,
+	"./ms.js": 143,
+	"./my": 145,
+	"./my.js": 145,
+	"./nb": 146,
+	"./nb.js": 146,
+	"./ne": 147,
+	"./ne.js": 147,
+	"./nl": 148,
+	"./nl-be": 149,
+	"./nl-be.js": 149,
+	"./nl.js": 148,
+	"./nn": 150,
+	"./nn.js": 150,
+	"./pa-in": 151,
+	"./pa-in.js": 151,
+	"./pl": 152,
+	"./pl.js": 152,
+	"./pt": 153,
+	"./pt-br": 154,
+	"./pt-br.js": 154,
+	"./pt.js": 153,
+	"./ro": 155,
+	"./ro.js": 155,
+	"./ru": 156,
+	"./ru.js": 156,
+	"./sd": 157,
+	"./sd.js": 157,
+	"./se": 158,
+	"./se.js": 158,
+	"./si": 159,
+	"./si.js": 159,
+	"./sk": 160,
+	"./sk.js": 160,
+	"./sl": 161,
+	"./sl.js": 161,
+	"./sq": 162,
+	"./sq.js": 162,
+	"./sr": 163,
+	"./sr-cyrl": 164,
+	"./sr-cyrl.js": 164,
+	"./sr.js": 163,
+	"./ss": 165,
+	"./ss.js": 165,
+	"./sv": 166,
+	"./sv.js": 166,
+	"./sw": 167,
+	"./sw.js": 167,
+	"./ta": 168,
+	"./ta.js": 168,
+	"./te": 169,
+	"./te.js": 169,
+	"./tet": 170,
+	"./tet.js": 170,
+	"./th": 171,
+	"./th.js": 171,
+	"./tl-ph": 172,
+	"./tl-ph.js": 172,
+	"./tlh": 173,
+	"./tlh.js": 173,
+	"./tr": 174,
+	"./tr.js": 174,
+	"./tzl": 175,
+	"./tzl.js": 175,
+	"./tzm": 176,
+	"./tzm-latn": 177,
+	"./tzm-latn.js": 177,
+	"./tzm.js": 176,
+	"./uk": 178,
+	"./uk.js": 178,
+	"./ur": 179,
+	"./ur.js": 179,
+	"./uz": 180,
+	"./uz-latn": 181,
+	"./uz-latn.js": 181,
+	"./uz.js": 180,
+	"./vi": 182,
+	"./vi.js": 182,
+	"./x-pseudo": 183,
+	"./x-pseudo.js": 183,
+	"./yo": 184,
+	"./yo.js": 184,
+	"./zh-cn": 185,
+	"./zh-cn.js": 185,
+	"./zh-hk": 186,
+	"./zh-hk.js": 186,
+	"./zh-tw": 187,
+	"./zh-tw.js": 187
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -45278,6 +45354,11 @@ class AppSearchResultCreator extends __WEBPACK_IMPORTED_MODULE_0__polymer_polyme
     }
   }
 
+  /**
+   * @method _onLabelUpdate
+   * @description fired when label updates.  This element detects if the creator
+   * is an external link or a string label.  Then renders a link
+   */
   _onLabelUpdate() {
     if( this.label.match(/^http/i) ) this.link = true;
     else this.link = false;
@@ -45305,7 +45386,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__ = __webpack_require__(290);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__);
 
@@ -45339,8 +45420,8 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(187);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_pages_iron_pages__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_pages_iron_pages__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel__ = __webpack_require__(297);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_collection_info_panel__ = __webpack_require__(309);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
@@ -45349,7 +45430,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__ = __webpack_require__(311);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__lib_config__);
 
 
@@ -45533,7 +45614,7 @@ const IronMenubarBehavior = [
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selectable_js__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selectable_js__ = __webpack_require__(41);
 
 
 
@@ -45697,7 +45778,7 @@ const IronMultiSelectableBehavior = [
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(44);
 
 const $_documentContainer = document.createElement('div');
 $_documentContainer.setAttribute('style', 'display: none;');
@@ -45866,7 +45947,7 @@ Object(__WEBPACK_IMPORTED_MODULE_5__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(187);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_toggle_panel_cork_toggle_panel__ = __webpack_require__(298);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel_html__ = __webpack_require__(300);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_filter_panel_html__);
@@ -45919,7 +46000,7 @@ window.customElements.define('app-filter-panel', AppFilterPanel);
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_icon_iron_icon__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__ = __webpack_require__(299);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__);
 
@@ -46224,10 +46305,23 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
     return __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html___default.a;
   }
 
+  /**
+   * @method _realLabel
+   * @description render label
+   * 
+   * @param {String} value 
+   * @param {String} label 
+   */
   _realLabel(value, label) {
     return label || value;
   }
 
+  /**
+   * @method _onClick
+   * @description called when div wrapper is clicked
+   * 
+   * TODO: add aria checkbox role
+   */
   _onClick() {
     this.checked = !this.checked;
     this.dispatchEvent(new CustomEvent('change', {bubbles: true, composed: true}));
@@ -46249,7 +46343,7 @@ window.customElements.define('app-normal-checkbox', AppNormalCheckbox);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_checked_element_behavior_js__ = __webpack_require__(306);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_render_status_js__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(49);
 
 
 
@@ -46534,7 +46628,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_checked_element_behavior_iron_checked_element_behavior_js__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_inky_focus_behavior_js__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_inky_focus_behavior_js__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_ripple_behavior_js__ = __webpack_require__(28);
 
 
@@ -46587,8 +46681,8 @@ const PaperCheckedElementBehavior = [
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(65);
 
 
 
@@ -46741,6 +46835,13 @@ class AppCollectionInfoPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_
     this.active = true;
   }
 
+  /**
+   * @method _onSelectedCollectionUpdate
+   * @description from CollectionInterface, called when a collection is selected.
+   * This is done by setting a collection filter.
+   * 
+   * @param {Object} selected currently selected collection 
+   */
   _onSelectedCollectionUpdate(selected) {
     if( !selected ) return;
 
@@ -46775,7 +46876,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* 311 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n  paper-tabs {\n    --paper-tabs-selection-bar: {\n      border-bottom: 3px solid var(--default-primary-color);\n    }\n  }\n  paper-tab {\n    --paper-tab-content-unselected : {    \n      text-transform: uppercase;\n      color: var(--text-disabled);\n    }\n    --paper-tab-content : {\n      text-transform: uppercase;\n      color: var(--default-primary-color);\n    }\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.previewImageTinyThumbnail]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.title]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.previewImageTinyThumbnail]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.title]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
 
 /***/ }),
 /* 312 */
@@ -46790,13 +46891,14 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-c
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bytes__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bytes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_bytes__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_image_viewer__ = __webpack_require__(314);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_image_download__ = __webpack_require__(326);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_CollectionInterface__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__interfaces_CollectionInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_image_download__ = __webpack_require__(327);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_record_metadata_layout__ = __webpack_require__(329);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__);
 
 
 
@@ -46809,9 +46911,31 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-c
 
 
 
+
+
+
+const lorem = 'Lorem ipsum dolor sit amet cons ectetuer adipiscing elit sed et diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam';
+const citeText = [
+  {
+    label : 'MLA',
+    text : lorem
+  },
+  {
+    label : 'APA',
+    text : lorem
+  },
+  {
+    label : 'Chicago / Turabian',
+    text : lorem
+  },
+  {
+    label : 'Harvard',
+    text : lorem
+  }
+];
 
 class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_7__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_8__interfaces_CollectionInterface___default.a) {
+      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface___default.a) {
 
   static get template() {
     return __WEBPACK_IMPORTED_MODULE_1__app_record_html___default.a;
@@ -46854,6 +46978,14 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
       rights : {
         type : String,
         value : ''
+      },
+      metadata : {
+        type : Array,
+        value : () => []
+      },
+      cite : {
+        type : Array,
+        value : () => citeText
       }
     }
   }
@@ -46864,6 +46996,12 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
     this.momentFormat = 'YYYY';
   }
 
+  /**
+   * @method _onAppStateUpdate
+   * @description from AppStateInterface, called when happ state updates
+   * 
+   * @param {*} e 
+   */
   _onAppStateUpdate(e) {
     if( e.location.path[0] !== 'record' ) return;
 
@@ -46874,6 +47012,12 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
     this._esGetRecord(this.currentRecordId);
   }
 
+  /**
+   * @method _onEsRecordUpdate
+   * @description from ElasticSearchInterface, called when search state updates
+   * 
+   * @param {Object} e 
+   */
   async _onEsRecordUpdate(e) {
     if( e.id !== this.currentRecordId ) return;
     if( e.state !== 'loaded' ) return;
@@ -46884,6 +47028,7 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
     this.$.imageViewer.render(this.record.id);
 
     this.title = this.record.title || '';
+
     this.description = this.record.description || '';
     this.$.link.value = window.location.href;
 
@@ -46911,14 +47056,53 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
       this.collectionName = collection.title;
     }
 
+    this._updateMetadataRows();
   }
 
+  /**
+   * @method _updateMetadataRows
+   * @description update metadata table
+   */
+  _updateMetadataRows() {
+    let metadata = [];
+
+    this._addMetadataRow(metadata, 'title', 'Item Name');
+    this._addMetadataRow(metadata, 'collectionName', 'Collection');
+    this._addMetadataRow(metadata, 'date', 'Date');
+
+    this._addMetadataRow(metadata, 'resourceType', 'Resource Type');
+
+    this.metadata = metadata;
+  }
+
+  /**
+   * @method _addMetadataRow
+   * @description update metadata table row
+   * 
+   * @param {Array} metadata 
+   * @param {String} attr 
+   * @param {String} label 
+   */
+  _addMetadataRow(metadata, attr, label) {
+    if( !this[attr] ) return;
+    metadata.push({
+      attr: label || attr, 
+      value: this[attr]
+    });
+  }
+
+  /**
+   * @method _copyLink
+   * @description bound to click event on button.  Copy text to clipboard
+   * show UI interaction.
+   */
   _copyLink() {
     this.$.link.select();
     document.execCommand("Copy");
 
     this.$.copyIcon.icon = 'check';
     this.$.copyButton.setAttribute('active', 'active');
+
     setTimeout(() => {
       this.$.copyIcon.icon = 'content-copy';
       this.$.copyButton.removeAttribute('active', 'active');
@@ -46935,7 +47119,7 @@ customElements.define('app-record', AppRecord);
 /* 313 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  #copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  #copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  #copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer id=\"imageViewer\"></app-image-viewer>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[title]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <div class=\"label\">Use Permission</div>\n        <div>\n          <a href=\"[[rights]]\" target=\"_block\">\n            <iron-icon icon=\"link\"></iron-icon> Link\n          </a>\n        </div>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer id=\"imageViewer\"></app-image-viewer>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[title]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <div class=\"label\">Use Permission</div>\n        <div>\n          <a href=\"[[rights]]\" target=\"_block\">\n            <iron-icon icon=\"link\"></iron-icon> Link\n          </a>\n        </div>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <template is=\"dom-repeat\" items=\"[[cite]]\">\n        <div class=\"cite-container\">\n          <div class=\"label\">[[item.label]]</div>\n          <div class=\"text\">\n            <div style=\"padding-bottom: 10px\">[[item.text]]</div>\n            <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n              <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n              <span>Copy</span>\n            </button>\n          </div>\n        </div>\n      </template>\n    </div>\n  </app-record-metadata-layout>\n</div>";
 
 /***/ }),
 /* 314 */
@@ -61142,18 +61326,41 @@ exports.map = createMap;
 /* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(322)(undefined);
+var escape = __webpack_require__(322);
+exports = module.exports = __webpack_require__(323)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/* required styles */\r\n\r\n.leaflet-pane,\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-tile-container,\r\n.leaflet-pane > svg,\r\n.leaflet-pane > canvas,\r\n.leaflet-zoom-box,\r\n.leaflet-image-layer,\r\n.leaflet-layer {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\ttop: 0;\r\n\t}\r\n.leaflet-container {\r\n\toverflow: hidden;\r\n\t}\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\t  -webkit-user-drag: none;\r\n\t}\r\n/* Safari renders non-retina tile on retina better with this, but Chrome is worse */\r\n.leaflet-safari .leaflet-tile {\r\n\timage-rendering: -webkit-optimize-contrast;\r\n\t}\r\n/* hack that prevents hw layers \"stretching\" when loading new tiles */\r\n.leaflet-safari .leaflet-tile-container {\r\n\twidth: 1600px;\r\n\theight: 1600px;\r\n\t-webkit-transform-origin: 0 0;\r\n\t}\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\tdisplay: block;\r\n\t}\r\n/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */\r\n/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */\r\n.leaflet-container .leaflet-overlay-pane svg,\r\n.leaflet-container .leaflet-marker-pane img,\r\n.leaflet-container .leaflet-shadow-pane img,\r\n.leaflet-container .leaflet-tile-pane img,\r\n.leaflet-container img.leaflet-image-layer {\r\n\tmax-width: none !important;\r\n\t}\r\n\r\n.leaflet-container.leaflet-touch-zoom {\r\n\t-ms-touch-action: pan-x pan-y;\r\n\ttouch-action: pan-x pan-y;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag {\r\n\t-ms-touch-action: pinch-zoom;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {\r\n\t-ms-touch-action: none;\r\n\ttouch-action: none;\r\n}\r\n.leaflet-container {\r\n\t-webkit-tap-highlight-color: transparent;\r\n}\r\n.leaflet-container a {\r\n\t-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);\r\n}\r\n.leaflet-tile {\r\n\tfilter: inherit;\r\n\tvisibility: hidden;\r\n\t}\r\n.leaflet-tile-loaded {\r\n\tvisibility: inherit;\r\n\t}\r\n.leaflet-zoom-box {\r\n\twidth: 0;\r\n\theight: 0;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\tz-index: 800;\r\n\t}\r\n/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */\r\n.leaflet-overlay-pane svg {\r\n\t-moz-user-select: none;\r\n\t}\r\n\r\n.leaflet-pane         { z-index: 400; }\r\n\r\n.leaflet-tile-pane    { z-index: 200; }\r\n.leaflet-overlay-pane { z-index: 400; }\r\n.leaflet-shadow-pane  { z-index: 500; }\r\n.leaflet-marker-pane  { z-index: 600; }\r\n.leaflet-tooltip-pane   { z-index: 650; }\r\n.leaflet-popup-pane   { z-index: 700; }\r\n\r\n.leaflet-map-pane canvas { z-index: 100; }\r\n.leaflet-map-pane svg    { z-index: 200; }\r\n\r\n.leaflet-vml-shape {\r\n\twidth: 1px;\r\n\theight: 1px;\r\n\t}\r\n.lvml {\r\n\tbehavior: url(#default#VML);\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\t}\r\n\r\n\r\n/* control positioning */\r\n\r\n.leaflet-control {\r\n\tposition: relative;\r\n\tz-index: 800;\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-top,\r\n.leaflet-bottom {\r\n\tposition: absolute;\r\n\tz-index: 1000;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-top {\r\n\ttop: 0;\r\n\t}\r\n.leaflet-right {\r\n\tright: 0;\r\n\t}\r\n.leaflet-bottom {\r\n\tbottom: 0;\r\n\t}\r\n.leaflet-left {\r\n\tleft: 0;\r\n\t}\r\n.leaflet-control {\r\n\tfloat: left;\r\n\tclear: both;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tfloat: right;\r\n\t}\r\n.leaflet-top .leaflet-control {\r\n\tmargin-top: 10px;\r\n\t}\r\n.leaflet-bottom .leaflet-control {\r\n\tmargin-bottom: 10px;\r\n\t}\r\n.leaflet-left .leaflet-control {\r\n\tmargin-left: 10px;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tmargin-right: 10px;\r\n\t}\r\n\r\n\r\n/* zoom and fade animations */\r\n\r\n.leaflet-fade-anim .leaflet-tile {\r\n\twill-change: opacity;\r\n\t}\r\n.leaflet-fade-anim .leaflet-popup {\r\n\topacity: 0;\r\n\t-webkit-transition: opacity 0.2s linear;\r\n\t   -moz-transition: opacity 0.2s linear;\r\n\t     -o-transition: opacity 0.2s linear;\r\n\t        transition: opacity 0.2s linear;\r\n\t}\r\n.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {\r\n\topacity: 1;\r\n\t}\r\n.leaflet-zoom-animated {\r\n\t-webkit-transform-origin: 0 0;\r\n\t    -ms-transform-origin: 0 0;\r\n\t        transform-origin: 0 0;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\twill-change: transform;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\t-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t     -o-transition:      -o-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t}\r\n.leaflet-zoom-anim .leaflet-tile,\r\n.leaflet-pan-anim .leaflet-tile {\r\n\t-webkit-transition: none;\r\n\t   -moz-transition: none;\r\n\t     -o-transition: none;\r\n\t        transition: none;\r\n\t}\r\n\r\n.leaflet-zoom-anim .leaflet-zoom-hide {\r\n\tvisibility: hidden;\r\n\t}\r\n\r\n\r\n/* cursors */\r\n\r\n.leaflet-interactive {\r\n\tcursor: pointer;\r\n\t}\r\n.leaflet-grab {\r\n\tcursor: -webkit-grab;\r\n\tcursor:    -moz-grab;\r\n\t}\r\n.leaflet-crosshair,\r\n.leaflet-crosshair .leaflet-interactive {\r\n\tcursor: crosshair;\r\n\t}\r\n.leaflet-popup-pane,\r\n.leaflet-control {\r\n\tcursor: auto;\r\n\t}\r\n.leaflet-dragging .leaflet-grab,\r\n.leaflet-dragging .leaflet-grab .leaflet-interactive,\r\n.leaflet-dragging .leaflet-marker-draggable {\r\n\tcursor: move;\r\n\tcursor: -webkit-grabbing;\r\n\tcursor:    -moz-grabbing;\r\n\t}\r\n\r\n/* marker & overlays interactivity */\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-image-layer,\r\n.leaflet-pane > svg path,\r\n.leaflet-tile-container {\r\n\tpointer-events: none;\r\n\t}\r\n\r\n.leaflet-marker-icon.leaflet-interactive,\r\n.leaflet-image-layer.leaflet-interactive,\r\n.leaflet-pane > svg path.leaflet-interactive {\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n\r\n/* visual tweaks */\r\n\r\n.leaflet-container {\r\n\tbackground: #ddd;\r\n\toutline: 0;\r\n\t}\r\n.leaflet-container a {\r\n\tcolor: #0078A8;\r\n\t}\r\n.leaflet-container a.leaflet-active {\r\n\toutline: 2px solid orange;\r\n\t}\r\n.leaflet-zoom-box {\r\n\tborder: 2px dotted #38f;\r\n\tbackground: rgba(255,255,255,0.5);\r\n\t}\r\n\r\n\r\n/* general typography */\r\n.leaflet-container {\r\n\tfont: 12px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif;\r\n\t}\r\n\r\n\r\n/* general toolbar styles */\r\n\r\n.leaflet-bar {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.65);\r\n\tborder-radius: 4px;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #fff;\r\n\tborder-bottom: 1px solid #ccc;\r\n\twidth: 26px;\r\n\theight: 26px;\r\n\tline-height: 26px;\r\n\tdisplay: block;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tcolor: black;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-control-layers-toggle {\r\n\tbackground-position: 50% 50%;\r\n\tbackground-repeat: no-repeat;\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #f4f4f4;\r\n\t}\r\n.leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 4px;\r\n\tborder-top-right-radius: 4px;\r\n\t}\r\n.leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 4px;\r\n\tborder-bottom-right-radius: 4px;\r\n\tborder-bottom: none;\r\n\t}\r\n.leaflet-bar a.leaflet-disabled {\r\n\tcursor: default;\r\n\tbackground-color: #f4f4f4;\r\n\tcolor: #bbb;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-bar a {\r\n\twidth: 30px;\r\n\theight: 30px;\r\n\tline-height: 30px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 2px;\r\n\tborder-top-right-radius: 2px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 2px;\r\n\tborder-bottom-right-radius: 2px;\r\n\t}\r\n\r\n/* zoom control */\r\n\r\n.leaflet-control-zoom-in,\r\n.leaflet-control-zoom-out {\r\n\tfont: bold 18px 'Lucida Console', Monaco, monospace;\r\n\ttext-indent: 1px;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {\r\n\tfont-size: 22px;\r\n\t}\r\n\r\n\r\n/* layers control */\r\n\r\n.leaflet-control-layers {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.4);\r\n\tbackground: #fff;\r\n\tborder-radius: 5px;\r\n\t}\r\n.leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + __webpack_require__(323) + ");\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\t}\r\n.leaflet-retina .leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + __webpack_require__(324) + ");\r\n\tbackground-size: 26px 26px;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers-toggle {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\t}\r\n.leaflet-control-layers .leaflet-control-layers-list,\r\n.leaflet-control-layers-expanded .leaflet-control-layers-toggle {\r\n\tdisplay: none;\r\n\t}\r\n.leaflet-control-layers-expanded .leaflet-control-layers-list {\r\n\tdisplay: block;\r\n\tposition: relative;\r\n\t}\r\n.leaflet-control-layers-expanded {\r\n\tpadding: 6px 10px 6px 6px;\r\n\tcolor: #333;\r\n\tbackground: #fff;\r\n\t}\r\n.leaflet-control-layers-scrollbar {\r\n\toverflow-y: scroll;\r\n\toverflow-x: hidden;\r\n\tpadding-right: 5px;\r\n\t}\r\n.leaflet-control-layers-selector {\r\n\tmargin-top: 2px;\r\n\tposition: relative;\r\n\ttop: 1px;\r\n\t}\r\n.leaflet-control-layers label {\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-control-layers-separator {\r\n\theight: 0;\r\n\tborder-top: 1px solid #ddd;\r\n\tmargin: 5px -10px 5px -6px;\r\n\t}\r\n\r\n/* Default icon URLs */\r\n.leaflet-default-icon-path {\r\n\tbackground-image: url(" + __webpack_require__(325) + ");\r\n\t}\r\n\r\n\r\n/* attribution and scale controls */\r\n\r\n.leaflet-container .leaflet-control-attribution {\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.7);\r\n\tmargin: 0;\r\n\t}\r\n.leaflet-control-attribution,\r\n.leaflet-control-scale-line {\r\n\tpadding: 0 5px;\r\n\tcolor: #333;\r\n\t}\r\n.leaflet-control-attribution a {\r\n\ttext-decoration: none;\r\n\t}\r\n.leaflet-control-attribution a:hover {\r\n\ttext-decoration: underline;\r\n\t}\r\n.leaflet-container .leaflet-control-attribution,\r\n.leaflet-container .leaflet-control-scale {\r\n\tfont-size: 11px;\r\n\t}\r\n.leaflet-left .leaflet-control-scale {\r\n\tmargin-left: 5px;\r\n\t}\r\n.leaflet-bottom .leaflet-control-scale {\r\n\tmargin-bottom: 5px;\r\n\t}\r\n.leaflet-control-scale-line {\r\n\tborder: 2px solid #777;\r\n\tborder-top: none;\r\n\tline-height: 1.1;\r\n\tpadding: 2px 5px 1px;\r\n\tfont-size: 11px;\r\n\twhite-space: nowrap;\r\n\toverflow: hidden;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.5);\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child) {\r\n\tborder-top: 2px solid #777;\r\n\tborder-bottom: none;\r\n\tmargin-top: -2px;\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child):not(:last-child) {\r\n\tborder-bottom: 2px solid #777;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-attribution,\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tbox-shadow: none;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tborder: 2px solid rgba(0,0,0,0.2);\r\n\tbackground-clip: padding-box;\r\n\t}\r\n\r\n\r\n/* popup */\r\n\r\n.leaflet-popup {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tmargin-bottom: 20px;\r\n\t}\r\n.leaflet-popup-content-wrapper {\r\n\tpadding: 1px;\r\n\ttext-align: left;\r\n\tborder-radius: 12px;\r\n\t}\r\n.leaflet-popup-content {\r\n\tmargin: 13px 19px;\r\n\tline-height: 1.4;\r\n\t}\r\n.leaflet-popup-content p {\r\n\tmargin: 18px 0;\r\n\t}\r\n.leaflet-popup-tip-container {\r\n\twidth: 40px;\r\n\theight: 20px;\r\n\tposition: absolute;\r\n\tleft: 50%;\r\n\tmargin-left: -20px;\r\n\toverflow: hidden;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-popup-tip {\r\n\twidth: 17px;\r\n\theight: 17px;\r\n\tpadding: 1px;\r\n\r\n\tmargin: -10px auto 0;\r\n\r\n\t-webkit-transform: rotate(45deg);\r\n\t   -moz-transform: rotate(45deg);\r\n\t    -ms-transform: rotate(45deg);\r\n\t     -o-transform: rotate(45deg);\r\n\t        transform: rotate(45deg);\r\n\t}\r\n.leaflet-popup-content-wrapper,\r\n.leaflet-popup-tip {\r\n\tbackground: white;\r\n\tcolor: #333;\r\n\tbox-shadow: 0 3px 14px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\tpadding: 4px 4px 0 0;\r\n\tborder: none;\r\n\ttext-align: center;\r\n\twidth: 18px;\r\n\theight: 14px;\r\n\tfont: 16px/14px Tahoma, Verdana, sans-serif;\r\n\tcolor: #c3c3c3;\r\n\ttext-decoration: none;\r\n\tfont-weight: bold;\r\n\tbackground: transparent;\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button:hover {\r\n\tcolor: #999;\r\n\t}\r\n.leaflet-popup-scrolled {\r\n\toverflow: auto;\r\n\tborder-bottom: 1px solid #ddd;\r\n\tborder-top: 1px solid #ddd;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-popup-content-wrapper {\r\n\tzoom: 1;\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\twidth: 24px;\r\n\tmargin: 0 auto;\r\n\r\n\t-ms-filter: \"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)\";\r\n\tfilter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip-container {\r\n\tmargin-top: -1px;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-control-zoom,\r\n.leaflet-oldie .leaflet-control-layers,\r\n.leaflet-oldie .leaflet-popup-content-wrapper,\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\tborder: 1px solid #999;\r\n\t}\r\n\r\n\r\n/* div icon */\r\n\r\n.leaflet-div-icon {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #666;\r\n\t}\r\n\r\n\r\n/* Tooltip */\r\n/* Base styles for the element that has a tooltip */\r\n.leaflet-tooltip {\r\n\tposition: absolute;\r\n\tpadding: 6px;\r\n\tbackground-color: #fff;\r\n\tborder: 1px solid #fff;\r\n\tborder-radius: 3px;\r\n\tcolor: #222;\r\n\twhite-space: nowrap;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\tuser-select: none;\r\n\tpointer-events: none;\r\n\tbox-shadow: 0 1px 3px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-tooltip.leaflet-clickable {\r\n\tcursor: pointer;\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-tooltip-top:before,\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\tborder: 6px solid transparent;\r\n\tbackground: transparent;\r\n\tcontent: \"\";\r\n\t}\r\n\r\n/* Directions */\r\n\r\n.leaflet-tooltip-bottom {\r\n\tmargin-top: 6px;\r\n}\r\n.leaflet-tooltip-top {\r\n\tmargin-top: -6px;\r\n}\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-top:before {\r\n\tleft: 50%;\r\n\tmargin-left: -6px;\r\n\t}\r\n.leaflet-tooltip-top:before {\r\n\tbottom: 0;\r\n\tmargin-bottom: -12px;\r\n\tborder-top-color: #fff;\r\n\t}\r\n.leaflet-tooltip-bottom:before {\r\n\ttop: 0;\r\n\tmargin-top: -12px;\r\n\tmargin-left: -6px;\r\n\tborder-bottom-color: #fff;\r\n\t}\r\n.leaflet-tooltip-left {\r\n\tmargin-left: -6px;\r\n}\r\n.leaflet-tooltip-right {\r\n\tmargin-left: 6px;\r\n}\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\ttop: 50%;\r\n\tmargin-top: -6px;\r\n\t}\r\n.leaflet-tooltip-left:before {\r\n\tright: 0;\r\n\tmargin-right: -12px;\r\n\tborder-left-color: #fff;\r\n\t}\r\n.leaflet-tooltip-right:before {\r\n\tleft: 0;\r\n\tmargin-left: -12px;\r\n\tborder-right-color: #fff;\r\n\t}\r\n", ""]);
+exports.push([module.i, "/* required styles */\r\n\r\n.leaflet-pane,\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-tile-container,\r\n.leaflet-pane > svg,\r\n.leaflet-pane > canvas,\r\n.leaflet-zoom-box,\r\n.leaflet-image-layer,\r\n.leaflet-layer {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\ttop: 0;\r\n\t}\r\n.leaflet-container {\r\n\toverflow: hidden;\r\n\t}\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\t  -webkit-user-drag: none;\r\n\t}\r\n/* Safari renders non-retina tile on retina better with this, but Chrome is worse */\r\n.leaflet-safari .leaflet-tile {\r\n\timage-rendering: -webkit-optimize-contrast;\r\n\t}\r\n/* hack that prevents hw layers \"stretching\" when loading new tiles */\r\n.leaflet-safari .leaflet-tile-container {\r\n\twidth: 1600px;\r\n\theight: 1600px;\r\n\t-webkit-transform-origin: 0 0;\r\n\t}\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\tdisplay: block;\r\n\t}\r\n/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */\r\n/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */\r\n.leaflet-container .leaflet-overlay-pane svg,\r\n.leaflet-container .leaflet-marker-pane img,\r\n.leaflet-container .leaflet-shadow-pane img,\r\n.leaflet-container .leaflet-tile-pane img,\r\n.leaflet-container img.leaflet-image-layer {\r\n\tmax-width: none !important;\r\n\t}\r\n\r\n.leaflet-container.leaflet-touch-zoom {\r\n\t-ms-touch-action: pan-x pan-y;\r\n\ttouch-action: pan-x pan-y;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag {\r\n\t-ms-touch-action: pinch-zoom;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {\r\n\t-ms-touch-action: none;\r\n\ttouch-action: none;\r\n}\r\n.leaflet-container {\r\n\t-webkit-tap-highlight-color: transparent;\r\n}\r\n.leaflet-container a {\r\n\t-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);\r\n}\r\n.leaflet-tile {\r\n\tfilter: inherit;\r\n\tvisibility: hidden;\r\n\t}\r\n.leaflet-tile-loaded {\r\n\tvisibility: inherit;\r\n\t}\r\n.leaflet-zoom-box {\r\n\twidth: 0;\r\n\theight: 0;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\tz-index: 800;\r\n\t}\r\n/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */\r\n.leaflet-overlay-pane svg {\r\n\t-moz-user-select: none;\r\n\t}\r\n\r\n.leaflet-pane         { z-index: 400; }\r\n\r\n.leaflet-tile-pane    { z-index: 200; }\r\n.leaflet-overlay-pane { z-index: 400; }\r\n.leaflet-shadow-pane  { z-index: 500; }\r\n.leaflet-marker-pane  { z-index: 600; }\r\n.leaflet-tooltip-pane   { z-index: 650; }\r\n.leaflet-popup-pane   { z-index: 700; }\r\n\r\n.leaflet-map-pane canvas { z-index: 100; }\r\n.leaflet-map-pane svg    { z-index: 200; }\r\n\r\n.leaflet-vml-shape {\r\n\twidth: 1px;\r\n\theight: 1px;\r\n\t}\r\n.lvml {\r\n\tbehavior: url(#default#VML);\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\t}\r\n\r\n\r\n/* control positioning */\r\n\r\n.leaflet-control {\r\n\tposition: relative;\r\n\tz-index: 800;\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-top,\r\n.leaflet-bottom {\r\n\tposition: absolute;\r\n\tz-index: 1000;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-top {\r\n\ttop: 0;\r\n\t}\r\n.leaflet-right {\r\n\tright: 0;\r\n\t}\r\n.leaflet-bottom {\r\n\tbottom: 0;\r\n\t}\r\n.leaflet-left {\r\n\tleft: 0;\r\n\t}\r\n.leaflet-control {\r\n\tfloat: left;\r\n\tclear: both;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tfloat: right;\r\n\t}\r\n.leaflet-top .leaflet-control {\r\n\tmargin-top: 10px;\r\n\t}\r\n.leaflet-bottom .leaflet-control {\r\n\tmargin-bottom: 10px;\r\n\t}\r\n.leaflet-left .leaflet-control {\r\n\tmargin-left: 10px;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tmargin-right: 10px;\r\n\t}\r\n\r\n\r\n/* zoom and fade animations */\r\n\r\n.leaflet-fade-anim .leaflet-tile {\r\n\twill-change: opacity;\r\n\t}\r\n.leaflet-fade-anim .leaflet-popup {\r\n\topacity: 0;\r\n\t-webkit-transition: opacity 0.2s linear;\r\n\t   -moz-transition: opacity 0.2s linear;\r\n\t     -o-transition: opacity 0.2s linear;\r\n\t        transition: opacity 0.2s linear;\r\n\t}\r\n.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {\r\n\topacity: 1;\r\n\t}\r\n.leaflet-zoom-animated {\r\n\t-webkit-transform-origin: 0 0;\r\n\t    -ms-transform-origin: 0 0;\r\n\t        transform-origin: 0 0;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\twill-change: transform;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\t-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t     -o-transition:      -o-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t}\r\n.leaflet-zoom-anim .leaflet-tile,\r\n.leaflet-pan-anim .leaflet-tile {\r\n\t-webkit-transition: none;\r\n\t   -moz-transition: none;\r\n\t     -o-transition: none;\r\n\t        transition: none;\r\n\t}\r\n\r\n.leaflet-zoom-anim .leaflet-zoom-hide {\r\n\tvisibility: hidden;\r\n\t}\r\n\r\n\r\n/* cursors */\r\n\r\n.leaflet-interactive {\r\n\tcursor: pointer;\r\n\t}\r\n.leaflet-grab {\r\n\tcursor: -webkit-grab;\r\n\tcursor:    -moz-grab;\r\n\t}\r\n.leaflet-crosshair,\r\n.leaflet-crosshair .leaflet-interactive {\r\n\tcursor: crosshair;\r\n\t}\r\n.leaflet-popup-pane,\r\n.leaflet-control {\r\n\tcursor: auto;\r\n\t}\r\n.leaflet-dragging .leaflet-grab,\r\n.leaflet-dragging .leaflet-grab .leaflet-interactive,\r\n.leaflet-dragging .leaflet-marker-draggable {\r\n\tcursor: move;\r\n\tcursor: -webkit-grabbing;\r\n\tcursor:    -moz-grabbing;\r\n\t}\r\n\r\n/* marker & overlays interactivity */\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-image-layer,\r\n.leaflet-pane > svg path,\r\n.leaflet-tile-container {\r\n\tpointer-events: none;\r\n\t}\r\n\r\n.leaflet-marker-icon.leaflet-interactive,\r\n.leaflet-image-layer.leaflet-interactive,\r\n.leaflet-pane > svg path.leaflet-interactive {\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n\r\n/* visual tweaks */\r\n\r\n.leaflet-container {\r\n\tbackground: #ddd;\r\n\toutline: 0;\r\n\t}\r\n.leaflet-container a {\r\n\tcolor: #0078A8;\r\n\t}\r\n.leaflet-container a.leaflet-active {\r\n\toutline: 2px solid orange;\r\n\t}\r\n.leaflet-zoom-box {\r\n\tborder: 2px dotted #38f;\r\n\tbackground: rgba(255,255,255,0.5);\r\n\t}\r\n\r\n\r\n/* general typography */\r\n.leaflet-container {\r\n\tfont: 12px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif;\r\n\t}\r\n\r\n\r\n/* general toolbar styles */\r\n\r\n.leaflet-bar {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.65);\r\n\tborder-radius: 4px;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #fff;\r\n\tborder-bottom: 1px solid #ccc;\r\n\twidth: 26px;\r\n\theight: 26px;\r\n\tline-height: 26px;\r\n\tdisplay: block;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tcolor: black;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-control-layers-toggle {\r\n\tbackground-position: 50% 50%;\r\n\tbackground-repeat: no-repeat;\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #f4f4f4;\r\n\t}\r\n.leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 4px;\r\n\tborder-top-right-radius: 4px;\r\n\t}\r\n.leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 4px;\r\n\tborder-bottom-right-radius: 4px;\r\n\tborder-bottom: none;\r\n\t}\r\n.leaflet-bar a.leaflet-disabled {\r\n\tcursor: default;\r\n\tbackground-color: #f4f4f4;\r\n\tcolor: #bbb;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-bar a {\r\n\twidth: 30px;\r\n\theight: 30px;\r\n\tline-height: 30px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 2px;\r\n\tborder-top-right-radius: 2px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 2px;\r\n\tborder-bottom-right-radius: 2px;\r\n\t}\r\n\r\n/* zoom control */\r\n\r\n.leaflet-control-zoom-in,\r\n.leaflet-control-zoom-out {\r\n\tfont: bold 18px 'Lucida Console', Monaco, monospace;\r\n\ttext-indent: 1px;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {\r\n\tfont-size: 22px;\r\n\t}\r\n\r\n\r\n/* layers control */\r\n\r\n.leaflet-control-layers {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.4);\r\n\tbackground: #fff;\r\n\tborder-radius: 5px;\r\n\t}\r\n.leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(324)) + ");\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\t}\r\n.leaflet-retina .leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(325)) + ");\r\n\tbackground-size: 26px 26px;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers-toggle {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\t}\r\n.leaflet-control-layers .leaflet-control-layers-list,\r\n.leaflet-control-layers-expanded .leaflet-control-layers-toggle {\r\n\tdisplay: none;\r\n\t}\r\n.leaflet-control-layers-expanded .leaflet-control-layers-list {\r\n\tdisplay: block;\r\n\tposition: relative;\r\n\t}\r\n.leaflet-control-layers-expanded {\r\n\tpadding: 6px 10px 6px 6px;\r\n\tcolor: #333;\r\n\tbackground: #fff;\r\n\t}\r\n.leaflet-control-layers-scrollbar {\r\n\toverflow-y: scroll;\r\n\toverflow-x: hidden;\r\n\tpadding-right: 5px;\r\n\t}\r\n.leaflet-control-layers-selector {\r\n\tmargin-top: 2px;\r\n\tposition: relative;\r\n\ttop: 1px;\r\n\t}\r\n.leaflet-control-layers label {\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-control-layers-separator {\r\n\theight: 0;\r\n\tborder-top: 1px solid #ddd;\r\n\tmargin: 5px -10px 5px -6px;\r\n\t}\r\n\r\n/* Default icon URLs */\r\n.leaflet-default-icon-path {\r\n\tbackground-image: url(" + escape(__webpack_require__(326)) + ");\r\n\t}\r\n\r\n\r\n/* attribution and scale controls */\r\n\r\n.leaflet-container .leaflet-control-attribution {\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.7);\r\n\tmargin: 0;\r\n\t}\r\n.leaflet-control-attribution,\r\n.leaflet-control-scale-line {\r\n\tpadding: 0 5px;\r\n\tcolor: #333;\r\n\t}\r\n.leaflet-control-attribution a {\r\n\ttext-decoration: none;\r\n\t}\r\n.leaflet-control-attribution a:hover {\r\n\ttext-decoration: underline;\r\n\t}\r\n.leaflet-container .leaflet-control-attribution,\r\n.leaflet-container .leaflet-control-scale {\r\n\tfont-size: 11px;\r\n\t}\r\n.leaflet-left .leaflet-control-scale {\r\n\tmargin-left: 5px;\r\n\t}\r\n.leaflet-bottom .leaflet-control-scale {\r\n\tmargin-bottom: 5px;\r\n\t}\r\n.leaflet-control-scale-line {\r\n\tborder: 2px solid #777;\r\n\tborder-top: none;\r\n\tline-height: 1.1;\r\n\tpadding: 2px 5px 1px;\r\n\tfont-size: 11px;\r\n\twhite-space: nowrap;\r\n\toverflow: hidden;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.5);\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child) {\r\n\tborder-top: 2px solid #777;\r\n\tborder-bottom: none;\r\n\tmargin-top: -2px;\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child):not(:last-child) {\r\n\tborder-bottom: 2px solid #777;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-attribution,\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tbox-shadow: none;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tborder: 2px solid rgba(0,0,0,0.2);\r\n\tbackground-clip: padding-box;\r\n\t}\r\n\r\n\r\n/* popup */\r\n\r\n.leaflet-popup {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tmargin-bottom: 20px;\r\n\t}\r\n.leaflet-popup-content-wrapper {\r\n\tpadding: 1px;\r\n\ttext-align: left;\r\n\tborder-radius: 12px;\r\n\t}\r\n.leaflet-popup-content {\r\n\tmargin: 13px 19px;\r\n\tline-height: 1.4;\r\n\t}\r\n.leaflet-popup-content p {\r\n\tmargin: 18px 0;\r\n\t}\r\n.leaflet-popup-tip-container {\r\n\twidth: 40px;\r\n\theight: 20px;\r\n\tposition: absolute;\r\n\tleft: 50%;\r\n\tmargin-left: -20px;\r\n\toverflow: hidden;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-popup-tip {\r\n\twidth: 17px;\r\n\theight: 17px;\r\n\tpadding: 1px;\r\n\r\n\tmargin: -10px auto 0;\r\n\r\n\t-webkit-transform: rotate(45deg);\r\n\t   -moz-transform: rotate(45deg);\r\n\t    -ms-transform: rotate(45deg);\r\n\t     -o-transform: rotate(45deg);\r\n\t        transform: rotate(45deg);\r\n\t}\r\n.leaflet-popup-content-wrapper,\r\n.leaflet-popup-tip {\r\n\tbackground: white;\r\n\tcolor: #333;\r\n\tbox-shadow: 0 3px 14px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\tpadding: 4px 4px 0 0;\r\n\tborder: none;\r\n\ttext-align: center;\r\n\twidth: 18px;\r\n\theight: 14px;\r\n\tfont: 16px/14px Tahoma, Verdana, sans-serif;\r\n\tcolor: #c3c3c3;\r\n\ttext-decoration: none;\r\n\tfont-weight: bold;\r\n\tbackground: transparent;\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button:hover {\r\n\tcolor: #999;\r\n\t}\r\n.leaflet-popup-scrolled {\r\n\toverflow: auto;\r\n\tborder-bottom: 1px solid #ddd;\r\n\tborder-top: 1px solid #ddd;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-popup-content-wrapper {\r\n\tzoom: 1;\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\twidth: 24px;\r\n\tmargin: 0 auto;\r\n\r\n\t-ms-filter: \"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)\";\r\n\tfilter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip-container {\r\n\tmargin-top: -1px;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-control-zoom,\r\n.leaflet-oldie .leaflet-control-layers,\r\n.leaflet-oldie .leaflet-popup-content-wrapper,\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\tborder: 1px solid #999;\r\n\t}\r\n\r\n\r\n/* div icon */\r\n\r\n.leaflet-div-icon {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #666;\r\n\t}\r\n\r\n\r\n/* Tooltip */\r\n/* Base styles for the element that has a tooltip */\r\n.leaflet-tooltip {\r\n\tposition: absolute;\r\n\tpadding: 6px;\r\n\tbackground-color: #fff;\r\n\tborder: 1px solid #fff;\r\n\tborder-radius: 3px;\r\n\tcolor: #222;\r\n\twhite-space: nowrap;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\tuser-select: none;\r\n\tpointer-events: none;\r\n\tbox-shadow: 0 1px 3px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-tooltip.leaflet-clickable {\r\n\tcursor: pointer;\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-tooltip-top:before,\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\tborder: 6px solid transparent;\r\n\tbackground: transparent;\r\n\tcontent: \"\";\r\n\t}\r\n\r\n/* Directions */\r\n\r\n.leaflet-tooltip-bottom {\r\n\tmargin-top: 6px;\r\n}\r\n.leaflet-tooltip-top {\r\n\tmargin-top: -6px;\r\n}\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-top:before {\r\n\tleft: 50%;\r\n\tmargin-left: -6px;\r\n\t}\r\n.leaflet-tooltip-top:before {\r\n\tbottom: 0;\r\n\tmargin-bottom: -12px;\r\n\tborder-top-color: #fff;\r\n\t}\r\n.leaflet-tooltip-bottom:before {\r\n\ttop: 0;\r\n\tmargin-top: -12px;\r\n\tmargin-left: -6px;\r\n\tborder-bottom-color: #fff;\r\n\t}\r\n.leaflet-tooltip-left {\r\n\tmargin-left: -6px;\r\n}\r\n.leaflet-tooltip-right {\r\n\tmargin-left: 6px;\r\n}\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\ttop: 50%;\r\n\tmargin-top: -6px;\r\n\t}\r\n.leaflet-tooltip-left:before {\r\n\tright: 0;\r\n\tmargin-right: -12px;\r\n\tborder-left-color: #fff;\r\n\t}\r\n.leaflet-tooltip-right:before {\r\n\tleft: 0;\r\n\tmargin-left: -12px;\r\n\tborder-right-color: #fff;\r\n\t}\r\n", ""]);
 
 // exports
 
 
 /***/ }),
 /* 322 */
+/***/ (function(module, exports) {
+
+module.exports = function escape(url) {
+    if (typeof url !== 'string') {
+        return url
+    }
+    // If url is already wrapped in quotes, remove them
+    if (/^['"].*['"]$/.test(url)) {
+        url = url.slice(1, -1);
+    }
+    // Should url be wrapped?
+    // See https://drafts.csswg.org/css-values-3/#urls
+    if (/["'() \t\n]/.test(url)) {
+        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
+    }
+
+    return url
+}
+
+
+/***/ }),
+/* 323 */
 /***/ (function(module, exports) {
 
 /*
@@ -61235,30 +61442,30 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 323 */
+/* 324 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAQAAAADQ4RFAAACf0lEQVR4AY1UM3gkARTePdvdoTxXKc+qTl3aU5U6b2Kbkz3Gtq3Zw6ziLGNPzrYx7946Tr6/ee/XeCQ4D3ykPtL5tHno4n0d/h3+xfuWHGLX81cn7r0iTNzjr7LrlxCqPtkbTQEHeqOrTy4Yyt3VCi/IOB0v7rVC7q45Q3Gr5K6jt+3Gl5nCoDD4MtO+j96Wu8atmhGqcNGHObuf8OM/x3AMx38+4Z2sPqzCxRFK2aF2e5Jol56XTLyggAMTL56XOMoS1W4pOyjUcGGQdZxU6qRh7B9Zp+PfpOFlqt0zyDZckPi1ttmIp03jX8gyJ8a/PG2yutpS/Vol7peZIbZcKBAEEheEIAgFbDkz5H6Zrkm2hVWGiXKiF4Ycw0RWKdtC16Q7qe3X4iOMxruonzegJzWaXFrU9utOSsLUmrc0YjeWYjCW4PDMADElpJSSQ0vQvA1Tm6/JlKnqFs1EGyZiFCqnRZTEJJJiKRYzVYzJck2Rm6P4iH+cmSY0YzimYa8l0EtTODFWhcMIMVqdsI2uiTvKmTisIDHJ3od5GILVhBCarCfVRmo4uTjkhrhzkiBV7SsaqS+TzrzM1qpGGUFt28pIySQHR6h7F6KSwGWm97ay+Z+ZqMcEjEWebE7wxCSQwpkhJqoZA5ivCdZDjJepuJ9IQjGGUmuXJdBFUygxVqVsxFsLMbDe8ZbDYVCGKxs+W080max1hFCarCfV+C1KATwcnvE9gRRuMP2prdbWGowm1KB1y+zwMMENkM755cJ2yPDtqhTI6ED1M/82yIDtC/4j4BijjeObflpO9I9MwXTCsSX8jWAFeHr05WoLTJ5G8IQVS/7vwR6ohirYM7f6HzYpogfS3R2OAAAAAElFTkSuQmCC"
 
 /***/ }),
-/* 324 */
+/* 325 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAQAAABvcdNgAAAEsklEQVR4AWL4TydIhpZK1kpWOlg0w3ZXP6D2soBtG42jeI6ZmQTHzAxiTbSJsYLjO9HhP+WOmcuhciVnmHVQcJnp7DFvScowZorad/+V/fVzMdMT2g9Cv9guXGv/7pYOrXh2U+RRR3dSd9JRx6bIFc/ekqHI29JC6pJ5ZEh1yWkhkbcFeSjxgx3L2m1cb1C7bceyxA+CNjT/Ifff+/kDk2u/w/33/IeCMOSaWZ4glosqT3DNnNZQ7Cs58/3Ce5HL78iZH/vKVIaYlqzfdLu8Vi7dnvUbEza5Idt36tquZFldl6N5Z/POLof0XLK61mZCmJSWjVF9tEjUluu74IUXvgttuVIHE7YxSkaYhJZam7yiM9Pv82JYfl9nptxZaxMJE4YSPty+vF0+Y2up9d3wwijfjZbabqm/3bZ9ecKHsiGmRflnn1MW4pjHf9oLufyn2z3y1D6n8g8TZhxyzipLNPnAUpsOiuWimg52psrTZYnOWYNDTMuWBWa0tJb4rgq1UvmutpaYEbZlwU3CLJm/ayYjHW5/h7xWLn9Hh1vepDkyf7dE7MtT5LR4e7yYpHrkhOUpEfssBLq2pPhAqoSWKUkk7EDqkmK6RrCEzqDjhNDWNE+XSMvkJRDWlZTmCW0l0PHQGRZY5t1L83kT0Y3l2SItk5JAWHl2dCOBm+fPu3fo5/3v61RMCO9Jx2EEYYhb0rmNQMX/vm7gqOEJLcXTGw3CAuRNeyaPWwjR8PRqKQ1PDA/dpv+on9Shox52WFnx0KY8onHayrJzm87i5h9xGw/tfkev0jGsQizqezUKjk12hBMKJ4kbCqGPVNXudyyrShovGw5CgxsRICxF6aRmSjlBnHRzg7Gx8fKqEubI2rahQYdR1YgDIRQO7JvQyD52hoIQx0mxa0ODtW2Iozn1le2iIRdzwWewedyZzewidueOGqlsn1MvcnQpuVwLGG3/IR1hIKxCjelIDZ8ldqWz25jWAsnldEnK0Zxro19TGVb2ffIZEsIO89EIEDvKMPrzmBOQcKQ+rroye6NgRRxqR4U8EAkz0CL6uSGOm6KQCdWjvjRiSP1BPalCRS5iQYiEIvxuBMJEWgzSoHADcVMuN7IuqqTeyUPq22qFimFtxDyBBJEwNyt6TM88blFHao/6tWWhuuOM4SAK4EI4QmFHA+SEyWlp4EQoJ13cYGzMu7yszEIBOm2rVmHUNqwAIQabISNMRstmdhNWcFLsSm+0tjJH1MdRxO5Nx0WDMhCtgD6OKgZeljJqJKc9po8juskR9XN0Y1lZ3mWjLR9JCO1jRDMd0fpYC2VnvjBSEFg7wBENc0R9HFlb0xvF1+TBEpF68d+DHR6IOWVv2BECtxo46hOFUBd/APU57WIoEwJhIi2CdpyZX0m93BZicktMj1AS9dClteUFAUNUIEygRZCtik5zSxI9MubTBH1GOiHsiLJ3OCoSZkILa9PxiN0EbvhsAo8tdAf9Seepd36lGWHmtNANTv5Jd0z4QYyeo/UEJqxKRpg5LZx6btLPsOaEmdMyxYdlc8LMaJnikDlhclqmPiQnTEpLUIZEwkRagjYkEibQErwhkTAKCLQEbUgkzJQWc/0PstHHcfEdQ+UAAAAASUVORK5CYII="
 
 /***/ }),
-/* 325 */
+/* 326 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RfEmN8VNAsQhPqF55xHkMzz3jSmChWU6f7/XZKNH+9+hBLOHYozuKQPxyMPUKkrX/K0uWnfFaJGS1QPRtZsOPtr3NsW0uyh6NNCOkU3Yz+bXbT3I8G3xE5EXLXtCXbbqwCO9zPQYPRTZ5vIDXD7U+w7rFDEoUUf7ibHIR4y6bLVPXrz8JVZEql13trxwue/uDivd3fkWRbS6/IA2bID4uk0UpF1N8qLlbBlXs4Ee7HLTfV1j54APvODnSfOWBqtKVvjgLKzF5YdEk5ewRkGlK0i33Eofffc7HT56jD7/6U+qH3Cx7SBLNntH5YIPvODnyfIXZYRVDPqgHtLs5ABHD3YzLuespb7t79FY34DjMwrVrcTuwlT55YMPvOBnRrJ4VXTdNnYug5ucHLBjEpt30701A3Ts+HEa73u6dT3FNWwflY86eMHPk+Yu+i6pzUpRrW7SNDg5JHR4KapmM5Wv2E8Tfcb1HoqqHMHU+uWDD7zg54mz5/2BSnizi9T1Dg4QQXLToGNCkb6tb1NU+QAlGr1++eADrzhn/u8Q2YZhQVlZ5+CAOtqfbhmaUCS1ezNFVm2imDbPmPng5wmz+gwh+oHDce0eUtQ6OGDIyR0uUhUsoO3vfDmmgOezH0mZN59x7MBi++WDL1g/eEiU3avlidO671bkLfwbw5XV2P8Pzo0ydy4t2/0eu33xYSOMOD8hTf4CrBtGMSoXfPLchX+J0ruSePw3LZeK0juPJbYzrhkH0io7B3k164hiGvawhOKMLkrQLyVpZg8rHFW7E2uHOL888IBPlNZ1FPzstSJM694fWr6RwpvcJK60+0HCILTBzZLFNdtAzJaohze60T8qBzyh5ZuOg5e7uwQppofEmf2++DYvmySqGBuKaicF1blQjhuHdvCIMvp8whTTfZzI7RldpwtSzL+F1+wkdZ2TBOW2gIF88PBTzD/gpeREAMEbxnJcaJHNHrpzji0gQCS6hdkEeYt9DF/2qPcEC8RM28Hwmr3sdNyht00byAut2k3gufWNtgtOEOFGUwcXWNDbdNbpgBGxEvKkOQsxivJx33iow0Vw5S6SVTrpVq11ysA2Rp7gTfPfktc6zhtXBBC+adRLshf6sG2RfHPZ5EAc4sVZ83yCN00Fk/4kggu40ZTvIEm5g24qtU4KjBrx/BTTH8ifVASAG7gKrnWxJDcU7x8X6Ecczhm3o6YicvsLXWfh3Ch1W0k8x0nXF+0fFxgt4phz8QvypiwCCFKMqXCnqXExjq10beH+UUA7+nG6mdG/Pu0f3LgFcGrl2s0kNNjpmoJ9o4B29CMO8dMT4Q5ox8uitF6fqsrJOr8qnwNbRzv6hSnG5wP+64C7h9lp30hKNtKdWjtdkbuPA19nJ7Tz3zR/ibgARbhb4AlhavcBebmTHcFl2fvYEnW0ox9xMxKBS8btJ+KiEbq9zA4RthQXDhPa0T9TEe69gWupwc6uBUphquXgf+/FrIjweHQS4/pduMe5ERUMHUd9xv8ZR98CxkS4F2n3EUrUZ10EYNw7BWm9x1GiPssi3GgiGRDKWRYZfXlON+dfNbM+GgIwYdwAAAAASUVORK5CYII="
 
 /***/ }),
-/* 326 */
+/* 327 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html__ = __webpack_require__(327);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html__ = __webpack_require__(328);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_download_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_bytes__);
@@ -61463,13 +61670,190 @@ class AppImageDownload extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
 customElements.define('app-image-download', AppImageDownload);
 
 /***/ }),
-/* 327 */
+/* 328 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  button {\n    border: none;\n    border-radius: 0;\n    cursor: pointer;\n    color : var(--default-primary-color);\n    background-color: var(--medium-background-color);\n    width: 35px;\n    height: 35px;\n    font-weight: var(--font-weight-heavy);\n    margin: 4px;\n  }\n  button[selected] {\n    background : var(--default-primary-color);\n    color : var(--default-secondary-color);\n  }\n  .info {\n    margin: 10px 0;\n    font-size: var(--font-size-sm);\n  }\n  a {\n    display: inline-block;\n    padding: 8px;\n    color : var(--default-primary-color);\n    background-color : var(--default-secondary-color);\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n  }\n  select {\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    margin-right: 15px;\n    height: 40px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2IiB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojZGFhYTAwO308L3N0eWxlPjwvZGVmcz48Zz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMCAwIDEwIDAgNSA2IDAgMCIvPjwvZz48L3N2Zz4=');\n    @apply --fin-search-box-select-inverse;\n  }\n  select option {\n    text-transform: uppercase;\n  }\n</style>\n\n<div>\n  <template is=\"dom-repeat\" items=\"[[sizes]]\">\n    <button index$=\"[[index]]\" selected$=\"[[item.selected]]\" on-click=\"_onSizeSelected\">[[item.label]]</button>\n  </template>\n</div>\n\n<div class=\"info\">\n  [[resolutionTitle]] | [[resolution]] <span hidden$=\"[[!defaultImage]]\">| [[size]]</span>\n</div>\n\n<div style=\"display:flex; align-items: center\">\n  <select id=\"format\" on-change=\"_onFormatSelected\">\n    <template is=\"dom-repeat\" items=\"[[formats]]\">\n      <option value=\"[[item]]\">[[item]]</option>\n    </template>\n  </select>\n\n  <a href=\"[[href]]\" download target=\"_blank\">\n    <iron-icon icon=\"file-download\"></iron-icon>\n    Download\n  </a>\n</div>";
 
 /***/ }),
-/* 328 */
+/* 329 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__ = __webpack_require__(330);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_tabs_paper_tabs__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_iron_pages_iron_pages__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_iron_media_query_iron_media_query__ = __webpack_require__(331);
+
+
+
+
+
+
+
+class AppRecordMetadataLayout extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */] {
+
+  static get template() {
+    return __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html___default.a;
+  }
+
+  static get properties() {
+    return {
+      mobile : {
+        type : Boolean,
+        value : false,
+        observer : '_updateVisiblePanels'
+      },
+      selectedTab : {
+        type : Number,
+        value : 0,
+        observer : '_updateVisiblePanels'
+      },
+      showRight : {
+        type : Boolean,
+        value : true
+      },
+      showLeft : {
+        type : Boolean,
+        value : true
+      }
+    }
+  }
+
+  /**
+   * @method _updateVisiblePanels
+   * @description called when `mobile` or `selectedTab` property is updated
+   * Set the correct panel to display.
+   */
+  _updateVisiblePanels() {
+    this.showRight = true;
+    this.showLeft = true;
+
+    if( !this.mobile ) return;
+    
+    if( this.selectedTab === 0 ) this.showRight = false;
+    else this.showLeft = false;
+  }
+
+}
+/* unused harmony export default */
+
+
+customElements.define('app-record-metadata-layout', AppRecordMetadataLayout);
+
+/***/ }),
+/* 330 */
+/***/ (function(module, exports) {
+
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n\n  .layout {\n    display: flex;\n  }\n  .layout > * {\n    flex : 1;\n  }\n\n  h2 {\n    border-bottom: 1px solid var(--medium-background-color);\n    color: var(--default-primary-color);\n    padding-bottom: 10px;\n  }\n</style>\n\n<iron-media-query query=\"(max-width: 900px)\" query-matches=\"{{mobile}}\"></iron-media-query>\n\n\n<paper-tabs selected=\"{{selectedTab}}\" hidden$=\"[[!mobile]]\">\n  <paper-tab>Item Data</paper-tab>\n  <paper-tab>Cite Item</paper-tab>\n</paper-tabs>\n\n<div class=\"layout\">\n  <div hidden$=\"[[!showLeft]]\">\n    <h2>Item Data</h2>\n    <slot name=\"left\"></slot>\n  </div>\n  <div hidden$=\"[[!showRight]]\">\n      <h2>Cite this Item</h2>\n    <slot name=\"right\"></slot>\n  </div>\n</div>";
+
+/***/ }),
+/* 331 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
+
+
+
+Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Polymer */])({
+
+  is: 'iron-media-query',
+
+  properties: {
+
+    /**
+     * The Boolean return value of the media query.
+     */
+    queryMatches: {
+      type: Boolean,
+      value: false,
+      readOnly: true,
+      notify: true
+    },
+
+    /**
+     * The CSS media query to evaluate.
+     */
+    query: {
+      type: String,
+      observer: 'queryChanged'
+    },
+
+    /**
+     * If true, the query attribute is assumed to be a complete media query
+     * string rather than a single media feature.
+     */
+    full: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * @type {function(MediaQueryList)}
+     */
+    _boundMQHandler: {
+      value: function() {
+        return this.queryHandler.bind(this);
+      }
+    },
+
+    /**
+     * @type {MediaQueryList}
+     */
+    _mq: {
+      value: null
+    }
+  },
+
+  attached: function() {
+    this.style.display = 'none';
+    this.queryChanged();
+  },
+
+  detached: function() {
+    this._remove();
+  },
+
+  _add: function() {
+    if (this._mq) {
+      this._mq.addListener(this._boundMQHandler);
+    }
+  },
+
+  _remove: function() {
+    if (this._mq) {
+      this._mq.removeListener(this._boundMQHandler);
+    }
+    this._mq = null;
+  },
+
+  queryChanged: function() {
+    this._remove();
+    var query = this.query;
+    if (!query) {
+      return;
+    }
+    if (!this.full && query[0] !== '(') {
+      query = '(' + query + ')';
+    }
+    this._mq = window.matchMedia(query);
+    this._add();
+    this.queryHandler(this._mq);
+  },
+
+  queryHandler: function(mq) {
+    this._setQueryMatches(mq.matches);
+  }
+
+});
+
+
+/***/ }),
+/* 332 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61480,8 +61864,8 @@ module.exports = "<style include=\"shared-styles\">\n  button {\n    border: non
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__auth_app_auth_footer__ = __webpack_require__(329);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__auth_app_auth_footer__ = __webpack_require__(333);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html__ = __webpack_require__(335);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__app_footer_html__);
 
 
@@ -61500,6 +61884,7 @@ class AppFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 
   static get properties() {
     return {
+      // JSON payload of collection overview
       collections : {
         type : Array,
         value : () => []
@@ -61512,11 +61897,21 @@ class AppFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
     this.active = true;
   }
 
+  /**
+   * @method _onCollectionOverviewUpdate
+   * @description from CollectionInterface, called when collection overview query completes
+   */
   _onCollectionOverviewUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this.collections = e.payload;
   }
 
+  /**
+   * @method _onBrowseCollection
+   * @description from click event, called when collection image is clicked
+   * 
+   * @param {Object} e HTML click event 
+   */
   _onBrowseCollection(e) {
     let id = e.currentTarget.getAttribute('data-id');
     this._esSetKeywordFilter('shortIdMemberOf', id);
@@ -61526,14 +61921,14 @@ class AppFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-footer', AppFooter);
 
 /***/ }),
-/* 329 */
+/* 333 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__ = __webpack_require__(330);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__ = __webpack_require__(334);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__);
 
 
@@ -61564,6 +61959,10 @@ class AppAuthFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_p
     this.active = true;
   }
 
+  /**
+   * @method _onAuthUpdate
+   * @description from AuthInterface. called whenever auth state changes
+   */
   _onAuthUpdate(e) {
     if( e.state === 'loggedIn' ) {
       this.user = e.user;
@@ -61577,25 +61976,28 @@ class AppAuthFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_p
 customElements.define('app-auth-footer', AppAuthFooter);
 
 /***/ }),
-/* 330 */
+/* 334 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    color: var(--inverse-text-color);\n  }\n  a {\n    color: var(--inverse-text-color);\n    cursor: pointer;\n  }\n  .icon-container {\n    display: flex;\n    align-items: center;\n  }\n</style>\n\n<div hidden$=\"[[!loggedIn]]\">\n  <div>Logged in as:</div>\n  <div class=\"icon-container\">\n    <iron-icon icon=\"fin:account\"></iron-icon>&nbsp;&nbsp;\n    <div>[[user.user]]</div>\n  </div>\n  <div>\n    <a on-click=\"_logout\" class=\"gold\">Log Out</a>\n  </div>\n</div>\n<div hidden$=\"[[loggedIn]]\">\n  <a on-click=\"_login\">Login</a>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    color: var(--inverse-text-color);\n  }\n  a {\n    color: var(--inverse-text-color);\n    cursor: pointer;\n  }\n  .icon-container {\n    display: flex;\n    align-items: center;\n  }\n</style>\n\n<div hidden$=\"[[!loggedIn]]\">\n  <div>Logged in as:</div>\n  <div class=\"icon-container\">\n    <iron-icon icon=\"fin:account\"></iron-icon>&nbsp;&nbsp;\n    <div>[[user.username]]</div>\n  </div>\n  <div>\n    <a on-click=\"_logout\" class=\"gold\">Log Out</a>\n  </div>\n</div>\n<div hidden$=\"[[loggedIn]]\">\n  <a on-click=\"_login\">Login</a>\n</div>";
 
 /***/ }),
-/* 331 */
+/* 335 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background: var(--secondary-background-color);\n    color: var(--inverse-text-color);\n    max-width: var(--max-width);\n    padding: 20px 0;\n  }\n\n  a, a:visited {\n    cursor: pointer;\n    color: var(--inverse-text-color);\n    text-decoration: none;\n  }\n\n  .lib-logo  {\n    height: 45px;\n  }\n\n  .row {\n    display: flex;\n    justify-content: center;\n  }\n\n  .row > div {\n    padding: 15px;\n  }\n\n  .menu.horizontal li {\n    padding: 0 10px;\n    border-right: 1px solid white;\n  }\n  .menu.horizontal li:last-child {\n    border-right: none;\n  }\n  .menu a {\n    cursor: pointer;\n  }\n\n  @media( max-width: 768px ) {\n    ul.menu.horizontal {\n      display: block;\n      text-align: left;\n    }\n  }\n\n  .logo {\n    display: inline-block;\n    width: 100%;\n    position: relative;\n    margin: 70px 0 30px;\n  }\n  .logo hr {\n    position: absolute;\n    top: 50%;\n    width: 100%;\n    margin-top: 0;\n    margin-bottom: 0;\n    border-top: 1px solid rgba(255,255,255,.25);\n    border-bottom: none;\n    border-right: none;\n    border-left: none;\n  }\n  .logo .logo-img {\n    display: inline-block;\n    position: relative;\n  }\n  .logo img {\n    height: 100px;\n    padding: 0 25px;\n    background: var(--default-primary-color);\n  }\n\n  @media(max-width: 768px) {\n    .row {\n      display: block;\n    }\n  }\n</style>\n\n<footer role=\"contentinfo\">\n\n  <div class=\"row\">\n    <div> <!-- col start -->\n      <div>\n          <a href=\"https://library.ucdavis.edu\" target=\"_blank\">\n              <img class=\"lib-logo\" src=\"/images/ucd-lib-logo-white.png\">\n          </a>\n      </div>\n      <div>UC Davis Library</div>\n      <p>\n        100 NW Quad<br />\n        University of California, Davis<br />\n        Davis, CA 95616<br />\n        (530) 752-8792<br /><br />\n        <a href=\"mailto:library@ucdavis.edu\">library@ucdavis.edu</a>\n      </p>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Digital Collections</h2>\n      <ul class=\"menu\">\n        <template is=\"dom-repeat\" items=\"[[collections]]\">\n          <li><a on-click=\"_onBrowseCollection\" data-id$=\"[[item.shortId]]\">[[item.title]]</a></li>\n        </template>\n      </ul>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Library Info</h2>\n      <ul class=\"menu\">\n        <li><a href=\"https://library.ucdavis.edu/news/\" target=\"_blank\">News</a></li>\n        <li><a href=\"https://library.ucdavis.edu/about/\" target=\"_blank\">About</a></li>\n        <li><a href=\"https://library.ucdavis.edu/library/\" target=\"_blank\">Visit</a></li>\n        <li><a href=\"https://library.ucdavis.edu/service/careers/\" target=\"_blank\">Careers</a></li>\n      </ul>\n      <div class=\"donate\"><a href=\"http://give.ucdavis.edu/ULIB\" target=\"_blank\">Give to the UC Davis Library</a></div>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Account</h2>\n      <ul class=\"menu\">\n        <li>\n          <app-auth-footer></app-auth-footer>\n        </li>\n      </ul>\n    </div><!-- col end -->\n  </div><!-- row end -->\n\n  <div style=\"text-align:center\">\n    <div class=\"logo\"><!-- logo -->\n        <hr>\n        <div class=\"logo-img\">\n            <img src=\"/images/ucd-logo.svg\" alt=\"UC Davis Logo\">\n        </div>\n    </div>\n\n    <div>\n      <p>University of California, Davis, One Shields Avenue, Davis, CA 95616 | 530-752-1011</p>\n      <ul class=\"menu horizontal\">\n        <li><a href=\"/help/\">Help</a></li>\n        <li><a href=\"/general-support/\">Questions or comments?</a></li>\n        <li><a href=\"https://www.ucdavis.edu/help/privacy-accessibility/\" target=\"_blank\">Privacy &amp; Accessibility</a></li>\n        <li><a href=\"https://occr.ucdavis.edu/poc/\" target=\"_blank\">Principles of Community</a></li>\n        <li><a href=\"https://www.ucdavis.edu/\" target=\"_blank\">UC Davis</a></li>\n        <li><a href=\"https://www.universityofcalifornia.edu/\" target=\"_blank\">University of California</a></li>\n      </ul>\n      <p>Copyright &copy; 2017 The Regents of the University of California, Davis campus. All rights reserved.</p>\n    </div>\n  </div>\n\n</footer>";
 
 /***/ }),
-/* 332 */
+/* 336 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 
 
+/**
+ * This is the rainbow color bar at the top of a page.  Just a style element.
+ */
 class AppHeaderColorbar extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */] {
 
   static get properties() {
@@ -61633,11 +62035,19 @@ class AppHeaderColorbar extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
     this.fippedImageUrl = '/images/header-colorbar-flipped.png';
   }
 
+  /**
+   * @method _updateHeight
+   * @description called when `height` property is changed.
+   */
   _updateHeight() {
     if( this.height > 36 ) this.height = 36;
     this.style.height = this.height+'px';
   }
 
+  /**
+   * @method _flip
+   * @description called when `flipped` property is changed.
+   */
   _flip() {
     if( this.flipped ) this.style.backgroundImage = `url('${this.fippedImageUrl}')`;
     else this.style.backgroundImage = `url('${this.imageUrl}')`;
@@ -61646,7 +62056,7 @@ class AppHeaderColorbar extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 customElements.define('app-header-colorbar', AppHeaderColorbar);
 
 /***/ }),
-/* 333 */
+/* 337 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n    background: var(--default-primary-color);\n  }\n  app-header {\n    \n  }\n  .content {\n    display: flex;\n    justify-content: center;\n  }\n  .content > div {\n    max-width: 1000px;\n    min-width: 300px;\n  }\n  paper-material {\n    background: white;\n    display: block;\n    padding: 10px;\n    margin: 10px;\n  }\n  paper-button {\n    background: white;\n  }\n  a[button] {\n    text-decoration: none;\n    color: var(--primary-text-color);\n  }\n</style>\n\n<app-route app-routes=\"[[appRoutes]]\"></app-route>\n\n<iron-pages selected=\"[[page]]\" attr-for-selected=\"id\" selected-attribute=\"visible\">\n  <app-home id=\"home\"></app-home>\n  <app-search id=\"search\"></app-search>\n  <app-record id=\"record\"></app-record>\n</iron-pages>\n\n<div style=\"display:flex; justify-content:center\">\n  <app-footer></app-footer>\n</div>";

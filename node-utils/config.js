@@ -1,19 +1,18 @@
 const fs = require('fs');
 
 let defaultServices = [];
-if( fs.existsSync('/etc/dams/default-services.js') ) {
-  defaultServices = require('/etc/dams/default-services.js');
+if( fs.existsSync('/etc/fin/default-services.js') ) {
+  defaultServices = require('/etc/fin/default-services.js');
 }
 
-var fcrepoHostname = 'fcrepo';
-var redisHostname = 'redis';
-var esHostname = 'elasticsearch';
+var fcrepoHostname = process.env.FCREPO_HOST || 'fcrepo';
+var esHostname = process.env.ES_HOST || 'elasticsearch';
 
 module.exports = {
 
   server : {
-    url : process.env.DAMS_URL || 'http://localhost:3000',
-    loglevel : process.env.DAMS_LOG_LEVEL || 'info',
+    url : process.env.FIN_URL || 'http://localhost:3000',
+    loglevel : process.env.FIN_LOG_LEVEL || 'info',
     cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme',
     cookieMaxAge : process.env.SERVER_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 86400 * 30)
   },
@@ -52,12 +51,12 @@ module.exports = {
       schemaType : 'fcrepo-collection',
     },
     host : `http://elastic:changeme@${esHostname}:9200`,
-    log : 'error'
+    log : process.env.ES_LOG_LEVEL || 'error'
   },
 
   redis : {
-    host : redisHostname,
-    port : 6379,
+    host : process.env.REDIS_HOST || 'redis',
+    port : process.env.REDIS_PORT || 6379,
     refreshTokenExpire : (86400 * 30)
   }
 

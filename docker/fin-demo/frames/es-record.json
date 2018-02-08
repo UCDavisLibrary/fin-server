@@ -1,0 +1,135 @@
+{
+  "@context": {
+    "dct" : "http://purl.org/dc/terms/",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "fedora" : "http://fedora.info/definitions/v4/repository#",
+    "ebucore" : "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
+    "pcdm": "http://pcdm.org/models#",
+    "premis" : "http://www.loc.gov/premis/rdf/v1#",
+    "title" : {
+      "@id": "dct:title"
+    },
+    "description" : {
+      "@id": "dc:description"
+    },
+    "subjects" : {
+      "@id": "dc:subject"
+    },
+    "creator" : {
+      "@id": "dc:creator"
+    },
+    "creatorLink" : {
+      "@id": "dct:creator",
+      "@type" : "@id"
+    },
+    "createdBy" : {
+      "@id": "fedora:createdBy"
+    },
+    "parent" : {
+      "@id": "fedora:hasParent",
+      "@type": "@id"
+    },
+    "memberOf":{
+      "@id" : "pcdm:memberOf",
+      "@type": "@id"
+    },
+    "mimeType" : {
+      "@id" : "ebucore:hasMimeType"
+    },
+    "lastModified" : {
+      "@type" : "http://www.w3.org/2001/XMLSchema#dateTime",
+      "@id" : "fedora:lastModified"
+    },
+    "lastModifiedBy" : {
+      "@id" : "fedora:lastModifiedBy"
+    },
+    "subjectLinks" : {
+      "@id" : "dct:subject",
+      "@type" : "@id"
+    },
+    "created" : {
+      "@id" : "dct:created"
+    },
+    "type" : {
+      "@id" : "dct:type"
+    },
+    "localIdentifier" : {
+      "@id" : "dc:identifier"
+    },
+    "universalIdentifier" : {
+      "@id" : "dct:identifier"
+    },
+    "source" : {
+      "@id" : "dct:source"
+    },
+    "rightsLink" : {
+      "@id" : "dct:rights",
+      "@type" : "@id"
+    },
+    "fileSize" : {
+      "@id" : "premis:hasSize",
+      "@type" : "http://www.w3.org/2001/XMLSchema#long"
+    },
+    "filename" : {
+      "@id" : "ebucore:filename"
+    }
+  },
+  "@explicit": true,
+  "title": {
+    "@default" : ""
+  },
+  "description": {
+    "@default" : ""
+  },
+  "subjects": {
+    "@default" : ""
+  },
+  "creator" : {
+    "@default" : ""
+  },
+  "creatorLink" : {
+    "@default" : ""
+  },
+  "createdBy" : {
+    "@default" : ""
+  },
+  "memberOf" : {
+    "@default" : ""
+  },
+  "mimeType" : {
+    "@default" : ""
+  },
+  "lastModified" : {
+    "@default" : ""
+  },
+  "lastModifiedBy" : {
+    "@default" : ""
+  },
+  "subjectLinks" : {
+    "@default" : ""
+  },
+  "created" : {
+    "@default" : ""
+  },
+  "type" : {
+    "@default" : ""
+  },
+  "localIdentifier" : {
+    "@default" : ""
+  },
+  "universalIdentifier" : {
+    "@default" : ""
+  },
+  "source" : {
+    "@default" : ""
+  },
+  "rightsLink" : {
+    "@default" : ""
+  },
+  "fileSize" : {
+    "@default" : 0
+  },
+  "filename" : {
+    "@default" : ""
+  }
+}

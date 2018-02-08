@@ -12,17 +12,14 @@ services:
   server:
     build: ../../server
     volumes:
-      - ../../services/frames:/etc/dams/frames
-      - ../../services/default-services.js:/etc/dams/default-services.js
+      - ../../services/frames:/etc/fin/frames
+      - ../../services/default-services.js:/etc/fin/default-services.js
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_TTL=${JWT_TTL}
-      - DAMS_URL=${DAMS_URL}
-      - DAMS_ENV=prod
+      - FIN_URL=${FIN_URL}
     depends_on:
       - fcrepo
-      - elasticsearch
       - redis
     ports:
       - 3000:3001
@@ -37,10 +34,20 @@ services:
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_VERBOSE=${JWT_VERBOSE}
-      - DAMS_URL=${DAMS_URL}
-    ports:
-      - 61613:61613 #STOMP
+      - FIN_URL=${FIN_URL}
+
+  ###
+  # UC DAMS Client UI
+  ###
+  ucd-lib-client:
+    build: ../../services/ucd-lib-client
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+      - FIN_ENV=prod
+    depends_on:
+      - elasticsearch
 
   ###
   # Search
@@ -58,7 +65,7 @@ services:
       - es-data:/usr/share/elasticsearch/data
       - ../elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     depends_on:
-      - fcrepo
+      - server
 
   ###
   # Session, local user and role store
@@ -80,7 +87,6 @@ services:
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_TTL=${JWT_TTL}
 
   ###
   # API Extension Services
@@ -98,13 +104,11 @@ services:
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_TTL=${JWT_TTL}
-      - DAMS_URL=${DAMS_URL}
+      - FIN_URL=${FIN_URL}
     depends_on:
       - server
       - fcrepo
       - elasticsearch
-    command: node service
 
   # file system serialization
   serialization:
@@ -112,13 +116,35 @@ services:
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_TTL=${JWT_TTL}
-      - DAMS_URL=${DAMS_URL}
+      - FIN_URL=${FIN_URL}
     depends_on:
       - server
       - fcrepo
       - elasticsearch
-    command: node service
+
+  ###
+  # CAS AuthenticationService
+  ###
+  cas:
+    build: ../../services/cas
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
+
+  ###
+  # Basic Username/Password AuthenticationService
+  ###
+  basic-auth:
+    build: ../../services/basic-auth
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
 
 volumes:
   fedora-data:

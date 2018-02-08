@@ -1,4 +1,4 @@
-var authUtils = require('../../lib/auth');
+var authUtils = require('../../models/auth');
 
 module.exports = (yargs) => {
   return yargs

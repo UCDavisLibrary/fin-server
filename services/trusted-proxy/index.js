@@ -1,28 +1,20 @@
 var proxy = require('http-proxy');
 var http = require('http');
-var jwt = require('jsonwebtoken');
+const {jwt, config} = require('@ucd-lib/fin-node-utils');
+
 
 var token = null;
 function setToken() {
-  token = jwt.sign(
-    {
-      username: 'trusted-proxy',
-      admin : true
-    }, 
-    process.env.JWT_SECRET, 
-    {
-      issuer: process.env.JWT_ISSUER,
-      expiresIn: parseInt(process.env.JWT_TTL)
-    }
-  );
+  token = jwt.create('trusted-proxy', true);
 }
+
 setInterval(setToken, 1000 * 60 * 60 * 6);
 setToken();
 
 var proxy = proxy.createProxyServer({});
 var server = http.createServer(function(req, res) {
   req.headers.Authorization = `Bearer ${token}`;
-  proxy.web(req, res, { target: 'http://fcrepo:8080' });
+  proxy.web(req, res, { target: config.fcrepo.host });
 });
 
 server.listen(3000, () => {

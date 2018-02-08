@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ucd-lib/fin-node-utils": "^0.1.2",
     "express": "^4.16.2",
     "http-proxy": "^1.16.2",
     "jsonwebtoken": "^8.1.0"

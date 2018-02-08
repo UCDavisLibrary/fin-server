@@ -7,12 +7,16 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd client && webpack",
+    "watch": "cd client && webpack --watch",
+    "analyze-bundle": "cd client && webpack --profile --json webpack-dist.config.js > stats.json && webpack-bundle-analyzer -m server stats.json",
+    "dist": "cd client && ./build.sh"
   },
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",
   "dependencies": {
-    "@ucd-lib/fin-node-utils": "0.0.12",
+    "@ucd-lib/fin-node-utils": "^0.1.2",
     "@ucd-lib/spa-router-middleware": "0.0.1",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",

@@ -1,0 +1,164 @@
+
+version: '2'
+
+###
+# Demo Fin Server from deployed DockerHub container images
+#
+# To run create a .env file in the same directory as this docker-compose
+# file and set the following environmental variables:
+#    - JWT_SECRET=[server secret]
+#    - JWT_ISSUER=[your domain, eg library.ucdavis.edu]
+#    - FIN_URL=[application url, http://mydams.org or http://localhost:3000 for testing]
+###
+services:
+  
+  ###
+  # Font End NodeJS Application Server
+  ###
+  server:
+    image: ucdlib/fin-server
+    volumes:
+      - ./frames:/etc/fin/frames
+      - ./default-services.js:/etc/fin/default-services.js
+    ports:
+      - 3000:3001
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - fcrepo
+      - redis
+
+  ###
+  # Fedora Repository
+  ###
+  fcrepo:
+    build: ucdlib/fin-fcrepo
+    volumes:
+      - fedora-data:/var/lib/jetty/fedora-data
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+
+  ###
+  # Session, admin store
+  ###
+  redis:
+    image: redis:3.2
+    volumes:
+      - redis-data:/data
+
+  ###
+  # UC DAMS Client UI
+  ###
+  ucd-lib-client:
+    image: ucdlib/fin-ucd-lib-client
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+      - FIN_ENV=prod
+    depends_on:
+      - elasticsearch
+
+  ###
+  # Search
+  ###
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    depends_on:
+      - server
+
+  ###
+  # Trusted Proxy for Services
+  # required for loris service
+  ###
+  trustedproxy:
+    image: ucdlib/fin-trusted-proxy
+    depends_on:
+      - elasticsearch
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+
+  ###
+  # IIIF Service
+  ###
+  loris:
+    image: ucdlib/fin-loris-service
+    depends_on:
+      - server
+
+  
+  ###
+  # ES Indexer
+  ###
+  essync:
+    image: ucdlib/fin-essync-service
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
+
+  ###
+  # Serialize Fcrepo to disk
+  ###
+  serialization:
+    image: ucdlib/fin-serialization-service
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
+
+  ###
+  # CAS AuthenticationService
+  ###
+  cas:
+    image: ucdlib/fin-cas-service
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
+
+  ###
+  # Basic Username/Password AuthenticationService
+  ###
+  basic-auth:
+    image: ucdlib/fin-basic-auth
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
+
+###
+# Docker data volumes
+###
+volumes:
+  fedora-data:
+    driver: local
+  fedora-serialized-data:
+    driver: local
+  es-data:
+    driver: local
+  redis-data:
+    driver: local

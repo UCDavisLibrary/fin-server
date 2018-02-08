@@ -1,13 +1,13 @@
 FROM node:8
 
 RUN mkdir service
-COPY index.js service/
-COPY controller.js service/
-COPY model.js service/
-COPY cli.js service/
-COPY lib service/
-COPY package.json service/
-COPY package-lock.json service/
+ADD index.js /service/
+ADD controller.js /service/
+ADD model.js /service/
+ADD cli.js /service/
+ADD lib /service/lib
+ADD package.json /service/
+ADD package-lock.json /service/
 
 RUN cd /service && npm install 
 CMD node service

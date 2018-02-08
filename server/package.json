@@ -4,17 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd client && webpack",
-    "watch": "cd client && webpack --watch",
-    "analyze-bundle": "cd client && webpack --profile --json webpack-dist.config.js > stats.json && webpack-bundle-analyzer -m server stats.json",
-    "dist": "cd client && ./build.sh"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@ucd-lib/fin-node-api": "^0.4.0",
-    "@ucd-lib/fin-node-utils": "^0.1.1",
+    "@ucd-lib/fin-node-utils": "^0.1.2",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cas-authentication": "0.0.8",
