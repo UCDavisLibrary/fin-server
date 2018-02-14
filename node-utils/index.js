@@ -4,5 +4,5 @@ module.exports = {
   jwt : require('./jwt'),
   logger : require('./logger'),
   MessageServer : require('./MessageServer'),
-  utils : utils
+  utils : require('./utils')
 }

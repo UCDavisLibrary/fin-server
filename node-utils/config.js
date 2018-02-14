@@ -14,7 +14,7 @@ module.exports = {
     url : process.env.FIN_URL || 'http://localhost:3000',
     loglevel : process.env.FIN_LOG_LEVEL || 'info',
     cookieSecret : process.env.FIN_COOKIE_SECRET || 'changeme',
-    cookieMaxAge : process.env.FIN_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 86400 * 30),
+    cookieMaxAge : process.env.FIN_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 60 * 60 * 24 * 7),
     allowOrigins : (process.env.FIN_ALLOW_ORIGINS || '').split(',').filter(domain => domain !== '').map(domain => domain.trim()),
     cacheExpireTime : process.env.FIN_CACHE_EXPIRE || (60*60*24)
   },
@@ -39,7 +39,7 @@ module.exports = {
     secret : process.env.JWT_SECRET,
     issuer : process.env.JWT_ISSUER,
     // expires in seconds
-    ttl : process.env.JWT_TTL ? parseInt(process.env.JWT_TTL) : (60 * 60),
+    ttl : process.env.JWT_TTL ? parseInt(process.env.JWT_TTL) : (60 * 60 * 24),
     cookieName : process.env.JWT_COOKIE_NAME || 'fin-jwt'
   },
 

@@ -39,10 +39,10 @@ RUN pip2.7 install Pillow
 WORKDIR /opt
 
 # Get loris and unzip. 
-RUN wget --no-check-certificate https://github.com/loris-imageserver/loris/archive/v2.1.0-final.zip \
-	&& unzip v2.1.0-final.zip \
-	&& mv loris-2.1.0-final/ loris/ \
-	&& rm v2.1.0-final.zip
+RUN wget --no-check-certificate https://github.com/loris-imageserver/loris/archive/v2.2.0.zip \
+	&& unzip v2.2.0.zip \
+	&& mv loris-2.2.0/ loris/ \
+	&& rm v2.2.0.zip
 
 RUN useradd -d /var/www/loris -s /sbin/false loris
 
@@ -58,12 +58,14 @@ RUN ./setup.py install
 COPY loris2.conf etc/loris2.conf
 
 WORKDIR /opt/loris/loris
+COPY start.py start.py
+RUN mkdir -p /tmp/loris2/tmp
 
 # bind test server to 0.0.0.0
-RUN sed -i -- 's/localhost/0.0.0.0/g' webapp.py
-RUN sed -i 's/app = create_app(debug=True)/app = create_app(debug=False, config_file_path=conf_fp)/g' webapp.py
+#RUN sed -i -- 's/localhost/0.0.0.0/g' webapp.py
+#RUN sed -i 's/app = create_app(debug=True)/app = create_app(debug=False, config_file_path=conf_fp)/g' webapp.py
 
 RUN apt-get clean
 
 EXPOSE 5004
-CMD ["python", "webapp.py"]
+CMD ["python", "start.py"]

@@ -12,8 +12,8 @@ var argv = yargs
   .command('example', 'init repo with example data', function (yargs) {
     require('./cmds/example-repo')();
   })
-  .command('list', 'list items in project', function (yargs) {
-    console.log('listing items in project :)')
+  .command('cache', 'admin redis cache', function (yargs) {
+    return require('./cmds/cache')(yargs);
   })
   .strict()
   .help('help')

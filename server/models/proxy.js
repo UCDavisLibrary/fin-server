@@ -88,13 +88,6 @@ class ProxyModel {
     // set cors headers if in FIN_ALLOW_ORIGINS env variable or is a registered ExternalService domain
     this._setCors(req, proxyRes);
 
-    // turn off cache for browser support
-    // this fixes bug when browser changes Accept: [format] headers.  The header
-    // does not invalidate browser cache and cause bad response
-    proxyRes.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
-    proxyRes.headers['Expires'] = '0';
-    proxyRes.headers['Pragma'] = 'no-cache';
-
     // if this is a AuthenticationService request AND the proxy response has 
     // x-fin-authorized-agent header, hijack response and finish Fin auth flow
     if( serviceModel.isAuthenticationServiceRequest(req) ) {
@@ -113,6 +106,8 @@ class ProxyModel {
     // we had a true fcrepo request, append appropriate fin service link headers
     this._appendServiceLinkHeaders(req, proxyRes);
 
+    this._setNoCacheHeaders(proxyRes);
+
     // set the cache
     if( cache.isCacheableRequest(req) ) {
       cache.set(req.originalUrl, proxyRes, req);
@@ -120,6 +115,20 @@ class ProxyModel {
 
     // finally set the cache header (either miss or ignored)
     proxyRes.headers[cache.HEADER] = req.cacheStatus;
+  }
+
+  /**
+   * @method _setNoCache
+   * @description turn off cache for browser support. this fixes bug when 
+   * browser changes Accept: [format] headers.  The header does not invalidate 
+   * browser cache and cause bad response
+   * 
+   * @param {Object} proxyRes http-proxy response
+   */
+  _setNoCacheHeaders(proxyRes) {
+    proxyRes.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+    proxyRes.headers['Expires'] = '0';
+    proxyRes.headers['Pragma'] = 'no-cache';
   }
 
   /**
@@ -191,6 +200,13 @@ class ProxyModel {
    * @param {Object} res express response object
    */
   async _fcrepoProxyRequest(req, res) {
+    let path = req.originalUrl;
+    if( this._isMetadataRequest(req) ) {
+      path = path.replace(/fcr:metadata.*/, '');
+    }
+
+    // store for serivce headers
+    req.fcPath = path;
 
     // see if a cache hit
     if( cache.isCacheableRequest(req) ) {
@@ -198,7 +214,7 @@ class ProxyModel {
       // first preflight a head request for headers so we can check out and cache
       let info = await this._getContainerAccessAndInfo(req.originalUrl, req);
       if( !info.access ) {
-        return res.status(403).send('Unauthorized');
+        return res.status(info.response.statusCode).send(info.response.body || '');
       }
       
       // we don't cache binary resources
@@ -206,10 +222,14 @@ class ProxyModel {
         req.cacheStatus = 'ignored';
       } else {
         // see if there is something in the cache
-        let cachedRes = await cache.get(req.originalUrl, info.headers.etag, req);
+        
+        // we had a true fcrepo request, append appropriate fin service link headers
+        this._appendServiceLinkHeaders(req, info.response);
+        let cachedRes = await cache.get(req.originalUrl, info.response.headers, req);
        
         // cache hit, set headers, body, return.  we are done.
         if( cachedRes ) {
+          Logger.info('Cache hit: '+req.originalUrl);
           for( var key in cachedRes.headers ) {
             res.set(key, cachedRes.headers[key]);
           }
@@ -225,14 +245,6 @@ class ProxyModel {
 
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
     Logger.debug(`Fcrepo proxy request: ${url}`);
-
-    let path = req.originalUrl;
-    if( this._isMetadataRequest(req) ) {
-      path = path.replace(/fcr:metadata.*/, '');
-    }
-
-    // store for serivce headers
-    req.fcPath = path;
 
     proxy.web(req, res, {
       target : url
@@ -435,14 +447,14 @@ class ProxyModel {
 
     // make a head request to get fcrepo statusCode and link headers
     var {response, body} = await this._request({
-      type : 'HEAD',
+      method : 'HEAD',
       uri : path
     }, token);
 
     // if we don't get a 200 range status code from fcrepo, 
     // requesting agent does not have access to this container
     if( !api.isSuccess(response) ) {
-      return {access : false}
+      return {access : false, response}
     }
 
     // parse the link headers, used by following operations
@@ -458,12 +470,12 @@ class ProxyModel {
         access: true, 
         binary: true,
         links, 
-        headers: response.headers
+        response
       };
     }
 
     // we are not a binary container
-    return {access: true, binary: false, links, headers: response.headers};
+    return {access: true, binary: false, links, response};
   }
 
   /**
@@ -475,8 +487,10 @@ class ProxyModel {
     if( token ) {
       if( !options.headers ) options.headers = {};
       options.headers.Authorization = `Bearer ${token}`;
+      options.headers.host = new URL(config.server.url).host;
     }
-    options.uri = `${config.fcrepo.host}${options.uri}`;
+
+    options.uri = `http://${config.fcrepo.hostname}:8080${options.uri}`;
 
     return new Promise((resolve, reject) => {
       request(options, (error, response, body) => {

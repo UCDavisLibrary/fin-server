@@ -24,12 +24,14 @@ app.use(session({
   store: new RedisStore({
     host : 'redis'
   }),
+  cookie : {
+    maxAge          : config.server.cookieMaxAge,
+  },
   secret            : config.server.cookieSecret,
   resave            : false,
-  maxAge            : config.server.cookieMaxAge,
   saveUninitialized : true
 }));
-app.use(cookieParser()); 
+app.use(cookieParser(config.server.cookieSecret)); 
 
 // setup simple http logging
 app.use((req, res, next) => {

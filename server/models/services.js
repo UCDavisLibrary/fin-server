@@ -259,7 +259,6 @@ class ServiceModel {
     let id = event.payload.headers[ACTIVE_MQ_HEADER_ID];
 
     // this is a service update, reload services
-    console.log(id, '/'+api.service.ROOT, id.indexOf('/'+api.service.ROOT));
     if( id.indexOf('/'+api.service.ROOT) === 0 ) {
       this.bufferedReload();
       return;

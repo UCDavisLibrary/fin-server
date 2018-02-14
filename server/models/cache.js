@@ -1,4 +1,6 @@
 const redis = require('../lib/redisClient');
+const md5 = require('md5');
+const {config} = require('@ucd-lib/fin-node-utils');
 
 /**
  * Custom redis cache
@@ -33,11 +35,11 @@ class CacheModel {
     let body = '';
     res.on('data', (data) => body += data.toString());
     res.on('end', async () => {
-      let key = this.PREFIX + path + (res.headers.etag || '') +
-          (req.get('accept') || '') + (req.get('prefer') || '');
+      let headerHash = this._createHeadersMD5(req.get('accept'), req.get('prefer'), res.headers.link);
+      let key = this.PREFIX + path + res.headers.etag + headerHash;
 
       let value = JSON.stringify({
-        header : res.headers,
+        headers : res.headers,
         body : body
       });
       
@@ -51,12 +53,12 @@ class CacheModel {
    * @description check the redis cache for a specific request
    * 
    * @param {String} path 
-   * @param {String} etag from response headers 
+   * @param {String} resHeaders from response headers 
    * @param {Object} req express request 
    */
-  async get(path, etag = '', req) {
-    let key = this.PREFIX + path + etag + 
-              (req.get('accept') || '') + (req.get('prefer') || '');
+  async get(path, resHeaders, req) {
+    let headerHash = this._createHeadersMD5(req.get('accept'), req.get('prefer'), resHeaders.link);
+    let key = this.PREFIX + path + (resHeaders.etag || '') + headerHash;
 
     let value = await redis.get(key);
     if( value ) value = JSON.parse(value);
@@ -67,6 +69,10 @@ class CacheModel {
     if( req.method !== 'GET' ) return false;
     if( req.originalUrl.match(/.*fcr:assets.*/) ) return false;
     return true;
+  }
+
+  _createHeadersMD5(accept='', prefer='', link='') {
+    return md5(accept.trim()+prefer.trim()+link.trim());
   }
 
 }

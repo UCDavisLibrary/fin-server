@@ -32,7 +32,6 @@ module.exports = (yargs) => {
  */
 async function listAdmins(yargs) {
   var admins = await authUtils.loadAdmins();
-  console.log(admins);
   process.exit();
 }
 

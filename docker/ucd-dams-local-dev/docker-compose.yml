@@ -19,6 +19,7 @@ services:
       - 3000:3001
       - 9229:9229
     command: tail -f /dev/null
+    # command: node app
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -97,19 +98,25 @@ services:
   # Trusted Proxy for Services
   ###
   trustedproxy:
-    build: ../../services/trusted-proxy
+    image: node:8.5
+    volumes:
+      - ../../services/trusted-proxy:/service
     depends_on:
       - fcrepo
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_TTL=${JWT_TTL}
+    command: node service
 
   ###
   # API Extension Services
   ###
   loris:
     build: ../../services/loris
+    volumes:
+      - ../../services/loris/loris2.conf:/opt/loris/etc/loris2.conf
+      - ../../services/loris/start.py:/opt/loris/loris/start.py
     depends_on:
       - fcrepo
 

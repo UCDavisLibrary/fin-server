@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@ucd-lib/fin-node-api": "^0.4.0",
-    "@ucd-lib/fin-node-utils": "^0.1.5",
+    "@ucd-lib/fin-node-utils": "^0.1.8",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cas-authentication": "0.0.8",
@@ -22,6 +22,7 @@
     "http-proxy": "^1.16.2",
     "jsonld": "^0.4.12",
     "jsonwebtoken": "^8.1.0",
+    "md5": "^2.2.1",
     "redis": "^2.8.0",
     "stompit": "^0.25.0",
     "yargs": "^9.0.1"

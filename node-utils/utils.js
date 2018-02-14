@@ -9,7 +9,7 @@ const {URL} = require('url');
  * 
  * @returns {String}
  */
-getRootDomain(url) {
+function getRootDomain(url) {
   if( !url.match(/^http/) ) url = 'http://'+url;
   url = new URL(url);
   let parts = url.hostname.replace(/\.$/, '').split('.');
