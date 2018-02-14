@@ -8,6 +8,7 @@ const {logger, config, jwt} = require('@ucd-lib/fin-node-utils');
 
 const authModel = require('./auth');
 const serviceModel = require('./services');
+const cache = require('./cache');
 
 const Logger = logger();
 var proxy = httpProxy.createProxyServer({
@@ -22,7 +23,7 @@ const AUTHENTICATION_SERVICE_CHAR = '/auth'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 const IS_AUTHENTICATION_SERVICE_URL = new RegExp('^'+AUTHENTICATION_SERVICE_CHAR, 'i');
 
-// cors headers we attach to every response....
+// cors headers we attach to registered origins
 const CORS_HEADERS = {
   ['Access-Control-Allow-Methods'] : 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
   ['Access-Control-Expose-Headers'] : 'content-type, link, content-disposition, content-length, pragma, expires, cache-control',
@@ -43,14 +44,13 @@ class ProxyModel {
     // and not a service request, append the service link headers.
     proxy.on('proxyRes', this._onProxyResponse.bind(this));
 
+    // set the allowed origins for CORS requests provided by env variable
     this.allowOrigins = {};
     config.server.allowOrigins.forEach(origin => {
       try {
         this.allowOrigins[serviceModel.getRootDomain(origin)] = true;
       } catch(e) {}
     });
-  
-    
   }
 
   /**
@@ -62,9 +62,11 @@ class ProxyModel {
   bind(app) {
     // handle ALL /fcrepo requests
     app.use('/fcrepo', this._fcRepoPathResolver.bind(this));
+    
     // handle AuthenticationService requests. Do not handle Fin auth endpoints
     // of /auth/token /auth/user /auth/logout /auth/mint, these are reserved
     app.use(/^\/auth\/(?!token|user|logout|mint).*/i, this._proxyAuthenticationService.bind(this));
+    
     // send all requests that are not /fcrepo or /auth to the ClientService
     // fcrepo is really handled above but reads a little better to add... :/
     app.use(/^\/(?!auth|fcrepo).*/, this._proxyClientService.bind(this));
@@ -79,7 +81,6 @@ class ProxyModel {
    * @param {Object} res express response
    */
   async _onProxyResponse(proxyRes, req, res) {
-    debugger;
     if( req.timer ) {
       Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
     }
@@ -98,7 +99,7 @@ class ProxyModel {
     // x-fin-authorized-agent header, hijack response and finish Fin auth flow
     if( serviceModel.isAuthenticationServiceRequest(req) ) {
       if( proxyRes.headers['x-fin-authorized-agent'] ) {
-        await this._handleAuthenticationSuccess(req, proxyRes);
+        this._handleAuthenticationSuccess(req, proxyRes);
       }
       return;
     }
@@ -111,6 +112,14 @@ class ProxyModel {
     
     // we had a true fcrepo request, append appropriate fin service link headers
     this._appendServiceLinkHeaders(req, proxyRes);
+
+    // set the cache
+    if( cache.isCacheableRequest(req) ) {
+      cache.set(req.originalUrl, proxyRes, req);
+    }
+
+    // finally set the cache header (either miss or ignored)
+    proxyRes.headers[cache.HEADER] = req.cacheStatus;
   }
 
   /**
@@ -149,7 +158,7 @@ class ProxyModel {
    * @description start method for handling fcrepo proxy requests
    * 
    * @param {Object} req express request object 
-   * @param {Object} res http-proxy response object
+   * @param {Object} res express response object
    */
   async _fcRepoPathResolver(req, res) {
     req.timer = {
@@ -179,9 +188,41 @@ class ProxyModel {
    * @description main method for handling /fcrepo proxy requests
    * 
    * @param {Object} req express request object 
-   * @param {Object} res http-proxy response object
+   * @param {Object} res express response object
    */
   async _fcrepoProxyRequest(req, res) {
+
+    // see if a cache hit
+    if( cache.isCacheableRequest(req) ) {
+    
+      // first preflight a head request for headers so we can check out and cache
+      let info = await this._getContainerAccessAndInfo(req.originalUrl, req);
+      if( !info.access ) {
+        return res.status(403).send('Unauthorized');
+      }
+      
+      // we don't cache binary resources
+      if( info.binary ) {
+        req.cacheStatus = 'ignored';
+      } else {
+        // see if there is something in the cache
+        let cachedRes = await cache.get(req.originalUrl, info.headers.etag, req);
+       
+        // cache hit, set headers, body, return.  we are done.
+        if( cachedRes ) {
+          for( var key in cachedRes.headers ) {
+            res.set(key, cachedRes.headers[key]);
+          }
+          res.set(cache.HEADER, 'hit');
+          return res.send(cachedRes.body);
+
+        // cache miss, store status so we can set header
+        } else {
+          req.cacheStatus = 'miss';
+        }
+      }
+    }
+
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
     Logger.debug(`Fcrepo proxy request: ${url}`);
 
@@ -231,9 +272,6 @@ class ProxyModel {
    * @param {Object} res http-proxy response
    */
   async _handleAuthenticationSuccess(req, res) {
-    // hijack response, setting redirect to desired location
-    res.statusCode = 302;
-
     // mint token
     let username = res.headers['x-fin-authorized-agent'];
     let isAdmin = authModel.isAdmin(username);
@@ -245,6 +283,8 @@ class ProxyModel {
       url += '?jwt='+token+'&username='+username;
     }
     
+    // hijack response, setting redirect to desired location
+    res.statusCode = 302;
     res.headers['location'] = url;
     res.headers['set-cookie'] = config.jwt.cookieName+'='+token+'; Path=/; HttpOnly';
   }
@@ -417,12 +457,13 @@ class ProxyModel {
       return {
         access: true, 
         binary: true,
-        links 
+        links, 
+        headers: response.headers
       };
     }
 
     // we are not a binary container
-    return {access: true, binary: false, links};
+    return {access: true, binary: false, links, headers: response.headers};
   }
 
   /**

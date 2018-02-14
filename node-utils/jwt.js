@@ -18,7 +18,7 @@ class JwtUtils {
     let token = req.cookies[config.jwt.cookieName];
     if( token ) return token;
     
-    token = req.get('Authizoration');
+    token = req.get('Authorization');
     if( token ) return token.replace(/^Bearer /, '');
 
     return null;

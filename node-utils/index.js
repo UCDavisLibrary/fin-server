@@ -3,5 +3,6 @@ module.exports = {
   jsonld : require('./jsonld'),
   jwt : require('./jwt'),
   logger : require('./logger'),
-  MessageServer : require('./MessageServer')
+  MessageServer : require('./MessageServer'),
+  utils : utils
 }

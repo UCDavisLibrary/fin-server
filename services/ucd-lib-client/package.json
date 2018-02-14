@@ -16,7 +16,7 @@
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",
   "dependencies": {
-    "@ucd-lib/fin-node-utils": "^0.1.2",
+    "@ucd-lib/fin-node-utils": "^0.1.5",
     "@ucd-lib/spa-router-middleware": "0.0.1",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
