@@ -26,7 +26,7 @@ JWT_ISSUER=[your org here]
 FIN_URL=[your dams url here]
 ```
 
-And example FOR TESTING ONLY could be:
+An example FOR TESTING ONLY could be:
 
 ```env
 JWT_SECRET=testing

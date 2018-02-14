@@ -1,13 +1,50 @@
-var bcrypt = require('bcrypt');
-var {config, jwt} = require('@ucd-lib/fin-node-utils');
-var redis = require('../lib/redisClient');
+const bcrypt = require('bcrypt');
+const {config, jwt, logger} = require('@ucd-lib/fin-node-utils');
+const redis = require('../lib/redisClient');
 const crypto = require('crypto');
+const Logger = logger();
 
 class AuthModel {
 
   constructor() {
     this.ADMIN_LIST_KEY = 'admins';
     this.REFRESH_TOKEN_PREFIX = 'rtoken:';
+
+    redis.config('SET', 'save', '60 1 30 10');
+
+    this.admins = [];
+    this._initAdminSync();
+  }
+
+  /**
+   * @method _initAdminSync
+   * @description this method keeps the admin list in sync with redis.  Background, the AuthenticationService
+   * needs to know if a given agent is a admin.  This WAS stored in Redis, but the http-proxy doesn't let
+   * you do async work when handling to proxy response.  So to get around that we are keeping the admin
+   * list in memory.
+   */
+  async _initAdminSync() {
+    // make sure redis is setup to listen to keyspace events
+    // https://redis.io/topics/notifications
+    redis.config('SET', 'notify-keyspace-events', 'Kg$s');
+
+    // load our current list of admins into memory
+    await this.loadAdmins();
+
+    // clone our current redis connection to setup a listener
+    redis.duplicate((err, listenerClient) => {
+      if( err ) throw new Error('Failed to setup redis sync for admin list');
+
+      // handle updates to the admin key which we have subscribed to below
+      listenerClient.on('pmessage', async (channel, message) => {
+        await this.loadAdmins();
+      });
+
+      // listen for updates to the admin key
+      listenerClient.psubscribe(`__keyspace@*__:${this.ADMIN_LIST_KEY}`, function (err) {
+        if( err ) throw new Error('Failed to setup redis sync for admin list');
+      });
+    });    
   }
 
   /**
@@ -54,8 +91,9 @@ class AuthModel {
    * @returns {Array}
    */
   async loadAdmins() {
-    var admins = await redis.get(this.ADMIN_LIST_KEY);
-    return admins ? JSON.parse(admins) : [];
+    let admins = await redis.get(this.ADMIN_LIST_KEY);
+    this.admins = admins ? JSON.parse(admins) : [];
+    return this.admins;
   }
 
   /**
@@ -103,10 +141,8 @@ class AuthModel {
    * 
    * @returns {Boolean}
    */
-  async isAdmin(username) {
-    var admins = await this.loadAdmins();
-
-    return admins.indexOf(username) > -1;
+  isAdmin(username) {
+    return this.admins.indexOf(username) > -1;
   }
 }
 

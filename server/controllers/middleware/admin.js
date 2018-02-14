@@ -8,13 +8,13 @@ const auth = require('../../models/auth');
  * @param {*} res 
  * @param {*} next 
  */
-module.exports = async (req, res, next) => {
+module.exports = (req, res, next) => {
   let token = jwt.getJwtFromRequest(req);
 
   if( token ) {
     let user = jwt.validate(token);
     if( user ) {
-      let isAdmin = await auth.isAdmin(user.username);
+      let isAdmin = auth.isAdmin(user.username);
       if( isAdmin) return next();
     }
   }

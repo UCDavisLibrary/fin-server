@@ -1,6 +1,6 @@
 {
   "name": "fin-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@ucd-lib/fin-node-api": "^0.4.0",
-    "@ucd-lib/fin-node-utils": "^0.1.2",
+    "@ucd-lib/fin-node-utils": "^0.1.4",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cas-authentication": "0.0.8",

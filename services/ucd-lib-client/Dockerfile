@@ -7,6 +7,6 @@ RUN apt-get clean
 
 COPY ./ /app
 
-RUN cd /app && npm install 
+RUN cd /app && npm install --production
 
 CMD node app

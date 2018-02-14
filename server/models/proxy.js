@@ -42,6 +42,15 @@ class ProxyModel {
     // listen for proxy responses, if the request is not a /fcrepo request
     // and not a service request, append the service link headers.
     proxy.on('proxyRes', this._onProxyResponse.bind(this));
+
+    this.allowOrigins = {};
+    config.server.allowOrigins.forEach(origin => {
+      try {
+        this.allowOrigins[serviceModel.getRootDomain(origin)] = true;
+      } catch(e) {}
+    });
+  
+    
   }
 
   /**
@@ -69,12 +78,13 @@ class ProxyModel {
    * @param {Object} req express request
    * @param {Object} res express response
    */
-  _onProxyResponse(proxyRes, req, res) {
+  async _onProxyResponse(proxyRes, req, res) {
+    debugger;
     if( req.timer ) {
       Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
     }
 
-    // for now, open everything
+    // set cors headers if in FIN_ALLOW_ORIGINS env variable or is a registered ExternalService domain
     this._setCors(req, proxyRes);
 
     // turn off cache for browser support
@@ -88,7 +98,7 @@ class ProxyModel {
     // x-fin-authorized-agent header, hijack response and finish Fin auth flow
     if( serviceModel.isAuthenticationServiceRequest(req) ) {
       if( proxyRes.headers['x-fin-authorized-agent'] ) {
-        this._handleAuthenticationSuccess(req, proxyRes);
+        await this._handleAuthenticationSuccess(req, proxyRes);
       }
       return;
     }
@@ -111,11 +121,16 @@ class ProxyModel {
    * @param {Object} res express response
    */
   _setCors(req, res) {
-    let origin = '*';
-    if( req.headers.referer ) {
-      origin = new URL(req.headers.referer).origin;
+    if( !req.headers.referer ) return;
+
+    // first check if request is registered domain
+    let rootDomain = serviceModel.getRootDomain(req.headers.referer);
+    if( !serviceModel.authServiceDomains[rootDomain] && !this.allowOrigins[rootDomain] ) {
+      Logger.warn('Request with referer set to unknown domain: '+rootDomain+' / '+req.headers.referer);
+      return;
     }
 
+    let origin = new URL(req.headers.referer).origin;
     if( res.set ) {
       for( var key in CORS_HEADERS ) {
         res.set(key, CORS_HEADERS[key]);
@@ -145,7 +160,7 @@ class ProxyModel {
     // trying to sniff out browser preflight options request for cors
     // fcrepo sees this as a normal options request and doesn't handle correctly
     if( req.method === 'OPTIONS' && req.headers['access-control-request-headers'] ) {
-      this.setCors(req, res);
+      this._setCors(req, res);
       return res.status(200).send();
     }
 
@@ -215,19 +230,21 @@ class ProxyModel {
    * @param {Object} req Express request
    * @param {Object} res http-proxy response
    */
-  _handleAuthenticationSuccess(req, res) {
+  async _handleAuthenticationSuccess(req, res) {
+    // hijack response, setting redirect to desired location
+    res.statusCode = 302;
+
     // mint token
-    let username = res.headers['x-fin-authorized-agent']
-    let token = jwt.create(username, authModel.isAdmin(username));
+    let username = res.headers['x-fin-authorized-agent'];
+    let isAdmin = authModel.isAdmin(username);
+    let token = jwt.create(username, isAdmin);
 
     // set redirect url
     let url = req.query.cliRedirectUrl || req.query.redirectUrl || '/';
     if( req.query.provideJwt === 'true') {
-      url += '?jwt='+token+'&username='+payload.username;
+      url += '?jwt='+token+'&username='+username;
     }
-
-    // hijack response, setting redirect to desired location
-    res.statusCode = 302;
+    
     res.headers['location'] = url;
     res.headers['set-cookie'] = config.jwt.cookieName+'='+token+'; Path=/; HttpOnly';
   }

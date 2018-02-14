@@ -32,7 +32,7 @@ router.post('/token/verify', async (req, res) => {
   try {
     let valid = await model.refreshTokenVerification(username, token);
     if( valid ) {
-      let isAdmin = await model.isAdmin(username);
+      let isAdmin = model.isAdmin(username);
       res.json({
         success : true,
         jwt : jwt.create(username, isAdmin)

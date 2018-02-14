@@ -13,8 +13,9 @@ module.exports = {
   server : {
     url : process.env.FIN_URL || 'http://localhost:3000',
     loglevel : process.env.FIN_LOG_LEVEL || 'info',
-    cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme',
-    cookieMaxAge : process.env.SERVER_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 86400 * 30)
+    cookieSecret : process.env.FIN_COOKIE_SECRET || 'changeme',
+    cookieMaxAge : process.env.FIN_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 86400 * 30),
+    allowOrigins : (process.env.FIN_ALLOW_ORIGINS || '').split(',').filter(domain => domain !== '').map(domain => domain.trim())
   },
 
   defaultServices : defaultServices,

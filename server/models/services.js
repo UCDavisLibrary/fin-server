@@ -20,8 +20,13 @@ class ServiceModel {
 
   constructor() {
     this.reloadTimer = -1;
+    
     this.services = {};
     this.SERVICE_ROOT = api.getBaseUrl({path : api.service.ROOT});
+
+    // list of auth service domain names
+    this.authServiceDomains = {};
+
     this.init();
   }
 
@@ -71,10 +76,17 @@ class ServiceModel {
    */
   async reload() {
     let list = await api.service.list();
+    this.services = {};
+    this.authServiceDomains = {};
+    
     list.forEach(service => {
       this.services[service.id] = new ServiceDefinition(service)
+
       if( service.type === api.service.TYPES.CLIENT ) {
         this.clientService = this.services[service.id];
+      } else if( service.type === api.service.TYPES.EXTERNAL ) {
+        let domain = this.getRootDomain(service.urlTemplate);
+        this.authServiceDomains[domain] = new RegExp(domain+'$', 'i');
       }
     });
   }
@@ -217,6 +229,22 @@ class ServiceModel {
     let container = JSON.parse(response.body);
     return await jsonld.frame(container, frame);
   }
+
+  /**
+   * @method getRootDomain
+   * @description given a url string, return the root domain name. So for
+   * http://sub.host.com/foo would return host.com.
+   * 
+   * @param {String} url
+   * 
+   * @returns {String}
+   */
+  getRootDomain(url) {
+    if( !url.match(/^http/) ) url = 'http://'+url;
+    url = new URL(url);
+    let parts = url.hostname.replace(/\.$/, '').split('.');
+    return parts.splice(parts.length-2, parts.length-1).join('.').toLowerCase();
+  }
   
   /**
    * @method _onFcrepoEvent
@@ -231,6 +259,7 @@ class ServiceModel {
     let id = event.payload.headers[ACTIVE_MQ_HEADER_ID];
 
     // this is a service update, reload services
+    console.log(id, '/'+api.service.ROOT, id.indexOf('/'+api.service.ROOT));
     if( id.indexOf('/'+api.service.ROOT) === 0 ) {
       this.bufferedReload();
       return;
@@ -344,6 +373,11 @@ class ServiceDefinition {
     return this._frame;
   }
 
+  /**
+   * @method
+   * 
+   * @param {*} params 
+   */
   renderUrlTemplate(params) {
     let url = this.urlTemplate;
     for( var key in params ) {
