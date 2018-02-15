@@ -8,6 +8,7 @@ const {config} = require('@ucd-lib/fin-node-utils');
 class CacheModel {
 
   constructor() {
+    this.EXPIRE_TIME = config.server.cacheExpireTime || 60*60*12;
     this.PREFIX = 'cache:';
     this.HEADER = 'X-FIN-CACHE';
   }
@@ -44,7 +45,7 @@ class CacheModel {
       });
       
       await redis.set(key, value);
-      await redis.expire(key, config.server.cacheExpireTime || 60*60*12);
+      await redis.expire(key, this.EXPIRE_TIME);
     });
   }
 
@@ -61,7 +62,12 @@ class CacheModel {
     let key = this.PREFIX + path + (resHeaders.etag || '') + headerHash;
 
     let value = await redis.get(key);
-    if( value ) value = JSON.parse(value);
+    if( value ) {
+      value = JSON.parse(value);
+      
+      // update expire time on cache hit
+      redis.expire(key, this.EXPIRE_TIME);
+    }
     return value;
   }
 
