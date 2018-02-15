@@ -3,9 +3,12 @@ const model = require('./model');
 const {logger, config, jwt} = require('@ucd-lib/fin-node-utils');
 const Logger = logger();
 
+const AGENT_DOMAIN = process.env.BASIC_AUTH_AGENT_DOMAIN || 'local';
+
 router.post('/login', async (req, res) => {
   login(req.body.username, req.body.password, res);
 });
+
 router.get('/login', async (req, res) => {
   login(req.query.username, req.query.password, res);
 });
@@ -56,7 +59,7 @@ async function login(username, password, res) {
   }
 
   Logger.info('Basic Auth Service: login success: '+username);
-  res.set('X-FIN-AUTHORIZED-AGENT', username)
+  res.set('X-FIN-AUTHORIZED-AGENT', username+'@'+AGENT_DOMAIN)
      .json({success: true, username: username});
 }
 

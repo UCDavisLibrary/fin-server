@@ -9,7 +9,7 @@ class CacheModel {
 
   constructor() {
     this.PREFIX = 'cache:';
-    this.HEADER = 'X-CACHE';
+    this.HEADER = 'X-FIN-CACHE';
   }
 
   /**
@@ -44,7 +44,7 @@ class CacheModel {
       });
       
       await redis.set(key, value);
-      await redis.expire(key, config.server.cacheExpireTime || 60*60*24);
+      await redis.expire(key, config.server.cacheExpireTime || 60*60*12);
     });
   }
 
