@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  
+
+  <div class="layout">
+    <div>
+      <h2>Login</h2>
+      <div class="content">
+        <div>Username</div>
+        <div><input id="username" /></div>
+
+        <div style="margin-top: 15px">Password</div>
+        <div><input id="password" type="password" />
+      
+        <div style="text-align: right; font-size: 12px; margin: 5px 0">
+          <div><a href="create.html">Create Account</a></div>
+          <div><a href="reset.html">Forgot Password</a></div>
+        </div>
+
+        <div style="margin-top: 20px"><button id="login">Login</button></div>
+        <div id="msg" class="error"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    function login() {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'login');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      
+      xhr.onerror = function(e) {
+        console.log(e);
+        document.querySelector('#msg').innerHTML = 'Error logging in';
+      }
+
+      xhr.onload = function(response) {
+        response = response.target;
+        if( response.status >= 400 ) {
+          return document.querySelector('#msg').innerHTML = response.responseText;
+        }
+
+        window.location = response.responseURL;
+      }
+      
+      xhr.send(JSON.stringify({
+        username : document.querySelector('#username').value,
+        password : document.querySelector('#password').value,
+      }));
+    }
+    
+    document.querySelector('#login')
+            .addEventListener('click', login);
+    document.querySelector('#password')
+            .addEventListener('keyup', function(e) {
+              if( e.which === 13 ) login();
+            });
+  </script>
+
+</body>
+</html>

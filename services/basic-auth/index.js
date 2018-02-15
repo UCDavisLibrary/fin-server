@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const {logger, jwt, config} = require('@ucd-lib/fin-node-utils');
 const Logger = logger('basic-auth-service');
 const bodyParser = require('body-parser');
@@ -25,6 +26,9 @@ app.use(bodyParser.json());
 
 // register controller
 app.use(require('./controller'));
+
+// serve static assets
+app.use(express.static(path.join(__dirname, 'public')));
 
 // start server
 app.listen(8000, () => {

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Create Account</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  
+
+  <div class="layout">
+    <div>
+      <h2>Create Account</h2>
+      <div class="content">
+        <div>Username</div>
+        <div><input id="username" /></div>
+
+        <div style="margin-top: 15px">Email</div>
+        <div><input id="email" placeholder="Used to reset your password"/></div>
+
+        <div style="margin-top: 15px">Password</div>
+        <div><input id="password" type="password" />
+
+        <div style="margin-top: 15px">Password (verify)</div>
+        <div><input id="passwordRepeat" type="password" />
+
+        <div style="margin-top: 20px"><button id="create">Create</button></div>
+        <div id="msg" class="error"></div>
+
+        <div style="text-align: right; font-size: 12px; margin: 5px 0">
+          <div><a href="login.html">Cancel</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    function create() {
+      var username = document.querySelector('#username').value;
+      var p1 = document.querySelector('#password').value;
+      var p2 = document.querySelector('#passwordRepeat').value;
+      if( p1 !== p2 ) return alert('Your passwords do not match!');
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'user');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      
+      xhr.onerror = function(e) {
+        document.querySelector('#msg').innerHTML = 'Error creating account';
+      }
+
+      xhr.onload = function(response) {
+        response = response.target;
+        if( response.status >= 400 ) {
+          var error = JSON.parse(response.responseText)
+          return document.querySelector('#msg').innerHTML = error.message;
+        }
+
+        alert('User account '+username+' successfully created');
+        window.location.href = 'login';
+      }
+      
+      xhr.send(JSON.stringify({
+        username : username,
+        email : document.querySelector('#email').value,
+        password : p1
+      }));
+    }
+    
+    document.querySelector('#create')
+            .addEventListener('click', create);
+  </script>
+
+</body>
+</html>

@@ -1,5 +1,8 @@
+const express = require('express');
 const router = require('express').Router();
 const model = require('./model');
+const fs = require('fs');
+const path = require('path');
 const {logger, config, jwt} = require('@ucd-lib/fin-node-utils');
 const Logger = logger();
 
@@ -9,20 +12,31 @@ router.post('/login', async (req, res) => {
   login(req.body.username, req.body.password, res);
 });
 
-router.get('/login', async (req, res) => {
-  login(req.query.username, req.query.password, res);
+router.get('/login', (req, res) => {
+  res.set('Content-Type', 'text/html');
+  res.send(loadHtml('login.html'));
 });
 
-router.post('/', requireAdmin, async(req, res) => {
-  if( !req.body.username || !req.body.password ) {
-    return res.status(400).json({error: true, message: 'Username and password required'});
+router.post('/user', async(req, res) => {
+  if( !req.body.username ) {
+    return res.status(400).json({error: true, message: 'Username required'});
+  }
+  if( !req.body.password ) {
+    return res.status(400).json({error: true, message: 'Password required'});
+  }
+  if( !req.body.email ) {
+    return res.status(400).json({error: true, message: 'Email required'});
   }
 
-  let result = await model.createUser(req.body.username, req.body.password);
-  res.send({success: true, username: req.body.username, details: result});
+  try {
+    let result = await model.createUser(req.body.username, req.body.password, req.body.password);
+    res.send({success: true, username: req.body.username, details: result});
+  } catch(e) {
+    res.status(400).send({error: true, message: e.message});
+  }
 });
 
-router.delete('/:username', requireAdmin, async(req, res) => {
+router.delete('/user/:username', requireAdmin, async(req, res) => {
   if( !req.param.username) {
     return res.status(400).json({error: true, message: 'Username required'});
   }
@@ -31,12 +45,12 @@ router.delete('/:username', requireAdmin, async(req, res) => {
   res.send({success: true, username: req.param.username, details: result});
 });
 
-router.get('/', requireAdmin, async(req, res) => {
+router.get('/users', requireAdmin, async(req, res) => {
   let result = await model.getUsers();
   res.json(result);
 });
 
-router.get('/:username', requireAdmin, async(req, res) => {
+router.get('/user/:username', requireAdmin, async(req, res) => {
   if( !req.param.username) {
     return res.status(400).json({error: true, message: 'Username required'});
   }
@@ -61,6 +75,10 @@ async function login(username, password, res) {
   Logger.info('Basic Auth Service: login success: '+username);
   res.set('X-FIN-AUTHORIZED-AGENT', username+'@'+AGENT_DOMAIN)
      .json({success: true, username: username});
+}
+
+function loadHtml(file) {
+  return fs.readFileSync(path.join(__dirname, 'public', file), 'utf-8');
 }
 
 /**

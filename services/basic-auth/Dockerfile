@@ -6,6 +6,7 @@ ADD controller.js /service/
 ADD model.js /service/
 ADD cli.js /service/
 ADD lib /service/lib
+ADD public /service/public
 ADD package.json /service/
 ADD package-lock.json /service/
 

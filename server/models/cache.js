@@ -71,12 +71,31 @@ class CacheModel {
     return value;
   }
 
+  /**
+   * @method isCacheableRequest
+   * @description given a express request, see if the request is possibly cacheable.
+   * As much as we can anyway.  We still don't know container type, that will require
+   * a HEAD request to fedora.
+   * 
+   * @param {Object} req express request 
+   */
   isCacheableRequest(req) {
     if( req.method !== 'GET' ) return false;
     if( req.originalUrl.match(/.*fcr:assets.*/) ) return false;
     return true;
   }
 
+  /**
+   * @method _createHeadersMD5
+   * @description create the md5 of the accept, prefer and link headers.  this is used
+   * in creating the redis cache key
+   * 
+   * @param {String} accept
+   * @param {String} prefer
+   * @param {String} link
+   * 
+   * @returns {String}
+   */
   _createHeadersMD5(accept='', prefer='', link='') {
     return md5(accept.trim()+prefer.trim()+link.trim());
   }

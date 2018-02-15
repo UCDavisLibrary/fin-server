@@ -37,16 +37,20 @@ class AuthModel {
    * @description create a user account
    * 
    * @param {String} username 
-   * @param {Password} password
+   * @param {String} email used to reset password 
+   * @param {String} password
    * 
    * @returns {Promise} 
    */
-  async createUser(username, password) {
+  async createUser(username='', email='', password='') {
+    if( username.length < 3 ) throw new Error('Username must be at least 3 characters');
+    if( password.length < 6 ) throw new Error('Username must be at least 6 characters');
+
     var userinfo = await redis.get(username);
     if( userinfo ) throw new Error('User already exists');
 
     password = await bcrypt.hash(password, this.saltRounds);
-    var userinfo = JSON.stringify({username, password});
+    var userinfo = JSON.stringify({username, email, password});
     await redis.set(this.USER_KEY_PREFIX+username, userinfo);
   }
 
@@ -56,6 +60,7 @@ class AuthModel {
    * 
    * @param {Object} userinfo
    * @param {String} userinfo.username 
+   * @param {String} userinfo.email 
    * @param {String} userinfo.password
    * @param {Boolean} merge merge or replace with new information
    * 
