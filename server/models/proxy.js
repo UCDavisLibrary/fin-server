@@ -64,8 +64,8 @@ class ProxyModel {
     app.use('/fcrepo', this._fcRepoPathResolver.bind(this));
     
     // handle AuthenticationService requests. Do not handle Fin auth endpoints
-    // of /auth/token /auth/user /auth/logout /auth/mint, these are reserved
-    app.use(/^\/auth\/(?!token|user|logout|mint).*/i, this._proxyAuthenticationService.bind(this));
+    // of /auth/token /auth/user /auth/logout /auth/mint /auth/service, these are reserved
+    app.use(/^\/auth\/(?!token|user|logout|mint|service).*/i, this._proxyAuthenticationService.bind(this));
     
     // send all requests that are not /fcrepo or /auth to the ClientService
     // fcrepo is really handled above but reads a little better to add... :/
@@ -306,9 +306,9 @@ class ProxyModel {
    * @description handles proxy requests for FrameService, ProxyService and ExternalSerivce
    * requests. First checks requesting agent has access via a head request.
    * 
-   * @param {*} svcReq - Service request object, parsed above
-   * @param {*} expReq - Express request object
-   * @param {*} res - Express response object
+   * @param {Object} svcReq - Service request object, parsed above
+   * @param {Object} expReq - Express request object
+   * @param {Object} res - Express response object
    */
   async _serviceProxyRequest(svcReq, expReq, res) {
     // check this is even a valid service name
@@ -352,13 +352,20 @@ class ProxyModel {
     
     // run the proxy service
     } else if( service.type === api.service.TYPES.PROXY ) {
+      
       let url = service.renderUrlTemplate({fcPath : svcReq.fcPath, svcPath: svcReq.svcPath});
-      proxy.web(expReq, res, {target : url});
+      proxy.web(expReq, res, {
+        target : url,
+        headers : {
+          [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(service.id)
+        }
+      });
 
     // run the external service
     } else if( service.type === api.service.TYPES.EXTERNAL ) {
       let token = jwt.getJwtFromRequest(expReq);
       let url = service.renderUrlTemplate({fcUrl: querystring.escape(svcReq.fcUrl), token});
+      res.set(serviceModel.SIGNATURE_HEADER, serviceModel.createServiceSignature(service.id));
       res.redirect(url);
 
     // unknown service type
@@ -406,7 +413,8 @@ class ProxyModel {
       target : service.url+path,
       headers : {
         'X-FIN-ORIGINAL-PATH' : req.originalUrl,
-        'X-FIN-SERVICE-PATH' : AUTHENTICATION_SERVICE_CHAR+'/'+service.id
+        'X-FIN-SERVICE-PATH' : AUTHENTICATION_SERVICE_CHAR+'/'+service.id,
+        [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(service.id)
       },
       ignorePath : true
     });
@@ -426,7 +434,15 @@ class ProxyModel {
     }
 
     try {
-      proxy.web(req, res, {target : serviceModel.clientService.url+req.originalUrl});
+      proxy.web(
+        req, res, 
+        {
+          target : serviceModel.clientService.url+req.originalUrl,
+          headers : {
+            [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(service.id)
+          }
+        }
+      );
     } catch(e) {
       Logger.error('Failed to proxy to ClientService: '+serviceModel.clientService.id, e);
       res.status(400);

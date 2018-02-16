@@ -5,6 +5,7 @@ const {URL} = require('url');
 const activeMqProxy = require('../lib/activeMqProxy');
 const jsonld = require('jsonld');
 const util = require('util');
+const redis = require('../lib/redisClient');
 const Logger = logger();
 const jwt = require('jsonwebtoken');
 
@@ -15,6 +16,7 @@ const AUTHENTICATION_SERVICE_CHAR = '^/auth'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 const IS_AUTHENTICATION_SERVICE_URL = new RegExp(AUTHENTICATION_SERVICE_CHAR, 'i');
 const ACTIVE_MQ_HEADER_ID = 'org.fcrepo.jms.identifier';
+const SECRET_PREFIX = 'service-secret:';
 
 class ServiceModel {
 
@@ -22,6 +24,9 @@ class ServiceModel {
     this.reloadTimer = -1;
     
     this.services = {};
+    this.secrets = {};
+    this.SIGNATURE_HEADER = 'X-FIN-SERVICE-SIGNATURE';
+
     this.SERVICE_ROOT = api.getBaseUrl({path : api.service.ROOT});
 
     // list of auth service domain names
@@ -59,9 +64,31 @@ class ServiceModel {
       }
 
       await api.service.create(service);
+
+      if( service.secret ) {
+        await this.setServiceSecret(service.id, service.secret);
+      }
     }
 
-    // reload all service definitions
+    // clone our current redis connection to setup a listener
+    redis.duplicate((err, listenerClient) => {
+      if( err ) throw new Error('Failed to setup redis sync for service secrets');
+
+      // handle updates to the admin key which we have subscribed to below
+      listenerClient.on('pmessage', async (channel, message) => {
+        await this.reloadSecrets();
+      });
+
+      // listen for updates to the admin key
+      listenerClient.psubscribe(`__keyspace@*__:${SECRET_PREFIX}*`, function (err) {
+        if( err ) throw new Error('Failed to setup redis sync for admin list');
+      });
+    });  
+
+    // reload all service secrets from redis
+    await this.reloadSecrets();
+
+    // reload all service definitions from fedora
     await this.reload();
 
     // listen for service definition updates
@@ -72,15 +99,30 @@ class ServiceModel {
    * @method reload
    * @description reload all services from root service container
    * 
+   * @param {String} testingPath for testing only.  When a none root .services container is
+   * updated, it will be included in the known services.  THIS IS FOR TESTING ONLY.
+   * 
    * @return {Promise}
    */
-  async reload() {
+  async reload(testingPath) {
     let list = await api.service.list();
-    this.services = {};
+
+    // for testing only.  load the testing path services as well.
+    // these will be overridden when a testing path is not provided
+    if( testingPath ) {
+      api.service.testing();
+      try {
+        let tlist = await api.service.list();
+        list = list.concat(tlist);
+      } catch(e) {}
+      api.service.testing(false);
+    }
+
+    let services = {};
     this.authServiceDomains = {};
     
     list.forEach(service => {
-      this.services[service.id] = new ServiceDefinition(service)
+      services[service.id] = new ServiceDefinition(service)
 
       if( service.type === api.service.TYPES.CLIENT ) {
         this.clientService = this.services[service.id];
@@ -89,18 +131,24 @@ class ServiceModel {
         this.authServiceDomains[domain] = new RegExp(domain+'$', 'i');
       }
     });
+
+    Logger.info('Services reloaded', Object.keys(services));
+    this.services = services;
   }
 
   /**
    * @method bufferedReload
    * @description just like reload but buffers request for 1 sec
+   * 
+   * @param {String} testingPath for testing only.  When a none root .services container is
+   * updated, it will be included in the known services.  THIS IS FOR TESTING ONLY.
    */
-  bufferedReload() {
+  bufferedReload(testingPath) {
     if( this.reloadTimer !== -1 ) clearTimeout(this.reloadTimer);
     this.reloadTimer = setTimeout(() => {
       this.reloadTimer = -1;
-      this.reload();
-    }, 1000);
+      this.reload(testingPath);
+    }, 300);
   }
 
   /**
@@ -259,8 +307,10 @@ class ServiceModel {
     let id = event.payload.headers[ACTIVE_MQ_HEADER_ID];
 
     // this is a service update, reload services
-    if( id.indexOf('/'+api.service.ROOT) === 0 ) {
-      this.bufferedReload();
+    let serviceIndex = id.indexOf('/'+api.service.DEFAULT_ROOT);
+    let testingServiceIndex = id.indexOf('/integration-test/'+api.service.DEFAULT_ROOT);
+    if( serviceIndex === 0 || testingServiceIndex === 0 ) {
+      this.bufferedReload(testingServiceIndex === 0 ? id : null);
       return;
     }
 
@@ -288,13 +338,11 @@ class ServiceModel {
   _sendHttpNotification(name, url, event, secret) {
     Logger.debug(`Sending HTTP webhook notifiction to service ${name} ${url}`);
 
-    let token = jwt.sign({issuer: config.jwt.issuer, type: 'proxy-service'}, secret || config.jwt.secret);
-
     request({
       type : 'POST',
       uri : url,
       headers : {
-        'Authorization' : `Bearer ${token}`,
+        [this.sSIGNATURE_HEADER] : this.createServiceSignature(name),
         'Content-Type': 'application/json'
       },
       body : JSON.stringify(event)
@@ -305,6 +353,91 @@ class ServiceModel {
         Logger.error(`Failed to send HTTP notification to service ${name} ${url}`, response.statusCode, response.body);
       }
     });
+  }
+
+  /**
+   * @method reloadSecrets
+   * @description reload service secrets from redis
+   */
+  async reloadSecrets() {
+    let secrets = {};
+
+    let keys = await redis.keys(SECRET_PREFIX+'*');
+    for( let i = 0; i < keys.length; i++ ) {
+      let name = keys[i].replace(SECRET_PREFIX, '');
+      let secret = await redis.get(keys[i]);
+      secrets[name] = secret;
+    }
+
+    this.secrets = secrets;
+  }
+
+  /**
+   * @method setServiceSecret
+   * @description store a secret for a service
+   * 
+   * @param {String} id service id
+   * @param {String} secret service secret
+   * 
+   * @returns {Promise}
+   */
+  setServiceSecret(id, secret) {
+    if( !id ) throw Error('Service id required');
+    this.secrets[id] = secret;
+    return redis.set(SECRET_PREFIX+id, secret);
+  }
+  
+  /**
+   * @method deleteServiceSecret
+   * @description delete a secret for a service
+   * 
+   * @param {String} id service id
+   * 
+   * @returns {Promise}
+   */
+  deleteServiceSecret(id) {
+    if( !id ) throw Error('Service id required');
+    if( this.secrets[id] ) delete this.secrets[id];
+    return redis.del(SECRET_PREFIX+id);
+  }
+
+  /**
+   * @method createServiceSignature
+   * @description create a signature (jwt token) for a service with the
+   * service name, type and encrypted with either the provided service 
+   * secret or the jwt
+   * 
+   * @param {String} id service id
+   * @param {Object} req (optional) express request.  will set header on
+   * request if provided
+   * 
+   * @returns {String} jwt token for signature
+   */
+  createServiceSignature(id, req) {
+    let service = this.services[id];
+    if( !service ) {
+      throw new Error('Unable to create signature for unknown service: '+id);
+    }
+
+    let secret = this.secrets[id];
+
+    let signature = jwt.sign({
+        service : id,
+        type: service.type,
+        signer : secret ? id : 'fin'
+      }, 
+      secret || config.jwt.secret,
+      {
+        issuer: config.jwt.issuer,
+        expiresIn: 60*60
+      }
+    );
+
+    if( req ) {
+      req.set(this.SIGNATURE_HEADER, signature);
+    }
+
+    return signature;
   }
 
   /**

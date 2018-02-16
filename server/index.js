@@ -70,6 +70,8 @@ proxy.bind(app);
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json req body
 app.use(bodyParser.json());
+// parsetext/plain req body, default
+app.use(bodyParser.text({type: (req) => true}));
 // register auth controller
 app.use('/auth', require('./controllers/auth'));
 

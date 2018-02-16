@@ -13,9 +13,8 @@ module.exports = (req, res, next) => {
 
   if( token ) {
     let user = jwt.validate(token);
-    if( user ) {
-      let isAdmin = auth.isAdmin(user.username);
-      if( isAdmin) return next();
+    if( user && user.admin ) {
+      return next();
     }
   }
 
