@@ -7,7 +7,7 @@
 
 ## Demo
 
-A demo for using Fin can be found in [docker/fin-demo](docker/fin-demo/README.md).  Start here to get a good feel for what Fin is and how it's put to gether.  Think of it as quick start.
+A demo for using Fin can be found in [docker/fin-demo](docker/fin-demo/README.md).  Start here to get a good feel for what Fin is and how it's put together.  Think of the demo as a quick start guide.
 
 ## Documentation
 

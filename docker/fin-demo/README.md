@@ -1,6 +1,6 @@
 # FIN Demo
 
-This directory contains a demo DAMS built on the docker hub deployed fin containers.
+This directory contains a demo DAMS built on the docker hub deployed Fin containers.
 The demo is the UC Davis Library DAMS which contains the following services/containers.  
 
 *Note: All files required to run this demo are contained within this `/docker/fin-demo` directory.
@@ -53,7 +53,9 @@ Finally, start application with the following command:
 docker-compose up
 ```
 
-Directions for adding admin users can be found in the main [README](../../README.md) for this repo
+Now visit `http://localhost:3000` in your browser.
+
+Directions for adding admin users can be found in the [main docs](../../docs/README.md) for this repo
 
 ## Example Data
 
