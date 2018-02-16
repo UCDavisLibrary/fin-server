@@ -342,7 +342,7 @@ class ServiceModel {
       type : 'POST',
       uri : url,
       headers : {
-        [this.sSIGNATURE_HEADER] : this.createServiceSignature(name),
+        [this.SIGNATURE_HEADER] : this.createServiceSignature(name),
         'Content-Type': 'application/json'
       },
       body : JSON.stringify(event)
