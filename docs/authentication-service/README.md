@@ -25,3 +25,23 @@ Every HTTP request proxied to the AuthenticationService will have two headers:
 
  - **X-FIN-ORIGINAL-PATH**: The original path called to the fin server.  For the login example above this would be `/auth/foo/login`
  - **X-FIN-SERVICE-PATH**: The root service path for the authentication service.  For the example above this would be `/auth/foo`
+
+## Registration via CLI
+
+Example using the cas from the demo
+
+```bash
+$ fin service create \
+  --title "UCD Library CAS" \
+  --description "UCD CAS authentication service" \
+  --url http://ucd-lib-client:8000 \
+  cas AuthenticationService
+```
+
+## Demo
+
+Demo authentication services can be found here:
+ - [CAS](../../services/cas)
+   - A centeralized authentication protocol
+ - [Basic Authentication](../../services/basic-auth)
+   - A simple username/password service

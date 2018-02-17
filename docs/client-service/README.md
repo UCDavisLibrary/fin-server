@@ -4,6 +4,18 @@ By default Fin is a headless application, it has no default user interface (UI) 
 
 A registered ClientService will receive all request sent to the Fin server **accept** requests `/auth` and `/fcrepo` which are reserved for AuthenticationServices and Fedora respectively. All requests will map exactly as they were sent to Fin.  So you will still want to service you main UI from `/` and say a api root at `/api` (for example).
 
+## Registration via CLI
+
+Example using the ucd-lib-client from the demo
+
+```bash
+$ fin service create \
+  --title "UCD Library DAMS Interface" \
+  --description "UC Davis Library DAMS client interface" \
+  --url http://ucd-lib-client:8000 \
+  ucd-lib-client ClientService
+```
+
 ## Demo
 
 You can see a demo ClientService [here](../../services/ucd-lib-client).  This is a demo if the UC Davis DAMS.

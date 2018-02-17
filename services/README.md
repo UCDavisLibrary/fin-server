@@ -1,8 +1,10 @@
 # Fin Services
 
-At it's core Fin is a headless Fedora Commons instance with basic authentication and authorization.  All other functionality is added to Fin via services, this includes; Website/App UI (ClientService), user authentication (AuthenticationService), additional support services such as image services like IFFF (ProxyServices), JSON-LD transform services (FrameService), Fedora event notifications (WebhookService) and indepent external applications (ExternalService). 
+At it's core Fin is a headless Fedora Commons instance with basic authentication and authorization.  All other functionality is added to Fin via services, these includes; Website/App UI (ClientService), user authentication (AuthenticationService), additional support services such as image services like IFFF (ProxyServices), JSON-LD transform services (FrameService), Fedora event notifications (WebhookService) and indepent external applications (ExternalService). 
 
-See below for details on each service type and following links for further information about creating and using each service.  A good overview diagram for Fin service interaction can be found in the [demo-fin folder](../docker/fin-demo/README.md).
+A core part of Fin is that it is language agnostic.  Fin does not want to impose a language requirement that then sets a barrier for any organization that wants to use it but does have the resources to support a certain language (in Fin's case NodeJS).  Microservices allow you to write services in languages that best suit your organization, with simple HTTP/TCP being the underlying communication protocol between services.  Microservices also help break apart monolithic applications allowing for easy horizontal scaling on most modern cloud platforms.
+
+See below for details on each service type and follow links for further information about creating and using each service.  A good overview diagram for example Fin service interaction can be found in the [demo-fin folder](../docker/fin-demo/README.md).
 
 ## ClientService
 
@@ -14,6 +16,7 @@ A passthrough proxy service that proxies all requests to the client service.  Th
 
 A passthrough proxy service tied to fcrepo path that proxies a HTTP request to a external service and returns the services response.
 
+[ProxyService Documenation](../docs/proxy-service/README.md)
 
 ## WebhookService
 
