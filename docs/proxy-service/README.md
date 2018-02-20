@@ -1,5 +1,7 @@
 # ProxyService
 
+![Overview](./proxy-service.png)
+
 ## Implementing a ProxyService
 
 A ProxyService is a simple web service that takes at proxied Fin HTTP request and responds however it wishes.  The ProxyService `urlTemplate` can be configured to change the path for proxy request.  ProxyRequest are access by appending /svc:[service name]/[service path] to a supported Fedora container path.  Proxy sevices will show in the `link` header for supported containers.

@@ -1,5 +1,7 @@
 # AuthenticationService
 
+![Overview](./authentication-service.png)
+
 ## Implementing a AuthenticationService
 
 At it's core a authentication service should be a web service.  For this example we will create a service **foo** that sets up a listener to `/login`.  Requests to fin server at `/auth/foo/login` will be proxied to the authentication service at `/login`.  The service should handle the request and when finished respond with a custom header **X-FIN-AUTHENTICATED-AGENT**.  The value of this header should be the authenticated users username.

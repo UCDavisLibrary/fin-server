@@ -46,3 +46,11 @@ See docs [here](env-config.md)
 ## Demo
 
 [UC Davis DAMS Demo](../docker/fin-demo/README.md).  A great quick start and overview of Fin services in action.
+
+## CORS
+
+See Fin implementation details [here](cors.md)
+
+## Browser Quirks
+
+See docs [here](browser-quirks.md)

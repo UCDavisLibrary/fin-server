@@ -52,6 +52,8 @@ Default: 7 days
 
 Comma seperated list of origins you would like to grant access to FIN.  Requests from these origins will set proper CORS headers in the response as well as handle the browser preflight OPTIONS CORS request.
 
+[Read more](./cors.md)
+
 ## FIN_CACHE_EXPIRE (time in seconds)
 
 Default: 12 hours
