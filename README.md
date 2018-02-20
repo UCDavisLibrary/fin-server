@@ -5,16 +5,23 @@
  - Runs in Docker containers
  - Composed of microservice
 
+## Demo
+
+A demo for using Fin can be found in [docker/fin-demo](docker/fin-demo/README.md).  Start here to get a good feel for what Fin is and how it's put together.  Think of the demo as a quick start guide.
+
 ## Documentation
 
 - [Overview](docs/README.md)
 - [Services](services/README.md)
   - [AuthenticationService](docs/authentication-service/README.md)
   - [ClientService](docs/client-service/README.md)
+  - [ExternalService](docs/external-service/README.md)
+  - [FrameService](docs/frame-service/README.md)
   - [ProxyService](docs/proxy-service/README.md)
   - [WebhookService](docs/webhook-service/README.md)
-- [Config](env-config.md)
+- [Config](docs/env-config.md)
+- [CORS](docs/cors.md)
 
-## Demo
+## Docker
 
-A demo for using Fin can be found in [docker/fin-demo](docker/fin-demo/README.md).  Start here to get a good feel for what Fin is and how it's put together.  Think of the demo as a quick start guide.
+All images can be found on [Docker Hub](https://hub.docker.com/u/ucdlib/)
