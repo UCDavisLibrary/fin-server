@@ -439,7 +439,7 @@ class ProxyModel {
         {
           target : serviceModel.clientService.url+req.originalUrl,
           headers : {
-            [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(service.id)
+            [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(serviceModel.clientService.id)
           }
         }
       );

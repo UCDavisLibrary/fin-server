@@ -14,7 +14,7 @@ module.exports = [
     title : 'Elastic Search Sync',
     description : 'Notify Elastic Search indexer when fedora updates',
     type : 'WebhookService',
-    webhook : 'http://essync:3333'
+    url : 'http://essync:3333'
   },
   {
     id : 'es-record-frame',
@@ -34,7 +34,7 @@ module.exports = [
     id : 'serialization',
     description : 'Serializes all fedora data to filesystem',
     type : 'WebhookService',
-    webhook : 'http://serialization:3333'
+    url : 'http://serialization:3333'
   },
   {
     id : 'cas',

@@ -122,18 +122,23 @@ class ServiceModel {
     this.authServiceDomains = {};
     
     list.forEach(service => {
-      services[service.id] = new ServiceDefinition(service)
+      services[service.id] = new ServiceDefinition(service);
 
       if( service.type === api.service.TYPES.CLIENT ) {
-        this.clientService = this.services[service.id];
+        this.clientService = services[service.id];
       } else if( service.type === api.service.TYPES.EXTERNAL ) {
         let domain = this.getRootDomain(service.urlTemplate);
         this.authServiceDomains[domain] = new RegExp(domain+'$', 'i');
       }
     });
 
-    Logger.info('Services reloaded', Object.keys(services));
     this.services = services;
+    Logger.info('Services reloaded', Object.keys(services));
+
+    // run init
+    for( let id in this.services ) {
+      this.services[id].init(this);
+    }
   }
 
   /**
@@ -317,11 +322,11 @@ class ServiceModel {
     // check for dot paths, we don't send those
     if( this._isDotPath(id) ) return;
 
-    for( let key in this.services ) {
-      let service = this.services[key];
-      if( !service.webhook ) continue;
+    for( let id in this.services ) {
+      let service = this.services[id];
+      if( !service.url ) continue;
 
-      this._sendHttpNotification(key, service.webhook, event);
+      this._sendHttpNotification(id, service.url, event);
     }
   }
 
@@ -330,27 +335,27 @@ class ServiceModel {
    * @description send a HTTP webhook notification.  we don't really care about the response
    * unless there is an error, then log it.
    * 
-   * @param {String} name service name
+   * @param {String} id service name
    * @param {String} url webhook url to post to
    * @param {Object} event event payload
    * @param {String} secret optional.  service secret to encrypt auth token with
    */
-  _sendHttpNotification(name, url, event, secret) {
-    Logger.debug(`Sending HTTP webhook notifiction to service ${name} ${url}`);
+  _sendHttpNotification(id, url, event, secret) {
+    Logger.debug(`Sending HTTP webhook notifiction to service ${id} ${url}`);
 
     request({
       type : 'POST',
       uri : url,
       headers : {
-        [this.SIGNATURE_HEADER] : this.createServiceSignature(name),
+        [this.SIGNATURE_HEADER] : this.createServiceSignature(id),
         'Content-Type': 'application/json'
       },
       body : JSON.stringify(event)
     },
     (error, response, body) => {
-      if( error ) return Logger.error(`Failed to send HTTP notification to service ${name} ${url}`, error);
+      if( error ) return Logger.error(`Failed to send HTTP notification to service ${id} ${url}`, error);
       if( !api.isSuccess(response) ) {
-        Logger.error(`Failed to send HTTP notification to service ${name} ${url}`, response.statusCode, response.body);
+        Logger.error(`Failed to send HTTP notification to service ${id} ${url}`, response.statusCode, response.body);
       }
     });
   }
@@ -471,7 +476,6 @@ class ServiceDefinition {
 
   constructor(data = {}) {
     this.type = data.type || '';
-    this.webhook = data.webhook || '';
     this.frame = data.frame || '';
     this.urlTemplate = data.urlTemplate || '';
     this.url = data.url || '';
@@ -479,14 +483,21 @@ class ServiceDefinition {
     this.description = data.description || '';
     this.supportedTypes = data.supportedTypes || [];
     this.id = data.id || '';
+  }
 
+  init(model) {
     // let a authentication service know it's url
     if( this.type === api.service.TYPES.AUTHENTICATION ) {
       request(
         this.url+'/_init',
-        {qs : {
-          servicePath: '/auth/'+this.id
-        }},
+        {
+          headers : {
+            [model.SIGNATURE_HEADER] : model.createServiceSignature(this.id)
+          },
+          qs : {
+            servicePath: '/auth/'+this.id
+          }
+        },
         (error, response, body) => {
           // noop
         }

@@ -25,7 +25,7 @@ Example using the essync service from the demo
 $ fin service create \
   --title "Elastic Search Sync" \
   --description "Run Elastic Search indexer when fedora updates" \
-  --webhook http://essync:3333 \
+  --url http://essync:3333 \
   essync WebhookService
 ```
 
