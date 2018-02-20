@@ -4,7 +4,7 @@
 
 ## Implementing a ProxyService
 
-A ProxyService is a simple web service that takes at proxied Fin HTTP request and responds however it wishes.  The ProxyService `urlTemplate` can be configured to change the path for proxy request.  ProxyRequest are access by appending /svc:[service name]/[service path] to a supported Fedora container path.  Proxy sevices will show in the `link` header for supported containers.
+A ProxyService is a simple web service that takes at proxied Fin HTTP request and responding however it wishes.  The ProxyService `urlTemplate` can be configured to change the path for the proxy request.  ProxyServices are access by appending /svc:[service name]/[service path] to a supported Fedora container path.  ProxyServices will show in the `link` header for supported containers.
 
 As an example we will look at the IFFF service ([Loris](https://github.com/loris-imageserver/loris)) provided in the [demo](../../services/loris).  The Loris ProxyService is registered with the name `ifff` and has a host name `loris` with the service running on port 5004.  So we want all requests to proxy as follows:
 

@@ -4,14 +4,14 @@
 
 ## Implementing a AuthenticationService
 
-At it's core a authentication service should be a web service.  For this example we will create a service **foo** that sets up a listener to `/login`.  Requests to fin server at `/auth/foo/login` will be proxied to the authentication service at `/login`.  The service should handle the request and when finished respond with a custom header **X-FIN-AUTHENTICATED-AGENT**.  The value of this header should be the authenticated users username.
+At its core an authentication service should be a web service.  For this example we will create a service **foo** that sets up a listener to `/login`.  Requests to Fin server at `/auth/foo/login` will be proxied to the authentication service at `/login`.  The service should handle the request and when finished respond with a custom header **X-FIN-AUTHENTICATED-AGENT**.  The value of this header should be the authenticated users username.
 
-Example: user alice as been athenticated by AuthenticationService
+Example: user alice has been authenticated by AuthenticationService
 ```
-X-FIN-AUTHENTICATED-AGENT: alice
+X-FIN-AUTHENTICATED-AGENT: alice@local
 ```
 
-The fin service will see the custom header and take over the response to the user; minting a new jwt token, setting the token as a cookie and redirecting the user to a specified location finishing the authentication flow.  The server will handle logout events with calls to `/auth/logout` clearing all cookies and deleting the users fin session.
+The fin service will see the custom header and take over the response to the user; minting a new jwt token, setting the token as a cookie and redirecting the user to a specified location finishing the authentication flow.  The core Fin server will handle logout events with calls to `/auth/logout` clearing all cookies and deleting the users fin session.
 
 ## AuthenticationService Config (the sharp edges)
 
@@ -44,6 +44,6 @@ $ fin service create \
 
 Demo authentication services can be found here:
  - [CAS](../../services/cas)
-   - A centeralized authentication protocol
+   - A centralized authentication protocol
  - [Basic Authentication](../../services/basic-auth)
    - A simple username/password service

@@ -1,6 +1,6 @@
 # FIN Demo
 
-This directory contains a demo DAMS built on the docker hub deployed Fin containers.
+This directory contains a demo DAMS built on the [docker hub](https://hub.docker.com/u/ucdlib/) deployed Fin containers.
 The demo is the UC Davis Library DAMS which contains the following services/containers.  
 
 *Note: All files required to run this demo are contained within this `/docker/fin-demo` directory.
@@ -13,9 +13,9 @@ The demo is the UC Davis Library DAMS which contains the following services/cont
  - [Docker](https://docs.docker.com/install/)
  - [Docker Compose](https://docs.docker.com/compose/install/)
 
-### Linux: Setup max_map_count for Elastic Search 
+### Linux: Setup max_map_count for Elasticsearch 
 
-This is required to run Elastic Search
+This is required to run Elasticsearch
 
 ```bash
 sudo sysctl -w vm.max_map_count=262144
