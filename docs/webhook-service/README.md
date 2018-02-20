@@ -8,8 +8,8 @@ Those familiar with GitHub webhooks or other modern CI environments webhooks wil
 
 ```json
 {
-  header : {},
-  body : {}
+  "header" : {},
+  "body" : {}
 }
 ```
 
