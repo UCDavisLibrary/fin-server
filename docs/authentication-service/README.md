@@ -36,7 +36,7 @@ Example using the cas from the demo
 $ fin service create \
   --title "UCD Library CAS" \
   --description "UCD CAS authentication service" \
-  --url http://ucd-lib-client:8000 \
+  --url http://cas:8000 \
   cas AuthenticationService
 ```
 
