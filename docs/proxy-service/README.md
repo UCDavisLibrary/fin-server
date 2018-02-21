@@ -8,7 +8,7 @@ A ProxyService is a simple web service that takes a proxied Fin HTTP request and
 
 As an example we will look at the IFFF service ([Loris](https://github.com/loris-imageserver/loris)) provided in the [demo](../../services/loris).  The Loris ProxyService is registered with the name `ifff` and has a host name `loris` with the service running on port 5004.  So we want all requests to proxy as follows:
 
-`/fcrepo/rest/collections/my/image/svc:loris/full/,320/0/default.png` -> `http://loris:5003/fcrepo/rest/collections/my/image/full/,320/0/default.png` 
+`/fcrepo/rest/collections/my/image/svc:iiif/full/,320/0/default.png` -> `http://loris:5003/fcrepo/rest/collections/my/image/full/,320/0/default.png` 
 
 where the fedora path is `/fcrepo/rest/collections/my/image` and the ifff service path is `/full/,320/0/default.png`.  The mapping of the fin request to the service request is done via the registered ProxyService `urlTemplate`.  There are two mustache template variables that can be provided in the url template:
 
