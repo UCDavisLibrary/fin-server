@@ -97,6 +97,8 @@ services:
     build: ../../services/loris
     depends_on:
       - fcrepo
+    volumes:
+      - loris-data:/usr/local/share/images/loris
 
   # elastic search indexer
   essync:
@@ -154,4 +156,6 @@ volumes:
   es-data:
     driver: local
   redis-data:
+    driver: local
+  loris-data:
     driver: local

@@ -115,6 +115,7 @@ services:
   loris:
     build: ../../services/loris
     volumes:
+      - loris-data:/usr/local/share/images/loris
       - ../../services/loris/loris2.conf:/opt/loris/etc/loris2.conf
       - ../../services/loris/start.py:/opt/loris/loris/start.py
     depends_on:
@@ -211,4 +212,6 @@ volumes:
   es-data:
     driver: local
   redis-data:
+    driver: local
+  loris-data:
     driver: local

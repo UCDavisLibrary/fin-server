@@ -16,7 +16,7 @@ services:
   # Font End NodeJS Application Server
   ###
   server:
-    image: ucdlib/fin-server:1.0.2
+    image: ucdlib/fin-server:1.0.3
     volumes:
       - ./frames:/etc/fin/frames
       - ./default-services.js:/etc/fin/default-services.js
@@ -97,9 +97,11 @@ services:
   # IIIF Service
   ###
   loris:
-    image: ucdlib/fin-loris-service:v0.0.1
+    image: ucdlib/fin-loris-service:v0.0.2
     depends_on:
       - server
+    volumes:
+      - loris-data:/usr/local/share/images/loris
 
   
   ###
@@ -161,4 +163,6 @@ volumes:
   es-data:
     driver: local
   redis-data:
+    driver: local
+  loris-data:
     driver: local
