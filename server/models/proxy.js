@@ -83,9 +83,7 @@ class ProxyModel {
    * @param {Object} res express response
    */
   async _onProxyResponse(proxyRes, req, res) {
-    if( req.fcrepoProxyTime ) {
-      req.fcrepoProxyTime = Date.now() - req.fcrepoProxyTime;
-    }
+    this._setReqTime(req);
 
     // set cors headers if in FIN_ALLOW_ORIGINS env variable or is a registered ExternalService domain
     this._setCors(req, proxyRes);
@@ -316,6 +314,7 @@ class ProxyModel {
   async _serviceProxyRequest(svcReq, expReq, res) {
     // check this is even a valid service name
     if( !serviceModel.services[svcReq.name] ) {
+      this._setReqTime(expReq);
       return res.status(400).send(`Unknown Service: `+svcReq.name);
     }
 
@@ -323,6 +322,7 @@ class ProxyModel {
     // this container from the fcrepo link headers
     let info = await this._getContainerAccessAndInfo(svcReq.fcPath, expReq);
     if( !info.access ) {
+      this._setReqTime(expReq);
       return res.status(403).send('Unauthorized');
     }
 
@@ -540,6 +540,11 @@ class ProxyModel {
   _isMetadataRequest(req) {
     let last = req.originalUrl.replace(/\/$/,'').split('/').pop();
     return (last === 'fcr:metadata');
+  }
+
+  _setReqTime(req) {
+    if( !req.fcrepoProxyTime ) return;
+    req.fcrepoProxyTime = Date.now() - req.fcrepoProxyTime;
   }
 
 }
