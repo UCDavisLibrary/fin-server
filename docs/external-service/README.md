@@ -4,9 +4,9 @@
 
 ## Overview
 
-A external service is a standalone web application that can use Fin on a users behalf.  This means the application can have no association other than being registered with Fin as a ExternalService.  But this application, when accessed via the ExternalService url will be able to perform read and write requests on behalf of the user.
+A external service is a standalone web application that can use Fin on a users behalf.  This means the application can have no association other than being registered with Fin as a ExternalService.  When this application is accessed via the ExternalService url will be able to perform read and write requests on behalf of the user.
 
-When a ExternalService is registered the service url is added a list of domains that will be granted full cross site access via CORS permissions.  When a user visits the service link, the current use JWT token and current fin url will be provided to the service, allowing the service to perform any action on the current resource that the user has permission for.
+When a ExternalService is registered the service url is added a list of domains that will be granted full cross site access via CORS permissions.  When a user visits the service link, the current users JWT token and current fin url will be provided to the service allowing the service to perform any action on the current resource that the user has permission for.
 
 ## Implementing a ExternalService
 

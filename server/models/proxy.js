@@ -81,8 +81,8 @@ class ProxyModel {
    * @param {Object} res express response
    */
   async _onProxyResponse(proxyRes, req, res) {
-    if( req.timer ) {
-      Logger.info(`Proxy Request time: ${Date.now() - req.timer.time}ms ${req.timer.label}`);
+    if( req.fcrepoProxyTime ) {
+      req.fcrepoProxyTime = Date.now() - req.fcrepoProxyTime;
     }
 
     // set cors headers if in FIN_ALLOW_ORIGINS env variable or is a registered ExternalService domain
@@ -170,10 +170,7 @@ class ProxyModel {
    * @param {Object} res express response object
    */
   async _fcRepoPathResolver(req, res) {
-    req.timer = {
-      time : Date.now(),
-      label : `${req.method} ${req.originalUrl}`
-    }
+    req.fcrepoProxyTime = Date.now();
 
     // trying to sniff out browser preflight options request for cors
     // fcrepo sees this as a normal options request and doesn't handle correctly
@@ -229,7 +226,9 @@ class ProxyModel {
        
         // cache hit, set headers, body, return.  we are done.
         if( cachedRes ) {
-          Logger.info('Cache hit: '+req.originalUrl);
+          if( req.fcrepoProxyTime ) {
+            req.fcrepoProxyTime = Date.now() - req.fcrepoProxyTime;
+          }
           for( var key in cachedRes.headers ) {
             res.set(key, cachedRes.headers[key]);
           }

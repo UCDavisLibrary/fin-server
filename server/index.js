@@ -36,7 +36,12 @@ app.use(cookieParser(config.server.cookieSecret));
 // setup simple http logging
 app.use((req, res, next) => {
   res.on('finish',() => {
-    Logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${req.originalUrl || req.url} ${req.get('User-Agent') || 'no-user-agent'}`);
+    let fcrepoProxyTime = req.fcrepoProxyTime ? 'fcrepo:'+req.fcrepoProxyTime+'ms' : '';
+    let userAgent = req.get('User-Agent') || 'no-user-agent';
+    let url = req.originalUrl || req.url;
+    let cache = 'cache:' + (res.get('x-fin-cache') || 'no-cache');
+
+    Logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}, ${fcrepoProxyTime} ${cache}`);
   });
   next();
 });
