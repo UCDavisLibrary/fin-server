@@ -324,7 +324,7 @@ class ServiceModel {
 
     for( let id in this.services ) {
       let service = this.services[id];
-      if( !service.type !== 'WebhookService' ) continue;
+      if( service.type !== 'WebhookService' ) continue;
 
       this._sendHttpNotification(id, service.url, event);
     }
