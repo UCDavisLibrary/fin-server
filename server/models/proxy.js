@@ -31,6 +31,8 @@ const CORS_HEADERS = {
   ['Access-Control-Allow-Credentials'] : 'true'
 }
 
+const ROOT_DOMAIN = serviceModel.getRootDomain(config.server.url);
+
 /**
  * @class ProxyModel
  * @description main class the interacts with outside world and handles service requests
@@ -143,7 +145,9 @@ class ProxyModel {
 
     // first check if request is registered domain
     let rootDomain = serviceModel.getRootDomain(req.headers.referer);
-    if( !serviceModel.authServiceDomains[rootDomain] && !this.allowOrigins[rootDomain] ) {
+
+    // not fin server domain, external service domain or allowed origin domain
+    if( ROOT_DOMAIN !== rootDomain && !serviceModel.authServiceDomains[rootDomain] && !this.allowOrigins[rootDomain] ) {
       Logger.warn('Request with referer set to unknown domain: '+rootDomain+' / '+req.headers.referer);
       return;
     }
