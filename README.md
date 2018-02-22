@@ -1,8 +1,8 @@
 # FIN (Fedora IN docker) Server
 
 ## Fin Basics
- - Fedora Commons backed
- - Runs in Docker containers
+ - [Fedora Commons](http://fedorarepository.org/) backed
+ - Runs in [Docker](https://www.docker.com/) containers
  - Composed of microservice
 
 ## Demo
