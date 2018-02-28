@@ -9,7 +9,7 @@
       "type" : "keyword" 
     },
 
-    "shortIdMemberOf" : {
+    "shortIdIsPartOf" : {
       "type" : "keyword" 
     },
 

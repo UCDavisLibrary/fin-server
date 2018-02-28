@@ -45,10 +45,10 @@ class AppSearchHeader extends Mixin(PolymerElement)
   _onBrowse(e) {
     let shortId = e.detail;
     if( !shortId || shortId === 'Browse' ) {
-      return this._esRemoveKeywordFilter('shortIdMemberOf');
+      return this._esRemoveKeywordFilter('shortIdIsPartOf');
     }
     this.$.searchInput.browseValue = 'Browse';
-    this._esSetKeywordFilter('shortIdMemberOf', shortId);
+    this._esSetKeywordFilter('shortIdIsPartOf', shortId);
   }
 
   /**

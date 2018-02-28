@@ -62,8 +62,8 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
     this.record = await this._esGetRecord(this.currentRecordId);
     this.record = this.record.payload._source;
 
-    if( this.record.memberOf ) {
-      this.collection = await this._getCollection(this.record.memberOf);
+    if( this.record.isPartOf ) {
+      this.collection = await this._getCollection(this.record.isPartOf);
     } else {
       this.collection = null;
     }
@@ -83,7 +83,7 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    */
   _onCollectionClicked() {
     this._esClearFilters();
-    this._esSetKeywordFilter('shortIdMemberOf', this.collection.shortId);
+    this._esSetKeywordFilter('shortIdIsPartOf', this.collection.shortId);
   }
 
   /**

@@ -2,7 +2,7 @@ const {config} = require('@ucd-lib/fin-node-utils');
 const {URL} = require('url');
 
 const REMOVE_ATTRS = ['contains', 'accessControl', '@context',
-'hasMember', 'hasParent', 'linkHint', 'hasMessageDigest', 'hasFixityService'];
+'hasPart', 'hasParent', 'linkHint', 'hasMessageDigest', 'hasFixityService'];
 const fcrepoHostRe = new RegExp('^'+config.fcrepo.host);
 
 async function cleanupData(data, indexer) {
@@ -13,11 +13,11 @@ async function cleanupData(data, indexer) {
    * TODO: figure out best stratedgy for this
    */
   // set a preview image...
-  if( !data.previewImage && data.hasMember ) {
-    if( Array.isArray(data.hasMember) && data.hasMember.length > 0 ) {
-      data.previewImage = data.hasMember[0];
+  if( !data.previewImage && data.hasPart ) {
+    if( Array.isArray(data.hasPart) && data.hasPart.length > 0 ) {
+      data.previewImage = data.hasPart[0];
     } else {
-      data.previewImage = data.hasMember;
+      data.previewImage = data.hasPart;
     }
 
     // grab 16x16 base64 encoded thumbnail preview image
@@ -34,8 +34,8 @@ async function cleanupData(data, indexer) {
 
   // set short ids
   data.shortId = getShortId(data['@id']);
-  if( data.memberOf ) {
-    data.shortIdMemberOf = getShortId(data.memberOf); 
+  if( data.isPartOf ) {
+    data.shortIdIsPartOf = getShortId(data.isPartOf); 
   }
 
 

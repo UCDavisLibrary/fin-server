@@ -127,7 +127,7 @@ export default class AppSearchResult extends Mixin(PolymerElement)
       this.creator = [data.creator || ''];
     }
 
-    this.collectionName = this.data.memberOf || '';
+    this.collectionName = this.data.isPartOf || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.title;

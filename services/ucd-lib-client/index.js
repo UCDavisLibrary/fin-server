@@ -42,5 +42,5 @@ app.use('/rest', require('./controllers'));
 require('./lib/static')(app);
  
 app.listen(8000, () => {
-  Logger.info('server ready on port 8000');
+  Logger.info('server ready on port 8000, using: '+config.server.assets);
 });

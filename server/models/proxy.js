@@ -177,6 +177,7 @@ class ProxyModel {
     // trying to sniff out browser preflight options request for cors
     // fcrepo sees this as a normal options request and doesn't handle correctly
     if( req.method === 'OPTIONS' && req.headers['access-control-request-headers'] ) {
+      this._setReqTime(req);
       this._setCors(req, res);
       return res.status(200).send();
     }
@@ -228,9 +229,7 @@ class ProxyModel {
        
         // cache hit, set headers, body, return.  we are done.
         if( cachedRes ) {
-          if( req.fcrepoProxyTime ) {
-            req.fcrepoProxyTime = Date.now() - req.fcrepoProxyTime;
-          }
+          this._setReqTime(req);
           for( var key in cachedRes.headers ) {
             res.set(key, cachedRes.headers[key]);
           }
@@ -340,8 +339,10 @@ class ProxyModel {
 
         let fcPath = svcReq.fcPath.replace(api.getConfig().basePath, '');
         let framed = await serviceModel.renderFrame(service.id, fcPath);
+        this._setReqTime(expReq);
         res.json(framed);
       } catch(e) {
+        this._setReqTime(expReq);
         res.status(500).send({
           error : true,
           message : 'Unable to render from frame service '+service.id,
@@ -366,6 +367,8 @@ class ProxyModel {
 
     // run the external service
     } else if( service.type === api.service.TYPES.EXTERNAL ) {
+      this._setReqTime(expReq);
+
       let token = jwt.getJwtFromRequest(expReq);
       let url = service.renderUrlTemplate({fcUrl: querystring.escape(svcReq.fcUrl), token});
       res.set(serviceModel.SIGNATURE_HEADER, serviceModel.createServiceSignature(service.id));
@@ -373,6 +376,7 @@ class ProxyModel {
 
     // unknown service type
     } else {
+      this._setReqTime(expReq);
       res.status(500).json({
         error : true,
         message : 'Unsupported service type for request: '+service.type

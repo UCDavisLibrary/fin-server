@@ -149,7 +149,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       url : this.record.id
     });
 
-    this.collectionName = this.record.memberOf || '';
+    this.collectionName = this.record.isPartOf || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.title;

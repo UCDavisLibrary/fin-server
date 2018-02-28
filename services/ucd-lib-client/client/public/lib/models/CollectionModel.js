@@ -60,13 +60,13 @@ class CollectionModel extends BaseModel {
 
     /**
      * @method _onSearchDocumentUpdate
-     * @description listen to search document updates, if we have a shortIdMemberOf filter,
+     * @description listen to search document updates, if we have a shortIdIsPartOf filter,
      * then there is a selected collection
      */
     _onSearchDocumentUpdate(e) {
       let selected = null;
-      if( e.filters.shortIdMemberOf ) {
-        selected = this.getByShortId(e.filters.shortIdMemberOf.value[0]);
+      if( e.filters.shortIdIsPartOf ) {
+        selected = this.getByShortId(e.filters.shortIdIsPartOf.value[0]);
       }
       this.store.setSelectedCollection(selected);
     }

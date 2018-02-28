@@ -4,7 +4,7 @@
     "dc": "http://purl.org/dc/elements/1.1/",
     "fedora" : "http://fedora.info/definitions/v4/repository#",
     "ebucore" : "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
-    "pcdm": "http://pcdm.org/models#",
+    "schema": "http://schema.org/",
     "premis" : "http://www.loc.gov/premis/rdf/v1#",
     "title" : {
       "@id": "dct:title"
@@ -29,8 +29,8 @@
       "@id": "fedora:hasParent",
       "@type": "@id"
     },
-    "memberOf":{
-      "@id" : "pcdm:memberOf",
+    "isPartOf":{
+      "@id" : "schema:isPartOf",
       "@type": "@id"
     },
     "mimeType" : {
@@ -93,7 +93,7 @@
   "createdBy" : {
     "@default" : ""
   },
-  "memberOf" : {
+  "isPartOf" : {
     "@default" : ""
   },
   "mimeType" : {

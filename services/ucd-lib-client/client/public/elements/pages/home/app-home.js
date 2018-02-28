@@ -60,7 +60,7 @@ class AppHome extends Mixin(PolymerElement)
   _onBrowse(e) {
     let shortId = e.detail;
     if( !shortId || shortId === 'Browse' ) {
-      return this._esRemoveKeywordFilter('shortIdMemberOf');
+      return this._esRemoveKeywordFilter('shortIdIsPartOf');
     }
     this.$.searchBox.browseValue = 'Browse';
     this._onCollectionSelected(shortId);
@@ -89,7 +89,7 @@ class AppHome extends Mixin(PolymerElement)
    * @description filter based on a collection using short ids.
    */
   _onCollectionSelected(id) {
-    this._esSetKeywordFilter('shortIdMemberOf', id);
+    this._esSetKeywordFilter('shortIdIsPartOf', id);
   }
   
 }

@@ -4629,7 +4629,7 @@ const Base = Object(__WEBPACK_IMPORTED_MODULE_0__lib_legacy_legacy_element_mixin
  *
  * @customElement
  * @polymer
- * @memberof Polymer
+ * @isPartOf Polymer
  * @constructor
  * @implements {Polymer_ElementMixin}
  * @extends HTMLElement
@@ -4707,7 +4707,7 @@ const normalizedMatchesSelector = p.matches || p.matchesSelector ||
  * Cross-platform `element.matches` shim.
  *
  * @function matchesSelector
- * @memberof Polymer.dom
+ * @isPartOf Polymer.dom
  * @param {!Element} node Node to check selector against
  * @param {string} selector Selector to match
  * @return {boolean} True if node matched selector
@@ -5038,7 +5038,7 @@ const timeOut = {
    * Returns a sub-module with the async interface providing the provided
    * delay.
    *
-   * @memberof Polymer.Async.timeOut
+   * @isPartOf Polymer.Async.timeOut
    * @param {number} delay Time to wait before calling callbacks in ms
    * @return {AsyncInterface} An async timeout interface
    */
@@ -5051,7 +5051,7 @@ const timeOut = {
   /**
    * Enqueues a function called in the next task.
    *
-   * @memberof Polymer.Async.timeOut
+   * @isPartOf Polymer.Async.timeOut
    * @param {Function} fn Callback to run
    * @return {number} Handle used for canceling task
    */
@@ -5059,7 +5059,7 @@ const timeOut = {
   /**
    * Cancels a previously enqueued `timeOut` callback.
    *
-   * @memberof Polymer.Async.timeOut
+   * @isPartOf Polymer.Async.timeOut
    * @param {number} handle Handle returned from `run` of callback to cancel
    */
   cancel: window.clearTimeout.bind(window)
@@ -5071,7 +5071,7 @@ const animationFrame = {
   /**
    * Enqueues a function called at `requestAnimationFrame` timing.
    *
-   * @memberof Polymer.Async.animationFrame
+   * @isPartOf Polymer.Async.animationFrame
    * @param {Function} fn Callback to run
    * @return {number} Handle used for canceling task
    */
@@ -5079,7 +5079,7 @@ const animationFrame = {
   /**
    * Cancels a previously enqueued `animationFrame` callback.
    *
-   * @memberof Polymer.Async.timeOut
+   * @isPartOf Polymer.Async.timeOut
    * @param {number} handle Handle returned from `run` of callback to cancel
    */
   cancel: window.cancelAnimationFrame.bind(window)
@@ -5091,7 +5091,7 @@ const idlePeriod = {
   /**
    * Enqueues a function called at `requestIdleCallback` timing.
    *
-   * @memberof Polymer.Async.idlePeriod
+   * @isPartOf Polymer.Async.idlePeriod
    * @param {function(IdleDeadline)} fn Callback to run
    * @return {number} Handle used for canceling task
    */
@@ -5103,7 +5103,7 @@ const idlePeriod = {
   /**
    * Cancels a previously enqueued `idlePeriod` callback.
    *
-   * @memberof Polymer.Async.idlePeriod
+   * @isPartOf Polymer.Async.idlePeriod
    * @param {number} handle Handle returned from `run` of callback to cancel
    */
   cancel(handle) {
@@ -5120,7 +5120,7 @@ const microTask = {
   /**
    * Enqueues a function called at microtask timing.
    *
-   * @memberof Polymer.Async.microTask
+   * @isPartOf Polymer.Async.microTask
    * @param {Function} callback Callback to run
    * @return {number} Handle used for canceling task
    */
@@ -5133,7 +5133,7 @@ const microTask = {
   /**
    * Cancels a previously enqueued `microTask` callback.
    *
-   * @memberof Polymer.Async.microTask
+   * @isPartOf Polymer.Async.microTask
    * @param {number} handle Handle returned from `run` of callback to cancel
    */
   cancel(handle) {
@@ -5667,7 +5667,7 @@ let AsyncModule; // eslint-disable-line no-unused-vars
 
 /**
  * @summary Collapse multiple callbacks into one invocation after a timer.
- * @memberof Polymer
+ * @isPartOf Polymer
  */
 class Debouncer {
   constructor() {
@@ -6106,7 +6106,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /**
  * Legacy settings.
  * @namespace
- * @memberof Polymer
+ * @isPartOf Polymer
  */
 const settings = undefined || {};
 const useShadow = !(window.ShadyDOM);
@@ -6128,7 +6128,7 @@ const useNativeCustomElements = !(window.customElements.polyfillWrapFlushCallbac
  * `Polymer.rootPath` to provide a stable application mount path when
  * using client side routing.
  *
- * @memberof Polymer
+ * @isPartOf Polymer
  */
 let rootPath = undefined ||
   Object(__WEBPACK_IMPORTED_MODULE_1__resolve_url_js__["a" /* pathFromUrl */])(document.baseURI || window.location.href);
@@ -6156,7 +6156,7 @@ const setRootPath = function(path) {
  * `node` is the node where the value is being inserted.
  *
  * @type {(function(*,string,string,Node):*)|undefined}
- * @memberof Polymer
+ * @isPartOf Polymer
  */
 let sanitizeDOMValue = undefined;
 
@@ -6188,7 +6188,7 @@ let resolveDoc;
 /**
  * Resolves the given URL against the provided `baseUri'.
  *
- * @memberof Polymer.ResolveUrl
+ * @isPartOf Polymer.ResolveUrl
  * @param {string} url Input URL to resolve
  * @param {?string=} baseURI Base URI to resolve the URL against
  * @return {string} resolved URL
@@ -6232,7 +6232,7 @@ function resolveUrl(url, baseURI) {
  * Resolves any relative URL's in the given CSS text against the provided
  * `ownerDocument`'s `baseURI`.
  *
- * @memberof Polymer.ResolveUrl
+ * @isPartOf Polymer.ResolveUrl
  * @param {string} cssText CSS text to process
  * @param {string} baseURI Base URI to resolve the URL against
  * @return {string} Processed CSS text with resolved URL's
@@ -6249,7 +6249,7 @@ function resolveCss(cssText, baseURI) {
  * Returns a path from a given `url`. The path includes the trailing
  * `/` from the url.
  *
- * @memberof Polymer.ResolveUrl
+ * @isPartOf Polymer.ResolveUrl
  * @param {string} url Input URL to transform
  * @return {string} resolved path
  */
@@ -8748,7 +8748,7 @@ function styleOutsideTemplateCheck(inst) {
  *
  * @customElement
  * @extends HTMLElement
- * @memberof Polymer
+ * @isPartOf Polymer
  * @summary Custom element that provides a registry of relocatable DOM content
  *   by `id` that is agnostic to bundling.
  * @unrestricted
@@ -12383,7 +12383,7 @@ function createNotifyHostPropEffect() {
  *
  *
  * @namespace
- * @memberof Polymer
+ * @isPartOf Polymer
  * @summary Module for preparing and stamping instances of templates
  *   utilizing Polymer templating features.
  */
@@ -12442,7 +12442,7 @@ const Templatize = {
    * needed from the callbacks (such as references to `instances` stamped)
    * should be stored on the `owner` such that they can be retrieved via `this`.
    *
-   * @memberof Polymer.Templatize
+   * @isPartOf Polymer.Templatize
    * @param {!HTMLTemplateElement} template Template to templatize
    * @param {!Polymer_PropertyEffects} owner Owner of the template instances;
    *   any optional callbacks will be bound to this owner.
@@ -12490,7 +12490,7 @@ const Templatize = {
    *     model.set('item.checked', true);
    *   }
    *
-   * @memberof Polymer.Templatize
+   * @isPartOf Polymer.Templatize
    * @param {HTMLTemplateElement} template The model will be returned for
    *   elements stamped from this template
    * @param {Node} node Node for which to return a template model.
@@ -18198,7 +18198,7 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
       this.creator = [data.creator || ''];
     }
 
-    this.collectionName = this.data.memberOf || '';
+    this.collectionName = this.data.isPartOf || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.title;
@@ -32917,7 +32917,7 @@ function isSlot(node) {
  * `MutationObserver` and the `<slot>` element's `slotchange` event which
  * are asynchronous.
  *
- * @memberof Polymer
+ * @isPartOf Polymer
  * @summary Class that listens for changes (additions or removals) to
  * "flattened nodes" on a given `node`.
  */
@@ -33155,7 +33155,7 @@ let metaProps = {
  * @param {!HTMLElement|function(new:HTMLElement)} klass Element class.
  * @return {function(new:HTMLElement)} Returns a new Element class extended by the
  * passed in `behaviors` and also by `Polymer.LegacyElementMixin`.
- * @memberof Polymer
+ * @isPartOf Polymer
  * @suppress {invalidCasts, checkTypes}
  */
 function mixinBehaviors(behaviors, klass) {
@@ -33474,7 +33474,7 @@ let TemplatizerUser; // eslint-disable-line
  * between versions 1.x and 2.x.
  *
  * @polymerBehavior
- * @memberof Polymer
+ * @isPartOf Polymer
  */
 let Templatizer = {
 
@@ -33581,7 +33581,7 @@ const domBindBase =
  * @appliesMixin Polymer.OptionalMutableData
  * @appliesMixin Polymer.GestureEventListeners
  * @extends {domBindBase}
- * @memberof Polymer
+ * @isPartOf Polymer
  * @summary Custom element to allow using Polymer's template features (data
  *   binding, declarative event listeners, etc.) in the main document.
  */
@@ -33784,7 +33784,7 @@ const domRepeatBase = Object(__WEBPACK_IMPORTED_MODULE_4__mixins_mutable_data_js
  *
  * @customElement
  * @polymer
- * @memberof Polymer
+ * @isPartOf Polymer
  * @extends {domRepeatBase}
  * @appliesMixin Polymer.OptionalMutableData
  * @summary Custom element for stamping instance of a template bound to
@@ -34402,7 +34402,7 @@ customElements.define(DomRepeat.is, DomRepeat);
  * @customElement
  * @polymer
  * @extends Polymer.Element
- * @memberof Polymer
+ * @isPartOf Polymer
  * @summary Custom element that conditionally stamps and hides or removes
  *   template content based on a boolean flag.
  */
@@ -34669,7 +34669,7 @@ customElements.define(DomIf.is, DomIf);
  * @polymer
  * @mixinFunction
  * @appliesMixin Polymer.ElementMixin
- * @memberof Polymer
+ * @isPartOf Polymer
  * @summary Element mixin for recording dynamic associations between item paths in a
  * master `items` array and a `selected` array
  */
@@ -35044,7 +35044,7 @@ let baseArraySelector = ArraySelectorMixin(__WEBPACK_IMPORTED_MODULE_0__polymer_
  * @customElement
  * @extends {baseArraySelector}
  * @appliesMixin Polymer.ArraySelectorMixin
- * @memberof Polymer
+ * @isPartOf Polymer
  * @summary Custom element that links paths between an input `items` array and
  *   an output `selected` item or array based on calls to its selection API.
  */
@@ -35115,7 +35115,7 @@ const CustomStyleInterface = window.ShadyCSS.CustomStyleInterface;
  *
  * @customElement
  * @extends HTMLElement
- * @memberof Polymer
+ * @isPartOf Polymer
  * @summary Custom element for defining styles in the main document that can
  *   take advantage of Polymer's style scoping and custom properties shims.
  */
@@ -42021,13 +42021,13 @@ class CollectionModel extends BaseModel {
 
     /**
      * @method _onSearchDocumentUpdate
-     * @description listen to search document updates, if we have a shortIdMemberOf filter,
+     * @description listen to search document updates, if we have a shortIdIsPartOf filter,
      * then there is a selected collection
      */
     _onSearchDocumentUpdate(e) {
       let selected = null;
-      if( e.filters.shortIdMemberOf ) {
-        selected = this.getByShortId(e.filters.shortIdMemberOf.value[0]);
+      if( e.filters.shortIdIsPartOf ) {
+        selected = this.getByShortId(e.filters.shortIdIsPartOf.value[0]);
       }
       this.store.setSelectedCollection(selected);
     }
@@ -42144,7 +42144,7 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
   _onBrowse(e) {
     let shortId = e.detail;
     if( !shortId || shortId === 'Browse' ) {
-      return this._esRemoveKeywordFilter('shortIdMemberOf');
+      return this._esRemoveKeywordFilter('shortIdIsPartOf');
     }
     this.$.searchBox.browseValue = 'Browse';
     this._onCollectionSelected(shortId);
@@ -42173,7 +42173,7 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
    * @description filter based on a collection using short ids.
    */
   _onCollectionSelected(id) {
-    this._esSetKeywordFilter('shortIdMemberOf', id);
+    this._esSetKeywordFilter('shortIdIsPartOf', id);
   }
   
 }
@@ -44395,10 +44395,10 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
   _onBrowse(e) {
     let shortId = e.detail;
     if( !shortId || shortId === 'Browse' ) {
-      return this._esRemoveKeywordFilter('shortIdMemberOf');
+      return this._esRemoveKeywordFilter('shortIdIsPartOf');
     }
     this.$.searchInput.browseValue = 'Browse';
-    this._esSetKeywordFilter('shortIdMemberOf', shortId);
+    this._esSetKeywordFilter('shortIdIsPartOf', shortId);
   }
 
   /**
@@ -44548,8 +44548,8 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
     this.record = await this._esGetRecord(this.currentRecordId);
     this.record = this.record.payload._source;
 
-    if( this.record.memberOf ) {
-      this.collection = await this._getCollection(this.record.memberOf);
+    if( this.record.isPartOf ) {
+      this.collection = await this._getCollection(this.record.isPartOf);
     } else {
       this.collection = null;
     }
@@ -44569,7 +44569,7 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
    */
   _onCollectionClicked() {
     this._esClearFilters();
-    this._esSetKeywordFilter('shortIdMemberOf', this.collection.shortId);
+    this._esSetKeywordFilter('shortIdIsPartOf', this.collection.shortId);
   }
 
   /**
@@ -45528,7 +45528,7 @@ class AppFiltersPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
    * collection filter when clicked
    */
   _removeCollectionFilter() {
-    this._esRemoveKeywordFilter('shortIdMemberOf');
+    this._esRemoveKeywordFilter('shortIdIsPartOf');
   }
 }
 
@@ -47050,7 +47050,7 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
       url : this.record.id
     });
 
-    this.collectionName = this.record.memberOf || '';
+    this.collectionName = this.record.isPartOf || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.title;
@@ -61914,7 +61914,7 @@ class AppFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
    */
   _onBrowseCollection(e) {
     let id = e.currentTarget.getAttribute('data-id');
-    this._esSetKeywordFilter('shortIdMemberOf', id);
+    this._esSetKeywordFilter('shortIdIsPartOf', id);
   }
 }
 
