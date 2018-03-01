@@ -5,7 +5,7 @@
       "type" : "keyword"
     },
 
-    "shortId" : {
+    "localId" : {
       "type" : "keyword" 
     },
 

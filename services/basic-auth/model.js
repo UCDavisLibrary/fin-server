@@ -44,7 +44,7 @@ class AuthModel {
    */
   async createUser(username='', email='', password='') {
     if( username.length < 3 ) throw new Error('Username must be at least 3 characters');
-    if( password.length < 6 ) throw new Error('Username must be at least 6 characters');
+    if( password.length < 6 ) throw new Error('Password must be at least 6 characters');
 
     var userinfo = await redis.get(username);
     if( userinfo ) throw new Error('User already exists');

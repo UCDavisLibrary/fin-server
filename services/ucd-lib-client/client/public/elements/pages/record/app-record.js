@@ -123,7 +123,7 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     this.record = e.payload._source;
 
-    this.resolution = '';
+    this.resolution = this.record.width+'x'+this.record.height;
     this.$.imageViewer.render(this.record.id);
 
     this.title = this.record.title || '';
@@ -143,7 +143,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.rights = this.record.rights || '';
 
     this.$.download.render({
-      resolution : this.record.imageResolution,
+      resolution : [this.record.width, this.record.height],
       mimeType : this.mimeType,
       size : this.record.hasSize ? parseInt(this.record.hasSize) : 0,
       url : this.record.id

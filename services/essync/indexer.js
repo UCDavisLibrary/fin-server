@@ -1,4 +1,3 @@
-const utils = require('./utils');
 const elasticsearch = require('elasticsearch');
 const request = require('request');
 const schemaRecord = require('./schema-record');
@@ -7,9 +6,19 @@ const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const Logger = logger('essync');
 const timeProfile = require('./timeProfile');
 const fs = require('fs');
+const {URL} = require('url');
 
 // everything depends on indexer, so placing this here...
 process.on('unhandledRejection', err => Logger.error(err));
+
+const COLLECTION = 'http://schema.org/Collection';
+const CREATIVE_WORK = 'http://schema.org/CreativeWork';
+const MEDIA_OBJECT = 'http://schema.org/MediaObject';
+const SHORT_COLLECTION = 'schema:Collection';
+const SHORT_CREATIVE_WORK = 'schema:CreativeWork';
+const SHORT_MEDIA_OBJECT = 'schema:MediaObject';
+const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
+const SHORT_BINARY = 'fedora:Binary';
 
 class EsIndexer {
   
@@ -20,17 +29,37 @@ class EsIndexer {
       log: config.elasticsearch.log
     });
 
-    this.init();
+    this.frameServices = {
+      collection : 'es-collection-frame',
+      record : 'es-record-frame'
+    }
 
+    // properties to set local ids for
+    this.localIds = ['@id', 'hasPart', 'isPartOf', 'associatedMedia', 'encodesCreativeWork'];
+
+    this.init();
   }
 
+  /**
+   * @method isConnected
+   * @description make sure we are connected to elasticsearch
+   */
   isConnected() {
     return new Promise((resolve, reject) => {
-      this._isConnected(0, resolve, reject);
+      this._connect(0, resolve, reject);
     });
   }
 
-  async _isConnected(count, resolve, reject) {
+  /**
+   * @method _connect
+   * @description actually try to connect to elasticsearch, throttle delay back
+   * on failure.
+   * 
+   * @param {Number} count number of connection attempts
+   * @param {Function} resolve resolve wrapper promise
+   * @param {Function} reject reject wrapper promise
+   */
+  async _connect(count, resolve, reject) {
     if( count === 5 ) return reject('Unable to connect to Elastic Search');
     setTimeout(async () => {
       try {
@@ -38,12 +67,16 @@ class EsIndexer {
         resolve();
       } catch(e) {
         count++;
-        this._isConnected(count, resolve, reject);
+        this._connect(count, resolve, reject);
       }
       // grrrrr just waiting a bit for es to start
     }, 20000 + (1000 * count));
   }
 
+  /**
+   * @method init
+   * @description connect to elasticsearch and ensure collection indexes
+   */
   async init() {
     await this.isConnected();
 
@@ -51,6 +84,7 @@ class EsIndexer {
 
     let recordConfig = config.elasticsearch.record;
     let colConfig = config.elasticsearch.collection;
+
     await this.ensureIndex(recordConfig.alias, recordConfig.schemaType, schemaRecord);
     await this.ensureIndex(colConfig.alias, colConfig.schemaType, schemaCollection);
   }
@@ -66,40 +100,27 @@ class EsIndexer {
    * @returns {Promise}
    */
   async update(jsonld, recordIndex, collectionIndex) {
-    if( typeof jsonld === 'string') {
-      jsonld = await this.getContainer(jsonld);
-    }
-
-    if( !jsonld ) return;
-    if( !jsonld['@type'] ) return;
-
-    jsonld = await utils.cleanupData(jsonld, this);
-
-    let id = jsonld['@id'];
 
     // only index binary and collections
-    if( utils.isBinary(jsonld['@type']) ) {
-      Logger.info(`ES Indexer updating binary container: ${id}`);
+    if( this.isRecord(jsonld['@type']) ) {
+      Logger.info(`ES Indexer updating record container: ${jsonld.localId}`);
 
-      timeProfile.profileStart('ES Insert');
       await this.esClient.index({
         index : recordIndex || config.elasticsearch.record.alias,
         type: config.elasticsearch.record.schemaType,
-        id : id,
+        id : jsonld.localId,
         body: jsonld
       });
-      timeProfile.profileEnd('ES Insert');
-    } else if ( utils.isCollection(jsonld['@type']) ) {
-      Logger.info(`ES Indexer updating collection container: ${id}`);
 
-      timeProfile.profileStart('ES Insert');
+    } else if ( this.isCollection(jsonld['@type']) ) {
+      Logger.info(`ES Indexer updating collection container: ${jsonld.localId}`);
+
       await this.esClient.index({
         index : collectionIndex || config.elasticsearch.collection.alias,
         type: config.elasticsearch.collection.schemaType,
-        id : id,
+        id : jsonld.localId,
         body: jsonld
       });
-      timeProfile.profileEnd('ES Insert');
     }
   }
 
@@ -182,117 +203,111 @@ class EsIndexer {
   }
 
   /**
-   * @method getCompactJson
-   * @description fetch and cleanup a fcrepo path container as fedora compacted jsonld
+   * @method getJsonFrame
+   * @description get a fcrepo container frame at specified path. 
    * 
    * @param {String} path fcrepo url
-   * @param {Boolean} clean should the response json urls be cleaned up. defaults to true.
-   * 
-   * @returns {Promise} resolves to json data on success or null if failed
-   */
-  async getCompactJson(path) {
-    timeProfile.profileStart('getCompactJson');
-    var {response, body} = await this.request({
-      type : 'GET',
-      uri: path,
-      headers : {
-        Accept: 'application/ld+json; profile="http://www.w3.org/ns/json-ld#compacted"'
-      }
-    });
-    timeProfile.profileEnd('getCompactJson');
-
-    try {
-      body = JSON.parse(body);
-      let context = body['@context'];
-
-      if( body['@graph'] ) {
-        body = body['@graph'];
-      }
-      if( Array.isArray(body) ) {
-        for( var i = 0; i < body.length; i++ ) {
-          if( body[i]['@id'].indexOf(path) > -1 ) {
-            body = body[i];
-            break;
-          }
-        }
-        // not found
-        if( Array.isArray(body) ) body = {};
-      }
-
-      // grab the resolution from iiif
-      if( body.type === 'image' ) {
-        try {
-          timeProfile.profileStart('get iiif resolution');
-          let imgUrl = utils.replaceInternalUrl(body['@id'], 'http://server:3001')+'/svc:iiif/info.json';
-          var result = await this.request({
-            type : 'GET',
-            uri: imgUrl
-          });
-          result = JSON.parse(result.body);
-          body['imageResolution'] = [result.width, result.height];
-          timeProfile.profileEnd('get iiif resolution');
-
-          // grab 16x16 base64 encoded thumbnail
-          imgUrl = utils.replaceInternalUrl(body['@id'], 'http://server:3001')+'/svc:iiif/full/8,/0/default.png';
-          result = await this.request({
-            type : 'GET',
-            encoding : null,
-            uri: imgUrl
-          });
-
-          body['imageTinyThumbnail'] = 'data:image/png;base64,'+new Buffer(result.body).toString('base64');
-
-
-          
-        } catch(e) {}
-      }
-
-      body['@context'] = context;
-
-      return body;
-    } catch(e) {
-      Logger.error('Invalid response from server', e);
-    }
-
-    return null;
-  }
-
-  /**
-   * @method getContainer
-   * @description get a fcrepo container at specified path. will check to see if this is a 
-   * binary container and add /fcr:metadata if so
-   * 
-   * @param {String} path fcrepo url
-   * @param {Boolean} clean should the response json urls be cleaned up. defaults to true.
+   * @param {Array} types JSON-LD @type array 
    * 
    * @returns {Promise}
    */
-  async getContainer(path) {
-    let isBinary = await this.isBinaryContainer(path);
-    if( isBinary ) path += '/fcr:metadata';
-    return await this.getCompactJson(path);
+  async getJsonFrame(path, types) {
+    if( path.match(/fcr:metadata$/) ) {
+      path = path.replace(/\/fcr:metadata$/, '');
+    }
+
+    let svc = '';
+    if( this.isRecord(types) ) svc = this.frameServices.record;
+    else if( this.isCollection(types) ) svc = this.frameServices.collection;
+
+    // we don't have a frame service for this
+    if( !svc ) return null;
+
+    console.log( path+`/svc:${svc}`);
+    var response = await this.request({
+      type : 'GET',
+      uri : path+`/svc:${svc}`
+    });
+    console.log(response.body);
+
+    try {
+      return JSON.parse(response.body);
+    } catch(e) {
+      Logger.error('Failed to get frame for: '+path, response.statusCode+' '+response.body,  e);
+      return null;
+    }
+  }
+
+  async frameToEs(frame) {
+    frame = this.getRecordOrCollectionFrame(frame);
+    this.setLocalIds(frame);
+    await this.setThumbnail(frame);
+    await this.setImageResolution(frame);
+
+    return frame;
+  }
+
+  async setThumbnail(json) {
+    if( !json.exampleOfWork ) {
+      if( !json.mimeType ) return;
+      if( !json.mimeType.match(/image/i) ) return;
+    }
+
+    let imgUrl = json.exampleOfWork ? json.exampleOfWork : json['@id'];
+    imgUrl = imgUrl.replace(this.getFrameBaseUrl(), 'http://server:3001'+config.fcrepo.root)+'/svc:iiif/full/8,/0/default.png';
+
+    let result = await this.request({
+      type : 'GET',
+      encoding : null,
+      uri: imgUrl
+    });
+
+    json.thumbnailUrl = 'data:image/png;base64,'+new Buffer(result.body).toString('base64');
+    return json;
+  }
+
+  async setImageResolution(json) {
+    if( !json.exampleOfWork ) {
+      if( !json.mimeType ) return;
+      if( !json.mimeType.match(/image/i) ) return;
+    }
+
+    let imgUrl = json.exampleOfWork ? json.exampleOfWork : json['@id'];
+    imgUrl = imgUrl.replace(this.getFrameBaseUrl(), 'http://server:3001'+config.fcrepo.root)+'/svc:iiif/info.json';
+    
+    var result = await this.request({
+      type : 'GET',
+      uri: imgUrl
+    });
+    result = JSON.parse(result.body);
+
+    json.width = result.width;
+    json.height = result.height;
+
+    return json;
   }
 
   /**
-   * @method isBinaryContainer
-   * @description given a fcrepo path, makes a head request and checks for 'content-disposition'
-   * in response headers.  The existance of this header means the container is a binary container
+   * @method setLocalIds
+   * @description set shortend local identifiers for object
    * 
-   * @param {String} path - fcrepo url to call
-   * @returns {Promise} resolves to boolean
+   * @param {Object} json
+   * 
+   * @return {Object}
    */
-  async isBinaryContainer(path) {
-    timeProfile.profileStart('isBinaryContainer');
-    var {response, body} = await this.request({
-      type : 'HEAD',
-      uri : path
-    });
-    timeProfile.profileEnd('isBinaryContainer');
+  setLocalIds(json) {
+    this.localIds.forEach(id => {
+      if( json[id] === undefined ) return;
+      let shortId = (id === '@id') ? 'localId' : id+'LocalId';
 
-    if( response.headers['content-disposition'] ) {
-      return true;
-    }
-    return false;
+      if( Array.isArray(json[id]) ) {
+        json[shortId] = json[id].map(id => id.replace(this.getFrameBaseUrl(), '')); 
+      } else {
+        json[shortId] = json[id].replace(this.getFrameBaseUrl(), ''); 
+      }
+    });
+
+    return json;
   }
 
   /**
@@ -315,17 +330,141 @@ class EsIndexer {
     options.headers.Authorization = `Bearer ${this.token}`;
 
     if( !options.uri.match(/^http/i) ) {
-      options.uri = `${config.fcrepo.host}${config.fcrepo.root}${options.uri}`;
+      options.uri =  this.getBaseUrl() + options.uri;
     }
 
-    let t = Date.now();
     return new Promise((resolve, reject) => {
       request(options, (error, response, body) => {
-        timeProfile.log.push(`${Date.now()-t}ms ${options.type || 'GET'} ${options.uri}`);
         if( error ) reject(error);
-        else resolve({response, body});
+        else resolve(response);
       });
     });
+  }
+
+  /**
+   * @method getRecordOrCollectionFrame
+   * @description given a frame response, first grab the graph.  Then 
+   * look through the graph and return the first record or collection
+   * object you find
+   * 
+   * @param {Object} frame a response from a frame service
+   * 
+   * @returns {Object} 
+   */
+  getRecordOrCollectionFrame(frame) {
+    if( frame['@graph'] ) frame = frame['@graph'];
+    if( Array.isArray(frame) ) {
+      return frame.find(item => {
+        if( this.isCollection(item['@type']) ||
+            this.isRecord(item['@type']) ) {
+          return true;
+        }
+      });
+    }
+    return frame;
+  }
+
+  /** 
+   * @method getBaseUrl
+   * @description get the base url for fin
+   *  
+   * @returns {String}
+   */
+  getBaseUrl() {
+    if( config.server.url.match(/localhost/) ) {
+      return 'http://server:3001' + config.fcrepo.root;
+    }
+    return config.server.url + config.fcrepo.root;
+  }
+
+  /**
+   * @method getFrameBaseUrl
+   * @description this should be used to make shortIds from frame 
+   * responses.  If you are running on localhost in dev mode, the frame
+   * uri's will be http://fcrepo:8080, otherwise they should be the 
+   * fin host
+   * 
+   * @return {String}
+   */
+  getFrameBaseUrl() {
+    if( config.server.url.match(/localhost/) ) {
+      return 'http://fcrepo:8080' + config.fcrepo.root;
+    }
+    return config.server.url + config.fcrepo.root;
+  }
+
+  /**
+   * @method isBinary
+   * @description given an array of types, is this a fedora binary container.
+   * 
+   * @param {Array} types array or type uri's
+   * 
+   * @returns {Boolean}
+   */
+  isBinary(types = []) {
+    return (
+      types.indexOf(BINARY) > -1 || 
+      types.indexOf(SHORT_BINARY) > -1
+    );
+  }
+
+  /**
+   * @method isCollection
+   * @description given an array of types, is this a es collection.
+   * Currently that is any schema.org collection.
+   * 
+   * @param {Array} types array or type uri's
+   * 
+   * @returns {Boolean}
+   */
+  isCollection(types = []) {
+    return (
+      types.indexOf(COLLECTION) > -1 || 
+      types.indexOf(SHORT_COLLECTION) > -1
+    );
+  }
+
+  /**
+   * @method isRecord
+   * @description given an array of types, is this a es record.
+   * Currently that is any schema.org creative work or media object.
+   * 
+   * @param {Array} types array or type uri's
+   * 
+   * @returns {Boolean}
+   */ 
+  isRecord(types = []) {
+    return (
+      types.indexOf(CREATIVE_WORK) > -1 || 
+      types.indexOf(MEDIA_OBJECT) > -1 ||
+      types.indexOf(SHORT_CREATIVE_WORK) > -1 || 
+      types.indexOf(SHORT_MEDIA_OBJECT) > -1
+    );
+  }
+
+  /**
+   * @method isDotPath
+   * @description given a path string, does any section of the path start
+   * with a .
+   * 
+   * @param {String} path
+   * 
+   * @returns {Boolean}
+   */
+  isDotPath(path) {
+    if( path.match(/http/) ) {
+      let urlInfo = new URL(path);
+      path = urlInfo.pathname;
+    }
+    
+    path = path.split('/');
+    for( var i = 0; i < path.length; i++ ) {
+      if( path[i].match(/^\./) ) {
+        return true;
+      }
+    }
+    
+    return false;
   }
 }
 

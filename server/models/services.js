@@ -32,6 +32,9 @@ class ServiceModel {
     // list of auth service domain names
     this.authServiceDomains = {};
 
+    // timer ids for sending http notifications
+    this.notificationTimers = {};
+
     this.init();
   }
 
@@ -323,12 +326,34 @@ class ServiceModel {
     // check for dot paths, we don't send those
     if( this._isDotPath(id) ) return;
 
-    for( let id in this.services ) {
-      let service = this.services[id];
-      if( service.type !== 'WebhookService' ) continue;
+    this._sendHttpNotificationBuffered(event);
+  }
 
-      this._sendHttpNotification(id, service.url, event);
+  /**
+   * @method _sendHttpNotificationBuffered
+   * @description we want to debounce event notifications.  ie we want to let events
+   * for a certain path settle before we send notifications so listeners are hammer
+   * fin server requests as updates happen on the same path.
+   * 
+   * @param {Object} event 
+   */
+  _sendHttpNotificationBuffered(event) {
+    let id = event.payload.headers[ACTIVE_MQ_HEADER_ID];
+
+    if( this.notificationTimers[id] && this.notificationTimers[id] !== -1 ) {
+      clearTimeout(this.notificationTimers[id]);
     }
+
+    this.notificationTimers[id] = setTimeout(() => {
+      this.notificationTimers[id] = -1;
+      
+      for( let serviceId in this.services ) {
+        let service = this.services[serviceId];
+        if( service.type !== 'WebhookService' ) continue;
+  
+        this._sendHttpNotification(serviceId, service.url, event);
+      }
+    }, 10 * 1000);
   }
 
   /**

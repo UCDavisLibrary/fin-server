@@ -46,7 +46,6 @@ var argv = yargs
     .help('help')
     .argv
 
-
 /**
  * Create User
  */
@@ -60,11 +59,15 @@ function createUserOpts(yargs) {
       alias: 'p',
       required : true
     })
+    .option('email', {
+      alias: 'e',
+      required : true
+    })
 }
 
 async function createUser(yargs) {
   try {
-    await model.createUser(yargs.username, yargs.password);
+    await model.createUser(yargs.username, yargs.email, yargs.password);
     console.log('Local user created: ', yargs.username);
   } catch(e) {
     console.error(e.message);

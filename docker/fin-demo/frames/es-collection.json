@@ -6,7 +6,7 @@
     "ebucore" : "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
     "schema": "http://schema.org/",
     "title" : {
-      "@id": "dct:title"
+      "@id": "dc:title"
     },
     "description" : {
       "@id": "dc:description"
@@ -31,6 +31,10 @@
     "isPartOf":{
       "@id" : "schema:isPartOf",
       "@type": "@id"
+    },
+    "exampleOfWork" : {
+      "@id" : "schema:exampleOfWork",
+      "@type" : "@id"
     },
     "mimeType" : {
       "@id" : "ebucore:hasMimeType"
@@ -83,6 +87,9 @@
     "@default" : ""
   },
   "isPartOf" : {
+    "@default" : ""
+  },
+  "exampleOfWork" : {
     "@default" : ""
   },
   "mimeType" : {

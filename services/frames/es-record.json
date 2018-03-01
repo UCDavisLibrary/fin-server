@@ -33,6 +33,18 @@
       "@id" : "schema:isPartOf",
       "@type": "@id"
     },
+    "hasPart" : {
+      "@id" : "schema:hasPart",
+      "@type": "@id"
+    },
+    "associatedMedia" : {
+      "@id" : "schema:associatedMedia",
+      "@type": "@id"
+    },
+    "encodesCreativeWork" : {
+      "@id" : "schema:encodesCreativeWork",
+      "@type": "@id"
+    },
     "mimeType" : {
       "@id" : "ebucore:hasMimeType"
     },
@@ -94,6 +106,15 @@
     "@default" : ""
   },
   "isPartOf" : {
+    "@default" : ""
+  },
+  "hasPart" : {
+    "@default" : ""
+  },
+  "encodesCreativeWork" : {
+    "@default" : ""
+  },
+  "associatedMedia" : {
     "@default" : ""
   },
   "mimeType" : {

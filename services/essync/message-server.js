@@ -1,8 +1,8 @@
 const {MessageServer, config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const indexer = require('./indexer');
 const reindexer = require('./reindexer');
-const utils = require('./utils');
 const Logger = logger('essync');
+
 
 class EsSyncMessageServer extends MessageServer {
 
@@ -35,13 +35,23 @@ class EsSyncMessageServer extends MessageServer {
     // grab the resource path
     let path = msg.payload.headers['org.fcrepo.jms.identifier'] || '/';
 
-    if( utils.isDotPath(path) ) return;
+    // we don't want anything in a dot path
+    if( indexer.isDotPath(path) ) return;
+
+    // we only want collection and record types
+    if( !indexer.isCollection(msg.payload.body.type) && 
+        !indexer.isRecord(msg.payload.body.type) ) {
+      return;
+    }
 
     // fedora create or modify event
     if( eventTypes.indexOf('ResourceModification') > -1 ||
         eventTypes.indexOf('ResourceCreation') > -1  ) {
+      
+      let frame = await indexer.getJsonFrame(path, msg.payload.body.type);
+      frame = await indexer.frameToEs(frame);
 
-      indexer.update(path);
+      indexer.update(frame);
 
     // fedora remove event
     } else if( eventTypes.indexOf('ResourceDeletion') > -1 ) {

@@ -139,7 +139,8 @@ services:
       - FIN_URL=${FIN_URL}
     depends_on:
       - server
-    command: node service
+    # command: node service
+    command: tail -f /dev/null
 
   serialization:
     image: node:8.5

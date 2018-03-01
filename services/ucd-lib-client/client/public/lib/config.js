@@ -3,15 +3,15 @@ module.exports = {
 
   elasticSearch : {
     facets : {
-      'hasMimeType' : {
+      'mimeType' : {
         label : 'Mime-Type',
         type : 'facet'
       },
-      'dc:creator' : {
+      'creator' : {
         label : 'Creator',
         type : 'facet'
       },
-      'dc:subject_raw' : {
+      'subject_raw' : {
         label : 'Subject',
         type : 'facet'
       }

@@ -4,7 +4,7 @@
     "dc": "http://purl.org/dc/elements/1.1/",
     "fedora" : "http://fedora.info/definitions/v4/repository#",
     "ebucore" : "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
-    "schema": "http://schema.org",
+    "schema": "http://schema.org/",
     "premis" : "http://www.loc.gov/premis/rdf/v1#",
     "title" : {
       "@id": "dct:title"
@@ -31,6 +31,18 @@
     },
     "isPartOf":{
       "@id" : "schema:isPartOf",
+      "@type": "@id"
+    },
+    "hasPart" : {
+      "@id" : "schema:hasPart",
+      "@type": "@id"
+    },
+    "associatedMedia" : {
+      "@id" : "schema:associatedMedia",
+      "@type": "@id"
+    },
+    "encodesCreativeWork" : {
+      "@id" : "schema:encodesCreativeWork",
       "@type": "@id"
     },
     "mimeType" : {
@@ -94,6 +106,15 @@
     "@default" : ""
   },
   "isPartOf" : {
+    "@default" : ""
+  },
+  "hasPart" : {
+    "@default" : ""
+  },
+  "encodesCreativeWork" : {
+    "@default" : ""
+  },
+  "associatedMedia" : {
     "@default" : ""
   },
   "mimeType" : {

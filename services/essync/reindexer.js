@@ -4,7 +4,6 @@ const {jwt, config, logger} = require('@ucd-lib/fin-node-utils');
 const schemaRecord = require('./schema-record');
 const schemaCollection = require('./schema-collection');
 const clone = require('clone');
-const utils = require('./utils');
 const indexer = require('./indexer');
 const Logger = logger('essync');
 const {URL} = require('url');
@@ -47,7 +46,7 @@ class EsReindexer {
     Logger.info('New index created', newRecordIndexName, newCollectionIndexName);
     
     Logger.info('Crawling fedora and populating Index');
-    await this.crawl(`${config.fcrepo.host}${config.fcrepo.root}`, newRecordIndexName, newCollectionIndexName);
+    await this.crawl(`${config.fcrepo.host}${config.fcrepo.root}/collection`, newRecordIndexName, newCollectionIndexName);
 
     Logger.info('Updating aliases');
     await this.updateAliases(oldRecordIndexes, newRecordIndexName, recordConfig.alias);
@@ -74,24 +73,36 @@ class EsReindexer {
    * @returns {Promise}
    */
   async crawl(url, recordIndex, collectionIndex) {
-    let urlInfo = new URL(url);
+    if( indexer.isDotPath(url) ) return;
 
-    if( utils.isDotPath(url) ) return;
+    url = url.replace(indexer.getFrameBaseUrl(), 'http://server:3001'+config.fcrepo.root);
+    console.log(url);
+    let response = await indexer.request({
+      type : 'GET',
+      headers : {
+        accept : 'application/ld+json'
+      },
+      uri : url
+    });
 
-    let body = await indexer.getContainer(url);
-    if( !body ) return;
-    
-    await indexer.update(clone(body), recordIndex, collectionIndex);
+    let jsonld = JSON.parse(response.body)[0];
+    let frame = await indexer.getJsonFrame(url, jsonld['@type']);
 
-    if( !body.contains ) return;
+    if( frame ) {
+      console.log('INSERTING: '+url);
+      await indexer.update(frame, recordIndex, collectionIndex);
+    }
+
+    let contains = jsonld['http://www.w3.org/ns/ldp#contains'];
+    if( !contains ) return;
+
+    if( !Array.isArray(contains) ) {
+      contains = [contains];
+    }
 
     // update children
-    if( Array.isArray(body.contains) ) {
-      for( var i = 0; i < body.contains.length; i++ ) {
-        await this.crawl(body.contains[i], recordIndex, collectionIndex);
-      }
-    } else {
-      await this.crawl(body.contains, recordIndex, collectionIndex);
+    for( var i = 0; i < contains.length; i++ ) {
+      await this.crawl(contains[i]['@id'], recordIndex, collectionIndex);
     }
   }
 

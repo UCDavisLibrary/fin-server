@@ -19,6 +19,10 @@ module.exports = {
     cacheExpireTime : process.env.FIN_CACHE_EXPIRE || (60*60*12)
   },
 
+  fin : {
+    host : 'http://server:3001'
+  },
+
   defaultServices : defaultServices,
 
   cas : {

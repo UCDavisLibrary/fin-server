@@ -5,15 +5,15 @@
       "type" : "keyword"
     },
 
-    "shortId" : {
+    "localId" : {
       "type" : "keyword" 
     },
 
-    "shortIdIsPartOf" : {
+    "isPartOfLocalId" : {
       "type" : "keyword" 
     },
 
-    "dc:subject" : {
+    "subject" : {
       "type" : "text",
       "fields": {
         "raw": { 
@@ -22,7 +22,7 @@
       }
     },
 
-    "dc:creator" : {
+    "creator" : {
       "type" : "keyword"
     },
 
@@ -39,7 +39,7 @@
       "type" : "keyword"
     },
 
-    "hasMimeType" : {
+    "mimeType" : {
       "type" : "keyword"
     },
 
