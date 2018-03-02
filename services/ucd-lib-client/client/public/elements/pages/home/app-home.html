@@ -140,7 +140,7 @@
 <div class="collection-outer">
   <div class="collections">
     <template is="dom-repeat" items="[[highlightedCollections]]">
-      <div style="background-image:url('[[item.thumbnail]]')" data-id$="[[item.shortId]]" on-click="_onCollectionClicked">
+      <div style="background-image:url('[[item.thumbnail]]')" data-id$="[[item.localId]]" on-click="_onCollectionClicked">
         <div>[[item.title]]</div>
       </div>
     </template>

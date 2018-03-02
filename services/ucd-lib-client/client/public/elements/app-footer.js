@@ -45,7 +45,7 @@ class AppFooter extends Mixin(PolymerElement)
    */
   _onBrowseCollection(e) {
     let id = e.currentTarget.getAttribute('data-id');
-    this._esSetKeywordFilter('shortIdIsPartOf', id);
+    this._esSetKeywordFilter('isPartOfLocalId', id);
   }
 }
 

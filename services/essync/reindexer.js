@@ -1,13 +1,18 @@
 const request = require('superagent');
 const elasticsearch = require('elasticsearch');
 const {jwt, config, logger} = require('@ucd-lib/fin-node-utils');
-const schemaRecord = require('./schema-record');
-const schemaCollection = require('./schema-collection');
+const schemaRecord = require('./schemas/record');
+const schemaCollection = require('./schemas/collection');
 const clone = require('clone');
 const indexer = require('./indexer');
 const Logger = logger('essync');
 const {URL} = require('url');
-const timeProfile = require('./timeProfile');
+const api = require('@ucd-lib/fin-node-api');
+
+api.setConfig({
+  host : 'http://server:3001',
+  fcBasePath: config.fcrepo.root
+});
 
 class EsReindexer {
 
@@ -24,13 +29,10 @@ class EsReindexer {
    * @returns {Promise}
    */
   async run() {
-    // set to false to disable time profiling
-    timeProfile.enable = true;
-    timeProfile.profileStart('reindex');
-
 
     // make sure indexer has fresh token
     indexer.generateToken();
+    api.setConfig({jwt: indexer.token});
 
     let recordConfig = config.elasticsearch.record;
     let colConfig = config.elasticsearch.collection;
@@ -56,9 +58,6 @@ class EsReindexer {
     await this.dropIndexes(oldRecordIndexes);
     Logger.info('Removing old collection indexes', oldCollectionIndexes);
     await this.dropIndexes(oldCollectionIndexes);
-
-    timeProfile.profileEnd('reindex');
-    timeProfile.print();
   }
 
   /**
@@ -75,21 +74,28 @@ class EsReindexer {
   async crawl(url, recordIndex, collectionIndex) {
     if( indexer.isDotPath(url) ) return;
 
-    url = url.replace(indexer.getFrameBaseUrl(), 'http://server:3001'+config.fcrepo.root);
-    console.log(url);
-    let response = await indexer.request({
-      type : 'GET',
+    url = url.split(config.fcrepo.root)[1];
+
+    let response = await api.head({path : url});
+    
+    if( !response.checkStatus(200) ) return;
+    if( !api.isRdfContainer(response) ) {
+      url = url + '/fcr:metadata'
+    }
+
+    response = await api.get({
+      path: url,
       headers : {
-        accept : 'application/ld+json'
-      },
-      uri : url
+        accept : api.RDF_FORMATS.JSON_LD
+      }
     });
+    response = response.last;
 
     let jsonld = JSON.parse(response.body)[0];
     let frame = await indexer.getJsonFrame(url, jsonld['@type']);
 
     if( frame ) {
-      console.log('INSERTING: '+url);
+      frame = await indexer.frameToEs(frame);
       await indexer.update(frame, recordIndex, collectionIndex);
     }
 

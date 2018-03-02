@@ -45,8 +45,8 @@ class AppHome extends Mixin(PolymerElement)
     });
 
     overview.forEach(item => {
-      browse[item.shortId] = item.title;
-      item.thumbnail = item.previewImage+'/svc:iiif/full/,320/0/default.png'
+      browse[item.localId] = item.title;
+      item.thumbnail = '/fcrepo/rest'+item.exampleOfWorkLocalId+'/svc:iiif/full/,320/0/default.png'
     });
 
     this.$.searchBox.browse = browse;
@@ -58,12 +58,12 @@ class AppHome extends Mixin(PolymerElement)
    * @description called from the search box browse button
    */
   _onBrowse(e) {
-    let shortId = e.detail;
-    if( !shortId || shortId === 'Browse' ) {
-      return this._esRemoveKeywordFilter('shortIdIsPartOf');
+    let localId = e.detail;
+    if( !localId || localId === 'Browse' ) {
+      return this._esRemoveKeywordFilter('isPartOfLocalId');
     }
     this.$.searchBox.browseValue = 'Browse';
-    this._onCollectionSelected(shortId);
+    this._onCollectionSelected(localId);
   }
 
   /**
@@ -89,7 +89,7 @@ class AppHome extends Mixin(PolymerElement)
    * @description filter based on a collection using short ids.
    */
   _onCollectionSelected(id) {
-    this._esSetKeywordFilter('shortIdIsPartOf', id);
+    this._esSetKeywordFilter('isPartOfLocalId', id);
   }
   
 }

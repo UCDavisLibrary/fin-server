@@ -135,10 +135,10 @@ export default class AppRecord extends Mixin(PolymerElement)
                   moment(this.record.created).format(this.momentFormat) :
                   '';
 
-    this.resourceType = this.record.type || this.record.hasMimeType || 'Unknown';
+    this.resourceType = this.record.type || this.record.mimeType || 'Unknown';
 
     this.size = bytes(this.record.hasSize ? parseInt(this.record.hasSize) : 0);
-    this.mimeType = this.record.hasMimeType || '';
+    this.mimeType = this.record.mimeType || '';
 
     this.rights = this.record.rights || '';
 

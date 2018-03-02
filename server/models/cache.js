@@ -36,7 +36,7 @@ class CacheModel {
     let body = '';
     res.on('data', (data) => body += data.toString());
     res.on('end', async () => {
-      let headerHash = this._createHeadersMD5(req.get('accept'), req.get('prefer'), res.headers.link);
+      let headerHash = this._createHeadersMD5(req.get('accept'), req.get('prefer'), req.get('host'), res.headers.link);
       let key = this.PREFIX + path + res.headers.etag + headerHash;
 
       let value = JSON.stringify({
@@ -58,7 +58,7 @@ class CacheModel {
    * @param {Object} req express request 
    */
   async get(path, resHeaders, req) {
-    let headerHash = this._createHeadersMD5(req.get('accept'), req.get('prefer'), resHeaders.link);
+    let headerHash = this._createHeadersMD5(req.get('accept'), req.get('prefer'), req.get('host'), resHeaders.link);
     let key = this.PREFIX + path + (resHeaders.etag || '') + headerHash;
 
     let value = await redis.get(key);
@@ -90,14 +90,15 @@ class CacheModel {
    * @description create the md5 of the accept, prefer and link headers.  this is used
    * in creating the redis cache key
    * 
-   * @param {String} accept
-   * @param {String} prefer
-   * @param {String} link
+   * @param {String} accept request Accept header
+   * @param {String} prefer request Prefer header
+   * @param {String} host request Host header
+   * @param {String} link response Link header
    * 
    * @returns {String}
    */
-  _createHeadersMD5(accept='', prefer='', link='') {
-    return md5(accept.trim()+prefer.trim()+link.trim());
+  _createHeadersMD5(accept='', prefer='', host='', link='') {
+    return md5(accept.trim()+prefer.trim()+host.trim()+link.trim());
   }
 
 }

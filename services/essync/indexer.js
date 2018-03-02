@@ -1,12 +1,12 @@
 const elasticsearch = require('elasticsearch');
 const request = require('request');
-const schemaRecord = require('./schema-record');
-const schemaCollection = require('./schema-collection');
+const schemaRecord = require('./schemas/record');
+const schemaCollection = require('./schemas/collection');
 const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const Logger = logger('essync');
-const timeProfile = require('./timeProfile');
 const fs = require('fs');
 const {URL} = require('url');
+const api = require('@ucd-lib/fin-node-api');
 
 // everything depends on indexer, so placing this here...
 process.on('unhandledRejection', err => Logger.error(err));
@@ -19,6 +19,8 @@ const SHORT_CREATIVE_WORK = 'schema:CreativeWork';
 const SHORT_MEDIA_OBJECT = 'schema:MediaObject';
 const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 const SHORT_BINARY = 'fedora:Binary';
+
+const HOST = new URL(config.server.url).host;
 
 class EsIndexer {
   
@@ -35,7 +37,7 @@ class EsIndexer {
     }
 
     // properties to set local ids for
-    this.localIds = ['@id', 'hasPart', 'isPartOf', 'associatedMedia', 'encodesCreativeWork'];
+    this.localIds = ['@id', 'hasPart', 'isPartOf', 'exampleOfWork', 'associatedMedia', 'encodesCreativeWork'];
 
     this.init();
   }
@@ -100,7 +102,6 @@ class EsIndexer {
    * @returns {Promise}
    */
   async update(jsonld, recordIndex, collectionIndex) {
-
     // only index binary and collections
     if( this.isRecord(jsonld['@type']) ) {
       Logger.info(`ES Indexer updating record container: ${jsonld.localId}`);
@@ -133,31 +134,27 @@ class EsIndexer {
    * @returns {Promise}
    */
   async remove(path) {
-    // so we no longer have reference to item... 
-    // going to just try record first, if that fails
-    // then try collection
-
     // first try record collection
     try {
-      timeProfile.profileStart('ES Delete');
+
       await this.esClient.delete({
         index : config.elasticsearch.record.alias,
         type: config.elasticsearch.record.schemaType,
-        id : config.server.url+config.fcrepo.root+path,
+        id : path,
       });
-      timeProfile.profileEnd('ES Delete');
-      Logger.info(`ES Indexer removing binary container: ${id}`);
+
+      Logger.info(`ES Indexer removing record container: ${path}`);
     } catch(e) {
       // otherwise, try collection
       try {
-        timeProfile.profileStart('ES Delete');
+
         await this.esClient.delete({
           index : config.elasticsearch.collection.alias,
           type: config.elasticsearch.collection.schemaType,
-          id : config.server.url+config.fcrepo.root+path,
+          id : path,
         });
-        timeProfile.profileEnd('ES Delete');
-        Logger.info(`ES Indexer removing collection container: ${id}`);
+
+        Logger.info(`ES Indexer removing collection container: ${path}`);
       } catch(e) {}
     }
   }
@@ -223,12 +220,10 @@ class EsIndexer {
     // we don't have a frame service for this
     if( !svc ) return null;
 
-    console.log( path+`/svc:${svc}`);
     var response = await this.request({
       type : 'GET',
       uri : path+`/svc:${svc}`
     });
-    console.log(response.body);
 
     try {
       return JSON.parse(response.body);
@@ -298,12 +293,12 @@ class EsIndexer {
   setLocalIds(json) {
     this.localIds.forEach(id => {
       if( json[id] === undefined ) return;
-      let shortId = (id === '@id') ? 'localId' : id+'LocalId';
+      let localId = (id === '@id') ? 'localId' : id+'LocalId';
 
       if( Array.isArray(json[id]) ) {
-        json[shortId] = json[id].map(id => id.replace(this.getFrameBaseUrl(), '')); 
+        json[localId] = json[id].map(id => id.replace(this.getFrameBaseUrl(), '')); 
       } else {
-        json[shortId] = json[id].replace(this.getFrameBaseUrl(), ''); 
+        json[localId] = json[id].replace(this.getFrameBaseUrl(), ''); 
       }
     });
 
@@ -379,7 +374,7 @@ class EsIndexer {
 
   /**
    * @method getFrameBaseUrl
-   * @description this should be used to make shortIds from frame 
+   * @description this should be used to make localIds from frame 
    * responses.  If you are running on localhost in dev mode, the frame
    * uri's will be http://fcrepo:8080, otherwise they should be the 
    * fin host

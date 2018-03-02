@@ -29,7 +29,7 @@ class AppSearchHeader extends Mixin(PolymerElement)
 
     let browse = {};
     overview.forEach(item => {
-      browse[item.shortId] = item.title;
+      browse[item.localId] = item.title;
     });
 
     this.$.searchInput.browse = browse;
@@ -43,12 +43,12 @@ class AppSearchHeader extends Mixin(PolymerElement)
    * @param {Object} e 
    */
   _onBrowse(e) {
-    let shortId = e.detail;
-    if( !shortId || shortId === 'Browse' ) {
-      return this._esRemoveKeywordFilter('shortIdIsPartOf');
+    let localId = e.detail;
+    if( !localId || localId === 'Browse' ) {
+      return this._esRemoveKeywordFilter('isPartOfLocalId');
     }
     this.$.searchInput.browseValue = 'Browse';
-    this._esSetKeywordFilter('shortIdIsPartOf', shortId);
+    this._esSetKeywordFilter('isPartOfLocalId', localId);
   }
 
   /**

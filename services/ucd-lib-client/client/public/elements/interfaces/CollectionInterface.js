@@ -13,8 +13,8 @@ class CollectionInterface extends subclass {
     return this.CollectionModel.get(id);
   }
 
-  _getCollectionByShortId(shortId) {
-    return this.CollectionModel.getByShortId(shortId);
+  _getCollectionByLocalId(localId) {
+    return this.CollectionModel.getByLocalId(localId);
   }
 
 }

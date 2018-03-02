@@ -94,7 +94,7 @@ class AppFiltersPanel extends Mixin(PolymerElement)
    * collection filter when clicked
    */
   _removeCollectionFilter() {
-    this._esRemoveKeywordFilter('shortIdIsPartOf');
+    this._esRemoveKeywordFilter('isPartOfLocalId');
   }
 }
 

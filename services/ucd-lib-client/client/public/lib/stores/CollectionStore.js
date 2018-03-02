@@ -8,7 +8,7 @@ class CollectionStore extends BaseStore {
     this.data = {
       selected : null,
       byId : {},
-      byShortId : {},
+      byLocalId : {},
       // should include the overview state
       overview : {
         state : this.STATE.INIT
@@ -38,7 +38,7 @@ class CollectionStore extends BaseStore {
     payload.forEach(item => {
       item.id = item['@id'];
       this.data.byId[item.id] = item;
-      this.data.byShortId[item.shortId] = item;
+      this.data.byLocalId[item.localId] = item;
     });
 
     payload.sort((a,b) => {
