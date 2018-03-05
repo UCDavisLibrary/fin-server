@@ -1,6 +1,6 @@
 const request = require('superagent');
 const elasticsearch = require('elasticsearch');
-const {jwt, config, logger} = require('@ucd-lib/fin-node-utils');
+const {jwt, logger} = require('@ucd-lib/fin-node-utils');
 const schemaRecord = require('./schemas/record');
 const schemaCollection = require('./schemas/collection');
 const clone = require('clone');
@@ -8,6 +8,7 @@ const indexer = require('./indexer');
 const Logger = logger('essync');
 const {URL} = require('url');
 const api = require('@ucd-lib/fin-node-api');
+const config = require('./config');
 
 api.setConfig({
   host : 'http://server:3001',
@@ -32,32 +33,66 @@ class EsReindexer {
 
     // make sure indexer has fresh token
     indexer.generateToken();
-    api.setConfig({jwt: indexer.token});
 
     let recordConfig = config.elasticsearch.record;
     let colConfig = config.elasticsearch.collection;
 
+    // grab the current indexes being used for records and collections
     Logger.info('Grabbing current indexes')
     var oldRecordIndexes = await this.getCurrentIndexes(recordConfig.alias);
     var oldCollectionIndexes = await this.getCurrentIndexes(colConfig.alias);
     Logger.info('Found indexes', oldRecordIndexes, oldCollectionIndexes);
 
+    // create new indexes to insert into during the crawl
     Logger.info('Creating new index');
     var newRecordIndexName = await indexer.createIndex(recordConfig.alias, recordConfig.schemaType, schemaRecord);
     var newCollectionIndexName = await indexer.createIndex(colConfig.alias, colConfig.schemaType, schemaCollection);
     Logger.info('New index created', newRecordIndexName, newCollectionIndexName);
-    
-    Logger.info('Crawling fedora and populating Index');
-    await this.crawl(`${config.fcrepo.host}${config.fcrepo.root}/collection`, newRecordIndexName, newCollectionIndexName);
 
+    // now crawl collections
+    Logger.info('Crawling fin collections and populating Index');
+    // first thing, us a admin token to get all children of collection
+    api.setConfig({jwt: indexer.token});
+    let collections = await this.getRootCollections();
+
+    // we want to crawl as a public user (no jwt)
+    api.setConfig({jwt: null});
+    // crawl all collections
+    for( var i = 0; i < collections.length; i++ ) {
+      await this.crawl(collections[i], newRecordIndexName, newCollectionIndexName);
+    }
+
+    // for any currently active index, remove the alias name.  Set the alias name to the new indexes
     Logger.info('Updating aliases');
     await this.updateAliases(oldRecordIndexes, newRecordIndexName, recordConfig.alias);
     await this.updateAliases(oldCollectionIndexes, newCollectionIndexName, colConfig.alias);
 
+    // finally, drop all old indexes (the indexes that were active until the lines above)
     Logger.info('Removing old record indexes', oldRecordIndexes);
     await this.dropIndexes(oldRecordIndexes);
     Logger.info('Removing old collection indexes', oldCollectionIndexes);
     await this.dropIndexes(oldCollectionIndexes);
+  }
+
+  async getRootCollections() {
+    let response = await api.get({
+      path: config.essync.basePath,
+      headers : {
+        accept : api.RDF_FORMATS.JSON_LD
+      }
+    });
+    response = response.last;
+    let jsonld = JSON.parse(response.body)[0];
+
+    let contains = jsonld['http://www.w3.org/ns/ldp#contains'];
+    if( !contains ) return [];
+
+    // just make sure this is an array...
+    if( !Array.isArray(contains) ) {
+      contains = [contains];
+    }
+
+    return contains.map(item => item['@id']);
   }
 
   /**
@@ -74,15 +109,23 @@ class EsReindexer {
   async crawl(url, recordIndex, collectionIndex) {
     if( indexer.isDotPath(url) ) return;
 
+    // we just want the path, no host or fcBasePath
     url = url.split(config.fcrepo.root)[1];
 
+    // make a head request for access and container type info
     let response = await api.head({path : url});
     
+    // make a head request for access and container type info
     if( !response.checkStatus(200) ) return;
+
+    // if this is binary container, append /fcr:metadata to path
     if( !api.isRdfContainer(response) ) {
       url = url + '/fcr:metadata'
     }
 
+    // grab the current container as json-ld because we need full type 
+    // information in order to know which frame service to access.  We
+    // also need the contains information to continue the crawl
     response = await api.get({
       path: url,
       headers : {
@@ -90,23 +133,32 @@ class EsReindexer {
       }
     });
     response = response.last;
-
     let jsonld = JSON.parse(response.body)[0];
+
+    // grab the frame for the container
     let frame = await indexer.getJsonFrame(url, jsonld['@type']);
 
+    // the getJsonFrame returns null if not a valid container type, 
+    // so we only update elasticsearch if a valid frame was returned
     if( frame ) {
+      // munge the frame a bit (see method doc for more)
       frame = await indexer.frameToEs(frame);
+      // insert into elastic search
+      // here we pass the temporary aliases instead for the active index
+      // we will make the temp aliases the active index once we finish the crawl
       await indexer.update(frame, recordIndex, collectionIndex);
     }
 
+    // check if this container has children
     let contains = jsonld['http://www.w3.org/ns/ldp#contains'];
-    if( !contains ) return;
+    if( !contains ) return; // no more children, done crawling this branch
 
+    // just make sure this is an array...
     if( !Array.isArray(contains) ) {
       contains = [contains];
     }
 
-    // update children
+    // recursively crawl the children
     for( var i = 0; i < contains.length; i++ ) {
       await this.crawl(contains[i]['@id'], recordIndex, collectionIndex);
     }
@@ -190,7 +242,7 @@ class EsReindexer {
 
 const reindexer = new EsReindexer();
 
-// manually run reindexer
+// manually run reindexer from command line
 if( process.argv.indexOf('reindex') > -1 ) {
   reindexer.run()
     .then(() => Logger.info('done'))

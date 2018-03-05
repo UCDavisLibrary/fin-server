@@ -323,9 +323,6 @@ class ServiceModel {
       return;
     }
 
-    // check for dot paths, we don't send those
-    if( this._isDotPath(id) ) return;
-
     this._sendHttpNotificationBuffered(event);
   }
 
@@ -478,7 +475,7 @@ class ServiceModel {
    * 
    * @param {String} path url path to check
    * 
-   * @returns {Boolean} 
+   * @returns {String} first part of path with dot 
    */
   _isDotPath(path) {
     if( path.match(/^http/i) ) {
@@ -489,11 +486,11 @@ class ServiceModel {
     path = path.split('/');
     for( var i = 0; i < path.length; i++ ) {
       if( path[i].match(/^\./) ) {
-        return true;
+        return path[i];
       }
     }
     
-    return false;
+    return null;
   }
 
 }

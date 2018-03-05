@@ -44,18 +44,69 @@ class EsSyncMessageServer extends MessageServer {
       return;
     }
 
-    // fedora create or modify event
-    if( eventTypes.indexOf('ResourceModification') > -1 ||
-        eventTypes.indexOf('ResourceCreation') > -1  ) {
-      
+    // fedora create event
+    if( eventTypes.indexOf('ResourceCreation') > -1 ) {
+
+      // grab the frame for the path
       let frame = await indexer.getJsonFrame(path, msg.payload.body.type);
+      if( !frame ) return; // no access, quit out
+
+      // make required modifications to frame (see method docs for more information)
       frame = await indexer.frameToEs(frame);
 
+      // insert into elasticsearch
+      indexer.update(frame);
+
+    // fedora modify event
+    } else if( eventTypes.indexOf('ResourceModification') > -1 ) {
+
+      // grab the frame for the path
+      let frame = await indexer.getJsonFrame(path, msg.payload.body.type);
+      
+      // at this point, likely doesn't have public access
+      if( !frame ) {
+        if( indexer.isCollection(msg.payload.body.type) ) {
+          // remove collection and all children
+          indexer.removeCollection(path);
+        } else {
+          // remove from elastic search
+          indexer.remove(path, msg.payload.body.type);
+        }
+        return;
+      }
+
+      // TODO: if the collection doesn't exist in the  
+      // elasticsearch we need to reindex the entire collection
+      if( indexer.isCollection(msg.payload.body.type) ) {
+        let exists = await indexer.esClient.exists({
+          index : config.elasticsearch.collection.alias,
+          type: config.elasticsearch.collection.schemaType,
+          id : path
+        });
+
+        if( !exists ) {
+          Logger.info('Modification to existing collection not in elasticsearch, reindexing collection: '+path);
+          await reindexer.crawl(
+            indexer.getBaseUrl()+path,  
+            config.elasticsearch.record.alias,
+            config.elasticsearch.collection.alias
+          );
+          Logger.info('Reindexing collection complete: '+path);
+          return;
+        }
+      }
+
+      // make required modifications to frame (see method docs for more information)
+      frame = await indexer.frameToEs(frame);
+
+      // insert into elasticsearch
       indexer.update(frame);
 
     // fedora remove event
     } else if( eventTypes.indexOf('ResourceDeletion') > -1 ) {
-      indexer.remove(path);
+
+      // remove from elastic search
+      indexer.remove(path, msg.payload.body.type);
     }
   }
 }

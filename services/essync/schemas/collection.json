@@ -9,6 +9,10 @@
       "type" : "keyword" 
     },
 
+    "collectionLocalId" : {
+      "type" : "keyword" 
+    },
+
     "subject" : {
       "type" : "text",
       "fields": {

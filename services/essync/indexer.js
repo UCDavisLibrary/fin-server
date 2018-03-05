@@ -2,11 +2,12 @@ const elasticsearch = require('elasticsearch');
 const request = require('request');
 const schemaRecord = require('./schemas/record');
 const schemaCollection = require('./schemas/collection');
-const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
+const {logger, jwt} = require('@ucd-lib/fin-node-utils');
 const Logger = logger('essync');
 const fs = require('fs');
 const {URL} = require('url');
 const api = require('@ucd-lib/fin-node-api');
+const config = require('./config');
 
 // everything depends on indexer, so placing this here...
 process.on('unhandledRejection', err => Logger.error(err));
@@ -30,14 +31,6 @@ class EsIndexer {
       host: config.elasticsearch.host,
       log: config.elasticsearch.log
     });
-
-    this.frameServices = {
-      collection : 'es-collection-frame',
-      record : 'es-record-frame'
-    }
-
-    // properties to set local ids for
-    this.localIds = ['@id', 'hasPart', 'isPartOf', 'exampleOfWork', 'associatedMedia', 'encodesCreativeWork'];
 
     this.init();
   }
@@ -92,73 +85,15 @@ class EsIndexer {
   }
 
   /**
-   * @method update
-   * @description insert or update record
+   * @method ensureIndex
+   * @description make sure given index exists in elastic search
    * 
-   * @param {String|Object} jsonld either jsonld container or path to container in fcrepo
-   * @param {String} recordIndex optional record index to insert into, otherwise alias is used
-   * @param {String} collectionIndex optional collection index to insert into, otherwise alias is used
-   * 
-   * @returns {Promise}
-   */
-  async update(jsonld, recordIndex, collectionIndex) {
-    // only index binary and collections
-    if( this.isRecord(jsonld['@type']) ) {
-      Logger.info(`ES Indexer updating record container: ${jsonld.localId}`);
-
-      await this.esClient.index({
-        index : recordIndex || config.elasticsearch.record.alias,
-        type: config.elasticsearch.record.schemaType,
-        id : jsonld.localId,
-        body: jsonld
-      });
-
-    } else if ( this.isCollection(jsonld['@type']) ) {
-      Logger.info(`ES Indexer updating collection container: ${jsonld.localId}`);
-
-      await this.esClient.index({
-        index : collectionIndex || config.elasticsearch.collection.alias,
-        type: config.elasticsearch.collection.schemaType,
-        id : jsonld.localId,
-        body: jsonld
-      });
-    }
-  }
-
-  /**
-   * @method remove
-   * @description remove record
-   * 
-   * @param {String} path fcrepo path
+   * @param {String} alias 
+   * @param {String} schemaName 
+   * @param {Object} schema 
    * 
    * @returns {Promise}
    */
-  async remove(path) {
-    // first try record collection
-    try {
-
-      await this.esClient.delete({
-        index : config.elasticsearch.record.alias,
-        type: config.elasticsearch.record.schemaType,
-        id : path,
-      });
-
-      Logger.info(`ES Indexer removing record container: ${path}`);
-    } catch(e) {
-      // otherwise, try collection
-      try {
-
-        await this.esClient.delete({
-          index : config.elasticsearch.collection.alias,
-          type: config.elasticsearch.collection.schemaType,
-          id : path,
-        });
-
-        Logger.info(`ES Indexer removing collection container: ${path}`);
-      } catch(e) {}
-    }
-  }
-
   async ensureIndex(alias, schemaName, schema) {
     let exits = await this.esClient.indices.existsAlias({name: alias});
     if( exits ) return;
@@ -200,6 +135,110 @@ class EsIndexer {
   }
 
   /**
+   * @method update
+   * @description insert or update record
+   * 
+   * @param {String|Object} jsonld either jsonld container or path to container in fcrepo
+   * @param {String} recordIndex optional record index to insert into, otherwise alias is used
+   * @param {String} collectionIndex optional collection index to insert into, otherwise alias is used
+   * 
+   * @returns {Promise}
+   */
+  async update(jsonld, recordIndex, collectionIndex) {
+    // only index binary and collections
+    if( this.isRecord(jsonld['@type']) ) {
+      Logger.info(`ES Indexer updating record container: ${jsonld.localId}`);
+
+      await this.esClient.index({
+        index : recordIndex || config.elasticsearch.record.alias,
+        type: config.elasticsearch.record.schemaType,
+        id : jsonld.localId,
+        body: jsonld
+      });
+
+    } else if ( this.isCollection(jsonld['@type']) ) {
+      Logger.info(`ES Indexer updating collection container: ${jsonld.localId}`);
+
+      await this.esClient.index({
+        index : collectionIndex || config.elasticsearch.collection.alias,
+        type: config.elasticsearch.collection.schemaType,
+        id : jsonld.localId,
+        body: jsonld
+      });
+    } else {
+      Logger.info(`ES Indexer ignoring container: ${jsonld.localId}`, jsonld['@type']);
+    }
+  }
+
+  /**
+   * @method remove
+   * @description remove record
+   * 
+   * @param {String} path fcrepo path
+   * 
+   * @returns {Promise}
+   */
+  async remove(path, types) {
+    let exists = await this.esClient.exists({
+      index : config.elasticsearch.collection.alias,
+      type: config.elasticsearch.collection.schemaType,
+      id : path
+    });
+    if( !exists ) return;
+
+    if( this.isRecord(types) ) {
+      try {
+        await this.esClient.delete({
+          index : config.elasticsearch.record.alias,
+          type: config.elasticsearch.record.schemaType,
+          id : path
+        });
+  
+        Logger.info(`ES Indexer removed record container: ${path}`);
+      } catch(e) {
+        Logger.error('Failed to remove record container from elasticsearch: '+path, e);
+      }
+    } else if( this.isCollection(types) ) {
+      try {
+        await this.esClient.delete({
+          index : config.elasticsearch.collection.alias,
+          type: config.elasticsearch.collection.schemaType,
+          id : path
+        });
+  
+        Logger.info(`ES Indexer removed collection container: ${path}`);
+      } catch(e) {
+        Logger.error('Failed to remove collection container from elasticsearch: '+path, e);
+      }
+    }
+  }
+
+  async removeCollection(collectionLocalId) {
+    Logger.info(`Removing all records for collection: ${collectionLocalId}`);
+
+    try {
+      let response = await this.esClient.deleteByQuery({
+        index: config.elasticsearch.record.alias,
+        body : {
+          query: {
+            term : { 
+              collectionLocalId : collectionLocalId
+            }
+          }
+        }
+      });
+
+      await this.esClient.delete({
+        index : config.elasticsearch.collection.alias,
+        type: config.elasticsearch.collection.schemaType,
+        id : collectionLocalId
+      });
+    } catch(e) {
+      Logger.error(`Failed to remove all records for collection: ${collectionLocalId}`, e);
+    }
+  }
+
+  /**
    * @method getJsonFrame
    * @description get a fcrepo container frame at specified path. 
    * 
@@ -214,8 +253,8 @@ class EsIndexer {
     }
 
     let svc = '';
-    if( this.isRecord(types) ) svc = this.frameServices.record;
-    else if( this.isCollection(types) ) svc = this.frameServices.collection;
+    if( this.isRecord(types) ) svc = config.essync.frameServices.record;
+    else if( this.isCollection(types) ) svc = config.essync.frameServices.collection;
 
     // we don't have a frame service for this
     if( !svc ) return null;
@@ -224,6 +263,10 @@ class EsIndexer {
       type : 'GET',
       uri : path+`/svc:${svc}`
     });
+    if( response.statusCode === 403 ) {
+      Logger.error('Ignoring non-public container: '+path);
+      return null;
+    }
 
     try {
       return JSON.parse(response.body);
@@ -233,15 +276,39 @@ class EsIndexer {
     }
   }
 
+  /**
+   * @method frameToEs
+   * @description given a JSON-LD frame, extract the record or collection,
+   * set the local identifiers, set the base64 encoded thumbnail (if image), set
+   * the image resolution (if image)
+   * 
+   * @param {Object} frame
+   * 
+   * @returns {Promise} 
+   */
   async frameToEs(frame) {
     frame = this.getRecordOrCollectionFrame(frame);
     this.setLocalIds(frame);
     await this.setThumbnail(frame);
     await this.setImageResolution(frame);
 
+    if( this.isRecord(frame['@type']) ) {
+      frame.collectionLocalId = frame.localId.split('/').splice(0, 3).join('/');
+    }
+
     return frame;
   }
 
+  /**
+   * @method setThumbnail
+   * @description given a JSON-LD frame, set the thumbnail.  If there is an exampleOfWork,
+   * this property will be used otherwise the id of the frame.  The uri will be hit against
+   * the iiif service.
+   * 
+   * @param {Object} json
+   * 
+   * @returns {Object}
+   */
   async setThumbnail(json) {
     if( !json.exampleOfWork ) {
       if( !json.mimeType ) return;
@@ -261,6 +328,16 @@ class EsIndexer {
     return json;
   }
 
+  /**
+   * @method setImageResolution
+   * @description given a JSON-LD frame, set the image resolution.  If there is an exampleOfWork,
+   * this property will be used otherwise the id of the frame.  The uri will be hit against
+   * the iiif service for resolution information.
+   * 
+   * @param {Object} json
+   * 
+   * @returns {Object}
+   */
   async setImageResolution(json) {
     if( !json.exampleOfWork ) {
       if( !json.mimeType ) return;
@@ -284,14 +361,15 @@ class EsIndexer {
 
   /**
    * @method setLocalIds
-   * @description set shortend local identifiers for object
+   * @description set shortend local identifiers for object.  These ids strip off the 
+   * jsonld data
    * 
    * @param {Object} json
    * 
    * @return {Object}
    */
   setLocalIds(json) {
-    this.localIds.forEach(id => {
+    config.essync.localIds.forEach(id => {
       if( json[id] === undefined ) return;
       let localId = (id === '@id') ? 'localId' : id+'LocalId';
 
@@ -319,13 +397,13 @@ class EsIndexer {
    * jwt token and set uri to full path of fcrepo based on config.fcrepo params.
    */
   request(options) {
-    if( !this.token ) this.generateToken();
+    // if( !this.token ) this.generateToken();
 
     if( !options.headers ) options.headers = {};
-    options.headers.Authorization = `Bearer ${this.token}`;
+    // options.headers.Authorization = `Bearer ${this.token}`;
 
     if( !options.uri.match(/^http/i) ) {
-      options.uri =  this.getBaseUrl() + options.uri;
+      options.uri = this.getBaseUrl() + options.uri;
     }
 
     return new Promise((resolve, reject) => {
@@ -455,12 +533,13 @@ class EsIndexer {
     path = path.split('/');
     for( var i = 0; i < path.length; i++ ) {
       if( path[i].match(/^\./) ) {
-        return true;
+        return path[i];
       }
     }
-    
-    return false;
+
+    return null;
   }
+
 }
 
 module.exports = new EsIndexer();
