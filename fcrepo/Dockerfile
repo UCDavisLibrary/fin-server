@@ -3,7 +3,12 @@ FROM jetty:9.4.6
 ENV FCREPO_HOME=/var/lib/jetty/fedora-data \
     FCREPO_NAME=fcrepo \
     FCREPO_VERSION=4.7.4 \
-    FCREPO_WAR=/var/lib/jetty/webapps/fcrepo.war
+    FCREPO_WAR=/var/lib/jetty/webapps/fcrepo.war \
+		FCREPO_ETC=/etc/fcrepo
+
+ENV	FCREPO_MODESHAPE_CONFIGURATION=file://${FCREPO_ETC}/repository.json
+ENV	FCREPO_AUTH_WEBAC_AUTHORIZATION=file://${FCREPO_ETC}/root-authorization.ttl
+ENV FCREPO_ACTIVEMQ_CONFIGURATION=file://${FCREPO_ETC}/activemq.xml
 
 RUN apt-get update
 RUN apt-get install -y wget unzip
@@ -30,11 +35,17 @@ COPY ./web.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/
 COPY ./jetty-auth-jars/* /var/lib/jetty/lib/ext/
 COPY ./fcrepo.xml /var/lib/jetty/webapps/fcrepo.xml
 
+# Create an external configuration setup
+RUN mkdir -p ${FCREPO_ETC}
+COPY ./etc/fcrepo/* ${FCREPO_ETC}/
+
 RUN mkdir -p ${FCREPO_HOME} && chmod -R a+rw ${FCREPO_HOME}
 VOLUME ["$FCREPO_HOME"]
 
 ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
     -Dfcrepo.home=${FCREPO_HOME} \
-    -Dfcrepo.modeshape.configuration=classpath:/config/servlet-auth/repository.json" 
+    -Dfcrepo.modeshape.configuration=${FCREPO_MODESHAPE_CONFIGURATION}" \
+    -Dfcrepo.auth.webac.authorization=${FCREPO_AUTH_WEBAC_AUTHORIZATION}" \
+    -Dfcrepo.activemq.configuration=${FCREPO_ACTIVEMQ_CONFIGURATION}"
 
 CMD java $JAVA_OPTS -jar "$JETTY_HOME/start.jar"

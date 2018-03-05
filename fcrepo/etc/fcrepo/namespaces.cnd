@@ -1,0 +1,13 @@
+<acl = 'http://www.w3.org/ns/auth/acl#'>
+<cc = 'http://creativecommons.org/ns#'>
+<dcterms = 'http://purl.org/dc/terms/'>
+<exif = 'http://www.w3.org/2003/12/exif/ns#'>
+<geo = 'http://www.w3.org/2003/01/geo/wgs84_pos#'>
+<gn = 'http://www.geonames.org/ontology#'>
+<iana = 'http://www.iana.org/assignments/relation/'>
+<ore = 'http://www.openarchives.org/ore/terms/'>
+<owl = 'http://www.w3.org/2002/07/owl#'>
+<prov = 'http://www.w3.org/ns/prov#'>
+<rel = 'http://id.loc.gov/vocabulary/relators/'>
+<schema = 'http://schema.org/'>
+<skos = 'http://www.w3.org/2004/02/skos/core#'>
