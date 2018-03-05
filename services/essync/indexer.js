@@ -179,14 +179,14 @@ class EsIndexer {
    * @returns {Promise}
    */
   async remove(path, types) {
-    let exists = await this.esClient.exists({
-      index : config.elasticsearch.collection.alias,
-      type: config.elasticsearch.collection.schemaType,
-      id : path
-    });
-    if( !exists ) return;
-
     if( this.isRecord(types) ) {
+      let exists = await this.esClient.exists({
+        index : config.elasticsearch.record.alias,
+        type: config.elasticsearch.record.schemaType,
+        id : path
+      });
+      if( !exists ) return;
+
       try {
         await this.esClient.delete({
           index : config.elasticsearch.record.alias,
@@ -199,6 +199,13 @@ class EsIndexer {
         Logger.error('Failed to remove record container from elasticsearch: '+path, e);
       }
     } else if( this.isCollection(types) ) {
+      let exists = await this.esClient.exists({
+        index : config.elasticsearch.collection.alias,
+        type: config.elasticsearch.collection.schemaType,
+        id : path
+      });
+      if( !exists ) return;
+
       try {
         await this.esClient.delete({
           index : config.elasticsearch.collection.alias,
@@ -210,6 +217,8 @@ class EsIndexer {
       } catch(e) {
         Logger.error('Failed to remove collection container from elasticsearch: '+path, e);
       }
+    } else {
+      Logger.info('Unknown type of container to remove', types);
     }
   }
 
@@ -227,6 +236,13 @@ class EsIndexer {
           }
         }
       });
+
+      let exists = await this.esClient.exists({
+        index : config.elasticsearch.collection.alias,
+        type: config.elasticsearch.collection.schemaType,
+        id : collectionLocalId
+      });
+      if( !exists ) return;
 
       await this.esClient.delete({
         index : config.elasticsearch.collection.alias,

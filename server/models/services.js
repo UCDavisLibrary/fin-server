@@ -337,12 +337,16 @@ class ServiceModel {
   _sendHttpNotificationBuffered(event) {
     let id = event.payload.headers[ACTIVE_MQ_HEADER_ID];
 
-    if( this.notificationTimers[id] && this.notificationTimers[id] !== -1 ) {
-      clearTimeout(this.notificationTimers[id]);
+    if( this.notificationTimers[id] ) {
+      clearTimeout(this.notificationTimers[id].timer);
     }
 
-    this.notificationTimers[id] = setTimeout(() => {
-      this.notificationTimers[id] = -1;
+    // we need to save creation events
+    let eventType = event.payload.headers['org.fcrepo.jms.eventType'];
+
+    let timer = setTimeout(() => {
+      event.payload.headers['org.fcrepo.jms.eventType'] = this.notificationTimers[id].eventType;
+      delete this.notificationTimers[id];
       
       for( let serviceId in this.services ) {
         let service = this.services[serviceId];
@@ -351,6 +355,19 @@ class ServiceModel {
         this._sendHttpNotification(serviceId, service.url, event);
       }
     }, 10 * 1000);
+
+    // if there is a buffered event and it is a creation event, and there is a new event
+    // that is a modification event, set the type as creation.
+    if( this.notificationTimers[id] && 
+        this.notificationTimers[id].eventType.indexOf('ResourceCreation') > -1 &&
+        eventType.indexOf('ResourceModification') > -1 ) {
+      eventType = this.notificationTimers[id].eventType;
+    }
+
+    this.notificationTimers[id] = {
+      timer,
+      eventType
+    } 
   }
 
   /**

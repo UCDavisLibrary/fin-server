@@ -104,9 +104,11 @@ class EsSyncMessageServer extends MessageServer {
 
     // fedora remove event
     } else if( eventTypes.indexOf('ResourceDeletion') > -1 ) {
-
       // remove from elastic search
       indexer.remove(path, msg.payload.body.type);
+    } else {
+      
+      Logger.info('Unknown event', eventTypes);
     }
   }
 }
