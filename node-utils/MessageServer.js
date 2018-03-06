@@ -8,12 +8,19 @@ const jwt = require('./jwt');
 const config = require('./config');
 const logger = require('./logger');
 
+const WEBHOOK_EVENT_TYPES = {
+  FIN_EVENT : 'fin-event',
+  FCREPO_EVENT : 'fcrepo-event'
+}
+
 class MessageServer {
 
   constructor(name, port=3333) {
     this.name = name;
     this.port = port;
     this.request = request;
+
+    this.WEBHOOK_EVENT_TYPES = WEBHOOK_EVENT_TYPES;
 
     this.server = http.createServer((req, res) => {
       body(req, async (err, body) => {
@@ -46,6 +53,16 @@ class MessageServer {
     this._generateToken()
   }
 
+  /**
+   * @method getEventTypes
+   * @description given a webhook message, return the fcrepo event message
+   * types for this event.  The types will have the prefixes removed,
+   * only the type name will be in the array.
+   * 
+   * @param {Object} msg webhook message body
+   * 
+   * @returns {Array}
+   */
   getEventTypes(msg) {
     return msg.payload
       .headers['org.fcrepo.jms.eventType']
@@ -53,16 +70,81 @@ class MessageServer {
       .map(type => type.trim().replace(/.*#/, ''));
   }
 
+  /**
+   * @method getPath
+   * @description given a webhook message, return the fcrepo path
+   * for the event message
+   * 
+   * @param {Object} msg webhook message body
+   * 
+   * @returns {String}
+   */
+  getPath(msg) {
+    return msg.payload.headers['org.fcrepo.jms.identifier'] || '/';
+  }
+
+  /**
+   * @method isCreate
+   * @description given an array of strings from getEventTypes(),
+   * return true of this is a create event
+   * 
+   * @param {Array} eventTypes array of event names
+   * 
+   * @returns {Boolean}
+   */
   isCreate(eventTypes) {
     return (eventTypes.indexOf('ResourceCreation') > -1);
   }
 
+  /**
+   * @method isModify
+   * @description given an array of strings from getEventTypes(),
+   * return true of this is a modify event
+   * 
+   * @param {Array} eventTypes array of event names
+   * 
+   * @returns {Boolean}
+   */
   isModify(eventTypes) {
     return (eventTypes.indexOf('ResourceModification') > -1);
   }
 
-  isDelete(eventType) {
+  /**
+   * @method isDelete
+   * @description given an array of strings from getEventTypes(),
+   * return true of this is a delete event
+   * 
+   * @param {Array} eventTypes array of event names
+   * 
+   * @returns {Boolean}
+   */
+  isDelete(eventTypes) {
     return (eventTypes.indexOf('ResourceDeletion') > -1);
+  }
+
+  /**
+   * @method isDotPath
+   * @description given a path string from getPath, does any section of the path start
+   * with a .
+   * 
+   * @param {String} path
+   * 
+   * @returns {Boolean}
+   */
+  isDotPath(path) {
+    if( path.match(/http/) ) {
+      let urlInfo = new URL(path);
+      path = urlInfo.pathname;
+    }
+    
+    path = path.split('/');
+    for( var i = 0; i < path.length; i++ ) {
+      if( path[i].match(/^\./) ) {
+        return path[i];
+      }
+    }
+
+    return null;
   }
 
   _generateToken() {
