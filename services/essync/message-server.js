@@ -7,7 +7,7 @@ const Logger = logger('essync');
 class EsSyncMessageServer extends MessageServer {
 
   constructor() {
-    super('Elastic Search Sync');
+    super('Elasticsearch Sync');
   }
 
   /**

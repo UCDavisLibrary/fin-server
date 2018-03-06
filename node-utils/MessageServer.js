@@ -6,18 +6,19 @@ const body = require('body/json');
 const request = require('request');
 const jwt = require('./jwt');
 const config = require('./config');
-const port = 3333;
+const logger = require('./logger');
 
 class MessageServer {
 
-  constructor(name) {
+  constructor(name, port=3333) {
     this.name = name;
+    this.port = port;
     this.request = request;
 
     this.server = http.createServer((req, res) => {
       body(req, async (err, body) => {
         if( err ) {
-          
+          logger.error(`${name} - failed to parse message`, err);
         }
 
         var response = JSON.stringify({ack: true});
@@ -32,18 +33,36 @@ class MessageServer {
       });
     });
 
-    this.server.listen(port, function() {
-      console.log(`${name} - Message Server Listening`);
+    this.server.listen(this.port, function() {
+      logger.info(`${name} - Server Listening on ${this.port}`);
     });
 
     this.server.on('error', (e) => {
-      console.log(`${name} - Message server failed to start`);
-      console.error(e);
+      logger.error(`${name} - Server failed to start`, e);
     });
 
     this.token = null;
     setInterval(this._generateToken.bind(this), 1000 * 60 * 60 * 6);
     this._generateToken()
+  }
+
+  getEventTypes(msg) {
+    return msg.payload
+      .headers['org.fcrepo.jms.eventType']
+      .split(',')
+      .map(type => type.trim().replace(/.*#/, ''));
+  }
+
+  isCreate(eventTypes) {
+    return (eventTypes.indexOf('ResourceCreation') > -1);
+  }
+
+  isModify(eventTypes) {
+    return (eventTypes.indexOf('ResourceModification') > -1);
+  }
+
+  isDelete(eventType) {
+    return (eventTypes.indexOf('ResourceDeletion') > -1);
   }
 
   _generateToken() {

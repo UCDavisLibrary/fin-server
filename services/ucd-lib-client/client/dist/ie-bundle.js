@@ -4535,7 +4535,7 @@ var _elementMixin = __webpack_require__(30);
  *
  * @customElement
  * @polymer
- * @isPartOf Polymer
+ * @memberof Polymer
  * @constructor
  * @implements {Polymer_ElementMixin}
  * @extends HTMLElement
@@ -4622,7 +4622,7 @@ var normalizedMatchesSelector = p.matches || p.matchesSelector || p.mozMatchesSe
  * Cross-platform `element.matches` shim.
  *
  * @function matchesSelector
- * @isPartOf Polymer.dom
+ * @memberof Polymer.dom
  * @param {!Element} node Node to check selector against
  * @param {string} selector Selector to match
  * @return {boolean} True if node matched selector
@@ -5103,9 +5103,9 @@ module.exports = function (subclass) {
         return _getCollection;
       }()
     }, {
-      key: '_getCollectionByShortId',
-      value: function _getCollectionByShortId(shortId) {
-        return this.CollectionModel.getByShortId(shortId);
+      key: '_getCollectionByLocalId',
+      value: function _getCollectionByLocalId(localId) {
+        return this.CollectionModel.getByLocalId(localId);
       }
     }]);
 
@@ -5219,7 +5219,7 @@ var timeOut = exports.timeOut = {
    * Returns a sub-module with the async interface providing the provided
    * delay.
    *
-   * @isPartOf Polymer.Async.timeOut
+   * @memberof Polymer.Async.timeOut
    * @param {number} delay Time to wait before calling callbacks in ms
    * @return {AsyncInterface} An async timeout interface
    */
@@ -5236,7 +5236,7 @@ var timeOut = exports.timeOut = {
   /**
    * Enqueues a function called in the next task.
    *
-   * @isPartOf Polymer.Async.timeOut
+   * @memberof Polymer.Async.timeOut
    * @param {Function} fn Callback to run
    * @return {number} Handle used for canceling task
    */
@@ -5244,7 +5244,7 @@ var timeOut = exports.timeOut = {
   /**
    * Cancels a previously enqueued `timeOut` callback.
    *
-   * @isPartOf Polymer.Async.timeOut
+   * @memberof Polymer.Async.timeOut
    * @param {number} handle Handle returned from `run` of callback to cancel
    */
   cancel: window.clearTimeout.bind(window)
@@ -5254,7 +5254,7 @@ var animationFrame = exports.animationFrame = {
   /**
    * Enqueues a function called at `requestAnimationFrame` timing.
    *
-   * @isPartOf Polymer.Async.animationFrame
+   * @memberof Polymer.Async.animationFrame
    * @param {Function} fn Callback to run
    * @return {number} Handle used for canceling task
    */
@@ -5262,7 +5262,7 @@ var animationFrame = exports.animationFrame = {
   /**
    * Cancels a previously enqueued `animationFrame` callback.
    *
-   * @isPartOf Polymer.Async.timeOut
+   * @memberof Polymer.Async.timeOut
    * @param {number} handle Handle returned from `run` of callback to cancel
    */
   cancel: window.cancelAnimationFrame.bind(window)
@@ -5272,7 +5272,7 @@ var idlePeriod = exports.idlePeriod = {
   /**
    * Enqueues a function called at `requestIdleCallback` timing.
    *
-   * @isPartOf Polymer.Async.idlePeriod
+   * @memberof Polymer.Async.idlePeriod
    * @param {function(IdleDeadline)} fn Callback to run
    * @return {number} Handle used for canceling task
    */
@@ -5283,7 +5283,7 @@ var idlePeriod = exports.idlePeriod = {
   /**
    * Cancels a previously enqueued `idlePeriod` callback.
    *
-   * @isPartOf Polymer.Async.idlePeriod
+   * @memberof Polymer.Async.idlePeriod
    * @param {number} handle Handle returned from `run` of callback to cancel
    */
   cancel: function cancel(handle) {
@@ -5296,7 +5296,7 @@ var microTask = exports.microTask = {
   /**
    * Enqueues a function called at microtask timing.
    *
-   * @isPartOf Polymer.Async.microTask
+   * @memberof Polymer.Async.microTask
    * @param {Function} callback Callback to run
    * @return {number} Handle used for canceling task
    */
@@ -5310,7 +5310,7 @@ var microTask = exports.microTask = {
   /**
    * Cancels a previously enqueued `microTask` callback.
    *
-   * @isPartOf Polymer.Async.microTask
+   * @memberof Polymer.Async.microTask
    * @param {number} handle Handle returned from `run` of callback to cancel
    */
   cancel: function cancel(handle) {
@@ -5397,7 +5397,7 @@ var AsyncModule = void 0; // eslint-disable-line no-unused-vars
 
 /**
  * @summary Collapse multiple callbacks into one invocation after a timer.
- * @isPartOf Polymer
+ * @memberof Polymer
  */
 
 var Debouncer = function () {
@@ -5810,7 +5810,7 @@ var _resolveUrl = __webpack_require__(19);
 /**
  * Legacy settings.
  * @namespace
- * @isPartOf Polymer
+ * @memberof Polymer
  */
 var settings = undefined || {};
 var useShadow = exports.useShadow = !window.ShadyDOM;
@@ -5826,7 +5826,7 @@ exports.Settings = settings;
  * `Polymer.rootPath` to provide a stable application mount path when
  * using client side routing.
  *
- * @isPartOf Polymer
+ * @memberof Polymer
  */
 
 var rootPath = undefined || (0, _resolveUrl.pathFromUrl)(document.baseURI || window.location.href);
@@ -5851,7 +5851,7 @@ var setRootPath = exports.setRootPath = function setRootPath(path) {
  * `node` is the node where the value is being inserted.
  *
  * @type {(function(*,string,string,Node):*)|undefined}
- * @isPartOf Polymer
+ * @memberof Polymer
  */
 var sanitizeDOMValue = undefined;
 
@@ -5881,7 +5881,7 @@ var resolveDoc = void 0;
 /**
  * Resolves the given URL against the provided `baseUri'.
  *
- * @isPartOf Polymer.ResolveUrl
+ * @memberof Polymer.ResolveUrl
  * @param {string} url Input URL to resolve
  * @param {?string=} baseURI Base URI to resolve the URL against
  * @return {string} resolved URL
@@ -5924,7 +5924,7 @@ function resolveUrl(url, baseURI) {
  * Resolves any relative URL's in the given CSS text against the provided
  * `ownerDocument`'s `baseURI`.
  *
- * @isPartOf Polymer.ResolveUrl
+ * @memberof Polymer.ResolveUrl
  * @param {string} cssText CSS text to process
  * @param {string} baseURI Base URI to resolve the URL against
  * @return {string} Processed CSS text with resolved URL's
@@ -5939,7 +5939,7 @@ function resolveCss(cssText, baseURI) {
  * Returns a path from a given `url`. The path includes the trailing
  * `/` from the url.
  *
- * @isPartOf Polymer.ResolveUrl
+ * @memberof Polymer.ResolveUrl
  * @param {string} url Input URL to transform
  * @return {string} resolved path
  */
@@ -7984,7 +7984,7 @@ function styleOutsideTemplateCheck(inst) {
  *
  * @customElement
  * @extends HTMLElement
- * @isPartOf Polymer
+ * @memberof Polymer
  * @summary Custom element that provides a registry of relocatable DOM content
  *   by `id` that is agnostic to bundling.
  * @unrestricted
@@ -11893,7 +11893,7 @@ function createNotifyHostPropEffect() {
  *
  *
  * @namespace
- * @isPartOf Polymer
+ * @memberof Polymer
  * @summary Module for preparing and stamping instances of templates
  *   utilizing Polymer templating features.
  */
@@ -11952,7 +11952,7 @@ var Templatize = {
    * needed from the callbacks (such as references to `instances` stamped)
    * should be stored on the `owner` such that they can be retrieved via `this`.
    *
-   * @isPartOf Polymer.Templatize
+   * @memberof Polymer.Templatize
    * @param {!HTMLTemplateElement} template Template to templatize
    * @param {!Polymer_PropertyEffects} owner Owner of the template instances;
    *   any optional callbacks will be bound to this owner.
@@ -12012,7 +12012,7 @@ var Templatize = {
    *     model.set('item.checked', true);
    *   }
    *
-   * @isPartOf Polymer.Templatize
+   * @memberof Polymer.Templatize
    * @param {HTMLTemplateElement} template The model will be returned for
    *   elements stamped from this template
    * @param {Node} node Node for which to return a template model.
@@ -17056,15 +17056,15 @@ module.exports = {
 
   elasticSearch: {
     facets: {
-      'hasMimeType': {
+      'mimeType': {
         label: 'Mime-Type',
         type: 'facet'
       },
-      'dc:creator': {
+      'creator': {
         label: 'Creator',
         type: 'facet'
       },
-      'dc:subject_raw': {
+      'subject_raw': {
         label: 'Subject',
         type: 'facet'
         // 'winetype.raw' : {
@@ -17130,7 +17130,7 @@ var CollectionStore = function (_BaseStore) {
     _this.data = {
       selected: null,
       byId: {},
-      byShortId: {},
+      byLocalId: {},
       // should include the overview state
       overview: {
         state: _this.STATE.INIT
@@ -17167,7 +17167,7 @@ var CollectionStore = function (_BaseStore) {
       payload.forEach(function (item) {
         item.id = item['@id'];
         _this2.data.byId[item.id] = item;
-        _this2.data.byShortId[item.shortId] = item;
+        _this2.data.byLocalId[item.localId] = item;
       });
 
       payload.sort(function (a, b) {
@@ -17653,19 +17653,19 @@ var AppSearchResult = function (_Mixin$with) {
 
                 this.title = this.data.title || this.data.identifier || '';
 
-                if (this._isImg(this.data.hasMimeType)) {
-                  if (this.data.imageResolution) {
-                    ratio = this.data.imageResolution[1] / this.data.imageResolution[0];
+                if (this._isImg(this.data.mimeType)) {
+                  if (this.data.width && this.data.height) {
+                    ratio = this.data.height / this.data.width;
 
                     this.imgHeight = Math.floor(250 * ratio);
-                    this.imgUrl = this.data['@id'] + "/svc:iiif/full/," + (this.imgHeight + 40) + "/0/default.png";
+                    this.imgUrl = '/fcrepo/rest' + (this.data['localId'] + "/svc:iiif/full/," + (this.imgHeight + 40) + "/0/default.png");
                   } else {
                     this.imgHeight = 250;
-                    this.imgUrl = this.data['@id'] + '/svc:iiif/full/,290/0/default.png';
+                    this.imgUrl = '/fcrepo/rest' + this.data['localId'] + '/svc:iiif/full/,290/0/default.png';
                   }
 
-                  if (this.data.imageTinyThumbnail) {
-                    this.imgThumbail = this.data.imageTinyThumbnail;
+                  if (this.data.thumbnailUrl) {
+                    this.imgThumbail = this.data.thumbnailUrl;
                   } else {
                     this.imgThumbail = '';
                   }
@@ -33028,7 +33028,7 @@ function isSlot(node) {
  * `MutationObserver` and the `<slot>` element's `slotchange` event which
  * are asynchronous.
  *
- * @isPartOf Polymer
+ * @memberof Polymer
  * @summary Class that listens for changes (additions or removals) to
  * "flattened nodes" on a given `node`.
  */
@@ -33315,7 +33315,7 @@ var metaProps = {
  * @param {!HTMLElement|function(new:HTMLElement)} klass Element class.
  * @return {function(new:HTMLElement)} Returns a new Element class extended by the
  * passed in `behaviors` and also by `Polymer.LegacyElementMixin`.
- * @isPartOf Polymer
+ * @memberof Polymer
  * @suppress {invalidCasts, checkTypes}
  */
 function mixinBehaviors(behaviors, klass) {
@@ -33659,7 +33659,7 @@ var TemplatizerUser = void 0; // eslint-disable-line
  * between versions 1.x and 2.x.
  *
  * @polymerBehavior
- * @isPartOf Polymer
+ * @memberof Polymer
  */
 var Templatizer = {
 
@@ -33776,7 +33776,7 @@ var domBindBase = (0, _gestureEventListeners.GestureEventListeners)((0, _mutable
  * @appliesMixin Polymer.OptionalMutableData
  * @appliesMixin Polymer.GestureEventListeners
  * @extends {domBindBase}
- * @isPartOf Polymer
+ * @memberof Polymer
  * @summary Custom element to allow using Polymer's template features (data
  *   binding, declarative event listeners, etc.) in the main document.
  */
@@ -34019,7 +34019,7 @@ var domRepeatBase = (0, _mutableData.OptionalMutableData)(_polymerElement.Elemen
  *
  * @customElement
  * @polymer
- * @isPartOf Polymer
+ * @memberof Polymer
  * @extends {domRepeatBase}
  * @appliesMixin Polymer.OptionalMutableData
  * @summary Custom element for stamping instance of a template bound to
@@ -34724,7 +34724,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @customElement
  * @polymer
  * @extends Polymer.Element
- * @isPartOf Polymer
+ * @memberof Polymer
  * @summary Custom element that conditionally stamps and hides or removes
  *   template content based on a boolean flag.
  */
@@ -35032,7 +35032,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @polymer
  * @mixinFunction
  * @appliesMixin Polymer.ElementMixin
- * @isPartOf Polymer
+ * @memberof Polymer
  * @summary Element mixin for recording dynamic associations between item paths in a
  * master `items` array and a `selected` array
  */
@@ -35457,7 +35457,7 @@ var baseArraySelector = ArraySelectorMixin(_polymerElement.Element);
  * @customElement
  * @extends {baseArraySelector}
  * @appliesMixin Polymer.ArraySelectorMixin
- * @isPartOf Polymer
+ * @memberof Polymer
  * @summary Custom element that links paths between an input `items` array and
  *   an output `selected` item or array based on calls to its selection API.
  */
@@ -35558,7 +35558,7 @@ var CustomStyleInterface = window.ShadyCSS.CustomStyleInterface;
  *
  * @customElement
  * @extends HTMLElement
- * @isPartOf Polymer
+ * @memberof Polymer
  * @summary Custom element for defining styles in the main document that can
  *   take advantage of Polymer's style scoping and custom properties shims.
  */
@@ -43174,16 +43174,16 @@ var CollectionModel = function (_BaseModel) {
     }()
 
     /**
-     * @method getByShortId
+     * @method getByLocalId
      * @description get a collection by short id
      * 
-     * @param {String} shortId shortId of the collection
+     * @param {String} localId localId of the collection
      */
 
   }, {
-    key: 'getByShortId',
-    value: function getByShortId(shortId) {
-      return this.store.data.byShortId[shortId];
+    key: 'getByLocalId',
+    value: function getByLocalId(localId) {
+      return this.store.data.byLocalId[localId];
     }
 
     /**
@@ -43199,7 +43199,7 @@ var CollectionModel = function (_BaseModel) {
 
     /**
      * @method _onSearchDocumentUpdate
-     * @description listen to search document updates, if we have a shortIdIsPartOf filter,
+     * @description listen to search document updates, if we have a localIdIsPartOf filter,
      * then there is a selected collection
      */
 
@@ -43207,8 +43207,9 @@ var CollectionModel = function (_BaseModel) {
     key: '_onSearchDocumentUpdate',
     value: function _onSearchDocumentUpdate(e) {
       var selected = null;
-      if (e.filters.shortIdIsPartOf) {
-        selected = this.getByShortId(e.filters.shortIdIsPartOf.value[0]);
+
+      if (e.filters.isPartOfLocalId) {
+        selected = this.getByLocalId(e.filters.isPartOfLocalId.value[0]);
       }
       this.store.setSelectedCollection(selected);
     }
@@ -43396,8 +43397,8 @@ var AppHome = function (_Mixin$with) {
       });
 
       overview.forEach(function (item) {
-        browse[item.shortId] = item.title;
-        item.thumbnail = item.previewImage + '/svc:iiif/full/,320/0/default.png';
+        browse[item.localId] = item.title;
+        item.thumbnail = '/fcrepo/rest' + item.exampleOfWorkLocalId + '/svc:iiif/full/,320/0/default.png';
       });
 
       this.$.searchBox.browse = browse;
@@ -43412,12 +43413,12 @@ var AppHome = function (_Mixin$with) {
   }, {
     key: "_onBrowse",
     value: function _onBrowse(e) {
-      var shortId = e.detail;
-      if (!shortId || shortId === 'Browse') {
-        return this._esRemoveKeywordFilter('shortIdIsPartOf');
+      var localId = e.detail;
+      if (!localId || localId === 'Browse') {
+        return this._esRemoveKeywordFilter('isPartOfLocalId');
       }
       this.$.searchBox.browseValue = 'Browse';
-      this._onCollectionSelected(shortId);
+      this._onCollectionSelected(localId);
     }
 
     /**
@@ -43452,7 +43453,7 @@ var AppHome = function (_Mixin$with) {
   }, {
     key: "_onCollectionSelected",
     value: function _onCollectionSelected(id) {
-      this._esSetKeywordFilter('shortIdIsPartOf', id);
+      this._esSetKeywordFilter('isPartOfLocalId', id);
     }
   }]);
 
@@ -43586,7 +43587,7 @@ module.exports = "<style>\n  :host {\n    display: block;\n  }\n  .root {\n    d
 /* 265 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <div style=\"background-image:url('[[item.thumbnail]]')\" data-id$=\"[[item.shortId]]\" on-click=\"_onCollectionClicked\">\n        <div>[[item.title]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n\n<div class=\"container\">\n  <div>\n    <h1>About Digital Collections</h1>\n    <div class=\"text-container\">\n      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore\n         et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit duis. Eget \n         nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Volutpat sed cras ornare arcu \n         dui vivamus arcu felis bibendum. Faucibus turpis in eu mi bibendum neque egestas congue. Orci a \n         scelerisque purus semper eget duis. Quam viverra orci sagittis eu volutpat odio facilisis mauris \n         sit. Et malesuada fames ac turpis egestas sed tempus urna et. Vel orci porta non pulvinar. Urna \n         nec tincidunt praesent semper feugiat nibh sed pulvinar. Sagittis aliquam malesuada bibendum \n         arcu vitae elementum curabitur vitae nunc. Facilisi cras fermentum odio eu feugiat.\n        </p>\n          \n        <p>Et pharetra pharetra massa massa ultricies mi quis hendrerit. Ac orci phasellus egestas tellus \n          rutrum tellus pellentesque eu tincidunt. Ornare arcu odio ut sem nulla pharetra. Sodales ut eu \n          sem integer vitae. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Purus \n          non enim praesent elementum facilisis leo vel fringilla est. Nunc scelerisque viverra mauris in \n          aliquam. Accumsan in nisl nisi scelerisque eu ultrices vitae auctor eu. Massa sed elementum \n          tempus egestas. Lectus magna fringilla urna porttitor rhoncus dolor purus.</p>\n    </div>\n    <a>Link to Somewhere</a>\n  </div>\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <div style=\"background-image:url('[[item.thumbnail]]')\" data-id$=\"[[item.localId]]\" on-click=\"_onCollectionClicked\">\n        <div>[[item.title]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n\n<div class=\"container\">\n  <div>\n    <h1>About Digital Collections</h1>\n    <div class=\"text-container\">\n      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore\n         et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit duis. Eget \n         nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Volutpat sed cras ornare arcu \n         dui vivamus arcu felis bibendum. Faucibus turpis in eu mi bibendum neque egestas congue. Orci a \n         scelerisque purus semper eget duis. Quam viverra orci sagittis eu volutpat odio facilisis mauris \n         sit. Et malesuada fames ac turpis egestas sed tempus urna et. Vel orci porta non pulvinar. Urna \n         nec tincidunt praesent semper feugiat nibh sed pulvinar. Sagittis aliquam malesuada bibendum \n         arcu vitae elementum curabitur vitae nunc. Facilisi cras fermentum odio eu feugiat.\n        </p>\n          \n        <p>Et pharetra pharetra massa massa ultricies mi quis hendrerit. Ac orci phasellus egestas tellus \n          rutrum tellus pellentesque eu tincidunt. Ornare arcu odio ut sem nulla pharetra. Sodales ut eu \n          sem integer vitae. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Purus \n          non enim praesent elementum facilisis leo vel fringilla est. Nunc scelerisque viverra mauris in \n          aliquam. Accumsan in nisl nisi scelerisque eu ultrices vitae auctor eu. Massa sed elementum \n          tempus egestas. Lectus magna fringilla urna porttitor rhoncus dolor purus.</p>\n    </div>\n    <a>Link to Somewhere</a>\n  </div>\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>";
 
 /***/ }),
 /* 266 */
@@ -45325,7 +45326,7 @@ var AppSearchHeader = function (_Mixin$with) {
 
       var browse = {};
       overview.forEach(function (item) {
-        browse[item.shortId] = item.title;
+        browse[item.localId] = item.title;
       });
 
       this.$.searchInput.browse = browse;
@@ -45342,12 +45343,12 @@ var AppSearchHeader = function (_Mixin$with) {
   }, {
     key: "_onBrowse",
     value: function _onBrowse(e) {
-      var shortId = e.detail;
-      if (!shortId || shortId === 'Browse') {
-        return this._esRemoveKeywordFilter('shortIdIsPartOf');
+      var localId = e.detail;
+      if (!localId || localId === 'Browse') {
+        return this._esRemoveKeywordFilter('isPartOfLocalId');
       }
       this.$.searchInput.browseValue = 'Browse';
-      this._esSetKeywordFilter('shortIdIsPartOf', shortId);
+      this._esSetKeywordFilter('isPartOfLocalId', localId);
     }
 
     /**
@@ -45637,7 +45638,7 @@ var AppSearchBreadcrumb = function (_Mixin$with) {
     key: "_onCollectionClicked",
     value: function _onCollectionClicked() {
       this._esClearFilters();
-      this._esSetKeywordFilter('shortIdIsPartOf', this.collection.shortId);
+      this._esSetKeywordFilter('isPartOfLocalId', this.collection.localId);
     }
 
     /**
@@ -46832,7 +46833,7 @@ var AppFiltersPanel = function (_Mixin$with) {
   }, {
     key: "_removeCollectionFilter",
     value: function _removeCollectionFilter() {
-      this._esRemoveKeywordFilter('shortIdIsPartOf');
+      this._esRemoveKeywordFilter('isPartOfLocalId');
     }
   }]);
 
@@ -48088,7 +48089,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* 311 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.previewImageTinyThumbnail]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.title]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnailUrl]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.title]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
 
 /***/ }),
 /* 312 */
@@ -48289,7 +48290,7 @@ var AppRecord = function (_Mixin$with) {
 
                 this.record = e.payload._source;
 
-                this.resolution = '';
+                this.resolution = this.record.width + 'x' + this.record.height;
                 this.$.imageViewer.render(this.record.id);
 
                 this.title = this.record.title || '';
@@ -48299,15 +48300,15 @@ var AppRecord = function (_Mixin$with) {
 
                 this.date = this.record.created ? (0, _moment2.default)(this.record.created).format(this.momentFormat) : '';
 
-                this.resourceType = this.record.type || this.record.hasMimeType || 'Unknown';
+                this.resourceType = this.record.type || this.record.mimeType || 'Unknown';
 
                 this.size = (0, _bytes2.default)(this.record.hasSize ? parseInt(this.record.hasSize) : 0);
-                this.mimeType = this.record.hasMimeType || '';
+                this.mimeType = this.record.mimeType || '';
 
                 this.rights = this.record.rights || '';
 
                 this.$.download.render({
-                  resolution: this.record.imageResolution,
+                  resolution: [this.record.width, this.record.height],
                   mimeType: this.mimeType,
                   size: this.record.hasSize ? parseInt(this.record.hasSize) : 0,
                   url: this.record.id
@@ -63131,7 +63132,7 @@ var AppFooter = function (_Mixin$with) {
     key: "_onBrowseCollection",
     value: function _onBrowseCollection(e) {
       var id = e.currentTarget.getAttribute('data-id');
-      this._esSetKeywordFilter('shortIdIsPartOf', id);
+      this._esSetKeywordFilter('isPartOfLocalId', id);
     }
   }]);
 
@@ -63233,7 +63234,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* 335 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background: var(--secondary-background-color);\n    color: var(--inverse-text-color);\n    max-width: var(--max-width);\n    padding: 20px 0;\n  }\n\n  a, a:visited {\n    cursor: pointer;\n    color: var(--inverse-text-color);\n    text-decoration: none;\n  }\n\n  .lib-logo  {\n    height: 45px;\n  }\n\n  .row {\n    display: flex;\n    justify-content: center;\n  }\n\n  .row > div {\n    padding: 15px;\n  }\n\n  .menu.horizontal li {\n    padding: 0 10px;\n    border-right: 1px solid white;\n  }\n  .menu.horizontal li:last-child {\n    border-right: none;\n  }\n  .menu a {\n    cursor: pointer;\n  }\n\n  @media( max-width: 768px ) {\n    ul.menu.horizontal {\n      display: block;\n      text-align: left;\n    }\n  }\n\n  .logo {\n    display: inline-block;\n    width: 100%;\n    position: relative;\n    margin: 70px 0 30px;\n  }\n  .logo hr {\n    position: absolute;\n    top: 50%;\n    width: 100%;\n    margin-top: 0;\n    margin-bottom: 0;\n    border-top: 1px solid rgba(255,255,255,.25);\n    border-bottom: none;\n    border-right: none;\n    border-left: none;\n  }\n  .logo .logo-img {\n    display: inline-block;\n    position: relative;\n  }\n  .logo img {\n    height: 100px;\n    padding: 0 25px;\n    background: var(--default-primary-color);\n  }\n\n  @media(max-width: 768px) {\n    .row {\n      display: block;\n    }\n  }\n</style>\n\n<footer role=\"contentinfo\">\n\n  <div class=\"row\">\n    <div> <!-- col start -->\n      <div>\n          <a href=\"https://library.ucdavis.edu\" target=\"_blank\">\n              <img class=\"lib-logo\" src=\"/images/ucd-lib-logo-white.png\">\n          </a>\n      </div>\n      <div>UC Davis Library</div>\n      <p>\n        100 NW Quad<br />\n        University of California, Davis<br />\n        Davis, CA 95616<br />\n        (530) 752-8792<br /><br />\n        <a href=\"mailto:library@ucdavis.edu\">library@ucdavis.edu</a>\n      </p>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Digital Collections</h2>\n      <ul class=\"menu\">\n        <template is=\"dom-repeat\" items=\"[[collections]]\">\n          <li><a on-click=\"_onBrowseCollection\" data-id$=\"[[item.shortId]]\">[[item.title]]</a></li>\n        </template>\n      </ul>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Library Info</h2>\n      <ul class=\"menu\">\n        <li><a href=\"https://library.ucdavis.edu/news/\" target=\"_blank\">News</a></li>\n        <li><a href=\"https://library.ucdavis.edu/about/\" target=\"_blank\">About</a></li>\n        <li><a href=\"https://library.ucdavis.edu/library/\" target=\"_blank\">Visit</a></li>\n        <li><a href=\"https://library.ucdavis.edu/service/careers/\" target=\"_blank\">Careers</a></li>\n      </ul>\n      <div class=\"donate\"><a href=\"http://give.ucdavis.edu/ULIB\" target=\"_blank\">Give to the UC Davis Library</a></div>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Account</h2>\n      <ul class=\"menu\">\n        <li>\n          <app-auth-footer></app-auth-footer>\n        </li>\n      </ul>\n    </div><!-- col end -->\n  </div><!-- row end -->\n\n  <div style=\"text-align:center\">\n    <div class=\"logo\"><!-- logo -->\n        <hr>\n        <div class=\"logo-img\">\n            <img src=\"/images/ucd-logo.svg\" alt=\"UC Davis Logo\">\n        </div>\n    </div>\n\n    <div>\n      <p>University of California, Davis, One Shields Avenue, Davis, CA 95616 | 530-752-1011</p>\n      <ul class=\"menu horizontal\">\n        <li><a href=\"/help/\">Help</a></li>\n        <li><a href=\"/general-support/\">Questions or comments?</a></li>\n        <li><a href=\"https://www.ucdavis.edu/help/privacy-accessibility/\" target=\"_blank\">Privacy &amp; Accessibility</a></li>\n        <li><a href=\"https://occr.ucdavis.edu/poc/\" target=\"_blank\">Principles of Community</a></li>\n        <li><a href=\"https://www.ucdavis.edu/\" target=\"_blank\">UC Davis</a></li>\n        <li><a href=\"https://www.universityofcalifornia.edu/\" target=\"_blank\">University of California</a></li>\n      </ul>\n      <p>Copyright &copy; 2017 The Regents of the University of California, Davis campus. All rights reserved.</p>\n    </div>\n  </div>\n\n</footer>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background: var(--secondary-background-color);\n    color: var(--inverse-text-color);\n    max-width: var(--max-width);\n    padding: 20px 0;\n  }\n\n  a, a:visited {\n    cursor: pointer;\n    color: var(--inverse-text-color);\n    text-decoration: none;\n  }\n\n  .lib-logo  {\n    height: 45px;\n  }\n\n  .row {\n    display: flex;\n    justify-content: center;\n  }\n\n  .row > div {\n    padding: 15px;\n  }\n\n  .menu.horizontal li {\n    padding: 0 10px;\n    border-right: 1px solid white;\n  }\n  .menu.horizontal li:last-child {\n    border-right: none;\n  }\n  .menu a {\n    cursor: pointer;\n  }\n\n  @media( max-width: 768px ) {\n    ul.menu.horizontal {\n      display: block;\n      text-align: left;\n    }\n  }\n\n  .logo {\n    display: inline-block;\n    width: 100%;\n    position: relative;\n    margin: 70px 0 30px;\n  }\n  .logo hr {\n    position: absolute;\n    top: 50%;\n    width: 100%;\n    margin-top: 0;\n    margin-bottom: 0;\n    border-top: 1px solid rgba(255,255,255,.25);\n    border-bottom: none;\n    border-right: none;\n    border-left: none;\n  }\n  .logo .logo-img {\n    display: inline-block;\n    position: relative;\n  }\n  .logo img {\n    height: 100px;\n    padding: 0 25px;\n    background: var(--default-primary-color);\n  }\n\n  @media(max-width: 768px) {\n    .row {\n      display: block;\n    }\n  }\n</style>\n\n<footer role=\"contentinfo\">\n\n  <div class=\"row\">\n    <div> <!-- col start -->\n      <div>\n          <a href=\"https://library.ucdavis.edu\" target=\"_blank\">\n              <img class=\"lib-logo\" src=\"/images/ucd-lib-logo-white.png\">\n          </a>\n      </div>\n      <div>UC Davis Library</div>\n      <p>\n        100 NW Quad<br />\n        University of California, Davis<br />\n        Davis, CA 95616<br />\n        (530) 752-8792<br /><br />\n        <a href=\"mailto:library@ucdavis.edu\">library@ucdavis.edu</a>\n      </p>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Digital Collections</h2>\n      <ul class=\"menu\">\n        <template is=\"dom-repeat\" items=\"[[collections]]\">\n          <li><a on-click=\"_onBrowseCollection\" data-id$=\"[[item.localId]]\">[[item.title]]</a></li>\n        </template>\n      </ul>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Library Info</h2>\n      <ul class=\"menu\">\n        <li><a href=\"https://library.ucdavis.edu/news/\" target=\"_blank\">News</a></li>\n        <li><a href=\"https://library.ucdavis.edu/about/\" target=\"_blank\">About</a></li>\n        <li><a href=\"https://library.ucdavis.edu/library/\" target=\"_blank\">Visit</a></li>\n        <li><a href=\"https://library.ucdavis.edu/service/careers/\" target=\"_blank\">Careers</a></li>\n      </ul>\n      <div class=\"donate\"><a href=\"http://give.ucdavis.edu/ULIB\" target=\"_blank\">Give to the UC Davis Library</a></div>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Account</h2>\n      <ul class=\"menu\">\n        <li>\n          <app-auth-footer></app-auth-footer>\n        </li>\n      </ul>\n    </div><!-- col end -->\n  </div><!-- row end -->\n\n  <div style=\"text-align:center\">\n    <div class=\"logo\"><!-- logo -->\n        <hr>\n        <div class=\"logo-img\">\n            <img src=\"/images/ucd-logo.svg\" alt=\"UC Davis Logo\">\n        </div>\n    </div>\n\n    <div>\n      <p>University of California, Davis, One Shields Avenue, Davis, CA 95616 | 530-752-1011</p>\n      <ul class=\"menu horizontal\">\n        <li><a href=\"/help/\">Help</a></li>\n        <li><a href=\"/general-support/\">Questions or comments?</a></li>\n        <li><a href=\"https://www.ucdavis.edu/help/privacy-accessibility/\" target=\"_blank\">Privacy &amp; Accessibility</a></li>\n        <li><a href=\"https://occr.ucdavis.edu/poc/\" target=\"_blank\">Principles of Community</a></li>\n        <li><a href=\"https://www.ucdavis.edu/\" target=\"_blank\">UC Davis</a></li>\n        <li><a href=\"https://www.universityofcalifornia.edu/\" target=\"_blank\">University of California</a></li>\n      </ul>\n      <p>Copyright &copy; 2017 The Regents of the University of California, Davis campus. All rights reserved.</p>\n    </div>\n  </div>\n\n</footer>";
 
 /***/ }),
 /* 336 */
