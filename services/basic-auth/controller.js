@@ -4,7 +4,6 @@ const model = require('./model');
 const fs = require('fs');
 const path = require('path');
 const {logger, config, jwt} = require('@ucd-lib/fin-node-utils');
-const Logger = logger();
 
 const AGENT_DOMAIN = process.env.BASIC_AUTH_AGENT_DOMAIN || 'local';
 
@@ -63,16 +62,16 @@ async function login(username, password, res) {
   try { 
     var valid = await model.userVerification(username, password);
     if( !valid ) {
-      Logger.info('Basic Auth Service: login failure');
+      logger.info('Basic Auth Service: login failure');
       return res.status(401).send('Invalid username or password');
     }
     userinfo = await model.getUser(username);
   } catch(e) {
-    Logger.error('Basic Auth Service: login failure', e);
+    logger.error('Basic Auth Service: login failure', e);
     res.status(401).send();
   }
 
-  Logger.info('Basic Auth Service: login success: '+username);
+  logger.info('Basic Auth Service: login success: '+username);
   res.set('X-FIN-AUTHORIZED-AGENT', username+'@'+AGENT_DOMAIN)
      .json({success: true, username: username});
 }

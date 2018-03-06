@@ -1,14 +1,14 @@
+global.LOGGER_NAME = 'cas-service';
 const express = require('express');
 const {logger, config} = require('@ucd-lib/fin-node-utils');
 const session = require('express-session');
-const Logger = logger('cas-service');
 
 // global catch alls for errors
 process.on('uncaughtException', (e) => {
-  Logger.error(e)
+  logger.error(e)
   process.exit(-1);
 });
-process.on('unhandledRejection', (e) => Logger.error(e));
+process.on('unhandledRejection', (e) => logger.error(e));
 
 // create express instance
 const app = express();
@@ -24,7 +24,7 @@ app.use(session({
 // setup simple http logging
 app.use((req, res, next) => {
   res.on('finish',() => {
-    Logger.info(`${res.statusCode} ${req.protocol}/${req.httpVersion} ${req.originalUrl || req.url} ${req.get('User-Agent') || 'no-user-agent'}`);
+    logger.info(`${res.statusCode} ${req.protocol}/${req.httpVersion} ${req.originalUrl || req.url} ${req.get('User-Agent') || 'no-user-agent'}`);
   });
   next();
 });
@@ -32,5 +32,5 @@ app.use((req, res, next) => {
 require('./controller')(app);
 
 app.listen(8000, () => {
-  Logger.info('server ready on port 8000');
+  logger.info('server ready on port 8000');
 });

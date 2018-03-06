@@ -6,7 +6,6 @@ const activeMqProxy = require('../lib/activeMqProxy');
 const jsonld = require('jsonld');
 const util = require('util');
 const redis = require('../lib/redisClient');
-const Logger = logger();
 const jwt = require('jsonwebtoken');
 
 jsonld.frame = util.promisify(jsonld.frame);
@@ -136,7 +135,7 @@ class ServiceModel {
     });
 
     this.services = services;
-    Logger.info('Services reloaded', Object.keys(services));
+    logger.info('Services reloaded', Object.keys(services));
 
     // run init
     for( let id in this.services ) {
@@ -381,7 +380,7 @@ class ServiceModel {
    * @param {String} secret optional.  service secret to encrypt auth token with
    */
   _sendHttpNotification(id, url, event, secret) {
-    Logger.debug(`Sending HTTP webhook notifiction to service ${id} ${url}`);
+    logger.debug(`Sending HTTP webhook notifiction to service ${id} ${url}`);
 
     request({
       type : 'POST',
@@ -393,9 +392,9 @@ class ServiceModel {
       body : JSON.stringify(event)
     },
     (error, response, body) => {
-      if( error ) return Logger.error(`Failed to send HTTP notification to service ${id} ${url}`, error);
+      if( error ) return logger.error(`Failed to send HTTP notification to service ${id} ${url}`, error);
       if( !api.isSuccess(response) ) {
-        Logger.error(`Failed to send HTTP notification to service ${id} ${url}`, response.statusCode, response.body);
+        logger.error(`Failed to send HTTP notification to service ${id} ${url}`, response.statusCode, response.body);
       }
     });
   }

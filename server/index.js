@@ -1,7 +1,7 @@
+global.LOGGER_NAME = 'fin-server';
 const express = require('express');
 const path = require('path');
 const {logger, jwt, config} = require('@ucd-lib/fin-node-utils');
-const Logger = logger('fin-server');
 const session = require('express-session');
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
@@ -11,8 +11,8 @@ const api = require('@ucd-lib/fin-node-api');
 const SERVER_USERNAME = 'fin-server';
 
 // global catch alls for errors
-process.on('uncaughtException', (e) => Logger.error(e));
-process.on('unhandledRejection', (e) => Logger.error(e));
+process.on('uncaughtException', (e) => logger.error(e));
+process.on('unhandledRejection', (e) => logger.error(e));
 
 // create express instance
 const app = express();
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
     let url = req.originalUrl || req.url;
     let cache = 'cache:' + (res.get('x-fin-cache') || 'no-cache');
 
-    Logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}, ${fcrepoProxyTime} ${cache}`);
+    logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}, ${fcrepoProxyTime} ${cache}`);
   });
   next();
 });
@@ -83,5 +83,5 @@ app.use('/auth', require('./controllers/auth'));
 
 
 app.listen(3001, () => {
-  Logger.info('server ready on port 3001');
+  logger.info('server ready on port 3001');
 });

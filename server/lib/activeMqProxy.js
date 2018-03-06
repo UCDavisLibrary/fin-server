@@ -1,7 +1,6 @@
 const stompit = require('stompit'); // docs: http://gdaws.github.io/node-stomp/api/channel/
 const {config, logger} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
-const Logger = logger();
 const EventEmitter = require('events');
 
 
@@ -55,7 +54,7 @@ class MessageConsumer extends EventEmitter {
    */
   init() {
     if( !this.client ) return;
-    Logger.info('STOMP client connected');
+    logger.info('STOMP client connected');
 
 
     this.client.subscribe(subscribeHeaders, async (error, message) => {
@@ -74,7 +73,7 @@ class MessageConsumer extends EventEmitter {
       }
 
       var id = headers[ACTIVE_MQ_HEADER_ID];
-      Logger.debug('ActiveMQ Event', id, headers[ACTIVE_MQ_HEADER_EVENT]);
+      logger.debug('ActiveMQ Event', id, headers[ACTIVE_MQ_HEADER_EVENT]);
 
       this.broadcast({
         type : 'fcrepo-event',

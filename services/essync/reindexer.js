@@ -1,3 +1,4 @@
+global.LOGGER_NAME = 'essync';
 const request = require('superagent');
 const elasticsearch = require('elasticsearch');
 const {jwt, logger} = require('@ucd-lib/fin-node-utils');
@@ -5,7 +6,6 @@ const schemaRecord = require('./schemas/record');
 const schemaCollection = require('./schemas/collection');
 const clone = require('clone');
 const indexer = require('./indexer');
-const Logger = logger('essync');
 const {URL} = require('url');
 const api = require('@ucd-lib/fin-node-api');
 const config = require('./config');
@@ -38,19 +38,19 @@ class EsReindexer {
     let colConfig = config.elasticsearch.collection;
 
     // grab the current indexes being used for records and collections
-    Logger.info('Grabbing current indexes')
+    logger.info('Grabbing current indexes')
     var oldRecordIndexes = await this.getCurrentIndexes(recordConfig.alias);
     var oldCollectionIndexes = await this.getCurrentIndexes(colConfig.alias);
-    Logger.info('Found indexes', oldRecordIndexes, oldCollectionIndexes);
+    logger.info('Found indexes', oldRecordIndexes, oldCollectionIndexes);
 
     // create new indexes to insert into during the crawl
-    Logger.info('Creating new index');
+    logger.info('Creating new index');
     var newRecordIndexName = await indexer.createIndex(recordConfig.alias, recordConfig.schemaType, schemaRecord);
     var newCollectionIndexName = await indexer.createIndex(colConfig.alias, colConfig.schemaType, schemaCollection);
-    Logger.info('New index created', newRecordIndexName, newCollectionIndexName);
+    logger.info('New index created', newRecordIndexName, newCollectionIndexName);
 
     // now crawl collections
-    Logger.info('Crawling fin collections and populating Index');
+    logger.info('Crawling fin collections and populating Index');
     // first thing, us a admin token to get all children of collection
     api.setConfig({jwt: indexer.token});
     let collections = await this.getRootCollections();
@@ -63,14 +63,14 @@ class EsReindexer {
     }
 
     // for any currently active index, remove the alias name.  Set the alias name to the new indexes
-    Logger.info('Updating aliases');
+    logger.info('Updating aliases');
     await this.updateAliases(oldRecordIndexes, newRecordIndexName, recordConfig.alias);
     await this.updateAliases(oldCollectionIndexes, newCollectionIndexName, colConfig.alias);
 
     // finally, drop all old indexes (the indexes that were active until the lines above)
-    Logger.info('Removing old record indexes', oldRecordIndexes);
+    logger.info('Removing old record indexes', oldRecordIndexes);
     await this.dropIndexes(oldRecordIndexes);
-    Logger.info('Removing old collection indexes', oldCollectionIndexes);
+    logger.info('Removing old collection indexes', oldCollectionIndexes);
     await this.dropIndexes(oldCollectionIndexes);
   }
 
@@ -234,7 +234,7 @@ class EsReindexer {
         await indexer.esClient.indices.delete({index: oldIndexes[i]});
       }
     } catch(e) {
-      Logger.error(e);
+      logger.error(e);
     }
   }
 
@@ -245,7 +245,7 @@ const reindexer = new EsReindexer();
 // manually run reindexer from command line
 if( process.argv.indexOf('reindex') > -1 ) {
   reindexer.run()
-    .then(() => Logger.info('done'))
+    .then(() => logger.info('done'))
     .catch((e) => console.error(e))
 }
 

@@ -1,6 +1,6 @@
-var jwt = require('jsonwebtoken');
-var config = require('./config');
-const logger = require('./logger')();
+const jwt = require('jsonwebtoken');
+const config = require('./config');
+const logger = require('./logger');
 
 class JwtUtils {
 

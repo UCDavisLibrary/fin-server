@@ -3,14 +3,13 @@ const request = require('request');
 const schemaRecord = require('./schemas/record');
 const schemaCollection = require('./schemas/collection');
 const {logger, jwt} = require('@ucd-lib/fin-node-utils');
-const Logger = logger('essync');
 const fs = require('fs');
 const {URL} = require('url');
 const api = require('@ucd-lib/fin-node-api');
 const config = require('./config');
 
 // everything depends on indexer, so placing this here...
-process.on('unhandledRejection', err => Logger.error(err));
+process.on('unhandledRejection', err => logger.error(err));
 
 const COLLECTION = 'http://schema.org/Collection';
 const CREATIVE_WORK = 'http://schema.org/CreativeWork';
@@ -75,7 +74,7 @@ class EsIndexer {
   async init() {
     await this.isConnected();
 
-    Logger.info('Connected to Elastic Search');
+    logger.info('Connected to Elastic Search');
 
     let recordConfig = config.elasticsearch.record;
     let colConfig = config.elasticsearch.collection;
@@ -98,12 +97,12 @@ class EsIndexer {
     let exits = await this.esClient.indices.existsAlias({name: alias});
     if( exits ) return;
 
-    Logger.info(`No alias exists: ${alias}, creating...`);
+    logger.info(`No alias exists: ${alias}, creating...`);
 
     let indexName = await this.createIndex(alias, schemaName, schema);
     await this.esClient.indices.putAlias({index: indexName, name: alias});
     
-    Logger.info(`Index ${indexName} created pointing at alias ${alias}`);
+    logger.info(`Index ${indexName} created pointing at alias ${alias}`);
   }
 
   /**
@@ -147,7 +146,7 @@ class EsIndexer {
   async update(jsonld, recordIndex, collectionIndex) {
     // only index binary and collections
     if( this.isRecord(jsonld['@type']) ) {
-      Logger.info(`ES Indexer updating record container: ${jsonld.localId}`);
+      logger.info(`ES Indexer updating record container: ${jsonld.localId}`);
 
       await this.esClient.index({
         index : recordIndex || config.elasticsearch.record.alias,
@@ -157,7 +156,7 @@ class EsIndexer {
       });
 
     } else if ( this.isCollection(jsonld['@type']) ) {
-      Logger.info(`ES Indexer updating collection container: ${jsonld.localId}`);
+      logger.info(`ES Indexer updating collection container: ${jsonld.localId}`);
 
       await this.esClient.index({
         index : collectionIndex || config.elasticsearch.collection.alias,
@@ -166,7 +165,7 @@ class EsIndexer {
         body: jsonld
       });
     } else {
-      Logger.info(`ES Indexer ignoring container: ${jsonld.localId}`, jsonld['@type']);
+      logger.info(`ES Indexer ignoring container: ${jsonld.localId}`, jsonld['@type']);
     }
   }
 
@@ -194,9 +193,9 @@ class EsIndexer {
           id : path
         });
   
-        Logger.info(`ES Indexer removed record container: ${path}`);
+        logger.info(`ES Indexer removed record container: ${path}`);
       } catch(e) {
-        Logger.error('Failed to remove record container from elasticsearch: '+path, e);
+        logger.error('Failed to remove record container from elasticsearch: '+path, e);
       }
     } else if( this.isCollection(types) ) {
       let exists = await this.esClient.exists({
@@ -213,17 +212,17 @@ class EsIndexer {
           id : path
         });
   
-        Logger.info(`ES Indexer removed collection container: ${path}`);
+        logger.info(`ES Indexer removed collection container: ${path}`);
       } catch(e) {
-        Logger.error('Failed to remove collection container from elasticsearch: '+path, e);
+        logger.error('Failed to remove collection container from elasticsearch: '+path, e);
       }
     } else {
-      Logger.info('Unknown type of container to remove', types);
+      logger.info('Unknown type of container to remove', types);
     }
   }
 
   async removeCollection(collectionLocalId) {
-    Logger.info(`Removing all records for collection: ${collectionLocalId}`);
+    logger.info(`Removing all records for collection: ${collectionLocalId}`);
 
     try {
       let response = await this.esClient.deleteByQuery({
@@ -250,7 +249,7 @@ class EsIndexer {
         id : collectionLocalId
       });
     } catch(e) {
-      Logger.error(`Failed to remove all records for collection: ${collectionLocalId}`, e);
+      logger.error(`Failed to remove all records for collection: ${collectionLocalId}`, e);
     }
   }
 
@@ -280,14 +279,14 @@ class EsIndexer {
       uri : path+`/svc:${svc}`
     });
     if( response.statusCode === 403 ) {
-      Logger.error('Ignoring non-public container: '+path);
+      logger.error('Ignoring non-public container: '+path);
       return null;
     }
 
     try {
       return JSON.parse(response.body);
     } catch(e) {
-      Logger.error('Failed to get frame for: '+path, response.statusCode+' '+response.body,  e);
+      logger.error('Failed to get frame for: '+path, response.statusCode+' '+response.body,  e);
       return null;
     }
   }

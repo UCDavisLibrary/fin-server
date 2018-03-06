@@ -3,9 +3,8 @@ const model = require('../models/auth');
 const serviceModel = require('../models/services');
 const middleware = require('./middleware');
 const utils = require('./utils');
-const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
+const {config, jwt} = require('@ucd-lib/fin-node-utils');
 const {URL} = require('url');
-const Logger = logger();
 
 router.get('/service/:id', middleware.admin, async (req, res) => {
   try {

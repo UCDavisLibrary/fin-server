@@ -1,8 +1,7 @@
 const bcrypt = require('bcrypt');
-const {config, jwt, logger} = require('@ucd-lib/fin-node-utils');
+const {config, jwt} = require('@ucd-lib/fin-node-utils');
 const redis = require('../lib/redisClient');
 const crypto = require('crypto');
-const Logger = logger();
 
 class AuthModel {
 

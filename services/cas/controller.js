@@ -1,6 +1,5 @@
 const {logger, config, utils} = require('@ucd-lib/fin-node-utils');
 const CASAuthentication = require('cas-authentication');
-const Logger = logger();
 
 const AGENT_DOMAIN = process.env.CAS_AGENT_DOMAIN || utils.getRootDomain(config.cas.url);
 
@@ -16,13 +15,13 @@ function init(app) {
   // });
 
   app.get('/login', (req, res) => {
-    Logger.info('CAS Service: starting CAS redirection');
+    logger.info('CAS Service: starting CAS redirection');
 
     req.query.returnTo = config.server.url + req.get('x-fin-original-path');
     cas.service_url = config.server.url + req.get('x-fin-service-path');
 
     cas.bounce(req, res, async () => {
-      Logger.info('CAS Service: CAS redirection complete');
+      logger.info('CAS Service: CAS redirection complete');
 
       let username = '';
       if( cas.session_name && req.session[cas.session_name] ) {
@@ -30,11 +29,11 @@ function init(app) {
       }
 
       if( username ) {
-        Logger.info('CAS Service: CAS login success: '+username);
+        logger.info('CAS Service: CAS login success: '+username);
         res.set('X-FIN-AUTHORIZED-AGENT', username+'@'+AGENT_DOMAIN)
             .json({success: true, username: username+'@'+AGENT_DOMAIN});
       } else {
-        Logger.info('CAS Service: CAS login failure');
+        logger.info('CAS Service: CAS login failure');
         res.status(401).send();
       }
     });

@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@ucd-lib/fin-node-api": "^0.8.2",
-    "@ucd-lib/fin-node-utils": "^0.1.8",
+    "@ucd-lib/fin-node-utils": "^0.1.11",
     "body": "^5.1.0",
     "clone": "^2.1.1",
     "elasticsearch": "^13.3.1",

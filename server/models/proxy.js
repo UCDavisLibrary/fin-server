@@ -10,7 +10,6 @@ const authModel = require('./auth');
 const serviceModel = require('./services');
 const cache = require('./cache');
 
-const Logger = logger();
 var proxy = httpProxy.createProxyServer({
     ignorePath : true
 });
@@ -40,7 +39,7 @@ const ROOT_DOMAIN = serviceModel.getRootDomain(config.server.url);
 class ProxyModel {
 
   constructor() {
-    Logger.debug('Initializing proxy');
+    logger.debug('Initializing proxy');
 
     // listen for proxy responses, if the request is not a /fcrepo request
     // and not a service request, append the service link headers.
@@ -146,7 +145,7 @@ class ProxyModel {
 
     // not fin server domain, external service domain or allowed origin domain
     if( ROOT_DOMAIN !== rootDomain && !serviceModel.authServiceDomains[rootDomain] && !this.allowOrigins[rootDomain] ) {
-      Logger.warn('Request with referer set to unknown domain: '+rootDomain+' / '+req.headers.referer);
+      logger.warn('Request with referer set to unknown domain: '+rootDomain+' / '+req.headers.referer);
       return;
     }
 
@@ -244,7 +243,7 @@ class ProxyModel {
     }
 
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
-    Logger.debug(`Fcrepo proxy request: ${url}`);
+    logger.debug(`Fcrepo proxy request: ${url}`);
 
     proxy.web(req, res, {
       target : url
@@ -413,7 +412,7 @@ class ProxyModel {
     }
     path = path.replace(AUTHENTICATION_SERVICE_CHAR+'/'+service.id, '');
 
-    Logger.info(`AuthenticationService proxy request: ${req.originalUrl} -> ${service.url+path}`);
+    logger.info(`AuthenticationService proxy request: ${req.originalUrl} -> ${service.url+path}`);
 
     // send proxy request to new path, including reference headers to original request path
     proxy.web(req, res, {
@@ -451,7 +450,7 @@ class ProxyModel {
         }
       );
     } catch(e) {
-      Logger.error('Failed to proxy to ClientService: '+serviceModel.clientService.id, e);
+      logger.error('Failed to proxy to ClientService: '+serviceModel.clientService.id, e);
       res.status(400);
     }
   }
