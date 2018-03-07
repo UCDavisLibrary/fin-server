@@ -129,6 +129,18 @@ services:
       - server
 
   ###
+  # Auto Generator Demo
+  ###
+  essync:
+    image: ucdlib/fin-auto-generator-demo-service:1.0.0
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
+
+  ###
   # CAS AuthenticationService
   ###
   cas:

@@ -141,6 +141,18 @@ services:
       - server
     command: node service
 
+  auto-generator-demo:
+    image: node:8.5
+    volumes:
+      - ../../services/auto-generator-demo:/service
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
+    command: node service
+
   serialization:
     image: node:8.5
     volumes:

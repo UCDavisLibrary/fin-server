@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ucd-lib/fin-node-utils": "^0.1.11",
+    "@ucd-lib/fin-node-utils": "^0.1.12",
     "fs-extra": "^4.0.2"
   }
 }

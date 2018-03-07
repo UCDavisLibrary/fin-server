@@ -1,7 +1,7 @@
 {
-  "name": "cas",
-  "version": "0.0.1",
-  "description": "A UCD CAS authentication service",
+  "name": "@ucd-lib/auto-generator-demo",
+  "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,10 +9,8 @@
   "author": "jrmerz@ucdavis.edu",
   "license": "ISC",
   "dependencies": {
+    "@ucd-lib/fin-node-api": "^0.8.3",
     "@ucd-lib/fin-node-utils": "^0.1.12",
-    "body-parser": "^1.18.2",
-    "cas-authentication": "0.0.8",
-    "express": "^4.16.2",
-    "express-session": "^1.15.6"
+    "clone": "^2.1.1"
   }
 }

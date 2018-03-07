@@ -124,6 +124,17 @@ services:
       - fcrepo
       - elasticsearch
 
+  # auto generator service demo
+  auto-generator-demo:
+    build: ../../services/auto-generator-demo
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
+    # command: bash -c "tail -f /dev/null"
+
   ###
   # CAS AuthenticationService
   ###

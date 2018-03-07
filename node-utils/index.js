@@ -4,5 +4,6 @@ module.exports = {
   jwt : require('./jwt'),
   logger : require('./logger'),
   MessageServer : require('./MessageServer'),
-  utils : require('./utils')
+  utils : require('./utils'),
+  AutoGenerator : require('./AutoGenerator')
 }

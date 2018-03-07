@@ -40,8 +40,8 @@ class MessageServer {
       });
     });
 
-    this.server.listen(this.port, function() {
-      logger.info(`${name} - Server Listening on ${this.port}`);
+    this.server.listen(this.port, () => {
+      logger.info(`${name} - Server Listening on ${port}`);
     });
 
     this.server.on('error', (e) => {

@@ -17,6 +17,13 @@ module.exports = [
     url : 'http://essync:3333'
   },
   {
+    id : 'auto-generator-demo',
+    title : 'Auto Generator Demo',
+    description : 'Demo of automatic container generation',
+    type : 'WebhookService',
+    url : 'http://auto-generator-demo:3333'
+  },
+  {
     id : 'es-record-frame',
     title : 'Elastic Search - Collection Record Frame',
     description : 'Used for updating Elastic Search indexes when fedora updates',
