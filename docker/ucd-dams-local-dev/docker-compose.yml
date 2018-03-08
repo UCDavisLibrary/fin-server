@@ -15,6 +15,7 @@ services:
       - ../../server:/app
       - ../../services/frames:/etc/fin/frames
       - ../../services/default-services.js:/etc/fin/default-services.js
+      - fedora-backups:/fcrepo-backups
     ports:
       - 3000:3001
       - 9229:9229
@@ -37,6 +38,7 @@ services:
     build: ../../fcrepo
     volumes:
       - fedora-data:/var/lib/jetty/fedora-data
+      - fedora-backups:/var/lib/jetty/fcrepo-backups
     ports:
       - 8080:8080
       - 61613:61613
@@ -157,13 +159,15 @@ services:
     image: node:8.5
     volumes:
       - ../../services/serialization:/service
+      - fedora-serialized-data:/data
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
     depends_on:
       - server
-    command: node service
+    # command: node service
+    command: bash -c 'tail -f /dev/null'
 
   cas:
     image: node:8
@@ -217,6 +221,8 @@ services:
   #     - fedora-serialized-data:/data
 
 volumes:
+  fedora-backups:
+    driver: local
   fedora-data:
     driver: local
   fedora-serialized-data:

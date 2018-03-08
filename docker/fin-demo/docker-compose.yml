@@ -127,6 +127,8 @@ services:
       - FIN_URL=${FIN_URL}
     depends_on:
       - server
+    volumes:
+      - fedora-serialized-data:/data
 
   ###
   # Auto Generator Demo

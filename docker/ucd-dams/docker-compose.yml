@@ -123,6 +123,8 @@ services:
       - server
       - fcrepo
       - elasticsearch
+    volumes:
+      - fedora-serialized-data:/data
 
   # auto generator service demo
   auto-generator-demo:

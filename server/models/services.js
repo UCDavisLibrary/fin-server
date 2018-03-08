@@ -54,11 +54,11 @@ class ServiceModel {
     for( var i = 0; i < config.defaultServices.length; i++ ) {
       let service = config.defaultServices[i];
 
-      var {response} = await api.head({
+      var response = await api.head({
         path : '/'+api.service.ROOT+'/'+service.id
       });
 
-      if( response.statusCode === 200 ) {
+      if( response.checkStatus(200) ) {
         await api.delete({
           path: '/'+api.service.ROOT+'/'+service.id,
           permanent: true
@@ -108,14 +108,15 @@ class ServiceModel {
    */
   async reload(testingPath) {
     let list = await api.service.list();
+    list = list.data;
 
     // for testing only.  load the testing path services as well.
     // these will be overridden when a testing path is not provided
     if( testingPath ) {
       api.service.testing();
       try {
-        let tlist = await api.service.list();
-        list = list.concat(tlist);
+        let response = await api.service.list();
+        list = list.concat(response.data);
       } catch(e) {}
       api.service.testing(false);
     }
@@ -278,8 +279,8 @@ class ServiceModel {
       options.host = config.server.url;
     }
 
-    let {response} = await api.get(options);
-    if( response.statusCode !== 200 ) throw new Error(response.statusCode+' '+response.body);
+    let response = await api.get(options);
+    if( !response.checkStatus(200) ) throw new Error(response.statusCode+' '+response.body);
 
     let container = JSON.parse(response.body);
     return await jsonld.frame(container, frame);

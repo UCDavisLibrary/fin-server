@@ -79,6 +79,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.text({type: (req) => true}));
 // register auth controller
 app.use('/auth', require('./controllers/auth'));
+app.use('/fin', require('./controllers/fin'));
 
 
 

@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ucd-lib/fin-node-api": "^0.5.0",
+    "@ucd-lib/fin-node-api": "^0.8.3",
     "@ucd-lib/fin-node-utils": "^0.1.12",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",

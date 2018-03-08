@@ -68,9 +68,9 @@ class ProxyModel {
     // of /auth/token /auth/user /auth/logout /auth/mint /auth/service, these are reserved
     app.use(/^\/auth\/(?!token|user|logout|mint|service).*/i, this._proxyAuthenticationService.bind(this));
     
-    // send all requests that are not /fcrepo or /auth to the ClientService
+    // send all requests that are not /fcrepo, /auth or /fin to the ClientService
     // fcrepo is really handled above but reads a little better to add... :/
-    app.use(/^\/(?!auth|fcrepo).*/, this._proxyClientService.bind(this));
+    app.use(/^\/(?!auth|fcrepo|fin).*/, this._proxyClientService.bind(this));
   }
 
   /**

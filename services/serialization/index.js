@@ -1,4 +1,5 @@
-const {jwt, config, MessageServer} = require('@ucd-lib/fin-node-utils');
+global.LOGGER_NAME = 'serialization';
+const {jwt, config, logger, MessageServer} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
 const {URL} = require('url');
 const fs = require('fs-extra');
@@ -84,25 +85,17 @@ class SerializationMessageServer extends MessageServer {
   }
 
   async handleMessage(msg) {
+    if( msg.type !== this.WEBHOOK_EVENT_TYPES.FCREPO_EVENT ) return;
 
-    if( msg.type !== 'fcrepo-event' ) return;
+    let eventTypes = this.getEventTypes(msg);
+    let fcpath = this.getPath(msg);
 
-    let eventTypes = msg.payload
-                          .headers['org.fcrepo.jms.eventType']
-                          .split(',')
-                          .map(type => type.trim().replace(/.*#/, ''));
-
-    let fcpath = msg.payload.headers['org.fcrepo.jms.identifier'] || '/';
-
-    if( eventTypes.indexOf('ResourceModification') > -1 ||
-        eventTypes.indexOf('ResourceCreation') > -1  ) {
-      console.log(`Updating: ${fcpath}`);
+    if( this.isCreate(eventTypes) || this.isModify(eventTypes) ) {
+      logger.info(`Updating: ${fcpath}`);
       await this.getData(fcpath);
-
-    } else if( eventTypes.indexOf('ResourceDeletion') > -1 ) {
-      console.log(`Delete: ${fcpath}`);
+    } else if( this.isDelete(eventTypes) ) {
+      logger.info(`Delete: ${fcpath}`);
       await this.cleanData(fcpath);
-    
     }
   }
 

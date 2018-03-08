@@ -1,7 +1,7 @@
 FROM node:8
 
 RUN apt-get update
-RUN apt-get install -y git jq
+RUN apt-get install -y git jq zip unzip
 RUN npm install -g @ucd-lib/fin-cli@0.0.8
 RUN apt-get clean
 
