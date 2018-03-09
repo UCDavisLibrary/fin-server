@@ -58,7 +58,7 @@ export default class AppImageViewer extends PolymerElement {
    * @param {String} id record id (uri)
    */
   async render(id) {
-    let url = id+'/svc:iiif/full/full/0/default.png';
+    let url = '/fcrepo/rest'+id+'/svc:iiif/full/full/0/default.png';
     if( this.currentUrl === url ) return;
 
     if( this.viewer ) this.viewer.remove();

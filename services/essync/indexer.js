@@ -316,7 +316,7 @@ class EsIndexer {
 
   /**
    * @method setThumbnail
-   * @description given a JSON-LD frame, set the thumbnail.  If there is an exampleOfWork,
+   * @description given a JSON-LD frame, set the thumbnail.  If there is an workExample,
    * this property will be used otherwise the id of the frame.  The uri will be hit against
    * the iiif service.
    * 
@@ -325,12 +325,12 @@ class EsIndexer {
    * @returns {Object}
    */
   async setThumbnail(json) {
-    if( !json.exampleOfWork ) {
-      if( !json.mimeType ) return;
-      if( !json.mimeType.match(/image/i) ) return;
+    if( !json.workExample ) {
+      if( !json.fileFormat ) return;
+      if( !json.fileFormat.match(/image/i) ) return;
     }
 
-    let imgUrl = json.exampleOfWork ? json.exampleOfWork : json['@id'];
+    let imgUrl = json.workExample ? json.workExample : json['@id'];
     imgUrl = imgUrl.replace(this.getFrameBaseUrl(), 'http://server:3001'+config.fcrepo.root)+'/svc:iiif/full/8,/0/default.png';
 
     let result = await this.request({
@@ -345,7 +345,7 @@ class EsIndexer {
 
   /**
    * @method setImageResolution
-   * @description given a JSON-LD frame, set the image resolution.  If there is an exampleOfWork,
+   * @description given a JSON-LD frame, set the image resolution.  If there is an workExample,
    * this property will be used otherwise the id of the frame.  The uri will be hit against
    * the iiif service for resolution information.
    * 
@@ -354,12 +354,12 @@ class EsIndexer {
    * @returns {Object}
    */
   async setImageResolution(json) {
-    if( !json.exampleOfWork ) {
-      if( !json.mimeType ) return;
-      if( !json.mimeType.match(/image/i) ) return;
+    if( !json.workExample ) {
+      if( !json.fileFormat ) return;
+      if( !json.fileFormat.match(/image/i) ) return;
     }
 
-    let imgUrl = json.exampleOfWork ? json.exampleOfWork : json['@id'];
+    let imgUrl = json.workExample ? json.workExample : json['@id'];
     imgUrl = imgUrl.replace(this.getFrameBaseUrl(), 'http://server:3001'+config.fcrepo.root)+'/svc:iiif/info.json';
     
     var result = await this.request({

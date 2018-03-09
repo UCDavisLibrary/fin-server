@@ -29,7 +29,7 @@ class AppSearchHeader extends Mixin(PolymerElement)
 
     let browse = {};
     overview.forEach(item => {
-      browse[item.localId] = item.title;
+      browse[item.localId] = item.name;
     });
 
     this.$.searchInput.browse = browse;

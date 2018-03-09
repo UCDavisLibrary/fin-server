@@ -46,7 +46,7 @@ export default class AppRecord extends Mixin(PolymerElement)
         type : String,
         value : ''
       },
-      title : {
+      name : {
         type : String,
         value : ''
       },
@@ -70,7 +70,7 @@ export default class AppRecord extends Mixin(PolymerElement)
         type : String,
         value : ''
       },
-      mimeType : {
+      fileFormat : {
         type : String,
         value : ''
       },
@@ -124,9 +124,9 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.record = e.payload._source;
 
     this.resolution = this.record.width+'x'+this.record.height;
-    this.$.imageViewer.render(this.record.id);
+    this.$.imageViewer.render(this.record.localId);
 
-    this.title = this.record.title || '';
+    this.name = this.record.name || '';
 
     this.description = this.record.description || '';
     this.$.link.value = window.location.href;
@@ -135,16 +135,16 @@ export default class AppRecord extends Mixin(PolymerElement)
                   moment(this.record.created).format(this.momentFormat) :
                   '';
 
-    this.resourceType = this.record.type || this.record.mimeType || 'Unknown';
+    this.resourceType = this.record.type || this.record.fileFormat || 'Unknown';
 
     this.size = bytes(this.record.hasSize ? parseInt(this.record.hasSize) : 0);
-    this.mimeType = this.record.mimeType || '';
+    this.fileFormat = this.record.fileFormat || '';
 
     this.rights = this.record.rights || '';
 
     this.$.download.render({
       resolution : [this.record.width, this.record.height],
-      mimeType : this.mimeType,
+      fileFormat : this.fileFormat,
       size : this.record.hasSize ? parseInt(this.record.hasSize) : 0,
       url : this.record.id
     });
@@ -152,7 +152,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.collectionName = this.record.isPartOf || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
-      this.collectionName = collection.title;
+      this.collectionName = collection.name;
     }
 
     this._updateMetadataRows();
@@ -165,7 +165,7 @@ export default class AppRecord extends Mixin(PolymerElement)
   _updateMetadataRows() {
     let metadata = [];
 
-    this._addMetadataRow(metadata, 'title', 'Item Name');
+    this._addMetadataRow(metadata, 'name', 'Item Name');
     this._addMetadataRow(metadata, 'collectionName', 'Collection');
     this._addMetadataRow(metadata, 'date', 'Date');
 

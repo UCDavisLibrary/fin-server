@@ -1,25 +1,34 @@
 {
   "@context": {
-    "dct" : "http://purl.org/dc/terms/",
-    "dc": "http://purl.org/dc/elements/1.1/",
     "fedora" : "http://fedora.info/definitions/v4/repository#",
-    "ebucore" : "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
+    "fast": "http://id.worldcat.org/fast/",
+    "lcna": "http://id.loc.gov/authorities/names/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "schema": "http://schema.org/",
-    "title" : {
-      "@id": "dc:title"
+    "premis" : "http://www.loc.gov/premis/rdf/v1#",
+    "ebucore" : "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
+    "name" : {
+      "@id": "schema:name"
     },
     "description" : {
-      "@id": "dc:description"
+      "@id": "schema:description"
     },
-    "subjects" : {
-      "@id": "dc:subject"
+    "keywords" : {
+      "@id": "schema:keywords"
     },
     "creator" : {
-      "@id": "dc:creator"
+      "@id": "schema:creator"
     },
     "creatorLink" : {
-      "@id": "dct:creator",
-      "@type" : "@id"
+      "@id": "schema:creator",
+      "@type": "@id"
+    },
+    "publisher" : {
+      "@id": "schema:publisher"
+    },
+    "publisherLink" : {
+      "@id": "schema:publisher",
+      "@type": "@id"
     },
     "createdBy" : {
       "@id": "fedora:createdBy"
@@ -32,12 +41,21 @@
       "@id" : "schema:isPartOf",
       "@type": "@id"
     },
-    "exampleOfWork" : {
-      "@id" : "schema:exampleOfWork",
-      "@type" : "@id"
+    "hasPart" : {
+      "@id" : "schema:hasPart",
+      "@type": "@id"
     },
-    "mimeType" : {
-      "@id" : "ebucore:hasMimeType"
+    "associatedMedia" : {
+      "@id" : "schema:associatedMedia",
+      "@type": "@id"
+    },
+    "encodesCreativeWork" : {
+      "@id" : "schema:encodesCreativeWork",
+      "@type": "@id"
+    },
+    "workExample" : {
+      "@id" : "schema:workExample",
+      "@type": "@id"
     },
     "lastModified" : {
       "@type" : "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -46,41 +64,51 @@
     "lastModifiedBy" : {
       "@id" : "fedora:lastModifiedBy"
     },
-    "coverage" : {
-      "@id" : "dc:coverage"
+    "about" : {
+      "@id" : "schema:about"
     },
-    "subjectLinks" : {
-      "@id" : "dct:subject",
+    "aboutLink" : {
+      "@id" : "schema:about",
       "@type" : "@id"
     },
-    "publisher" : {
-      "@id" : "dc:publisher"
+    "datePublished" : {
+      "@id" : "schema:datePublished"
     },
-    "created" : {
-      "@id" : "dct:created"
+    "localIdentifier" : {
+      "@id" : "schema:identifier"
     },
-    "type" : {
-      "@id" : "dct:type"
+    "universalIdentifier" : {
+      "@id" : "schema:identifier"
     },
-    "rightsLink" : {
-      "@id" : "dct:rights",
+    "source" : {
+      "@id" : "schema:material"
+    },
+    "license" : {
+      "@id" : "schema:license",
       "@type" : "@id"
+    },
+    "fileSize" : {
+      "@id" : "premis:hasSize",
+      "@type" : "http://www.w3.org/2001/XMLSchema#long"
+    },
+    "filename" : {
+      "@id" : "ebucore:filename"
     }
   },
   "@explicit": true,
-  "title": {
+  "name": {
     "@default" : ""
   },
   "description": {
     "@default" : ""
   },
-  "subjects": {
+  "keywords": {
+    "@default" : ""
+  },
+  "about" : {
     "@default" : ""
   },
   "creator" : {
-    "@default" : ""
-  },
-  "creatorLink" : {
     "@default" : ""
   },
   "createdBy" : {
@@ -92,9 +120,6 @@
   "exampleOfWork" : {
     "@default" : ""
   },
-  "mimeType" : {
-    "@default" : ""
-  },
   "lastModified" : {
     "@default" : ""
   },
@@ -104,19 +129,19 @@
   "coverage" : {
     "@default" : ""
   },
-  "subjectLinks" : {
-    "@default" : ""
-  },
   "publisher" : {
     "@default" : ""
   },
-  "created" : {
+  "datePublished" : {
     "@default" : ""
   },
-  "type" : {
+  "license" : {
     "@default" : ""
   },
-  "rightsLink" : {
+  "hasPart" : {
+    "@default" : ""
+  },
+  "workExample" : {
     "@default" : ""
   }
 }

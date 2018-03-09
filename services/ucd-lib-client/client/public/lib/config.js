@@ -3,8 +3,8 @@ module.exports = {
 
   elasticSearch : {
     facets : {
-      'mimeType' : {
-        label : 'Mime-Type',
+      'fileFormat' : {
+        label : 'File Format',
         type : 'facet'
       },
       'creator' : {
@@ -42,7 +42,7 @@ module.exports = {
       // }
     },
 
-    textFields : ['title', 'description'],
+    textFields : ['name', 'description'],
     
     // max number of facets filter options
     maxFacetCount : 50

@@ -40,7 +40,7 @@
       "type" : "keyword"
     },
 
-    "title" : {
+    "name" : {
       "type": "text",
       "fields": {
         "raw": { 

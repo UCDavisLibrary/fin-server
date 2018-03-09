@@ -30,7 +30,7 @@ export default class AppSearchResult extends Mixin(PolymerElement)
         type : String,
         value : ''
       },
-      title : {
+      name : {
         type : String,
         value : ''
       },
@@ -71,13 +71,13 @@ export default class AppSearchResult extends Mixin(PolymerElement)
 
   /**
    * @method _isImg
-   * @description helper method to sniff if mimetype is image
+   * @description helper method to sniff if fileFormat is image
    * 
-   * @param {String} mimeType 
+   * @param {String} fileFormat 
    */
-  _isImg(mimeType) {
-    if( !mimeType ) return false;
-    return mimeType.match(/^image/i) ? true : false;
+  _isImg(fileFormat) {
+    if( !fileFormat ) return false;
+    return fileFormat.match(/^image/i) ? true : false;
   }
 
   /**
@@ -88,11 +88,11 @@ export default class AppSearchResult extends Mixin(PolymerElement)
     let data = Object.assign({}, this.data);
     if( !data['@id'] ) return;
     
-    this.fetchId = data['@id'].replace(this.baseUrl, '');   
+    this.fetchId = data.localId;   
 
-    this.title = this.data.title || this.data.identifier || '';
+    this.name = this.data.name || this.data.identifier || '';
 
-    if( this._isImg(this.data.mimeType) ) {
+    if( this._isImg(this.data.fileFormat) ) {
       if( this.data.width && this.data.height ) {
         let ratio = this.data.height / this.data.width;
         this.imgHeight = Math.floor(250 * ratio);
@@ -130,7 +130,7 @@ export default class AppSearchResult extends Mixin(PolymerElement)
     this.collectionName = this.data.isPartOf || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
-      this.collectionName = collection.title;
+      this.collectionName = collection.name;
     }
   }
 

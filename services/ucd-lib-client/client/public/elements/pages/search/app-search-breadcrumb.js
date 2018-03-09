@@ -18,7 +18,7 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
         type : Object,
         value : null
       },
-      title : {
+      name : {
         type : String,
         value : ''
       }

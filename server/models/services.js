@@ -282,7 +282,7 @@ class ServiceModel {
     let response = await api.get(options);
     if( !response.checkStatus(200) ) throw new Error(response.statusCode+' '+response.body);
 
-    let container = JSON.parse(response.body);
+    let container = JSON.parse(response.last.body);
     return await jsonld.frame(container, frame);
   }
 

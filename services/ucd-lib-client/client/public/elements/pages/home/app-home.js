@@ -39,14 +39,14 @@ class AppHome extends Mixin(PolymerElement)
     let browse = {};
 
     overview.sort((a,b) => {
-      if( a.title > b.title ) return 1;
-      if( a.title < b.title ) return -1;
+      if( a.name > b.name ) return 1;
+      if( a.name < b.name ) return -1;
       return 0;
     });
 
     overview.forEach(item => {
-      browse[item.localId] = item.title;
-      item.thumbnail = '/fcrepo/rest'+item.exampleOfWorkLocalId+'/svc:iiif/full/,320/0/default.png'
+      browse[item.localId] = item.name;
+      item.thumbnail = '/fcrepo/rest'+item.workExampleLocalId+'/svc:iiif/full/,320/0/default.png'
     });
 
     this.$.searchBox.browse = browse;

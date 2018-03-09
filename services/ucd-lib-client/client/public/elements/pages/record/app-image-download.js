@@ -52,7 +52,7 @@ export default class AppImageDownload extends PolymerElement {
         type : String,
         value : 'Full Resolution'
       },
-      mimeType : {
+      fileFormat : {
         type : String,
         value : ''
       },
@@ -78,7 +78,7 @@ export default class AppImageDownload extends PolymerElement {
    * @param {Object} options render options
    * @param {Array} options.resolution image resolution
    * @param {String} options.size full resolution image size
-   * @param {String} options.mimeType default mime type
+   * @param {String} options.fileFormat default mime type
    * @param {String} options.url fedora image url
    */
   render(options) {
@@ -98,7 +98,7 @@ export default class AppImageDownload extends PolymerElement {
     this.size = bytes(options.size);
     
     
-    this.originalFormat = options.mimeType.replace(/.*\//, '').toLowerCase();
+    this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();
 
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;

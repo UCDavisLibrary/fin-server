@@ -44,9 +44,7 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
 
     this.description = selected.description || '';
 
-    if( selected['dc:subject'] ) {
-      this.subject = selected['dc:subject'].join(', ');
-    } else if( selected.subject ) {
+    if( selected.subject ) {
       this.subject = selected.subject.join(', ');
     } else {
       this.subject = '';

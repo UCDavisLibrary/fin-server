@@ -166,8 +166,7 @@ services:
       - FIN_URL=${FIN_URL}
     depends_on:
       - server
-    # command: node service
-    command: bash -c 'tail -f /dev/null'
+    command: node service
 
   cas:
     image: node:8
