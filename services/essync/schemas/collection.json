@@ -5,11 +5,11 @@
       "type" : "keyword"
     },
 
-    "localId" : {
+    "id" : {
       "type" : "keyword" 
     },
 
-    "collectionLocalId" : {
+    "collectionId" : {
       "type" : "keyword" 
     },
 

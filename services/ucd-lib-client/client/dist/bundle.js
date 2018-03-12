@@ -5184,10 +5184,6 @@ class CollectionInterface extends subclass {
     return this.CollectionModel.get(id);
   }
 
-  _getCollectionByLocalId(localId) {
-    return this.CollectionModel.getByLocalId(localId);
-  }
-
 }
 
 /***/ }),
@@ -17588,8 +17584,8 @@ module.exports = {
 
   elasticSearch : {
     facets : {
-      'mimeType' : {
-        label : 'Mime-Type',
+      'fileFormat' : {
+        label : 'File Format',
         type : 'facet'
       },
       'creator' : {
@@ -17627,7 +17623,7 @@ module.exports = {
       // }
     },
 
-    textFields : ['title', 'description'],
+    textFields : ['name', 'description'],
     
     // max number of facets filter options
     maxFacetCount : 50
@@ -17648,7 +17644,6 @@ class CollectionStore extends BaseStore {
     this.data = {
       selected : null,
       byId : {},
-      byLocalId : {},
       // should include the overview state
       overview : {
         state : this.STATE.INIT
@@ -17678,12 +17673,11 @@ class CollectionStore extends BaseStore {
     payload.forEach(item => {
       item.id = item['@id'];
       this.data.byId[item.id] = item;
-      this.data.byLocalId[item.localId] = item;
     });
 
     payload.sort((a,b) => {
-      if( a.title > b.title ) return 1;
-      if( a.title < b.title ) return -1;
+      if( a.name > b.name ) return 1;
+      if( a.name < b.name ) return -1;
       return 0;
     });
 
@@ -18101,7 +18095,7 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
         type : String,
         value : ''
       },
-      title : {
+      name : {
         type : String,
         value : ''
       },
@@ -18142,13 +18136,13 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 
   /**
    * @method _isImg
-   * @description helper method to sniff if mimetype is image
+   * @description helper method to sniff if fileFormat is image
    * 
-   * @param {String} mimeType 
+   * @param {String} fileFormat 
    */
-  _isImg(mimeType) {
-    if( !mimeType ) return false;
-    return mimeType.match(/^image/i) ? true : false;
+  _isImg(fileFormat) {
+    if( !fileFormat ) return false;
+    return fileFormat.match(/^image/i) ? true : false;
   }
 
   /**
@@ -18159,18 +18153,18 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
     let data = Object.assign({}, this.data);
     if( !data['@id'] ) return;
     
-    this.fetchId = data['@id'].replace(this.baseUrl, '');   
+    this.fetchId = data.id;   
 
-    this.title = this.data.title || this.data.identifier || '';
+    this.name = this.data.name || this.data.identifier || '';
 
-    if( this._isImg(this.data.mimeType) ) {
+    if( this._isImg(this.data.fileFormat) ) {
       if( this.data.width && this.data.height ) {
         let ratio = this.data.height / this.data.width;
         this.imgHeight = Math.floor(250 * ratio);
-        this.imgUrl = '/fcrepo/rest'+`${this.data['localId']}/svc:iiif/full/,${this.imgHeight+40}/0/default.png`;
+        this.imgUrl = '/fcrepo/rest'+`${this.data.id}/svc:iiif/full/,${this.imgHeight+40}/0/default.png`;
       } else {
         this.imgHeight = 250;
-        this.imgUrl = '/fcrepo/rest'+this.data['localId']+'/svc:iiif/full/,290/0/default.png';
+        this.imgUrl = '/fcrepo/rest'+this.data.id+'/svc:iiif/full/,290/0/default.png';
       }
 
       if( this.data.thumbnailUrl ) {
@@ -18201,7 +18195,7 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
     this.collectionName = this.data.isPartOf || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
-      this.collectionName = collection.title;
+      this.collectionName = collection.name;
     }
   }
 
@@ -42002,16 +41996,6 @@ class CollectionModel extends BaseModel {
     }
 
     /**
-     * @method getByLocalId
-     * @description get a collection by short id
-     * 
-     * @param {String} localId localId of the collection
-     */
-    getByLocalId(localId) {
-      return this.store.data.byLocalId[localId];
-    }
-
-    /**
      * @method getSelectedCollection
      * @description get the selected collection
      */
@@ -42021,14 +42005,14 @@ class CollectionModel extends BaseModel {
 
     /**
      * @method _onSearchDocumentUpdate
-     * @description listen to search document updates, if we have a localIdIsPartOf filter,
+     * @description listen to search document updates, if we have isPartOf filter,
      * then there is a selected collection
      */
-    _onSearchDocumentUpdate(e) {
+    async _onSearchDocumentUpdate(e) {
       let selected = null;
 
-      if( e.filters.isPartOfLocalId ) {
-        selected = this.getByLocalId(e.filters.isPartOfLocalId.value[0]);
+      if( e.filters.isPartOf ) {
+        selected = await this.get(e.filters.isPartOf.value[0]);
       }
       this.store.setSelectedCollection(selected);
     }
@@ -42124,14 +42108,14 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
     let browse = {};
 
     overview.sort((a,b) => {
-      if( a.title > b.title ) return 1;
-      if( a.title < b.title ) return -1;
+      if( a.name > b.name ) return 1;
+      if( a.name < b.name ) return -1;
       return 0;
     });
 
     overview.forEach(item => {
-      browse[item.localId] = item.title;
-      item.thumbnail = '/fcrepo/rest'+item.exampleOfWorkLocalId+'/svc:iiif/full/,320/0/default.png'
+      browse[item.id] = item.name;
+      item.thumbnail = '/fcrepo/rest'+item.workExample+'/svc:iiif/full/,320/0/default.png'
     });
 
     this.$.searchBox.browse = browse;
@@ -42143,12 +42127,12 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
    * @description called from the search box browse button
    */
   _onBrowse(e) {
-    let localId = e.detail;
-    if( !localId || localId === 'Browse' ) {
-      return this._esRemoveKeywordFilter('isPartOfLocalId');
+    let id = e.detail;
+    if( !id || id === 'Browse' ) {
+      return this._esRemoveKeywordFilter('isPartOf');
     }
     this.$.searchBox.browseValue = 'Browse';
-    this._onCollectionSelected(localId);
+    this._onCollectionSelected(id);
   }
 
   /**
@@ -42174,7 +42158,7 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
    * @description filter based on a collection using short ids.
    */
   _onCollectionSelected(id) {
-    this._esSetKeywordFilter('isPartOfLocalId', id);
+    this._esSetKeywordFilter('isPartOf', id);
   }
   
 }
@@ -42284,7 +42268,7 @@ module.exports = "<style>\n  :host {\n    display: block;\n  }\n  .root {\n    d
 /* 265 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <div style=\"background-image:url('[[item.thumbnail]]')\" data-id$=\"[[item.localId]]\" on-click=\"_onCollectionClicked\">\n        <div>[[item.title]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n\n<div class=\"container\">\n  <div>\n    <h1>About Digital Collections</h1>\n    <div class=\"text-container\">\n      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore\n         et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit duis. Eget \n         nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Volutpat sed cras ornare arcu \n         dui vivamus arcu felis bibendum. Faucibus turpis in eu mi bibendum neque egestas congue. Orci a \n         scelerisque purus semper eget duis. Quam viverra orci sagittis eu volutpat odio facilisis mauris \n         sit. Et malesuada fames ac turpis egestas sed tempus urna et. Vel orci porta non pulvinar. Urna \n         nec tincidunt praesent semper feugiat nibh sed pulvinar. Sagittis aliquam malesuada bibendum \n         arcu vitae elementum curabitur vitae nunc. Facilisi cras fermentum odio eu feugiat.\n        </p>\n          \n        <p>Et pharetra pharetra massa massa ultricies mi quis hendrerit. Ac orci phasellus egestas tellus \n          rutrum tellus pellentesque eu tincidunt. Ornare arcu odio ut sem nulla pharetra. Sodales ut eu \n          sem integer vitae. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Purus \n          non enim praesent elementum facilisis leo vel fringilla est. Nunc scelerisque viverra mauris in \n          aliquam. Accumsan in nisl nisi scelerisque eu ultrices vitae auctor eu. Massa sed elementum \n          tempus egestas. Lectus magna fringilla urna porttitor rhoncus dolor purus.</p>\n    </div>\n    <a>Link to Somewhere</a>\n  </div>\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <div style=\"background-image:url('[[item.thumbnail]]')\" data-id$=\"[[item.id]]\" on-click=\"_onCollectionClicked\">\n        <div>[[item.name]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n\n<div class=\"container\">\n  <div>\n    <h1>About Digital Collections</h1>\n    <div class=\"text-container\">\n      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore\n         et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit duis. Eget \n         nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Volutpat sed cras ornare arcu \n         dui vivamus arcu felis bibendum. Faucibus turpis in eu mi bibendum neque egestas congue. Orci a \n         scelerisque purus semper eget duis. Quam viverra orci sagittis eu volutpat odio facilisis mauris \n         sit. Et malesuada fames ac turpis egestas sed tempus urna et. Vel orci porta non pulvinar. Urna \n         nec tincidunt praesent semper feugiat nibh sed pulvinar. Sagittis aliquam malesuada bibendum \n         arcu vitae elementum curabitur vitae nunc. Facilisi cras fermentum odio eu feugiat.\n        </p>\n          \n        <p>Et pharetra pharetra massa massa ultricies mi quis hendrerit. Ac orci phasellus egestas tellus \n          rutrum tellus pellentesque eu tincidunt. Ornare arcu odio ut sem nulla pharetra. Sodales ut eu \n          sem integer vitae. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Purus \n          non enim praesent elementum facilisis leo vel fringilla est. Nunc scelerisque viverra mauris in \n          aliquam. Accumsan in nisl nisi scelerisque eu ultrices vitae auctor eu. Massa sed elementum \n          tempus egestas. Lectus magna fringilla urna porttitor rhoncus dolor purus.</p>\n    </div>\n    <a>Link to Somewhere</a>\n  </div>\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>";
 
 /***/ }),
 /* 266 */
@@ -42371,11 +42355,9 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
    * if this is the first load and there is a query document in url path 
    */
   _onVisibleUpdate() {
-
     if( !this.visible ) return;
 
     if( this.firstLoad ) {
-      this.firstLoad = false;
       this._searchFromAppState();
     }
   }
@@ -42386,6 +42368,8 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
    * or if state update event is from popup state (forward, back button hit)
    */
   _searchFromAppState() {
+    this.firstLoad = false;
+
     let searchUrlParts = this.appState.location.path;
     let query;
     if( searchUrlParts.length > 1 ) {
@@ -44380,7 +44364,7 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 
     let browse = {};
     overview.forEach(item => {
-      browse[item.localId] = item.title;
+      browse[item.id] = item.name;
     });
 
     this.$.searchInput.browse = browse;
@@ -44394,12 +44378,12 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
    * @param {Object} e 
    */
   _onBrowse(e) {
-    let localId = e.detail;
-    if( !localId || localId === 'Browse' ) {
-      return this._esRemoveKeywordFilter('isPartOfLocalId');
+    let id = e.detail;
+    if( !id || id === 'Browse' ) {
+      return this._esRemoveKeywordFilter('isPartOf');
     }
     this.$.searchInput.browseValue = 'Browse';
-    this._esSetKeywordFilter('isPartOfLocalId', localId);
+    this._esSetKeywordFilter('isPartOf', id);
   }
 
   /**
@@ -44505,7 +44489,7 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
         type : Object,
         value : null
       },
-      title : {
+      name : {
         type : String,
         value : ''
       }
@@ -44570,7 +44554,7 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
    */
   _onCollectionClicked() {
     this._esClearFilters();
-    this._esSetKeywordFilter('isPartOfLocalId', this.collection.localId);
+    this._esSetKeywordFilter('isPartOf', this.collection.id);
   }
 
   /**
@@ -44589,7 +44573,7 @@ customElements.define('app-search-breadcrumb', AppSearchBreadcrumb);
 /* 279 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\">[[collection.title]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">Item</div>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\">[[collection.name]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">Item</div>\n</div>";
 
 /***/ }),
 /* 280 */
@@ -45380,7 +45364,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* 288 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    width: var(--grid-cell-width);\n    background-color: white;\n    cursor: pointer;\n  }\n  :host(:hover) {\n    border: 2px solid var(--default-secondary-color);\n    margin: -2px 0 0 -2px;\n  }\n  .img {\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: transparent;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n</style>\n\n<div hidden$=\"[[!isImage]]\" style=\"position: relative; width: 250px; height:[[imgHeight]]px\">\n  <div style=\"background-image: url('[[imgThumbail]]');height:[[imgHeight]]px\" class=\"img\" ></div>\n  <div style=\"background-image: url('[[imgUrl]]');height:[[imgHeight]]px\" class=\"img\"></div>\n</div>\n\n\n<div style=\"padding: 15px\">\n  <div class=\"collection-name\">[[collectionName]]</div>\n\n  <h4>[[title]]</h4>\n\n  <template is=\"dom-repeat\" items=\"[[creator]]\">\n    <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n  </template>\n\n  <div class=\"footer\">\n    <div class=\"year\">[[year]]</div>\n    <div>\n      <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n    </div>\n  </div>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    width: var(--grid-cell-width);\n    background-color: white;\n    cursor: pointer;\n  }\n  :host(:hover) {\n    border: 2px solid var(--default-secondary-color);\n    margin: -2px 0 0 -2px;\n  }\n  .img {\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: transparent;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n</style>\n\n<div hidden$=\"[[!isImage]]\" style=\"position: relative; width: 250px; height:[[imgHeight]]px\">\n  <div style=\"background-image: url('[[imgThumbail]]');height:[[imgHeight]]px\" class=\"img\" ></div>\n  <div style=\"background-image: url('[[imgUrl]]');height:[[imgHeight]]px\" class=\"img\"></div>\n</div>\n\n\n<div style=\"padding: 15px\">\n  <div class=\"collection-name\">[[collectionName]]</div>\n\n  <h4>[[name]]</h4>\n\n  <template is=\"dom-repeat\" items=\"[[creator]]\">\n    <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n  </template>\n\n  <div class=\"footer\">\n    <div class=\"year\">[[year]]</div>\n    <div>\n      <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
 /* 289 */
@@ -45407,7 +45391,7 @@ customElements.define('app-search-list-result', AppSearchListResult);
 /* 290 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: white;\n    margin: 10px;\n  }\n\n  .img {\n    height: 250px;\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: white;\n    background-position: center center;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .spacer {\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  .layout {\n    display: flex;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  .flex-vertical {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n  }\n</style>\n\n<div class=\"layout\">\n    <div style=\"background-image: url('[[imgUrl]]')\" hidden$=\"[[!isImage]]\" class=\"img\" ></div>\n\n  <div style=\"padding: 15px; flex: 1\">\n    <div class=\"flex-vertical\">\n      <div class=\"collection-name\">[[collectionName]]</div>\n      \n      <h4>[[title]]</h4>\n    \n      <template is=\"dom-repeat\" items=\"[[creator]]\">\n        <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n      </template>\n      \n      <div class=\"spacer\"></div>\n\n      <div class=\"footer\">\n        <div class=\"year\">[[year]]</div>\n        <div>\n          <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: white;\n    margin: 10px;\n  }\n\n  .img {\n    height: 250px;\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: white;\n    background-position: center center;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .spacer {\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  .layout {\n    display: flex;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  .flex-vertical {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n  }\n</style>\n\n<div class=\"layout\">\n    <div style=\"background-image: url('[[imgUrl]]')\" hidden$=\"[[!isImage]]\" class=\"img\" ></div>\n\n  <div style=\"padding: 15px; flex: 1\">\n    <div class=\"flex-vertical\">\n      <div class=\"collection-name\">[[collectionName]]</div>\n      \n      <h4>[[name]]</h4>\n    \n      <template is=\"dom-repeat\" items=\"[[creator]]\">\n        <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n      </template>\n      \n      <div class=\"spacer\"></div>\n\n      <div class=\"footer\">\n        <div class=\"year\">[[year]]</div>\n        <div>\n          <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
 /* 291 */
@@ -45512,6 +45496,8 @@ class AppFiltersPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
     
     this.collectionMode = true;
     this.selectedCollection = selected;
+    
+    console.log(this.selectedCollection);
     if( !this.selectedTab ) this.selectedTab = 'info';
   }
 
@@ -45529,7 +45515,7 @@ class AppFiltersPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
    * collection filter when clicked
    */
   _removeCollectionFilter() {
-    this._esRemoveKeywordFilter('isPartOfLocalId');
+    this._esRemoveKeywordFilter('isPartOf');
   }
 }
 
@@ -46848,9 +46834,7 @@ class AppCollectionInfoPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_
 
     this.description = selected.description || '';
 
-    if( selected['dc:subject'] ) {
-      this.subject = selected['dc:subject'].join(', ');
-    } else if( selected.subject ) {
+    if( selected.subject ) {
       this.subject = selected.subject.join(', ');
     } else {
       this.subject = '';
@@ -46877,7 +46861,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* 311 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnailUrl]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.title]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnailUrl]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.name]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
 
 /***/ }),
 /* 312 */
@@ -46948,7 +46932,7 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
         type : String,
         value : ''
       },
-      title : {
+      name : {
         type : String,
         value : ''
       },
@@ -46972,7 +46956,7 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
         type : String,
         value : ''
       },
-      mimeType : {
+      fileFormat : {
         type : String,
         value : ''
       },
@@ -47028,7 +47012,7 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
     this.resolution = this.record.width+'x'+this.record.height;
     this.$.imageViewer.render(this.record.id);
 
-    this.title = this.record.title || '';
+    this.name = this.record.name || '';
 
     this.description = this.record.description || '';
     this.$.link.value = window.location.href;
@@ -47037,16 +47021,16 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
                   __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.record.created).format(this.momentFormat) :
                   '';
 
-    this.resourceType = this.record.type || this.record.mimeType || 'Unknown';
+    this.resourceType = this.record.type || this.record.fileFormat || 'Unknown';
 
     this.size = __WEBPACK_IMPORTED_MODULE_3_bytes___default()(this.record.hasSize ? parseInt(this.record.hasSize) : 0);
-    this.mimeType = this.record.mimeType || '';
+    this.fileFormat = this.record.fileFormat || '';
 
     this.rights = this.record.rights || '';
 
     this.$.download.render({
       resolution : [this.record.width, this.record.height],
-      mimeType : this.mimeType,
+      fileFormat : this.fileFormat,
       size : this.record.hasSize ? parseInt(this.record.hasSize) : 0,
       url : this.record.id
     });
@@ -47054,7 +47038,7 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
     this.collectionName = this.record.isPartOf || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
-      this.collectionName = collection.title;
+      this.collectionName = collection.name;
     }
 
     this._updateMetadataRows();
@@ -47067,7 +47051,7 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
   _updateMetadataRows() {
     let metadata = [];
 
-    this._addMetadataRow(metadata, 'title', 'Item Name');
+    this._addMetadataRow(metadata, 'name', 'Item Name');
     this._addMetadataRow(metadata, 'collectionName', 'Collection');
     this._addMetadataRow(metadata, 'date', 'Date');
 
@@ -47120,7 +47104,7 @@ customElements.define('app-record', AppRecord);
 /* 313 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer id=\"imageViewer\"></app-image-viewer>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[title]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <div class=\"label\">Use Permission</div>\n        <div>\n          <a href=\"[[rights]]\" target=\"_block\">\n            <iron-icon icon=\"link\"></iron-icon> Link\n          </a>\n        </div>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <template is=\"dom-repeat\" items=\"[[cite]]\">\n        <div class=\"cite-container\">\n          <div class=\"label\">[[item.label]]</div>\n          <div class=\"text\">\n            <div style=\"padding-bottom: 10px\">[[item.text]]</div>\n            <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n              <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n              <span>Copy</span>\n            </button>\n          </div>\n        </div>\n      </template>\n    </div>\n  </app-record-metadata-layout>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer id=\"imageViewer\"></app-image-viewer>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[name]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <div class=\"label\">Use Permission</div>\n        <div>\n          <a href=\"[[rights]]\" target=\"_block\">\n            <iron-icon icon=\"link\"></iron-icon> Link\n          </a>\n        </div>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <template is=\"dom-repeat\" items=\"[[cite]]\">\n        <div class=\"cite-container\">\n          <div class=\"label\">[[item.label]]</div>\n          <div class=\"text\">\n            <div style=\"padding-bottom: 10px\">[[item.text]]</div>\n            <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n              <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n              <span>Copy</span>\n            </button>\n          </div>\n        </div>\n      </template>\n    </div>\n  </app-record-metadata-layout>\n</div>";
 
 /***/ }),
 /* 314 */
@@ -47195,7 +47179,7 @@ class AppImageViewer extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
    * @param {String} id record id (uri)
    */
   async render(id) {
-    let url = id+'/svc:iiif/full/full/0/default.png';
+    let url = '/fcrepo/rest'+id+'/svc:iiif/full/full/0/default.png';
     if( this.currentUrl === url ) return;
 
     if( this.viewer ) this.viewer.remove();
@@ -61524,7 +61508,7 @@ class AppImageDownload extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
         type : String,
         value : 'Full Resolution'
       },
-      mimeType : {
+      fileFormat : {
         type : String,
         value : ''
       },
@@ -61550,7 +61534,7 @@ class AppImageDownload extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
    * @param {Object} options render options
    * @param {Array} options.resolution image resolution
    * @param {String} options.size full resolution image size
-   * @param {String} options.mimeType default mime type
+   * @param {String} options.fileFormat default mime type
    * @param {String} options.url fedora image url
    */
   render(options) {
@@ -61570,7 +61554,7 @@ class AppImageDownload extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
     this.size = __WEBPACK_IMPORTED_MODULE_2_bytes___default()(options.size);
     
     
-    this.originalFormat = options.mimeType.replace(/.*\//, '').toLowerCase();
+    this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();
 
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
@@ -61915,7 +61899,7 @@ class AppFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
    */
   _onBrowseCollection(e) {
     let id = e.currentTarget.getAttribute('data-id');
-    this._esSetKeywordFilter('isPartOfLocalId', id);
+    this._esSetKeywordFilter('isPartOf', id);
   }
 }
 
@@ -61986,7 +61970,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* 335 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background: var(--secondary-background-color);\n    color: var(--inverse-text-color);\n    max-width: var(--max-width);\n    padding: 20px 0;\n  }\n\n  a, a:visited {\n    cursor: pointer;\n    color: var(--inverse-text-color);\n    text-decoration: none;\n  }\n\n  .lib-logo  {\n    height: 45px;\n  }\n\n  .row {\n    display: flex;\n    justify-content: center;\n  }\n\n  .row > div {\n    padding: 15px;\n  }\n\n  .menu.horizontal li {\n    padding: 0 10px;\n    border-right: 1px solid white;\n  }\n  .menu.horizontal li:last-child {\n    border-right: none;\n  }\n  .menu a {\n    cursor: pointer;\n  }\n\n  @media( max-width: 768px ) {\n    ul.menu.horizontal {\n      display: block;\n      text-align: left;\n    }\n  }\n\n  .logo {\n    display: inline-block;\n    width: 100%;\n    position: relative;\n    margin: 70px 0 30px;\n  }\n  .logo hr {\n    position: absolute;\n    top: 50%;\n    width: 100%;\n    margin-top: 0;\n    margin-bottom: 0;\n    border-top: 1px solid rgba(255,255,255,.25);\n    border-bottom: none;\n    border-right: none;\n    border-left: none;\n  }\n  .logo .logo-img {\n    display: inline-block;\n    position: relative;\n  }\n  .logo img {\n    height: 100px;\n    padding: 0 25px;\n    background: var(--default-primary-color);\n  }\n\n  @media(max-width: 768px) {\n    .row {\n      display: block;\n    }\n  }\n</style>\n\n<footer role=\"contentinfo\">\n\n  <div class=\"row\">\n    <div> <!-- col start -->\n      <div>\n          <a href=\"https://library.ucdavis.edu\" target=\"_blank\">\n              <img class=\"lib-logo\" src=\"/images/ucd-lib-logo-white.png\">\n          </a>\n      </div>\n      <div>UC Davis Library</div>\n      <p>\n        100 NW Quad<br />\n        University of California, Davis<br />\n        Davis, CA 95616<br />\n        (530) 752-8792<br /><br />\n        <a href=\"mailto:library@ucdavis.edu\">library@ucdavis.edu</a>\n      </p>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Digital Collections</h2>\n      <ul class=\"menu\">\n        <template is=\"dom-repeat\" items=\"[[collections]]\">\n          <li><a on-click=\"_onBrowseCollection\" data-id$=\"[[item.localId]]\">[[item.title]]</a></li>\n        </template>\n      </ul>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Library Info</h2>\n      <ul class=\"menu\">\n        <li><a href=\"https://library.ucdavis.edu/news/\" target=\"_blank\">News</a></li>\n        <li><a href=\"https://library.ucdavis.edu/about/\" target=\"_blank\">About</a></li>\n        <li><a href=\"https://library.ucdavis.edu/library/\" target=\"_blank\">Visit</a></li>\n        <li><a href=\"https://library.ucdavis.edu/service/careers/\" target=\"_blank\">Careers</a></li>\n      </ul>\n      <div class=\"donate\"><a href=\"http://give.ucdavis.edu/ULIB\" target=\"_blank\">Give to the UC Davis Library</a></div>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Account</h2>\n      <ul class=\"menu\">\n        <li>\n          <app-auth-footer></app-auth-footer>\n        </li>\n      </ul>\n    </div><!-- col end -->\n  </div><!-- row end -->\n\n  <div style=\"text-align:center\">\n    <div class=\"logo\"><!-- logo -->\n        <hr>\n        <div class=\"logo-img\">\n            <img src=\"/images/ucd-logo.svg\" alt=\"UC Davis Logo\">\n        </div>\n    </div>\n\n    <div>\n      <p>University of California, Davis, One Shields Avenue, Davis, CA 95616 | 530-752-1011</p>\n      <ul class=\"menu horizontal\">\n        <li><a href=\"/help/\">Help</a></li>\n        <li><a href=\"/general-support/\">Questions or comments?</a></li>\n        <li><a href=\"https://www.ucdavis.edu/help/privacy-accessibility/\" target=\"_blank\">Privacy &amp; Accessibility</a></li>\n        <li><a href=\"https://occr.ucdavis.edu/poc/\" target=\"_blank\">Principles of Community</a></li>\n        <li><a href=\"https://www.ucdavis.edu/\" target=\"_blank\">UC Davis</a></li>\n        <li><a href=\"https://www.universityofcalifornia.edu/\" target=\"_blank\">University of California</a></li>\n      </ul>\n      <p>Copyright &copy; 2017 The Regents of the University of California, Davis campus. All rights reserved.</p>\n    </div>\n  </div>\n\n</footer>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background: var(--secondary-background-color);\n    color: var(--inverse-text-color);\n    max-width: var(--max-width);\n    padding: 20px 0;\n  }\n\n  a, a:visited {\n    cursor: pointer;\n    color: var(--inverse-text-color);\n    text-decoration: none;\n  }\n\n  .lib-logo  {\n    height: 45px;\n  }\n\n  .row {\n    display: flex;\n    justify-content: center;\n  }\n\n  .row > div {\n    padding: 15px;\n  }\n\n  .menu.horizontal li {\n    padding: 0 10px;\n    border-right: 1px solid white;\n  }\n  .menu.horizontal li:last-child {\n    border-right: none;\n  }\n  .menu a {\n    cursor: pointer;\n  }\n\n  @media( max-width: 768px ) {\n    ul.menu.horizontal {\n      display: block;\n      text-align: left;\n    }\n  }\n\n  .logo {\n    display: inline-block;\n    width: 100%;\n    position: relative;\n    margin: 70px 0 30px;\n  }\n  .logo hr {\n    position: absolute;\n    top: 50%;\n    width: 100%;\n    margin-top: 0;\n    margin-bottom: 0;\n    border-top: 1px solid rgba(255,255,255,.25);\n    border-bottom: none;\n    border-right: none;\n    border-left: none;\n  }\n  .logo .logo-img {\n    display: inline-block;\n    position: relative;\n  }\n  .logo img {\n    height: 100px;\n    padding: 0 25px;\n    background: var(--default-primary-color);\n  }\n\n  @media(max-width: 768px) {\n    .row {\n      display: block;\n    }\n  }\n</style>\n\n<footer role=\"contentinfo\">\n\n  <div class=\"row\">\n    <div> <!-- col start -->\n      <div>\n          <a href=\"https://library.ucdavis.edu\" target=\"_blank\">\n              <img class=\"lib-logo\" src=\"/images/ucd-lib-logo-white.png\">\n          </a>\n      </div>\n      <div>UC Davis Library</div>\n      <p>\n        100 NW Quad<br />\n        University of California, Davis<br />\n        Davis, CA 95616<br />\n        (530) 752-8792<br /><br />\n        <a href=\"mailto:library@ucdavis.edu\">library@ucdavis.edu</a>\n      </p>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Digital Collections</h2>\n      <ul class=\"menu\">\n        <template is=\"dom-repeat\" items=\"[[collections]]\">\n          <li><a on-click=\"_onBrowseCollection\" data-id$=\"[[item.id]]\">[[item.name]]</a></li>\n        </template>\n      </ul>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Library Info</h2>\n      <ul class=\"menu\">\n        <li><a href=\"https://library.ucdavis.edu/news/\" target=\"_blank\">News</a></li>\n        <li><a href=\"https://library.ucdavis.edu/about/\" target=\"_blank\">About</a></li>\n        <li><a href=\"https://library.ucdavis.edu/library/\" target=\"_blank\">Visit</a></li>\n        <li><a href=\"https://library.ucdavis.edu/service/careers/\" target=\"_blank\">Careers</a></li>\n      </ul>\n      <div class=\"donate\"><a href=\"http://give.ucdavis.edu/ULIB\" target=\"_blank\">Give to the UC Davis Library</a></div>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Account</h2>\n      <ul class=\"menu\">\n        <li>\n          <app-auth-footer></app-auth-footer>\n        </li>\n      </ul>\n    </div><!-- col end -->\n  </div><!-- row end -->\n\n  <div style=\"text-align:center\">\n    <div class=\"logo\"><!-- logo -->\n        <hr>\n        <div class=\"logo-img\">\n            <img src=\"/images/ucd-logo.svg\" alt=\"UC Davis Logo\">\n        </div>\n    </div>\n\n    <div>\n      <p>University of California, Davis, One Shields Avenue, Davis, CA 95616 | 530-752-1011</p>\n      <ul class=\"menu horizontal\">\n        <li><a href=\"/help/\">Help</a></li>\n        <li><a href=\"/general-support/\">Questions or comments?</a></li>\n        <li><a href=\"https://www.ucdavis.edu/help/privacy-accessibility/\" target=\"_blank\">Privacy &amp; Accessibility</a></li>\n        <li><a href=\"https://occr.ucdavis.edu/poc/\" target=\"_blank\">Principles of Community</a></li>\n        <li><a href=\"https://www.ucdavis.edu/\" target=\"_blank\">UC Davis</a></li>\n        <li><a href=\"https://www.universityofcalifornia.edu/\" target=\"_blank\">University of California</a></li>\n      </ul>\n      <p>Copyright &copy; 2017 The Regents of the University of California, Davis campus. All rights reserved.</p>\n    </div>\n  </div>\n\n</footer>";
 
 /***/ }),
 /* 336 */

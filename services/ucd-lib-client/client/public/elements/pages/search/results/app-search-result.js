@@ -88,7 +88,7 @@ export default class AppSearchResult extends Mixin(PolymerElement)
     let data = Object.assign({}, this.data);
     if( !data['@id'] ) return;
     
-    this.fetchId = data.localId;   
+    this.fetchId = data.id;   
 
     this.name = this.data.name || this.data.identifier || '';
 
@@ -96,10 +96,10 @@ export default class AppSearchResult extends Mixin(PolymerElement)
       if( this.data.width && this.data.height ) {
         let ratio = this.data.height / this.data.width;
         this.imgHeight = Math.floor(250 * ratio);
-        this.imgUrl = '/fcrepo/rest'+`${this.data['localId']}/svc:iiif/full/,${this.imgHeight+40}/0/default.png`;
+        this.imgUrl = '/fcrepo/rest'+`${this.data.id}/svc:iiif/full/,${this.imgHeight+40}/0/default.png`;
       } else {
         this.imgHeight = 250;
-        this.imgUrl = '/fcrepo/rest'+this.data['localId']+'/svc:iiif/full/,290/0/default.png';
+        this.imgUrl = '/fcrepo/rest'+this.data.id+'/svc:iiif/full/,290/0/default.png';
       }
 
       if( this.data.thumbnailUrl ) {

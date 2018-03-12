@@ -112,20 +112,6 @@ services:
       - fcrepo
       - elasticsearch
 
-  # file system serialization
-  serialization:
-    build: ../../services/serialization
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER}
-      - FIN_URL=${FIN_URL}
-    depends_on:
-      - server
-      - fcrepo
-      - elasticsearch
-    volumes:
-      - fedora-serialized-data:/data
-
   # auto generator service demo
   auto-generator-demo:
     build: ../../services/auto-generator-demo
@@ -163,8 +149,6 @@ services:
 
 volumes:
   fedora-data:
-    driver: local
-  fedora-serialized-data:
     driver: local
   es-data:
     driver: local

@@ -64,11 +64,9 @@ export class AppSearch extends Mixin(PolymerElement)
    * if this is the first load and there is a query document in url path 
    */
   _onVisibleUpdate() {
-
     if( !this.visible ) return;
 
     if( this.firstLoad ) {
-      this.firstLoad = false;
       this._searchFromAppState();
     }
   }
@@ -79,6 +77,8 @@ export class AppSearch extends Mixin(PolymerElement)
    * or if state update event is from popup state (forward, back button hit)
    */
   _searchFromAppState() {
+    this.firstLoad = false;
+
     let searchUrlParts = this.appState.location.path;
     let query;
     if( searchUrlParts.length > 1 ) {

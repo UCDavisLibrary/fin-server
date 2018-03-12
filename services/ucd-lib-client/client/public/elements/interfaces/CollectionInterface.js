@@ -13,8 +13,4 @@ class CollectionInterface extends subclass {
     return this.CollectionModel.get(id);
   }
 
-  _getCollectionByLocalId(localId) {
-    return this.CollectionModel.getByLocalId(localId);
-  }
-
 }

@@ -155,19 +155,6 @@ services:
       - server
     command: node service
 
-  serialization:
-    image: node:8.5
-    volumes:
-      - ../../services/serialization:/service
-      - fedora-serialized-data:/data
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER}
-      - FIN_URL=${FIN_URL}
-    depends_on:
-      - server
-    command: node service
-
   cas:
     image: node:8
     volumes:
@@ -223,8 +210,6 @@ volumes:
   fedora-backups:
     driver: local
   fedora-data:
-    driver: local
-  fedora-serialized-data:
     driver: local
   es-data:
     driver: local

@@ -117,20 +117,6 @@ services:
       - server
 
   ###
-  # Serialize Fcrepo to disk
-  ###
-  serialization:
-    image: ucdlib/fin-serialization-service:1.0.0
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER}
-      - FIN_URL=${FIN_URL}
-    depends_on:
-      - server
-    volumes:
-      - fedora-serialized-data:/data
-
-  ###
   # Auto Generator Demo
   ###
   essync:
@@ -171,8 +157,6 @@ services:
 ###
 volumes:
   fedora-data:
-    driver: local
-  fedora-serialized-data:
     driver: local
   es-data:
     driver: local

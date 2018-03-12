@@ -12,4 +12,3 @@ cd $DIR
 ./fin-essync-service.sh
 ./fin-auto-generator-demo-service.sh
 ./fin-loris-service.sh
-./fin-serialization-service.sh

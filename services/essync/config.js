@@ -5,8 +5,8 @@ config.essync = {
   basePath : '/collection',
 
   // properties to set local ids for
-  localIds : ['@id', 'hasPart', 'isPartOf', 'exampleOfWork', 'workExample',
-              'associatedMedia', 'encodesCreativeWork', 'parent'],
+  // localIds : ['@id', 'hasPart', 'isPartOf', 'exampleOfWork', 'workExample',
+  //             'associatedMedia', 'encodesCreativeWork', 'parent'],
 
   // svc: names for frame services 
   frameServices : {

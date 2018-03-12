@@ -83,7 +83,7 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    */
   _onCollectionClicked() {
     this._esClearFilters();
-    this._esSetKeywordFilter('isPartOfLocalId', this.collection.localId);
+    this._esSetKeywordFilter('isPartOf', this.collection.id);
   }
 
   /**

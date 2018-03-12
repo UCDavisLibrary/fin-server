@@ -124,7 +124,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.record = e.payload._source;
 
     this.resolution = this.record.width+'x'+this.record.height;
-    this.$.imageViewer.render(this.record.localId);
+    this.$.imageViewer.render(this.record.id);
 
     this.name = this.record.name || '';
 

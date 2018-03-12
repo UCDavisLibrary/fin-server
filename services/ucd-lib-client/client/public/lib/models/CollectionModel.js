@@ -41,16 +41,6 @@ class CollectionModel extends BaseModel {
     }
 
     /**
-     * @method getByLocalId
-     * @description get a collection by short id
-     * 
-     * @param {String} localId localId of the collection
-     */
-    getByLocalId(localId) {
-      return this.store.data.byLocalId[localId];
-    }
-
-    /**
      * @method getSelectedCollection
      * @description get the selected collection
      */
@@ -60,14 +50,14 @@ class CollectionModel extends BaseModel {
 
     /**
      * @method _onSearchDocumentUpdate
-     * @description listen to search document updates, if we have a localIdIsPartOf filter,
+     * @description listen to search document updates, if we have isPartOf filter,
      * then there is a selected collection
      */
-    _onSearchDocumentUpdate(e) {
+    async _onSearchDocumentUpdate(e) {
       let selected = null;
 
-      if( e.filters.isPartOfLocalId ) {
-        selected = this.getByLocalId(e.filters.isPartOfLocalId.value[0]);
+      if( e.filters.isPartOf ) {
+        selected = await this.get(e.filters.isPartOf.value[0]);
       }
       this.store.setSelectedCollection(selected);
     }
