@@ -23,12 +23,12 @@
       "@id": "schema:creator",
       "@type": "@id"
     },
-    "publisher" : {
-      "@id": "schema:publisher"
-    },
     "publisherLink" : {
       "@id": "schema:publisher",
       "@type": "@id"
+    },
+    "publisher" : {
+      "@id": "schema:publisher"
     },
     "createdBy" : {
       "@id": "fedora:createdBy"
@@ -109,9 +109,6 @@
     "@default" : ""
   },
   "creator" : {
-    "@default" : ""
-  },
-  "creatorLink" : {
     "@default" : ""
   },
   "publisher" : {

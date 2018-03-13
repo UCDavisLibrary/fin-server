@@ -4,9 +4,12 @@ config.essync = {
 
   basePath : '/collection',
 
-  // properties to set local ids for
-  // localIds : ['@id', 'hasPart', 'isPartOf', 'exampleOfWork', 'workExample',
-  //             'associatedMedia', 'encodesCreativeWork', 'parent'],
+  // map of attributes to reduce and names to reduce to
+  reduceAttributes : {
+    creator : 'creators',
+    subject : 'subjects',
+    fileFormat : 'fileFormats'
+  },
 
   // svc: names for frame services 
   frameServices : {

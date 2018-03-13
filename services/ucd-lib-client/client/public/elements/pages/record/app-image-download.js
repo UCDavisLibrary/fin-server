@@ -188,7 +188,7 @@ export default class AppImageDownload extends PolymerElement {
 
       let size = this.sizes[this.selectedSize].size.join(',');
 
-      this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
+      this.href = '/fcrepo/rest' + this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
     });
   }
 

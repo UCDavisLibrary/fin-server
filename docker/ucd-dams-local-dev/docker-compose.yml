@@ -142,6 +142,7 @@ services:
     depends_on:
       - server
     command: node service
+    # command: bash -c 'tail -f /dev/null'
 
   auto-generator-demo:
     image: node:8.5
@@ -178,6 +179,7 @@ services:
     depends_on:
       - server
     command: node service
+    # command: bash -c 'tail -f /dev/null'
 
   basic-auth:
     image: node:8

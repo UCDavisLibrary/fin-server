@@ -1,11 +1,13 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import moment from "moment"
 import "./app-search-result-creator"
+
 import CollectionInterface from "../../../interfaces/CollectionInterface"
 import AppStateInterface from "../../../interfaces/AppStateInterface"
+import MediaInterface from "../../../interfaces/MediaInterface"
 
 export default class AppSearchResult extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface, CollectionInterface) {
+  .with(EventInterface, AppStateInterface, CollectionInterface, MediaInterface) {
 
   static get properties() {
     return {
@@ -70,17 +72,6 @@ export default class AppSearchResult extends Mixin(PolymerElement)
   }
 
   /**
-   * @method _isImg
-   * @description helper method to sniff if fileFormat is image
-   * 
-   * @param {String} fileFormat 
-   */
-  _isImg(fileFormat) {
-    if( !fileFormat ) return false;
-    return fileFormat.match(/^image/i) ? true : false;
-  }
-
-  /**
    * @method _onDataUpdate
    * @description fired when `data` property updates.  Set UI properties.
    */
@@ -92,14 +83,15 @@ export default class AppSearchResult extends Mixin(PolymerElement)
 
     this.name = this.data.name || this.data.identifier || '';
 
-    if( this._isImg(this.data.fileFormat) ) {
+    let imgPath = this._getImgPath(this.data);
+    if( imgPath ) {
       if( this.data.width && this.data.height ) {
         let ratio = this.data.height / this.data.width;
         this.imgHeight = Math.floor(250 * ratio);
-        this.imgUrl = '/fcrepo/rest'+`${this.data.id}/svc:iiif/full/,${this.imgHeight+40}/0/default.png`;
+        this.imgUrl = this._getImgUrl(imgPath, null, this.imgHeight+40);
       } else {
         this.imgHeight = 250;
-        this.imgUrl = '/fcrepo/rest'+this.data.id+'/svc:iiif/full/,290/0/default.png';
+        this.imgUrl = this._getImgUrl(imgPath, null, this.imgHeight);
       }
 
       if( this.data.thumbnailUrl ) {

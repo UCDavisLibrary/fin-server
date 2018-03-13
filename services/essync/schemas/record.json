@@ -13,7 +13,7 @@
       "type" : "keyword" 
     },
 
-    "subject" : {
+    "subjects" : {
       "type" : "text",
       "fields": {
         "raw": { 
@@ -26,7 +26,11 @@
       "type" : "keyword"
     },
 
-    "creator" : {
+    "isRootRecord" : {
+      "type" : "boolean"
+    },
+
+    "creators" : {
       "type" : "keyword"
     },
 
@@ -43,7 +47,7 @@
       "type" : "keyword"
     },
 
-    "fileFormat" : {
+    "fileFormats" : {
       "type" : "keyword"
     },
 

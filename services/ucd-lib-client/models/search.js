@@ -5,6 +5,16 @@ var config = require('../config');
 class SearchModel {
 
   search(body = {}) {
+    // right now, only allow search on root records
+    if( !body.query ) body.query = {};
+    if( !body.query.bool ) body.query.bool = {};
+    if( !body.query.bool.filter ) body.query.bool.filter = [];
+    body.query.bool.filter.push({
+      term : {
+        isRootRecord : true
+      }
+    });
+
     return es.search({
       index : config.elasticsearch.record.alias,
       body : body

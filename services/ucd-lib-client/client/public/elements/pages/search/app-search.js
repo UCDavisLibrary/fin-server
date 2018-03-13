@@ -22,8 +22,8 @@ export class AppSearch extends Mixin(PolymerElement)
     return {
       visible : {
         type : Boolean,
-        value : false,
-        observer : '_onVisibleUpdate'
+        value : false
+        // observer : '_onVisibleUpdate'
       },
       results : {
         type : Array,
@@ -43,6 +43,14 @@ export class AppSearch extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+    this._initState();
+  }
+
+  async _initState() {
+    let startState = await this._getAppState();
+    if( startState.location.path[0] === 'search' ) {
+      this._searchFromAppState();
+    }
   }
 
   /**
@@ -63,13 +71,13 @@ export class AppSearch extends Mixin(PolymerElement)
    * the first time we are loading.  if so, see if we need to search.  search is required
    * if this is the first load and there is a query document in url path 
    */
-  _onVisibleUpdate() {
-    if( !this.visible ) return;
+  // _onVisibleUpdate() {
+  //   if( !this.visible ) return;
 
-    if( this.firstLoad ) {
-      this._searchFromAppState();
-    }
-  }
+  //   if( this.firstLoad ) {
+  //     this._searchFromAppState();
+  //   }
+  // }
 
   /**
    * @method _searchFromAppState

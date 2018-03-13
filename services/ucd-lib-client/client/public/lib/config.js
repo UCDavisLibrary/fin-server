@@ -1,17 +1,18 @@
 module.exports = {
-  // facets to show on left side
+  fcrepoBasePath : '/fcrepo/rest',
 
+  // facets to show on left side
   elasticSearch : {
     facets : {
-      'fileFormat' : {
+      'fileFormats' : {
         label : 'File Format',
         type : 'facet'
       },
-      'creator' : {
+      'creators' : {
         label : 'Creator',
         type : 'facet'
       },
-      'subject_raw' : {
+      'subjects_raw' : {
         label : 'Subject',
         type : 'facet'
       }

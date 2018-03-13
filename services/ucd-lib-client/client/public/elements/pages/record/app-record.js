@@ -11,7 +11,7 @@ import "./app-record-metadata-layout"
 import AppStateInterface from "../../interfaces/AppStateInterface"
 import ElasticSearchInterface from "../../interfaces/ElasticSearchInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
-
+import MediaInterface from "../../interfaces/MediaInterface"
 
 const lorem = 'Lorem ipsum dolor sit amet cons ectetuer adipiscing elit sed et diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam';
 const citeText = [
@@ -34,7 +34,7 @@ const citeText = [
 ];
 
 export default class AppRecord extends Mixin(PolymerElement)
-      .with(EventInterface, AppStateInterface, ElasticSearchInterface, CollectionInterface) {
+      .with(EventInterface, AppStateInterface, ElasticSearchInterface, CollectionInterface, MediaInterface) {
 
   static get template() {
     return template;
@@ -108,6 +108,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     path.splice(0, 1);
     this.currentRecordId = '/'+path.join('/');
 
+    // TODO: check this isn't cached
     this._esGetRecord(this.currentRecordId);
   }
 
@@ -124,7 +125,9 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.record = e.payload._source;
 
     this.resolution = this.record.width+'x'+this.record.height;
-    this.$.imageViewer.render(this.record.id);
+    
+    let imgPath = this._getImgPath(this.record);
+    this.$.imageViewer.render(imgPath);
 
     this.name = this.record.name || '';
 
@@ -146,7 +149,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       resolution : [this.record.width, this.record.height],
       fileFormat : this.fileFormat,
       size : this.record.hasSize ? parseInt(this.record.hasSize) : 0,
-      url : this.record.id
+      url : imgPath
     });
 
     this.collectionName = this.record.isPartOf || '';

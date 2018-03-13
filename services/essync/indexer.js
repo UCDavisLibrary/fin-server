@@ -7,6 +7,7 @@ const fs = require('fs');
 const {URL} = require('url');
 const api = require('@ucd-lib/fin-node-api');
 const config = require('./config');
+const AttributeReducer = require('./attribute-reducer');
 
 // everything depends on indexer, so placing this here...
 process.on('unhandledRejection', err => logger.error(err));
@@ -30,6 +31,8 @@ class EsIndexer {
       host: config.elasticsearch.host,
       log: config.elasticsearch.log
     });
+
+    this.attributeReducer = new AttributeReducer(this.esClient);
 
     this.finUrlRegex = new RegExp(`^(${this.getBaseUrl()}|${this.getFrameBaseUrl()})`);
 
@@ -157,6 +160,12 @@ class EsIndexer {
         body: jsonld
       });
 
+      // start the timer for the attribute reducing
+      this.attributeReducer.onRecordUpdate({
+        record: jsonld,
+        alias : recordIndex || config.elasticsearch.record.alias
+      });
+
     } else if ( this.isCollection(jsonld['@type']) ) {
       logger.info(`ES Indexer updating collection container: ${jsonld['@id']}`);
 
@@ -166,6 +175,7 @@ class EsIndexer {
         id : jsonld['@id'],
         body: jsonld
       });
+
     } else {
       logger.info(`ES Indexer ignoring container: ${jsonld['@id']}`, jsonld['@type']);
     }
@@ -189,6 +199,10 @@ class EsIndexer {
       if( !exists ) return;
 
       try {
+
+        // start the timer for the attribute reducing
+        this.attributeReducer.onRecordUpdate({record: path});
+
         await this.esClient.delete({
           index : config.elasticsearch.record.alias,
           type: config.elasticsearch.record.schemaType,
@@ -311,6 +325,7 @@ class EsIndexer {
 
     if( this.isRecord(frame['@type']) ) {
       frame.collectionId = frame['@id'].split('/').splice(0, 3).join('/');
+      this.setRootRecord(frame);
     }
 
     frame.id = frame['@id'];
@@ -329,13 +344,10 @@ class EsIndexer {
    * @returns {Object}
    */
   async setThumbnail(json) {
-    if( !json.workExample ) {
-      if( !json.fileFormat ) return;
-      if( !json.fileFormat.match(/image/i) ) return;
-    }
+    let imgPath = this.getImagePath(json);
+    if( !imgPath ) return json;
 
-    let imgUrl = json.workExample ? json.workExample : json['@id'];
-    imgUrl = imgUrl.replace(this.getFrameBaseUrl(), 'http://server:3001'+config.fcrepo.root)+'/svc:iiif/full/8,/0/default.png';
+    let imgUrl = 'http://server:3001'+config.fcrepo.root+imgPath+'/svc:iiif/full/8,/0/default.png';
 
     let result = await this.request({
       type : 'GET',
@@ -358,13 +370,10 @@ class EsIndexer {
    * @returns {Object}
    */
   async setImageResolution(json) {
-    if( !json.workExample ) {
-      if( !json.fileFormat ) return;
-      if( !json.fileFormat.match(/image/i) ) return;
-    }
+    let imgPath = this.getImagePath(json);
+    if( !imgPath ) return json;
 
-    let imgUrl = json.workExample ? json.workExample : json['@id'];
-    imgUrl = imgUrl.replace(this.getFrameBaseUrl(), 'http://server:3001'+config.fcrepo.root)+'/svc:iiif/info.json';
+    let imgUrl = 'http://server:3001'+config.fcrepo.root+imgPath+'/svc:iiif/info.json';
     
     var result = await this.request({
       type : 'GET',
@@ -382,6 +391,28 @@ class EsIndexer {
     
 
     return json;
+  }
+
+  getImagePath(json) {
+    if( json.workExample ) {
+      return Array.isArray(json.workExample) ? json.workExample[0] : json.workExample;
+    }
+    
+    if( json.fileFormat && json.fileFormat.match(/image/i) ) {
+      return json.id
+    }
+    
+    if( json.associatedMedia ) {
+      return Array.isArray(json.associatedMedia) ? json.associatedMedia[0] : json.associatedMedia;
+    }
+
+    return null;
+  }
+
+  async setRootRecord(json) {
+    if( json.isPartOf && json.isPartOf === json.collectionId ) {
+      json.isRootRecord = true;
+    }
   }
 
   /**
