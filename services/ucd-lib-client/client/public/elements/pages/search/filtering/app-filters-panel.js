@@ -78,7 +78,6 @@ class AppFiltersPanel extends Mixin(PolymerElement)
     this.collectionMode = true;
     this.selectedCollection = selected;
     
-    console.log(this.selectedCollection);
     if( !this.selectedTab ) this.selectedTab = 'info';
   }
 

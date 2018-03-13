@@ -101,26 +101,26 @@ export default class AppRecord extends Mixin(PolymerElement)
    * 
    * @param {*} e 
    */
-  _onAppStateUpdate(e) {
+  async _onAppStateUpdate(e) {
     if( e.location.path[0] !== 'record' ) return;
 
     let path = e.location.path.slice(0);
     path.splice(0, 1);
     this.currentRecordId = '/'+path.join('/');
 
-    // TODO: check this isn't cached
-    this._esGetRecord(this.currentRecordId);
+    let record = await this._esGetRecord(this.currentRecordId)
+    this._render(record);
   }
 
   /**
-   * @method _onEsRecordUpdate
+   * @method _render
    * @description from ElasticSearchInterface, called when search state updates
    * 
    * @param {Object} e 
    */
-  async _onEsRecordUpdate(e) {
-    if( e.id !== this.currentRecordId ) return;
-    if( e.state !== 'loaded' ) return;
+  async _render(e) {
+    if( e.id === this.renderedRecordId ) return;
+    this.renderedRecordId = e.id;
 
     this.record = e.payload._source;
 
