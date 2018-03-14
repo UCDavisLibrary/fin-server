@@ -347,13 +347,8 @@ class ServiceModel {
     let timer = setTimeout(() => {
       event.payload.headers['org.fcrepo.jms.eventType'] = this.notificationTimers[id].eventType;
       delete this.notificationTimers[id];
-      
-      for( let serviceId in this.services ) {
-        let service = this.services[serviceId];
-        if( service.type !== 'WebhookService' ) continue;
-  
-        this._sendHttpNotification(serviceId, service.url, event);
-      }
+
+      this.sendWebhookNotification(event);
     }, 10 * 1000);
 
     // if there is a buffered event and it is a creation event, and there is a new event
@@ -371,6 +366,23 @@ class ServiceModel {
   }
 
   /**
+   * @method sendWebhookNotification
+   * @description broadcase a webhook notification to all webhook services
+   * 
+   * @param {Object} event
+   * @param {String} event.type webhook event type
+   * @param {Object} event.payload webhook event payload
+   */
+  sendWebhookNotification(event) {
+    for( let serviceId in this.services ) {
+      let service = this.services[serviceId];
+      if( service.type !== 'WebhookService' ) continue;
+
+      this._sendHttpNotification(serviceId, service.url, event);
+    }
+  }
+
+  /**
    * @method _sendHttpNotification
    * @description send a HTTP webhook notification.  we don't really care about the response
    * unless there is an error, then log it.
@@ -378,9 +390,8 @@ class ServiceModel {
    * @param {String} id service name
    * @param {String} url webhook url to post to
    * @param {Object} event event payload
-   * @param {String} secret optional.  service secret to encrypt auth token with
    */
-  _sendHttpNotification(id, url, event, secret) {
+  _sendHttpNotification(id, url, event) {
     logger.debug(`Sending HTTP webhook notifiction to service ${id} ${url}`);
 
     request({

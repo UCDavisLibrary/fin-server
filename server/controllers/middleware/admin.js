@@ -10,7 +10,7 @@ const auth = require('../../models/auth');
  */
 module.exports = (req, res, next) => {
   let token = jwt.getJwtFromRequest(req);
-
+  
   if( token ) {
     let user = jwt.validate(token);
     if( user && user.admin ) {
@@ -18,5 +18,5 @@ module.exports = (req, res, next) => {
     }
   }
 
-  res.sendStatus(401);
+  res.sendStatus(403);
 }
