@@ -129,7 +129,7 @@ services:
   #     - fcrepo
   
   ###
-  # ActiveMQ Services
+  # Services
   ###
   essync:
     image: node:8.5

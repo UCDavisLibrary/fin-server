@@ -19,16 +19,16 @@ class AttributeReducer {
    */
   async onRecordUpdate(e) {
     if( typeof e.record === 'string' ) {
-      let exists = await this._exists(e.record);
+      let exists = await this._exists(e.record, e.alias);
       if( !exists ) return;
-      e.record = await this._get(e.record);
+      e.record = await this._get(e.record, e.alias);
     }
 
     if( e.record.isRootRecord ) {
       return buffer.add({id: e.record.id, alias: e.alias});
     }
 
-    let rootRecordPath = await this.findRootRecord(e.record.id);
+    let rootRecordPath = await this.findRootRecord(e.record.id, e.alias);
     if( rootRecordPath ) buffer.add({id: rootRecordPath, alias: e.alias});
   }
 
@@ -39,23 +39,25 @@ class AttributeReducer {
    * Either a id string or null is returned if the root record cannot be found.
    * 
    * @param {String} path record id
+   * @param {String} alias (optional) index alias to use
    * 
    * @returns {Promise} resolves to String or null 
    */
-  async findRootRecord(path) {
-    let exists = await this._exists(path);
+  async findRootRecord(path, alias) {
+    let exists = await this._exists(path, alias);
     if( !exists ) return null;
 
-    let record = await this._get(path);
+    let record = await this._get(path, alias);
 
     if( record.isRootRecord ) {
       return record.id;
     }
 
-    if( record.isPartOf ) {
-      return await this.findRootRecord(record.isPartOf);
-    } else if( record.encodesCreativeWork ) {
-      return await this.findRootRecord(record.encodesCreativeWork);
+    let parentConnections = config.essync.parentConnections;
+    for( let i = 0; i < parentConnections.length; i++ ) {
+      if( record[parentConnections[i]] ) {
+        return await this.findRootRecord(record[parentConnections[i]], alias);
+      }
     }
 
     return null;
@@ -71,14 +73,14 @@ class AttributeReducer {
    * @param {String} e.alias alias to add record to
    */
   async reduceAttributes(e) {
-    let exists = await this._exists(e.id);
+    let exists = await this._exists(e.id, e.alias);
     if( !exists ) return;
 
-    let record = await this._get(e.id);
+    let record = await this._get(e.id, e.alias);
     if( !record.isRootRecord ) return;
 
     let reduced = {};
-    await this.walkRecord(record, reduced);
+    await this.walkRecord(record, reduced, e.alias);
     
     for( let key in reduced ) {
       record[key] = reduced[key];
@@ -102,29 +104,27 @@ class AttributeReducer {
    * 
    * @param {String|Object} record either record object or record id string
    * @param {Object} reduced current reduced attribute state
+   * @param {String} alias (optional) index alias to use
    * 
    * @returns {Promise} 
    */
-  async walkRecord(record, reduced) {
+  async walkRecord(record, reduced, alias) {
     if( typeof record === 'string' ) {
-      let exists = await this._exists(record);
+      let exists = await this._exists(record, alias);
       if( !exists ) return;
-      record = await this._get(record);
+      record = await this._get(record, alias);
     }
 
     this.addAttributes(record, reduced);
 
-    if( record.hasPart ) {
-      let hasPart = Array.isArray(record.hasPart) ? record.hasPart : [record.hasPart];
-      for( var i = 0; i < hasPart.length; i++ ) {
-        await this.walkRecord(hashPart[i], reduced);
-      }
-    }
-
-    if( record.associatedMedia ) {
-      let associatedMedia = Array.isArray(record.associatedMedia) ? record.associatedMedia : [record.associatedMedia];
-      for( var i = 0; i < associatedMedia.length; i++ ) {
-        await this.walkRecord(associatedMedia[i], reduced);
+    let childConnections = config.essync.childConnections;
+    for( let i = 0; i < childConnections.length; i++ ) {
+      if( !record[childConnections[i]] ) continue;
+      
+      let values = Array.isArray(record[childConnections[i]]) ? record[childConnections[i]] : [record[childConnections[i]]];
+      
+      for( let j = 0; j < values.length; j++ ) {
+        await this.walkRecord(values[j], reduced, alias);
       }
     }
   }
@@ -162,17 +162,17 @@ class AttributeReducer {
     return reduced;
   }
 
-  _exists(id) {
+  _exists(id, alias) {
     return this.esClient.exists({
-      index : config.elasticsearch.record.alias,
+      index : alias || config.elasticsearch.record.alias,
       type: config.elasticsearch.record.schemaType,
       id : id
     });
   }
 
-  async _get(id) {
+  async _get(id, alias) {
     let record = await this.esClient.get({
-      index: config.elasticsearch.record.alias,
+      index: alias || config.elasticsearch.record.alias,
       type: config.elasticsearch.record.schemaType,
       id: id
     });

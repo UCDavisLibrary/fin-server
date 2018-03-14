@@ -11,6 +11,12 @@ config.essync = {
     fileFormat : 'fileFormats'
   },
 
+  // attributes to traverse when walking up the record tree
+  parentConnections : ['isPartOf','encodesCreativeWork'],
+
+  // attributes to traverse when walking down the record tree
+  childConnections : ['hasPart', 'associatedMedia'],
+
   // svc: names for frame services 
   frameServices : {
     collection : 'es-collection-frame',

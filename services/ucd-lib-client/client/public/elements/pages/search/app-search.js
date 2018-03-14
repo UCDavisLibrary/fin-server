@@ -49,6 +49,7 @@ export class AppSearch extends Mixin(PolymerElement)
   async _initState() {
     let startState = await this._getAppState();
     if( startState.location.path[0] === 'search' ) {
+      this.appState = startState;
       this._searchFromAppState();
     }
   }
