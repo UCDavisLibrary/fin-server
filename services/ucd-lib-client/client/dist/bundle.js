@@ -42417,6 +42417,7 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
   async _initState() {
     let startState = await this._getAppState();
     if( startState.location.path[0] === 'search' ) {
+      this.appState = startState;
       this._searchFromAppState();
     }
   }

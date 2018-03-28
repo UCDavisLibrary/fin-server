@@ -1,7 +1,6 @@
 const api = require('@ucd-lib/fin-node-api');
 const path = require('path');
 const fs = require('fs-extra');
-const exec = require('child_process').exec;
 
 const ROOT = '/fcrepo-backups';
 const HOST = ''; // do we want to run backup container
@@ -17,17 +16,15 @@ class BackupModel {
    * @returns {Promise} 
    */
   async create(name) {
-    let dir = this.getBackupDir(name)
+    let dir = this.getBackupDir(name);
+    let statusFile = dir+'.status';
 
-    if( fs.existsSync(dir) ) {
-      await fs.remove(dir);
-    }
-    if( fs.existsSync(dir+'.zip') ) {
-      await fs.remove(dir+'.zip');
-    } 
+    await this.delete(name);
 
     await fs.mkdirs(dir);
     await fs.chmod(dir, 0o777);
+
+    await fs.writeFile(statusFile, 'creating');
 
     let response = await api.post({
       path : '/fcr:backup',
@@ -38,23 +35,15 @@ class BackupModel {
     });
 
     if( response.error ) {
+      await this.delete(name);
       throw new Error(response.error.message);
     }
     if( !response.checkStatus(200) ) {
+      await this.delete(name);
       throw new Error(response.last.body);
     }
-
-    console.log(`zip -r ../${name}.zip ./*`);
-    console.log(dir);
-    let {stdout, stderr} = await this.exec(`zip -r ../${name}.zip ./*`, {cwd: dir});
-    console.log(stdout);
-    console.log(stderr);
-
-    if( fs.existsSync(dir) ) {
-      await fs.remove(dir);
-    }
-
-    // fs.move(response.last.body, dir);
+    
+    await fs.remove(statusFile);
 
     return dir;
   }
@@ -77,20 +66,26 @@ class BackupModel {
    * 
    * @returns {Promise}
    */
-  async list() {
-    return (await fs.readdir(ROOT)).map(file => file.replace(/\.zip^/,''));
+  list() {
+    return fs.readdir(ROOT);
   }
 
   /**
-   * @method get
-   * @description get a backup
+   * @method
+   * @description helper for checking status of backup creation
    * 
    * @param {String} name name of backup
    * 
-   * @returns {Object} read stream
+   * @returns {String}
    */
-  get(name) {
-    return fs.createReadStream(this.getBackupDir(name)+'.zip')
+  getStatus(name) {
+    let zip = this.getBackupDir(name);
+    if( fs.existsSync(zip) ) return 'created';
+
+    let status = this.getBackupDir(name)+'.status';
+    if( fs.existsSync(status) ) return fs.readFileSync(status, 'utf-8');
+
+    return 'does not exist';
   }
 
   /**
@@ -101,20 +96,16 @@ class BackupModel {
    * 
    * @return {Promise} 
    */
-  delete(name) {
-    return fs.remove(this.getBackupDir(name));
-  }
+  async delete(name) {
+    let dir = this.getBackupDir(name);
 
-  exec(cmd, options = {}) {
-    options.shell = '/bin/bash';
-    return new Promise((resolve, reject) => {
-      exec(cmd, options, (error, stdout, stderr) => {
-        if( error ) reject(error);
-        else resolve({stdout, stderr});
-      });
-    });
+    if( fs.existsSync(dir) ) {
+      await fs.remove(dir);
+    }
+    if( fs.existsSync(dir+'.status') ) {
+      await fs.remove(dir+'.status');
+    } 
   }
-
 }
 
 module.exports = new BackupModel();

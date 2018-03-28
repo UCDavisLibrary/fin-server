@@ -43834,6 +43834,7 @@ var AppSearch = exports.AppSearch = function (_Mixin$with) {
                 startState = _context.sent;
 
                 if (startState.location.path[0] === 'search') {
+                  this.appState = startState;
                   this._searchFromAppState();
                 }
 

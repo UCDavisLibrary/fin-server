@@ -52,6 +52,8 @@ class ProxyModel {
         this.allowOrigins[serviceModel.getRootDomain(origin)] = true;
       } catch(e) {}
     });
+
+    console.log(this.allowOrigins);
   }
 
   /**
@@ -85,7 +87,7 @@ class ProxyModel {
     this._setReqTime(req);
 
     // set cors headers if in FIN_ALLOW_ORIGINS env variable or is a registered ExternalService domain
-    this._setCors(req, proxyRes);
+    // this._setCors(req, proxyRes);
 
     // if this is a AuthenticationService request AND the proxy response has 
     // x-fin-authorized-agent header, hijack response and finish Fin auth flow
@@ -173,11 +175,12 @@ class ProxyModel {
   async _fcRepoPathResolver(req, res) {
     req.fcrepoProxyTime = Date.now();
 
+    this._setCors(req, res);
+
     // trying to sniff out browser preflight options request for cors
     // fcrepo sees this as a normal options request and doesn't handle correctly
     if( req.method === 'OPTIONS' && req.headers['access-control-request-headers'] ) {
       this._setReqTime(req);
-      this._setCors(req, res);
       return res.status(200).send();
     }
 
