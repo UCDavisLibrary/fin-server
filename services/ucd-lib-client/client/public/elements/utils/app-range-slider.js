@@ -22,11 +22,13 @@ export default class AppRangeSlider extends PolymerElement {
       // current min/max values for slider (where the btns are)
       minValue : {
         type : Number,
-        value : 10
+        value : 10,
+        observer : '_render'
       },
       maxValue : {
         type : Number,
-        value : 90
+        value : 90,
+        observer : '_render'
       },
 
       // labels for slide btns
@@ -92,7 +94,6 @@ export default class AppRangeSlider extends PolymerElement {
   connectedCallback() {
     super.connectedCallback();
     
-    this._onResize();
     requestAnimationFrame(() => {
       this._onResize();
     });
@@ -138,9 +139,10 @@ export default class AppRangeSlider extends PolymerElement {
    * @returns {Number} px location
    */
   _valueToPx(value) {
+    value = value - this.absMinValue;
     let range = this.absMaxValue - this.absMinValue;
     let valPerPx = range / this.width;
-    return Math.floor(value / valPerPx);
+    return Math.round(value / valPerPx);
   }
 
   /**
@@ -154,16 +156,27 @@ export default class AppRangeSlider extends PolymerElement {
   _pxToValue(px) {
     let range = this.absMaxValue - this.absMinValue;
     let valPerPx = range / this.width;
-    return Math.floor(px * valPerPx);
+    return Math.round(px * valPerPx) + this.absMinValue;
+  }
+
+  _render() {
+    if( this.renderTimer ) {
+      clearTimeout(this.renderTimer);
+    }
+
+    this.renderTimer = setTimeout(() => {
+      this.renderTimer = 0;
+      this._renderAsync();
+    })
   }
 
   /**
-   * @method _render
+   * @method _renderAsync
    * @description set the current top/left px values for all btns,
    * labels and lines bases on current min/max values.
    */
-  _render() {
-    let hh = this.height / 2;
+  _renderAsync() {
+    let hh = this.height * 0.60;
 
     // set line heights
     this.$.numberLine.style.top = hh+'px';
@@ -180,6 +193,7 @@ export default class AppRangeSlider extends PolymerElement {
     // set btn left
     let minPxValue = this._valueToPx(this.minValue);
     let maxPxValue = this._valueToPx(this.maxValue);
+
     this.$.lowNumberBtn.style.left = (minPxValue - hBtnHeight)  + 'px';
     this.$.highNumberBtn.style.left = (maxPxValue - hBtnHeight) + 'px';
 
@@ -253,8 +267,6 @@ export default class AppRangeSlider extends PolymerElement {
       if( this.moving === 'min' ) this.minValue = this.maxValue;
       else this.maxValue = this.minValue;
     }
-
-    this._render();
   }
 
   /**
@@ -269,6 +281,15 @@ export default class AppRangeSlider extends PolymerElement {
     this.movingMin = false;
     this.movingMax = false;
     this.isMoving = false;
+
+    this.dispatchEvent(
+      new CustomEvent('range-value-change', {
+        detail: {
+          min : this.minValue,
+          max : this.maxValue
+        }
+      })
+    );
   }
 
   /**

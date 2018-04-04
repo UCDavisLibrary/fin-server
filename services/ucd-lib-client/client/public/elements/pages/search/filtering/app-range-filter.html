@@ -1,0 +1,37 @@
+<style>
+  :host {
+    display: block;
+  }
+  
+  .labels {
+    display: flex;
+  }
+
+  .inputs {
+    display: flex;
+  }
+
+  app-range-slider {
+    --light-background-color: var(--medium-background-color);
+  }
+</style>
+
+<div class="inputs">
+  <input id="minValueInput" type="number" on-change="_onInputChange" >
+  <span> - </span>
+  <input id="maxValueInput" type="number" on-change="_onInputChange" >
+</div>
+
+<app-range-slider
+  id="slider"
+  on-range-value-change="_onRangeSliderChange"
+  abs-min-value="[[absMinValue]]"
+  abs-max-value="[[absMaxValue]]"
+  min-value="[[minValue]]"
+  max-value="[[maxValue]]">
+</app-range-slider>
+
+<div class="labels">
+  <div style="flex:1">[[absMinValue]]</div>
+  <div>[[absMaxValue]]</div>
+</div>
