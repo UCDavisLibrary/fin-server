@@ -1,6 +1,7 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import "@ucd-lib/fin-search-box"
 import "../../utils/app-collection-card"
+import "../../utils/app-range-slider"
 
 import template from "./app-home.html"
 import ElasticSearchInterface from "../../interfaces/ElasticSearchInterface"
