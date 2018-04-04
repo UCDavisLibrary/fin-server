@@ -14,38 +14,6 @@ const SERVER_USERNAME = 'fin-server';
 process.on('uncaughtException', (e) => logger.error(e));
 process.on('unhandledRejection', (e) => logger.error(e));
 
-// create express instance
-const app = express();
-
-// Set up an Express session, which is required for CASAuthentication. 
-const RedisStore = require('connect-redis')(session); 
-app.use(session({
-  name : 'fin-sid',
-  store: new RedisStore({
-    host : 'redis'
-  }),
-  cookie : {
-    maxAge          : config.server.cookieMaxAge,
-  },
-  secret            : config.server.cookieSecret,
-  resave            : false,
-  saveUninitialized : true
-}));
-app.use(cookieParser(config.server.cookieSecret)); 
-
-// setup simple http logging
-app.use((req, res, next) => {
-  res.on('finish',() => {
-    let fcrepoProxyTime = req.fcrepoProxyTime ? 'fcrepo:'+req.fcrepoProxyTime+'ms' : '';
-    let userAgent = req.get('User-Agent') || 'no-user-agent';
-    let url = req.originalUrl || req.url;
-    let cache = 'cache:' + (res.get('x-fin-cache') || 'no-cache');
-
-    logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}, ${fcrepoProxyTime} ${cache}`);
-  });
-  next();
-});
-
 
 // wire up fin api for server
 api.setConfig({
@@ -54,35 +22,73 @@ api.setConfig({
   jwt : jwt.create(SERVER_USERNAME, true)
 });
 
-// rotate jwt token every six hours
-setInterval(() => {
-  api.setConfig({jwt: jwt.create(SERVER_USERNAME, true)})
-}, 6*60*60*1000);
+logger.info('waiting for fcrepo connection');
+require('./lib/startupCheck')(() => {
+  logger.info('waiting for fcrepo connection established');
 
-/**
- * Wire up main proxy
- */
-const proxy = require('./models/proxy');
-proxy.bind(app);
+  // create express instance
+  const app = express();
 
-/**
- * Register Auth Controller
- * 
- * IMPORTANT: Body parsers will mess up proxy, ALWAYS register them after the proxy
- */
+  // Set up an Express session, which is required for CASAuthentication. 
+  const RedisStore = require('connect-redis')(session); 
+  app.use(session({
+    name : 'fin-sid',
+    store: new RedisStore({
+      host : 'redis'
+    }),
+    cookie : {
+      maxAge          : config.server.cookieMaxAge,
+    },
+    secret            : config.server.cookieSecret,
+    resave            : false,
+    saveUninitialized : true
+  }));
+  app.use(cookieParser(config.server.cookieSecret)); 
 
-// parse application/x-www-form-urlencoded req body
-app.use(bodyParser.urlencoded({ extended: false }))
-// parse application/json req body
-app.use(bodyParser.json());
-// parsetext/plain req body, default
-app.use(bodyParser.text({type: (req) => true}));
-// register auth controller
-app.use('/auth', require('./controllers/auth'));
-app.use('/fin', require('./controllers/fin'));
+  // setup simple http logging
+  app.use((req, res, next) => {
+    res.on('finish',() => {
+      let fcrepoProxyTime = req.fcrepoProxyTime ? 'fcrepo:'+req.fcrepoProxyTime+'ms' : '';
+      let userAgent = req.get('User-Agent') || 'no-user-agent';
+      let url = req.originalUrl || req.url;
+      let cache = 'cache:' + (res.get('x-fin-cache') || 'no-cache');
+
+      logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}, ${fcrepoProxyTime} ${cache}`);
+    });
+    next();
+  });
+
+  // rotate jwt token every six hours
+  setInterval(() => {
+    api.setConfig({jwt: jwt.create(SERVER_USERNAME, true)})
+  }, 6*60*60*1000);
+
+  /**
+   * Wire up main proxy
+   */
+  const proxy = require('./models/proxy');
+  proxy.bind(app);
+
+  /**
+   * Register Auth Controller
+   * 
+   * IMPORTANT: Body parsers will mess up proxy, ALWAYS register them after the proxy
+   */
+
+  // parse application/x-www-form-urlencoded req body
+  app.use(bodyParser.urlencoded({ extended: false }))
+  // parse application/json req body
+  app.use(bodyParser.json());
+  // parsetext/plain req body, default
+  app.use(bodyParser.text({type: (req) => true}));
+  // register auth controller
+  app.use('/auth', require('./controllers/auth'));
+  app.use('/fin', require('./controllers/fin'));
 
 
 
-app.listen(3001, () => {
-  logger.info('server ready on port 3001');
+  app.listen(3001, () => {
+    logger.info('server ready on port 3001');
+  });
+
 });

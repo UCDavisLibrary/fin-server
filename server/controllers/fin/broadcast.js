@@ -8,7 +8,6 @@ router.post('/:name', requireAdmin, async (req, res) => {
     if( typeof req.body === 'string' ) {
       req.body = JSON.parse(req.body || '{}');
     } 
-    console.log(req.body);
 
     model.sendWebhookNotification({
       type : req.params.name,

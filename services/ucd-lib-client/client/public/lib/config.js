@@ -15,6 +15,10 @@ module.exports = {
       'subjects_raw' : {
         label : 'Subject',
         type : 'facet'
+      },
+      datePublished : {
+        label : 'Published',
+        type : 'range'
       }
       // 'winetype.raw' : {
       //   label : 'Wine Type',

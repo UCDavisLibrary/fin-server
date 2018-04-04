@@ -140,9 +140,7 @@
 <div class="collection-outer">
   <div class="collections">
     <template is="dom-repeat" items="[[highlightedCollections]]">
-      <div style="background-image:url('[[item.thumbnail]]')" data-id$="[[item.id]]" on-click="_onCollectionClicked">
-        <div>[[item.name]]</div>
-      </div>
+      <app-collection-card collection="[[item]]"></app-collection-card>
     </template>
   </div>
 </div>

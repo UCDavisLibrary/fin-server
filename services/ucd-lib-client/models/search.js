@@ -4,6 +4,13 @@ var config = require('../config');
 
 class SearchModel {
 
+  searchCollection(body = {}) {
+    return es.search({
+      index : config.elasticsearch.collection.alias,
+      body : body
+    });
+  }
+
   search(body = {}) {
     // right now, only allow search on root records
     if( !body.query ) body.query = {};

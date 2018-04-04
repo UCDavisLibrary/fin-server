@@ -52,8 +52,6 @@ class ProxyModel {
         this.allowOrigins[serviceModel.getRootDomain(origin)] = true;
       } catch(e) {}
     });
-
-    console.log(this.allowOrigins);
   }
 
   /**

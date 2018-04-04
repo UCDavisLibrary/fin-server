@@ -56,6 +56,10 @@
       "format" : "date_optional_time"
     },
 
+    "datePublished" : {
+      "type" : "integer"
+    },
+
     "lastModifiedBy" : {
       "type" : "keyword"
     },

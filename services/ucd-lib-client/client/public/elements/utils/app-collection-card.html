@@ -1,0 +1,35 @@
+<style>
+  :host {
+    display: inline-block;
+  }
+
+  .root {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 320px;
+    width: 320px;
+    margin: 15px;
+    position: relative;
+  }
+
+  .root:hover {
+    cursor: pointer;
+    margin: 13px;
+    border: 2px solid var(--default-primary-color);
+  }
+
+  .root > div  {
+    position: absolute;
+    padding: 15px;
+    color: var(--default-secondary-color);
+    background-color: rgba(0, 38, 85, .7);
+    left : 0;
+    bottom : 25px;
+    font-weight: var(--font-weight-heavy);
+  }
+</style>
+
+<div class="root" style="background-image:url('[[collection.thumbnail]]')" data-id$="[[collection.id]]">
+  <div>[[collection.name]]</div>
+</div>

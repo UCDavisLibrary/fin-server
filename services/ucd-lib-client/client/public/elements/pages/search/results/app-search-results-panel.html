@@ -25,6 +25,13 @@
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');
   }
 
+  h3 {
+    border-top: 1px solid var(--light-background-color);
+    margin: 15px 0 0 0;
+    padding: 15px 0 0 0;
+    color: var(--default-primary-color);
+  }
+
   .masonry {
     margin: 10px;
     position: relative;
@@ -110,6 +117,10 @@
     align-items: center;
   }
 
+  .collections {
+    text-align: center;
+  }
+
   @media( min-width: 975px ) {
     .header {
       display: flex;
@@ -188,6 +199,16 @@
       </select>
     </div>
     <div style="margin-left: 10px; font-style:italic">per page</div>
+  </div>
+</div>
+
+<div class="collections" hidden$="[[!showCollectionResults]]">
+  <div hidden$="[[!collectionResults.length]]">
+    <h3>Collections</h3>
+    <template is="dom-repeat" items="[[collectionResults]]">
+      <app-collection-card collection="[[item]]" on-click="_onCollectionClicked"></app-collection-card>
+    </template>
+    <h3 hidden$="[[!results.length]]">Items</h3>
   </div>
 </div>
 

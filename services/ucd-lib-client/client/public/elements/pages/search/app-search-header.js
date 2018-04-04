@@ -8,6 +8,15 @@ import CollectionInferface from '../../interfaces/CollectionInterface'
 class AppSearchHeader extends Mixin(PolymerElement)
       .with(EventInterface, ElasticSearchInterface, CollectionInferface) {
 
+  static get properties() {
+    return {
+      selectedCollection : {
+        type : String,
+        value : ''
+      }
+    }
+  }
+
   static get template() {
     return template;
   }
@@ -74,6 +83,17 @@ class AppSearchHeader extends Mixin(PolymerElement)
     } catch(e) {
       this.$.searchInput.value = '';
     }
+  }
+
+  /**
+   * @method _onSelectedCollectionUpdate
+   * @description from CollectionInterface, called when a collection is selected.
+   * This is done by setting a collection filter.
+   * 
+   * @param {Object} selected currently selected collection 
+   */
+  _onSelectedCollectionUpdate(selected) {
+    this.selectedCollection = selected;
   }
 
 }

@@ -20,6 +20,30 @@ class ElasticSearchServiceImpl extends ElasticSearchService {
 
     return this.store.data.byId[id];
   }
+
+  /**
+   * @method searchCollection
+   * @description Search the catalogs
+   * 
+   * @param {Object} query - elastic search query parameters
+   * 
+   * @returns {Promise}
+   */
+  async searchCollection(query = {}) {
+    return await this.request({
+      url : this.apiPath+'/collection',
+      fetchOptions : {
+        method : 'POST',
+        headers : {
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(query)
+      },
+      onLoading : promise => this.store.setSearchCollectionLoading(query, promise),
+      onLoad : result => this.store.setSearchCollectionLoaded(query, result.body),
+      onError : e => this.store.setSearchCollectionError(query, e)
+    });
+  }
 }
 
 module.exports = new ElasticSearchServiceImpl();

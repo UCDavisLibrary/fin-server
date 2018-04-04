@@ -3,13 +3,15 @@ import "@ucd-lib/cork-pagination"
 
 import "./app-search-grid-result"
 import "./app-search-list-result"
+import "../../../utils/app-collection-card"
 import ElasticSearchInterface from "../../../interfaces/ElasticSearchInterface"
 import AppStateInterface from "../../../interfaces/AppStateInterface"
+import CollectionInterface from "../../../interfaces/CollectionInterface"
 
 import template from './app-search-results-panel.html'
 
 class AppSearchResultsPanel extends Mixin(PolymerElement)
-      .with(EventInterface, ElasticSearchInterface, AppStateInterface) {
+      .with(EventInterface, ElasticSearchInterface, AppStateInterface, CollectionInterface) {
 
   static get properties() {
     return {
@@ -20,6 +22,15 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
         type : Array,
         value : () => []
       },
+
+      /**
+       * Array of collection search results
+       */
+      collectionResults : {
+        type : Array,
+        value : () => []
+      },
+
       /**
        * size in px's between each masonary layout cell
        */
@@ -50,6 +61,11 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
       currentIndex : {
         type : Number,
         value : 0
+      },
+
+      showCollectionResults : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -64,6 +80,8 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
 
     this.resizeTimer = -1;
     window.addEventListener('resize', () => this._resizeAsync());
+
+    this.MasterController().on('show-collection-search-results', show => this._updateCollectionResultsVisibility(show));
   }
 
   /**
@@ -209,6 +227,33 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
     this.dispatchEvent(new CustomEvent('page-change', {
       detail : e.detail
     }));
+  }
+
+  _updateCollectionResultsVisibility(show) {
+    this.showCollectionResults = show;
+  }
+
+  /**
+   * @method _onEsSearchCollectionUpdate
+   * @description from ElasticSearchInterface, called when a collection search state
+   * is updated.
+   * 
+   * @param {Object} e 
+   */
+  _onEsSearchCollectionUpdate(e) {
+    if( e.state !== 'loaded' ) return;
+    this.collectionResults = e.payload;
+  }
+
+  /**
+   * @method _onCollectionClicked
+   * @description bound to app-collection-card click event
+   * 
+   * @param {Object} e click event
+   */
+  _onCollectionClicked(e) {
+    let id = e.currentTarget.collection.id
+    this._esSetKeywordAndText('', 'isPartOf', id);
   }
 
 }

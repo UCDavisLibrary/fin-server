@@ -68,7 +68,8 @@
       "@type" : "@id"
     },
     "datePublished" : {
-      "@id" : "schema:datePublished"
+      "@id" : "schema:datePublished",
+      "@type" : "http://www.w3.org/2001/XMLSchema#long"
     },
     "identifier" : {
       "@id" : "schema:identifier"
@@ -112,6 +113,9 @@
     "@default" : ""
   },
   "publisher" : {
+    "@default" : ""
+  },
+  "datePublished" : {
     "@default" : ""
   },
   "createdBy" : {

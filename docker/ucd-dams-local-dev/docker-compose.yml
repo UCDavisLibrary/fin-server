@@ -27,10 +27,6 @@ services:
       - FIN_URL=${FIN_URL}
       - FIN_ENV=dev
       - FIN_ALLOW_ORIGINS=localhost:8081
-    depends_on:
-      - fcrepo
-      - redis
-      - elasticsearch
 
   # postgres:
   #   image: postgres:9
@@ -103,6 +99,8 @@ services:
       - redis-data:/data
     ports:
       - 6379:6379
+    depends_on:
+      - fcrepo
 
   ###
   # Trusted Proxy for Services

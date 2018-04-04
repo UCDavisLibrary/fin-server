@@ -18,9 +18,6 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
-    depends_on:
-      - fcrepo
-      - redis
     ports:
       - 3000:3001
 
