@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 191);
+/******/ 	return __webpack_require__(__webpack_require__.s = 192);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1911,7 +1911,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(287)("./" + name);
+            __webpack_require__(289)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -4583,7 +4583,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(286)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(288)(module)))
 
 /***/ }),
 /* 1 */
@@ -4592,13 +4592,13 @@ return hooks;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_legacy_legacy_element_mixin_js__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_legacy_polymer_fn_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_legacy_templatizer_behavior_js__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_elements_dom_bind_js__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_elements_dom_repeat_js__ = __webpack_require__(205);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_elements_dom_if_js__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_elements_array_selector_js__ = __webpack_require__(207);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_elements_custom_style_js__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_legacy_mutable_data_behavior_js__ = __webpack_require__(210);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_legacy_templatizer_behavior_js__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_elements_dom_bind_js__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_elements_dom_repeat_js__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_elements_dom_if_js__ = __webpack_require__(207);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_elements_array_selector_js__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_elements_custom_style_js__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_legacy_mutable_data_behavior_js__ = __webpack_require__(211);
 
 
 
@@ -4647,7 +4647,7 @@ const Element = Object(__WEBPACK_IMPORTED_MODULE_0__lib_mixins_element_mixin_js_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__class_js__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__class_js__ = __webpack_require__(203);
 
 
 const Polymer = function(info) {
@@ -4686,7 +4686,7 @@ let Polymer;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_flattened_nodes_observer_js__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_flattened_nodes_observer_js__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(21);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__["b"]; });
 /* unused harmony reexport addDebouncer */
@@ -4988,16 +4988,55 @@ const dom = function(obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  BaseModel : __webpack_require__(228),
-  BaseStore : __webpack_require__(230),
-  BaseService : __webpack_require__(231),
-  Mixin : __webpack_require__(233),
-  EventInterface : __webpack_require__(234),
+  BaseModel : __webpack_require__(229),
+  BaseStore : __webpack_require__(231),
+  BaseService : __webpack_require__(232),
+  Mixin : __webpack_require__(234),
+  EventInterface : __webpack_require__(235),
   fetch : __webpack_require__(61)
 }
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {ElasticSearchInterface} = __webpack_require__(29);
+
+module.exports = subclass => 
+  class ElasticSearchInterfaceImpl extends Mixin(subclass).with(ElasticSearchInterface) {
+
+    async _esGetRecord(id) {
+      return this.ElasticSearchModel.get(id);
+    }
+
+    async _esSetKeywordAndText(text, attr, value) {
+      return this.ElasticSearchModel.setKeywordAndText(text, attr, value);
+    }
+  }
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = subclass => 
+class CollectionInterface extends subclass {
+  constructor() {
+    super();
+    this._injectModel('CollectionModel');
+  }
+
+  async _getCollectionOverview() {
+    return this.CollectionModel.overview();
+  }
+
+  async _getCollection(id) {
+    return this.CollectionModel.get(id);
+  }
+
+}
+
+/***/ }),
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5150,41 +5189,6 @@ const microTask = {
 /* harmony export (immutable) */ __webpack_exports__["microTask"] = microTask;
 
 
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {ElasticSearchInterface} = __webpack_require__(29);
-
-module.exports = subclass => 
-  class ElasticSearchInterfaceImpl extends Mixin(subclass).with(ElasticSearchInterface) {
-
-    async _esGetRecord(id) {
-      return this.ElasticSearchModel.get(id);
-    }
-  }
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = subclass => 
-class CollectionInterface extends subclass {
-  constructor() {
-    super();
-    this._injectModel('CollectionModel');
-  }
-
-  async _getCollectionOverview() {
-    return this.CollectionModel.overview();
-  }
-
-  async _getCollection(id) {
-    return this.CollectionModel.get(id);
-  }
-
-}
 
 /***/ }),
 /* 10 */
@@ -5653,7 +5657,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixin_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(9);
 
 
 
@@ -6960,7 +6964,7 @@ document.head.appendChild($_documentContainer);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js__ = __webpack_require__(220);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js__ = __webpack_require__(221);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js__);
 
 
@@ -7824,7 +7828,7 @@ const IronA11yKeysBehavior = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_ripple_paper_ripple_js__ = __webpack_require__(223);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_ripple_paper_ripple_js__ = __webpack_require__(224);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_button_state_js__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -7943,10 +7947,10 @@ const PaperRippleBehavior = {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  ElasticSearchInterface : __webpack_require__(256),
-  ElasticSearchModel : __webpack_require__(257),
-  ElasticSearchService : __webpack_require__(258),
-  ElasticSearchStore : __webpack_require__(259)
+  ElasticSearchInterface : __webpack_require__(257),
+  ElasticSearchModel : __webpack_require__(258),
+  ElasticSearchService : __webpack_require__(259),
+  ElasticSearchStore : __webpack_require__(260)
 }
 
 /***/ }),
@@ -8840,8 +8844,8 @@ customElements.define('dom-module', DomModule);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_path_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_case_map_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__property_accessors_js__ = __webpack_require__(192);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__template_stamp_js__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__property_accessors_js__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__template_stamp_js__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_settings_js__ = __webpack_require__(18);
 
 
@@ -12783,7 +12787,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selection_js__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selection_js__ = __webpack_require__(226);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_case_map_js__ = __webpack_require__(13);
 
@@ -13923,7 +13927,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var EventEmitter = __webpack_require__(229).EventEmitter;
+var EventEmitter = __webpack_require__(230).EventEmitter;
 
 /**
  * @class MasterController
@@ -13989,9 +13993,9 @@ module.exports = new MasterController();
 
 module.exports = {
   AppStateInterface : __webpack_require__(63),
-  AppStateModel : __webpack_require__(243),
-  AppStateStore : __webpack_require__(244),
-  'app-route' : __webpack_require__(245)
+  AppStateModel : __webpack_require__(244),
+  AppStateStore : __webpack_require__(245),
+  'app-route' : __webpack_require__(246)
 }
 
 /***/ }),
@@ -14006,8 +14010,10 @@ class ElasticSearchStoreImpl extends ElasticSearchStore {
     super();
 
     this.data.byId = {};
+    this.data.searchCollection = {};
 
     this.events.RECORD_UPDATE = 'es-record-update';
+    this.events.SEARCH_COLLECTION_UPDATE = 'es-search-collection-update';
   }
 
   setRecordLoading(id, promise) {
@@ -14038,6 +14044,48 @@ class ElasticSearchStoreImpl extends ElasticSearchStore {
     this.emit(this.events.RECORD_UPDATE, state);
   }
 
+  /**
+   * Search Collection
+   */
+  setSearchCollectionLoading(query, promise) {
+    this._setSearchCollectionState({
+      state: this.STATE.LOADING, 
+      query: query,
+      request : promise
+    });
+  }
+
+  setSearchCollectionLoaded(query, payload) {
+    payload = payload
+      .hits.hits.map(item => {
+        item._source.thumbnail = '/fcrepo/rest'+item._source.workExample+'/svc:iiif/full/,320/0/default.png'
+        return item._source;
+      });
+
+    this._setSearchCollectionState({
+      state: this.STATE.LOADED,   
+      query: query,
+      payload: payload
+    });
+  }
+
+  setSearchCollectionError(query, e) {
+    this._setSearchCollectionState({
+      state: this.STATE.ERROR,   
+      query: query,
+      error: e
+    });
+  }
+
+  _setSearchCollectionState(state) {
+    this.data.searchCollection = Object.assign({}, state);
+    this.emit(this.events.SEARCH_COLLECTION_UPDATE, this.data.searchCollection);
+  }
+
+  getSearch() {
+    return this.data.search;
+  }
+
 }
 
 module.exports = new ElasticSearchStoreImpl();
@@ -14063,6 +14111,10 @@ module.exports = {
       'subjects_raw' : {
         label : 'Subject',
         type : 'facet'
+      },
+      datePublished : {
+        label : 'Published',
+        type : 'range'
       }
       // 'winetype.raw' : {
       //   label : 'Wine Type',
@@ -14188,15 +14240,15 @@ const PaperInkyFocusBehavior = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_icon_iron_icon_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(295);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(297);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_icon_button_paper_icon_button_js__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_icon_button_paper_icon_button_js__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_styles_color_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(297);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(298);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(299);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(300);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__iron_menu_behavior_iron_menu_behavior_js__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__iron_menu_behavior_iron_menu_behavior_js__ = __webpack_require__(190);
 
 
 
@@ -14872,18 +14924,18 @@ function _cssFromModuleImports(module) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_apply_shim_js__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_apply_shim_js__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_element_mixin_js__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_gesture_event_listeners_js__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_import_href_js__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_import_href_js__ = __webpack_require__(200);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_render_status_js__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_gestures_js__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils_debounce_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_async_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_async_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__utils_path_js__ = __webpack_require__(20);
 
 
@@ -15840,7 +15892,7 @@ const LegacyElementMixin = Object(__WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__[
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_settings_js__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__css_parse_js__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_regex_js__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__unscoped_style_handler_js__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__unscoped_style_handler_js__ = __webpack_require__(198);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -16451,7 +16503,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["resetMouseCanceller"] = resetMouseCanceller;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__async_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__async_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__debounce_js__ = __webpack_require__(14);
 
 
@@ -17543,7 +17595,7 @@ function equals(currentValue, previousValue) {
 // on the global object (window or self)
 //
 // Return that as the export for use in Webpack, Browserify etc.
-__webpack_require__(232);
+__webpack_require__(233);
 module.exports = self.fetch.bind(self);
 
 
@@ -17709,6 +17761,38 @@ module.exports = new CollectionStore();
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__ = __webpack_require__(268);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__);
+
+
+
+class AppCollectionCard extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */] {
+
+  static get template() {
+    return __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html___default.a;
+  }
+
+  static get properties() {
+    return {
+      collection : {
+        type : Object,
+        value : () => {}
+      }
+    }
+  }
+
+}
+/* unused harmony export default */
+
+
+customElements.define('app-collection-card', AppCollectionCard);
+
+/***/ }),
+/* 66 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_polymer_element_js__ = __webpack_require__(2);
 
@@ -17783,7 +17867,7 @@ const IronFormElementBehavior = {
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17885,7 +17969,7 @@ const IronValidatableBehavior = {
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17921,7 +18005,7 @@ const PaperInputAddonBehavior = {
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18052,19 +18136,19 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_result_creator__ = __webpack_require__(288);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_result_creator__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__ = __webpack_require__(188);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__);
 
 
@@ -18199,7 +18283,7 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18277,7 +18361,7 @@ return af;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18424,7 +18508,7 @@ return ar;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18488,7 +18572,7 @@ return arDz;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18552,7 +18636,7 @@ return arKw;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18683,7 +18767,7 @@ return arLy;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18748,7 +18832,7 @@ return arMa;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18858,7 +18942,7 @@ return arSa;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18922,7 +19006,7 @@ return arTn;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19032,7 +19116,7 @@ return az;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19171,7 +19255,7 @@ return be;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19266,7 +19350,7 @@ return bg;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19330,7 +19414,7 @@ return bm;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19454,7 +19538,7 @@ return bn;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19578,7 +19662,7 @@ return bo;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19691,7 +19775,7 @@ return br;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19839,7 +19923,7 @@ return bs;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19932,7 +20016,7 @@ return ca;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20109,7 +20193,7 @@ return cs;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20177,7 +20261,7 @@ return cv;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20263,7 +20347,7 @@ return cy;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20328,7 +20412,7 @@ return da;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20411,7 +20495,7 @@ return de;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20495,7 +20579,7 @@ return deAt;
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20578,7 +20662,7 @@ return deCh;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20683,7 +20767,7 @@ return dv;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20788,7 +20872,7 @@ return el;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20860,7 +20944,7 @@ return enAu;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20928,7 +21012,7 @@ return enCa;
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21000,7 +21084,7 @@ return enGb;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21072,7 +21156,7 @@ return enIe;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21144,7 +21228,7 @@ return enNz;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21222,7 +21306,7 @@ return eo;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21319,7 +21403,7 @@ return es;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21415,7 +21499,7 @@ return esDo;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21503,7 +21587,7 @@ return esUs;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21588,7 +21672,7 @@ return et;
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21659,7 +21743,7 @@ return eu;
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21771,7 +21855,7 @@ return fa;
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21883,7 +21967,7 @@ return fi;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21948,7 +22032,7 @@ return fo;
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22036,7 +22120,7 @@ return fr;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22115,7 +22199,7 @@ return frCa;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22198,7 +22282,7 @@ return frCh;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22278,7 +22362,7 @@ return fy;
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22359,7 +22443,7 @@ return gd;
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22441,7 +22525,7 @@ return gl;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22568,7 +22652,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22697,7 +22781,7 @@ return gu;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22801,7 +22885,7 @@ return he;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22930,7 +23014,7 @@ return hi;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23080,7 +23164,7 @@ return hr;
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23194,7 +23278,7 @@ return hu;
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23294,7 +23378,7 @@ return hyAm;
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23382,7 +23466,7 @@ return id;
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23514,7 +23598,7 @@ return is;
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23589,7 +23673,7 @@ return it;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23674,7 +23758,7 @@ return ja;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23762,7 +23846,7 @@ return jv;
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23856,7 +23940,7 @@ return ka;
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23948,7 +24032,7 @@ return kk;
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24011,7 +24095,7 @@ return km;
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24142,7 +24226,7 @@ return kn;
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24230,7 +24314,7 @@ return ko;
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24323,7 +24407,7 @@ return ky;
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24465,7 +24549,7 @@ return lb;
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24540,7 +24624,7 @@ return lo;
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24662,7 +24746,7 @@ return lt;
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24764,7 +24848,7 @@ return lv;
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24880,7 +24964,7 @@ return me;
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24949,7 +25033,7 @@ return mi;
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25044,7 +25128,7 @@ return mk;
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25130,7 +25214,7 @@ return ml;
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25294,7 +25378,7 @@ return mr;
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25381,7 +25465,7 @@ return ms;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25469,7 +25553,7 @@ return msMy;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25570,7 +25654,7 @@ return my;
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25638,7 +25722,7 @@ return nb;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25766,7 +25850,7 @@ return ne;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25859,7 +25943,7 @@ return nl;
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25952,7 +26036,7 @@ return nlBe;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26017,7 +26101,7 @@ return nn;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26146,7 +26230,7 @@ return paIn;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26275,7 +26359,7 @@ return pl;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26345,7 +26429,7 @@ return pt;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26412,7 +26496,7 @@ return ptBr;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26492,7 +26576,7 @@ return ro;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26680,7 +26764,7 @@ return ru;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26783,7 +26867,7 @@ return sd;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26849,7 +26933,7 @@ return se;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26925,7 +27009,7 @@ return si;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27080,7 +27164,7 @@ return sk;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27247,7 +27331,7 @@ return sl;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27322,7 +27406,7 @@ return sq;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27437,7 +27521,7 @@ return sr;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27552,7 +27636,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27646,7 +27730,7 @@ return ss;
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27720,7 +27804,7 @@ return sv;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27784,7 +27868,7 @@ return sw;
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27919,7 +28003,7 @@ return ta;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28013,7 +28097,7 @@ return te;
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28086,7 +28170,7 @@ return tet;
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28158,7 +28242,7 @@ return th;
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28225,7 +28309,7 @@ return tlPh;
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28350,7 +28434,7 @@ return tlh;
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28445,7 +28529,7 @@ return tr;
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28541,7 +28625,7 @@ return tzl;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28604,7 +28688,7 @@ return tzm;
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28667,7 +28751,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28823,7 +28907,7 @@ return uk;
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28927,7 +29011,7 @@ return ur;
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28990,7 +29074,7 @@ return uz;
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29053,7 +29137,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29137,7 +29221,7 @@ return vi;
 
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29210,7 +29294,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29275,7 +29359,7 @@ return yo;
 
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29391,7 +29475,7 @@ return zhCn;
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29501,7 +29585,7 @@ return zhHk;
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29610,7 +29694,7 @@ return zhTw;
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports) {
 
 module.exports = subclass => 
@@ -29631,12 +29715,12 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selector_iron_multi_selectable_js__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selector_iron_multi_selectable_js__ = __webpack_require__(298);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_selector_iron_selectable_js__ = __webpack_require__(41);
@@ -30052,7 +30136,7 @@ const IronMenuBehavior = [
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30218,41 +30302,41 @@ function parse(val) {
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_layout_app_header_app_header__ = __webpack_require__(194);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_app_layout_app_toolbar_app_toolbar__ = __webpack_require__(215);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_app_layout_app_drawer_app_drawer__ = __webpack_require__(216);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_paper_material_paper_material__ = __webpack_require__(217);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_paper_styles_paper_styles__ = __webpack_require__(219);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_paper_button_paper_button__ = __webpack_require__(221);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_layout_app_header_app_header__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_app_layout_app_toolbar_app_toolbar__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_app_layout_app_drawer_app_drawer__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_paper_material_paper_material__ = __webpack_require__(218);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_paper_styles_paper_styles__ = __webpack_require__(220);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_paper_button_paper_button__ = __webpack_require__(222);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_iron_pages_iron_pages__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_iron_icons_iron_icons__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ucd_lib_fin_icons_fin_icons__ = __webpack_require__(226);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ucd_lib_fin_icons_fin_icons__ = __webpack_require__(227);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ucd_lib_cork_app_utils__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ucd_lib_cork_app_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__ucd_lib_cork_app_utils__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__styles_style_properties__ = __webpack_require__(235);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__styles_shared_styles__ = __webpack_require__(237);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib__ = __webpack_require__(239);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__styles_style_properties__ = __webpack_require__(236);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__styles_shared_styles__ = __webpack_require__(238);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib__ = __webpack_require__(240);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__lib__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_home_app_home__ = __webpack_require__(264);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_search_app_search__ = __webpack_require__(268);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_record_app_record__ = __webpack_require__(314);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__app_footer__ = __webpack_require__(334);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__utils_app_header_colorbar__ = __webpack_require__(338);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_home_app_home__ = __webpack_require__(265);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_search_app_search__ = __webpack_require__(270);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_record_app_record__ = __webpack_require__(320);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__app_footer__ = __webpack_require__(340);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__utils_app_header_colorbar__ = __webpack_require__(344);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__interfaces_AppStateInterface__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__interfaces_AppStateInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__fin_app_html__ = __webpack_require__(339);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__fin_app_html__ = __webpack_require__(345);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__fin_app_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__fin_app_html__);
 
 
@@ -30355,7 +30439,7 @@ class FinApp extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_
 customElements.define('fin-app', FinApp);
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30363,7 +30447,7 @@ customElements.define('fin-app', FinApp);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_case_map_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_async_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_async_js__ = __webpack_require__(9);
 
 
 
@@ -30952,7 +31036,7 @@ const PropertyAccessors = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__["
 
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31416,14 +31500,14 @@ const TemplateStamp = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__["a" /
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_scroll_effects_app_scroll_effects_behavior_js__ = __webpack_require__(211);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_layout_behavior_app_layout_behavior_js__ = __webpack_require__(214);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_scroll_effects_app_scroll_effects_behavior_js__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_layout_behavior_app_layout_behavior_js__ = __webpack_require__(215);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -31877,14 +31961,14 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_apply_shim_js__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_apply_shim_js__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_template_map_js__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_util_js__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_apply_shim_utils_js__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_apply_shim_utils_js__ = __webpack_require__(199);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_document_wait_js__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_common_utils_js__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_custom_style_interface_js__ = __webpack_require__(57);
@@ -32085,7 +32169,7 @@ if (!window.ShadyCSS || !window.ShadyCSS.ScopingShim) {
 window.ShadyCSS.ApplyShim = applyShim;
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32572,7 +32656,7 @@ Object.defineProperty(ApplyShim.prototype, 'invalidCallback', {
 /* harmony default export */ __webpack_exports__["a"] = (ApplyShim);
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32622,7 +32706,7 @@ function isUnscopedStyle(style) {
 }
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32788,7 +32872,7 @@ function elementsAreInvalid() {
 }
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32869,7 +32953,7 @@ const importHref = function(href, onload, onerror, optAsync) {
 
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports) {
 
 function resolve() {
@@ -32884,7 +32968,7 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32892,7 +32976,7 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__array_splice_js__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(9);
 
 
 
@@ -33132,7 +33216,7 @@ class FlattenedNodesObserver {
 
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33403,7 +33487,7 @@ const Class = function(info) {
 
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33548,7 +33632,7 @@ let Templatizer = {
 
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33676,7 +33760,7 @@ customElements.define('dom-bind', DomBind);
 
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33687,7 +33771,7 @@ customElements.define('dom-bind', DomBind);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_mutable_data_js__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_async_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_async_js__ = __webpack_require__(9);
 
 
 
@@ -34376,7 +34460,7 @@ customElements.define(DomRepeat.is, DomRepeat);
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -34385,7 +34469,7 @@ customElements.define(DomRepeat.is, DomRepeat);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_templatize_js__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_debounce_js__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_async_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_async_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(20);
 
 
@@ -34647,7 +34731,7 @@ customElements.define(DomIf.is, DomIf);
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35068,12 +35152,12 @@ customElements.define(ArraySelector.is, ArraySelector);
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export CustomStyle */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_custom_style_interface_js__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_custom_style_interface_js__ = __webpack_require__(210);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_style_gather_js__ = __webpack_require__(52);
 
 
@@ -35165,7 +35249,7 @@ window.customElements.define('custom-style', CustomStyle);
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35239,7 +35323,7 @@ if (!window.ShadyCSS) {
 window.ShadyCSS.CustomStyleInterface = customStyleInterface;
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35317,13 +35401,13 @@ const OptionalMutableDataBehavior = {
 
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_scroll_target_behavior_iron_scroll_target_behavior_js__ = __webpack_require__(212);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_helpers_js__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_scroll_target_behavior_iron_scroll_target_behavior_js__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_helpers_js__ = __webpack_require__(214);
 
 
 
@@ -35621,7 +35705,7 @@ const AppScrollEffectsBehavior = [
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35872,7 +35956,7 @@ const IronScrollTargetBehavior = {
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35997,14 +36081,14 @@ const scroll = function scroll(options) {
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_async_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_async_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_debounce_js__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_utils_flush_js__ = __webpack_require__(21);
 
@@ -36090,7 +36174,7 @@ const AppLayoutBehavior = [
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36156,7 +36240,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36783,13 +36867,13 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_shadow_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_material_shared_styles_js__ = __webpack_require__(218);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_material_shared_styles_js__ = __webpack_require__(219);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -36846,7 +36930,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36890,7 +36974,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36907,7 +36991,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports) {
 
 const $_documentContainer = document.createElement('div');
@@ -36920,14 +37004,14 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_button_behavior_js__ = __webpack_require__(222);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_element_styles_paper_material_styles_js__ = __webpack_require__(224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_button_behavior_js__ = __webpack_require__(223);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_element_styles_paper_material_styles_js__ = __webpack_require__(225);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -37065,7 +37149,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37164,7 +37248,7 @@ const PaperButtonBehavior = [
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37861,7 +37945,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37922,7 +38006,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38032,13 +38116,13 @@ IronSelection.prototype = {
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_iron_icon_iron_icon__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_iconset_svg_iron_iconset_svg__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html__ = __webpack_require__(228);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__fin_icons_html__);
 
 
@@ -38050,13 +38134,13 @@ ele.innerHTML = __WEBPACK_IMPORTED_MODULE_2__fin_icons_html___default.a;
 document.head.appendChild(ele);
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports) {
 
 module.exports = "<iron-iconset-svg name=\"fin\" size=\"24\">\n  <svg>\n    <defs>\n  \n      <g id=\"account\">\n        <clipPath id=\"account-clip-path\">\n          <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        </clipPath>  \n        <style type=\"text/css\">.cls-1{fill:#008eaa;}.cls-2{clip-path:url(#account-clip-path);}.cls-3{fill:#f3f3f3;}</style>\n        \n        <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        <g class=\"cls-2\">\n          <circle class=\"cls-3\" cx=\"12\" cy=\"9.88\" r=\"3.5\"/>\n          <ellipse class=\"cls-3\" cx=\"12\" cy=\"22.66\" rx=\"7\" ry=\"8.05\"/>\n        </g>         \n      </g>\n\n      <g id=\"blank-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n      </g>\n\n      <g id=\"blank\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n      </g>\n\n      <g id=\"check\">\n        <polygon points=\"8.57 19.54 2.12 13.08 3.88 11.31 8.57 16 20.12 4.46 21.88 6.23 8.57 19.54\"/>\n      </g>\n\n      <g id=\"copy\">\n        <path d=\"M21.22,5.54H18.46V2.78A1.28,1.28,0,0,0,17.18,1.5H2.78A1.28,1.28,0,0,0,1.5,2.78v14.4a1.28,1.28,0,0,0,1.28,1.28H5.54v2.76A1.28,1.28,0,0,0,6.82,22.5h14.4a1.28,1.28,0,0,0,1.28-1.28V6.82A1.28,1.28,0,0,0,21.22,5.54ZM5.54,6.82V17.65H2.78a.47.47,0,0,1-.47-.47V2.78a.47.47,0,0,1,.47-.47h14.4a.47.47,0,0,1,.47.47V5.54H6.82A1.28,1.28,0,0,0,5.54,6.82ZM19,15.15H15.15V19h-2.1V15.15H9.2v-2.1h3.85V9.2h2.1v3.85H19Z\"/>\n      </g>\n\n      <g id=\"grid\">\n        <rect x=\"17.08\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"17.08\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n      </g>\n\n      <g id=\"image-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <circle cx=\"6.33\" cy=\"5.84\" r=\"1.97\"/>\n        <polygon points=\"3.13 12.93 3.13 15.55 15.61 15.55 15.61 10.83 11.98 7.2 7.4 11.78 5.93 10.32 3.13 12.93\"/>\n      </g>\n\n      <g id=\"image\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <circle cx=\"7.99\" cy=\"7.35\" r=\"2.6\"/>\n        <polygon points=\"3.79 16.69 3.79 20.14 20.21 20.14 20.21 13.92 15.44 9.14 9.4 15.18 7.47 13.25 3.79 16.69\"/>\n      </g>\n\n      <g id=\"list\">\n        <rect x=\"1.5\" y=\"5.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"5.51\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"10.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"10.5\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"15.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"15.5\" width=\"15.89\" height=\"3\"/>\n      </g>\n\n      <g id=\"search\">\n        <path d=\"M22.16,20.08l-5.25-5.24a8.38,8.38,0,1,0-1.53,1.77l5.13,5.12a1.15,1.15,0,0,0,.82.35,1.18,1.18,0,0,0,.83-2ZM9.88,16.35a6,6,0,1,1,6-6.05A6.06,6.06,0,0,1,9.88,16.35Z\"/>\n      </g>\n\n      <g id=\"multiple-sound\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.45.45,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.2,1.2,0,0,1,21.19,22.35Z\"/>\n        <path d=\"M6.88,5.39v5.76a1.76,1.76,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.78h0v-5L13,6.48V10a1.73,1.73,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.79v0h0V4Z\"/>\n      </g>\n\n      <g id=\"sound\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <path d=\"M8.72,6.75v7.59a2.3,2.3,0,0,0-1.33-.41,2.35,2.35,0,1,0,2.35,2.34v0h0V9.63l7-1.43v4.57a2.29,2.29,0,0,0-1.33-.42,2.35,2.35,0,1,0,2.34,2.34h0V4.92Z\"/>\n      </g>\n\n      <g id=\"text-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <rect x=\"5.2\" y=\"7.74\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"10.28\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"12.83\" width=\"4.18\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"5.2\" width=\"8.37\" height=\"0.74\"/>\n      </g>\n\n      <g id=\"text\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <rect x=\"6.5\" y=\"9.84\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"13.18\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"16.53\" width=\"5.5\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"6.5\" width=\"11\" height=\"0.97\"/>\n      </g>\n\n      <g id=\"triangle-dropdown\">\n        <polygon points=\"1.5 5.7 22.5 5.7 12 18.3 1.5 5.7\"/>\n      </g>\n\n      <g id=\"video-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <polygon points=\"12.75 9.36 6.6 13.37 6.6 5.24 12.75 9.36\"/>\n      </g>\n\n      <g id=\"video\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <polygon points=\"16.45 11.99 8.35 17.27 8.35 6.57 16.45 11.99\"/>\n      </g>\n    </defs>\n  </svg>\n</iron-iconset-svg>";
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MasterController = __webpack_require__(45);
@@ -38141,7 +38225,7 @@ class BaseModel {
 module.exports = BaseModel;
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -38449,7 +38533,7 @@ function isUndefined(arg) {
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MasterController = __webpack_require__(45);
@@ -38541,7 +38625,7 @@ class BaseStore {
 module.exports = BaseStore;
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // help: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
@@ -38780,7 +38864,7 @@ class BaseService {
 module.exports = BaseService;
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -39247,7 +39331,7 @@ module.exports = BaseService;
 
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports) {
 
  /**
@@ -39272,11 +39356,11 @@ if( typeof window !== 'undefined' ) {
 module.exports = Mixin;
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {Debouncer} = __webpack_require__(14);
-const Async = __webpack_require__(7);
+const Async = __webpack_require__(9);
 const MasterController = __webpack_require__(45);
 
 /**
@@ -39607,11 +39691,11 @@ if( typeof window !== 'undefined' ) {
 module.exports = EventInterface;
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_properties_html__ = __webpack_require__(236);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_properties_html__ = __webpack_require__(237);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_properties_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__style_properties_html__);
 
 let styleWrapper = document.createElement('div');
@@ -39620,17 +39704,17 @@ styleWrapper.innerHTML = __WEBPACK_IMPORTED_MODULE_0__style_properties_html___de
 document.head.appendChild(styleWrapper);
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports) {
 
 module.exports = "<custom-style>\n  <style>\n    html {\n      --default-primary-color : #002655;\n      --light-primary-color   : #335379;\n      \n      --default-secondary-color : #daaa00;\n      --light-secondary-color   : #9be7ff;\n      --dark-secondary-color    : #2286c3;\n\n      --medium-background-color : #B2BDCF;\n      --light-background-color : #D6DCE6;\n      --super-light-background-color: #f3f3f3;\n    \n      --text-primary-color      : black;\n      --primary-text-color      : var(--text-primary-color);\n      --secondary-text-color    : var(--default-secondary-color);\n      --inverse-text-color      : white;\n      --gray-text               : #8B8B8B;\n      --text-disabled           : var(--gray-text);\n\n      --max-width               : 1200px;\n      --max-text-width          : 650px;\n      --font-size               : 16px;\n      --font-size-sm            : 14px;\n      --font-weight             : 400;\n      --font-weight-heavy       : 700;\n\n      --layout-sm               : 768px;\n      --grid-cell-width         : 250px;\n\n     /**\n      * Custom mixins\n      */\n      --fin-search-box-select: {\n        font-size: var(--font-size);\n        font-weight: var(--font-weight);\n        color: var(--default-primary-color);\n        background-color: var(--default-secondary-color);\n        width: 100px;\n      }\n      --fin-search-box-select-inverse: {\n        @apply(--fin-search-box-select);\n        color: var(--default-secondary-color);\n        background-color: var(--default-primary-color);\n      }\n      --fin-search-box-input: {\n        font-size: var(--font-size);\n      }\n      --cork-drop-down-arrow-color: var(--default-primary-color);\n      --cork-toggle-panel-label : {\n        padding: 10px 0;\n        color: var(--default-primary-color);\n        font-weight: var(--font-weight-heavy);\n      }\n    }\n    body, html {\n      /* @apply --paper-font-common-base; */\n      font-family: \"proxima-nova\",\"Montserrat\",\"Lucida Grande\",\"Lucida Sans\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\n      font-size        : var(--font-size);\n      font-weight      : var(--font-weight);\n      line-height      : calc(var(--font-size) * 1.625);\n      margin           : 0;\n      padding          : 0;\n      height           : 100%;\n      background-color : var(--default-background-color);\n      color            : var(--text-primary-color);\n    }\n  </style>\n</custom-style>";
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_styles_html__ = __webpack_require__(238);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_styles_html__ = __webpack_require__(239);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_styles_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__shared_styles_html__);
 
 let styleWrapper = document.createElement('div');
@@ -39639,30 +39723,30 @@ styleWrapper.innerHTML = __WEBPACK_IMPORTED_MODULE_0__shared_styles_html___defau
 document.head.appendChild(styleWrapper);
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports) {
 
 module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n      paper-material {\n        background: white;\n        display: block;\n        padding: 10px;\n        margin: 10px;\n      }\n\n      paper-tabs {\n        --paper-tabs-selection-bar: {\n          border-bottom: 3px solid var(--default-primary-color);\n        }\n      }\n      paper-tab {\n        --paper-tab-content-unselected : {    \n          text-transform: uppercase;\n          color: var(--text-disabled);\n        }\n        --paper-tab-content : {\n          text-transform: uppercase;\n          color: var(--default-primary-color);\n        }\n      }\n\n      [hidden] {\n        display: none !important;\n      }\n\n      input, select, button {\n        font-size        : var(--font-size);\n        font-weight      : var(--font-weight);\n        color            : var(--text-primary-color);\n      }\n\n      main {\n        display: flex;\n        justify-content: center;\n      }\n\n      main > * {\n        max-width: 1000px;\n        width: 100%;\n      }\n\n      ul.menu {\n        list-style: none;\n        margin: 0;\n        padding: 0;\n      }\n\n      ul.menu.horizontal {\n        display: flex;\n      }\n\n      a {\n        text-decoration: none;\n        color: var(--default-primary-color);\n      }\n\n      a.italic {\n        color: var(--default-secondary-color);\n        font-style: italic;\n      }\n\n      a.gold {\n        color: var(--default-secondary-color);\n      }\n\n      .text-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n      }\n      \n      .text-container > * {\n        max-width: var(--max-text-width);\n        width: 100%;\n      }\n\n      .container {\n        display: flex;\n        justify-content: center;\n        flex-direction: column;\n        align-items: center;\n      }\n\n      .container > * {\n        max-width: var(--max-width);\n        width: 100%;\n        justify-content: center;\n      }\n\n      fin-search-box > iron-icon {\n        color: var(--default-secondary-color);\n      }\n    </style>\n  </template>\n</dom-module>";
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  AuthModel : __webpack_require__(240),
-  AppStateModel : __webpack_require__(242),
-  ElasticSearchModel : __webpack_require__(255),
-  CollectionModel : __webpack_require__(261),
-  MediaModel : __webpack_require__(263)
+  AuthModel : __webpack_require__(241),
+  AppStateModel : __webpack_require__(243),
+  ElasticSearchModel : __webpack_require__(256),
+  CollectionModel : __webpack_require__(262),
+  MediaModel : __webpack_require__(264)
 }
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseModel} = __webpack_require__(6);
 var AuthStore = __webpack_require__(62);
-var AuthService = __webpack_require__(241);
+var AuthService = __webpack_require__(242);
 
 
 class AuthModel extends BaseModel {
@@ -39692,7 +39776,7 @@ class AuthModel extends BaseModel {
 module.exports = new AuthModel();
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
@@ -39729,11 +39813,11 @@ class AuthSerivce extends BaseService {
 module.exports = new AuthSerivce();
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {AppStateModel} = __webpack_require__(46);
-var AppStateStore = __webpack_require__(254);
+var AppStateStore = __webpack_require__(255);
 
 class AppStateModelImpl extends AppStateModel {
 
@@ -39747,7 +39831,7 @@ class AppStateModelImpl extends AppStateModel {
 module.exports = new AppStateModelImpl();
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseModel} = __webpack_require__(6);
@@ -39811,7 +39895,7 @@ class AppStateModel extends BaseModel {
 module.exports = AppStateModel;
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseStore} = __webpack_require__(6);
@@ -39844,16 +39928,16 @@ class AppStateStore extends BaseStore {
 module.exports = AppStateStore;
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_route_app_location__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_route_app_location__ = __webpack_require__(247);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string__ = __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_query_string__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__);
@@ -39942,14 +40026,14 @@ class AppRoute extends Object(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_util
 customElements.define('app-route', AppRoute);
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_location_iron_location_js__ = __webpack_require__(247);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_location_iron_query_params_js__ = __webpack_require__(248);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_route_converter_behavior_js__ = __webpack_require__(249);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_location_iron_location_js__ = __webpack_require__(248);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_location_iron_query_params_js__ = __webpack_require__(249);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_route_converter_behavior_js__ = __webpack_require__(250);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -40086,7 +40170,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40448,7 +40532,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40543,7 +40627,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40641,14 +40725,14 @@ const AppRouteConverterBehavior = {
 
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(251);
-var objectAssign = __webpack_require__(252);
-var decodeComponent = __webpack_require__(253);
+var strictUriEncode = __webpack_require__(252);
+var objectAssign = __webpack_require__(253);
+var decodeComponent = __webpack_require__(254);
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -40858,7 +40942,7 @@ exports.stringify = function (obj, opts) {
 
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40871,7 +40955,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40968,7 +41052,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 253 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41069,19 +41153,19 @@ module.exports = function (encodedURI) {
 
 
 /***/ }),
-/* 254 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {AppStateStore} = __webpack_require__(46);
 module.exports = new AppStateStore();
 
 /***/ }),
-/* 255 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {ElasticSearchModel} = __webpack_require__(29);
 const ElasticSearchStore = __webpack_require__(47);
-const ElasticSearchService = __webpack_require__(260);
+const ElasticSearchService = __webpack_require__(261);
 var config = __webpack_require__(48);
 
 class ElasticSearchModelImpl extends ElasticSearchModel {
@@ -41106,12 +41190,66 @@ class ElasticSearchModelImpl extends ElasticSearchModel {
     return this.service.get(id);
   }
 
+  /**
+   * @method search
+   * @description preform a es collection search given an app search document
+   * 
+   * @param {Object} searchDocument
+   * 
+   * @returns {Promise}
+   */
+  search(searchDocument = {}) {
+    let promise = super.search(searchDocument);
+
+    // there is search text but no collection filter applied
+    if( !searchDocument.filters.isPartOf && searchDocument.text ) {
+      this.searchCollection({text: searchDocument.text});
+      this.emit('show-collection-search-results', true);
+    } else {
+      this.emit('show-collection-search-results', false);
+    }
+
+    return promise;
+  }
+
+  /**
+   * @method searchCollection
+   * @description preform a es collection search given an app search document
+   * 
+   * @param {Object} searchDocument
+   * 
+   * @returns {Promise}
+   */
+  async searchCollection(searchDocument = {}) {
+    searchDocument.limit = 100;
+    searchDocument.offset = 0;
+
+    let esBody = this.fromSearchDocumentToEsBody(searchDocument);
+    delete esBody.aggs;
+
+    return this.service.searchCollection(esBody);
+  }
+
+  async setKeywordAndText(text, attr, value, op = 'or') {
+    let query = this.getAppSearchDocument();
+    
+    query.filters[attr] = {
+      type : 'keyword',
+      op : op,
+      value : [value]
+    }
+    query.offset = 0;
+    query.text = '';
+
+    return this.search(query);
+  }
+
 }
 
 module.exports = new ElasticSearchModelImpl();
 
 /***/ }),
-/* 256 */
+/* 257 */
 /***/ (function(module, exports) {
 
 module.exports = subclass => 
@@ -41179,7 +41317,7 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 257 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
@@ -41706,7 +41844,7 @@ class ElasticSearchModel extends BaseModel {
 module.exports = ElasticSearchModel;
 
 /***/ }),
-/* 258 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
@@ -41769,7 +41907,7 @@ class ElasticSearchService extends BaseService {
 module.exports = ElasticSearchService;
 
 /***/ }),
-/* 259 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseStore} = __webpack_require__(6);
@@ -41942,7 +42080,7 @@ class ElasticSearchStore extends BaseStore {
 module.exports = ElasticSearchStore;
 
 /***/ }),
-/* 260 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {ElasticSearchService} = __webpack_require__(29);
@@ -41967,17 +42105,41 @@ class ElasticSearchServiceImpl extends ElasticSearchService {
 
     return this.store.data.byId[id];
   }
+
+  /**
+   * @method searchCollection
+   * @description Search the catalogs
+   * 
+   * @param {Object} query - elastic search query parameters
+   * 
+   * @returns {Promise}
+   */
+  async searchCollection(query = {}) {
+    return await this.request({
+      url : this.apiPath+'/collection',
+      fetchOptions : {
+        method : 'POST',
+        headers : {
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(query)
+      },
+      onLoading : promise => this.store.setSearchCollectionLoading(query, promise),
+      onLoad : result => this.store.setSearchCollectionLoaded(query, result.body),
+      onError : e => this.store.setSearchCollectionError(query, e)
+    });
+  }
 }
 
 module.exports = new ElasticSearchServiceImpl();
 
 /***/ }),
-/* 261 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
 const CollectionStore = __webpack_require__(64);
-const CollectionService = __webpack_require__(262);
+const CollectionService = __webpack_require__(263);
 // it's ok to import other stores & services, just not models
 const ElasticSearchStore = __webpack_require__(47);
 
@@ -42043,7 +42205,7 @@ class CollectionModel extends BaseModel {
 module.exports = new CollectionModel();
 
 /***/ }),
-/* 262 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
@@ -42075,7 +42237,7 @@ class CollectionService extends BaseService {
 module.exports = new CollectionService();
 
 /***/ }),
-/* 263 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
@@ -42130,20 +42292,22 @@ class MediaModel extends BaseModel {
 module.exports = new MediaModel();
 
 /***/ }),
-/* 264 */
+/* 265 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_fin_search_box__ = __webpack_require__(265);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_home_html__ = __webpack_require__(267);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_home_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_home_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_CollectionInterface__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_CollectionInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_fin_search_box__ = __webpack_require__(266);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_app_collection_card__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html__ = __webpack_require__(269);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_home_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__);
+
 
 
 
@@ -42153,10 +42317,10 @@ module.exports = new MediaModel();
 
 
 class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */]) 
-      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_5__interfaces_CollectionInterface___default.a) {
+      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default.a) {
   
   static get template() {
-    return __WEBPACK_IMPORTED_MODULE_2__app_home_html___default.a;
+    return __WEBPACK_IMPORTED_MODULE_3__app_home_html___default.a;
   }
 
   static get properties() {
@@ -42243,12 +42407,12 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
 customElements.define('app-home', AppHome);
 
 /***/ }),
-/* 265 */
+/* 266 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__ = __webpack_require__(266);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__ = __webpack_require__(267);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__);
 
 
@@ -42336,35 +42500,41 @@ class FinSearchBox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_
 customElements.define('fin-search-box', FinSearchBox);
 
 /***/ }),
-/* 266 */
+/* 267 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n  .root {\n    display: flex;\n    align-items: center;\n  }\n  input {\n    width: 100%;\n    box-sizing: border-box;\n    padding: 0 5px;\n    background: white;\n    border: none;\n    height: 45px;\n    outline: none;\n    @apply --fin-search-box-input;\n  }\n  button {\n    background: white;\n    height: 45px;\n    border: none;\n    margin: 0;\n    padding: 0 10px;\n    border-radius: 0;\n    cursor: pointer;\n    @apply --fin-search-box-button;\n  }\n  select {\n    margin-left: 20px;\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    height: 45px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n    @apply --fin-search-box-select;\n  }\n  @media(max-width: 600px) {\n    select {\n      margin-left: 10px;\n    }\n  }\n</style>\n\n<div class=\"root\">\n  <div style=\"flex:1\">\n    <input \n      id=\"input\" \n      type=\"text\"\n      on-keyup=\"_onKeyUp\"\n      placeholder=\"[[placeholder]]\" />\n  </div>\n  <button on-click=\"_fireSearch\">\n    <slot name=\"button-content\"></slot>\n  </button>\n  <select id=\"select\" on-change=\"_fireBrowse\">\n    <option>Browse</option>\n  </select>\n</div>";
 
 /***/ }),
-/* 267 */
+/* 268 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <div style=\"background-image:url('[[item.thumbnail]]')\" data-id$=\"[[item.id]]\" on-click=\"_onCollectionClicked\">\n        <div>[[item.name]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n\n<div class=\"text-container\">\n\n  <h1>About Digital Collections</h1>\n\n  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore\n      et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit duis. Eget \n      nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Volutpat sed cras ornare arcu \n      dui vivamus arcu felis bibendum. Faucibus turpis in eu mi bibendum neque egestas congue. Orci a \n      scelerisque purus semper eget duis. Quam viverra orci sagittis eu volutpat odio facilisis mauris \n      sit. Et malesuada fames ac turpis egestas sed tempus urna et. Vel orci porta non pulvinar. Urna \n      nec tincidunt praesent semper feugiat nibh sed pulvinar. Sagittis aliquam malesuada bibendum \n      arcu vitae elementum curabitur vitae nunc. Facilisi cras fermentum odio eu feugiat.\n    </p>\n      \n    <p>Et pharetra pharetra massa massa ultricies mi quis hendrerit. Ac orci phasellus egestas tellus \n      rutrum tellus pellentesque eu tincidunt. Ornare arcu odio ut sem nulla pharetra. Sodales ut eu \n      sem integer vitae. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Purus \n      non enim praesent elementum facilisis leo vel fringilla est. Nunc scelerisque viverra mauris in \n      aliquam. Accumsan in nisl nisi scelerisque eu ultrices vitae auctor eu. Massa sed elementum \n      tempus egestas. Lectus magna fringilla urna porttitor rhoncus dolor purus.</p>\n\n    <a>Link to Somewhere</a>\n\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>";
+module.exports = "<style>\n  :host {\n    display: inline-block;\n  }\n\n  .root {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .root:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .root > div  {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<div class=\"root\" style=\"background-image:url('[[collection.thumbnail]]')\" data-id$=\"[[collection.id]]\">\n  <div>[[collection.name]]</div>\n</div>\n";
 
 /***/ }),
-/* 268 */
+/* 269 */
+/***/ (function(module, exports) {
+
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <app-collection-card collection=\"[[item]]\"></app-collection-card>\n    </template>\n  </div>\n</div>\n\n<div class=\"text-container\">\n  \n  <h1>About Digital Collections</h1>\n\n  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore\n      et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit duis. Eget \n      nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Volutpat sed cras ornare arcu \n      dui vivamus arcu felis bibendum. Faucibus turpis in eu mi bibendum neque egestas congue. Orci a \n      scelerisque purus semper eget duis. Quam viverra orci sagittis eu volutpat odio facilisis mauris \n      sit. Et malesuada fames ac turpis egestas sed tempus urna et. Vel orci porta non pulvinar. Urna \n      nec tincidunt praesent semper feugiat nibh sed pulvinar. Sagittis aliquam malesuada bibendum \n      arcu vitae elementum curabitur vitae nunc. Facilisi cras fermentum odio eu feugiat.\n    </p>\n      \n    <p>Et pharetra pharetra massa massa ultricies mi quis hendrerit. Ac orci phasellus egestas tellus \n      rutrum tellus pellentesque eu tincidunt. Ornare arcu odio ut sem nulla pharetra. Sodales ut eu \n      sem integer vitae. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Purus \n      non enim praesent elementum facilisis leo vel fringilla est. Nunc scelerisque viverra mauris in \n      aliquam. Accumsan in nisl nisi scelerisque eu ultrices vitae auctor eu. Massa sed elementum \n      tempus egestas. Lectus magna fringilla urna porttitor rhoncus dolor purus.</p>\n\n    <a>Link to Somewhere</a>\n\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>";
+
+/***/ }),
+/* 270 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_input_paper_input__ = __webpack_require__(269);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_input_paper_input__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html__ = __webpack_require__(278);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_search_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_header__ = __webpack_require__(277);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb__ = __webpack_require__(280);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__results_app_search_results_panel__ = __webpack_require__(282);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__filtering_app_filters_panel__ = __webpack_require__(294);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_header__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb__ = __webpack_require__(282);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__results_app_search_results_panel__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__filtering_app_filters_panel__ = __webpack_require__(296);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__);
 
 
@@ -42544,17 +42714,17 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-search', AppSearch);
 
 /***/ }),
-/* 269 */
+/* 271 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_input_iron_input_js__ = __webpack_require__(270);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_behavior_js__ = __webpack_require__(272);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_input_char_counter_js__ = __webpack_require__(273);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_input_container_js__ = __webpack_require__(274);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_input_error_js__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_input_iron_input_js__ = __webpack_require__(272);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_behavior_js__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_input_char_counter_js__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_input_container_js__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_input_error_js__ = __webpack_require__(277);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_lib_elements_dom_module_js__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_polymer_element_js__ = __webpack_require__(2);
@@ -42735,13 +42905,13 @@ Object(__WEBPACK_IMPORTED_MODULE_7__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 270 */
+/* 272 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_announcer_iron_a11y_announcer_js__ = __webpack_require__(271);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_announcer_iron_a11y_announcer_js__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -43028,7 +43198,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 271 */
+/* 273 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43110,7 +43280,7 @@ IronA11yAnnouncer.requestAvailability = function() {
 
 
 /***/ }),
-/* 272 */
+/* 274 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43667,13 +43837,13 @@ const PaperInputBehavior = [
 
 
 /***/ }),
-/* 273 */
+/* 275 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_typography_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_input_addon_behavior_js__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_input_addon_behavior_js__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -43745,7 +43915,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 274 */
+/* 276 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44328,14 +44498,14 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 275 */
+/* 277 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_typography_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_addon_behavior_js__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_addon_behavior_js__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -44401,23 +44571,23 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 276 */
+/* 278 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .search-container {\n    background-color: var(--super-light-background-color);\n    min-height: 500px;\n    display: flex;\n  }\n  .search-content {\n    margin: 15px;\n    flex: 1;\n  }\n  app-filters-panel {\n    width: 350px;\n  }\n\n  #drawer app-filters-panel {\n    width: 300px;\n  }\n  \n  #drawer {\n    position: absolute;\n    top: 0;\n    left: -335px;\n    bottom: 0;\n    background: white;\n    width: 300px;\n    z-index: 10;\n    transition: left 300ms ease-out;\n    background-color: var(--light-background-color);\n  }\n\n  @keyframes fadeIn {\n    from {\n      opacity: 0;\n    }\n    to {\n      opacity: .7;\n    }\n  }\n\n  #drawer-background {\n    opacity: .7;\n    position: absolute;\n    top: 0;\n    left: 0;\n    bottom: 0;\n    right: 0;\n    background: black;\n    z-index: 5;\n    display: none;\n    animation: fadeIn 300ms;\n  }\n\n  #drawer[open] {\n    left: 0;\n  }\n\n  #drawer-background[open] {\n    display: block;\n  }\n\n  #desktop-filter-panel {\n    display: none;\n  }\n\n  @media( min-width: 975px ) {\n    #outerDrawer {\n      display: none;\n    }\n    #desktop-filter-panel {\n      display: block;\n    }\n  }\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<div style=\"position: relative\">\n  <div id=\"outerDrawer\">\n    <div id=\"drawer\" open$=\"[[drawerOpen]]\">\n      <app-filters-panel on-toggle-drawer=\"_toggleDrawer\"></app-filters-panel>\n    </div>\n    <div id=\"drawer-background\" open$=\"[[drawerOpen]]\" on-click=\"_toggleDrawer\"></div>\n  </div>\n\n  <div class=\"search-container\">\n    <app-filters-panel id=\"desktop-filter-panel\"></app-filters-panel>\n    <div class=\"search-content\">\n      <app-search-results-panel \n        id=\"resultsPanel\" \n        on-toggle-drawer=\"_toggleDrawer\" \n        on-page-size-change=\"_onPageSizeChange\"\n        on-page-change=\"_onPaginationChange\">\n      </app-search-results-panel>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 277 */
+/* 279 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_app_auth_header__ = __webpack_require__(278);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_app_auth_header__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html__ = __webpack_require__(281);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_search_header_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface__);
 
 
@@ -44428,6 +44598,15 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 
 class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
       .with(EventInterface, __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface___default.a) {
+
+  static get properties() {
+    return {
+      selectedCollection : {
+        type : String,
+        value : ''
+      }
+    }
+  }
 
   static get template() {
     return __WEBPACK_IMPORTED_MODULE_2__app_search_header_html___default.a;
@@ -44497,11 +44676,22 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
     }
   }
 
+  /**
+   * @method _onSelectedCollectionUpdate
+   * @description from CollectionInterface, called when a collection is selected.
+   * This is done by setting a collection filter.
+   * 
+   * @param {Object} selected currently selected collection 
+   */
+  _onSelectedCollectionUpdate(selected) {
+    this.selectedCollection = selected;
+  }
+
 }
 customElements.define('app-search-header', AppSearchHeader);
 
 /***/ }),
-/* 278 */
+/* 280 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44536,24 +44726,24 @@ class AppAuthHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_p
 customElements.define('app-auth-header', AppAuthHeader);
 
 /***/ }),
-/* 279 */
+/* 281 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--default-primary-color);\n    color: var(--inverse-text-color);\n    padding: 15px;\n  }\n\n  app-auth-header {\n    margin-left: 10px;\n  }\n  \n  fin-search-box {\n    display: inline-block;\n    width: 100%;\n    box-sizing: border-box;\n    max-width: 525px;\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n  }\n  \n  h2 {\n    margin: 0;\n    white-space: nowrap;\n  }\n  h2 a {\n    color: var(--default-secondary-color);\n    text-decoration: none;\n  }\n  h2 a:visited {\n    color: var(--default-secondary-color);\n    text-decoration: none;\n  }\n\n  img {\n    height: 50px;\n  }\n\n  .logo, h2 {\n    padding-right: 20px;\n    display: none;\n  }\n\n  .filler {\n    flex: .25;\n    display: none;\n  }\n\n  .logo-sm {\n    margin-right: 10px;\n  }\n\n  @media( min-width: 700px ) {\n    .logo {\n      display: block;\n    }\n    .logo-sm {\n      display: none;\n    }\n  }\n\n  @media( min-width: 815px ) {\n    h2 {\n      display: block;\n    }\n  }\n\n  @media( min-width: 1100px ) {\n    .filler {\n      display: block;\n    }\n  }\n</style>\n\n<div class=\"layout\">\n  <img class=\"logo\" src=\"/images/ucd-lib-logo-white.png\" />\n  <img class=\"logo-sm\" src=\"/images/ucd-lib-logo-white-sm.png\" />\n  <h2><a href=\"/\">Digital Collections</a></h2>\n  <div class=\"filler\"></div>\n  <div style=\"flex:1; text-align:right\">\n    <fin-search-box \n      id=\"searchInput\" \n      on-search=\"_onSearch\" \n      on-browse=\"_onBrowse\"\n      placeholder=\"Search Keyword(s)\">\n      <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n    </fin-search-box>\n  </div>\n  <app-auth-header></app-auth-header>\n</div>\n\n";
 
 /***/ }),
-/* 280 */
+/* 282 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__ = __webpack_require__(283);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__);
 
 
@@ -44656,26 +44846,31 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
 customElements.define('app-search-breadcrumb', AppSearchBreadcrumb);
 
 /***/ }),
-/* 281 */
+/* 283 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\">[[collection.name]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">Item</div>\n</div>";
 
 /***/ }),
-/* 282 */
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_cork_pagination__ = __webpack_require__(283);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_grid_result__ = __webpack_require__(285);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_list_result__ = __webpack_require__(291);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_search_results_panel_html__ = __webpack_require__(293);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_search_results_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__app_search_results_panel_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_cork_pagination__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_grid_result__ = __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_list_result__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_app_collection_card__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__ = __webpack_require__(295);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__);
+
+
 
 
 
@@ -44687,7 +44882,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 
 
 class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default.a) {
+      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface___default.a) {
 
   static get properties() {
     return {
@@ -44698,6 +44893,15 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
         type : Array,
         value : () => []
       },
+
+      /**
+       * Array of collection search results
+       */
+      collectionResults : {
+        type : Array,
+        value : () => []
+      },
+
       /**
        * size in px's between each masonary layout cell
        */
@@ -44728,12 +44932,17 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
       currentIndex : {
         type : Number,
         value : 0
+      },
+
+      showCollectionResults : {
+        type : Boolean,
+        value : false
       }
     }
   }
 
   static get template() {
-    return __WEBPACK_IMPORTED_MODULE_6__app_search_results_panel_html___default.a;
+    return __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html___default.a;
   }
 
   constructor() {
@@ -44742,6 +44951,8 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
 
     this.resizeTimer = -1;
     window.addEventListener('resize', () => this._resizeAsync());
+
+    this.MasterController().on('show-collection-search-results', show => this._updateCollectionResultsVisibility(show));
   }
 
   /**
@@ -44889,19 +45100,46 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
     }));
   }
 
+  _updateCollectionResultsVisibility(show) {
+    this.showCollectionResults = show;
+  }
+
+  /**
+   * @method _onEsSearchCollectionUpdate
+   * @description from ElasticSearchInterface, called when a collection search state
+   * is updated.
+   * 
+   * @param {Object} e 
+   */
+  _onEsSearchCollectionUpdate(e) {
+    if( e.state !== 'loaded' ) return;
+    this.collectionResults = e.payload;
+  }
+
+  /**
+   * @method _onCollectionClicked
+   * @description bound to app-collection-card click event
+   * 
+   * @param {Object} e click event
+   */
+  _onCollectionClicked(e) {
+    let id = e.currentTarget.collection.id
+    this._esSetKeywordAndText('', 'isPartOf', id);
+  }
+
 }
 
 customElements.define('app-search-results-panel', AppSearchResultsPanel);
 
 /***/ }),
-/* 283 */
+/* 285 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_icon_button_paper_icon_button__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_icon_button_paper_icon_button__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__ = __webpack_require__(286);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__);
 
 
@@ -45082,18 +45320,18 @@ class CorkPagination extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 window.customElements.define('cork-pagination', CorkPagination);
 
 /***/ }),
-/* 284 */
+/* 286 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #root {\n    display: flex;\n    align-items: center;\n  }\n\n  .ellipsis {\n    display: none;\n  }\n\n  paper-icon-button {\n    color: var(--cork-color, --default-primary-color);\n  }\n  paper-icon-button[disabled] {\n     color: var(--cork-disabled-color, var(--disabled-color, #ccc));\n  }\n\n  a {\n    color: var(--cork-color, --default-primary-color);\n    cursor: pointer;\n    text-align: center;\n    min-width: 20px;\n    border-radius: 25px;\n    display: inline-block;\n    padding: 5px;\n    margin: 0 3px;\n    font-size: 14px;\n    line-height: 20px;\n  }\n\n  a:hover {\n    background: var(--cork-background-color-light, var(--light-background-color, #eee));\n  }\n\n  a[selected] {\n    background: var(--cork-background-color, var(--medium-background-color, #ccc));\n    color: white;\n  }\n\n  [hidden] {\n    display: none;\n  }\n\n  .text-display {\n    font-style: italic;\n  }\n</style>\n\n<div id=\"root\">\n  <paper-icon-button disabled$=\"[[firstPage]]\" icon=\"arrow-back\" on-click=\"previous\"></paper-icon-button>\n\n  <div style=\"flex:1\"></div>\n\n  <div hidden$=\"[[loading]]\">\n    <div hidden$=\"[[!textMode]]\" class=\"text-display\">[[textDisplay]]</div>\n  </div>\n\n  <div hidden$=\"[[textMode]]\">\n    <a selected$=\"[[firstPage]]\" on-click=\"_selectPage\">1</a>\n    <a id=\"startEllipsis\" class=\"ellipsis\" on-click=\"previousSection\">...</a>\n\n    <template is=\"dom-repeat\" items=\"[[pages]]\">\n      <a selected$=\"[[item.selected]]\" on-click=\"_selectPage\">[[item.index]]</a>\n    </template>\n\n    <a id=\"stopEllipsis\" class=\"ellipsis\" on-click=\"nextSection\">...</a>\n    <a id=\"lastPage\" selected$=\"[[lastPage]]\" on-click=\"_selectPage\">[[lastPageIndex]]</a>\n  </div>\n\n  <div style=\"flex:1\"></div>\n\n  <paper-icon-button disabled$=\"[[lastPage]]\" icon=\"arrow-forward\" on-click=\"next\"></paper-icon-button>\n</div>";
 
 /***/ }),
-/* 285 */
+/* 287 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__ = __webpack_require__(292);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__);
 
 
@@ -45109,7 +45347,7 @@ class AppSearchGridResult extends __WEBPACK_IMPORTED_MODULE_0__app_search_result
 customElements.define('app-search-grid-result', AppSearchGridResult);
 
 /***/ }),
-/* 286 */
+/* 288 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -45137,246 +45375,246 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 287 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 70,
-	"./af.js": 70,
-	"./ar": 71,
-	"./ar-dz": 72,
-	"./ar-dz.js": 72,
-	"./ar-kw": 73,
-	"./ar-kw.js": 73,
-	"./ar-ly": 74,
-	"./ar-ly.js": 74,
-	"./ar-ma": 75,
-	"./ar-ma.js": 75,
-	"./ar-sa": 76,
-	"./ar-sa.js": 76,
-	"./ar-tn": 77,
-	"./ar-tn.js": 77,
-	"./ar.js": 71,
-	"./az": 78,
-	"./az.js": 78,
-	"./be": 79,
-	"./be.js": 79,
-	"./bg": 80,
-	"./bg.js": 80,
-	"./bm": 81,
-	"./bm.js": 81,
-	"./bn": 82,
-	"./bn.js": 82,
-	"./bo": 83,
-	"./bo.js": 83,
-	"./br": 84,
-	"./br.js": 84,
-	"./bs": 85,
-	"./bs.js": 85,
-	"./ca": 86,
-	"./ca.js": 86,
-	"./cs": 87,
-	"./cs.js": 87,
-	"./cv": 88,
-	"./cv.js": 88,
-	"./cy": 89,
-	"./cy.js": 89,
-	"./da": 90,
-	"./da.js": 90,
-	"./de": 91,
-	"./de-at": 92,
-	"./de-at.js": 92,
-	"./de-ch": 93,
-	"./de-ch.js": 93,
-	"./de.js": 91,
-	"./dv": 94,
-	"./dv.js": 94,
-	"./el": 95,
-	"./el.js": 95,
-	"./en-au": 96,
-	"./en-au.js": 96,
-	"./en-ca": 97,
-	"./en-ca.js": 97,
-	"./en-gb": 98,
-	"./en-gb.js": 98,
-	"./en-ie": 99,
-	"./en-ie.js": 99,
-	"./en-nz": 100,
-	"./en-nz.js": 100,
-	"./eo": 101,
-	"./eo.js": 101,
-	"./es": 102,
-	"./es-do": 103,
-	"./es-do.js": 103,
-	"./es-us": 104,
-	"./es-us.js": 104,
-	"./es.js": 102,
-	"./et": 105,
-	"./et.js": 105,
-	"./eu": 106,
-	"./eu.js": 106,
-	"./fa": 107,
-	"./fa.js": 107,
-	"./fi": 108,
-	"./fi.js": 108,
-	"./fo": 109,
-	"./fo.js": 109,
-	"./fr": 110,
-	"./fr-ca": 111,
-	"./fr-ca.js": 111,
-	"./fr-ch": 112,
-	"./fr-ch.js": 112,
-	"./fr.js": 110,
-	"./fy": 113,
-	"./fy.js": 113,
-	"./gd": 114,
-	"./gd.js": 114,
-	"./gl": 115,
-	"./gl.js": 115,
-	"./gom-latn": 116,
-	"./gom-latn.js": 116,
-	"./gu": 117,
-	"./gu.js": 117,
-	"./he": 118,
-	"./he.js": 118,
-	"./hi": 119,
-	"./hi.js": 119,
-	"./hr": 120,
-	"./hr.js": 120,
-	"./hu": 121,
-	"./hu.js": 121,
-	"./hy-am": 122,
-	"./hy-am.js": 122,
-	"./id": 123,
-	"./id.js": 123,
-	"./is": 124,
-	"./is.js": 124,
-	"./it": 125,
-	"./it.js": 125,
-	"./ja": 126,
-	"./ja.js": 126,
-	"./jv": 127,
-	"./jv.js": 127,
-	"./ka": 128,
-	"./ka.js": 128,
-	"./kk": 129,
-	"./kk.js": 129,
-	"./km": 130,
-	"./km.js": 130,
-	"./kn": 131,
-	"./kn.js": 131,
-	"./ko": 132,
-	"./ko.js": 132,
-	"./ky": 133,
-	"./ky.js": 133,
-	"./lb": 134,
-	"./lb.js": 134,
-	"./lo": 135,
-	"./lo.js": 135,
-	"./lt": 136,
-	"./lt.js": 136,
-	"./lv": 137,
-	"./lv.js": 137,
-	"./me": 138,
-	"./me.js": 138,
-	"./mi": 139,
-	"./mi.js": 139,
-	"./mk": 140,
-	"./mk.js": 140,
-	"./ml": 141,
-	"./ml.js": 141,
-	"./mr": 142,
-	"./mr.js": 142,
-	"./ms": 143,
-	"./ms-my": 144,
-	"./ms-my.js": 144,
-	"./ms.js": 143,
-	"./my": 145,
-	"./my.js": 145,
-	"./nb": 146,
-	"./nb.js": 146,
-	"./ne": 147,
-	"./ne.js": 147,
-	"./nl": 148,
-	"./nl-be": 149,
-	"./nl-be.js": 149,
-	"./nl.js": 148,
-	"./nn": 150,
-	"./nn.js": 150,
-	"./pa-in": 151,
-	"./pa-in.js": 151,
-	"./pl": 152,
-	"./pl.js": 152,
-	"./pt": 153,
-	"./pt-br": 154,
-	"./pt-br.js": 154,
-	"./pt.js": 153,
-	"./ro": 155,
-	"./ro.js": 155,
-	"./ru": 156,
-	"./ru.js": 156,
-	"./sd": 157,
-	"./sd.js": 157,
-	"./se": 158,
-	"./se.js": 158,
-	"./si": 159,
-	"./si.js": 159,
-	"./sk": 160,
-	"./sk.js": 160,
-	"./sl": 161,
-	"./sl.js": 161,
-	"./sq": 162,
-	"./sq.js": 162,
-	"./sr": 163,
-	"./sr-cyrl": 164,
-	"./sr-cyrl.js": 164,
-	"./sr.js": 163,
-	"./ss": 165,
-	"./ss.js": 165,
-	"./sv": 166,
-	"./sv.js": 166,
-	"./sw": 167,
-	"./sw.js": 167,
-	"./ta": 168,
-	"./ta.js": 168,
-	"./te": 169,
-	"./te.js": 169,
-	"./tet": 170,
-	"./tet.js": 170,
-	"./th": 171,
-	"./th.js": 171,
-	"./tl-ph": 172,
-	"./tl-ph.js": 172,
-	"./tlh": 173,
-	"./tlh.js": 173,
-	"./tr": 174,
-	"./tr.js": 174,
-	"./tzl": 175,
-	"./tzl.js": 175,
-	"./tzm": 176,
-	"./tzm-latn": 177,
-	"./tzm-latn.js": 177,
-	"./tzm.js": 176,
-	"./uk": 178,
-	"./uk.js": 178,
-	"./ur": 179,
-	"./ur.js": 179,
-	"./uz": 180,
-	"./uz-latn": 181,
-	"./uz-latn.js": 181,
-	"./uz.js": 180,
-	"./vi": 182,
-	"./vi.js": 182,
-	"./x-pseudo": 183,
-	"./x-pseudo.js": 183,
-	"./yo": 184,
-	"./yo.js": 184,
-	"./zh-cn": 185,
-	"./zh-cn.js": 185,
-	"./zh-hk": 186,
-	"./zh-hk.js": 186,
-	"./zh-tw": 187,
-	"./zh-tw.js": 187
+	"./af": 71,
+	"./af.js": 71,
+	"./ar": 72,
+	"./ar-dz": 73,
+	"./ar-dz.js": 73,
+	"./ar-kw": 74,
+	"./ar-kw.js": 74,
+	"./ar-ly": 75,
+	"./ar-ly.js": 75,
+	"./ar-ma": 76,
+	"./ar-ma.js": 76,
+	"./ar-sa": 77,
+	"./ar-sa.js": 77,
+	"./ar-tn": 78,
+	"./ar-tn.js": 78,
+	"./ar.js": 72,
+	"./az": 79,
+	"./az.js": 79,
+	"./be": 80,
+	"./be.js": 80,
+	"./bg": 81,
+	"./bg.js": 81,
+	"./bm": 82,
+	"./bm.js": 82,
+	"./bn": 83,
+	"./bn.js": 83,
+	"./bo": 84,
+	"./bo.js": 84,
+	"./br": 85,
+	"./br.js": 85,
+	"./bs": 86,
+	"./bs.js": 86,
+	"./ca": 87,
+	"./ca.js": 87,
+	"./cs": 88,
+	"./cs.js": 88,
+	"./cv": 89,
+	"./cv.js": 89,
+	"./cy": 90,
+	"./cy.js": 90,
+	"./da": 91,
+	"./da.js": 91,
+	"./de": 92,
+	"./de-at": 93,
+	"./de-at.js": 93,
+	"./de-ch": 94,
+	"./de-ch.js": 94,
+	"./de.js": 92,
+	"./dv": 95,
+	"./dv.js": 95,
+	"./el": 96,
+	"./el.js": 96,
+	"./en-au": 97,
+	"./en-au.js": 97,
+	"./en-ca": 98,
+	"./en-ca.js": 98,
+	"./en-gb": 99,
+	"./en-gb.js": 99,
+	"./en-ie": 100,
+	"./en-ie.js": 100,
+	"./en-nz": 101,
+	"./en-nz.js": 101,
+	"./eo": 102,
+	"./eo.js": 102,
+	"./es": 103,
+	"./es-do": 104,
+	"./es-do.js": 104,
+	"./es-us": 105,
+	"./es-us.js": 105,
+	"./es.js": 103,
+	"./et": 106,
+	"./et.js": 106,
+	"./eu": 107,
+	"./eu.js": 107,
+	"./fa": 108,
+	"./fa.js": 108,
+	"./fi": 109,
+	"./fi.js": 109,
+	"./fo": 110,
+	"./fo.js": 110,
+	"./fr": 111,
+	"./fr-ca": 112,
+	"./fr-ca.js": 112,
+	"./fr-ch": 113,
+	"./fr-ch.js": 113,
+	"./fr.js": 111,
+	"./fy": 114,
+	"./fy.js": 114,
+	"./gd": 115,
+	"./gd.js": 115,
+	"./gl": 116,
+	"./gl.js": 116,
+	"./gom-latn": 117,
+	"./gom-latn.js": 117,
+	"./gu": 118,
+	"./gu.js": 118,
+	"./he": 119,
+	"./he.js": 119,
+	"./hi": 120,
+	"./hi.js": 120,
+	"./hr": 121,
+	"./hr.js": 121,
+	"./hu": 122,
+	"./hu.js": 122,
+	"./hy-am": 123,
+	"./hy-am.js": 123,
+	"./id": 124,
+	"./id.js": 124,
+	"./is": 125,
+	"./is.js": 125,
+	"./it": 126,
+	"./it.js": 126,
+	"./ja": 127,
+	"./ja.js": 127,
+	"./jv": 128,
+	"./jv.js": 128,
+	"./ka": 129,
+	"./ka.js": 129,
+	"./kk": 130,
+	"./kk.js": 130,
+	"./km": 131,
+	"./km.js": 131,
+	"./kn": 132,
+	"./kn.js": 132,
+	"./ko": 133,
+	"./ko.js": 133,
+	"./ky": 134,
+	"./ky.js": 134,
+	"./lb": 135,
+	"./lb.js": 135,
+	"./lo": 136,
+	"./lo.js": 136,
+	"./lt": 137,
+	"./lt.js": 137,
+	"./lv": 138,
+	"./lv.js": 138,
+	"./me": 139,
+	"./me.js": 139,
+	"./mi": 140,
+	"./mi.js": 140,
+	"./mk": 141,
+	"./mk.js": 141,
+	"./ml": 142,
+	"./ml.js": 142,
+	"./mr": 143,
+	"./mr.js": 143,
+	"./ms": 144,
+	"./ms-my": 145,
+	"./ms-my.js": 145,
+	"./ms.js": 144,
+	"./my": 146,
+	"./my.js": 146,
+	"./nb": 147,
+	"./nb.js": 147,
+	"./ne": 148,
+	"./ne.js": 148,
+	"./nl": 149,
+	"./nl-be": 150,
+	"./nl-be.js": 150,
+	"./nl.js": 149,
+	"./nn": 151,
+	"./nn.js": 151,
+	"./pa-in": 152,
+	"./pa-in.js": 152,
+	"./pl": 153,
+	"./pl.js": 153,
+	"./pt": 154,
+	"./pt-br": 155,
+	"./pt-br.js": 155,
+	"./pt.js": 154,
+	"./ro": 156,
+	"./ro.js": 156,
+	"./ru": 157,
+	"./ru.js": 157,
+	"./sd": 158,
+	"./sd.js": 158,
+	"./se": 159,
+	"./se.js": 159,
+	"./si": 160,
+	"./si.js": 160,
+	"./sk": 161,
+	"./sk.js": 161,
+	"./sl": 162,
+	"./sl.js": 162,
+	"./sq": 163,
+	"./sq.js": 163,
+	"./sr": 164,
+	"./sr-cyrl": 165,
+	"./sr-cyrl.js": 165,
+	"./sr.js": 164,
+	"./ss": 166,
+	"./ss.js": 166,
+	"./sv": 167,
+	"./sv.js": 167,
+	"./sw": 168,
+	"./sw.js": 168,
+	"./ta": 169,
+	"./ta.js": 169,
+	"./te": 170,
+	"./te.js": 170,
+	"./tet": 171,
+	"./tet.js": 171,
+	"./th": 172,
+	"./th.js": 172,
+	"./tl-ph": 173,
+	"./tl-ph.js": 173,
+	"./tlh": 174,
+	"./tlh.js": 174,
+	"./tr": 175,
+	"./tr.js": 175,
+	"./tzl": 176,
+	"./tzl.js": 176,
+	"./tzm": 177,
+	"./tzm-latn": 178,
+	"./tzm-latn.js": 178,
+	"./tzm.js": 177,
+	"./uk": 179,
+	"./uk.js": 179,
+	"./ur": 180,
+	"./ur.js": 180,
+	"./uz": 181,
+	"./uz-latn": 182,
+	"./uz-latn.js": 182,
+	"./uz.js": 181,
+	"./vi": 183,
+	"./vi.js": 183,
+	"./x-pseudo": 184,
+	"./x-pseudo.js": 184,
+	"./yo": 185,
+	"./yo.js": 185,
+	"./zh-cn": 186,
+	"./zh-cn.js": 186,
+	"./zh-hk": 187,
+	"./zh-hk.js": 187,
+	"./zh-tw": 188,
+	"./zh-tw.js": 188
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -45392,15 +45630,15 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 287;
+webpackContext.id = 289;
 
 /***/ }),
-/* 288 */
+/* 290 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__ = __webpack_require__(289);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__ = __webpack_require__(291);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__);
 
 
@@ -45441,24 +45679,24 @@ class AppSearchResultCreator extends __WEBPACK_IMPORTED_MODULE_0__polymer_polyme
 customElements.define('app-search-result-creator', AppSearchResultCreator);
 
 /***/ }),
-/* 289 */
+/* 291 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .text {\n    display: block;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    width: calc(var(--grid-cell-width) - 30px);\n    color: var(--gray-text);\n  }\n</style>\n\n<a class=\"text\" hidden=\"[[!link]]\" href=\"[[label]]\" target=\"_blank\">[[label]]</a>\n<div class=\"text\" hidden=\"[[link]]\">[[label]]</div>";
 
 /***/ }),
-/* 290 */
+/* 292 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    width: var(--grid-cell-width);\n    background-color: white;\n    cursor: pointer;\n  }\n  :host(:hover) {\n    border: 2px solid var(--default-secondary-color);\n    margin: -2px 0 0 -2px;\n  }\n  .img {\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: transparent;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n</style>\n\n<div hidden$=\"[[!isImage]]\" style=\"position: relative; width: 250px; height:[[imgHeight]]px\">\n  <div style=\"background-image: url('[[imgThumbail]]');height:[[imgHeight]]px\" class=\"img\" ></div>\n  <div style=\"background-image: url('[[imgUrl]]');height:[[imgHeight]]px\" class=\"img\"></div>\n</div>\n\n\n<div style=\"padding: 15px\">\n  <div class=\"collection-name\">[[collectionName]]</div>\n\n  <h4>[[name]]</h4>\n\n  <template is=\"dom-repeat\" items=\"[[creator]]\">\n    <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n  </template>\n\n  <div class=\"footer\">\n    <div class=\"year\">[[year]]</div>\n    <div>\n      <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 291 */
+/* 293 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__ = __webpack_require__(292);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__ = __webpack_require__(294);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__);
 
 
@@ -45474,32 +45712,32 @@ class AppSearchListResult extends __WEBPACK_IMPORTED_MODULE_0__app_search_result
 customElements.define('app-search-list-result', AppSearchListResult);
 
 /***/ }),
-/* 292 */
+/* 294 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: white;\n    margin: 10px;\n  }\n\n  .img {\n    height: 250px;\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: white;\n    background-position: center center;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .spacer {\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  .layout {\n    display: flex;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  .flex-vertical {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n  }\n</style>\n\n<div class=\"layout\">\n    <div style=\"background-image: url('[[imgUrl]]')\" hidden$=\"[[!isImage]]\" class=\"img\" ></div>\n\n  <div style=\"padding: 15px; flex: 1\">\n    <div class=\"flex-vertical\">\n      <div class=\"collection-name\">[[collectionName]]</div>\n      \n      <h4>[[name]]</h4>\n    \n      <template is=\"dom-repeat\" items=\"[[creator]]\">\n        <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n      </template>\n      \n      <div class=\"spacer\"></div>\n\n      <div class=\"footer\">\n        <div class=\"year\">[[year]]</div>\n        <div>\n          <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 293 */
+/* 295 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    max-width: 1150px;\n  }\n\n  .header {\n    font-size: var(--font-size-sm);\n    display: flex;\n    align-items: center;\n    margin-left: -15px;\n  }\n\n  select {\n    margin-left: 10px;\n    border: 1px solid var(--light-background-color);\n    border-radius: 0;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 16px 16px;\n    background-repeat: no-repeat;\n    background-color: transparent;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n  }\n\n  .masonry {\n    margin: 10px;\n    position: relative;\n  }\n\n  .masonry .item {\n    display: block;\n    position: absolute;\n    /* visibility: hidden; */\n    top : 25px;\n    left: 25px;\n    will-change: top, left;\n    transition: top 500ms ease-out, left 500ms ease-out;\n  }\n\n  .list {\n    margin: 10px;\n  }\n\n  .list .item {\n    padding: 10px;\n    margin-bottom: 15px;\n    background-color: #daaa00;\n    height: 250px;\n  }\n\n  .spacer {\n    height: 20px;\n    border-right: 1px solid var(--light-background-color);\n  }\n\n  .total {\n    font-style: italic; \n    padding-left: 10px;\n  }\n\n  .mobile-total {\n    font-style: italic; \n  }\n\n  .filler {\n    flex: 1;\n  }\n\n  cork-pagination {\n    display: inline-block;\n\n    --cork-color : var(--default-primary-color);\n    --cork-background-color : var(--default-secondary-color);\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n    margin-left: -15px;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  .drawer-toggle[disabled] {\n    color: var(--light-background-color);\n  }\n\n  .header {\n    display : none;\n  }\n\n  .mobile-header .row2 {\n    display: flex;\n    align-items: center;\n  }\n\n  @media( min-width: 975px ) {\n    .header {\n      display: flex;\n    }\n    .mobile-header {\n      display: none;\n    }\n  }\n</style>\n\n<div class=\"header\">\n  <div class=\"total\">[[total]] results found</div>\n  \n  <div class=\"filler\"></div>\n  \n  <paper-icon-button \n    icon=\"fin:grid\" \n    disabled$=\"[[!isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"masonry\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  <paper-icon-button \n    icon=\"fin:list\" \n    disabled$=\"[[isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"list\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  \n  <div>\n    <select id=\"numPerPage\" on-change=\"_onPageSizeChange\">\n      <option>50</option>\n      <option>20</option>\n      <option>10</option>\n    </select>\n  </div>\n  <div style=\"margin-left: 10px; font-style:italic\">Items per page</div>\n</div>\n\n<div class=\"mobile-header\">\n  <div>\n    <div style=\"display:inline-block\">\n      <button class=\"drawer-toggle\" on-click=\"_onToggleDrawer\">\n        <span>Info / Filters</span>\n        <iron-icon icon=\"add\"></iron-icon>\n      </button>\n    </div>\n  </div>\n\n  <div class=\"row2\">\n    <div class=\"total\">[[total]] results</div>\n\n    <div class=\"filler\"></div>\n    \n    <paper-icon-button \n      icon=\"fin:grid\" \n      disabled$=\"[[!isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"masonry\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    <paper-icon-button \n      icon=\"fin:list\" \n      disabled$=\"[[isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"list\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    \n    <div>\n      <select id=\"numPerPageM\" on-change=\"_onPageSizeChange\">\n        <option>50</option>\n        <option>20</option>\n        <option>10</option>\n      </select>\n    </div>\n    <div style=\"margin-left: 10px; font-style:italic\">per page</div>\n  </div>\n</div>\n\n<div class=\"masonry\" id=\"layout\" hidden$=\"[[isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-grid-result data=\"[[item]]\" class=\"item\"></app-search-grid-result>\n  </template>\n</div>\n\n<div class=\"list\" hidden$=\"[[!isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-list-result data=\"[[item]]\"></app-search-list-result>\n  </template>\n</div>\n\n<div style=\"text-align:center\">\n  <cork-pagination \n    total-results=\"[[total]]\" \n    items-per-page=\"[[numPerPage]]\"\n    current-index=\"[[currentIndex]]\"\n    on-nav=\"_onPaginationNav\">\n  </cork-pagination>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    max-width: 1150px;\n  }\n\n  .header {\n    font-size: var(--font-size-sm);\n    display: flex;\n    align-items: center;\n    margin-left: -15px;\n  }\n\n  select {\n    margin-left: 10px;\n    border: 1px solid var(--light-background-color);\n    border-radius: 0;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 16px 16px;\n    background-repeat: no-repeat;\n    background-color: transparent;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n  }\n\n  h3 {\n    border-top: 1px solid var(--light-background-color);\n    margin: 15px 0 0 0;\n    padding: 15px 0 0 0;\n    color: var(--default-primary-color);\n  }\n\n  .masonry {\n    margin: 10px;\n    position: relative;\n  }\n\n  .masonry .item {\n    display: block;\n    position: absolute;\n    /* visibility: hidden; */\n    top : 25px;\n    left: 25px;\n    will-change: top, left;\n    transition: top 500ms ease-out, left 500ms ease-out;\n  }\n\n  .list {\n    margin: 10px;\n  }\n\n  .list .item {\n    padding: 10px;\n    margin-bottom: 15px;\n    background-color: #daaa00;\n    height: 250px;\n  }\n\n  .spacer {\n    height: 20px;\n    border-right: 1px solid var(--light-background-color);\n  }\n\n  .total {\n    font-style: italic; \n    padding-left: 10px;\n  }\n\n  .mobile-total {\n    font-style: italic; \n  }\n\n  .filler {\n    flex: 1;\n  }\n\n  cork-pagination {\n    display: inline-block;\n\n    --cork-color : var(--default-primary-color);\n    --cork-background-color : var(--default-secondary-color);\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n    margin-left: -15px;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  .drawer-toggle[disabled] {\n    color: var(--light-background-color);\n  }\n\n  .header {\n    display : none;\n  }\n\n  .mobile-header .row2 {\n    display: flex;\n    align-items: center;\n  }\n\n  .collections {\n    text-align: center;\n  }\n\n  @media( min-width: 975px ) {\n    .header {\n      display: flex;\n    }\n    .mobile-header {\n      display: none;\n    }\n  }\n</style>\n\n<div class=\"header\">\n  <div class=\"total\">[[total]] results found</div>\n  \n  <div class=\"filler\"></div>\n  \n  <paper-icon-button \n    icon=\"fin:grid\" \n    disabled$=\"[[!isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"masonry\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  <paper-icon-button \n    icon=\"fin:list\" \n    disabled$=\"[[isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"list\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  \n  <div>\n    <select id=\"numPerPage\" on-change=\"_onPageSizeChange\">\n      <option>50</option>\n      <option>20</option>\n      <option>10</option>\n    </select>\n  </div>\n  <div style=\"margin-left: 10px; font-style:italic\">Items per page</div>\n</div>\n\n<div class=\"mobile-header\">\n  <div>\n    <div style=\"display:inline-block\">\n      <button class=\"drawer-toggle\" on-click=\"_onToggleDrawer\">\n        <span>Info / Filters</span>\n        <iron-icon icon=\"add\"></iron-icon>\n      </button>\n    </div>\n  </div>\n\n  <div class=\"row2\">\n    <div class=\"total\">[[total]] results</div>\n\n    <div class=\"filler\"></div>\n    \n    <paper-icon-button \n      icon=\"fin:grid\" \n      disabled$=\"[[!isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"masonry\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    <paper-icon-button \n      icon=\"fin:list\" \n      disabled$=\"[[isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"list\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    \n    <div>\n      <select id=\"numPerPageM\" on-change=\"_onPageSizeChange\">\n        <option>50</option>\n        <option>20</option>\n        <option>10</option>\n      </select>\n    </div>\n    <div style=\"margin-left: 10px; font-style:italic\">per page</div>\n  </div>\n</div>\n\n<div class=\"collections\" hidden$=\"[[!showCollectionResults]]\">\n  <div hidden$=\"[[!collectionResults.length]]\">\n    <h3>Collections</h3>\n    <template is=\"dom-repeat\" items=\"[[collectionResults]]\">\n      <app-collection-card collection=\"[[item]]\" on-click=\"_onCollectionClicked\"></app-collection-card>\n    </template>\n    <h3 hidden$=\"[[!results.length]]\">Items</h3>\n  </div>\n</div>\n\n<div class=\"masonry\" id=\"layout\" hidden$=\"[[isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-grid-result data=\"[[item]]\" class=\"item\"></app-search-grid-result>\n  </template>\n</div>\n\n<div class=\"list\" hidden$=\"[[!isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-list-result data=\"[[item]]\"></app-search-list-result>\n  </template>\n</div>\n\n<div style=\"text-align:center\">\n  <cork-pagination \n    total-results=\"[[total]]\" \n    items-per-page=\"[[numPerPage]]\"\n    current-index=\"[[currentIndex]]\"\n    on-nav=\"_onPaginationNav\">\n  </cork-pagination>\n</div>";
 
 /***/ }),
-/* 294 */
+/* 296 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_pages_iron_pages__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel__ = __webpack_require__(299);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_collection_info_panel__ = __webpack_require__(311);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel__ = __webpack_require__(301);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_collection_info_panel__ = __webpack_require__(317);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__ = __webpack_require__(319);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__lib_config__);
@@ -45607,12 +45845,12 @@ class AppFiltersPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 customElements.define('app-filters-panel', AppFiltersPanel);
 
 /***/ }),
-/* 295 */
+/* 297 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_menu_behavior_js__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_menu_behavior_js__ = __webpack_require__(190);
 
 
 
@@ -45681,7 +45919,7 @@ const IronMenubarBehavior = [
 
 
 /***/ }),
-/* 296 */
+/* 298 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45846,7 +46084,7 @@ const IronMultiSelectableBehavior = [
 
 
 /***/ }),
-/* 297 */
+/* 299 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45866,7 +46104,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 298 */
+/* 300 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46014,16 +46252,18 @@ Object(__WEBPACK_IMPORTED_MODULE_5__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 299 */
+/* 301 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_toggle_panel_cork_toggle_panel__ = __webpack_require__(300);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel_html__ = __webpack_require__(302);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_filter_panel_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_facet_filter__ = __webpack_require__(303);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_toggle_panel_cork_toggle_panel__ = __webpack_require__(302);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter__ = __webpack_require__(304);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__ = __webpack_require__(308);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_facet_filter__ = __webpack_require__(309);
+  
 
 
 
@@ -46044,7 +46284,7 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
   }
 
   static get template() {
-    return __WEBPACK_IMPORTED_MODULE_3__app_filter_panel_html___default.a;
+    return __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html___default.a;
   }
 
   _render() {
@@ -46055,6 +46295,10 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
     ele.label = this.filter.label;
     ele.filter = this.filter.filter;
     ele.isDollar = this.filter.isDollar;
+
+    ele.addEventListener('update-visibility', (e) => {
+      this.style.display = e.detail.show ? 'block' : 'none';
+    });
     
     this.$.filters.appendChild(ele);
   }
@@ -46066,14 +46310,14 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 window.customElements.define('app-filter-panel', AppFilterPanel);
 
 /***/ }),
-/* 300 */
+/* 302 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_icon_iron_icon__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__ = __webpack_require__(301);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__ = __webpack_require__(303);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__);
 
 
@@ -46126,28 +46370,512 @@ class CorkTogglePanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('cork-toggle-panel', CorkTogglePanel);
 
 /***/ }),
-/* 301 */
+/* 303 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #label {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    @apply --cork-toggle-panel-label;\n  }\n\n  #content {\n    overflow: hidden;\n    height: 0;\n    transition: height 250ms ease-out;\n    @apply --cork-toggle-panel-content;\n  }\n\n  iron-icon {\n    color: var(--cork-drop-down-arrow-color, #912046);\n    transform: rotateX(0);\n    transition: transform 250ms ease-out;\n  }\n\n  iron-icon[closed] {\n    transform: rotate(-90deg);\n  }\n\n</style>\n\n<div id=\"label\" on-click=\"toggle\">\n  <div style=\"flex:1\">[[label]]</div>\n  <iron-icon icon=\"arrow-drop-down\" closed$=\"[[!opened]]\"></iron-icon>\n</div>\n\n<div id=\"content\">\n  <slot></slot>\n</div>";
 
 /***/ }),
-/* 302 */
+/* 304 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_app_range_slider__ = __webpack_require__(305);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html__ = __webpack_require__(307);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_range_filter_html__);
+
+
+
+
+
+class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
+  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default.a) {
+
+  static get template() {
+    return __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html___default.a;
+  }
+
+  static get properties() {
+    return {
+      label : {
+        type : String,
+        value : ''
+      },
+      filter : {
+        type : String,
+        value : ''
+      },
+
+      absMinValue : {
+        type : Number,
+        value : -1
+      },
+      absMaxValue : {
+        type : Number,
+        value : -1 
+      },
+
+      minValue : {
+        type : Number,
+        value : -1
+      },
+      maxValue : {
+        type : Number,
+        value : -1
+      }
+
+    }
+  }
+
+  constructor() {
+    super();
+    this.active = true;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    setTimeout(() => {
+      this.$.slider._onResize();
+    }, 100);
+  }
+
+  _onRangeSliderChange(e) {
+    this.minValue = e.detail.min;
+    this.maxValue = e.detail.max;
+
+    this.$.minValueInput.value = this.minValue;
+    this.$.maxValueInput.value = this.maxValue;
+
+    this._esAppendRangeFilter(this.filter, {
+      gte: this.minValue,
+      lte: this.maxValue
+    });
+  }
+
+  _onInputChange() {
+    let min = this.$.minValueInput.value;
+    let max = this.$.maxValueInput.value;
+
+    if( min < this.absMinValue ) {
+      this.$.minValueInput.value = this.absMinValue;
+      min = this.absMinValue;
+    }
+    if( max > this.absMaxValue ) {
+      this.$.maxValueInput.value = this.absMaxValue;
+      max = this.absMaxValue;
+    }
+    if( min > max ) min = max;
+
+    this.minValue = min;
+    this.maxValue = max;
+
+    this._esAppendRangeFilter(this.filter, {
+      gte: this.minValue,
+      lte: this.maxValue
+    });
+  }
+
+  _onDefaultEsSearchUpdate(e) {
+    if( e.state !== 'loaded' ) return;
+
+    this.absMinValue = e.payload.aggregations[this.filter+'-min'].value;
+    this.absMaxValue = e.payload.aggregations[this.filter+'-max'].value;
+
+    if( this.minValue === -1 ) {
+      this.minValue = this.absMinValue;
+      this.maxValue = this.absMaxValue;
+
+      this.$.minValueInput.value = this.minValue;
+      this.$.maxValueInput.value = this.maxValue;
+    }
+  }
+
+  _onEsSearchUpdate(e) {
+    if( e.state !== 'loaded' ) return;
+
+    var query = e.query.query;
+    var activeFilters = [];
+
+    if( query && 
+        query.bool && 
+        query.bool.must ) {
+      
+      var arr = query.bool.must;
+
+      for( var i = 0; i < arr.length; i++ ) {
+        if( arr[i].range[this.filter] ) {
+          let value = arr[i].range[this.filter];
+          
+          this.minValue = value.gte;
+          this.maxValue = value.lte;
+          this.$.minValueInput.value = this.minValue;
+          this.$.maxValueInput.value = this.maxValue;
+        }
+      }
+    }
+  }
+
+}
+/* unused harmony export default */
+
+
+customElements.define('app-range-filter', AppRangeFilter);
+
+/***/ }),
+/* 305 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__);
+
+
+
+class AppRangeSlider extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */] {
+
+  static get template() {
+    return __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html___default.a;
+  }
+
+  static get properties() {
+    return {
+      // absolute min/max values for slider
+      absMinValue : {
+        type : Number,
+        value : 0,
+        observer : '_renderAsync'
+      },
+      absMaxValue : {
+        type : Number,
+        value : 100,
+        observer : '_renderAsync'
+      },
+
+      // current min/max values for slider (where the btns are)
+      minValue : {
+        type : Number,
+        value : 10,
+        observer : '_renderAsync'
+      },
+      maxValue : {
+        type : Number,
+        value : 90,
+        observer : '_renderAsync'
+      },
+
+      // labels for slide btns
+      minValueLabel : {
+        type : String,
+        value : ''
+      },
+      maxValueLabel : {
+        type : String,
+        value : ''
+      },
+
+      // current widget size info
+      // used so we don't have to ask the DOM on each render
+      width : {
+        type : Number,
+        value : 1
+      },
+      height : {
+        type : Number,
+        value : 1
+      },
+      btnHeight : {
+        type : Number,
+        value : 1
+      },
+
+      // string that indicate type of move
+      moving : {
+        type : String,
+        value : ''
+      },
+
+      // different moving flags for binding UI element classes
+      movingMin : {
+        type : Boolean,
+        value : false
+      },
+      movingMax : {
+        type : Boolean,
+        value : false
+      },
+      isMoving : {
+        type : Boolean,
+        value : false
+      }
+    }
+  }
+
+  
+  constructor() {
+    super();
+    this._windowResizeListener = this._onResize.bind(this);
+    this._windowMouseListener = this._onMoveStop.bind(this);
+
+    this.addEventListener('mousemove', (e) => this._onMove(e));
+  }
+
+  /**
+   * @method connectedCallback
+   * @description setup our window mouse listeners, fire first render
+   */
+  connectedCallback() {
+    super.connectedCallback();
+    
+    requestAnimationFrame(() => {
+      this._onResize();
+    });
+
+    window.addEventListener('resize', this._windowResizeListener);
+    window.addEventListener('mouseup', this._windowMouseListener);
+    window.addEventListener('mouseout', this._windowMouseListener);
+  }
+
+  /**
+   * @method disconnectedCallback
+   * @description remove our window mouse listeners
+   */
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener('resize', this._windowResizeListener);
+    window.removeEventListener('mouseup', this._windowMouseListener);
+    window.removeEventListener('mouseout', this._windowMouseListener);
+  }
+
+  /**
+   * @method _onResize
+   * @description cache the element size so we don't have to look it up
+   * on each render of btn and line positions.  Then fire render to make
+   * sure everything is visually correct.
+   */
+  _onResize() {
+    this.width = this.offsetWidth || 1;
+    this.height = this.offsetHeight;
+    this.left = this.offsetLeft;
+
+    this.btnHeight = this.$.lowNumberBtn.offsetHeight;
+    this._render();
+  }
+
+  /**
+   * @method _valueToPx
+   * @description given a number line value, return px location relative
+   * to the widget
+   * 
+   * @param {Number} value number line value
+   * 
+   * @returns {Number} px location
+   */
+  _valueToPx(value) {
+    value = value - this.absMinValue;
+    let range = this.absMaxValue - this.absMinValue;
+    let valPerPx = range / this.width;
+    return Math.round(value / valPerPx);
+  }
+
+  /**
+   * @method _pxToValue
+   * @description given a px location, return number line value
+   * 
+   * @param {Number} px location
+   * 
+   * @returns {Number} value
+   */
+  _pxToValue(px) {
+    let range = this.absMaxValue - this.absMinValue;
+    let valPerPx = range / this.width;
+    return Math.round(px * valPerPx) + this.absMinValue;
+  }
+
+  _renderAsync() {
+    if( this.renderTimer ) {
+      clearTimeout(this.renderTimer);
+    }
+
+    this.renderTimer = setTimeout(() => {
+      this.renderTimer = 0;
+      this._render();
+    }, 0);
+  }
+
+  /**
+   * @method _renderAsync
+   * @description set the current top/left px values for all btns,
+   * labels and lines bases on current min/max values.
+   */
+  _render() {
+    let hh = this.height * 0.60;
+
+    // set line heights
+    this.$.numberLine.style.top = hh+'px';
+    this.$.fillLine.style.top = hh+'px';
+
+    // set btn heights
+    let hBtnHeight = this.btnHeight / 2;
+    this.$.lowNumberBtn.style.top = (hh - hBtnHeight) +'px';
+    this.$.highNumberBtn.style.top = (hh - hBtnHeight) +'px';
+
+    this.$.lowNumberLabel.style.top = (hh - hBtnHeight - 22) +'px';
+    this.$.highNumberLabel.style.top = (hh - hBtnHeight - 22) +'px';
+
+    // set btn left
+    let minPxValue = this._valueToPx(this.minValue);
+    let maxPxValue = this._valueToPx(this.maxValue);
+
+    this.$.lowNumberBtn.style.left = (minPxValue - hBtnHeight)  + 'px';
+    this.$.highNumberBtn.style.left = (maxPxValue - hBtnHeight) + 'px';
+
+    this.$.lowNumberLabel.style.left = (minPxValue - hBtnHeight) + 'px';
+    this.$.highNumberLabel.style.left = (maxPxValue - hBtnHeight) + 'px';
+    
+    this.$.fillLine.style.left = minPxValue +'px';
+    this.$.fillLine.style.width = (maxPxValue - minPxValue)  +'px';
+
+    this.minValueLabel = this.renderLabel(this.minValue);
+    this.maxValueLabel = this.renderLabel(this.maxValue);
+  }
+
+  /**
+   * @method _onMoveStart
+   * @description bound to btns and center line.  Fired when the user mouses
+   * down on element indicating a move is starting
+   * 
+   * @param {MouseEvent} e 
+   */
+  _onMoveStart(e) {
+    this.moving = e.currentTarget.getAttribute('prop');
+    
+    if( this.moving === 'range' ) {
+      this.startRange = {
+        min : e.currentTarget.offsetLeft,
+        max : e.currentTarget.offsetLeft + e.currentTarget.offsetWidth,
+        left :  e.pageX - this.left
+      }
+    }
+
+    this.isMoving = true;
+    this.movingMin = (this.moving === 'max') ? false : true;
+    this.movingMax = (this.moving === 'min') ? false : true;
+  }
+
+  /**
+   * @method _onMove
+   * @description bound to mousemove event on this element.  Update min/max
+   * values based on type of move that is happening ie min, max or range.  Does
+   * nothing if we are not moving.
+   * 
+   * @param {MouseEvent} e 
+   */
+  _onMove(e) {
+    if( !this.moving ) return;
+
+    let left = e.pageX - this.left;
+    
+    if( this.moving === 'min' ) {
+      this.minValue = this._pxToValue(left);
+    } else if( this.moving === 'max' ) {
+      this.maxValue = this._pxToValue(left);
+    } else if( this.moving === 'max' ) {
+      this.maxValue = this._pxToValue(left);
+    } else if( this.moving === 'range' ) {
+      let diff = this.startRange.left - left;
+
+      this.minValue = this._pxToValue(this.startRange.min - diff);
+      this.maxValue = this._pxToValue(this.startRange.max - diff);
+    }
+    
+    if( this.minValue < this.absMinValue ) {
+      this.minValue = this.absMinValue;
+    }
+    if( this.maxValue > this.absMaxValue ) {
+      this.maxValue = this.absMaxValue;
+    }
+
+    if( this.minValue > this.maxValue ) {
+      if( this.moving === 'min' ) this.minValue = this.maxValue;
+      else this.maxValue = this.minValue;
+    }
+  }
+
+  /**
+   * @method _onMoveStop
+   * @description bound to mouseup/mouseout event on window.  It's always best to bind
+   * this to the window as a catch all.  Resets all moving flags
+   */
+  _onMoveStop() {
+    if( !this.moving ) return;
+
+    this.moving = '';
+    this.movingMin = false;
+    this.movingMax = false;
+    this.isMoving = false;
+
+    this.dispatchEvent(
+      new CustomEvent('range-value-change', {
+        detail: {
+          min : this.minValue,
+          max : this.maxValue
+        }
+      })
+    );
+  }
+
+  /**
+   * @method renderLabel
+   * @description render the label value.  Override if you want
+   * anything other than the number.
+   * 
+   * @param {Number} value current value to render
+   * 
+   * @returns {String}
+   */
+  renderLabel(value) {
+    return value;
+  }
+
+}
+/* unused harmony export default */
+
+
+customElements.define('app-range-slider', AppRangeSlider);
+
+/***/ }),
+/* 306 */
+/***/ (function(module, exports) {
+
+module.exports = "<style>\n  :host {\n    display: block;\n    position: relative;\n    height: 50px;\n    margin: 0 13px;\n\n    -webkit-touch-callout: none; /* iOS Safari */\n    -webkit-user-select: none; /* Safari */\n    -khtml-user-select: none; /* Konqueror HTML */\n    -moz-user-select: none; /* Firefox */\n    -ms-user-select: none; /* Internet Explorer/Edge */\n    user-select: none; /* Non-prefixed version, currently */\n  }\n\n  #numberLine {\n    position: absolute;\n    left : 0;\n    right : 0;\n    height: 3px;\n    background-color: var(--light-background-color, #888);\n  }\n\n  #fillLine {\n    position: absolute;\n    cursor: move;\n    background-color: var(--default-primary-color);\n    height: 3px;\n  }\n\n  .btn {\n    position: absolute;\n    height: 25px;\n    width: 25px;\n    cursor: move;\n  }\n\n  .btn > div {\n    margin: 5px;\n    height: 15px;\n    width: 15px;\n    border-radius: 15px;\n    background-color: var(--default-primary-color);\n    transition: all 150ms linear;\n  }\n\n  .btn[moving] > div {\n    margin: 0px;\n    height: 25px;\n    width: 25px;\n    border-radius: 25px;\n  }\n\n  .label {\n    width : 25px;\n    font-size: 12px; \n    position: absolute;\n    text-align: center;\n    transform: scale(0);\n    transition: transform 200ms linear;\n    color: var(--default-primary-color);\n  }\n\n  .label[moving] {\n    transform: scale(1);\n  }\n\n</style>\n\n<div id=\"numberLine\"></div>\n\n<div id=\"fillLine\" prop=\"range\" on-mousedown=\"_onMoveStart\"></div>\n\n<div id=\"lowNumberLabel\" class=\"label\" moving$=\"[[isMoving]]\">[[minValueLabel]]</div>\n<div id=\"highNumberLabel\" class=\"label\" moving$=\"[[isMoving]]\">[[maxValueLabel]]</div>\n\n<div id=\"lowNumberBtn\" class=\"btn\" prop=\"min\" on-mousedown=\"_onMoveStart\" moving$=\"[[movingMin]]\" >\n  <div></div>\n</div>\n\n<div id=\"highNumberBtn\" class=\"btn\" prop=\"max\" on-mousedown=\"_onMoveStart\" moving$=\"[[movingMax]]\">\n  <div></div>\n</div>";
+
+/***/ }),
+/* 307 */
+/***/ (function(module, exports) {
+
+module.exports = "<style>\n  :host {\n    display: block;\n  }\n  \n  .labels {\n    display: flex;\n    margin: 0 13px;\n    color: var(--gray-text);\n    font-size: var(--font-size-sm);\n  }\n\n  .inputs {\n    display: flex;\n    align-items: center;\n  }\n\n  input {\n    margin: 0 13px;\n    padding: 7px;\n    border: 0;\n    width: 50px;\n    font-size: var(--font-size-sm);\n  }\n\n  app-range-slider {\n    --light-background-color: var(--medium-background-color);\n  }\n</style>\n\n<div class=\"inputs\">\n  <input id=\"minValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n  <span> - </span>\n  <input id=\"maxValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n</div>\n\n<app-range-slider\n  id=\"slider\"\n  on-range-value-change=\"_onRangeSliderChange\"\n  abs-min-value=\"[[absMinValue]]\"\n  abs-max-value=\"[[absMaxValue]]\"\n  min-value=\"[[minValue]]\"\n  max-value=\"[[maxValue]]\">\n</app-range-slider>\n\n<div class=\"labels\">\n  <div style=\"flex:1\">[[absMinValue]]</div>\n  <div>[[absMaxValue]]</div>\n</div>";
+
+/***/ }),
+/* 308 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n</style>\n\n<cork-toggle-panel label=\"[[filter.label]]\">\n  <div id=\"filters\"></div>\n</cork-toggle-panel>";
 
 /***/ }),
-/* 303 */
+/* 309 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__ = __webpack_require__(304);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__ = __webpack_require__(310);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_facet_checkbox__ = __webpack_require__(305);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_facet_checkbox__ = __webpack_require__(311);
 
 
 
@@ -46227,6 +46955,14 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
       item.active = (this.activeFilters.indexOf(item.key) > -1) ? true : false;
       return Object.assign({}, item);
     });
+
+    this.dispatchEvent(
+      new CustomEvent('update-visibility', {
+        detail: {
+          show: (this.buckets.length !== 0)
+        }
+      })
+    );
   }
 
   _toggleFilter(e) {
@@ -46249,18 +46985,18 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
 window.customElements.define('app-facet-filter', AppFacetFilter);
 
 /***/ }),
-/* 304 */
+/* 310 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block\n  }\n\n  .filter {\n    padding: 4px 5px;\n    display: flex;\n    align-items: center;\n  }\n  .filter a {\n    display: inline-block;\n    cursor: pointer;\n    color: black;\n    transition: color 250ms ease-out, transform 250ms ease-out;\n    transform: scale(1);\n  }\n  .filter a span {\n    color: var(--default-primary-color);\n  }\n  .filter a:hover {\n    transform: scale(1.5);\n    color: var(--default-primary-color);\n  }\n\n  .active-filter {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    color: white;\n    font-size: 14px;\n    background: var(--primary-text-color);\n    padding: 5px;\n    border-radius: 3px;\n    margin: 3px;\n  }\n\n  .active-filter:hover {\n    color: var(--default-primary-color);\n    background: #ccc;\n  }\n\n  .count {\n    color: var(--text-disabled);\n    flex: 1;\n    text-align: right;\n  }\n\n  .overflow {\n    overflow: auto;\n    max-height: 200px;\n  }\n\n  paper-checkbox[active] .key {\n    color: var(--default-primary-color);\n    font-weight: bold;\n  }\n\n  paper-checkbox[disabled] .key {\n    color: var(--secondary-text-color);\n    font-style: italic;\n  }\n</style>\n\n<div class=\"overflow\">\n  <div>\n    <template is=\"dom-repeat\" items=\"[[buckets]]\">\n      <div class=\"filter\">\n\n        <app-facet-checkbox\n          type$=\"[[label]]\"\n          index$=\"[[index]]\"\n          value$=\"[[item.key]]\"\n          checked$=\"[[item.active]]\" \n          on-change=\"_toggleFilter\">\n        </app-facet-checkbox>\n\n        <div class=\"count\">[[item.doc_count]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n";
 
 /***/ }),
-/* 305 */
+/* 311 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_normal_checkbox__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_normal_checkbox__ = __webpack_require__(312);
 
 
 
@@ -46335,13 +47071,13 @@ class AppFacetCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
 window.customElements.define('app-facet-checkbox', AppFacetCheckbox);
 
 /***/ }),
-/* 306 */
+/* 312 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_checkbox_paper_checkbox__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__ = __webpack_require__(310);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_checkbox_paper_checkbox__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__ = __webpack_require__(316);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__);
 
 
@@ -46406,13 +47142,13 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 window.customElements.define('app-normal-checkbox', AppNormalCheckbox);
 
 /***/ }),
-/* 307 */
+/* 313 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_checked_element_behavior_js__ = __webpack_require__(308);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_checked_element_behavior_js__ = __webpack_require__(314);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_render_status_js__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(50);
@@ -46694,12 +47430,12 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 308 */
+/* 314 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_checked_element_behavior_iron_checked_element_behavior_js__ = __webpack_require__(309);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_checked_element_behavior_iron_checked_element_behavior_js__ = __webpack_require__(315);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_inky_focus_behavior_js__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_ripple_behavior_js__ = __webpack_require__(28);
 
@@ -46748,13 +47484,13 @@ const PaperCheckedElementBehavior = [
 
 
 /***/ }),
-/* 309 */
+/* 315 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(66);
 
 
 
@@ -46858,20 +47594,20 @@ const IronCheckedElementBehavior = [
 
 
 /***/ }),
-/* 310 */
+/* 316 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    cursor: pointer;\n  }\n\n  iron-icon {\n    display: none;\n    color: var(--default-secondary-color);\n  }\n\n  div {\n    user-select: none;\n    display: flex;\n    min-height: 24px;\n  }\n\n  span {\n    display: inline-block;\n    padding-top: 3px;\n  }\n\n  div[checked] iron-icon {\n    display: inline-block;\n  }\n\n  div[checked] .value {\n    font-style: italic;\n    font-weight: bold;\n  }\n</style>\n\n<div checked$=\"[[checked]]\" on-click=\"_onClick\">\n  <iron-icon icon=\"close\"></iron-icon>\n  <span class=\"value\">[[realLabel]]</span>\n</div>";
 
 /***/ }),
-/* 311 */
+/* 317 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__ = __webpack_require__(312);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__ = __webpack_require__(318);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__);
 
 
@@ -46937,39 +47673,39 @@ class AppCollectionInfoPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_
 customElements.define('app-collection-info-panel', AppCollectionInfoPanel);
 
 /***/ }),
-/* 312 */
+/* 318 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    padding: 15px;\n  }\n  h3 {\n    color: var(--default-primary-color);\n    margin: 5px 0;\n  }\n  .section {\n    margin-bottom: 20px;\n  }\n</style>\n\n<div class=\"section\" hidden$=\"[[!description]]\">\n  <h3>Description</h3>\n  <div>[[description]]</div>\n</div>\n\n<div class=\"section\" hidden$=\"[[!subject]]\">\n  <h3>Subject</h3>\n  <div>[[subject]]</div>\n</div>\n\n<div class=\"section\" hidden$=\"[[!coverage]]\">\n  <h3>Coverage</h3>\n  <div>[[coverage]]</div>\n</div>\n\n\n<div>[[collection.description]]</div>";
 
 /***/ }),
-/* 313 */
+/* 319 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnailUrl]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.name]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
 
 /***/ }),
-/* 314 */
+/* 320 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html__ = __webpack_require__(315);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html__ = __webpack_require__(321);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_record_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bytes__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bytes__ = __webpack_require__(191);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bytes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_bytes__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_image_viewer__ = __webpack_require__(316);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_image_download__ = __webpack_require__(329);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_record_metadata_layout__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_image_viewer__ = __webpack_require__(322);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_image_download__ = __webpack_require__(335);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_record_metadata_layout__ = __webpack_require__(337);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_MediaInterface__ = __webpack_require__(188);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_MediaInterface__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__interfaces_MediaInterface__);
 
 
@@ -47191,23 +47927,23 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-record', AppRecord);
 
 /***/ }),
-/* 315 */
+/* 321 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer id=\"imageViewer\"></app-image-viewer>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[name]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <div class=\"label\">Use Permission</div>\n        <div>\n          <a href=\"[[rights]]\" target=\"_block\">\n            <iron-icon icon=\"link\"></iron-icon> Link\n          </a>\n        </div>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <template is=\"dom-repeat\" items=\"[[cite]]\">\n        <div class=\"cite-container\">\n          <div class=\"label\">[[item.label]]</div>\n          <div class=\"text\">\n            <div style=\"padding-bottom: 10px\">[[item.text]]</div>\n            <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n              <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n              <span>Copy</span>\n            </button>\n          </div>\n        </div>\n      </template>\n    </div>\n  </app-record-metadata-layout>\n</div>";
 
 /***/ }),
-/* 316 */
+/* 322 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_html__ = __webpack_require__(317);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_html__ = __webpack_require__(323);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_viewer_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(318);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet__ = __webpack_require__(321);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(324);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet__ = __webpack_require__(327);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leaflet__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__ = __webpack_require__(322);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__ = __webpack_require__(328);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__);
 
 
@@ -47301,20 +48037,20 @@ class AppImageViewer extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 customElements.define('app-image-viewer', AppImageViewer);
 
 /***/ }),
-/* 317 */
+/* 323 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  #viewer { \n    height: 450px; \n    background-color: black;\n    position: relative;\n  }\n  paper-spinner-lite {\n    --paper-spinner-color: var(--default-secondary-color);\n  }\n  .spinner-layout {\n    position: absolute;\n    top : 0;\n    right : 0;\n    left : 0;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n</style>\n\n<div id=\"viewer\">\n  <div class=\"spinner-layout\" hidden$=\"[[!loading]]\">\n    <paper-spinner-lite active$=\"[[loading]]\"></paper-spinner-lite>\n  </div>\n</div>\n";
 
 /***/ }),
-/* 318 */
+/* 324 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_color_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_spinner_behavior_js__ = __webpack_require__(319);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__ = __webpack_require__(320);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_spinner_behavior_js__ = __webpack_require__(325);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__ = __webpack_require__(326);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
@@ -47351,7 +48087,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 319 */
+/* 325 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47429,7 +48165,7 @@ const PaperSpinnerBehavior = {
 
 
 /***/ }),
-/* 320 */
+/* 326 */
 /***/ (function(module, exports) {
 
 const $_documentContainer = document.createElement('div');
@@ -47769,7 +48505,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 321 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -61384,11 +62120,11 @@ exports.map = createMap;
 
 
 /***/ }),
-/* 322 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-        var result = __webpack_require__(323);
+        var result = __webpack_require__(329);
 
         if (typeof result === "string") {
             module.exports = result;
@@ -61398,22 +62134,22 @@ exports.map = createMap;
     
 
 /***/ }),
-/* 323 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var escape = __webpack_require__(324);
-exports = module.exports = __webpack_require__(325)(false);
+var escape = __webpack_require__(330);
+exports = module.exports = __webpack_require__(331)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/* required styles */\r\n\r\n.leaflet-pane,\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-tile-container,\r\n.leaflet-pane > svg,\r\n.leaflet-pane > canvas,\r\n.leaflet-zoom-box,\r\n.leaflet-image-layer,\r\n.leaflet-layer {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\ttop: 0;\r\n\t}\r\n.leaflet-container {\r\n\toverflow: hidden;\r\n\t}\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\t  -webkit-user-drag: none;\r\n\t}\r\n/* Safari renders non-retina tile on retina better with this, but Chrome is worse */\r\n.leaflet-safari .leaflet-tile {\r\n\timage-rendering: -webkit-optimize-contrast;\r\n\t}\r\n/* hack that prevents hw layers \"stretching\" when loading new tiles */\r\n.leaflet-safari .leaflet-tile-container {\r\n\twidth: 1600px;\r\n\theight: 1600px;\r\n\t-webkit-transform-origin: 0 0;\r\n\t}\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\tdisplay: block;\r\n\t}\r\n/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */\r\n/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */\r\n.leaflet-container .leaflet-overlay-pane svg,\r\n.leaflet-container .leaflet-marker-pane img,\r\n.leaflet-container .leaflet-shadow-pane img,\r\n.leaflet-container .leaflet-tile-pane img,\r\n.leaflet-container img.leaflet-image-layer {\r\n\tmax-width: none !important;\r\n\t}\r\n\r\n.leaflet-container.leaflet-touch-zoom {\r\n\t-ms-touch-action: pan-x pan-y;\r\n\ttouch-action: pan-x pan-y;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag {\r\n\t-ms-touch-action: pinch-zoom;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {\r\n\t-ms-touch-action: none;\r\n\ttouch-action: none;\r\n}\r\n.leaflet-container {\r\n\t-webkit-tap-highlight-color: transparent;\r\n}\r\n.leaflet-container a {\r\n\t-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);\r\n}\r\n.leaflet-tile {\r\n\tfilter: inherit;\r\n\tvisibility: hidden;\r\n\t}\r\n.leaflet-tile-loaded {\r\n\tvisibility: inherit;\r\n\t}\r\n.leaflet-zoom-box {\r\n\twidth: 0;\r\n\theight: 0;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\tz-index: 800;\r\n\t}\r\n/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */\r\n.leaflet-overlay-pane svg {\r\n\t-moz-user-select: none;\r\n\t}\r\n\r\n.leaflet-pane         { z-index: 400; }\r\n\r\n.leaflet-tile-pane    { z-index: 200; }\r\n.leaflet-overlay-pane { z-index: 400; }\r\n.leaflet-shadow-pane  { z-index: 500; }\r\n.leaflet-marker-pane  { z-index: 600; }\r\n.leaflet-tooltip-pane   { z-index: 650; }\r\n.leaflet-popup-pane   { z-index: 700; }\r\n\r\n.leaflet-map-pane canvas { z-index: 100; }\r\n.leaflet-map-pane svg    { z-index: 200; }\r\n\r\n.leaflet-vml-shape {\r\n\twidth: 1px;\r\n\theight: 1px;\r\n\t}\r\n.lvml {\r\n\tbehavior: url(#default#VML);\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\t}\r\n\r\n\r\n/* control positioning */\r\n\r\n.leaflet-control {\r\n\tposition: relative;\r\n\tz-index: 800;\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-top,\r\n.leaflet-bottom {\r\n\tposition: absolute;\r\n\tz-index: 1000;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-top {\r\n\ttop: 0;\r\n\t}\r\n.leaflet-right {\r\n\tright: 0;\r\n\t}\r\n.leaflet-bottom {\r\n\tbottom: 0;\r\n\t}\r\n.leaflet-left {\r\n\tleft: 0;\r\n\t}\r\n.leaflet-control {\r\n\tfloat: left;\r\n\tclear: both;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tfloat: right;\r\n\t}\r\n.leaflet-top .leaflet-control {\r\n\tmargin-top: 10px;\r\n\t}\r\n.leaflet-bottom .leaflet-control {\r\n\tmargin-bottom: 10px;\r\n\t}\r\n.leaflet-left .leaflet-control {\r\n\tmargin-left: 10px;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tmargin-right: 10px;\r\n\t}\r\n\r\n\r\n/* zoom and fade animations */\r\n\r\n.leaflet-fade-anim .leaflet-tile {\r\n\twill-change: opacity;\r\n\t}\r\n.leaflet-fade-anim .leaflet-popup {\r\n\topacity: 0;\r\n\t-webkit-transition: opacity 0.2s linear;\r\n\t   -moz-transition: opacity 0.2s linear;\r\n\t     -o-transition: opacity 0.2s linear;\r\n\t        transition: opacity 0.2s linear;\r\n\t}\r\n.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {\r\n\topacity: 1;\r\n\t}\r\n.leaflet-zoom-animated {\r\n\t-webkit-transform-origin: 0 0;\r\n\t    -ms-transform-origin: 0 0;\r\n\t        transform-origin: 0 0;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\twill-change: transform;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\t-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t     -o-transition:      -o-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t}\r\n.leaflet-zoom-anim .leaflet-tile,\r\n.leaflet-pan-anim .leaflet-tile {\r\n\t-webkit-transition: none;\r\n\t   -moz-transition: none;\r\n\t     -o-transition: none;\r\n\t        transition: none;\r\n\t}\r\n\r\n.leaflet-zoom-anim .leaflet-zoom-hide {\r\n\tvisibility: hidden;\r\n\t}\r\n\r\n\r\n/* cursors */\r\n\r\n.leaflet-interactive {\r\n\tcursor: pointer;\r\n\t}\r\n.leaflet-grab {\r\n\tcursor: -webkit-grab;\r\n\tcursor:    -moz-grab;\r\n\t}\r\n.leaflet-crosshair,\r\n.leaflet-crosshair .leaflet-interactive {\r\n\tcursor: crosshair;\r\n\t}\r\n.leaflet-popup-pane,\r\n.leaflet-control {\r\n\tcursor: auto;\r\n\t}\r\n.leaflet-dragging .leaflet-grab,\r\n.leaflet-dragging .leaflet-grab .leaflet-interactive,\r\n.leaflet-dragging .leaflet-marker-draggable {\r\n\tcursor: move;\r\n\tcursor: -webkit-grabbing;\r\n\tcursor:    -moz-grabbing;\r\n\t}\r\n\r\n/* marker & overlays interactivity */\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-image-layer,\r\n.leaflet-pane > svg path,\r\n.leaflet-tile-container {\r\n\tpointer-events: none;\r\n\t}\r\n\r\n.leaflet-marker-icon.leaflet-interactive,\r\n.leaflet-image-layer.leaflet-interactive,\r\n.leaflet-pane > svg path.leaflet-interactive {\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n\r\n/* visual tweaks */\r\n\r\n.leaflet-container {\r\n\tbackground: #ddd;\r\n\toutline: 0;\r\n\t}\r\n.leaflet-container a {\r\n\tcolor: #0078A8;\r\n\t}\r\n.leaflet-container a.leaflet-active {\r\n\toutline: 2px solid orange;\r\n\t}\r\n.leaflet-zoom-box {\r\n\tborder: 2px dotted #38f;\r\n\tbackground: rgba(255,255,255,0.5);\r\n\t}\r\n\r\n\r\n/* general typography */\r\n.leaflet-container {\r\n\tfont: 12px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif;\r\n\t}\r\n\r\n\r\n/* general toolbar styles */\r\n\r\n.leaflet-bar {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.65);\r\n\tborder-radius: 4px;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #fff;\r\n\tborder-bottom: 1px solid #ccc;\r\n\twidth: 26px;\r\n\theight: 26px;\r\n\tline-height: 26px;\r\n\tdisplay: block;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tcolor: black;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-control-layers-toggle {\r\n\tbackground-position: 50% 50%;\r\n\tbackground-repeat: no-repeat;\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #f4f4f4;\r\n\t}\r\n.leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 4px;\r\n\tborder-top-right-radius: 4px;\r\n\t}\r\n.leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 4px;\r\n\tborder-bottom-right-radius: 4px;\r\n\tborder-bottom: none;\r\n\t}\r\n.leaflet-bar a.leaflet-disabled {\r\n\tcursor: default;\r\n\tbackground-color: #f4f4f4;\r\n\tcolor: #bbb;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-bar a {\r\n\twidth: 30px;\r\n\theight: 30px;\r\n\tline-height: 30px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 2px;\r\n\tborder-top-right-radius: 2px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 2px;\r\n\tborder-bottom-right-radius: 2px;\r\n\t}\r\n\r\n/* zoom control */\r\n\r\n.leaflet-control-zoom-in,\r\n.leaflet-control-zoom-out {\r\n\tfont: bold 18px 'Lucida Console', Monaco, monospace;\r\n\ttext-indent: 1px;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {\r\n\tfont-size: 22px;\r\n\t}\r\n\r\n\r\n/* layers control */\r\n\r\n.leaflet-control-layers {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.4);\r\n\tbackground: #fff;\r\n\tborder-radius: 5px;\r\n\t}\r\n.leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(326)) + ");\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\t}\r\n.leaflet-retina .leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(327)) + ");\r\n\tbackground-size: 26px 26px;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers-toggle {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\t}\r\n.leaflet-control-layers .leaflet-control-layers-list,\r\n.leaflet-control-layers-expanded .leaflet-control-layers-toggle {\r\n\tdisplay: none;\r\n\t}\r\n.leaflet-control-layers-expanded .leaflet-control-layers-list {\r\n\tdisplay: block;\r\n\tposition: relative;\r\n\t}\r\n.leaflet-control-layers-expanded {\r\n\tpadding: 6px 10px 6px 6px;\r\n\tcolor: #333;\r\n\tbackground: #fff;\r\n\t}\r\n.leaflet-control-layers-scrollbar {\r\n\toverflow-y: scroll;\r\n\toverflow-x: hidden;\r\n\tpadding-right: 5px;\r\n\t}\r\n.leaflet-control-layers-selector {\r\n\tmargin-top: 2px;\r\n\tposition: relative;\r\n\ttop: 1px;\r\n\t}\r\n.leaflet-control-layers label {\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-control-layers-separator {\r\n\theight: 0;\r\n\tborder-top: 1px solid #ddd;\r\n\tmargin: 5px -10px 5px -6px;\r\n\t}\r\n\r\n/* Default icon URLs */\r\n.leaflet-default-icon-path {\r\n\tbackground-image: url(" + escape(__webpack_require__(328)) + ");\r\n\t}\r\n\r\n\r\n/* attribution and scale controls */\r\n\r\n.leaflet-container .leaflet-control-attribution {\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.7);\r\n\tmargin: 0;\r\n\t}\r\n.leaflet-control-attribution,\r\n.leaflet-control-scale-line {\r\n\tpadding: 0 5px;\r\n\tcolor: #333;\r\n\t}\r\n.leaflet-control-attribution a {\r\n\ttext-decoration: none;\r\n\t}\r\n.leaflet-control-attribution a:hover {\r\n\ttext-decoration: underline;\r\n\t}\r\n.leaflet-container .leaflet-control-attribution,\r\n.leaflet-container .leaflet-control-scale {\r\n\tfont-size: 11px;\r\n\t}\r\n.leaflet-left .leaflet-control-scale {\r\n\tmargin-left: 5px;\r\n\t}\r\n.leaflet-bottom .leaflet-control-scale {\r\n\tmargin-bottom: 5px;\r\n\t}\r\n.leaflet-control-scale-line {\r\n\tborder: 2px solid #777;\r\n\tborder-top: none;\r\n\tline-height: 1.1;\r\n\tpadding: 2px 5px 1px;\r\n\tfont-size: 11px;\r\n\twhite-space: nowrap;\r\n\toverflow: hidden;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.5);\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child) {\r\n\tborder-top: 2px solid #777;\r\n\tborder-bottom: none;\r\n\tmargin-top: -2px;\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child):not(:last-child) {\r\n\tborder-bottom: 2px solid #777;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-attribution,\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tbox-shadow: none;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tborder: 2px solid rgba(0,0,0,0.2);\r\n\tbackground-clip: padding-box;\r\n\t}\r\n\r\n\r\n/* popup */\r\n\r\n.leaflet-popup {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tmargin-bottom: 20px;\r\n\t}\r\n.leaflet-popup-content-wrapper {\r\n\tpadding: 1px;\r\n\ttext-align: left;\r\n\tborder-radius: 12px;\r\n\t}\r\n.leaflet-popup-content {\r\n\tmargin: 13px 19px;\r\n\tline-height: 1.4;\r\n\t}\r\n.leaflet-popup-content p {\r\n\tmargin: 18px 0;\r\n\t}\r\n.leaflet-popup-tip-container {\r\n\twidth: 40px;\r\n\theight: 20px;\r\n\tposition: absolute;\r\n\tleft: 50%;\r\n\tmargin-left: -20px;\r\n\toverflow: hidden;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-popup-tip {\r\n\twidth: 17px;\r\n\theight: 17px;\r\n\tpadding: 1px;\r\n\r\n\tmargin: -10px auto 0;\r\n\r\n\t-webkit-transform: rotate(45deg);\r\n\t   -moz-transform: rotate(45deg);\r\n\t    -ms-transform: rotate(45deg);\r\n\t     -o-transform: rotate(45deg);\r\n\t        transform: rotate(45deg);\r\n\t}\r\n.leaflet-popup-content-wrapper,\r\n.leaflet-popup-tip {\r\n\tbackground: white;\r\n\tcolor: #333;\r\n\tbox-shadow: 0 3px 14px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\tpadding: 4px 4px 0 0;\r\n\tborder: none;\r\n\ttext-align: center;\r\n\twidth: 18px;\r\n\theight: 14px;\r\n\tfont: 16px/14px Tahoma, Verdana, sans-serif;\r\n\tcolor: #c3c3c3;\r\n\ttext-decoration: none;\r\n\tfont-weight: bold;\r\n\tbackground: transparent;\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button:hover {\r\n\tcolor: #999;\r\n\t}\r\n.leaflet-popup-scrolled {\r\n\toverflow: auto;\r\n\tborder-bottom: 1px solid #ddd;\r\n\tborder-top: 1px solid #ddd;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-popup-content-wrapper {\r\n\tzoom: 1;\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\twidth: 24px;\r\n\tmargin: 0 auto;\r\n\r\n\t-ms-filter: \"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)\";\r\n\tfilter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip-container {\r\n\tmargin-top: -1px;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-control-zoom,\r\n.leaflet-oldie .leaflet-control-layers,\r\n.leaflet-oldie .leaflet-popup-content-wrapper,\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\tborder: 1px solid #999;\r\n\t}\r\n\r\n\r\n/* div icon */\r\n\r\n.leaflet-div-icon {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #666;\r\n\t}\r\n\r\n\r\n/* Tooltip */\r\n/* Base styles for the element that has a tooltip */\r\n.leaflet-tooltip {\r\n\tposition: absolute;\r\n\tpadding: 6px;\r\n\tbackground-color: #fff;\r\n\tborder: 1px solid #fff;\r\n\tborder-radius: 3px;\r\n\tcolor: #222;\r\n\twhite-space: nowrap;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\tuser-select: none;\r\n\tpointer-events: none;\r\n\tbox-shadow: 0 1px 3px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-tooltip.leaflet-clickable {\r\n\tcursor: pointer;\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-tooltip-top:before,\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\tborder: 6px solid transparent;\r\n\tbackground: transparent;\r\n\tcontent: \"\";\r\n\t}\r\n\r\n/* Directions */\r\n\r\n.leaflet-tooltip-bottom {\r\n\tmargin-top: 6px;\r\n}\r\n.leaflet-tooltip-top {\r\n\tmargin-top: -6px;\r\n}\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-top:before {\r\n\tleft: 50%;\r\n\tmargin-left: -6px;\r\n\t}\r\n.leaflet-tooltip-top:before {\r\n\tbottom: 0;\r\n\tmargin-bottom: -12px;\r\n\tborder-top-color: #fff;\r\n\t}\r\n.leaflet-tooltip-bottom:before {\r\n\ttop: 0;\r\n\tmargin-top: -12px;\r\n\tmargin-left: -6px;\r\n\tborder-bottom-color: #fff;\r\n\t}\r\n.leaflet-tooltip-left {\r\n\tmargin-left: -6px;\r\n}\r\n.leaflet-tooltip-right {\r\n\tmargin-left: 6px;\r\n}\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\ttop: 50%;\r\n\tmargin-top: -6px;\r\n\t}\r\n.leaflet-tooltip-left:before {\r\n\tright: 0;\r\n\tmargin-right: -12px;\r\n\tborder-left-color: #fff;\r\n\t}\r\n.leaflet-tooltip-right:before {\r\n\tleft: 0;\r\n\tmargin-left: -12px;\r\n\tborder-right-color: #fff;\r\n\t}\r\n", ""]);
+exports.push([module.i, "/* required styles */\r\n\r\n.leaflet-pane,\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-tile-container,\r\n.leaflet-pane > svg,\r\n.leaflet-pane > canvas,\r\n.leaflet-zoom-box,\r\n.leaflet-image-layer,\r\n.leaflet-layer {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\ttop: 0;\r\n\t}\r\n.leaflet-container {\r\n\toverflow: hidden;\r\n\t}\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\t  -webkit-user-drag: none;\r\n\t}\r\n/* Safari renders non-retina tile on retina better with this, but Chrome is worse */\r\n.leaflet-safari .leaflet-tile {\r\n\timage-rendering: -webkit-optimize-contrast;\r\n\t}\r\n/* hack that prevents hw layers \"stretching\" when loading new tiles */\r\n.leaflet-safari .leaflet-tile-container {\r\n\twidth: 1600px;\r\n\theight: 1600px;\r\n\t-webkit-transform-origin: 0 0;\r\n\t}\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\tdisplay: block;\r\n\t}\r\n/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */\r\n/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */\r\n.leaflet-container .leaflet-overlay-pane svg,\r\n.leaflet-container .leaflet-marker-pane img,\r\n.leaflet-container .leaflet-shadow-pane img,\r\n.leaflet-container .leaflet-tile-pane img,\r\n.leaflet-container img.leaflet-image-layer {\r\n\tmax-width: none !important;\r\n\t}\r\n\r\n.leaflet-container.leaflet-touch-zoom {\r\n\t-ms-touch-action: pan-x pan-y;\r\n\ttouch-action: pan-x pan-y;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag {\r\n\t-ms-touch-action: pinch-zoom;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {\r\n\t-ms-touch-action: none;\r\n\ttouch-action: none;\r\n}\r\n.leaflet-container {\r\n\t-webkit-tap-highlight-color: transparent;\r\n}\r\n.leaflet-container a {\r\n\t-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);\r\n}\r\n.leaflet-tile {\r\n\tfilter: inherit;\r\n\tvisibility: hidden;\r\n\t}\r\n.leaflet-tile-loaded {\r\n\tvisibility: inherit;\r\n\t}\r\n.leaflet-zoom-box {\r\n\twidth: 0;\r\n\theight: 0;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\tz-index: 800;\r\n\t}\r\n/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */\r\n.leaflet-overlay-pane svg {\r\n\t-moz-user-select: none;\r\n\t}\r\n\r\n.leaflet-pane         { z-index: 400; }\r\n\r\n.leaflet-tile-pane    { z-index: 200; }\r\n.leaflet-overlay-pane { z-index: 400; }\r\n.leaflet-shadow-pane  { z-index: 500; }\r\n.leaflet-marker-pane  { z-index: 600; }\r\n.leaflet-tooltip-pane   { z-index: 650; }\r\n.leaflet-popup-pane   { z-index: 700; }\r\n\r\n.leaflet-map-pane canvas { z-index: 100; }\r\n.leaflet-map-pane svg    { z-index: 200; }\r\n\r\n.leaflet-vml-shape {\r\n\twidth: 1px;\r\n\theight: 1px;\r\n\t}\r\n.lvml {\r\n\tbehavior: url(#default#VML);\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\t}\r\n\r\n\r\n/* control positioning */\r\n\r\n.leaflet-control {\r\n\tposition: relative;\r\n\tz-index: 800;\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-top,\r\n.leaflet-bottom {\r\n\tposition: absolute;\r\n\tz-index: 1000;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-top {\r\n\ttop: 0;\r\n\t}\r\n.leaflet-right {\r\n\tright: 0;\r\n\t}\r\n.leaflet-bottom {\r\n\tbottom: 0;\r\n\t}\r\n.leaflet-left {\r\n\tleft: 0;\r\n\t}\r\n.leaflet-control {\r\n\tfloat: left;\r\n\tclear: both;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tfloat: right;\r\n\t}\r\n.leaflet-top .leaflet-control {\r\n\tmargin-top: 10px;\r\n\t}\r\n.leaflet-bottom .leaflet-control {\r\n\tmargin-bottom: 10px;\r\n\t}\r\n.leaflet-left .leaflet-control {\r\n\tmargin-left: 10px;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tmargin-right: 10px;\r\n\t}\r\n\r\n\r\n/* zoom and fade animations */\r\n\r\n.leaflet-fade-anim .leaflet-tile {\r\n\twill-change: opacity;\r\n\t}\r\n.leaflet-fade-anim .leaflet-popup {\r\n\topacity: 0;\r\n\t-webkit-transition: opacity 0.2s linear;\r\n\t   -moz-transition: opacity 0.2s linear;\r\n\t     -o-transition: opacity 0.2s linear;\r\n\t        transition: opacity 0.2s linear;\r\n\t}\r\n.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {\r\n\topacity: 1;\r\n\t}\r\n.leaflet-zoom-animated {\r\n\t-webkit-transform-origin: 0 0;\r\n\t    -ms-transform-origin: 0 0;\r\n\t        transform-origin: 0 0;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\twill-change: transform;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\t-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t     -o-transition:      -o-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t}\r\n.leaflet-zoom-anim .leaflet-tile,\r\n.leaflet-pan-anim .leaflet-tile {\r\n\t-webkit-transition: none;\r\n\t   -moz-transition: none;\r\n\t     -o-transition: none;\r\n\t        transition: none;\r\n\t}\r\n\r\n.leaflet-zoom-anim .leaflet-zoom-hide {\r\n\tvisibility: hidden;\r\n\t}\r\n\r\n\r\n/* cursors */\r\n\r\n.leaflet-interactive {\r\n\tcursor: pointer;\r\n\t}\r\n.leaflet-grab {\r\n\tcursor: -webkit-grab;\r\n\tcursor:    -moz-grab;\r\n\t}\r\n.leaflet-crosshair,\r\n.leaflet-crosshair .leaflet-interactive {\r\n\tcursor: crosshair;\r\n\t}\r\n.leaflet-popup-pane,\r\n.leaflet-control {\r\n\tcursor: auto;\r\n\t}\r\n.leaflet-dragging .leaflet-grab,\r\n.leaflet-dragging .leaflet-grab .leaflet-interactive,\r\n.leaflet-dragging .leaflet-marker-draggable {\r\n\tcursor: move;\r\n\tcursor: -webkit-grabbing;\r\n\tcursor:    -moz-grabbing;\r\n\t}\r\n\r\n/* marker & overlays interactivity */\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-image-layer,\r\n.leaflet-pane > svg path,\r\n.leaflet-tile-container {\r\n\tpointer-events: none;\r\n\t}\r\n\r\n.leaflet-marker-icon.leaflet-interactive,\r\n.leaflet-image-layer.leaflet-interactive,\r\n.leaflet-pane > svg path.leaflet-interactive {\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n\r\n/* visual tweaks */\r\n\r\n.leaflet-container {\r\n\tbackground: #ddd;\r\n\toutline: 0;\r\n\t}\r\n.leaflet-container a {\r\n\tcolor: #0078A8;\r\n\t}\r\n.leaflet-container a.leaflet-active {\r\n\toutline: 2px solid orange;\r\n\t}\r\n.leaflet-zoom-box {\r\n\tborder: 2px dotted #38f;\r\n\tbackground: rgba(255,255,255,0.5);\r\n\t}\r\n\r\n\r\n/* general typography */\r\n.leaflet-container {\r\n\tfont: 12px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif;\r\n\t}\r\n\r\n\r\n/* general toolbar styles */\r\n\r\n.leaflet-bar {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.65);\r\n\tborder-radius: 4px;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #fff;\r\n\tborder-bottom: 1px solid #ccc;\r\n\twidth: 26px;\r\n\theight: 26px;\r\n\tline-height: 26px;\r\n\tdisplay: block;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tcolor: black;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-control-layers-toggle {\r\n\tbackground-position: 50% 50%;\r\n\tbackground-repeat: no-repeat;\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #f4f4f4;\r\n\t}\r\n.leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 4px;\r\n\tborder-top-right-radius: 4px;\r\n\t}\r\n.leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 4px;\r\n\tborder-bottom-right-radius: 4px;\r\n\tborder-bottom: none;\r\n\t}\r\n.leaflet-bar a.leaflet-disabled {\r\n\tcursor: default;\r\n\tbackground-color: #f4f4f4;\r\n\tcolor: #bbb;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-bar a {\r\n\twidth: 30px;\r\n\theight: 30px;\r\n\tline-height: 30px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 2px;\r\n\tborder-top-right-radius: 2px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 2px;\r\n\tborder-bottom-right-radius: 2px;\r\n\t}\r\n\r\n/* zoom control */\r\n\r\n.leaflet-control-zoom-in,\r\n.leaflet-control-zoom-out {\r\n\tfont: bold 18px 'Lucida Console', Monaco, monospace;\r\n\ttext-indent: 1px;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {\r\n\tfont-size: 22px;\r\n\t}\r\n\r\n\r\n/* layers control */\r\n\r\n.leaflet-control-layers {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.4);\r\n\tbackground: #fff;\r\n\tborder-radius: 5px;\r\n\t}\r\n.leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(332)) + ");\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\t}\r\n.leaflet-retina .leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(333)) + ");\r\n\tbackground-size: 26px 26px;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers-toggle {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\t}\r\n.leaflet-control-layers .leaflet-control-layers-list,\r\n.leaflet-control-layers-expanded .leaflet-control-layers-toggle {\r\n\tdisplay: none;\r\n\t}\r\n.leaflet-control-layers-expanded .leaflet-control-layers-list {\r\n\tdisplay: block;\r\n\tposition: relative;\r\n\t}\r\n.leaflet-control-layers-expanded {\r\n\tpadding: 6px 10px 6px 6px;\r\n\tcolor: #333;\r\n\tbackground: #fff;\r\n\t}\r\n.leaflet-control-layers-scrollbar {\r\n\toverflow-y: scroll;\r\n\toverflow-x: hidden;\r\n\tpadding-right: 5px;\r\n\t}\r\n.leaflet-control-layers-selector {\r\n\tmargin-top: 2px;\r\n\tposition: relative;\r\n\ttop: 1px;\r\n\t}\r\n.leaflet-control-layers label {\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-control-layers-separator {\r\n\theight: 0;\r\n\tborder-top: 1px solid #ddd;\r\n\tmargin: 5px -10px 5px -6px;\r\n\t}\r\n\r\n/* Default icon URLs */\r\n.leaflet-default-icon-path {\r\n\tbackground-image: url(" + escape(__webpack_require__(334)) + ");\r\n\t}\r\n\r\n\r\n/* attribution and scale controls */\r\n\r\n.leaflet-container .leaflet-control-attribution {\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.7);\r\n\tmargin: 0;\r\n\t}\r\n.leaflet-control-attribution,\r\n.leaflet-control-scale-line {\r\n\tpadding: 0 5px;\r\n\tcolor: #333;\r\n\t}\r\n.leaflet-control-attribution a {\r\n\ttext-decoration: none;\r\n\t}\r\n.leaflet-control-attribution a:hover {\r\n\ttext-decoration: underline;\r\n\t}\r\n.leaflet-container .leaflet-control-attribution,\r\n.leaflet-container .leaflet-control-scale {\r\n\tfont-size: 11px;\r\n\t}\r\n.leaflet-left .leaflet-control-scale {\r\n\tmargin-left: 5px;\r\n\t}\r\n.leaflet-bottom .leaflet-control-scale {\r\n\tmargin-bottom: 5px;\r\n\t}\r\n.leaflet-control-scale-line {\r\n\tborder: 2px solid #777;\r\n\tborder-top: none;\r\n\tline-height: 1.1;\r\n\tpadding: 2px 5px 1px;\r\n\tfont-size: 11px;\r\n\twhite-space: nowrap;\r\n\toverflow: hidden;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.5);\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child) {\r\n\tborder-top: 2px solid #777;\r\n\tborder-bottom: none;\r\n\tmargin-top: -2px;\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child):not(:last-child) {\r\n\tborder-bottom: 2px solid #777;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-attribution,\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tbox-shadow: none;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tborder: 2px solid rgba(0,0,0,0.2);\r\n\tbackground-clip: padding-box;\r\n\t}\r\n\r\n\r\n/* popup */\r\n\r\n.leaflet-popup {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tmargin-bottom: 20px;\r\n\t}\r\n.leaflet-popup-content-wrapper {\r\n\tpadding: 1px;\r\n\ttext-align: left;\r\n\tborder-radius: 12px;\r\n\t}\r\n.leaflet-popup-content {\r\n\tmargin: 13px 19px;\r\n\tline-height: 1.4;\r\n\t}\r\n.leaflet-popup-content p {\r\n\tmargin: 18px 0;\r\n\t}\r\n.leaflet-popup-tip-container {\r\n\twidth: 40px;\r\n\theight: 20px;\r\n\tposition: absolute;\r\n\tleft: 50%;\r\n\tmargin-left: -20px;\r\n\toverflow: hidden;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-popup-tip {\r\n\twidth: 17px;\r\n\theight: 17px;\r\n\tpadding: 1px;\r\n\r\n\tmargin: -10px auto 0;\r\n\r\n\t-webkit-transform: rotate(45deg);\r\n\t   -moz-transform: rotate(45deg);\r\n\t    -ms-transform: rotate(45deg);\r\n\t     -o-transform: rotate(45deg);\r\n\t        transform: rotate(45deg);\r\n\t}\r\n.leaflet-popup-content-wrapper,\r\n.leaflet-popup-tip {\r\n\tbackground: white;\r\n\tcolor: #333;\r\n\tbox-shadow: 0 3px 14px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\tpadding: 4px 4px 0 0;\r\n\tborder: none;\r\n\ttext-align: center;\r\n\twidth: 18px;\r\n\theight: 14px;\r\n\tfont: 16px/14px Tahoma, Verdana, sans-serif;\r\n\tcolor: #c3c3c3;\r\n\ttext-decoration: none;\r\n\tfont-weight: bold;\r\n\tbackground: transparent;\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button:hover {\r\n\tcolor: #999;\r\n\t}\r\n.leaflet-popup-scrolled {\r\n\toverflow: auto;\r\n\tborder-bottom: 1px solid #ddd;\r\n\tborder-top: 1px solid #ddd;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-popup-content-wrapper {\r\n\tzoom: 1;\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\twidth: 24px;\r\n\tmargin: 0 auto;\r\n\r\n\t-ms-filter: \"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)\";\r\n\tfilter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip-container {\r\n\tmargin-top: -1px;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-control-zoom,\r\n.leaflet-oldie .leaflet-control-layers,\r\n.leaflet-oldie .leaflet-popup-content-wrapper,\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\tborder: 1px solid #999;\r\n\t}\r\n\r\n\r\n/* div icon */\r\n\r\n.leaflet-div-icon {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #666;\r\n\t}\r\n\r\n\r\n/* Tooltip */\r\n/* Base styles for the element that has a tooltip */\r\n.leaflet-tooltip {\r\n\tposition: absolute;\r\n\tpadding: 6px;\r\n\tbackground-color: #fff;\r\n\tborder: 1px solid #fff;\r\n\tborder-radius: 3px;\r\n\tcolor: #222;\r\n\twhite-space: nowrap;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\tuser-select: none;\r\n\tpointer-events: none;\r\n\tbox-shadow: 0 1px 3px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-tooltip.leaflet-clickable {\r\n\tcursor: pointer;\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-tooltip-top:before,\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\tborder: 6px solid transparent;\r\n\tbackground: transparent;\r\n\tcontent: \"\";\r\n\t}\r\n\r\n/* Directions */\r\n\r\n.leaflet-tooltip-bottom {\r\n\tmargin-top: 6px;\r\n}\r\n.leaflet-tooltip-top {\r\n\tmargin-top: -6px;\r\n}\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-top:before {\r\n\tleft: 50%;\r\n\tmargin-left: -6px;\r\n\t}\r\n.leaflet-tooltip-top:before {\r\n\tbottom: 0;\r\n\tmargin-bottom: -12px;\r\n\tborder-top-color: #fff;\r\n\t}\r\n.leaflet-tooltip-bottom:before {\r\n\ttop: 0;\r\n\tmargin-top: -12px;\r\n\tmargin-left: -6px;\r\n\tborder-bottom-color: #fff;\r\n\t}\r\n.leaflet-tooltip-left {\r\n\tmargin-left: -6px;\r\n}\r\n.leaflet-tooltip-right {\r\n\tmargin-left: 6px;\r\n}\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\ttop: 50%;\r\n\tmargin-top: -6px;\r\n\t}\r\n.leaflet-tooltip-left:before {\r\n\tright: 0;\r\n\tmargin-right: -12px;\r\n\tborder-left-color: #fff;\r\n\t}\r\n.leaflet-tooltip-right:before {\r\n\tleft: 0;\r\n\tmargin-left: -12px;\r\n\tborder-right-color: #fff;\r\n\t}\r\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 324 */
+/* 330 */
 /***/ (function(module, exports) {
 
 module.exports = function escape(url) {
@@ -61435,7 +62171,7 @@ module.exports = function escape(url) {
 
 
 /***/ }),
-/* 325 */
+/* 331 */
 /***/ (function(module, exports) {
 
 /*
@@ -61517,32 +62253,32 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 326 */
+/* 332 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAQAAAADQ4RFAAACf0lEQVR4AY1UM3gkARTePdvdoTxXKc+qTl3aU5U6b2Kbkz3Gtq3Zw6ziLGNPzrYx7946Tr6/ee/XeCQ4D3ykPtL5tHno4n0d/h3+xfuWHGLX81cn7r0iTNzjr7LrlxCqPtkbTQEHeqOrTy4Yyt3VCi/IOB0v7rVC7q45Q3Gr5K6jt+3Gl5nCoDD4MtO+j96Wu8atmhGqcNGHObuf8OM/x3AMx38+4Z2sPqzCxRFK2aF2e5Jol56XTLyggAMTL56XOMoS1W4pOyjUcGGQdZxU6qRh7B9Zp+PfpOFlqt0zyDZckPi1ttmIp03jX8gyJ8a/PG2yutpS/Vol7peZIbZcKBAEEheEIAgFbDkz5H6Zrkm2hVWGiXKiF4Ycw0RWKdtC16Q7qe3X4iOMxruonzegJzWaXFrU9utOSsLUmrc0YjeWYjCW4PDMADElpJSSQ0vQvA1Tm6/JlKnqFs1EGyZiFCqnRZTEJJJiKRYzVYzJck2Rm6P4iH+cmSY0YzimYa8l0EtTODFWhcMIMVqdsI2uiTvKmTisIDHJ3od5GILVhBCarCfVRmo4uTjkhrhzkiBV7SsaqS+TzrzM1qpGGUFt28pIySQHR6h7F6KSwGWm97ay+Z+ZqMcEjEWebE7wxCSQwpkhJqoZA5ivCdZDjJepuJ9IQjGGUmuXJdBFUygxVqVsxFsLMbDe8ZbDYVCGKxs+W080max1hFCarCfV+C1KATwcnvE9gRRuMP2prdbWGowm1KB1y+zwMMENkM755cJ2yPDtqhTI6ED1M/82yIDtC/4j4BijjeObflpO9I9MwXTCsSX8jWAFeHr05WoLTJ5G8IQVS/7vwR6ohirYM7f6HzYpogfS3R2OAAAAAElFTkSuQmCC"
 
 /***/ }),
-/* 327 */
+/* 333 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAQAAABvcdNgAAAEsklEQVR4AWL4TydIhpZK1kpWOlg0w3ZXP6D2soBtG42jeI6ZmQTHzAxiTbSJsYLjO9HhP+WOmcuhciVnmHVQcJnp7DFvScowZorad/+V/fVzMdMT2g9Cv9guXGv/7pYOrXh2U+RRR3dSd9JRx6bIFc/ekqHI29JC6pJ5ZEh1yWkhkbcFeSjxgx3L2m1cb1C7bceyxA+CNjT/Ifff+/kDk2u/w/33/IeCMOSaWZ4glosqT3DNnNZQ7Cs58/3Ce5HL78iZH/vKVIaYlqzfdLu8Vi7dnvUbEza5Idt36tquZFldl6N5Z/POLof0XLK61mZCmJSWjVF9tEjUluu74IUXvgttuVIHE7YxSkaYhJZam7yiM9Pv82JYfl9nptxZaxMJE4YSPty+vF0+Y2up9d3wwijfjZbabqm/3bZ9ecKHsiGmRflnn1MW4pjHf9oLufyn2z3y1D6n8g8TZhxyzipLNPnAUpsOiuWimg52psrTZYnOWYNDTMuWBWa0tJb4rgq1UvmutpaYEbZlwU3CLJm/ayYjHW5/h7xWLn9Hh1vepDkyf7dE7MtT5LR4e7yYpHrkhOUpEfssBLq2pPhAqoSWKUkk7EDqkmK6RrCEzqDjhNDWNE+XSMvkJRDWlZTmCW0l0PHQGRZY5t1L83kT0Y3l2SItk5JAWHl2dCOBm+fPu3fo5/3v61RMCO9Jx2EEYYhb0rmNQMX/vm7gqOEJLcXTGw3CAuRNeyaPWwjR8PRqKQ1PDA/dpv+on9Shox52WFnx0KY8onHayrJzm87i5h9xGw/tfkev0jGsQizqezUKjk12hBMKJ4kbCqGPVNXudyyrShovGw5CgxsRICxF6aRmSjlBnHRzg7Gx8fKqEubI2rahQYdR1YgDIRQO7JvQyD52hoIQx0mxa0ODtW2Iozn1le2iIRdzwWewedyZzewidueOGqlsn1MvcnQpuVwLGG3/IR1hIKxCjelIDZ8ldqWz25jWAsnldEnK0Zxro19TGVb2ffIZEsIO89EIEDvKMPrzmBOQcKQ+rroye6NgRRxqR4U8EAkz0CL6uSGOm6KQCdWjvjRiSP1BPalCRS5iQYiEIvxuBMJEWgzSoHADcVMuN7IuqqTeyUPq22qFimFtxDyBBJEwNyt6TM88blFHao/6tWWhuuOM4SAK4EI4QmFHA+SEyWlp4EQoJ13cYGzMu7yszEIBOm2rVmHUNqwAIQabISNMRstmdhNWcFLsSm+0tjJH1MdRxO5Nx0WDMhCtgD6OKgZeljJqJKc9po8juskR9XN0Y1lZ3mWjLR9JCO1jRDMd0fpYC2VnvjBSEFg7wBENc0R9HFlb0xvF1+TBEpF68d+DHR6IOWVv2BECtxo46hOFUBd/APU57WIoEwJhIi2CdpyZX0m93BZicktMj1AS9dClteUFAUNUIEygRZCtik5zSxI9MubTBH1GOiHsiLJ3OCoSZkILa9PxiN0EbvhsAo8tdAf9Seepd36lGWHmtNANTv5Jd0z4QYyeo/UEJqxKRpg5LZx6btLPsOaEmdMyxYdlc8LMaJnikDlhclqmPiQnTEpLUIZEwkRagjYkEibQErwhkTAKCLQEbUgkzJQWc/0PstHHcfEdQ+UAAAAASUVORK5CYII="
 
 /***/ }),
-/* 328 */
+/* 334 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RfEmN8VNAsQhPqF55xHkMzz3jSmChWU6f7/XZKNH+9+hBLOHYozuKQPxyMPUKkrX/K0uWnfFaJGS1QPRtZsOPtr3NsW0uyh6NNCOkU3Yz+bXbT3I8G3xE5EXLXtCXbbqwCO9zPQYPRTZ5vIDXD7U+w7rFDEoUUf7ibHIR4y6bLVPXrz8JVZEql13trxwue/uDivd3fkWRbS6/IA2bID4uk0UpF1N8qLlbBlXs4Ee7HLTfV1j54APvODnSfOWBqtKVvjgLKzF5YdEk5ewRkGlK0i33Eofffc7HT56jD7/6U+qH3Cx7SBLNntH5YIPvODnyfIXZYRVDPqgHtLs5ABHD3YzLuespb7t79FY34DjMwrVrcTuwlT55YMPvOBnRrJ4VXTdNnYug5ucHLBjEpt30701A3Ts+HEa73u6dT3FNWwflY86eMHPk+Yu+i6pzUpRrW7SNDg5JHR4KapmM5Wv2E8Tfcb1HoqqHMHU+uWDD7zg54mz5/2BSnizi9T1Dg4QQXLToGNCkb6tb1NU+QAlGr1++eADrzhn/u8Q2YZhQVlZ5+CAOtqfbhmaUCS1ezNFVm2imDbPmPng5wmz+gwh+oHDce0eUtQ6OGDIyR0uUhUsoO3vfDmmgOezH0mZN59x7MBi++WDL1g/eEiU3avlidO671bkLfwbw5XV2P8Pzo0ydy4t2/0eu33xYSOMOD8hTf4CrBtGMSoXfPLchX+J0ruSePw3LZeK0juPJbYzrhkH0io7B3k164hiGvawhOKMLkrQLyVpZg8rHFW7E2uHOL888IBPlNZ1FPzstSJM694fWr6RwpvcJK60+0HCILTBzZLFNdtAzJaohze60T8qBzyh5ZuOg5e7uwQppofEmf2++DYvmySqGBuKaicF1blQjhuHdvCIMvp8whTTfZzI7RldpwtSzL+F1+wkdZ2TBOW2gIF88PBTzD/gpeREAMEbxnJcaJHNHrpzji0gQCS6hdkEeYt9DF/2qPcEC8RM28Hwmr3sdNyht00byAut2k3gufWNtgtOEOFGUwcXWNDbdNbpgBGxEvKkOQsxivJx33iow0Vw5S6SVTrpVq11ysA2Rp7gTfPfktc6zhtXBBC+adRLshf6sG2RfHPZ5EAc4sVZ83yCN00Fk/4kggu40ZTvIEm5g24qtU4KjBrx/BTTH8ifVASAG7gKrnWxJDcU7x8X6Ecczhm3o6YicvsLXWfh3Ch1W0k8x0nXF+0fFxgt4phz8QvypiwCCFKMqXCnqXExjq10beH+UUA7+nG6mdG/Pu0f3LgFcGrl2s0kNNjpmoJ9o4B29CMO8dMT4Q5ox8uitF6fqsrJOr8qnwNbRzv6hSnG5wP+64C7h9lp30hKNtKdWjtdkbuPA19nJ7Tz3zR/ibgARbhb4AlhavcBebmTHcFl2fvYEnW0ox9xMxKBS8btJ+KiEbq9zA4RthQXDhPa0T9TEe69gWupwc6uBUphquXgf+/FrIjweHQS4/pduMe5ERUMHUd9xv8ZR98CxkS4F2n3EUrUZ10EYNw7BWm9x1GiPssi3GgiGRDKWRYZfXlON+dfNbM+GgIwYdwAAAAASUVORK5CYII="
 
 /***/ }),
-/* 329 */
+/* 335 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html__ = __webpack_require__(330);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html__ = __webpack_require__(336);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_download_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes__ = __webpack_require__(191);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_bytes__);
 
 
@@ -61745,22 +62481,22 @@ class AppImageDownload extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
 customElements.define('app-image-download', AppImageDownload);
 
 /***/ }),
-/* 330 */
+/* 336 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  button {\n    border: none;\n    border-radius: 0;\n    cursor: pointer;\n    color : var(--default-primary-color);\n    background-color: var(--medium-background-color);\n    width: 35px;\n    height: 35px;\n    font-weight: var(--font-weight-heavy);\n    margin: 4px;\n  }\n  button[selected] {\n    background : var(--default-primary-color);\n    color : var(--default-secondary-color);\n  }\n  .info {\n    margin: 10px 0;\n    font-size: var(--font-size-sm);\n  }\n  a {\n    display: inline-block;\n    padding: 8px;\n    color : var(--default-primary-color);\n    background-color : var(--default-secondary-color);\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n  }\n  select {\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    margin-right: 15px;\n    height: 40px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2IiB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojZGFhYTAwO308L3N0eWxlPjwvZGVmcz48Zz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMCAwIDEwIDAgNSA2IDAgMCIvPjwvZz48L3N2Zz4=');\n    @apply --fin-search-box-select-inverse;\n  }\n  select option {\n    text-transform: uppercase;\n  }\n</style>\n\n<div>\n  <template is=\"dom-repeat\" items=\"[[sizes]]\">\n    <button index$=\"[[index]]\" selected$=\"[[item.selected]]\" on-click=\"_onSizeSelected\">[[item.label]]</button>\n  </template>\n</div>\n\n<div class=\"info\">\n  [[resolutionTitle]] | [[resolution]] <span hidden$=\"[[!defaultImage]]\">| [[size]]</span>\n</div>\n\n<div style=\"display:flex; align-items: center\">\n  <select id=\"format\" on-change=\"_onFormatSelected\">\n    <template is=\"dom-repeat\" items=\"[[formats]]\">\n      <option value=\"[[item]]\">[[item]]</option>\n    </template>\n  </select>\n\n  <a href=\"[[href]]\" download target=\"_blank\">\n    <iron-icon icon=\"file-download\"></iron-icon>\n    Download\n  </a>\n</div>";
 
 /***/ }),
-/* 331 */
+/* 337 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__ = __webpack_require__(332);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__ = __webpack_require__(338);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_tabs_paper_tabs__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_iron_pages_iron_pages__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_iron_media_query_iron_media_query__ = __webpack_require__(333);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_iron_media_query_iron_media_query__ = __webpack_require__(339);
 
 
 
@@ -61819,13 +62555,13 @@ class AppRecordMetadataLayout extends __WEBPACK_IMPORTED_MODULE_0__polymer_polym
 customElements.define('app-record-metadata-layout', AppRecordMetadataLayout);
 
 /***/ }),
-/* 332 */
+/* 338 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n\n  .layout {\n    display: flex;\n  }\n  .layout > * {\n    flex : 1;\n  }\n\n  h2 {\n    border-bottom: 1px solid var(--medium-background-color);\n    color: var(--default-primary-color);\n    padding-bottom: 10px;\n  }\n</style>\n\n<iron-media-query query=\"(max-width: 900px)\" query-matches=\"{{mobile}}\"></iron-media-query>\n\n\n<paper-tabs selected=\"{{selectedTab}}\" hidden$=\"[[!mobile]]\">\n  <paper-tab>Item Data</paper-tab>\n  <paper-tab>Cite Item</paper-tab>\n</paper-tabs>\n\n<div class=\"layout\">\n  <div hidden$=\"[[!showLeft]]\">\n    <h2>Item Data</h2>\n    <slot name=\"left\"></slot>\n  </div>\n  <div hidden$=\"[[!showRight]]\">\n      <h2>Cite this Item</h2>\n    <slot name=\"right\"></slot>\n  </div>\n</div>";
 
 /***/ }),
-/* 333 */
+/* 339 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61928,19 +62664,19 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 334 */
+/* 340 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__auth_app_auth_footer__ = __webpack_require__(335);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html__ = __webpack_require__(337);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__auth_app_auth_footer__ = __webpack_require__(341);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html__ = __webpack_require__(343);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__app_footer_html__);
 
 
@@ -61996,14 +62732,14 @@ class AppFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-footer', AppFooter);
 
 /***/ }),
-/* 335 */
+/* 341 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__ = __webpack_require__(336);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__ = __webpack_require__(342);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__);
 
 
@@ -62051,19 +62787,19 @@ class AppAuthFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_p
 customElements.define('app-auth-footer', AppAuthFooter);
 
 /***/ }),
-/* 336 */
+/* 342 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    color: var(--inverse-text-color);\n  }\n  a {\n    color: var(--inverse-text-color);\n    cursor: pointer;\n  }\n  .icon-container {\n    display: flex;\n    align-items: center;\n  }\n</style>\n\n<div hidden$=\"[[!loggedIn]]\">\n  <div>Logged in as:</div>\n  <div class=\"icon-container\">\n    <iron-icon icon=\"fin:account\"></iron-icon>&nbsp;&nbsp;\n    <div>[[user.username]]</div>\n  </div>\n  <div>\n    <a on-click=\"_logout\" class=\"gold\">Log Out</a>\n  </div>\n</div>\n<div hidden$=\"[[loggedIn]]\">\n  <a on-click=\"_login\">Login</a>\n</div>";
 
 /***/ }),
-/* 337 */
+/* 343 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background: var(--secondary-background-color);\n    color: var(--inverse-text-color);\n    max-width: var(--max-width);\n    padding: 20px 0;\n  }\n\n  a, a:visited {\n    cursor: pointer;\n    color: var(--inverse-text-color);\n    text-decoration: none;\n  }\n\n  .lib-logo  {\n    height: 45px;\n  }\n\n  .row {\n    display: flex;\n    justify-content: center;\n  }\n\n  .row > div {\n    padding: 15px;\n  }\n\n  .menu.horizontal li {\n    padding: 0 10px;\n    border-right: 1px solid white;\n  }\n  .menu.horizontal li:last-child {\n    border-right: none;\n  }\n  .menu a {\n    cursor: pointer;\n  }\n\n  @media( max-width: 768px ) {\n    ul.menu.horizontal {\n      display: block;\n      text-align: left;\n    }\n  }\n\n  .logo {\n    display: inline-block;\n    width: 100%;\n    position: relative;\n    margin: 70px 0 30px;\n  }\n  .logo hr {\n    position: absolute;\n    top: 50%;\n    width: 100%;\n    margin-top: 0;\n    margin-bottom: 0;\n    border-top: 1px solid rgba(255,255,255,.25);\n    border-bottom: none;\n    border-right: none;\n    border-left: none;\n  }\n  .logo .logo-img {\n    display: inline-block;\n    position: relative;\n  }\n  .logo img {\n    height: 100px;\n    padding: 0 25px;\n    background: var(--default-primary-color);\n  }\n\n  @media(max-width: 768px) {\n    .row {\n      display: block;\n    }\n  }\n</style>\n\n<footer role=\"contentinfo\">\n\n  <div class=\"row\">\n    <div> <!-- col start -->\n      <div>\n          <a href=\"https://library.ucdavis.edu\" target=\"_blank\">\n              <img class=\"lib-logo\" src=\"/images/ucd-lib-logo-white.png\">\n          </a>\n      </div>\n      <div>UC Davis Library</div>\n      <p>\n        100 NW Quad<br />\n        University of California, Davis<br />\n        Davis, CA 95616<br />\n        (530) 752-8792<br /><br />\n        <a href=\"mailto:library@ucdavis.edu\">library@ucdavis.edu</a>\n      </p>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Digital Collections</h2>\n      <ul class=\"menu\">\n        <template is=\"dom-repeat\" items=\"[[collections]]\">\n          <li><a on-click=\"_onBrowseCollection\" data-id$=\"[[item.id]]\">[[item.name]]</a></li>\n        </template>\n      </ul>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Library Info</h2>\n      <ul class=\"menu\">\n        <li><a href=\"https://library.ucdavis.edu/news/\" target=\"_blank\">News</a></li>\n        <li><a href=\"https://library.ucdavis.edu/about/\" target=\"_blank\">About</a></li>\n        <li><a href=\"https://library.ucdavis.edu/library/\" target=\"_blank\">Visit</a></li>\n        <li><a href=\"https://library.ucdavis.edu/service/careers/\" target=\"_blank\">Careers</a></li>\n      </ul>\n      <div class=\"donate\"><a href=\"http://give.ucdavis.edu/ULIB\" target=\"_blank\">Give to the UC Davis Library</a></div>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Account</h2>\n      <ul class=\"menu\">\n        <li>\n          <app-auth-footer></app-auth-footer>\n        </li>\n      </ul>\n    </div><!-- col end -->\n  </div><!-- row end -->\n\n  <div style=\"text-align:center\">\n    <div class=\"logo\"><!-- logo -->\n        <hr>\n        <div class=\"logo-img\">\n            <img src=\"/images/ucd-logo.svg\" alt=\"UC Davis Logo\">\n        </div>\n    </div>\n\n    <div>\n      <p>University of California, Davis, One Shields Avenue, Davis, CA 95616 | 530-752-1011</p>\n      <ul class=\"menu horizontal\">\n        <li><a href=\"/help/\">Help</a></li>\n        <li><a href=\"/general-support/\">Questions or comments?</a></li>\n        <li><a href=\"https://www.ucdavis.edu/help/privacy-accessibility/\" target=\"_blank\">Privacy &amp; Accessibility</a></li>\n        <li><a href=\"https://occr.ucdavis.edu/poc/\" target=\"_blank\">Principles of Community</a></li>\n        <li><a href=\"https://www.ucdavis.edu/\" target=\"_blank\">UC Davis</a></li>\n        <li><a href=\"https://www.universityofcalifornia.edu/\" target=\"_blank\">University of California</a></li>\n      </ul>\n      <p>Copyright &copy; 2017 The Regents of the University of California, Davis campus. All rights reserved.</p>\n    </div>\n  </div>\n\n</footer>";
 
 /***/ }),
-/* 338 */
+/* 344 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62131,7 +62867,7 @@ class AppHeaderColorbar extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 customElements.define('app-header-colorbar', AppHeaderColorbar);
 
 /***/ }),
-/* 339 */
+/* 345 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n    background: var(--default-primary-color);\n  }\n  app-header {\n    \n  }\n  .content {\n    display: flex;\n    justify-content: center;\n  }\n  .content > div {\n    max-width: 1000px;\n    min-width: 300px;\n  }\n  paper-material {\n    background: white;\n    display: block;\n    padding: 10px;\n    margin: 10px;\n  }\n  paper-button {\n    background: white;\n  }\n  a[button] {\n    text-decoration: none;\n    color: var(--primary-text-color);\n  }\n</style>\n\n<app-route app-routes=\"[[appRoutes]]\"></app-route>\n\n<iron-pages selected=\"[[page]]\" attr-for-selected=\"id\" selected-attribute=\"visible\">\n  <app-home id=\"home\"></app-home>\n  <app-search id=\"search\"></app-search>\n  <app-record id=\"record\"></app-record>\n</iron-pages>\n\n<div style=\"display:flex; justify-content:center\">\n  <app-footer></app-footer>\n</div>";
