@@ -12,23 +12,25 @@ export default class AppRangeSlider extends PolymerElement {
       // absolute min/max values for slider
       absMinValue : {
         type : Number,
-        value : 0
+        value : 0,
+        observer : '_renderAsync'
       },
       absMaxValue : {
         type : Number,
-        value : 100 
+        value : 100,
+        observer : '_renderAsync'
       },
 
       // current min/max values for slider (where the btns are)
       minValue : {
         type : Number,
         value : 10,
-        observer : '_render'
+        observer : '_renderAsync'
       },
       maxValue : {
         type : Number,
         value : 90,
-        observer : '_render'
+        observer : '_renderAsync'
       },
 
       // labels for slide btns
@@ -159,15 +161,15 @@ export default class AppRangeSlider extends PolymerElement {
     return Math.round(px * valPerPx) + this.absMinValue;
   }
 
-  _render() {
+  _renderAsync() {
     if( this.renderTimer ) {
       clearTimeout(this.renderTimer);
     }
 
     this.renderTimer = setTimeout(() => {
       this.renderTimer = 0;
-      this._renderAsync();
-    })
+      this._render();
+    }, 0);
   }
 
   /**
@@ -175,7 +177,7 @@ export default class AppRangeSlider extends PolymerElement {
    * @description set the current top/left px values for all btns,
    * labels and lines bases on current min/max values.
    */
-  _renderAsync() {
+  _render() {
     let hh = this.height * 0.60;
 
     // set line heights

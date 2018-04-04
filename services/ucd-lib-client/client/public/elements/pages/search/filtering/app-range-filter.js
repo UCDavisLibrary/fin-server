@@ -45,14 +45,13 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
-    this.first = true;
   }
 
   connectedCallback() {
     super.connectedCallback();
     setTimeout(() => {
       this.$.slider._onResize();
-    }, 50);
+    }, 100);
   }
 
   _onRangeSliderChange(e) {
@@ -69,8 +68,21 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
   }
 
   _onInputChange() {
-    this.minValue = this.$.minValueInput.value;
-    this.maxValue = this.$.maxValueInput.value;
+    let min = this.$.minValueInput.value;
+    let max = this.$.maxValueInput.value;
+
+    if( min < this.absMinValue ) {
+      this.$.minValueInput.value = this.absMinValue;
+      min = this.absMinValue;
+    }
+    if( max > this.absMaxValue ) {
+      this.$.maxValueInput.value = this.absMaxValue;
+      max = this.absMaxValue;
+    }
+    if( min > max ) min = max;
+
+    this.minValue = min;
+    this.maxValue = max;
 
     this._esAppendRangeFilter(this.filter, {
       gte: this.minValue,
@@ -84,48 +96,39 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     this.absMinValue = e.payload.aggregations[this.filter+'-min'].value;
     this.absMaxValue = e.payload.aggregations[this.filter+'-max'].value;
 
-    this.minValue = this.absMinValue;
-    this.maxValue = this.absMaxValue;
+    if( this.minValue === -1 ) {
+      this.minValue = this.absMinValue;
+      this.maxValue = this.absMaxValue;
 
-    this.$.minValueInput.value = this.minValue;
-    this.$.maxValueInput.value = this.maxValue;
+      this.$.minValueInput.value = this.minValue;
+      this.$.maxValueInput.value = this.maxValue;
+    }
   }
 
-  // _onEsSearchUpdate(e) {
-  //   if( e.state !== 'loaded' ) return;
+  _onEsSearchUpdate(e) {
+    if( e.state !== 'loaded' ) return;
 
-  //   var query = e.query.query;
-  //   var activeFilters = [];
+    var query = e.query.query;
+    var activeFilters = [];
 
-  //   if( query && 
-  //       query.bool && 
-  //       query.bool.filter ) {
+    if( query && 
+        query.bool && 
+        query.bool.must ) {
       
-  //     var arr = query.bool.filter;
+      var arr = query.bool.must;
 
-  //     for( var i = 0; i < arr.length; i++ ) {
-  //       if( arr[i].terms[this.filter] ) {
-  //         activeFilters = arr[i].terms[this.filter];
-  //       }
-  //     }
-  //   }
-
-  //   this.activeFilters = activeFilters;
-  //   this._updateActiveFilters();
-  // }
-
-  // _updateActiveFilters() {
-  //   if( !this.activeFilters ) return;
-
-  //   // console.log(this.activeFilters);
-
-  //   // this.buckets = this.buckets.map(item => {
-  //   //   item.active = (this.activeFilters.indexOf(item.key) > -1) ? true : false;
-  //   //   return Object.assign({}, item);
-  //   // });
-  // }
-
-
+      for( var i = 0; i < arr.length; i++ ) {
+        if( arr[i].range[this.filter] ) {
+          let value = arr[i].range[this.filter];
+          
+          this.minValue = value.gte;
+          this.maxValue = value.lte;
+          this.$.minValueInput.value = this.minValue;
+          this.$.maxValueInput.value = this.maxValue;
+        }
+      }
+    }
+  }
 
 }
 

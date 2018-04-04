@@ -77,6 +77,14 @@ class AppFacetFilter extends Mixin(PolymerElement)
       item.active = (this.activeFilters.indexOf(item.key) > -1) ? true : false;
       return Object.assign({}, item);
     });
+
+    this.dispatchEvent(
+      new CustomEvent('update-visibility', {
+        detail: {
+          show: (this.buckets.length !== 0)
+        }
+      })
+    );
   }
 
   _toggleFilter(e) {

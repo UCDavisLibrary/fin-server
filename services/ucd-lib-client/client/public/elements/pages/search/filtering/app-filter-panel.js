@@ -1,4 +1,4 @@
-import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+  import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-tabs/paper-tabs"
 import "@ucd-lib/cork-toggle-panel/cork-toggle-panel"
 
@@ -30,6 +30,10 @@ export class AppFilterPanel extends PolymerElement {
     ele.label = this.filter.label;
     ele.filter = this.filter.filter;
     ele.isDollar = this.filter.isDollar;
+
+    ele.addEventListener('update-visibility', (e) => {
+      this.style.display = e.detail.show ? 'block' : 'none';
+    });
     
     this.$.filters.appendChild(ele);
   }
