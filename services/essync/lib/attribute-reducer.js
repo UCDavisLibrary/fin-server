@@ -159,6 +159,15 @@ class AttributeReducer {
       });
     }
 
+    // reduce @type to type for schema.org attributes
+    if( !reduced.type ) reduced.type = [];
+    (record['@type'] || []).forEach(val => {
+      if( !val.match(/^schema:/) ) return;
+      val = val.replace(/^schema:/, '');
+      if( reduced.type.indexOf(val) > -1 ) return;
+      reduced.type.push(val);
+    });
+
     return reduced;
   }
 

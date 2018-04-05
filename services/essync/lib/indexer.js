@@ -1,7 +1,7 @@
 const elasticsearch = require('elasticsearch');
 const request = require('request');
-const schemaRecord = require('./schemas/record');
-const schemaCollection = require('./schemas/collection');
+const schemaRecord = require('../schemas/record');
+const schemaCollection = require('../schemas/collection');
 const {logger, jwt} = require('@ucd-lib/fin-node-utils');
 const fs = require('fs');
 const {URL} = require('url');

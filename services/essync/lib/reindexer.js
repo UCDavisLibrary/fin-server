@@ -1,9 +1,8 @@
-global.LOGGER_NAME = 'essync';
 const request = require('superagent');
 const elasticsearch = require('elasticsearch');
 const {jwt, logger} = require('@ucd-lib/fin-node-utils');
-const schemaRecord = require('./schemas/record');
-const schemaCollection = require('./schemas/collection');
+const schemaRecord = require('../schemas/record');
+const schemaCollection = require('../schemas/collection');
 const clone = require('clone');
 const indexer = require('./indexer');
 const {URL} = require('url');
@@ -241,12 +240,5 @@ class EsReindexer {
 }
 
 const reindexer = new EsReindexer();
-
-// manually run reindexer from command line
-if( process.argv.indexOf('reindex') > -1 ) {
-  reindexer.run()
-    .then(() => logger.info('done'))
-    .catch((e) => console.error(e))
-}
 
 module.exports = reindexer;

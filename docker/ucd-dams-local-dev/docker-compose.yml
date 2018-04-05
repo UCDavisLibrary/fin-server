@@ -13,7 +13,7 @@ services:
     build: ../../server
     volumes:
       - ../../server:/app
-      - ../../services/frames:/etc/fin/frames
+      - ../../server/default-frames:/etc/fin/frames
       - ../../services/default-services.js:/etc/fin/default-services.js
       - ../../server/backups:/fcrepo-backups
     ports:
