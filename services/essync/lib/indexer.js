@@ -322,6 +322,7 @@ class EsIndexer {
     this.stripFinHost(frame);
     await this.setThumbnail(frame);
     await this.setImageResolution(frame);
+    await this.setYearFromDate(frame);
 
     if( this.isRecord(frame['@type']) ) {
       frame.collectionId = frame['@id'].split('/').splice(0, 3).join('/');
@@ -393,6 +394,15 @@ class EsIndexer {
     return json;
   }
 
+  /**
+   * @method getImagePath
+   * @description return the representative image for record.  The order of lookup is
+   * workExample, record id (if fileFormat is of type image/*), associatedMedia
+   * 
+   * @param {Object} json record
+   * 
+   * @returns {String|null}
+   */
   getImagePath(json) {
     if( json.workExample ) {
       return Array.isArray(json.workExample) ? json.workExample[0] : json.workExample;
@@ -409,35 +419,36 @@ class EsIndexer {
     return null;
   }
 
+  /**
+   * @method setYearFromDate
+   * @description given ISO 8601 Date attributes, map them to a year
+   * attribute if the date attribute exits.
+   * 
+   * @param {Object} json record
+   */
+  setYearFromDate(json) {
+    for( let dateAttr in config.essync.dateToYear ) {
+      if( !json[dateAttr] ) continue;
+
+      let year = json[dateAttr].match(/^\d\d\d\d/);
+      if( !year ) continue;
+
+      json[config.essync.dateToYear[dateAttr]] = parseInt(year[0]);
+    }
+  }
+
+  /**
+   * @method setRootRecord
+   * @description given a record, set the isRootRecord flag if the
+   * isPartOf attribute is equal to the collection id
+   * 
+   * @param {Object} json record
+   */
   async setRootRecord(json) {
     if( json.isPartOf && json.isPartOf === json.collectionId ) {
       json.isRootRecord = true;
     }
   }
-
-  /**
-   * @method setLocalIds
-   * @description set shortend local identifiers for object.  These ids strip off the 
-   * jsonld data
-   * 
-   * @param {Object} json
-   * 
-   * @return {Object}
-   */
-  // setLocalIds(json) {
-  //   config.essync.localIds.forEach(id => {
-  //     if( json[id] === undefined ) return;
-  //     let localId = (id === '@id') ? 'localId' : id+'LocalId';
-
-  //     if( Array.isArray(json[id]) ) {
-  //       json[localId] = json[id].map(id => id.replace(this.getFrameBaseUrl(), '')); 
-  //     } else {
-  //       json[localId] = json[id].replace(this.getFrameBaseUrl(), ''); 
-  //     }
-  //   });
-
-  //   return json;
-  // }
 
   /**
    * @method stripFinHost

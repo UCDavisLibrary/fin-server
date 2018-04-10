@@ -11,6 +11,13 @@ config.essync = {
     fileFormat : 'fileFormats'
   },
 
+  // if these attributes exist, the ISO 8601 date will be stripped for
+  // everything but the year and a new attribute created with the name
+  // of the given key in the hash
+  dateToYear : {
+    datePublished : 'yearPublished'
+  },
+
   // attributes to traverse when walking up the record tree
   parentConnections : ['isPartOf','encodesCreativeWork'],
 

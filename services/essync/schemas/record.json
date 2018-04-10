@@ -56,7 +56,7 @@
       "format" : "date_optional_time"
     },
 
-    "datePublished" : {
+    "yearPublished" : {
       "type" : "integer"
     },
 
