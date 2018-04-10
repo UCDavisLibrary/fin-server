@@ -39350,13 +39350,6 @@ const MasterController = __webpack_require__(45);
  *  // do stuff
  * }
  * 
- * If you need to debug the a element, set the following getter to 
- * see a full log of a elements auto event bindings
- * 
- * get _debugEventInterface() {
- *  return true;
- * }
- * 
  */
 const EventInterface = subclass =>
   class EventMixin extends subclass {
@@ -39403,6 +39396,9 @@ const EventInterface = subclass =>
       // initialize handlers
       this.bind = {};
       
+      // actual function called by handler
+      this._eb_handlers = {};
+
       // have we initialized the handlers?
       this._eb_handlersSet = false;
       
@@ -39458,8 +39454,7 @@ const EventInterface = subclass =>
     _eb_init_fn(eventName) {
       this[this.bind[eventName]] = this[this.bind[eventName]].bind(this);
 
-      // actually wire up event 
-      MasterController.on(eventName, (...args) => {
+      this._eb_handlers[eventName] = (...args) => {
         // if we are not active, quit
         if( !this.active ) {
           if( this._debugEventInterface ) {
@@ -39472,7 +39467,10 @@ const EventInterface = subclass =>
           console.log(this.nodeName, 'received event', eventName, ', triggering function:', this.bind[eventName]);
         }
         this[this.bind[eventName]].apply(this, args);
-      });
+      }
+
+      // actually wire up event 
+      MasterController.on(eventName, this._eb_handlers[eventName]);
     }
     
     /**
@@ -39494,7 +39492,15 @@ const EventInterface = subclass =>
       
       for( var key in this.bind ) {
         if( !this[this.bind[key]] ) continue;
-        MasterController.removeListener(key, this[this.bind[key]]);
+        
+        // do a little verification that listener was actually detached
+        let count = MasterController.listenerCount(key);
+
+        MasterController.removeListener(key, this._eb_handlers[key]);
+
+        if( MasterController.listenerCount(key) !== count-1 ) {
+          console.warn(this.nodeName, 'On element detach, failed to remove event listener for: ', key);
+        }
 
         if( this._debugEventInterface ) {
           console.log(this.nodeName, 'removing event listener for:', key);
@@ -41481,6 +41487,7 @@ class ElasticSearchModel extends BaseModel {
       // do we need to append filters?
       if( data.filters ) {
         let range = {};
+        let rangeWithNull = [];
         let keywords = [];
 
         // loop all provided filters, splitting into keyword
@@ -41507,7 +41514,38 @@ class ElasticSearchModel extends BaseModel {
             }
             
           } else if( attrProps.type === 'range' ) {
-            range[attr] = attrProps.value;
+            if( attrProps.value.includeNull ) {
+              let r = Object.assign({}, attrProps.value);
+              let nullValue = r.includeNull;
+              delete r.includeNull;
+
+              rangeWithNull.push({
+                bool : {
+                  should : [
+                    {
+                      range: {
+                        [attr] : r
+                      }
+                    },
+                    {
+                      bool: {
+                        must_not: {
+                          exists: {
+                            field: attr
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              });
+
+            } else {
+              if( attrProps.value.includeNull !== undefined ) {
+                delete attrProps.value.includeNull;
+              }
+              range[attr] = attrProps.value;
+            }
           }
         }
 
@@ -41526,6 +41564,15 @@ class ElasticSearchModel extends BaseModel {
 
           esBody.query.bool.must.push({range});
         }
+
+        if( rangeWithNull.length > 0 ) {
+          if( !esBody.query.bool.must ) {
+            esBody.query.bool.must = [];
+          }
+
+          esBody.query.bool.must = esBody.query.bool.must.concat(rangeWithNull);
+        }
+
       }
     }
 
@@ -41547,7 +41594,7 @@ class ElasticSearchModel extends BaseModel {
   async search(searchDocument = {}) {
     this.store.setAppSearchDocument(searchDocument);
     let esBody = this.fromSearchDocumentToEsBody(searchDocument);
-    return this.service.search(esBody);
+    return this.service.search(esBody, searchDocument);
   }
 
   /**
@@ -41836,9 +41883,11 @@ class ElasticSearchService extends BaseService {
    * @description Search the catalogs
    * 
    * @param {Object} query - elastic search query parameters
+   * @param {Object} searchDocument - cork search document representation
+   * 
    * @returns {Promise}
    */
-  async search(query = {}) {
+  async search(query = {}, searchDocument = {}) {
     return await this.request({
       url : this.apiPath,
       fetchOptions : {
@@ -41848,9 +41897,9 @@ class ElasticSearchService extends BaseService {
         },
         body : JSON.stringify(query)
       },
-      onLoading : promise => this.store.setSearchLoading(query, promise),
-      onLoad : result => this.store.setSearchLoaded(query, result.body),
-      onError : e => this.store.setSearchError(query, e)
+      onLoading : promise => this.store.setSearchLoading(query, searchDocument,  promise),
+      onLoad : result => this.store.setSearchLoaded(query, searchDocument, result.body),
+      onError : e => this.store.setSearchError(query, searchDocument, e)
     });
   }
 
@@ -41985,27 +42034,26 @@ class ElasticSearchStore extends BaseStore {
   /**
    * Search
    */
-  setSearchLoading(query, promise) {
+  setSearchLoading(query, searchDocument, promise) {
     this._setSearchState({
       state: this.STATE.LOADING, 
-      query: query,
+      query, searchDocument,
       request : promise
     });
   }
 
-  setSearchLoaded(query, payload) {
+  setSearchLoaded(query, searchDocument, payload) {
     this._setSearchState({
       state: this.STATE.LOADED,   
-      query: query,
+      query, searchDocument,
       payload: payload
     });
   }
 
-  setSearchError(query, e) {
+  setSearchError(query, searchDocument, error) {
     this._setSearchState({
       state: this.STATE.ERROR,   
-      query: query,
-      error: e
+      query, searchDocument, error
     });
   }
 
@@ -46400,6 +46448,11 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
       maxValue : {
         type : Number,
         value : -1
+      },
+
+      showUnknown : {
+        type : Boolean,
+        value : false
       }
 
     }
@@ -46417,6 +46470,23 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
     }, 100);
   }
 
+  /**
+   * @method _isDefaultState
+   * @description is range filter in the default state?  ie abs min/max
+   * is the same as min/max and unknown values are included?  If so
+   * we don't actually need a filter on.
+   */
+  _isDefaultState() {
+    if( this.minValue === this.absMinValue &&
+        this.maxValue === this.absMaxValue &&
+        this.$.unknown.checked === true ) {
+      
+      this._esRemoveRangeFilter(this.filter);
+      return true;
+    }
+    return false;
+  }
+
   _onRangeSliderChange(e) {
     this.minValue = e.detail.min;
     this.maxValue = e.detail.max;
@@ -46424,10 +46494,23 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
     this.$.minValueInput.value = this.minValue;
     this.$.maxValueInput.value = this.maxValue;
 
-    this._esAppendRangeFilter(this.filter, {
+    this._onRangeNullChange();
+  }
+
+  _onRangeNullChange() {
+    let value = {
       gte: this.minValue,
       lte: this.maxValue
-    });
+    }
+
+    if( this.$.unknown.checked ) {
+      value.includeNull = true;
+    }
+
+    // remove filter and return
+    if( this._isDefaultState() ) return;
+
+    this._esAppendRangeFilter(this.filter, value);
   }
 
   _onInputChange() {
@@ -46447,10 +46530,7 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
     this.minValue = min;
     this.maxValue = max;
 
-    this._esAppendRangeFilter(this.filter, {
-      gte: this.minValue,
-      lte: this.maxValue
-    });
+    this._onRangeNullChange();
   }
 
   _onDefaultEsSearchUpdate(e) {
@@ -46471,25 +46551,16 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
   _onEsSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
-    var query = e.query.query;
-    var activeFilters = [];
+    let filters = e.searchDocument.filters || {};
 
-    if( query && 
-        query.bool && 
-        query.bool.must ) {
-      
-      var arr = query.bool.must;
+    if( filters[this.filter] ) {
+      let value = filters[this.filter].value;
 
-      for( var i = 0; i < arr.length; i++ ) {
-        if( arr[i].range[this.filter] ) {
-          let value = arr[i].range[this.filter];
-          
-          this.minValue = value.gte;
-          this.maxValue = value.lte;
-          this.$.minValueInput.value = this.minValue;
-          this.$.maxValueInput.value = this.maxValue;
-        }
-      }
+      this.minValue = value.gte;
+      this.maxValue = value.lte;
+      this.$.minValueInput.value = this.minValue;
+      this.$.maxValueInput.value = this.maxValue;
+      this.$.unknown.checked = value.includeNull ? true : false;
     }
   }
 
@@ -46832,7 +46903,7 @@ module.exports = "<style>\n  :host {\n    display: block;\n    position: relativ
 /* 307 */
 /***/ (function(module, exports) {
 
-module.exports = "<style>\n  :host {\n    display: block;\n  }\n  \n  .labels {\n    display: flex;\n    margin: 0 13px;\n    color: var(--gray-text);\n    font-size: var(--font-size-sm);\n  }\n\n  .inputs {\n    display: flex;\n    align-items: center;\n  }\n\n  input {\n    margin: 0 13px;\n    padding: 7px;\n    border: 0;\n    width: 50px;\n    font-size: var(--font-size-sm);\n  }\n\n  app-range-slider {\n    --light-background-color: var(--medium-background-color);\n  }\n</style>\n\n<div class=\"inputs\">\n  <input id=\"minValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n  <span> - </span>\n  <input id=\"maxValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n</div>\n\n<app-range-slider\n  id=\"slider\"\n  on-range-value-change=\"_onRangeSliderChange\"\n  abs-min-value=\"[[absMinValue]]\"\n  abs-max-value=\"[[absMaxValue]]\"\n  min-value=\"[[minValue]]\"\n  max-value=\"[[maxValue]]\">\n</app-range-slider>\n\n<div class=\"labels\">\n  <div style=\"flex:1\">[[absMinValue]]</div>\n  <div>[[absMaxValue]]</div>\n</div>";
+module.exports = "<style>\n  :host {\n    display: block;\n  }\n  \n  .labels {\n    display: flex;\n    margin: 0 13px;\n    color: var(--gray-text);\n    font-size: var(--font-size-sm);\n  }\n\n  .inputs {\n    display: flex;\n    align-items: center;\n  }\n\n  input[type=\"number\"] {\n    margin: 0 13px;\n    padding: 7px;\n    border: 0;\n    width: 50px;\n    font-size: var(--font-size-sm);\n  }\n\n  .unknown {\n    margin-left: 9px;\n    display: flex;\n    align-items: center;\n  }\n\n  label {\n    font-size: var(--font-size-sm);\n    font-style: italic;\n    padding-left: 5px;\n  }\n\n  app-range-slider {\n    --light-background-color: var(--medium-background-color);\n  }\n</style>\n\n<div class=\"inputs\">\n  <input id=\"minValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n  <span> - </span>\n  <input id=\"maxValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n</div>\n\n<app-range-slider\n  id=\"slider\"\n  on-range-value-change=\"_onRangeSliderChange\"\n  abs-min-value=\"[[absMinValue]]\"\n  abs-max-value=\"[[absMaxValue]]\"\n  min-value=\"[[minValue]]\"\n  max-value=\"[[maxValue]]\">\n</app-range-slider>\n\n<div class=\"labels\">\n  <div style=\"flex:1\">[[absMinValue]]</div>\n  <div>[[absMaxValue]]</div>\n</div>\n\n<div class=\"unknown\" hidden$=\"[[showUnknown]]\">\n  <input type=\"checkbox\" id=\"unknown\" on-click=\"_onRangeNullChange\" />\n  <label for=\"unknown\">include unknown / unspecified</label>\n</div>";
 
 /***/ }),
 /* 308 */

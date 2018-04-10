@@ -15,12 +15,24 @@
     align-items: center;
   }
 
-  input {
+  input[type="number"] {
     margin: 0 13px;
     padding: 7px;
     border: 0;
     width: 50px;
     font-size: var(--font-size-sm);
+  }
+
+  .unknown {
+    margin-left: 9px;
+    display: flex;
+    align-items: center;
+  }
+
+  label {
+    font-size: var(--font-size-sm);
+    font-style: italic;
+    padding-left: 5px;
   }
 
   app-range-slider {
@@ -46,4 +58,9 @@
 <div class="labels">
   <div style="flex:1">[[absMinValue]]</div>
   <div>[[absMaxValue]]</div>
+</div>
+
+<div class="unknown" hidden$="[[showUnknown]]">
+  <input type="checkbox" id="unknown" on-click="_onRangeNullChange" />
+  <label for="unknown">include unknown / unspecified</label>
 </div>

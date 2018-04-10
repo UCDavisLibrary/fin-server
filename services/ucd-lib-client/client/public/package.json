@@ -20,7 +20,7 @@
     "@polymer/paper-tabs": "^3.0.0-pre.1",
     "@polymer/paper-toast": "^3.0.0-pre.1",
     "@polymer/polymer": "^3.0.0-pre.1",
-    "@ucd-lib/cork-app-elastic-search": "0.1.1",
+    "@ucd-lib/cork-app-elastic-search": "0.2.1",
     "@ucd-lib/cork-app-state": "0.0.14",
     "@ucd-lib/cork-app-utils": "2.0.4",
     "@ucd-lib/cork-pagination": "^2.0.0",
@@ -37,6 +37,7 @@
   },
   "resolutions": {
     "@webcomponents/webcomponentsjs": "1.0.12",
-    "boom": "5.2.0"
+    "boom": "5.2.0",
+    "@ucd-lib/cork-app-utils": "2.0.5"
   }
 }

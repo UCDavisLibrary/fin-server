@@ -287,11 +287,11 @@
     "@webcomponents/shadycss" "^1.0.0"
     "@webcomponents/webcomponentsjs" "^1.0.0"
 
-"@ucd-lib/cork-app-elastic-search@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-elastic-search/-/cork-app-elastic-search-0.1.1.tgz#ecb5ae17900ba633e6fa7661fbb48f652835fa75"
+"@ucd-lib/cork-app-elastic-search@0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-elastic-search/-/cork-app-elastic-search-0.2.1.tgz#e97e885e425748e6099421c2604219685055bfdd"
   dependencies:
-    "@ucd-lib/cork-app-utils" "^2.0.3"
+    "@ucd-lib/cork-app-utils" "^2.0.4"
     clone "^2.1.1"
 
 "@ucd-lib/cork-app-state@0.0.14":
@@ -303,10 +303,11 @@
     "@ucd-lib/cork-app-utils" "^2.0.3"
     query-string "^5.0.1"
 
-"@ucd-lib/cork-app-utils@2.0.4", "@ucd-lib/cork-app-utils@^2.0.3":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-utils/-/cork-app-utils-2.0.4.tgz#5baf247e6085f1b369bfdbe943ddb0181de3d36c"
+"@ucd-lib/cork-app-utils@2.0.4", "@ucd-lib/cork-app-utils@2.0.5", "@ucd-lib/cork-app-utils@^2.0.3", "@ucd-lib/cork-app-utils@^2.0.4":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-utils/-/cork-app-utils-2.0.5.tgz#6bda51bbac0a9b79eec539a6ed4a579640185f0d"
   dependencies:
+    fs-extra "^4.0.2"
     isomorphic-fetch "^2.2.1"
 
 "@ucd-lib/cork-pagination@^2.0.0":
@@ -371,6 +372,18 @@ encoding@^0.1.11:
   dependencies:
     iconv-lite "~0.4.13"
 
+fs-extra@^4.0.2:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-4.0.3.tgz#0d852122e5bc5beb453fb028e9c0c9bf36340c94"
+  dependencies:
+    graceful-fs "^4.1.2"
+    jsonfile "^4.0.0"
+    universalify "^0.1.0"
+
+graceful-fs@^4.1.2, graceful-fs@^4.1.6:
+  version "4.1.11"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
+
 hoek@4.x.x:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.0.tgz#72d9d0754f7fe25ca2d01ad8f8f9a9449a89526d"
@@ -389,6 +402,12 @@ isomorphic-fetch@^2.2.1:
   dependencies:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
+
+jsonfile@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
+  optionalDependencies:
+    graceful-fs "^4.1.6"
 
 leaflet@^1.2.0:
   version "1.2.0"
@@ -420,6 +439,10 @@ query-string@^5.0.1:
 strict-uri-encode@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
+
+universalify@^0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.1.tgz#fa71badd4437af4c148841e3b3b165f9e9e590b7"
 
 whatwg-fetch@>=0.10.0:
   version "2.0.3"

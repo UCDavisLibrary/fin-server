@@ -37,6 +37,11 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
       maxValue : {
         type : Number,
         value : -1
+      },
+
+      showUnknown : {
+        type : Boolean,
+        value : false
       }
 
     }
@@ -54,6 +59,23 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     }, 100);
   }
 
+  /**
+   * @method _isDefaultState
+   * @description is range filter in the default state?  ie abs min/max
+   * is the same as min/max and unknown values are included?  If so
+   * we don't actually need a filter on.
+   */
+  _isDefaultState() {
+    if( this.minValue === this.absMinValue &&
+        this.maxValue === this.absMaxValue &&
+        this.$.unknown.checked === true ) {
+      
+      this._esRemoveRangeFilter(this.filter);
+      return true;
+    }
+    return false;
+  }
+
   _onRangeSliderChange(e) {
     this.minValue = e.detail.min;
     this.maxValue = e.detail.max;
@@ -61,10 +83,23 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     this.$.minValueInput.value = this.minValue;
     this.$.maxValueInput.value = this.maxValue;
 
-    this._esAppendRangeFilter(this.filter, {
+    this._onRangeNullChange();
+  }
+
+  _onRangeNullChange() {
+    let value = {
       gte: this.minValue,
       lte: this.maxValue
-    });
+    }
+
+    if( this.$.unknown.checked ) {
+      value.includeNull = true;
+    }
+
+    // remove filter and return
+    if( this._isDefaultState() ) return;
+
+    this._esAppendRangeFilter(this.filter, value);
   }
 
   _onInputChange() {
@@ -84,10 +119,7 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     this.minValue = min;
     this.maxValue = max;
 
-    this._esAppendRangeFilter(this.filter, {
-      gte: this.minValue,
-      lte: this.maxValue
-    });
+    this._onRangeNullChange();
   }
 
   _onDefaultEsSearchUpdate(e) {
@@ -108,25 +140,16 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
   _onEsSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
-    var query = e.query.query;
-    var activeFilters = [];
+    let filters = e.searchDocument.filters || {};
 
-    if( query && 
-        query.bool && 
-        query.bool.must ) {
-      
-      var arr = query.bool.must;
+    if( filters[this.filter] ) {
+      let value = filters[this.filter].value;
 
-      for( var i = 0; i < arr.length; i++ ) {
-        if( arr[i].range[this.filter] ) {
-          let value = arr[i].range[this.filter];
-          
-          this.minValue = value.gte;
-          this.maxValue = value.lte;
-          this.$.minValueInput.value = this.minValue;
-          this.$.maxValueInput.value = this.maxValue;
-        }
-      }
+      this.minValue = value.gte;
+      this.maxValue = value.lte;
+      this.$.minValueInput.value = this.minValue;
+      this.$.maxValueInput.value = this.maxValue;
+      this.$.unknown.checked = value.includeNull ? true : false;
     }
   }
 
