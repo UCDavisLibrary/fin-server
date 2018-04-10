@@ -16,6 +16,7 @@ for( var key in config.elasticSearch.facets ) {
   facetFilters.push({
     label : config.elasticSearch.facets[key].label,
     type : config.elasticSearch.facets[key].type,
+    ignore : config.elasticSearch.facets[key].ignore,
     isDollar : config.elasticSearch.facets[key].isDollar,
     filter : key
   });

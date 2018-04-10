@@ -29,6 +29,7 @@ export class AppFilterPanel extends PolymerElement {
     var ele = document.createElement('app-'+this.filter.type+'-filter');
     ele.label = this.filter.label;
     ele.filter = this.filter.filter;
+    ele.ignore = this.filter.ignore;
     ele.isDollar = this.filter.isDollar;
 
     ele.addEventListener('update-visibility', (e) => {

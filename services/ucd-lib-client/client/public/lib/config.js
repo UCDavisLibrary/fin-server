@@ -19,6 +19,11 @@ module.exports = {
       yearPublished : {
         label : 'Published',
         type : 'range'
+      },
+      type : {
+        label : 'Type',
+        type : 'facet',
+        ignore : ['CreativeWork']
       }
     },
 

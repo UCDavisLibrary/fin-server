@@ -17,6 +17,10 @@ class AppFacetFilter extends Mixin(PolymerElement)
         type : String,
         value : ''
       },
+      ignore : {
+        type : Array,
+        value : []
+      },
       buckets : {
         type : Array,
         value : []
@@ -44,6 +48,14 @@ class AppFacetFilter extends Mixin(PolymerElement)
   _onDefaultEsSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this.buckets = e.payload.aggregations[this.filter].buckets;
+
+    if( this.ignore && this.ignore.length ) {
+      this.ignore.forEach(key => {
+        let index = this.buckets.findIndex(bucket => bucket.key === key);
+        if( index > -1 ) this.buckets.splice(index, 1);
+      });
+    }
+
     this._updateActiveFilters();
   }
 

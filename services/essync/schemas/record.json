@@ -9,6 +9,10 @@
       "type" : "keyword" 
     },
 
+    "type" : {
+      "type" : "keyword" 
+    },
+
     "isPartOf" : {
       "type" : "keyword" 
     },
