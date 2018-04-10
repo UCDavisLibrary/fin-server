@@ -13394,6 +13394,11 @@ module.exports = {
       yearPublished: {
         label: 'Published',
         type: 'range'
+      },
+      type: {
+        label: 'Type',
+        type: 'facet',
+        ignore: ['CreativeWork']
       }
     },
 
@@ -47320,6 +47325,7 @@ for (var key in _config2.default.elasticSearch.facets) {
   facetFilters.push({
     label: _config2.default.elasticSearch.facets[key].label,
     type: _config2.default.elasticSearch.facets[key].type,
+    ignore: _config2.default.elasticSearch.facets[key].ignore,
     isDollar: _config2.default.elasticSearch.facets[key].isDollar,
     filter: key
   });
@@ -47813,6 +47819,7 @@ var AppFilterPanel = exports.AppFilterPanel = function (_PolymerElement) {
       var ele = document.createElement('app-' + this.filter.type + '-filter');
       ele.label = this.filter.label;
       ele.filter = this.filter.filter;
+      ele.ignore = this.filter.ignore;
       ele.isDollar = this.filter.isDollar;
 
       ele.addEventListener('update-visibility', function (e) {
@@ -48599,6 +48606,10 @@ var AppFacetFilter = function (_Mixin$with) {
           type: String,
           value: ''
         },
+        ignore: {
+          type: Array,
+          value: []
+        },
         buckets: {
           type: Array,
           value: []
@@ -48627,8 +48638,20 @@ var AppFacetFilter = function (_Mixin$with) {
   _createClass(AppFacetFilter, [{
     key: '_onDefaultEsSearchUpdate',
     value: function _onDefaultEsSearchUpdate(e) {
+      var _this2 = this;
+
       if (e.state !== 'loaded') return;
       this.buckets = e.payload.aggregations[this.filter].buckets;
+
+      if (this.ignore && this.ignore.length) {
+        this.ignore.forEach(function (key) {
+          var index = _this2.buckets.findIndex(function (bucket) {
+            return bucket.key === key;
+          });
+          if (index > -1) _this2.buckets.splice(index, 1);
+        });
+      }
+
       this._updateActiveFilters();
     }
   }, {
@@ -48656,12 +48679,12 @@ var AppFacetFilter = function (_Mixin$with) {
   }, {
     key: '_updateActiveFilters',
     value: function _updateActiveFilters() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (!this.activeFilters) return;
 
       this.buckets = this.buckets.map(function (item) {
-        item.active = _this2.activeFilters.indexOf(item.key) > -1 ? true : false;
+        item.active = _this3.activeFilters.indexOf(item.key) > -1 ? true : false;
         return Object.assign({}, item);
       });
 

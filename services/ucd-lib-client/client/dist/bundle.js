@@ -14115,6 +14115,11 @@ module.exports = {
       yearPublished : {
         label : 'Published',
         type : 'range'
+      },
+      type : {
+        label : 'Type',
+        type : 'facet',
+        ignore : ['CreativeWork']
       }
     },
 
@@ -45782,6 +45787,7 @@ for( var key in __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearc
   facetFilters.push({
     label : __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearch.facets[key].label,
     type : __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearch.facets[key].type,
+    ignore : __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearch.facets[key].ignore,
     isDollar : __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearch.facets[key].isDollar,
     filter : key
   });
@@ -46317,6 +46323,7 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
     var ele = document.createElement('app-'+this.filter.type+'-filter');
     ele.label = this.filter.label;
     ele.filter = this.filter.filter;
+    ele.ignore = this.filter.ignore;
     ele.isDollar = this.filter.isDollar;
 
     ele.addEventListener('update-visibility', (e) => {
@@ -46941,6 +46948,10 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
         type : String,
         value : ''
       },
+      ignore : {
+        type : Array,
+        value : []
+      },
       buckets : {
         type : Array,
         value : []
@@ -46968,6 +46979,14 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
   _onDefaultEsSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this.buckets = e.payload.aggregations[this.filter].buckets;
+
+    if( this.ignore && this.ignore.length ) {
+      this.ignore.forEach(key => {
+        let index = this.buckets.findIndex(bucket => bucket.key === key);
+        if( index > -1 ) this.buckets.splice(index, 1);
+      });
+    }
+
     this._updateActiveFilters();
   }
 
