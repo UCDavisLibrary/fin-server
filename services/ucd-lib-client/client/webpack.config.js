@@ -23,6 +23,10 @@ module.exports = {
           }
         },
         {
+          test: /\.(xml|csl)$/,
+          use: [ 'raw-loader']
+        },
+        {
           test: /\.css$/,
           use: [ 'to-string-loader', 'css-loader' ]
         },
