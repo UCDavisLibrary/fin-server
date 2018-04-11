@@ -61,35 +61,42 @@ class CitationsModel {
     engine.updateItems([cslJson.id]);
     return engine.makeBibliography()[1].join('\n')
   }
-}
 
-let test = new CitationsModel();
+  esRecordToCslJson(record) {
+    let d = new Date();
 
-let json = {
-  "id": "Item-1",
-  "type": "book",
-  "title": "Digital Typography",
-  "publisher": "Center for the Study of Language and Information",
-  "number-of-pages": "685",
-  "source": "Amazon.com",
-  "ISBN": "1575860104",
-  "author": [
-    {
-      "family": "Knuth",
-      "given": "Donald E."
+    let cslJson = {
+      id : record['@id'],
+      title : record.name,
+      publisher : record.publisher,
+      source : 'library.ucdavis.edu',
+      accessed : {
+        'date-parts': [[ d.getFullYear(), d.getMonth()+1, d.getDate()]]
+      }
     }
-  ],
-  "issued": {
-    "date-parts": [
-      [
-        "1998",
-        6,
-        1
-      ]
-    ]
+
+    if( record.author ) {
+      cslJson.author = [{
+        family: record.author
+      }];
+    }
+
+    if( record.datePublished ) {
+      cslJson.issued = {
+        "raw": record.datePublished
+      }
+    } else if( record.yearPublished ) {
+      cslJson.issued = {
+        "raw": record.yearPublished+''
+      }
+    }
+
+    return cslJson;
+  }
+
+  renderEsRecord(record, format) {
+    return this.render(this.esRecordToCslJson(record), format);
   }
 }
-console.log(test.render(json, 'mla'))
-console.log(test.render(json, 'chicago'))
 
-export default test;
+export default new CitationsModel();

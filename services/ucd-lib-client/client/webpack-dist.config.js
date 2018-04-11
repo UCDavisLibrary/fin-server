@@ -23,6 +23,10 @@ var modern = {
             }
           },
           {
+            test: /\.(xml|csl)$/,
+            use: [ 'raw-loader']
+          },
+          {
             test: /\.css$/,
             use: [ 'to-string-loader', 'css-loader' ]
           },
@@ -57,6 +61,10 @@ var ie =  {
                 attrs: false
             }
           }
+        },
+        {
+          test: /\.(xml|csl)$/,
+          use: [ 'raw-loader']
         },
         {
           test: /\.css$/,

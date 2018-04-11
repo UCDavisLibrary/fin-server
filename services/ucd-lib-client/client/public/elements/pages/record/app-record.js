@@ -4,6 +4,7 @@ import template from "./app-record.html"
 import moment from "moment"
 import bytes from "bytes"
 import rightsDefinitions from "../../../lib/rights.json"
+import citations from "../../../lib/models/CitationsModel"
 
 import "./app-image-viewer"
 import "./app-image-download"
@@ -13,26 +14,6 @@ import AppStateInterface from "../../interfaces/AppStateInterface"
 import ElasticSearchInterface from "../../interfaces/ElasticSearchInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
-
-const lorem = 'Lorem ipsum dolor sit amet cons ectetuer adipiscing elit sed et diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam';
-const citeText = [
-  {
-    label : 'MLA',
-    text : lorem
-  },
-  {
-    label : 'APA',
-    text : lorem
-  },
-  {
-    label : 'Chicago / Turabian',
-    text : lorem
-  },
-  {
-    label : 'Harvard',
-    text : lorem
-  }
-];
 
 export default class AppRecord extends Mixin(PolymerElement)
       .with(EventInterface, AppStateInterface, ElasticSearchInterface, CollectionInterface, MediaInterface) {
@@ -82,10 +63,6 @@ export default class AppRecord extends Mixin(PolymerElement)
       metadata : {
         type : Array,
         value : () => []
-      },
-      cite : {
-        type : Array,
-        value : () => citeText
       }
     }
   }
@@ -154,6 +131,11 @@ export default class AppRecord extends Mixin(PolymerElement)
     } else {
       this.record = null;
     }
+
+    // render citations
+    this.$.mla.innerHTML = citations.renderEsRecord(this.record, 'mla');
+    this.$.apa.innerHTML = citations.renderEsRecord(this.record, 'apa');
+    this.$.chicago.innerHTML = citations.renderEsRecord(this.record, 'chicago');
 
     this.$.download.render({
       resolution : [this.record.width, this.record.height],
