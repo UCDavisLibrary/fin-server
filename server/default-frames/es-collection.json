@@ -72,7 +72,8 @@
       "@type" : "@id"
     },
     "datePublished" : {
-      "@id" : "schema:datePublished"
+      "@id" : "schema:datePublished",
+      "@type" : "http://www.w3.org/2001/XMLSchema#date"
     },
     "localIdentifier" : {
       "@id" : "schema:identifier"
