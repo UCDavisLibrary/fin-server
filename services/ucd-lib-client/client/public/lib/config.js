@@ -27,7 +27,7 @@ module.exports = {
       }
     },
 
-    textFields : ['name', 'description'],
+    textFields : ['name', 'description', 'keywords'],
     
     // max number of facets filter options
     maxFacetCount : 50
