@@ -3,6 +3,7 @@ import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-record.html"
 import moment from "moment"
 import bytes from "bytes"
+import rightsDefinitions from "../../../lib/rights.json"
 
 import "./app-image-viewer"
 import "./app-image-download"
@@ -75,8 +76,8 @@ export default class AppRecord extends Mixin(PolymerElement)
         value : ''
       },
       rights : {
-        type : String,
-        value : ''
+        type : Object,
+        value : () => {}
       },
       metadata : {
         type : Array,
@@ -143,7 +144,16 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.size = bytes(this.record.hasSize ? parseInt(this.record.hasSize) : 0);
     this.fileFormat = this.record.fileFormat || '';
 
-    this.rights = this.record.rights || '';
+    if( this.record.license && rightsDefinitions[this.record.license] ) {
+      let def = rightsDefinitions[this.record.license];
+      this.rights = {
+        link : this.record.license,
+        label : def.text,
+        icon : `/images/rights-icons/${def.icon}.svg`
+      }
+    } else {
+      this.record = null;
+    }
 
     this.$.download.render({
       resolution : [this.record.width, this.record.height],

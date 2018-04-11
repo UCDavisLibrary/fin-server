@@ -1,0 +1,50 @@
+{
+  "http://rightsstatements.org/vocab/InC/1.0/" : {
+    "text": "IN COPYRIGHT",
+    "icon": "InC"
+  },
+  "http://rightsstatements.org/vocab/InC-OW-EU/1.0/" :  {
+    "text": "IN COPYRIGHT - EU ORPHAN WORK",
+    "icon": "InC"
+  },	
+  "http://rightsstatements.org/vocab/InC-EDU/1.0/" :  {
+    "text": "IN COPYRIGHT - EDUCATIONAL USE PERMITTED",
+    "icon": "InC"
+  },
+  "http://rightsstatements.org/vocab/InC-NC/1.0/" :  {
+    "text": "IN COPYRIGHT - NON-COMMERCIAL USE PERMITTED",
+    "icon": "InC"
+  },	
+  "http://rightsstatements.org/vocab/InC-RUU/1.0/" :  {
+    "text": "IN COPYRIGHT - RIGHTS-HOLDER(S) UNLOCATABLE OR UNIDENTIFIABLE",
+    "icon": "InC"
+  },
+  "http://rightsstatements.org/vocab/NoC-NC/1.0/" :  {
+    "text": "NO COPYRIGHT - CONTRACTUAL RESTRICTIONS",
+    "icon": "NoC"
+  },	
+  "http://rightsstatements.org/vocab/NoC-NC/1.0/" :  {
+    "text": "NO COPYRIGHT - NON-COMMERCIAL USE ONLY",
+    "icon": "NoC"
+  },	
+  "http://rightsstatements.org/vocab/NoC-OKLR/1.0/" :  {
+    "text": "NO COPYRIGHT - OTHER KNOWN LEGAL RESTRICTIONS",
+    "icon": "NoC"
+  },	
+  "http://rightsstatements.org/vocab/NoC-US/1.0/" :  {
+    "text": "NO COPYRIGHT - UNITED STATES",
+    "icon": "NoC"
+  },	
+  "http://rightsstatements.org/vocab/CNE/1.0/" :  {
+    "text": "COPYRIGHT NOT EVALUATED",
+    "icon": "Other"
+  },	
+  "http://rightsstatements.org/vocab/UND/1.0/" :  {
+    "text": "COPYRIGHT UNDETERMINED",
+    "icon": "Other"
+  },	
+  "http://rightsstatements.org/vocab/NKC/1.0/" :  {
+    "text": "NO KNOWN COPYRIGHT",
+    "icon": "Other"
+  }
+}
