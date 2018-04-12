@@ -6,7 +6,7 @@ import bytes from "bytes"
 import rightsDefinitions from "../../../lib/rights.json"
 import citations from "../../../lib/models/CitationsModel"
 
-import "./app-image-viewer"
+import "./viewer/app-image-viewer-static"
 import "./app-image-download"
 import "./app-record-metadata-layout"
 
@@ -48,14 +48,6 @@ export default class AppRecord extends Mixin(PolymerElement)
         type : String,
         value : ''
       },
-      resolution : {
-        type : String,
-        value : ''
-      },
-      fileFormat : {
-        type : String,
-        value : ''
-      },
       rights : {
         type : Object,
         value : () => {}
@@ -84,42 +76,36 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     let path = e.location.path.slice(0);
     path.splice(0, 1);
+    if( this.currentRecordId === '/'+path.join('/') ) return;
+
     this.currentRecordId = '/'+path.join('/');
 
-    let record = await this._esGetRecord(this.currentRecordId)
-    this._render(record);
+    let result = await this._esGetRecord(this.currentRecordId);
+    this._setSelectedRecord(result.payload._source);
   }
 
   /**
-   * @method _render
-   * @description from ElasticSearchInterface, called when search state updates
+   * @method _onSelectedRecordUpdate
+   * @description from AppStateInterface, called when a record is selected
    * 
-   * @param {Object} e 
+   * @param {Object} record selected record
    */
-  async _render(e) {
-    if( e.id === this.renderedRecordId ) return;
-    this.renderedRecordId = e.id;
+  async _onSelectedRecordUpdate(record) {
+    if( record.id === this.renderedRecordId ) return;
 
-    this.record = e.payload._source;
-
-    this.resolution = this.record.width+'x'+this.record.height;
-    
-    let imgPath = this._getImgPath(this.record);
-    this.$.imageViewer.render(imgPath);
+    this.renderedRecordId = record.id;
+    this.record = record;
 
     this.name = this.record.name || '';
 
     this.description = this.record.description || '';
     this.$.link.value = window.location.href;
 
-    this.date = this.record.created ? 
-                  moment(this.record.created).format(this.momentFormat) :
+    this.date = this.record.datePublished ? 
+                  moment(this.record.datePublished).format(this.momentFormat) :
                   '';
 
-    this.resourceType = this.record.type || this.record.fileFormat || 'Unknown';
-
-    this.size = bytes(this.record.hasSize ? parseInt(this.record.hasSize) : 0);
-    this.fileFormat = this.record.fileFormat || '';
+    this.resourceType = this.record.type ? this.record.type.join(', ') : 'Unknown';
 
     if( this.record.license && rightsDefinitions[this.record.license] ) {
       let def = rightsDefinitions[this.record.license];
@@ -129,7 +115,7 @@ export default class AppRecord extends Mixin(PolymerElement)
         icon : `/images/rights-icons/${def.icon}.svg`
       }
     } else {
-      this.record = null;
+      this.rights = null;
     }
 
     // render citations
@@ -137,20 +123,36 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.apa.innerHTML = citations.renderEsRecord(this.record, 'apa');
     this.$.chicago.innerHTML = citations.renderEsRecord(this.record, 'chicago');
 
-    this.$.download.render({
-      resolution : [this.record.width, this.record.height],
-      fileFormat : this.fileFormat,
-      size : this.record.hasSize ? parseInt(this.record.hasSize) : 0,
-      url : imgPath
-    });
-
     this.collectionName = this.record.isPartOf || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.name;
     }
 
+    if( record.associatedMedia ) {
+      let imageList = this._getImageMediaList(record);
+      if( imageList.length ) this._setSelectedRecordMedia(imageList[0]);
+      else this._setSelectedRecordMedia(record);
+    } else {
+      this._setSelectedRecordMedia(record);
+    }
+
     this._updateMetadataRows();
+  }
+
+  /**
+   * @method _onSelectedRecordMediaUpdate
+   * @description from AppStateInterface, called when a records media is selected
+   * 
+   * @param {Object} record 
+   */
+  _onSelectedRecordMediaUpdate(record) {
+    this.$.download.render({
+      resolution : [record.width, record.height],
+      fileFormat : record.fileFormat,
+      size : record.fileSize ? parseInt(record.fileSize) : 0,
+      url : this._getImgPath(record)
+    });
   }
 
   /**

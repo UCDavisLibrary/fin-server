@@ -8,6 +8,22 @@ class AppStateModelImpl extends AppStateModel {
     this.store = AppStateStore;
   }
 
+  setSelectedRecord(record) {
+    this.store.setSelectedRecord(record);
+  }
+
+  getSelectedRecord() {
+    return this.store.getSelectedRecord();
+  }
+
+  setSelectedRecordMedia(record) {
+    this.store.setSelectedRecordMedia(record);
+  }
+
+  getSelectedRecordMedia() {
+    return this.store.getSelectedRecordMedia();
+  }
+
 }
 
 module.exports = new AppStateModelImpl();

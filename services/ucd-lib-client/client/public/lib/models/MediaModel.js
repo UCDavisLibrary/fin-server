@@ -44,6 +44,28 @@ class MediaModel extends BaseModel {
     return `${config.fcrepoBasePath}${path}/svc:iiif/full/${width},${height}/0/default.png`;
   }
 
+  /**
+   * @method getImageMediaList
+   * @description given a root record that has been has it's hasParts/associatedMedia
+   * filled in, return the first image list found.
+   * 
+   * @param {Object} rootRecord a filled in root record
+   * @returns {Array}
+   */
+  getImageMediaList(rootRecord) {
+    if( rootRecord._imageList ) return rootRecord._imageList;
+    if( !rootRecord._associatedMedia ) return [];
+
+    for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
+      let ef = rootRecord._associatedMedia[i].encodingFormat;
+      if( ef && ef.toLowerCase() === 'image list' ) {
+        rootRecord._imageList = rootRecord._associatedMedia[i]._hasPart;
+        return rootRecord._associatedMedia[i]._hasPart;
+      }
+    }
+
+    return [];
+  }
 
 }
 

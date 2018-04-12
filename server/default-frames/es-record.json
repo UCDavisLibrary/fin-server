@@ -67,6 +67,10 @@
       "@id" : "schema:about",
       "@type" : "@id"
     },
+    "workExample" : {
+      "@id" : "schema:workExample",
+      "@type" : "@id"
+    },
     "datePublished" : {
       "@id" : "schema:datePublished",
       "@type" : "http://www.w3.org/2001/XMLSchema#date"
@@ -84,13 +88,12 @@
     "fileFormat" : {
       "@id" : "ebucore:hasMimeType"
     },
+    "encodingFormat" : {
+      "@id" : "schema:encodingFormat"
+    },
     "fileSize" : {
       "@id" : "premis:hasSize",
-      "@type" : "http://www.w3.org/2001/XMLSchema#long"
-    },
-    "premis:hasSize" : {
-      "@id" : "premis:hasSize",
-      "@type" : "http://www.w3.org/2001/XMLSchema#long"
+      "@type": "http://www.w3.org/2001/XMLSchema#long"
     },
     "filename" : {
       "@id" : "ebucore:filename"
@@ -107,6 +110,9 @@
     "@default" : ""
   },
   "about" : {
+    "@default" : ""
+  },
+  "workExample" : {
     "@default" : ""
   },
   "creator" : {
@@ -136,6 +142,9 @@
   "fileFormat" : {
     "@default" : ""
   },
+  "encodingFormat" : {
+    "@default" : ""
+  },
   "lastModified" : {
     "@default" : ""
   },
@@ -155,7 +164,7 @@
     "@default" : ""
   },
   "fileSize" : {
-    "@default" : 0
+    "@default" : ""
   },
   "filename" : {
     "@default" : ""

@@ -13,4 +13,8 @@ module.exports = subclass =>
       return this.MediaModel.getImgUrl(path, width, height);
     }
 
+    _getImageMediaList(rootRecord) {
+      return this.MediaModel.getImageMediaList(rootRecord);
+    }
+
   }

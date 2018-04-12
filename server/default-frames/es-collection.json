@@ -71,6 +71,10 @@
       "@id" : "schema:about",
       "@type" : "@id"
     },
+    "workExample" : {
+      "@id" : "schema:workExample",
+      "@type" : "@id"
+    },
     "datePublished" : {
       "@id" : "schema:datePublished",
       "@type" : "http://www.w3.org/2001/XMLSchema#date"
@@ -109,6 +113,9 @@
   "about" : {
     "@default" : ""
   },
+  "workExample" : {
+    "@default" : ""
+  },
   "creator" : {
     "@default" : ""
   },
@@ -140,9 +147,6 @@
     "@default" : ""
   },
   "hasPart" : {
-    "@default" : ""
-  },
-  "workExample" : {
     "@default" : ""
   }
 }
