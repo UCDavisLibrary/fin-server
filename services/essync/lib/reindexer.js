@@ -121,7 +121,7 @@ class EsReindexer {
     if( !api.isRdfContainer(response) ) {
       url = url + '/fcr:metadata'
     }
-
+    
     // grab the current container as json-ld because we need full type 
     // information in order to know which frame service to access.  We
     // also need the contains information to continue the crawl

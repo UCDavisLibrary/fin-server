@@ -11,7 +11,21 @@
     align-items: center;
   }
 
+  #thumbnails {
+    overflow: hidden;
+    /* (50px width + 10px margin + 4px border) * 8 thumbnails */
+    max-width: 512px;
+  }
+
+  #thumbnails > div {
+    white-space: nowrap;
+    margin-left: 0;
+    will-change: margin-left;
+    transition: margin-left 250ms ease-out;
+  }
+
   .thumbnail {
+    display: inline-block;
     width: 50px;
     height: 50px;
     background-size: cover;
@@ -28,26 +42,45 @@
 
   paper-icon-button {
     color: var(--default-secondary-color);
+    min-width: 40px;
+  }
+
+  paper-icon-button[disabled] {
+    color: var(--gray-text);
+    min-width: 40px;
   }
 </style>
 
 <div class="layout">
-  <div id="navLeft"></div>
-  <div class="layout">
-    <template is="dom-repeat" items="[[thumbnails]]">
-      <div 
-        class="thumbnail" 
-        selected$="[[item.selected]]" 
-        style="background-image:url([[item.src]])"
-        media-id$="[[item.id]]"
-        on-click="_onThumbnailClicked">
-      </div>
-    </template>
+  <div id="navLeft">
+    <paper-icon-button icon="chevron-left" disabled$="[[!showNavLeft]]" on-click="_pageLeft"></paper-icon-button>
   </div>
-  <div id="navRight"></div>
+  <div id="thumbnails">
+    <div id="thumbnailContainer">
+      <template is="dom-repeat" items="[[thumbnails]]">
+        <button 
+          class="thumbnail" 
+          selected$="[[item.selected]]" 
+          style="background-image:url([[item.src]])"
+          media-id$="[[item.id]]"
+          alt$="Item #[[item.position]]"
+          on-click="_onThumbnailClicked">
+        </button>
+      </template>
+
+    </div>
+  </div>
+  <div id="navRight">
+    <paper-icon-button icon="chevron-right" disabled$="[[!showNavRight]]" on-click="_pageRight"></paper-icon-button>
+  </div>
 
   <div style="flex:1"></div>
   
+  <paper-icon-button icon="social:share" hidden$="[[breakControls]]"></paper-icon-button>
+  <paper-icon-button icon="zoom-in" hidden$="[[breakControls]]"></paper-icon-button>
+</div>
+
+<div hidden$="[[!breakControls]]" style="text-align: right">
   <paper-icon-button icon="social:share"></paper-icon-button>
   <paper-icon-button icon="zoom-in"></paper-icon-button>
 </div>

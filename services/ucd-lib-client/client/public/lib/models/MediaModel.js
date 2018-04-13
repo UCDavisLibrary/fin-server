@@ -59,7 +59,13 @@ class MediaModel extends BaseModel {
     for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
       let ef = rootRecord._associatedMedia[i].encodingFormat;
       if( ef && ef.toLowerCase() === 'image list' ) {
-        rootRecord._imageList = rootRecord._associatedMedia[i]._hasPart;
+        rootRecord._imageList = rootRecord._associatedMedia[i]._hasPart || [];
+        rootRecord._imageList.sort((a, b) => {
+          if( a.position > b.position ) return 1;
+          if( a.position < b.position ) return -1;
+          return 1;
+        });
+
         return rootRecord._associatedMedia[i]._hasPart;
       }
     }

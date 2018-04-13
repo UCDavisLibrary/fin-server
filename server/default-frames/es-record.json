@@ -30,6 +30,9 @@
     "publisher" : {
       "@id": "schema:publisher"
     },
+    "position" : {
+      "@id": "schema:position"
+    },
     "createdBy" : {
       "@id": "fedora:createdBy"
     },
@@ -119,6 +122,9 @@
     "@default" : ""
   },
   "publisher" : {
+    "@default" : ""
+  },
+  "position" : {
     "@default" : ""
   },
   "datePublished" : {
