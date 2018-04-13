@@ -53,6 +53,10 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
       isLightbox : {
         type : Boolean,
         value : false
+      },
+      singleImage : {
+        type : Boolean,
+        value : true
       }
     }
   }
@@ -169,6 +173,10 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
 
       return thumbnail;
     });
+
+    this.singleImage = (this.thumbnails.length > 1) ? false : true;
+    if( this.singleImage ) this.classList.add('single');
+    else this.classList.remove('single');
 
     this._resize();
   }

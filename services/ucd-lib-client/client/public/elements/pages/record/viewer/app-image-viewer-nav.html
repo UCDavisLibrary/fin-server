@@ -6,6 +6,14 @@
     padding: 8px;
   }
 
+  :host(.single) {
+    background-color: transparent;
+  }
+
+  :host(.single) paper-icon-button {
+    background-color: var(--default-primary-color);
+  }
+
   .layout {
     display: flex;
     align-items: center;
@@ -52,10 +60,10 @@
 </style>
 
 <div class="layout">
-  <div id="navLeft">
+  <div id="navLeft" hidden$="[[singleImage]]">
     <paper-icon-button icon="chevron-left" disabled$="[[!showNavLeft]]" on-click="_pageLeft"></paper-icon-button>
   </div>
-  <div id="thumbnails">
+  <div id="thumbnails" hidden$="[[singleImage]]">
     <div id="thumbnailContainer">
       <template is="dom-repeat" items="[[thumbnails]]">
         <button 
@@ -70,7 +78,7 @@
 
     </div>
   </div>
-  <div id="navRight">
+  <div id="navRight" hidden$="[[singleImage]]">
     <paper-icon-button icon="chevron-right" disabled$="[[!showNavRight]]" on-click="_pageRight"></paper-icon-button>
   </div>
 

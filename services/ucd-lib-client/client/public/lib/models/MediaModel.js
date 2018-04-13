@@ -56,6 +56,7 @@ class MediaModel extends BaseModel {
     if( rootRecord._imageList ) return rootRecord._imageList;
     if( !rootRecord._associatedMedia ) return [];
 
+    // see if we have an image list
     for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
       let ef = rootRecord._associatedMedia[i].encodingFormat;
       if( ef && ef.toLowerCase() === 'image list' ) {
@@ -70,7 +71,17 @@ class MediaModel extends BaseModel {
       }
     }
 
-    return [];
+    // if no image list, return list of images
+    let imageRecords = [];
+    for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
+      let ff = rootRecord._associatedMedia[i].fileFormat;
+      if( ff && ff.match(/^image/i) ) {
+        imageRecords.push(rootRecord._associatedMedia[i]);
+      }
+    }
+    rootRecord._imageList = imageRecords;
+
+    return imageRecords;
   }
 
 }
