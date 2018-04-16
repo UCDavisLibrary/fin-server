@@ -118,16 +118,19 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.rights = null;
     }
 
+    this.collectionName = this.record.isPartOf || '';
+    if( this.collectionName ) {
+      let collection = await this._getCollection(this.collectionName);
+      this.collectionName = collection.name;
+      this.record.collectionName = collection.name;
+    }
+
     // render citations
     this.$.mla.innerHTML = citations.renderEsRecord(this.record, 'mla');
     this.$.apa.innerHTML = citations.renderEsRecord(this.record, 'apa');
     this.$.chicago.innerHTML = citations.renderEsRecord(this.record, 'chicago');
 
-    this.collectionName = this.record.isPartOf || '';
-    if( this.collectionName ) {
-      let collection = await this._getCollection(this.collectionName);
-      this.collectionName = collection.name;
-    }
+
 
     if( record.associatedMedia ) {
       let imageList = this._getImageMediaList(record);

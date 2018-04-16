@@ -75,6 +75,10 @@ class CitationsModel {
       }
     }
 
+    if( record.collectionName ) {
+      cslJson['collection-title'] = record.collectionName;
+    }
+
     if( record.author ) {
       cslJson.author = [{
         family: record.author
