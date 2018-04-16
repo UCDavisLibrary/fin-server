@@ -151,6 +151,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
 
     L.imageOverlay(url, this.bounds).addTo(this.viewer);
     this.viewer.fitBounds(this.bounds);
+
+    this.shadowRoot.querySelector('.leaflet-control-attribution').style.display = 'none';
   }
 
   /**

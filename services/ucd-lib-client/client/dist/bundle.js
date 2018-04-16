@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 194);
+/******/ 	return __webpack_require__(__webpack_require__.s = 195);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1911,7 +1911,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(295)("./" + name);
+            __webpack_require__(297)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -4583,22 +4583,22 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(67)(module)))
 
 /***/ }),
 /* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_legacy_legacy_element_mixin_js__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_legacy_legacy_element_mixin_js__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_legacy_polymer_fn_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_legacy_templatizer_behavior_js__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_elements_dom_bind_js__ = __webpack_require__(207);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_elements_dom_repeat_js__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_elements_dom_if_js__ = __webpack_require__(209);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_elements_array_selector_js__ = __webpack_require__(210);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_elements_custom_style_js__ = __webpack_require__(211);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_legacy_mutable_data_behavior_js__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_legacy_templatizer_behavior_js__ = __webpack_require__(207);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_elements_dom_bind_js__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_elements_dom_repeat_js__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_elements_dom_if_js__ = __webpack_require__(210);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_elements_array_selector_js__ = __webpack_require__(211);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_elements_custom_style_js__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_legacy_mutable_data_behavior_js__ = __webpack_require__(214);
 
 
 
@@ -4619,7 +4619,7 @@ const Base = Object(__WEBPACK_IMPORTED_MODULE_0__lib_legacy_legacy_element_mixin
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Element; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_mixins_element_mixin_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_mixins_element_mixin_js__ = __webpack_require__(32);
 
 
 /**
@@ -4647,7 +4647,7 @@ const Element = Object(__WEBPACK_IMPORTED_MODULE_0__lib_mixins_element_mixin_js_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__class_js__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__class_js__ = __webpack_require__(206);
 
 
 const Polymer = function(info) {
@@ -4685,9 +4685,9 @@ let Polymer;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return matchesSelector; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_flattened_nodes_observer_js__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_flattened_nodes_observer_js__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(22);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__["b"]; });
 /* unused harmony reexport addDebouncer */
 
@@ -4988,19 +4988,44 @@ const dom = function(obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  BaseModel : __webpack_require__(231),
-  BaseStore : __webpack_require__(233),
-  BaseService : __webpack_require__(234),
-  Mixin : __webpack_require__(236),
-  EventInterface : __webpack_require__(237),
-  fetch : __webpack_require__(61)
+  BaseModel : __webpack_require__(233),
+  BaseStore : __webpack_require__(235),
+  BaseService : __webpack_require__(236),
+  Mixin : __webpack_require__(238),
+  EventInterface : __webpack_require__(239),
+  fetch : __webpack_require__(62)
 }
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const {ElasticSearchInterface} = __webpack_require__(29);
+const {AppStateInterface} = __webpack_require__(47);
+
+module.exports = subclass => 
+  class AppStateInterfaceImpl extends Mixin(subclass).with(AppStateInterface) {
+    _setSelectedRecord(record) {
+      this.AppStateModel.setSelectedRecord(record);
+    }
+  
+    _getSelectedRecord() {
+      return this.AppStateModel.getSelectedRecord();
+    }
+  
+    _setSelectedRecordMedia(record) {
+      this.AppStateModel.setSelectedRecordMedia(record);
+    }
+  
+    _getSelectedRecordMedia() {
+      return this.AppStateModel.getSelectedRecordMedia();
+    }
+  }
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {ElasticSearchInterface} = __webpack_require__(31);
 
 module.exports = subclass => 
   class ElasticSearchInterfaceImpl extends Mixin(subclass).with(ElasticSearchInterface) {
@@ -5015,7 +5040,7 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = subclass => 
@@ -5036,7 +5061,7 @@ class CollectionInterface extends subclass {
 }
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5191,7 +5216,7 @@ const microTask = {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5247,7 +5272,7 @@ const dedupingMixin = function(mixin) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5606,17 +5631,6 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {AppStateInterface} = __webpack_require__(46);
-
-module.exports = subclass => 
-  class AppStateInterfaceImpl extends Mixin(subclass).with(AppStateInterface) {
-    
-  }
-
-/***/ }),
 /* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5656,8 +5670,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Debouncer", function() { return Debouncer; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixin_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixin_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(10);
 
 
 
@@ -5767,197 +5781,8 @@ class Debouncer {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color_js__ = __webpack_require__(24);
-
-
-const $_documentContainer = document.createElement('div');
-$_documentContainer.setAttribute('style', 'display: none;');
-
-$_documentContainer.innerHTML = `<custom-style>
-  <style is="custom-style">
-    html {
-      /*
-       * You can use these generic variables in your elements for easy theming.
-       * For example, if all your elements use \`--primary-text-color\` as its main
-       * color, then switching from a light to a dark theme is just a matter of
-       * changing the value of \`--primary-text-color\` in your application.
-       */
-      --primary-text-color: var(--light-theme-text-color);
-      --primary-background-color: var(--light-theme-background-color);
-      --secondary-text-color: var(--light-theme-secondary-color);
-      --disabled-text-color: var(--light-theme-disabled-color);
-      --divider-color: var(--light-theme-divider-color);
-      --error-color: var(--paper-deep-orange-a700);
-
-      /*
-       * Primary and accent colors. Also see color.html for more colors.
-       */
-      --primary-color: var(--paper-indigo-500);
-      --light-primary-color: var(--paper-indigo-100);
-      --dark-primary-color: var(--paper-indigo-700);
-
-      --accent-color: var(--paper-pink-a200);
-      --light-accent-color: var(--paper-pink-a100);
-      --dark-accent-color: var(--paper-pink-a400);
-
-
-      /*
-       * Material Design Light background theme
-       */
-      --light-theme-background-color: #ffffff;
-      --light-theme-base-color: #000000;
-      --light-theme-text-color: var(--paper-grey-900);
-      --light-theme-secondary-color: #737373;  /* for secondary text and icons */
-      --light-theme-disabled-color: #9b9b9b;  /* disabled/hint text */
-      --light-theme-divider-color: #dbdbdb;
-
-      /*
-       * Material Design Dark background theme
-       */
-      --dark-theme-background-color: var(--paper-grey-900);
-      --dark-theme-base-color: #ffffff;
-      --dark-theme-text-color: #ffffff;
-      --dark-theme-secondary-color: #bcbcbc;  /* for secondary text and icons */
-      --dark-theme-disabled-color: #646464;  /* disabled/hint text */
-      --dark-theme-divider-color: #3c3c3c;
-
-      /*
-       * Deprecated values because of their confusing names.
-       */
-      --text-primary-color: var(--dark-theme-text-color);
-      --default-primary-color: var(--primary-color);
-    }
-  </style>
-</custom-style>`;
-
-document.head.appendChild($_documentContainer);
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_polymer_element_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
-
-
-
-
-const IronControlState = {
-
-  properties: {
-
-    /**
-     * If true, the element currently has focus.
-     */
-    focused: {
-      type: Boolean,
-      value: false,
-      notify: true,
-      readOnly: true,
-      reflectToAttribute: true
-    },
-
-    /**
-     * If true, the user cannot interact with this element.
-     */
-    disabled: {
-      type: Boolean,
-      value: false,
-      notify: true,
-      observer: '_disabledChanged',
-      reflectToAttribute: true
-    },
-
-    _oldTabIndex: {
-      type: Number
-    },
-
-    _boundFocusBlurHandler: {
-      type: Function,
-      value: function() {
-        return this._focusBlurHandler.bind(this);
-      }
-    },
-
-    __handleEventRetargeting: {
-      type: Boolean,
-      value: function() {
-        return !this.shadowRoot && !__WEBPACK_IMPORTED_MODULE_1__polymer_polymer_element_js__["a" /* Element */];
-      }
-    }
-  },
-
-  observers: [
-    '_changedControlState(focused, disabled)'
-  ],
-
-  ready: function() {
-    this.addEventListener('focus', this._boundFocusBlurHandler, true);
-    this.addEventListener('blur', this._boundFocusBlurHandler, true);
-  },
-
-  _focusBlurHandler: function(event) {
-    // In Polymer 2.0, the library takes care of retargeting events.
-    if (__WEBPACK_IMPORTED_MODULE_1__polymer_polymer_element_js__["a" /* Element */]) {
-      this._setFocused(event.type === 'focus');
-      return;
-    }
-
-    // NOTE(cdata):  if we are in ShadowDOM land, `event.target` will
-    // eventually become `this` due to retargeting; if we are not in
-    // ShadowDOM land, `event.target` will eventually become `this` due
-    // to the second conditional which fires a synthetic event (that is also
-    // handled). In either case, we can disregard `event.path`.
-    if (event.target === this) {
-      this._setFocused(event.type === 'focus');
-    } else if (this.__handleEventRetargeting) {
-      var target = /** @type {Node} */(Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__["a" /* dom */])(event).localTarget);
-      if (!this.isLightDescendant(target)) {
-        this.fire(event.type, {sourceEvent: event}, {
-          node: this,
-          bubbles: event.bubbles,
-          cancelable: event.cancelable
-        });
-      }
-    }
-  },
-
-  _disabledChanged: function(disabled, old) {
-    this.setAttribute('aria-disabled', disabled ? 'true' : 'false');
-    this.style.pointerEvents = disabled ? 'none' : '';
-    if (disabled) {
-      this._oldTabIndex = this.tabIndex;
-      this._setFocused(false);
-      this.tabIndex = -1;
-      this.blur();
-    } else if (this._oldTabIndex !== undefined) {
-      this.tabIndex = this._oldTabIndex;
-    }
-  },
-
-  _changedControlState: function() {
-    // _controlStateChanged is abstract, follow-on behaviors may implement it
-    if (this._controlStateChanged) {
-      this._controlStateChanged();
-    }
-  }
-
-};
-/* harmony export (immutable) */ __webpack_exports__["a"] = IronControlState;
-
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -6090,7 +5915,221 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color_js__ = __webpack_require__(25);
+
+
+const $_documentContainer = document.createElement('div');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<custom-style>
+  <style is="custom-style">
+    html {
+      /*
+       * You can use these generic variables in your elements for easy theming.
+       * For example, if all your elements use \`--primary-text-color\` as its main
+       * color, then switching from a light to a dark theme is just a matter of
+       * changing the value of \`--primary-text-color\` in your application.
+       */
+      --primary-text-color: var(--light-theme-text-color);
+      --primary-background-color: var(--light-theme-background-color);
+      --secondary-text-color: var(--light-theme-secondary-color);
+      --disabled-text-color: var(--light-theme-disabled-color);
+      --divider-color: var(--light-theme-divider-color);
+      --error-color: var(--paper-deep-orange-a700);
+
+      /*
+       * Primary and accent colors. Also see color.html for more colors.
+       */
+      --primary-color: var(--paper-indigo-500);
+      --light-primary-color: var(--paper-indigo-100);
+      --dark-primary-color: var(--paper-indigo-700);
+
+      --accent-color: var(--paper-pink-a200);
+      --light-accent-color: var(--paper-pink-a100);
+      --dark-accent-color: var(--paper-pink-a400);
+
+
+      /*
+       * Material Design Light background theme
+       */
+      --light-theme-background-color: #ffffff;
+      --light-theme-base-color: #000000;
+      --light-theme-text-color: var(--paper-grey-900);
+      --light-theme-secondary-color: #737373;  /* for secondary text and icons */
+      --light-theme-disabled-color: #9b9b9b;  /* disabled/hint text */
+      --light-theme-divider-color: #dbdbdb;
+
+      /*
+       * Material Design Dark background theme
+       */
+      --dark-theme-background-color: var(--paper-grey-900);
+      --dark-theme-base-color: #ffffff;
+      --dark-theme-text-color: #ffffff;
+      --dark-theme-secondary-color: #bcbcbc;  /* for secondary text and icons */
+      --dark-theme-disabled-color: #646464;  /* disabled/hint text */
+      --dark-theme-divider-color: #3c3c3c;
+
+      /*
+       * Deprecated values because of their confusing names.
+       */
+      --text-primary-color: var(--dark-theme-text-color);
+      --default-primary-color: var(--primary-color);
+    }
+  </style>
+</custom-style>`;
+
+document.head.appendChild($_documentContainer);
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_polymer_element_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
+
+
+
+
+const IronControlState = {
+
+  properties: {
+
+    /**
+     * If true, the element currently has focus.
+     */
+    focused: {
+      type: Boolean,
+      value: false,
+      notify: true,
+      readOnly: true,
+      reflectToAttribute: true
+    },
+
+    /**
+     * If true, the user cannot interact with this element.
+     */
+    disabled: {
+      type: Boolean,
+      value: false,
+      notify: true,
+      observer: '_disabledChanged',
+      reflectToAttribute: true
+    },
+
+    _oldTabIndex: {
+      type: Number
+    },
+
+    _boundFocusBlurHandler: {
+      type: Function,
+      value: function() {
+        return this._focusBlurHandler.bind(this);
+      }
+    },
+
+    __handleEventRetargeting: {
+      type: Boolean,
+      value: function() {
+        return !this.shadowRoot && !__WEBPACK_IMPORTED_MODULE_1__polymer_polymer_element_js__["a" /* Element */];
+      }
+    }
+  },
+
+  observers: [
+    '_changedControlState(focused, disabled)'
+  ],
+
+  ready: function() {
+    this.addEventListener('focus', this._boundFocusBlurHandler, true);
+    this.addEventListener('blur', this._boundFocusBlurHandler, true);
+  },
+
+  _focusBlurHandler: function(event) {
+    // In Polymer 2.0, the library takes care of retargeting events.
+    if (__WEBPACK_IMPORTED_MODULE_1__polymer_polymer_element_js__["a" /* Element */]) {
+      this._setFocused(event.type === 'focus');
+      return;
+    }
+
+    // NOTE(cdata):  if we are in ShadowDOM land, `event.target` will
+    // eventually become `this` due to retargeting; if we are not in
+    // ShadowDOM land, `event.target` will eventually become `this` due
+    // to the second conditional which fires a synthetic event (that is also
+    // handled). In either case, we can disregard `event.path`.
+    if (event.target === this) {
+      this._setFocused(event.type === 'focus');
+    } else if (this.__handleEventRetargeting) {
+      var target = /** @type {Node} */(Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__["a" /* dom */])(event).localTarget);
+      if (!this.isLightDescendant(target)) {
+        this.fire(event.type, {sourceEvent: event}, {
+          node: this,
+          bubbles: event.bubbles,
+          cancelable: event.cancelable
+        });
+      }
+    }
+  },
+
+  _disabledChanged: function(disabled, old) {
+    this.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+    this.style.pointerEvents = disabled ? 'none' : '';
+    if (disabled) {
+      this._oldTabIndex = this.tabIndex;
+      this._setFocused(false);
+      this.tabIndex = -1;
+      this.blur();
+    } else if (this._oldTabIndex !== undefined) {
+      this.tabIndex = this._oldTabIndex;
+    }
+  },
+
+  _changedControlState: function() {
+    // _controlStateChanged is abstract, follow-on behaviors may implement it
+    if (this._controlStateChanged) {
+      this._controlStateChanged();
+    }
+  }
+
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = IronControlState;
+
+
+
+/***/ }),
 /* 18 */
+/***/ (function(module, exports) {
+
+module.exports = subclass => 
+  class MediaInterface extends subclass {
+    constructor() {
+      super();
+      this._injectModel('MediaModel');
+    }
+
+    _getImgPath(record) {
+      return this.MediaModel.getImgPath(record);
+    }
+
+    _getImgUrl(path, width, height) {
+      return this.MediaModel.getImgUrl(path, width, height);
+    }
+
+    _getImageMediaList(rootRecord) {
+      return this.MediaModel.getImageMediaList(rootRecord);
+    }
+
+  }
+
+/***/ }),
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6099,7 +6138,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return sanitizeDOMValue; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__resolve_url_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__resolve_url_js__ = __webpack_require__(20);
 
 
 
@@ -6170,7 +6209,7 @@ const setSanitizeDOMValue = function(newSanitizeDOMValue) {
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6263,7 +6302,7 @@ function pathFromUrl(url) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6380,7 +6419,7 @@ const isDeep = isPath;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6425,11 +6464,11 @@ const flush = function() {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_mixin_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_mixin_js__ = __webpack_require__(11);
 
 
 // Common implementation for mixin & behavior
@@ -6545,7 +6584,7 @@ MutableData._mutablePropertyChange = mutablePropertyChange;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6623,7 +6662,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6959,12 +6998,12 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js__ = __webpack_require__(223);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js__ = __webpack_require__(224);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js__);
 
 
@@ -7133,13 +7172,13 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_control_state_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_control_state_js__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
 
@@ -7366,7 +7405,7 @@ const IronButtonState = [
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7823,13 +7862,13 @@ const IronA11yKeysBehavior = {
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_ripple_paper_ripple_js__ = __webpack_require__(226);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_button_state_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_ripple_paper_ripple_js__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_button_state_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
 
@@ -7943,18 +7982,264 @@ const PaperRippleBehavior = {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
+
+
+
+
+/**
+ * The `iron-iconset-svg` element allows users to define their own icon sets
+ * that contain svg icons. The svg icon elements should be children of the
+ * `iron-iconset-svg` element. Multiple icons should be given distinct id's.
+ *
+ * Using svg elements to create icons has a few advantages over traditional
+ * bitmap graphics like jpg or png. Icons that use svg are vector based so
+ * they are resolution independent and should look good on any device. They
+ * are stylable via css. Icons can be themed, colorized, and even animated.
+ *
+ * Example:
+ *
+ *     <iron-iconset-svg name="my-svg-icons" size="24">
+ *       <svg>
+ *         <defs>
+ *           <g id="shape">
+ *             <rect x="12" y="0" width="12" height="24" />
+ *             <circle cx="12" cy="12" r="12" />
+ *           </g>
+ *         </defs>
+ *       </svg>
+ *     </iron-iconset-svg>
+ *
+ * This will automatically register the icon set "my-svg-icons" to the iconset
+ * database.  To use these icons from within another element, make a
+ * `iron-iconset` element and call the `byId` method
+ * to retrieve a given iconset. To apply a particular icon inside an
+ * element use the `applyIcon` method. For example:
+ *
+ *     iconset.applyIcon(iconNode, 'car');
+ *
+ * @element iron-iconset-svg
+ * @demo demo/index.html
+ * @implements {Polymer.Iconset}
+ */
+Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Polymer */])({
+  is: 'iron-iconset-svg',
+
+  properties: {
+
+    /**
+     * The name of the iconset.
+     */
+    name: {
+      type: String,
+      observer: '_nameChanged'
+    },
+
+    /**
+     * The size of an individual icon. Note that icons must be square.
+     */
+    size: {
+      type: Number,
+      value: 24
+    },
+
+    /**
+     * Set to true to enable mirroring of icons where specified when they are
+     * stamped. Icons that should be mirrored should be decorated with a
+     * `mirror-in-rtl` attribute.
+     *
+     * NOTE: For performance reasons, direction will be resolved once per
+     * document per iconset, so moving icons in and out of RTL subtrees will
+     * not cause their mirrored state to change.
+     */
+    rtlMirroring: {
+      type: Boolean,
+      value: false
+    }
+  },
+
+  created: function() {
+    this._meta = new __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__["a" /* IronMeta */]({type: 'iconset', key: null, value: null});
+  },
+
+  attached: function() {
+    this.style.display = 'none';
+  },
+
+  /**
+   * Construct an array of all icon names in this iconset.
+   *
+   * @return {!Array} Array of icon names.
+   */
+  getIconNames: function() {
+    this._icons = this._createIconMap();
+    return Object.keys(this._icons).map(function(n) {
+      return this.name + ':' + n;
+    }, this);
+  },
+
+  /**
+   * Applies an icon to the given element.
+   *
+   * An svg icon is prepended to the element's shadowRoot if it exists,
+   * otherwise to the element itself.
+   *
+   * If RTL mirroring is enabled, and the icon is marked to be mirrored in
+   * RTL, the element will be tested (once and only once ever for each
+   * iconset) to determine the direction of the subtree the element is in.
+   * This direction will apply to all future icon applications, although only
+   * icons marked to be mirrored will be affected.
+   *
+   * @method applyIcon
+   * @param {Element} element Element to which the icon is applied.
+   * @param {string} iconName Name of the icon to apply.
+   * @return {?Element} The svg element which renders the icon.
+   */
+  applyIcon: function(element, iconName) {
+    // Remove old svg element
+    this.removeIcon(element);
+    // install new svg element
+    var svg = this._cloneIcon(iconName,
+        this.rtlMirroring && this._targetIsRTL(element));
+    if (svg) {
+      // insert svg element into shadow root, if it exists
+      var pde = Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__["a" /* dom */])(element.root || element);
+      pde.insertBefore(svg, pde.childNodes[0]);
+      return element._svgIcon = svg;
+    }
+    return null;
+  },
+
+  /**
+   * Remove an icon from the given element by undoing the changes effected
+   * by `applyIcon`.
+   *
+   * @param {Element} element The element from which the icon is removed.
+   */
+  removeIcon: function(element) {
+    // Remove old svg element
+    if (element._svgIcon) {
+      Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__["a" /* dom */])(element.root || element).removeChild(element._svgIcon);
+      element._svgIcon = null;
+    }
+  },
+
+  /**
+   * Measures and memoizes the direction of the element. Note that this
+   * measurement is only done once and the result is memoized for future
+   * invocations.
+   */
+  _targetIsRTL: function(target) {
+    if (this.__targetIsRTL == null) {
+      if (target && target.nodeType !== Node.ELEMENT_NODE) {
+        target = target.host;
+      }
+
+      this.__targetIsRTL = target &&
+          window.getComputedStyle(target)['direction'] === 'rtl';
+    }
+
+    return this.__targetIsRTL;
+  },
+
+  /**
+   *
+   * When name is changed, register iconset metadata
+   *
+   */
+  _nameChanged: function() {
+    this._meta.value = null;
+    this._meta.key = this.name;
+    this._meta.value = this;
+
+    this.async(function() {
+      this.fire('iron-iconset-added', this, {node: window});
+    });
+  },
+
+  /**
+   * Create a map of child SVG elements by id.
+   *
+   * @return {!Object} Map of id's to SVG elements.
+   */
+  _createIconMap: function() {
+    // Objects chained to Object.prototype (`{}`) have members. Specifically,
+    // on FF there is a `watch` method that confuses the icon map, so we
+    // need to use a null-based object here.
+    var icons = Object.create(null);
+    Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__["a" /* dom */])(this).querySelectorAll('[id]')
+      .forEach(function(icon) {
+        icons[icon.id] = icon;
+      });
+    return icons;
+  },
+
+  /**
+   * Produce installable clone of the SVG element matching `id` in this
+   * iconset, or `undefined` if there is no matching element.
+   *
+   * @return {Element} Returns an installable clone of the SVG element
+   * matching `id`.
+   */
+  _cloneIcon: function(id, mirrorAllowed) {
+    // create the icon map on-demand, since the iconset itself has no discrete
+    // signal to know when it's children are fully parsed
+    this._icons = this._icons || this._createIconMap();
+    return this._prepareSvgClone(this._icons[id], this.size, mirrorAllowed);
+  },
+
+  /**
+   * @param {Element} sourceSvg
+   * @param {number} size
+   * @param {Boolean} mirrorAllowed
+   * @return {Element}
+   */
+  _prepareSvgClone: function(sourceSvg, size, mirrorAllowed) {
+    if (sourceSvg) {
+      var content = sourceSvg.cloneNode(true),
+          svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+          viewBox = content.getAttribute('viewBox') || '0 0 ' + size + ' ' + size,
+          cssText = 'pointer-events: none; display: block; width: 100%; height: 100%;';
+
+      if (mirrorAllowed && content.hasAttribute('mirror-in-rtl')) {
+        cssText += '-webkit-transform:scale(-1,1);transform:scale(-1,1);';
+      }
+
+      svg.setAttribute('viewBox', viewBox);
+      svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      svg.setAttribute('focusable', 'false');
+      // TODO(dfreedm): `pointer-events: none` works around https://crbug.com/370136
+      // TODO(sjmiles): inline style may not be ideal, but avoids requiring a shadow-root
+      svg.style.cssText = cssText;
+      svg.appendChild(content).removeAttribute('id');
+      return svg;
+    }
+    return null;
+  }
+
+});
+
+
+/***/ }),
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  ElasticSearchInterface : __webpack_require__(259),
-  ElasticSearchModel : __webpack_require__(260),
-  ElasticSearchService : __webpack_require__(261),
-  ElasticSearchStore : __webpack_require__(262)
+  ElasticSearchInterface : __webpack_require__(261),
+  ElasticSearchModel : __webpack_require__(262),
+  ElasticSearchService : __webpack_require__(263),
+  ElasticSearchStore : __webpack_require__(264)
 }
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7964,13 +8249,13 @@ module.exports = {
 /* unused harmony export dumpRegistrations */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_mixin_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_mixin_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_case_map_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_style_gather_js__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_resolve_url_js__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__elements_dom_module_js__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__property_effects_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_style_gather_js__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_resolve_url_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__elements_dom_module_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__property_effects_js__ = __webpack_require__(34);
 
 
 
@@ -8704,14 +8989,14 @@ const updateStyles = function(props) {
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DomModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_resolve_url_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_resolve_url_js__ = __webpack_require__(20);
 
 
 
@@ -8835,18 +9120,18 @@ customElements.define('dom-module', DomModule);
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_path_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_path_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_case_map_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__property_accessors_js__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__template_stamp_js__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_settings_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__property_accessors_js__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__template_stamp_js__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_settings_js__ = __webpack_require__(19);
 
 
 
@@ -11489,7 +11774,7 @@ let hostStack = {
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11539,7 +11824,7 @@ if (window.ShadyCSS && window.ShadyCSS.nativeCss !== undefined) {
 }
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11816,7 +12101,7 @@ const AT_START = '@';
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11860,14 +12145,14 @@ const HOST_SUFFIX = '($|[.:[\\s>+~])';
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["c"] = updateNativeProperties;
 /* harmony export (immutable) */ __webpack_exports__["b"] = getComputedStyleValue;
 /* harmony export (immutable) */ __webpack_exports__["a"] = detectMixin;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_regex_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_regex_js__ = __webpack_require__(37);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -11930,7 +12215,7 @@ function detectMixin(cssText) {
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12009,7 +12294,7 @@ function afterNextRender(context, callback, args) {
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12017,8 +12302,8 @@ function afterNextRender(context, callback, args) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TemplateInstanceBase; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_property_effects_js__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_mutable_data_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_property_effects_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_mutable_data_js__ = __webpack_require__(23);
 
 
 
@@ -12526,12 +12811,12 @@ const Templatize = {
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_lib_utils_settings_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_lib_utils_settings_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
 
@@ -12724,13 +13009,13 @@ const IronResizableBehavior = {
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_selector_iron_selectable_js__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_selector_iron_selectable_js__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -12782,12 +13067,12 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selection_js__ = __webpack_require__(228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selection_js__ = __webpack_require__(229);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_case_map_js__ = __webpack_require__(13);
 
@@ -13188,12 +13473,12 @@ const IronSelectableBehavior = {
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_icon_iron_icon_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_icon_iron_icon_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(30);
 
 
 const $_documentContainer = document.createElement('div');
@@ -13517,7 +13802,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13678,256 +13963,10 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 44 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
-
-
-
-
-/**
- * The `iron-iconset-svg` element allows users to define their own icon sets
- * that contain svg icons. The svg icon elements should be children of the
- * `iron-iconset-svg` element. Multiple icons should be given distinct id's.
- *
- * Using svg elements to create icons has a few advantages over traditional
- * bitmap graphics like jpg or png. Icons that use svg are vector based so
- * they are resolution independent and should look good on any device. They
- * are stylable via css. Icons can be themed, colorized, and even animated.
- *
- * Example:
- *
- *     <iron-iconset-svg name="my-svg-icons" size="24">
- *       <svg>
- *         <defs>
- *           <g id="shape">
- *             <rect x="12" y="0" width="12" height="24" />
- *             <circle cx="12" cy="12" r="12" />
- *           </g>
- *         </defs>
- *       </svg>
- *     </iron-iconset-svg>
- *
- * This will automatically register the icon set "my-svg-icons" to the iconset
- * database.  To use these icons from within another element, make a
- * `iron-iconset` element and call the `byId` method
- * to retrieve a given iconset. To apply a particular icon inside an
- * element use the `applyIcon` method. For example:
- *
- *     iconset.applyIcon(iconNode, 'car');
- *
- * @element iron-iconset-svg
- * @demo demo/index.html
- * @implements {Polymer.Iconset}
- */
-Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Polymer */])({
-  is: 'iron-iconset-svg',
-
-  properties: {
-
-    /**
-     * The name of the iconset.
-     */
-    name: {
-      type: String,
-      observer: '_nameChanged'
-    },
-
-    /**
-     * The size of an individual icon. Note that icons must be square.
-     */
-    size: {
-      type: Number,
-      value: 24
-    },
-
-    /**
-     * Set to true to enable mirroring of icons where specified when they are
-     * stamped. Icons that should be mirrored should be decorated with a
-     * `mirror-in-rtl` attribute.
-     *
-     * NOTE: For performance reasons, direction will be resolved once per
-     * document per iconset, so moving icons in and out of RTL subtrees will
-     * not cause their mirrored state to change.
-     */
-    rtlMirroring: {
-      type: Boolean,
-      value: false
-    }
-  },
-
-  created: function() {
-    this._meta = new __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__["a" /* IronMeta */]({type: 'iconset', key: null, value: null});
-  },
-
-  attached: function() {
-    this.style.display = 'none';
-  },
-
-  /**
-   * Construct an array of all icon names in this iconset.
-   *
-   * @return {!Array} Array of icon names.
-   */
-  getIconNames: function() {
-    this._icons = this._createIconMap();
-    return Object.keys(this._icons).map(function(n) {
-      return this.name + ':' + n;
-    }, this);
-  },
-
-  /**
-   * Applies an icon to the given element.
-   *
-   * An svg icon is prepended to the element's shadowRoot if it exists,
-   * otherwise to the element itself.
-   *
-   * If RTL mirroring is enabled, and the icon is marked to be mirrored in
-   * RTL, the element will be tested (once and only once ever for each
-   * iconset) to determine the direction of the subtree the element is in.
-   * This direction will apply to all future icon applications, although only
-   * icons marked to be mirrored will be affected.
-   *
-   * @method applyIcon
-   * @param {Element} element Element to which the icon is applied.
-   * @param {string} iconName Name of the icon to apply.
-   * @return {?Element} The svg element which renders the icon.
-   */
-  applyIcon: function(element, iconName) {
-    // Remove old svg element
-    this.removeIcon(element);
-    // install new svg element
-    var svg = this._cloneIcon(iconName,
-        this.rtlMirroring && this._targetIsRTL(element));
-    if (svg) {
-      // insert svg element into shadow root, if it exists
-      var pde = Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__["a" /* dom */])(element.root || element);
-      pde.insertBefore(svg, pde.childNodes[0]);
-      return element._svgIcon = svg;
-    }
-    return null;
-  },
-
-  /**
-   * Remove an icon from the given element by undoing the changes effected
-   * by `applyIcon`.
-   *
-   * @param {Element} element The element from which the icon is removed.
-   */
-  removeIcon: function(element) {
-    // Remove old svg element
-    if (element._svgIcon) {
-      Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__["a" /* dom */])(element.root || element).removeChild(element._svgIcon);
-      element._svgIcon = null;
-    }
-  },
-
-  /**
-   * Measures and memoizes the direction of the element. Note that this
-   * measurement is only done once and the result is memoized for future
-   * invocations.
-   */
-  _targetIsRTL: function(target) {
-    if (this.__targetIsRTL == null) {
-      if (target && target.nodeType !== Node.ELEMENT_NODE) {
-        target = target.host;
-      }
-
-      this.__targetIsRTL = target &&
-          window.getComputedStyle(target)['direction'] === 'rtl';
-    }
-
-    return this.__targetIsRTL;
-  },
-
-  /**
-   *
-   * When name is changed, register iconset metadata
-   *
-   */
-  _nameChanged: function() {
-    this._meta.value = null;
-    this._meta.key = this.name;
-    this._meta.value = this;
-
-    this.async(function() {
-      this.fire('iron-iconset-added', this, {node: window});
-    });
-  },
-
-  /**
-   * Create a map of child SVG elements by id.
-   *
-   * @return {!Object} Map of id's to SVG elements.
-   */
-  _createIconMap: function() {
-    // Objects chained to Object.prototype (`{}`) have members. Specifically,
-    // on FF there is a `watch` method that confuses the icon map, so we
-    // need to use a null-based object here.
-    var icons = Object.create(null);
-    Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__["a" /* dom */])(this).querySelectorAll('[id]')
-      .forEach(function(icon) {
-        icons[icon.id] = icon;
-      });
-    return icons;
-  },
-
-  /**
-   * Produce installable clone of the SVG element matching `id` in this
-   * iconset, or `undefined` if there is no matching element.
-   *
-   * @return {Element} Returns an installable clone of the SVG element
-   * matching `id`.
-   */
-  _cloneIcon: function(id, mirrorAllowed) {
-    // create the icon map on-demand, since the iconset itself has no discrete
-    // signal to know when it's children are fully parsed
-    this._icons = this._icons || this._createIconMap();
-    return this._prepareSvgClone(this._icons[id], this.size, mirrorAllowed);
-  },
-
-  /**
-   * @param {Element} sourceSvg
-   * @param {number} size
-   * @param {Boolean} mirrorAllowed
-   * @return {Element}
-   */
-  _prepareSvgClone: function(sourceSvg, size, mirrorAllowed) {
-    if (sourceSvg) {
-      var content = sourceSvg.cloneNode(true),
-          svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
-          viewBox = content.getAttribute('viewBox') || '0 0 ' + size + ' ' + size,
-          cssText = 'pointer-events: none; display: block; width: 100%; height: 100%;';
-
-      if (mirrorAllowed && content.hasAttribute('mirror-in-rtl')) {
-        cssText += '-webkit-transform:scale(-1,1);transform:scale(-1,1);';
-      }
-
-      svg.setAttribute('viewBox', viewBox);
-      svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-      svg.setAttribute('focusable', 'false');
-      // TODO(dfreedm): `pointer-events: none` works around https://crbug.com/370136
-      // TODO(sjmiles): inline style may not be ideal, but avoids requiring a shadow-root
-      svg.style.cssText = cssText;
-      svg.appendChild(content).removeAttribute('id');
-      return svg;
-    }
-    return null;
-  }
-
-});
-
-
-/***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var EventEmitter = __webpack_require__(232).EventEmitter;
+var EventEmitter = __webpack_require__(234).EventEmitter;
 
 /**
  * @class MasterController
@@ -13988,21 +14027,21 @@ class MasterController extends EventEmitter {
 module.exports = new MasterController();
 
 /***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = {
-  AppStateInterface : __webpack_require__(63),
-  AppStateModel : __webpack_require__(246),
-  AppStateStore : __webpack_require__(247),
-  'app-route' : __webpack_require__(248)
-}
-
-/***/ }),
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var {ElasticSearchStore} = __webpack_require__(29);
+module.exports = {
+  AppStateInterface : __webpack_require__(64),
+  AppStateModel : __webpack_require__(248),
+  AppStateStore : __webpack_require__(249),
+  'app-route' : __webpack_require__(250)
+}
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var {ElasticSearchStore} = __webpack_require__(31);
 
 class ElasticSearchStoreImpl extends ElasticSearchStore {
 
@@ -14091,7 +14130,7 @@ class ElasticSearchStoreImpl extends ElasticSearchStore {
 module.exports = new ElasticSearchStoreImpl();
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -14132,7 +14171,7 @@ module.exports = {
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = subclass => 
@@ -14165,14 +14204,14 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_ripple_behavior_js__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_behaviors_iron_control_state_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_ripple_behavior_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_behaviors_iron_control_state_js__ = __webpack_require__(17);
 
 
 
@@ -14214,19 +14253,19 @@ const PaperInkyFocusBehavior = [
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_icon_iron_icon_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(303);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_icon_button_paper_icon_button_js__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_styles_color_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(305);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_icon_iron_icon_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(305);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_icon_button_paper_icon_button_js__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_styles_color_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(307);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(308);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__iron_menu_behavior_iron_menu_behavior_js__ = __webpack_require__(192);
@@ -14803,7 +14842,7 @@ Object(__WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14812,7 +14851,7 @@ Object(__WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* harmony export (immutable) */ __webpack_exports__["c"] = cssFromTemplate;
 /* harmony export (immutable) */ __webpack_exports__["a"] = cssFromModuleImports;
 /* unused harmony export _cssFromModuleImports */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__resolve_url_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__resolve_url_js__ = __webpack_require__(20);
 
 
 const MODULE_STYLE_LINK_SELECTOR = 'link[rel=import][type~=css]';
@@ -14901,23 +14940,23 @@ function _cssFromModuleImports(module) {
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_apply_shim_js__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_element_mixin_js__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_gesture_event_listeners_js__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_import_href_js__ = __webpack_require__(202);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_render_status_js__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_apply_shim_js__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_element_mixin_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_gesture_event_listeners_js__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_import_href_js__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_render_status_js__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__ = __webpack_require__(204);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_gestures_js__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_gestures_js__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils_debounce_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_async_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__utils_path_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_async_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__utils_path_js__ = __webpack_require__(21);
 
 
 
@@ -15852,7 +15891,7 @@ const LegacyElementMixin = Object(__WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__[
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15870,10 +15909,10 @@ const LegacyElementMixin = Object(__WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__[
 /* unused harmony export setElementClassRaw */
 /* harmony export (immutable) */ __webpack_exports__["c"] = getIsExtends;
 /* harmony export (immutable) */ __webpack_exports__["b"] = gatherStyleText;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_settings_js__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__css_parse_js__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_regex_js__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__unscoped_style_handler_js__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_settings_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__css_parse_js__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_regex_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__unscoped_style_handler_js__ = __webpack_require__(201);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -16170,7 +16209,7 @@ function gatherStyleText(element) {
 }
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16194,7 +16233,7 @@ const templateMap = {};
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16247,13 +16286,13 @@ function documentWait(callback) {
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export CustomStyleProvider */
 /* unused harmony export CustomStyleInterfaceInterface */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__document_wait_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__document_wait_js__ = __webpack_require__(57);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -16415,14 +16454,14 @@ let CustomStyleInterfaceInterface;
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_gestures_js__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_gestures_js__ = __webpack_require__(60);
 
 
 
@@ -16463,7 +16502,7 @@ const GestureEventListeners = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16484,7 +16523,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["resetMouseCanceller"] = resetMouseCanceller;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__async_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__async_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__debounce_js__ = __webpack_require__(14);
 
 
@@ -17298,7 +17337,7 @@ const remove = removeListener;
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17569,19 +17608,19 @@ function equals(currentValue, previousValue) {
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // the whatwg-fetch polyfill installs the fetch() function
 // on the global object (window or self)
 //
 // Return that as the export for use in Webpack, Browserify etc.
-__webpack_require__(235);
+__webpack_require__(237);
 module.exports = self.fetch.bind(self);
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseStore} = __webpack_require__(6);
@@ -17633,7 +17672,7 @@ class AuthStore extends BaseStore {
 module.exports = new AuthStore();
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 module.exports = subclass => 
@@ -17665,7 +17704,7 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseStore} = __webpack_require__(6);
@@ -17738,20 +17777,20 @@ class CollectionStore extends BaseStore {
 module.exports = new CollectionStore();
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_citeproc__ = __webpack_require__(267);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_citeproc__ = __webpack_require__(269);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_citeproc___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_citeproc__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml__ = __webpack_require__(268);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml__ = __webpack_require__(270);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_apa_csl__ = __webpack_require__(269);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_apa_csl__ = __webpack_require__(271);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_apa_csl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__styles_apa_csl__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl__ = __webpack_require__(270);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl__ = __webpack_require__(272);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl__ = __webpack_require__(273);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl__);
 
 
@@ -17857,7 +17896,7 @@ class CitationsModel {
 /* harmony default export */ __webpack_exports__["default"] = (new CitationsModel());
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -17885,12 +17924,12 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__ = __webpack_require__(277);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__);
 
 
@@ -17917,7 +17956,7 @@ class AppCollectionCard extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 customElements.define('app-collection-card', AppCollectionCard);
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17995,13 +18034,13 @@ const IronFormElementBehavior = {
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export IronValidatableBehaviorMeta */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_meta_iron_meta_js__ = __webpack_require__(45);
 
 
 let IronValidatableBehaviorMeta = null;
@@ -18097,7 +18136,7 @@ const IronValidatableBehavior = {
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18133,14 +18172,14 @@ const PaperInputAddonBehavior = {
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_icon_iron_icon_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_default_theme_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_icon_iron_icon_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_default_theme_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -18264,19 +18303,19 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_result_creator__ = __webpack_require__(296);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_result_creator__ = __webpack_require__(298);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__);
 
 
@@ -18411,7 +18450,7 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18489,7 +18528,7 @@ return af;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18636,7 +18675,7 @@ return ar;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18700,7 +18739,7 @@ return arDz;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18764,7 +18803,7 @@ return arKw;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18895,7 +18934,7 @@ return arLy;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18960,7 +18999,7 @@ return arMa;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19070,7 +19109,7 @@ return arSa;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19134,7 +19173,7 @@ return arTn;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19244,7 +19283,7 @@ return az;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19383,7 +19422,7 @@ return be;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19478,7 +19517,7 @@ return bg;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19542,7 +19581,7 @@ return bm;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19666,7 +19705,7 @@ return bn;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19790,7 +19829,7 @@ return bo;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19903,7 +19942,7 @@ return br;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20051,7 +20090,7 @@ return bs;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20144,7 +20183,7 @@ return ca;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20321,7 +20360,7 @@ return cs;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20389,7 +20428,7 @@ return cv;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20475,7 +20514,7 @@ return cy;
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20540,7 +20579,7 @@ return da;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20623,7 +20662,7 @@ return de;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20707,7 +20746,7 @@ return deAt;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20790,7 +20829,7 @@ return deCh;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20895,7 +20934,7 @@ return dv;
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21000,7 +21039,7 @@ return el;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21072,7 +21111,7 @@ return enAu;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21140,7 +21179,7 @@ return enCa;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21212,7 +21251,7 @@ return enGb;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21284,7 +21323,7 @@ return enIe;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21356,7 +21395,7 @@ return enNz;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21434,7 +21473,7 @@ return eo;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21531,7 +21570,7 @@ return es;
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21627,7 +21666,7 @@ return esDo;
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21715,7 +21754,7 @@ return esUs;
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21800,7 +21839,7 @@ return et;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21871,7 +21910,7 @@ return eu;
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21983,7 +22022,7 @@ return fa;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22095,7 +22134,7 @@ return fi;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22160,7 +22199,7 @@ return fo;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22248,7 +22287,7 @@ return fr;
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22327,7 +22366,7 @@ return frCa;
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22410,7 +22449,7 @@ return frCh;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22490,7 +22529,7 @@ return fy;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22571,7 +22610,7 @@ return gd;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22653,7 +22692,7 @@ return gl;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22780,7 +22819,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22909,7 +22948,7 @@ return gu;
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23013,7 +23052,7 @@ return he;
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23142,7 +23181,7 @@ return hi;
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23292,7 +23331,7 @@ return hr;
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23406,7 +23445,7 @@ return hu;
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23506,7 +23545,7 @@ return hyAm;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23594,7 +23633,7 @@ return id;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23726,7 +23765,7 @@ return is;
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23801,7 +23840,7 @@ return it;
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23886,7 +23925,7 @@ return ja;
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23974,7 +24013,7 @@ return jv;
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24068,7 +24107,7 @@ return ka;
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24160,7 +24199,7 @@ return kk;
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24223,7 +24262,7 @@ return km;
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24354,7 +24393,7 @@ return kn;
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24442,7 +24481,7 @@ return ko;
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24535,7 +24574,7 @@ return ky;
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24677,7 +24716,7 @@ return lb;
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24752,7 +24791,7 @@ return lo;
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24874,7 +24913,7 @@ return lt;
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24976,7 +25015,7 @@ return lv;
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25092,7 +25131,7 @@ return me;
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25161,7 +25200,7 @@ return mi;
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25256,7 +25295,7 @@ return mk;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25342,7 +25381,7 @@ return ml;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25506,7 +25545,7 @@ return mr;
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25593,7 +25632,7 @@ return ms;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25681,7 +25720,7 @@ return msMy;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25782,7 +25821,7 @@ return my;
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25850,7 +25889,7 @@ return nb;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25978,7 +26017,7 @@ return ne;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26071,7 +26110,7 @@ return nl;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26164,7 +26203,7 @@ return nlBe;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26229,7 +26268,7 @@ return nn;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26358,7 +26397,7 @@ return paIn;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26487,7 +26526,7 @@ return pl;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26557,7 +26596,7 @@ return pt;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26624,7 +26663,7 @@ return ptBr;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26704,7 +26743,7 @@ return ro;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26892,7 +26931,7 @@ return ru;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26995,7 +27034,7 @@ return sd;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27061,7 +27100,7 @@ return se;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27137,7 +27176,7 @@ return si;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27292,7 +27331,7 @@ return sk;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27459,7 +27498,7 @@ return sl;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27534,7 +27573,7 @@ return sq;
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27649,7 +27688,7 @@ return sr;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27764,7 +27803,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27858,7 +27897,7 @@ return ss;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27932,7 +27971,7 @@ return sv;
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27996,7 +28035,7 @@ return sw;
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28131,7 +28170,7 @@ return ta;
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28225,7 +28264,7 @@ return te;
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28298,7 +28337,7 @@ return tet;
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28370,7 +28409,7 @@ return th;
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28437,7 +28476,7 @@ return tlPh;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28562,7 +28601,7 @@ return tlh;
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28657,7 +28696,7 @@ return tr;
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28753,7 +28792,7 @@ return tzl;
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28816,7 +28855,7 @@ return tzm;
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28879,7 +28918,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29035,7 +29074,7 @@ return uk;
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29139,7 +29178,7 @@ return ur;
 
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29202,7 +29241,7 @@ return uz;
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29265,7 +29304,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29349,7 +29388,7 @@ return vi;
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29422,7 +29461,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29487,7 +29526,7 @@ return yo;
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29603,7 +29642,7 @@ return zhCn;
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29713,7 +29752,7 @@ return zhHk;
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29822,36 +29861,15 @@ return zhTw;
 
 
 /***/ }),
-/* 191 */
-/***/ (function(module, exports) {
-
-module.exports = subclass => 
-  class MediaInterface extends subclass {
-    constructor() {
-      super();
-      this._injectModel('MediaModel');
-    }
-
-    _getImgPath(record) {
-      return this.MediaModel.getImgPath(record);
-    }
-
-    _getImgUrl(path, width, height) {
-      return this.MediaModel.getImgUrl(path, width, height);
-    }
-
-  }
-
-/***/ }),
 /* 192 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selector_iron_multi_selectable_js__ = __webpack_require__(304);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selector_iron_multi_selectable_js__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_selector_iron_selectable_js__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_selector_iron_selectable_js__ = __webpack_require__(43);
 
 
 
@@ -30434,38 +30452,84 @@ function parse(val) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_color_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_spinner_behavior_js__ = __webpack_require__(332);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__ = __webpack_require__(333);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
+
+
+
+
+
+const $_documentContainer = document.createElement('div');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<dom-module id="paper-spinner-lite">
+  <template strip-whitespace="">
+    <style include="paper-spinner-styles"></style>
+
+    <div id="spinnerContainer" class-name="[[__computeContainerClasses(active, __coolingDown)]]" on-animationend="__reset" on-webkit-animation-end="__reset">
+      <div class="spinner-layer">
+        <div class="circle-clipper left"></div>
+        <div class="circle-clipper right"></div>
+      </div>
+    </div>
+  </template>
+
+  
+</dom-module>`;
+
+document.head.appendChild($_documentContainer);
+Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Polymer */])({
+  is: 'paper-spinner-lite',
+
+  behaviors: [
+    __WEBPACK_IMPORTED_MODULE_2__paper_spinner_behavior_js__["a" /* PaperSpinnerBehavior */]
+  ]
+});
+
+
+/***/ }),
+/* 195 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_layout_app_header_app_header__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_app_layout_app_toolbar_app_toolbar__ = __webpack_require__(218);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_app_layout_app_drawer_app_drawer__ = __webpack_require__(219);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_paper_material_paper_material__ = __webpack_require__(220);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_paper_styles_paper_styles__ = __webpack_require__(222);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_paper_button_paper_button__ = __webpack_require__(224);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_iron_pages_iron_pages__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_iron_icons_iron_icons__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ucd_lib_fin_icons_fin_icons__ = __webpack_require__(229);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ucd_lib_cork_app_utils__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ucd_lib_cork_app_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__ucd_lib_cork_app_utils__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__styles_style_properties__ = __webpack_require__(238);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__styles_shared_styles__ = __webpack_require__(240);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib__ = __webpack_require__(242);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__lib__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_home_app_home__ = __webpack_require__(272);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_search_app_search__ = __webpack_require__(277);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_record_app_record__ = __webpack_require__(326);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__app_footer__ = __webpack_require__(347);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__utils_app_header_colorbar__ = __webpack_require__(351);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__interfaces_AppStateInterface__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__fin_app_html__ = __webpack_require__(352);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__fin_app_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__fin_app_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_layout_app_header_app_header__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_app_layout_app_toolbar_app_toolbar__ = __webpack_require__(219);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_app_layout_app_drawer_app_drawer__ = __webpack_require__(220);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_paper_material_paper_material__ = __webpack_require__(221);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_paper_styles_paper_styles__ = __webpack_require__(223);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_paper_button_paper_button__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_iron_pages_iron_pages__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_iron_icons_iron_icons__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_iron_icons_social_icons__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ucd_lib_fin_icons_fin_icons__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ucd_lib_cork_app_utils__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ucd_lib_cork_app_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__ucd_lib_cork_app_utils__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__styles_style_properties__ = __webpack_require__(240);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__styles_shared_styles__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib__ = __webpack_require__(244);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__lib__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_home_app_home__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_search_app_search__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_record_app_record__ = __webpack_require__(328);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__app_footer__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__utils_app_header_colorbar__ = __webpack_require__(358);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_AuthInterface__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__interfaces_AuthInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__interfaces_CollectionInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__interfaces_ElasticSearchInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__fin_app_html__ = __webpack_require__(359);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__fin_app_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__fin_app_html__);
+
 
 
 
@@ -30505,11 +30569,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 window.html = (str) => str[0];
 
 class FinApp extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_19__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_20__interfaces_AuthInterface___default.a, __WEBPACK_IMPORTED_MODULE_21__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_22__interfaces_ElasticSearchInterface___default.a) {
+  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_21__interfaces_AuthInterface___default.a, __WEBPACK_IMPORTED_MODULE_22__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_23__interfaces_ElasticSearchInterface___default.a) {
 
   // Define a string template instead of a `<template>` element.
   static get template() {
-    return __WEBPACK_IMPORTED_MODULE_23__fin_app_html___default.a;
+    return __WEBPACK_IMPORTED_MODULE_24__fin_app_html___default.a;
   }
 
   static get properties() {
@@ -30567,15 +30631,15 @@ class FinApp extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_
 customElements.define('fin-app', FinApp);
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_case_map_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_async_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_async_js__ = __webpack_require__(10);
 
 
 
@@ -31164,13 +31228,13 @@ const PropertyAccessors = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__["
 
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(11);
 
 
 
@@ -31628,14 +31692,14 @@ const TemplateStamp = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__["a" /
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_scroll_effects_app_scroll_effects_behavior_js__ = __webpack_require__(214);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_layout_behavior_app_layout_behavior_js__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_scroll_effects_app_scroll_effects_behavior_js__ = __webpack_require__(215);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_layout_behavior_app_layout_behavior_js__ = __webpack_require__(218);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -32089,18 +32153,18 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_apply_shim_js__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_template_map_js__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_util_js__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_apply_shim_utils_js__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_document_wait_js__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_common_utils_js__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_custom_style_interface_js__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_style_settings_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_apply_shim_js__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_template_map_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_util_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_apply_shim_utils_js__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_document_wait_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_common_utils_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_custom_style_interface_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_style_settings_js__ = __webpack_require__(35);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -32297,14 +32361,14 @@ if (!window.ShadyCSS || !window.ShadyCSS.ScopingShim) {
 window.ShadyCSS.ApplyShim = applyShim;
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_util_js__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_regex_js__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utils_js__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__css_parse_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_util_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_regex_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utils_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__css_parse_js__ = __webpack_require__(36);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -32784,7 +32848,7 @@ Object.defineProperty(ApplyShim.prototype, 'invalidCallback', {
 /* harmony default export */ __webpack_exports__["a"] = (ApplyShim);
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32834,7 +32898,7 @@ function isUnscopedStyle(style) {
 }
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32847,8 +32911,8 @@ function isUnscopedStyle(style) {
 /* unused harmony export startValidating */
 /* harmony export (immutable) */ __webpack_exports__["b"] = startValidatingTemplate;
 /* unused harmony export elementsAreInvalid */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_map_js__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__css_parse_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_map_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__css_parse_js__ = __webpack_require__(36);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -33000,7 +33064,7 @@ function elementsAreInvalid() {
 }
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33081,7 +33145,7 @@ const importHref = function(href, onload, onerror, optAsync) {
 
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports) {
 
 function resolve() {
@@ -33096,15 +33160,15 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
 
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FlattenedNodesObserver; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__array_splice_js__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__array_splice_js__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(10);
 
 
 
@@ -33344,13 +33408,13 @@ class FlattenedNodesObserver {
 
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export mixinBehaviors */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__legacy_element_mixin_js__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__elements_dom_module_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__legacy_element_mixin_js__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__elements_dom_module_js__ = __webpack_require__(33);
 
 
 
@@ -33615,12 +33679,12 @@ const Class = function(info) {
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export Templatizer */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_templatize_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_templatize_js__ = __webpack_require__(40);
 
 
 let TemplateInstanceBase = __WEBPACK_IMPORTED_MODULE_0__utils_templatize_js__["a" /* TemplateInstanceBase */]; // eslint-disable-line
@@ -33760,16 +33824,16 @@ let Templatizer = {
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export DomBind */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_property_effects_js__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_mutable_data_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_gesture_event_listeners_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_property_effects_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_mutable_data_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_gesture_event_listeners_js__ = __webpack_require__(59);
 
 
 
@@ -33888,18 +33952,18 @@ customElements.define('dom-bind', DomBind);
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export DomRepeat */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_element_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_templatize_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_templatize_js__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_debounce_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_mutable_data_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_async_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_mutable_data_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_async_js__ = __webpack_require__(10);
 
 
 
@@ -34588,17 +34652,17 @@ customElements.define(DomRepeat.is, DomRepeat);
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export DomIf */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_element_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_templatize_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_templatize_js__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_debounce_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_async_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_async_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(21);
 
 
 
@@ -34859,16 +34923,16 @@ customElements.define(DomIf.is, DomIf);
 
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export ArraySelectorMixin */
 /* unused harmony export ArraySelector */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_element_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_array_splice_js__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_element_mixin_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_array_splice_js__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_element_mixin_js__ = __webpack_require__(32);
 
 
 
@@ -35280,13 +35344,13 @@ customElements.define(ArraySelector.is, ArraySelector);
 
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export CustomStyle */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_custom_style_interface_js__ = __webpack_require__(212);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_style_gather_js__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_custom_style_interface_js__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_style_gather_js__ = __webpack_require__(53);
 
 
 
@@ -35377,13 +35441,13 @@ window.customElements.define('custom-style', CustomStyle);
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_custom_style_interface_js__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_common_utils_js__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_settings_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_custom_style_interface_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_common_utils_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_settings_js__ = __webpack_require__(35);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -35451,11 +35515,11 @@ if (!window.ShadyCSS) {
 window.ShadyCSS.CustomStyleInterface = customStyleInterface;
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_mutable_data_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_mutable_data_js__ = __webpack_require__(23);
 
 
 let mutablePropertyChange;
@@ -35529,13 +35593,13 @@ const OptionalMutableDataBehavior = {
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_scroll_target_behavior_iron_scroll_target_behavior_js__ = __webpack_require__(215);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_helpers_js__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_scroll_target_behavior_iron_scroll_target_behavior_js__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_helpers_js__ = __webpack_require__(217);
 
 
 
@@ -35833,7 +35897,7 @@ const AppScrollEffectsBehavior = [
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36084,7 +36148,7 @@ const IronScrollTargetBehavior = {
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36209,16 +36273,16 @@ const scroll = function scroll(options) {
 
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_async_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_async_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_debounce_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_utils_flush_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_utils_flush_js__ = __webpack_require__(22);
 
 
 
@@ -36302,12 +36366,12 @@ const AppLayoutBehavior = [
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -36368,14 +36432,14 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_render_status_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_render_status_js__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
 
@@ -36995,13 +37059,13 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_shadow_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_material_shared_styles_js__ = __webpack_require__(221);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_shadow_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_material_shared_styles_js__ = __webpack_require__(222);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -37058,11 +37122,11 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__paper_styles_shadow_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__paper_styles_shadow_js__ = __webpack_require__(24);
 
 const $_documentContainer = document.createElement('div');
 $_documentContainer.setAttribute('style', 'display: none;');
@@ -37102,15 +37166,15 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__default_theme_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shadow_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__typography_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__default_theme_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shadow_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__typography_js__ = __webpack_require__(26);
 
 
 
@@ -37119,7 +37183,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports) {
 
 const $_documentContainer = document.createElement('div');
@@ -37132,14 +37196,14 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_button_behavior_js__ = __webpack_require__(225);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_element_styles_paper_material_styles_js__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_button_behavior_js__ = __webpack_require__(226);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_element_styles_paper_material_styles_js__ = __webpack_require__(228);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -37277,14 +37341,14 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_ripple_behavior_js__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_behaviors_iron_control_state_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_ripple_behavior_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_behaviors_iron_control_state_js__ = __webpack_require__(17);
 
 
 
@@ -37376,12 +37440,12 @@ const PaperButtonBehavior = [
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
@@ -38073,12 +38137,12 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shadow_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shadow_js__ = __webpack_require__(24);
 
 
 const $_documentContainer = document.createElement('div');
@@ -38134,7 +38198,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38244,13 +38308,63 @@ IronSelection.prototype = {
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_iron_icon_iron_icon__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_iconset_svg_iron_iconset_svg__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_icon_iron_icon_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(30);
+
+
+const $_documentContainer = document.createElement('div');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<iron-iconset-svg name="social" size="24">
+<svg><defs>
+<g id="cake"><path d="M12 6c1.11 0 2-.9 2-2 0-.38-.1-.73-.29-1.03L12 0l-1.71 2.97c-.19.3-.29.65-.29 1.03 0 1.1.9 2 2 2zm4.6 9.99l-1.07-1.07-1.08 1.07c-1.3 1.3-3.58 1.31-4.89 0l-1.07-1.07-1.09 1.07C6.75 16.64 5.88 17 4.96 17c-.73 0-1.4-.23-1.96-.61V21c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-4.61c-.56.38-1.23.61-1.96.61-.92 0-1.79-.36-2.44-1.01zM18 9h-5V7h-2v2H6c-1.66 0-3 1.34-3 3v1.54c0 1.08.88 1.96 1.96 1.96.52 0 1.02-.2 1.38-.57l2.14-2.13 2.13 2.13c.74.74 2.03.74 2.77 0l2.14-2.13 2.13 2.13c.37.37.86.57 1.38.57 1.08 0 1.96-.88 1.96-1.96V12C21 10.34 19.66 9 18 9z"></path></g>
+<g id="domain"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"></path></g>
+<g id="group"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path></g>
+<g id="group-add"><path d="M8 10H5V7H3v3H0v2h3v3h2v-3h3v-2zm10 1c1.66 0 2.99-1.34 2.99-3S19.66 5 18 5c-.32 0-.63.05-.91.14.57.81.9 1.79.9 2.86s-.34 2.04-.9 2.86c.28.09.59.14.91.14zm-5 0c1.66 0 2.99-1.34 2.99-3S14.66 5 13 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm6.62 2.16c.83.73 1.38 1.66 1.38 2.84v2h3v-2c0-1.54-2.37-2.49-4.38-2.84zM13 13c-2 0-6 1-6 3v2h12v-2c0-2-4-3-6-3z"></path></g>
+<g id="location-city"><path d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z"></path></g>
+<g id="mood"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path></g>
+<g id="mood-bad"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 3c-2.33 0-4.31 1.46-5.11 3.5h10.22c-.8-2.04-2.78-3.5-5.11-3.5z"></path></g>
+<g id="notifications"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"></path></g>
+<g id="notifications-active"><path d="M7.58 4.08L6.15 2.65C3.75 4.48 2.17 7.3 2.03 10.5h2c.15-2.65 1.51-4.97 3.55-6.42zm12.39 6.42h2c-.15-3.2-1.73-6.02-4.12-7.85l-1.42 1.43c2.02 1.45 3.39 3.77 3.54 6.42zM18 11c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2v-5zm-6 11c.14 0 .27-.01.4-.04.65-.14 1.18-.58 1.44-1.18.1-.24.15-.5.15-.78h-4c.01 1.1.9 2 2.01 2z"></path></g>
+<g id="notifications-none"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"></path></g>
+<g id="notifications-off"><path d="M20 18.69L7.84 6.14 5.27 3.49 4 4.76l2.8 2.8v.01c-.52.99-.8 2.16-.8 3.42v5l-2 2v1h13.73l2 2L21 19.72l-1-1.03zM12 22c1.11 0 2-.89 2-2h-4c0 1.11.89 2 2 2zm6-7.32V11c0-3.08-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68c-.15.03-.29.08-.42.12-.1.03-.2.07-.3.11h-.01c-.01 0-.01 0-.02.01-.23.09-.46.2-.68.31 0 0-.01 0-.01.01L18 14.68z"></path></g>
+<g id="notifications-paused"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.93 6 11v5l-2 2v1h16v-1l-2-2zm-3.5-6.2l-2.8 3.4h2.8V15h-5v-1.8l2.8-3.4H9.5V8h5v1.8z"></path></g>
+<g id="pages"><path d="M3 5v6h5L7 7l4 1V3H5c-1.1 0-2 .9-2 2zm5 8H3v6c0 1.1.9 2 2 2h6v-5l-4 1 1-4zm9 4l-4-1v5h6c1.1 0 2-.9 2-2v-6h-5l1 4zm2-14h-6v5l4-1-1 4h5V5c0-1.1-.9-2-2-2z"></path></g>
+<g id="party-mode"><path d="M20 4h-3.17L15 2H9L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 3c1.63 0 3.06.79 3.98 2H12c-1.66 0-3 1.34-3 3 0 .35.07.69.18 1H7.1c-.06-.32-.1-.66-.1-1 0-2.76 2.24-5 5-5zm0 10c-1.63 0-3.06-.79-3.98-2H12c1.66 0 3-1.34 3-3 0-.35-.07-.69-.18-1h2.08c.07.32.1.66.1 1 0 2.76-2.24 5-5 5z"></path></g>
+<g id="people"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path></g>
+<g id="people-outline"><path d="M16.5 13c-1.2 0-3.07.34-4.5 1-1.43-.67-3.3-1-4.5-1C5.33 13 1 14.08 1 16.25V19h22v-2.75c0-2.17-4.33-3.25-6.5-3.25zm-4 4.5h-10v-1.25c0-.54 2.56-1.75 5-1.75s5 1.21 5 1.75v1.25zm9 0H14v-1.25c0-.46-.2-.86-.52-1.22.88-.3 1.96-.53 3.02-.53 2.44 0 5 1.21 5 1.75v1.25zM7.5 12c1.93 0 3.5-1.57 3.5-3.5S9.43 5 7.5 5 4 6.57 4 8.5 5.57 12 7.5 12zm0-5.5c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 5.5c1.93 0 3.5-1.57 3.5-3.5S18.43 5 16.5 5 13 6.57 13 8.5s1.57 3.5 3.5 3.5zm0-5.5c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"></path></g>
+<g id="person"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></g>
+<g id="person-add"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></g>
+<g id="person-outline"><path d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1m0 9c2.97 0 6.1 1.46 6.1 2.1v1.1H5.9V17c0-.64 3.13-2.1 6.1-2.1M12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z"></path></g>
+<g id="plus-one"><path d="M10 8H8v4H4v2h4v4h2v-4h4v-2h-4zm4.5-1.92V7.9l2.5-.5V18h2V5z"></path></g>
+<g id="poll"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"></path></g>
+<g id="public"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path></g>
+<g id="school"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"></path></g>
+<g id="sentiment-dissatisfied"><circle cx="15.5" cy="9.5" r="1.5"></circle><circle cx="8.5" cy="9.5" r="1.5"></circle><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-6c-2.33 0-4.32 1.45-5.12 3.5h1.67c.69-1.19 1.97-2 3.45-2s2.75.81 3.45 2h1.67c-.8-2.05-2.79-3.5-5.12-3.5z"></path></g>
+<g id="sentiment-neutral"><path d="M9 14h6v1.5H9z"></path><circle cx="15.5" cy="9.5" r="1.5"></circle><circle cx="8.5" cy="9.5" r="1.5"></circle><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></g>
+<g id="sentiment-satisfied"><circle cx="15.5" cy="9.5" r="1.5"></circle><circle cx="8.5" cy="9.5" r="1.5"></circle><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-4c-1.48 0-2.75-.81-3.45-2H6.88c.8 2.05 2.79 3.5 5.12 3.5s4.32-1.45 5.12-3.5h-1.67c-.7 1.19-1.97 2-3.45 2z"></path></g>
+<g id="sentiment-very-dissatisfied"><path d="M11.99 2C6.47 2 2 6.47 2 12s4.47 10 9.99 10S22 17.53 22 12 17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm4.18-12.24l-1.06 1.06-1.06-1.06L13 8.82l1.06 1.06L13 10.94 14.06 12l1.06-1.06L16.18 12l1.06-1.06-1.06-1.06 1.06-1.06zM7.82 12l1.06-1.06L9.94 12 11 10.94 9.94 9.88 11 8.82 9.94 7.76 8.88 8.82 7.82 7.76 6.76 8.82l1.06 1.06-1.06 1.06zM12 14c-2.33 0-4.31 1.46-5.11 3.5h10.22c-.8-2.04-2.78-3.5-5.11-3.5z"></path></g>
+<g id="sentiment-very-satisfied"><path d="M11.99 2C6.47 2 2 6.47 2 12s4.47 10 9.99 10S22 17.53 22 12 17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm1-10.06L14.06 11l1.06-1.06L16.18 11l1.06-1.06-2.12-2.12zm-4.12 0L9.94 11 11 9.94 8.88 7.82 6.76 9.94 7.82 11zM12 17.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path></g>
+<g id="share"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></g>
+<g id="whatshot"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"></path></g>
+</defs></svg>
+</iron-iconset-svg>`;
+
+document.head.appendChild($_documentContainer);
+
+
+/***/ }),
+/* 231 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_iron_icon_iron_icon__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_iconset_svg_iron_iconset_svg__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html__ = __webpack_require__(232);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__fin_icons_html__);
 
 
@@ -38262,16 +38376,16 @@ ele.innerHTML = __WEBPACK_IMPORTED_MODULE_2__fin_icons_html___default.a;
 document.head.appendChild(ele);
 
 /***/ }),
-/* 230 */
+/* 232 */
 /***/ (function(module, exports) {
 
 module.exports = "<iron-iconset-svg name=\"fin\" size=\"24\">\n  <svg>\n    <defs>\n  \n      <g id=\"account\">\n        <clipPath id=\"account-clip-path\">\n          <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        </clipPath>  \n        <style type=\"text/css\">.cls-1{fill:#008eaa;}.cls-2{clip-path:url(#account-clip-path);}.cls-3{fill:#f3f3f3;}</style>\n        \n        <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        <g class=\"cls-2\">\n          <circle class=\"cls-3\" cx=\"12\" cy=\"9.88\" r=\"3.5\"/>\n          <ellipse class=\"cls-3\" cx=\"12\" cy=\"22.66\" rx=\"7\" ry=\"8.05\"/>\n        </g>         \n      </g>\n\n      <g id=\"blank-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n      </g>\n\n      <g id=\"blank\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n      </g>\n\n      <g id=\"check\">\n        <polygon points=\"8.57 19.54 2.12 13.08 3.88 11.31 8.57 16 20.12 4.46 21.88 6.23 8.57 19.54\"/>\n      </g>\n\n      <g id=\"copy\">\n        <path d=\"M21.22,5.54H18.46V2.78A1.28,1.28,0,0,0,17.18,1.5H2.78A1.28,1.28,0,0,0,1.5,2.78v14.4a1.28,1.28,0,0,0,1.28,1.28H5.54v2.76A1.28,1.28,0,0,0,6.82,22.5h14.4a1.28,1.28,0,0,0,1.28-1.28V6.82A1.28,1.28,0,0,0,21.22,5.54ZM5.54,6.82V17.65H2.78a.47.47,0,0,1-.47-.47V2.78a.47.47,0,0,1,.47-.47h14.4a.47.47,0,0,1,.47.47V5.54H6.82A1.28,1.28,0,0,0,5.54,6.82ZM19,15.15H15.15V19h-2.1V15.15H9.2v-2.1h3.85V9.2h2.1v3.85H19Z\"/>\n      </g>\n\n      <g id=\"grid\">\n        <rect x=\"17.08\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"17.08\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n      </g>\n\n      <g id=\"image-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <circle cx=\"6.33\" cy=\"5.84\" r=\"1.97\"/>\n        <polygon points=\"3.13 12.93 3.13 15.55 15.61 15.55 15.61 10.83 11.98 7.2 7.4 11.78 5.93 10.32 3.13 12.93\"/>\n      </g>\n\n      <g id=\"image\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <circle cx=\"7.99\" cy=\"7.35\" r=\"2.6\"/>\n        <polygon points=\"3.79 16.69 3.79 20.14 20.21 20.14 20.21 13.92 15.44 9.14 9.4 15.18 7.47 13.25 3.79 16.69\"/>\n      </g>\n\n      <g id=\"list\">\n        <rect x=\"1.5\" y=\"5.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"5.51\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"10.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"10.5\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"15.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"15.5\" width=\"15.89\" height=\"3\"/>\n      </g>\n\n      <g id=\"search\">\n        <path d=\"M22.16,20.08l-5.25-5.24a8.38,8.38,0,1,0-1.53,1.77l5.13,5.12a1.15,1.15,0,0,0,.82.35,1.18,1.18,0,0,0,.83-2ZM9.88,16.35a6,6,0,1,1,6-6.05A6.06,6.06,0,0,1,9.88,16.35Z\"/>\n      </g>\n\n      <g id=\"multiple-sound\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.45.45,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.2,1.2,0,0,1,21.19,22.35Z\"/>\n        <path d=\"M6.88,5.39v5.76a1.76,1.76,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.78h0v-5L13,6.48V10a1.73,1.73,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.79v0h0V4Z\"/>\n      </g>\n\n      <g id=\"sound\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <path d=\"M8.72,6.75v7.59a2.3,2.3,0,0,0-1.33-.41,2.35,2.35,0,1,0,2.35,2.34v0h0V9.63l7-1.43v4.57a2.29,2.29,0,0,0-1.33-.42,2.35,2.35,0,1,0,2.34,2.34h0V4.92Z\"/>\n      </g>\n\n      <g id=\"text-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <rect x=\"5.2\" y=\"7.74\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"10.28\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"12.83\" width=\"4.18\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"5.2\" width=\"8.37\" height=\"0.74\"/>\n      </g>\n\n      <g id=\"text\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <rect x=\"6.5\" y=\"9.84\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"13.18\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"16.53\" width=\"5.5\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"6.5\" width=\"11\" height=\"0.97\"/>\n      </g>\n\n      <g id=\"triangle-dropdown\">\n        <polygon points=\"1.5 5.7 22.5 5.7 12 18.3 1.5 5.7\"/>\n      </g>\n\n      <g id=\"video-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <polygon points=\"12.75 9.36 6.6 13.37 6.6 5.24 12.75 9.36\"/>\n      </g>\n\n      <g id=\"video\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <polygon points=\"16.45 11.99 8.35 17.27 8.35 6.57 16.45 11.99\"/>\n      </g>\n    </defs>\n  </svg>\n</iron-iconset-svg>";
 
 /***/ }),
-/* 231 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MasterController = __webpack_require__(45);
+var MasterController = __webpack_require__(46);
 
 /**
  * @class BaseModel
@@ -38353,7 +38467,7 @@ class BaseModel {
 module.exports = BaseModel;
 
 /***/ }),
-/* 232 */
+/* 234 */
 /***/ (function(module, exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -38661,10 +38775,10 @@ function isUndefined(arg) {
 
 
 /***/ }),
-/* 233 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MasterController = __webpack_require__(45);
+var MasterController = __webpack_require__(46);
 
 /**
  * @class BaseStore
@@ -38753,11 +38867,11 @@ class BaseStore {
 module.exports = BaseStore;
 
 /***/ }),
-/* 234 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // help: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-const fetch = __webpack_require__(61);
+const fetch = __webpack_require__(62);
 
 /**
  * @class BaseService
@@ -38992,7 +39106,7 @@ class BaseService {
 module.exports = BaseService;
 
 /***/ }),
-/* 235 */
+/* 237 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -39459,7 +39573,7 @@ module.exports = BaseService;
 
 
 /***/ }),
-/* 236 */
+/* 238 */
 /***/ (function(module, exports) {
 
  /**
@@ -39484,12 +39598,12 @@ if( typeof window !== 'undefined' ) {
 module.exports = Mixin;
 
 /***/ }),
-/* 237 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {Debouncer} = __webpack_require__(14);
-const Async = __webpack_require__(9);
-const MasterController = __webpack_require__(45);
+const Async = __webpack_require__(10);
+const MasterController = __webpack_require__(46);
 
 /**
  * @mixin EventInterface
@@ -39825,11 +39939,11 @@ if( typeof window !== 'undefined' ) {
 module.exports = EventInterface;
 
 /***/ }),
-/* 238 */
+/* 240 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_properties_html__ = __webpack_require__(239);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_properties_html__ = __webpack_require__(241);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_properties_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__style_properties_html__);
 
 let styleWrapper = document.createElement('div');
@@ -39838,17 +39952,17 @@ styleWrapper.innerHTML = __WEBPACK_IMPORTED_MODULE_0__style_properties_html___de
 document.head.appendChild(styleWrapper);
 
 /***/ }),
-/* 239 */
+/* 241 */
 /***/ (function(module, exports) {
 
 module.exports = "<custom-style>\n  <style>\n    html {\n      --default-primary-color : #002655;\n      --light-primary-color   : #335379;\n      \n      --default-secondary-color : #daaa00;\n      --light-secondary-color   : #9be7ff;\n      --dark-secondary-color    : #2286c3;\n\n      --medium-background-color : #B2BDCF;\n      --light-background-color : #D6DCE6;\n      --super-light-background-color: #f3f3f3;\n    \n      --text-primary-color      : black;\n      --primary-text-color      : var(--text-primary-color);\n      --secondary-text-color    : var(--default-secondary-color);\n      --inverse-text-color      : white;\n      --gray-text               : #8B8B8B;\n      --text-disabled           : var(--gray-text);\n\n      --max-width               : 1200px;\n      --max-text-width          : 650px;\n      --font-size               : 16px;\n      --font-size-sm            : 14px;\n      --font-weight             : 400;\n      --font-weight-heavy       : 700;\n\n      --layout-sm               : 768px;\n      --grid-cell-width         : 250px;\n\n     /**\n      * Custom mixins\n      */\n      --fin-search-box-select: {\n        font-size: var(--font-size);\n        font-weight: var(--font-weight);\n        color: var(--default-primary-color);\n        background-color: var(--default-secondary-color);\n        width: 100px;\n      }\n      --fin-search-box-select-inverse: {\n        @apply(--fin-search-box-select);\n        color: var(--default-secondary-color);\n        background-color: var(--default-primary-color);\n      }\n      --fin-search-box-input: {\n        font-size: var(--font-size);\n      }\n      --cork-drop-down-arrow-color: var(--default-primary-color);\n      --cork-toggle-panel-label : {\n        padding: 10px 0;\n        color: var(--default-primary-color);\n        font-weight: var(--font-weight-heavy);\n      }\n    }\n    body, html {\n      /* @apply --paper-font-common-base; */\n      font-family: \"proxima-nova\",\"Montserrat\",\"Lucida Grande\",\"Lucida Sans\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\n      font-size        : var(--font-size);\n      font-weight      : var(--font-weight);\n      line-height      : calc(var(--font-size) * 1.625);\n      margin           : 0;\n      padding          : 0;\n      height           : 100%;\n      background-color : var(--default-background-color);\n      color            : var(--text-primary-color);\n    }\n  </style>\n</custom-style>";
 
 /***/ }),
-/* 240 */
+/* 242 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_styles_html__ = __webpack_require__(241);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_styles_html__ = __webpack_require__(243);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_styles_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__shared_styles_html__);
 
 let styleWrapper = document.createElement('div');
@@ -39857,31 +39971,31 @@ styleWrapper.innerHTML = __WEBPACK_IMPORTED_MODULE_0__shared_styles_html___defau
 document.head.appendChild(styleWrapper);
 
 /***/ }),
-/* 241 */
+/* 243 */
 /***/ (function(module, exports) {
 
 module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n      paper-material {\n        background: white;\n        display: block;\n        padding: 10px;\n        margin: 10px;\n      }\n\n      paper-tabs {\n        --paper-tabs-selection-bar: {\n          border-bottom: 3px solid var(--default-primary-color);\n        }\n      }\n      paper-tab {\n        --paper-tab-content-unselected : {    \n          text-transform: uppercase;\n          color: var(--text-disabled);\n        }\n        --paper-tab-content : {\n          text-transform: uppercase;\n          color: var(--default-primary-color);\n        }\n      }\n\n      [hidden] {\n        display: none !important;\n      }\n\n      input, select, button {\n        font-size        : var(--font-size);\n        font-weight      : var(--font-weight);\n        color            : var(--text-primary-color);\n      }\n\n      main {\n        display: flex;\n        justify-content: center;\n      }\n\n      main > * {\n        max-width: 1000px;\n        width: 100%;\n      }\n\n      ul.menu {\n        list-style: none;\n        margin: 0;\n        padding: 0;\n      }\n\n      ul.menu.horizontal {\n        display: flex;\n      }\n\n      a {\n        text-decoration: none;\n        color: var(--default-primary-color);\n      }\n\n      a.italic {\n        color: var(--default-secondary-color);\n        font-style: italic;\n      }\n\n      a.gold {\n        color: var(--default-secondary-color);\n      }\n\n      .text-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n      }\n      \n      .text-container > * {\n        max-width: var(--max-text-width);\n        width: 100%;\n      }\n\n      .container {\n        display: flex;\n        justify-content: center;\n        flex-direction: column;\n        align-items: center;\n      }\n\n      .container > * {\n        max-width: var(--max-width);\n        width: 100%;\n        justify-content: center;\n      }\n\n      fin-search-box > iron-icon {\n        color: var(--default-secondary-color);\n      }\n    </style>\n  </template>\n</dom-module>";
 
 /***/ }),
-/* 242 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  AuthModel : __webpack_require__(243),
-  AppStateModel : __webpack_require__(245),
-  ElasticSearchModel : __webpack_require__(258),
-  CollectionModel : __webpack_require__(264),
-  MediaModel : __webpack_require__(266),
-  CitationModel : __webpack_require__(65)
+  AuthModel : __webpack_require__(245),
+  AppStateModel : __webpack_require__(247),
+  ElasticSearchModel : __webpack_require__(260),
+  CollectionModel : __webpack_require__(266),
+  MediaModel : __webpack_require__(268),
+  CitationModel : __webpack_require__(66)
 }
 
 /***/ }),
-/* 243 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseModel} = __webpack_require__(6);
-var AuthStore = __webpack_require__(62);
-var AuthService = __webpack_require__(244);
+var AuthStore = __webpack_require__(63);
+var AuthService = __webpack_require__(246);
 
 
 class AuthModel extends BaseModel {
@@ -39911,11 +40025,11 @@ class AuthModel extends BaseModel {
 module.exports = new AuthModel();
 
 /***/ }),
-/* 244 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
-const AuthStore = __webpack_require__(62);
+const AuthStore = __webpack_require__(63);
 
 class AuthSerivce extends BaseService {
 
@@ -39948,11 +40062,11 @@ class AuthSerivce extends BaseService {
 module.exports = new AuthSerivce();
 
 /***/ }),
-/* 245 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var {AppStateModel} = __webpack_require__(46);
-var AppStateStore = __webpack_require__(257);
+var {AppStateModel} = __webpack_require__(47);
+var AppStateStore = __webpack_require__(259);
 
 class AppStateModelImpl extends AppStateModel {
 
@@ -39961,12 +40075,28 @@ class AppStateModelImpl extends AppStateModel {
     this.store = AppStateStore;
   }
 
+  setSelectedRecord(record) {
+    this.store.setSelectedRecord(record);
+  }
+
+  getSelectedRecord() {
+    return this.store.getSelectedRecord();
+  }
+
+  setSelectedRecordMedia(record) {
+    this.store.setSelectedRecordMedia(record);
+  }
+
+  getSelectedRecordMedia() {
+    return this.store.getSelectedRecordMedia();
+  }
+
 }
 
 module.exports = new AppStateModelImpl();
 
 /***/ }),
-/* 246 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseModel} = __webpack_require__(6);
@@ -40030,7 +40160,7 @@ class AppStateModel extends BaseModel {
 module.exports = AppStateModel;
 
 /***/ }),
-/* 247 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseStore} = __webpack_require__(6);
@@ -40063,18 +40193,18 @@ class AppStateStore extends BaseStore {
 module.exports = AppStateStore;
 
 /***/ }),
-/* 248 */
+/* 250 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_route_app_location__ = __webpack_require__(249);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_route_app_location__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string__ = __webpack_require__(255);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_query_string__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__);
 
 
@@ -40161,14 +40291,14 @@ class AppRoute extends Object(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_util
 customElements.define('app-route', AppRoute);
 
 /***/ }),
-/* 249 */
+/* 251 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_location_iron_location_js__ = __webpack_require__(250);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_location_iron_query_params_js__ = __webpack_require__(251);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_route_converter_behavior_js__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_location_iron_location_js__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_location_iron_query_params_js__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_route_converter_behavior_js__ = __webpack_require__(254);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -40305,7 +40435,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 250 */
+/* 252 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40667,7 +40797,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 251 */
+/* 253 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40762,7 +40892,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 252 */
+/* 254 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40860,14 +40990,14 @@ const AppRouteConverterBehavior = {
 
 
 /***/ }),
-/* 253 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(254);
-var objectAssign = __webpack_require__(255);
-var decodeComponent = __webpack_require__(256);
+var strictUriEncode = __webpack_require__(256);
+var objectAssign = __webpack_require__(257);
+var decodeComponent = __webpack_require__(258);
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -41077,7 +41207,7 @@ exports.stringify = function (obj, opts) {
 
 
 /***/ }),
-/* 254 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41090,7 +41220,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 255 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41187,7 +41317,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 256 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41288,20 +41418,53 @@ module.exports = function (encodedURI) {
 
 
 /***/ }),
-/* 257 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const {AppStateStore} = __webpack_require__(46);
-module.exports = new AppStateStore();
+const {AppStateStore} = __webpack_require__(47);
+
+class ImplAppStateStore extends AppStateStore {
+
+  constructor() {
+    super();
+
+    this.data.selectedRecord = null;
+    this.data.selectedRecordMedia = null;
+
+    this.events.SELECTED_RECORD_UPDATE = 'selected-record-update';
+    this.events.SELECTED_RECORD_MEDIA_UPDATE = 'selected-record-media-update';
+  }
+
+  setSelectedRecord(record) {
+    this.data.selectedRecord = record;
+    this.emit(this.events.SELECTED_RECORD_UPDATE, record);
+  }
+
+  getSelectedRecord() {
+    return this.data.selectedRecord;
+  }
+
+  setSelectedRecordMedia(record) {
+    this.data.selectedRecordMedia = record;
+    this.emit(this.events.SELECTED_RECORD_MEDIA_UPDATE, record);
+  }
+
+  getSelectedRecordMedia() {
+    return this.data.selectedRecordMedia;
+  }
+
+}
+
+module.exports = new ImplAppStateStore();
 
 /***/ }),
-/* 258 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var {ElasticSearchModel} = __webpack_require__(29);
-const ElasticSearchStore = __webpack_require__(47);
-const ElasticSearchService = __webpack_require__(263);
-var config = __webpack_require__(48);
+var {ElasticSearchModel} = __webpack_require__(31);
+const ElasticSearchStore = __webpack_require__(48);
+const ElasticSearchService = __webpack_require__(265);
+var config = __webpack_require__(49);
 
 class ElasticSearchModelImpl extends ElasticSearchModel {
 
@@ -41384,7 +41547,7 @@ class ElasticSearchModelImpl extends ElasticSearchModel {
 module.exports = new ElasticSearchModelImpl();
 
 /***/ }),
-/* 259 */
+/* 261 */
 /***/ (function(module, exports) {
 
 module.exports = subclass => 
@@ -41452,7 +41615,7 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 260 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
@@ -42020,7 +42183,7 @@ class ElasticSearchModel extends BaseModel {
 module.exports = ElasticSearchModel;
 
 /***/ }),
-/* 261 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
@@ -42085,7 +42248,7 @@ class ElasticSearchService extends BaseService {
 module.exports = ElasticSearchService;
 
 /***/ }),
-/* 262 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseStore} = __webpack_require__(6);
@@ -42257,11 +42420,11 @@ class ElasticSearchStore extends BaseStore {
 module.exports = ElasticSearchStore;
 
 /***/ }),
-/* 263 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const {ElasticSearchService} = __webpack_require__(29);
-const ElasticSearchStore = __webpack_require__(47);
+const {ElasticSearchService} = __webpack_require__(31);
+const ElasticSearchStore = __webpack_require__(48);
 
 class ElasticSearchServiceImpl extends ElasticSearchService {
   constructor() {
@@ -42311,14 +42474,14 @@ class ElasticSearchServiceImpl extends ElasticSearchService {
 module.exports = new ElasticSearchServiceImpl();
 
 /***/ }),
-/* 264 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
-const CollectionStore = __webpack_require__(64);
-const CollectionService = __webpack_require__(265);
+const CollectionStore = __webpack_require__(65);
+const CollectionService = __webpack_require__(267);
 // it's ok to import other stores & services, just not models
-const ElasticSearchStore = __webpack_require__(47);
+const ElasticSearchStore = __webpack_require__(48);
 
 class CollectionModel extends BaseModel {
   
@@ -42382,11 +42545,11 @@ class CollectionModel extends BaseModel {
 module.exports = new CollectionModel();
 
 /***/ }),
-/* 265 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
-const CollectionStore = __webpack_require__(64);
+const CollectionStore = __webpack_require__(65);
 
 class CollectionService extends BaseService {
 
@@ -42414,11 +42577,11 @@ class CollectionService extends BaseService {
 module.exports = new CollectionService();
 
 /***/ }),
-/* 266 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
-const config = __webpack_require__(48);
+const config = __webpack_require__(49);
 
 class MediaModel extends BaseModel {
   
@@ -42463,13 +42626,52 @@ class MediaModel extends BaseModel {
     return `${config.fcrepoBasePath}${path}/svc:iiif/full/${width},${height}/0/default.png`;
   }
 
+  /**
+   * @method getImageMediaList
+   * @description given a root record that has been has it's hasParts/associatedMedia
+   * filled in, return the first image list found.
+   * 
+   * @param {Object} rootRecord a filled in root record
+   * @returns {Array}
+   */
+  getImageMediaList(rootRecord) {
+    if( rootRecord._imageList ) return rootRecord._imageList;
+    if( !rootRecord._associatedMedia ) return [];
+
+    // see if we have an image list
+    for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
+      let ef = rootRecord._associatedMedia[i].encodingFormat;
+      if( ef && ef.toLowerCase() === 'image list' ) {
+        rootRecord._imageList = rootRecord._associatedMedia[i]._hasPart || [];
+        rootRecord._imageList.sort((a, b) => {
+          if( a.position > b.position ) return 1;
+          if( a.position < b.position ) return -1;
+          return 1;
+        });
+
+        return rootRecord._associatedMedia[i]._hasPart;
+      }
+    }
+
+    // if no image list, return list of images
+    let imageRecords = [];
+    for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
+      let ff = rootRecord._associatedMedia[i].fileFormat;
+      if( ff && ff.match(/^image/i) ) {
+        imageRecords.push(rootRecord._associatedMedia[i]);
+      }
+    }
+    rootRecord._imageList = imageRecords;
+
+    return imageRecords;
+  }
 
 }
 
 module.exports = new MediaModel();
 
 /***/ }),
-/* 267 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {/*
@@ -59581,47 +59783,47 @@ CSL.parseParticles = function(){
 }();
 module.exports = CSL;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)(module)))
-
-/***/ }),
-/* 268 */
-/***/ (function(module, exports) {
-
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<locale xmlns=\"http://purl.org/net/xbiblio/csl\" version=\"1.0\" xml:lang=\"en-US\">\n  <info>\n    <translator>\n      <name>Andrew Dunning</name>\n    </translator>\n    <translator>\n      <name>Sebastian Karcher</name>\n    </translator>\n    <translator>\n      <name>Rintze M. Zelle</name>\n    </translator>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n    <updated>2015-10-10T23:31:02+00:00</updated>\n  </info>\n  <style-options punctuation-in-quote=\"true\"/>\n  <date form=\"text\">\n    <date-part name=\"month\" suffix=\" \"/>\n    <date-part name=\"day\" suffix=\", \"/>\n    <date-part name=\"year\"/>\n  </date>\n  <date form=\"numeric\">\n    <date-part name=\"month\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"day\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"year\"/>\n  </date>\n  <terms>\n    <term name=\"accessed\">accessed</term>\n    <term name=\"and\">and</term>\n    <term name=\"and others\">and others</term>\n    <term name=\"anonymous\">anonymous</term>\n    <term name=\"anonymous\" form=\"short\">anon.</term>\n    <term name=\"at\">at</term>\n    <term name=\"available at\">available at</term>\n    <term name=\"by\">by</term>\n    <term name=\"circa\">circa</term>\n    <term name=\"circa\" form=\"short\">c.</term>\n    <term name=\"cited\">cited</term>\n    <term name=\"edition\">\n      <single>edition</single>\n      <multiple>editions</multiple>\n    </term>\n    <term name=\"edition\" form=\"short\">ed.</term>\n    <term name=\"et-al\">et al.</term>\n    <term name=\"forthcoming\">forthcoming</term>\n    <term name=\"from\">from</term>\n    <term name=\"ibid\">ibid.</term>\n    <term name=\"in\">in</term>\n    <term name=\"in press\">in press</term>\n    <term name=\"internet\">internet</term>\n    <term name=\"interview\">interview</term>\n    <term name=\"letter\">letter</term>\n    <term name=\"no date\">no date</term>\n    <term name=\"no date\" form=\"short\">n.d.</term>\n    <term name=\"online\">online</term>\n    <term name=\"presented at\">presented at the</term>\n    <term name=\"reference\">\n      <single>reference</single>\n      <multiple>references</multiple>\n    </term>\n    <term name=\"reference\" form=\"short\">\n      <single>ref.</single>\n      <multiple>refs.</multiple>\n    </term>\n    <term name=\"retrieved\">retrieved</term>\n    <term name=\"scale\">scale</term>\n    <term name=\"version\">version</term>\n\n    <!-- ANNO DOMINI; BEFORE CHRIST -->\n    <term name=\"ad\">AD</term>\n    <term name=\"bc\">BC</term>\n\n    <!-- PUNCTUATION -->\n    <term name=\"open-quote\">“</term>\n    <term name=\"close-quote\">”</term>\n    <term name=\"open-inner-quote\">‘</term>\n    <term name=\"close-inner-quote\">’</term>\n    <term name=\"page-range-delimiter\">–</term>\n\n    <!-- ORDINALS -->\n    <term name=\"ordinal\">th</term>\n    <term name=\"ordinal-01\">st</term>\n    <term name=\"ordinal-02\">nd</term>\n    <term name=\"ordinal-03\">rd</term>\n    <term name=\"ordinal-11\">th</term>\n    <term name=\"ordinal-12\">th</term>\n    <term name=\"ordinal-13\">th</term>\n\n    <!-- LONG ORDINALS -->\n    <term name=\"long-ordinal-01\">first</term>\n    <term name=\"long-ordinal-02\">second</term>\n    <term name=\"long-ordinal-03\">third</term>\n    <term name=\"long-ordinal-04\">fourth</term>\n    <term name=\"long-ordinal-05\">fifth</term>\n    <term name=\"long-ordinal-06\">sixth</term>\n    <term name=\"long-ordinal-07\">seventh</term>\n    <term name=\"long-ordinal-08\">eighth</term>\n    <term name=\"long-ordinal-09\">ninth</term>\n    <term name=\"long-ordinal-10\">tenth</term>\n\n    <!-- LONG LOCATOR FORMS -->\n    <term name=\"book\">\n      <single>book</single>\n      <multiple>books</multiple>\n    </term>\n    <term name=\"chapter\">\n      <single>chapter</single>\n      <multiple>chapters</multiple>\n    </term>\n    <term name=\"column\">\n      <single>column</single>\n      <multiple>columns</multiple>\n    </term>\n    <term name=\"figure\">\n      <single>figure</single>\n      <multiple>figures</multiple>\n    </term>\n    <term name=\"folio\">\n      <single>folio</single>\n      <multiple>folios</multiple>\n    </term>\n    <term name=\"issue\">\n      <single>number</single>\n      <multiple>numbers</multiple>\n    </term>\n    <term name=\"line\">\n      <single>line</single>\n      <multiple>lines</multiple>\n    </term>\n    <term name=\"note\">\n      <single>note</single>\n      <multiple>notes</multiple>\n    </term>\n    <term name=\"opus\">\n      <single>opus</single>\n      <multiple>opera</multiple>\n    </term>\n    <term name=\"page\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"number-of-pages\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"paragraph\">\n      <single>paragraph</single>\n      <multiple>paragraphs</multiple>\n    </term>\n    <term name=\"part\">\n      <single>part</single>\n      <multiple>parts</multiple>\n    </term>\n    <term name=\"section\">\n      <single>section</single>\n      <multiple>sections</multiple>\n    </term>\n    <term name=\"sub verbo\">\n      <single>sub verbo</single>\n      <multiple>sub verbis</multiple>\n    </term>\n    <term name=\"verse\">\n      <single>verse</single>\n      <multiple>verses</multiple>\n    </term>\n    <term name=\"volume\">\n      <single>volume</single>\n      <multiple>volumes</multiple>\n    </term>\n\n    <!-- SHORT LOCATOR FORMS -->\n    <term name=\"book\" form=\"short\">\n      <single>bk.</single>\n      <multiple>bks.</multiple>\n    </term>\n    <term name=\"chapter\" form=\"short\">\n      <single>chap.</single>\n      <multiple>chaps.</multiple>\n    </term>\n    <term name=\"column\" form=\"short\">\n      <single>col.</single>\n      <multiple>cols.</multiple>\n    </term>\n    <term name=\"figure\" form=\"short\">\n      <single>fig.</single>\n      <multiple>figs.</multiple>\n    </term>\n    <term name=\"folio\" form=\"short\">\n      <single>fol.</single>\n      <multiple>fols.</multiple>\n    </term>\n    <term name=\"issue\" form=\"short\">\n      <single>no.</single>\n      <multiple>nos.</multiple>\n    </term>\n    <term name=\"line\" form=\"short\">\n      <single>l.</single>\n      <multiple>ll.</multiple>\n    </term>\n    <term name=\"note\" form=\"short\">\n      <single>n.</single>\n      <multiple>nn.</multiple>\n    </term>\n    <term name=\"opus\" form=\"short\">\n      <single>op.</single>\n      <multiple>opp.</multiple>\n    </term>\n    <term name=\"page\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"number-of-pages\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"paragraph\" form=\"short\">\n      <single>para.</single>\n      <multiple>paras.</multiple>\n    </term>\n    <term name=\"part\" form=\"short\">\n      <single>pt.</single>\n      <multiple>pts.</multiple>\n    </term>\n    <term name=\"section\" form=\"short\">\n      <single>sec.</single>\n      <multiple>secs.</multiple>\n    </term>\n    <term name=\"sub verbo\" form=\"short\">\n      <single>s.v.</single>\n      <multiple>s.vv.</multiple>\n    </term>\n    <term name=\"verse\" form=\"short\">\n      <single>v.</single>\n      <multiple>vv.</multiple>\n    </term>\n    <term name=\"volume\" form=\"short\">\n      <single>vol.</single>\n      <multiple>vols.</multiple>\n    </term>\n\n    <!-- SYMBOL LOCATOR FORMS -->\n    <term name=\"paragraph\" form=\"symbol\">\n      <single>¶</single>\n      <multiple>¶¶</multiple>\n    </term>\n    <term name=\"section\" form=\"symbol\">\n      <single>§</single>\n      <multiple>§§</multiple>\n    </term>\n\n    <!-- LONG ROLE FORMS -->\n    <term name=\"director\">\n      <single>director</single>\n      <multiple>directors</multiple>\n    </term>\n    <term name=\"editor\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"editorial-director\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"illustrator\">\n      <single>illustrator</single>\n      <multiple>illustrators</multiple>\n    </term>\n    <term name=\"translator\">\n      <single>translator</single>\n      <multiple>translators</multiple>\n    </term>\n    <term name=\"editortranslator\">\n      <single>editor &amp; translator</single>\n      <multiple>editors &amp; translators</multiple>\n    </term>\n\n    <!-- SHORT ROLE FORMS -->\n    <term name=\"director\" form=\"short\">\n      <single>dir.</single>\n      <multiple>dirs.</multiple>\n    </term>\n    <term name=\"editor\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"editorial-director\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"illustrator\" form=\"short\">\n      <single>ill.</single>\n      <multiple>ills.</multiple>\n    </term>\n    <term name=\"translator\" form=\"short\">\n      <single>tran.</single>\n      <multiple>trans.</multiple>\n    </term>\n    <term name=\"editortranslator\" form=\"short\">\n      <single>ed. &amp; tran.</single>\n      <multiple>eds. &amp; trans.</multiple>\n    </term>\n\n    <!-- VERB ROLE FORMS -->\n    <term name=\"container-author\" form=\"verb\">by</term>\n    <term name=\"director\" form=\"verb\">directed by</term>\n    <term name=\"editor\" form=\"verb\">edited by</term>\n    <term name=\"editorial-director\" form=\"verb\">edited by</term>\n    <term name=\"illustrator\" form=\"verb\">illustrated by</term>\n    <term name=\"interviewer\" form=\"verb\">interview by</term>\n    <term name=\"recipient\" form=\"verb\">to</term>\n    <term name=\"reviewed-author\" form=\"verb\">by</term>\n    <term name=\"translator\" form=\"verb\">translated by</term>\n    <term name=\"editortranslator\" form=\"verb\">edited &amp; translated by</term>\n\n    <!-- SHORT VERB ROLE FORMS -->\n    <term name=\"director\" form=\"verb-short\">dir. by</term>\n    <term name=\"editor\" form=\"verb-short\">ed. by</term>\n    <term name=\"editorial-director\" form=\"verb-short\">ed. by</term>\n    <term name=\"illustrator\" form=\"verb-short\">illus. by</term>\n    <term name=\"translator\" form=\"verb-short\">trans. by</term>\n    <term name=\"editortranslator\" form=\"verb-short\">ed. &amp; trans. by</term>\n\n    <!-- LONG MONTH FORMS -->\n    <term name=\"month-01\">January</term>\n    <term name=\"month-02\">February</term>\n    <term name=\"month-03\">March</term>\n    <term name=\"month-04\">April</term>\n    <term name=\"month-05\">May</term>\n    <term name=\"month-06\">June</term>\n    <term name=\"month-07\">July</term>\n    <term name=\"month-08\">August</term>\n    <term name=\"month-09\">September</term>\n    <term name=\"month-10\">October</term>\n    <term name=\"month-11\">November</term>\n    <term name=\"month-12\">December</term>\n\n    <!-- SHORT MONTH FORMS -->\n    <term name=\"month-01\" form=\"short\">Jan.</term>\n    <term name=\"month-02\" form=\"short\">Feb.</term>\n    <term name=\"month-03\" form=\"short\">Mar.</term>\n    <term name=\"month-04\" form=\"short\">Apr.</term>\n    <term name=\"month-05\" form=\"short\">May</term>\n    <term name=\"month-06\" form=\"short\">Jun.</term>\n    <term name=\"month-07\" form=\"short\">Jul.</term>\n    <term name=\"month-08\" form=\"short\">Aug.</term>\n    <term name=\"month-09\" form=\"short\">Sep.</term>\n    <term name=\"month-10\" form=\"short\">Oct.</term>\n    <term name=\"month-11\" form=\"short\">Nov.</term>\n    <term name=\"month-12\" form=\"short\">Dec.</term>\n\n    <!-- SEASONS -->\n    <term name=\"season-01\">Spring</term>\n    <term name=\"season-02\">Summer</term>\n    <term name=\"season-03\">Autumn</term>\n    <term name=\"season-04\">Winter</term>\n  </terms>\n</locale>\n"
-
-/***/ }),
-/* 269 */
-/***/ (function(module, exports) {
-
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"expanded\">\n  <info>\n    <title>American Psychological Association 6th edition</title>\n    <title-short>APA</title-short>\n    <id>http://www.zotero.org/styles/apa</id>\n    <link href=\"http://www.zotero.org/styles/apa\" rel=\"self\"/>\n    <link href=\"http://owl.english.purdue.edu/owl/resource/560/01/\" rel=\"documentation\"/>\n    <author>\n      <name>Simon Kornblith</name>\n      <email>simon@simonster.com</email>\n    </author>\n    <contributor>\n      <name>Bruce D'Arcus</name>\n    </contributor>\n    <contributor>\n      <name>Curtis M. Humphrey</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name> Brenton M. Wiernik</name>\n      <email>zotero@wiernik.org</email>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"psychology\"/>\n    <category field=\"generic-base\"/>\n    <updated>2016-09-28T13:09:49+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editortranslator\" form=\"short\">\n        <single>ed. &amp; trans.</single>\n        <multiple>eds. &amp; trans.</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">\n        <single>trans.</single>\n        <multiple>trans.</multiple>\n      </term>\n    </terms>\n  </locale>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"any\">\n        <group delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"article-journal chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"none\">\n        <group delimiter=\", \" prefix=\" (\" suffix=\")\">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"all\" and=\"symbol\" sort-separator=\", \" initialize-with=\". \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\" (\" suffix=\")\" text-case=\"capitalize-first\"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <choose>\n          <if type=\"report\">\n            <text variable=\"publisher\"/>\n            <text macro=\"title\"/>\n          </if>\n          <else>\n            <text macro=\"title\"/>\n          </else>\n        </choose>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <choose>\n      <if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\"/>\n      </if>\n      <else>\n        <names variable=\"author\">\n          <name form=\"short\" and=\"symbol\" delimiter=\", \" initialize-with=\". \"/>\n          <substitute>\n            <names variable=\"editor\"/>\n            <names variable=\"translator\"/>\n            <choose>\n              <if type=\"report\">\n                <text variable=\"publisher\"/>\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </if>\n              <else-if type=\"legal_case\">\n                <text variable=\"title\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"book graphic  motion_picture song\" match=\"any\">\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"bill legislation\" match=\"any\">\n                <text variable=\"title\" form=\"short\"/>\n              </else-if>\n              <else-if variable=\"reviewed-author\">\n                <choose>\n                  <if variable=\"reviewed-title\" match=\"none\">\n                    <text variable=\"title\" form=\"short\" font-style=\"italic\" prefix=\"Review of \"/>\n                  </if>\n                  <else>\n                    <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n                  </else>\n                </choose>\n              </else-if>\n              <else>\n                <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n              </else>\n            </choose>\n          </substitute>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"patent-number\">\n    <!-- genre: U.S. Patent number: 123,445-->\n    <group delimiter=\" \">\n      <group delimiter=\" \">\n        <text variable=\"genre\"/>\n        <text term=\"issue\" form=\"short\" text-case=\"capitalize-first\"/>\n      </group>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <choose>\n      <if type=\"thesis report\" match=\"any\">\n        <choose>\n          <if variable=\"DOI\" match=\"any\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else-if variable=\"URL\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"URL\"/>\n            </group>\n          </else-if>\n          <else-if variable=\"archive\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"archive\" suffix=\".\"/>\n              <text variable=\"archive_location\" prefix=\" (\" suffix=\")\"/>\n            </group>\n          </else-if>\n        </choose>\n      </if>\n      <else>\n        <choose>\n          <if variable=\"DOI\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else>\n            <choose>\n              <if type=\"post post-weblog webpage\" match=\"any\">\n                <group delimiter=\" \">\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <group>\n                    <date variable=\"accessed\" form=\"text\" suffix=\", \"/>\n                  </group>\n                  <text term=\"from\"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </if>\n              <else>\n                <group>\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <text term=\"from\" suffix=\" \"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </else>\n            </choose>\n          </else>\n        </choose>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if type=\"book dataset graphic manuscript motion_picture report song speech thesis\" match=\"any\">\n        <choose>\n          <if variable=\"version\" type=\"book\" match=\"all\">\n            <!---This is a hack until we have a computer program type -->\n            <text variable=\"title\"/>\n          </if>\n          <else>\n            <text variable=\"title\" font-style=\"italic\"/>\n          </else>\n        </choose>\n      </if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\" \">\n              <text variable=\"title\"/>\n              <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n                <text variable=\"reviewed-title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\" delimiter=\", \">\n                  <label form=\"verb-short\" suffix=\" \"/>\n                  <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <!-- assume `title` is title of reviewed work -->\n            <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n              <text variable=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\" delimiter=\", \">\n                <label form=\"verb-short\" suffix=\" \"/>\n                <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\" font-style=\"italic\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-plus-extra\">\n    <text macro=\"title\"/>\n    <choose>\n      <if type=\"report thesis\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"genre\" match=\"any\">\n                <text variable=\"genre\"/>\n              </if>\n              <else>\n                <text variable=\"collection-title\"/>\n              </else>\n            </choose>\n            <text variable=\"number\" prefix=\"No. \"/>\n          </group>\n          <group delimiter=\" \">\n            <text term=\"version\" text-case=\"capitalize-first\"/>\n            <text variable=\"version\"/>\n          </group>\n          <text macro=\"edition\"/>\n        </group>\n      </if>\n      <else-if type=\"post-weblog webpage\" match=\"any\">\n        <text variable=\"genre\" prefix=\" [\" suffix=\"]\"/>\n      </else-if>\n      <else-if variable=\"version\">\n        <group delimiter=\" \" prefix=\" (\" suffix=\")\">\n          <text term=\"version\" text-case=\"capitalize-first\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n    </choose>\n    <text macro=\"format\" prefix=\" [\" suffix=\"]\"/>\n  </macro>\n  <macro name=\"format\">\n    <choose>\n      <if match=\"any\" variable=\"medium\">\n        <text variable=\"medium\" text-case=\"capitalize-first\"/>\n      </if>\n      <else-if type=\"dataset\" match=\"any\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <!-- This should be localized -->\n            <text value=\"Data set\"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <choose>\n      <if type=\"report\" match=\"any\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <text variable=\"publisher\"/>\n        </group>\n      </if>\n      <else-if type=\"thesis\" match=\"any\">\n        <group delimiter=\", \">\n          <text variable=\"publisher\"/>\n          <text variable=\"publisher-place\"/>\n        </group>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <choose>\n            <if variable=\"publisher\">\n              <text variable=\"publisher\"/>\n            </if>\n            <else>\n              <text variable=\"authority\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"post-weblog webpage\" match=\"none\">\n        <group delimiter=\", \">\n          <choose>\n            <if variable=\"event version\" type=\"speech dataset motion_picture\" match=\"none\">\n              <!-- Including version is to avoid printing the programming language for computerProgram /-->\n              <text variable=\"genre\"/>\n            </if>\n          </choose>\n          <choose>\n            <if type=\"article-journal article-magazine article-newspaper\" match=\"none\">\n              <group delimiter=\": \">\n                <choose>\n                  <if variable=\"publisher-place\">\n                    <text variable=\"publisher-place\"/>\n                  </if>\n                  <else>\n                    <text variable=\"event-place\"/>\n                  </else>\n                </choose>\n                <text variable=\"publisher\"/>\n              </group>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <choose>\n      <if variable=\"container-title\" match=\"none\">\n        <choose>\n          <if variable=\"event\">\n            <choose>\n              <if variable=\"genre\" match=\"none\">\n                <text term=\"presented at\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <text variable=\"event\"/>\n              </if>\n              <else>\n                <group delimiter=\" \">\n                  <text variable=\"genre\" text-case=\"capitalize-first\"/>\n                  <text term=\"presented at\"/>\n                  <text variable=\"event\"/>\n                </group>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"speech\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </else-if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"issued\">\n            <group prefix=\" (\" suffix=\")\">\n              <date variable=\"issued\">\n                <date-part name=\"year\"/>\n              </date>\n              <text variable=\"year-suffix\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                    <date-part prefix=\" \" name=\"day\"/>\n                  </date>\n                </else-if>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"status\">\n            <group prefix=\" (\" suffix=\")\">\n              <text variable=\"status\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else-if>\n          <else>\n            <group prefix=\" (\" suffix=\")\">\n              <text term=\"no date\" form=\"short\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued-sort\">\n    <choose>\n      <if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n          <date-part name=\"month\"/>\n          <date-part name=\"day\"/>\n        </date>\n      </if>\n      <else>\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n        </date>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issued-year\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\"/\">\n          <date variable=\"original-date\">\n            <date-part name=\"year\"/>\n          </date>\n          <group>\n            <date variable=\"issued\">\n              <date-part name=\"year\"/>\n            </date>\n            <text variable=\"year-suffix\"/>\n          </group>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if is-numeric=\"edition\">\n        <group delimiter=\" \">\n          <number variable=\"edition\" form=\"ordinal\"/>\n          <text term=\"edition\" form=\"short\"/>\n        </group>\n      </if>\n      <else>\n        <text variable=\"edition\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal article-magazine\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <group>\n            <text variable=\"volume\" font-style=\"italic\"/>\n            <text variable=\"issue\" prefix=\"(\" suffix=\")\"/>\n          </group>\n          <text variable=\"page\"/>\n        </group>\n        <choose>\n          <!--for advanced online publication-->\n          <if variable=\"issued\">\n            <choose>\n              <if variable=\"page issue\" match=\"none\">\n                <text variable=\"status\" prefix=\". \"/>\n              </if>\n            </choose>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"article-newspaper\">\n        <group delimiter=\" \" prefix=\", \">\n          <label variable=\"page\" form=\"short\"/>\n          <text variable=\"page\"/>\n        </group>\n      </else-if>\n      <else-if type=\"book graphic motion_picture report song chapter paper-conference entry-encyclopedia entry-dictionary\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <choose>\n            <if type=\"report\" match=\"none\">\n              <!-- edition for report is included in title-plus-extra /-->\n              <text macro=\"edition\"/>\n            </if>\n          </choose>\n          <choose>\n            <if variable=\"volume\" match=\"any\">\n              <group>\n                <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"volume\" form=\"numeric\"/>\n              </group>\n            </if>\n            <else>\n              <group>\n                <text term=\"volume\" form=\"short\" plural=\"true\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"number-of-volumes\" form=\"numeric\" prefix=\"1&#8211;\"/>\n              </group>\n            </else>\n          </choose>\n          <group>\n            <label variable=\"page\" form=\"short\" suffix=\" \"/>\n            <text variable=\"page\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"legal_case\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text variable=\"authority\"/>\n          <choose>\n            <if variable=\"container-title\" match=\"any\">\n              <!--Only print year for cases published in reporters-->\n              <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n            </if>\n            <else>\n              <date variable=\"issued\" form=\"text\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <date variable=\"issued\" prefix=\" (\" suffix=\")\">\n          <date-part name=\"year\"/>\n        </date>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"citation-locator\">\n    <group>\n      <choose>\n        <if locator=\"chapter\">\n          <label variable=\"locator\" form=\"long\" text-case=\"capitalize-first\"/>\n        </if>\n        <else>\n          <label variable=\"locator\" form=\"short\"/>\n        </else>\n      </choose>\n      <text variable=\"locator\" prefix=\" \"/>\n    </group>\n  </macro>\n  <macro name=\"container\">\n    <choose>\n      <if type=\"post-weblog webpage\" match=\"none\">\n        <group>\n          <choose>\n            <if type=\"chapter paper-conference entry-encyclopedia\" match=\"any\">\n              <text term=\"in\" text-case=\"capitalize-first\" suffix=\" \"/>\n            </if>\n          </choose>\n          <group delimiter=\", \">\n            <text macro=\"container-contributors\"/>\n            <text macro=\"secondary-contributors\"/>\n            <text macro=\"container-title\"/>\n          </group>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"article article-journal article-magazine article-newspaper\" match=\"any\">\n        <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"bill legal_case legislation\" match=\"none\">\n        <text variable=\"container-title\" font-style=\"italic\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"legal-cites\">\n    <choose>\n      <if type=\"legal_case\" match=\"any\">\n        <group prefix=\", \" delimiter=\" \">\n          <choose>\n            <if variable=\"container-title\">\n              <text variable=\"volume\"/>\n              <text variable=\"container-title\"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <text variable=\"page\"/>\n            </if>\n            <else>\n              <text variable=\"number\" prefix=\"No. \"/>\n            </else>\n          </choose>\n        </group>\n      </if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <group delimiter=\", \" prefix=\", \">\n          <choose>\n            <if variable=\"number\">\n              <!--There's a public law number-->\n              <text variable=\"number\" prefix=\"Pub. L. No. \"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <text variable=\"page-first\"/>\n              </group>\n            </if>\n            <else>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"original-date\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"original-date\">\n            <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n              <!---This should be localized-->\n              <text value=\"Original work published\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"original-date\" delimiter=\" \">\n                    <date-part name=\"month\"/>\n                    <date-part name=\"year\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"original-date\" form=\"text\"/>\n                </else-if>\n                <else>\n                  <date variable=\"original-date\">\n                    <date-part name=\"year\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"6\" et-al-use-first=\"1\" et-al-subsequent-min=\"3\" et-al-subsequent-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" collapse=\"year\" givenname-disambiguation-rule=\"primary-name\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\"/>\n    </sort>\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <text macro=\"author-short\"/>\n        <text macro=\"issued-year\"/>\n        <text macro=\"citation-locator\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"8\" et-al-use-first=\"6\" et-al-use-last=\"true\" entry-spacing=\"0\" line-spacing=\"2\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\" sort=\"ascending\"/>\n      <key macro=\"title\"/>\n    </sort>\n    <layout>\n      <group suffix=\".\">\n        <group delimiter=\". \">\n          <text macro=\"author\"/>\n          <text macro=\"issued\"/>\n          <text macro=\"title-plus-extra\"/>\n          <text macro=\"container\"/>\n        </group>\n        <text macro=\"legal-cites\"/>\n        <text macro=\"locators\"/>\n        <group delimiter=\", \" prefix=\". \">\n          <text macro=\"event\"/>\n          <text macro=\"publisher\"/>\n        </group>\n      </group>\n      <text macro=\"access\" prefix=\" \"/>\n      <text macro=\"original-date\" prefix=\" \"/>\n    </layout>\n  </bibliography>\n</style>\n"
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(67)(module)))
 
 /***/ }),
 /* 270 */
 /***/ (function(module, exports) {
 
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"minimal-two\">\n  <info>\n    <title>Modern Language Association 8th edition</title>\n    <title-short>MLA</title-short>\n    <id>http://www.zotero.org/styles/modern-language-association</id>\n    <link href=\"http://www.zotero.org/styles/modern-language-association\" rel=\"self\"/>\n    <link href=\"http://style.mla.org\" rel=\"documentation\"/>\n    <author>\n      <name>Sebastian Karcher</name>\n    </author>\n    <category citation-format=\"author\"/>\n    <category field=\"generic-base\"/>\n    <summary>This style adheres to the MLA 8th edition handbook. Follows the structure of references as outlined in the MLA Manual closely</summary>\n    <updated>2014-07-06T20:05:10+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <date form=\"text\">\n      <date-part name=\"day\" suffix=\" \"/>\n      <date-part name=\"month\" suffix=\" \" form=\"short\"/>\n      <date-part name=\"year\"/>\n    </date>\n    <terms>\n      <term name=\"month-01\" form=\"short\">Jan.</term>\n      <term name=\"month-02\" form=\"short\">Feb.</term>\n      <term name=\"month-03\" form=\"short\">Mar.</term>\n      <term name=\"month-04\" form=\"short\">Apr.</term>\n      <term name=\"month-05\" form=\"short\">May</term>\n      <term name=\"month-06\" form=\"short\">June</term>\n      <term name=\"month-07\" form=\"short\">July</term>\n      <term name=\"month-08\" form=\"short\">Aug.</term>\n      <term name=\"month-09\" form=\"short\">Sept.</term>\n      <term name=\"month-10\" form=\"short\">Oct.</term>\n      <term name=\"month-11\" form=\"short\">Nov.</term>\n      <term name=\"month-12\" form=\"short\">Dec.</term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"first\" and=\"text\" delimiter-precedes-last=\"always\" delimiter-precedes-et-al=\"always\" initialize=\"false\" initialize-with=\". \"/>\n      <label form=\"long\" prefix=\", \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <group delimiter=\", \">\n      <names variable=\"author\">\n        <name form=\"short\" initialize-with=\". \" and=\"text\"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <text macro=\"title-short\"/>\n        </substitute>\n      </names>\n      <choose>\n        <if disambiguate=\"true\">\n          <text macro=\"title-short\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-short\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" form=\"short\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" form=\"short\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n  </macro>\n  <macro name=\"other-contributors\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \"/>\n          <name and=\"text\"/>\n        </names>\n      </if>\n      <else>\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \" text-case=\"capitalize-first\"/>\n          <name and=\"text\"/>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"version\">\n    <group delimiter=\", \">\n      <choose>\n        <if is-numeric=\"edition\">\n          <group delimiter=\" \">\n            <number variable=\"edition\" form=\"ordinal\"/>\n            <text term=\"edition\" form=\"short\"/>\n          </group>\n        </if>\n        <else>\n          <text variable=\"edition\" text-case=\"capitalize-first\"/>\n        </else>\n      </choose>\n      <text variable=\"version\"/>\n    </group>\n  </macro>\n  <macro name=\"number\">\n    <group delimiter=\", \">\n      <group>\n        <choose>\n          <!--lowercase if we have a preceding element-->\n          <if variable=\"edition container-title\" match=\"any\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </if>\n          <!--other contributors preceding the volume-->\n          <else-if variable=\"author editor\" match=\"all\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else-if>\n          <else>\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else>\n        </choose>\n      </group>\n      <group delimiter=\" \">\n        <text term=\"issue\" form=\"short\"/>\n        <text variable=\"issue\"/>\n      </group>\n      <choose>\n        <if type=\"report\">\n          <text variable=\"genre\"/>\n        </if>\n      </choose>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"publisher\">\n    <text variable=\"publisher\"/>\n  </macro>\n  <macro name=\"publication-date\">\n    <choose>\n      <if type=\"book chapter paper-conference motion_picture\" match=\"any\">\n        <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n      </if>\n      <else-if type=\"article-journal article-magazine\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" date-parts=\"year-month\"/>\n      </else-if>\n      <else-if type=\"speech\" match=\"none\">\n        <date variable=\"issued\" form=\"text\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"location\">\n    <group delimiter=\", \">\n      <group delimiter=\" \">\n        <label variable=\"page\" form=\"short\"/>\n        <text variable=\"page\"/>\n      </group>\n      <choose>\n        <if variable=\"source\" match=\"none\">\n          <text macro=\"URI\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"container2-title\">\n    <group delimiter=\", \">\n      <choose>\n        <if type=\"speech\">\n          <text variable=\"event\"/>\n          <date variable=\"event-date\" form=\"text\"/>\n          <text variable=\"event-place\"/>\n        </if>\n      </choose>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n      <text variable=\"archive_location\"/>\n    </group>\n  </macro>\n  <macro name=\"container2-location\">\n    <choose>\n      <if variable=\"source\">\n        <choose>\n          <if variable=\"DOI URL\" match=\"any\">\n            <group delimiter=\", \">\n              <text variable=\"source\" font-style=\"italic\"/>\n              <text macro=\"URI\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"URI\">\n    <choose>\n      <if variable=\"DOI\">\n        <text variable=\"DOI\" prefix=\"doi:\"/>\n      </if>\n      <else>\n        <text variable=\"URL\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"accessed\">\n    <!--using accessed where we don't have an issued date; follows recommendation on p. 53 -->\n    <choose>\n      <if variable=\"issued\" match=\"none\">\n        <group delimiter=\" \">\n          <text term=\"accessed\" text-case=\"capitalize-first\"/>\n          <date variable=\"accessed\" form=\"text\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"3\" et-al-use-first=\"1\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <choose>\n        <if locator=\"page\">\n          <group delimiter=\" \">\n            <text macro=\"author-short\"/>\n            <text variable=\"locator\"/>\n          </group>\n        </if>\n        <else>\n          <group delimiter=\", \">\n            <text macro=\"author-short\"/>\n            <group>\n              <label variable=\"locator\" form=\"short\"/>\n              <text variable=\"locator\"/>\n            </group>\n          </group>\n        </else>\n      </choose>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"3\" et-al-use-first=\"1\" line-spacing=\"2\" entry-spacing=\"0\" subsequent-author-substitute=\"---\">\n    <sort>\n      <key macro=\"author\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"author\"/>\n        <text macro=\"title\"/>\n        <date variable=\"original-date\" form=\"numeric\" date-parts=\"year\"/>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 1\"-->\n          <text macro=\"container-title\"/>\n          <text macro=\"other-contributors\"/>\n          <text macro=\"version\"/>\n          <text macro=\"number\"/>\n          <text macro=\"publisher\"/>\n          <text macro=\"publication-date\"/>\n          <text macro=\"location\"/>\n        </group>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 2\"-->\n          <!--currently just using this one for archival info-->\n          <text macro=\"container2-title\"/>\n          <text macro=\"container2-location\"/>\n        </group>\n        <text macro=\"accessed\"/>\n      </group>\n    </layout>\n  </bibliography>\n</style>\n"
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<locale xmlns=\"http://purl.org/net/xbiblio/csl\" version=\"1.0\" xml:lang=\"en-US\">\n  <info>\n    <translator>\n      <name>Andrew Dunning</name>\n    </translator>\n    <translator>\n      <name>Sebastian Karcher</name>\n    </translator>\n    <translator>\n      <name>Rintze M. Zelle</name>\n    </translator>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n    <updated>2015-10-10T23:31:02+00:00</updated>\n  </info>\n  <style-options punctuation-in-quote=\"true\"/>\n  <date form=\"text\">\n    <date-part name=\"month\" suffix=\" \"/>\n    <date-part name=\"day\" suffix=\", \"/>\n    <date-part name=\"year\"/>\n  </date>\n  <date form=\"numeric\">\n    <date-part name=\"month\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"day\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"year\"/>\n  </date>\n  <terms>\n    <term name=\"accessed\">accessed</term>\n    <term name=\"and\">and</term>\n    <term name=\"and others\">and others</term>\n    <term name=\"anonymous\">anonymous</term>\n    <term name=\"anonymous\" form=\"short\">anon.</term>\n    <term name=\"at\">at</term>\n    <term name=\"available at\">available at</term>\n    <term name=\"by\">by</term>\n    <term name=\"circa\">circa</term>\n    <term name=\"circa\" form=\"short\">c.</term>\n    <term name=\"cited\">cited</term>\n    <term name=\"edition\">\n      <single>edition</single>\n      <multiple>editions</multiple>\n    </term>\n    <term name=\"edition\" form=\"short\">ed.</term>\n    <term name=\"et-al\">et al.</term>\n    <term name=\"forthcoming\">forthcoming</term>\n    <term name=\"from\">from</term>\n    <term name=\"ibid\">ibid.</term>\n    <term name=\"in\">in</term>\n    <term name=\"in press\">in press</term>\n    <term name=\"internet\">internet</term>\n    <term name=\"interview\">interview</term>\n    <term name=\"letter\">letter</term>\n    <term name=\"no date\">no date</term>\n    <term name=\"no date\" form=\"short\">n.d.</term>\n    <term name=\"online\">online</term>\n    <term name=\"presented at\">presented at the</term>\n    <term name=\"reference\">\n      <single>reference</single>\n      <multiple>references</multiple>\n    </term>\n    <term name=\"reference\" form=\"short\">\n      <single>ref.</single>\n      <multiple>refs.</multiple>\n    </term>\n    <term name=\"retrieved\">retrieved</term>\n    <term name=\"scale\">scale</term>\n    <term name=\"version\">version</term>\n\n    <!-- ANNO DOMINI; BEFORE CHRIST -->\n    <term name=\"ad\">AD</term>\n    <term name=\"bc\">BC</term>\n\n    <!-- PUNCTUATION -->\n    <term name=\"open-quote\">“</term>\n    <term name=\"close-quote\">”</term>\n    <term name=\"open-inner-quote\">‘</term>\n    <term name=\"close-inner-quote\">’</term>\n    <term name=\"page-range-delimiter\">–</term>\n\n    <!-- ORDINALS -->\n    <term name=\"ordinal\">th</term>\n    <term name=\"ordinal-01\">st</term>\n    <term name=\"ordinal-02\">nd</term>\n    <term name=\"ordinal-03\">rd</term>\n    <term name=\"ordinal-11\">th</term>\n    <term name=\"ordinal-12\">th</term>\n    <term name=\"ordinal-13\">th</term>\n\n    <!-- LONG ORDINALS -->\n    <term name=\"long-ordinal-01\">first</term>\n    <term name=\"long-ordinal-02\">second</term>\n    <term name=\"long-ordinal-03\">third</term>\n    <term name=\"long-ordinal-04\">fourth</term>\n    <term name=\"long-ordinal-05\">fifth</term>\n    <term name=\"long-ordinal-06\">sixth</term>\n    <term name=\"long-ordinal-07\">seventh</term>\n    <term name=\"long-ordinal-08\">eighth</term>\n    <term name=\"long-ordinal-09\">ninth</term>\n    <term name=\"long-ordinal-10\">tenth</term>\n\n    <!-- LONG LOCATOR FORMS -->\n    <term name=\"book\">\n      <single>book</single>\n      <multiple>books</multiple>\n    </term>\n    <term name=\"chapter\">\n      <single>chapter</single>\n      <multiple>chapters</multiple>\n    </term>\n    <term name=\"column\">\n      <single>column</single>\n      <multiple>columns</multiple>\n    </term>\n    <term name=\"figure\">\n      <single>figure</single>\n      <multiple>figures</multiple>\n    </term>\n    <term name=\"folio\">\n      <single>folio</single>\n      <multiple>folios</multiple>\n    </term>\n    <term name=\"issue\">\n      <single>number</single>\n      <multiple>numbers</multiple>\n    </term>\n    <term name=\"line\">\n      <single>line</single>\n      <multiple>lines</multiple>\n    </term>\n    <term name=\"note\">\n      <single>note</single>\n      <multiple>notes</multiple>\n    </term>\n    <term name=\"opus\">\n      <single>opus</single>\n      <multiple>opera</multiple>\n    </term>\n    <term name=\"page\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"number-of-pages\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"paragraph\">\n      <single>paragraph</single>\n      <multiple>paragraphs</multiple>\n    </term>\n    <term name=\"part\">\n      <single>part</single>\n      <multiple>parts</multiple>\n    </term>\n    <term name=\"section\">\n      <single>section</single>\n      <multiple>sections</multiple>\n    </term>\n    <term name=\"sub verbo\">\n      <single>sub verbo</single>\n      <multiple>sub verbis</multiple>\n    </term>\n    <term name=\"verse\">\n      <single>verse</single>\n      <multiple>verses</multiple>\n    </term>\n    <term name=\"volume\">\n      <single>volume</single>\n      <multiple>volumes</multiple>\n    </term>\n\n    <!-- SHORT LOCATOR FORMS -->\n    <term name=\"book\" form=\"short\">\n      <single>bk.</single>\n      <multiple>bks.</multiple>\n    </term>\n    <term name=\"chapter\" form=\"short\">\n      <single>chap.</single>\n      <multiple>chaps.</multiple>\n    </term>\n    <term name=\"column\" form=\"short\">\n      <single>col.</single>\n      <multiple>cols.</multiple>\n    </term>\n    <term name=\"figure\" form=\"short\">\n      <single>fig.</single>\n      <multiple>figs.</multiple>\n    </term>\n    <term name=\"folio\" form=\"short\">\n      <single>fol.</single>\n      <multiple>fols.</multiple>\n    </term>\n    <term name=\"issue\" form=\"short\">\n      <single>no.</single>\n      <multiple>nos.</multiple>\n    </term>\n    <term name=\"line\" form=\"short\">\n      <single>l.</single>\n      <multiple>ll.</multiple>\n    </term>\n    <term name=\"note\" form=\"short\">\n      <single>n.</single>\n      <multiple>nn.</multiple>\n    </term>\n    <term name=\"opus\" form=\"short\">\n      <single>op.</single>\n      <multiple>opp.</multiple>\n    </term>\n    <term name=\"page\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"number-of-pages\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"paragraph\" form=\"short\">\n      <single>para.</single>\n      <multiple>paras.</multiple>\n    </term>\n    <term name=\"part\" form=\"short\">\n      <single>pt.</single>\n      <multiple>pts.</multiple>\n    </term>\n    <term name=\"section\" form=\"short\">\n      <single>sec.</single>\n      <multiple>secs.</multiple>\n    </term>\n    <term name=\"sub verbo\" form=\"short\">\n      <single>s.v.</single>\n      <multiple>s.vv.</multiple>\n    </term>\n    <term name=\"verse\" form=\"short\">\n      <single>v.</single>\n      <multiple>vv.</multiple>\n    </term>\n    <term name=\"volume\" form=\"short\">\n      <single>vol.</single>\n      <multiple>vols.</multiple>\n    </term>\n\n    <!-- SYMBOL LOCATOR FORMS -->\n    <term name=\"paragraph\" form=\"symbol\">\n      <single>¶</single>\n      <multiple>¶¶</multiple>\n    </term>\n    <term name=\"section\" form=\"symbol\">\n      <single>§</single>\n      <multiple>§§</multiple>\n    </term>\n\n    <!-- LONG ROLE FORMS -->\n    <term name=\"director\">\n      <single>director</single>\n      <multiple>directors</multiple>\n    </term>\n    <term name=\"editor\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"editorial-director\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"illustrator\">\n      <single>illustrator</single>\n      <multiple>illustrators</multiple>\n    </term>\n    <term name=\"translator\">\n      <single>translator</single>\n      <multiple>translators</multiple>\n    </term>\n    <term name=\"editortranslator\">\n      <single>editor &amp; translator</single>\n      <multiple>editors &amp; translators</multiple>\n    </term>\n\n    <!-- SHORT ROLE FORMS -->\n    <term name=\"director\" form=\"short\">\n      <single>dir.</single>\n      <multiple>dirs.</multiple>\n    </term>\n    <term name=\"editor\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"editorial-director\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"illustrator\" form=\"short\">\n      <single>ill.</single>\n      <multiple>ills.</multiple>\n    </term>\n    <term name=\"translator\" form=\"short\">\n      <single>tran.</single>\n      <multiple>trans.</multiple>\n    </term>\n    <term name=\"editortranslator\" form=\"short\">\n      <single>ed. &amp; tran.</single>\n      <multiple>eds. &amp; trans.</multiple>\n    </term>\n\n    <!-- VERB ROLE FORMS -->\n    <term name=\"container-author\" form=\"verb\">by</term>\n    <term name=\"director\" form=\"verb\">directed by</term>\n    <term name=\"editor\" form=\"verb\">edited by</term>\n    <term name=\"editorial-director\" form=\"verb\">edited by</term>\n    <term name=\"illustrator\" form=\"verb\">illustrated by</term>\n    <term name=\"interviewer\" form=\"verb\">interview by</term>\n    <term name=\"recipient\" form=\"verb\">to</term>\n    <term name=\"reviewed-author\" form=\"verb\">by</term>\n    <term name=\"translator\" form=\"verb\">translated by</term>\n    <term name=\"editortranslator\" form=\"verb\">edited &amp; translated by</term>\n\n    <!-- SHORT VERB ROLE FORMS -->\n    <term name=\"director\" form=\"verb-short\">dir. by</term>\n    <term name=\"editor\" form=\"verb-short\">ed. by</term>\n    <term name=\"editorial-director\" form=\"verb-short\">ed. by</term>\n    <term name=\"illustrator\" form=\"verb-short\">illus. by</term>\n    <term name=\"translator\" form=\"verb-short\">trans. by</term>\n    <term name=\"editortranslator\" form=\"verb-short\">ed. &amp; trans. by</term>\n\n    <!-- LONG MONTH FORMS -->\n    <term name=\"month-01\">January</term>\n    <term name=\"month-02\">February</term>\n    <term name=\"month-03\">March</term>\n    <term name=\"month-04\">April</term>\n    <term name=\"month-05\">May</term>\n    <term name=\"month-06\">June</term>\n    <term name=\"month-07\">July</term>\n    <term name=\"month-08\">August</term>\n    <term name=\"month-09\">September</term>\n    <term name=\"month-10\">October</term>\n    <term name=\"month-11\">November</term>\n    <term name=\"month-12\">December</term>\n\n    <!-- SHORT MONTH FORMS -->\n    <term name=\"month-01\" form=\"short\">Jan.</term>\n    <term name=\"month-02\" form=\"short\">Feb.</term>\n    <term name=\"month-03\" form=\"short\">Mar.</term>\n    <term name=\"month-04\" form=\"short\">Apr.</term>\n    <term name=\"month-05\" form=\"short\">May</term>\n    <term name=\"month-06\" form=\"short\">Jun.</term>\n    <term name=\"month-07\" form=\"short\">Jul.</term>\n    <term name=\"month-08\" form=\"short\">Aug.</term>\n    <term name=\"month-09\" form=\"short\">Sep.</term>\n    <term name=\"month-10\" form=\"short\">Oct.</term>\n    <term name=\"month-11\" form=\"short\">Nov.</term>\n    <term name=\"month-12\" form=\"short\">Dec.</term>\n\n    <!-- SEASONS -->\n    <term name=\"season-01\">Spring</term>\n    <term name=\"season-02\">Summer</term>\n    <term name=\"season-03\">Autumn</term>\n    <term name=\"season-04\">Winter</term>\n  </terms>\n</locale>\n"
 
 /***/ }),
 /* 271 */
 /***/ (function(module, exports) {
 
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"display-and-sort\" page-range-format=\"chicago\">\n  <info>\n    <title>Chicago Manual of Style 17th edition (author-date)</title>\n    <id>http://www.zotero.org/styles/chicago-author-date</id>\n    <link href=\"http://www.zotero.org/styles/chicago-author-date\" rel=\"self\"/>\n    <link href=\"http://www.chicagomanualofstyle.org/tools_citationguide.html\" rel=\"documentation\"/>\n    <author>\n      <name>Julian Onions</name>\n      <email>julian.onions@gmail.com</email>\n    </author>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Andrew Dunning</name>\n      <email>andrew.dunning@utoronto.ca</email>\n      <uri>https://orcid.org/0000-0003-0464-5036</uri>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"generic-base\"/>\n    <summary>The author-date variant of the Chicago style</summary>\n    <updated>2018-01-24T12:00:00+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editor\" form=\"verb-short\">ed.</term>\n      <term name=\"container-author\" form=\"verb\">by</term>\n      <term name=\"translator\" form=\"verb-short\">trans.</term>\n      <term name=\"editortranslator\" form=\"verb\">\n        <single>edited and translated by</single>\n        <multiple>edited and translated by</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"none\">\n        <group delimiter=\". \">\n          <names variable=\"editor translator\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"director\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"editor\">\n    <names variable=\"editor\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"translator\">\n    <names variable=\"translator\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"recipient\">\n    <choose>\n      <if type=\"personal_communication\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <text term=\"letter\" text-case=\"capitalize-first\"/>\n          </else>\n        </choose>\n      </if>\n    </choose>\n    <names variable=\"recipient\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"lowercase\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"substitute-title\">\n    <choose>\n      <if type=\"article-magazine article-newspaper review review-book\" match=\"any\">\n        <text macro=\"container-title\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"contributors\">\n    <group delimiter=\". \">\n      <names variable=\"author\">\n        <name and=\"text\" name-as-sort-order=\"first\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n        <label form=\"short\" prefix=\", \"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <names variable=\"director\"/>\n          <text macro=\"substitute-title\"/>\n          <text macro=\"title\"/>\n        </substitute>\n      </names>\n      <text macro=\"recipient\"/>\n    </group>\n  </macro>\n  <macro name=\"contributors-short\">\n    <names variable=\"author\">\n      <name form=\"short\" and=\"text\" delimiter=\", \" initialize-with=\". \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <names variable=\"director\"/>\n        <text macro=\"substitute-title\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"interviewer\">\n    <names variable=\"interviewer\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"capitalize-first\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"archive\">\n    <group delimiter=\". \">\n      <text variable=\"archive_location\" text-case=\"capitalize-first\"/>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <group delimiter=\". \">\n      <choose>\n        <if type=\"graphic report\" match=\"any\">\n          <text macro=\"archive\"/>\n        </if>\n        <else-if type=\"article-journal bill book chapter legal_case legislation motion_picture paper-conference\" match=\"none\">\n          <text macro=\"archive\"/>\n        </else-if>\n      </choose>\n      <choose>\n        <if type=\"webpage post-weblog\" match=\"any\">\n          <date variable=\"issued\" form=\"text\"/>\n        </if>\n      </choose>\n      <choose>\n        <if variable=\"issued\" match=\"none\">\n          <group delimiter=\" \">\n            <text term=\"accessed\" text-case=\"capitalize-first\"/>\n            <date variable=\"accessed\" form=\"text\"/>\n          </group>\n        </if>\n      </choose>\n      <choose>\n        <if type=\"legal_case\" match=\"none\">\n          <choose>\n            <if variable=\"DOI\">\n              <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n            </if>\n            <else>\n              <text variable=\"URL\"/>\n            </else>\n          </choose>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"title\" match=\"none\">\n        <choose>\n          <if type=\"personal_communication\" match=\"none\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"bill book graphic legislation motion_picture song\" match=\"any\">\n        <text variable=\"title\" text-case=\"title\" font-style=\"italic\"/>\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text term=\"version\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\". \">\n              <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n              <group delimiter=\", \">\n                <text variable=\"reviewed-title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\">\n                  <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                  <name and=\"text\" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\", \">\n              <text variable=\"title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\">\n                <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                <name and=\"text\" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"legal_case interview patent\" match=\"any\">\n        <text variable=\"title\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\". \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\" strip-periods=\"true\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" text-case=\"capitalize-first\" prefix=\". \"/>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\", \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume\">\n            <text variable=\"volume\" prefix=\" \"/>\n            <group prefix=\" (\" suffix=\")\">\n              <choose>\n                <if variable=\"issue\">\n                  <text variable=\"issue\"/>\n                </if>\n                <else>\n                  <date variable=\"issued\">\n                    <date-part name=\"month\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"issue\">\n            <group delimiter=\" \" prefix=\", \">\n              <text term=\"issue\" form=\"short\"/>\n              <text variable=\"issue\"/>\n              <date variable=\"issued\" prefix=\"(\" suffix=\")\">\n                <date-part name=\"month\"/>\n              </date>\n            </group>\n          </else-if>\n          <else>\n            <date variable=\"issued\" prefix=\", \">\n              <date-part name=\"month\"/>\n            </date>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"legal_case\">\n        <text variable=\"volume\" prefix=\", \"/>\n        <text variable=\"container-title\" prefix=\" \"/>\n        <text variable=\"page\" prefix=\" \"/>\n      </else-if>\n      <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <group prefix=\". \" delimiter=\". \">\n          <group>\n            <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <number variable=\"volume\" form=\"numeric\"/>\n          </group>\n          <group>\n            <number variable=\"number-of-volumes\" form=\"numeric\"/>\n            <text term=\"volume\" form=\"short\" prefix=\" \" plural=\"true\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\" match=\"none\">\n            <group prefix=\". \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <number variable=\"volume\" form=\"numeric\"/>\n            </group>\n          </if>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators-chapter\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\">\n            <group prefix=\", \">\n              <text variable=\"volume\" suffix=\":\"/>\n              <text variable=\"page\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"locators-article\">\n    <choose>\n      <if type=\"article-newspaper\">\n        <group prefix=\", \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"edition\"/>\n            <text term=\"edition\"/>\n          </group>\n          <group>\n            <text term=\"section\" form=\"short\" suffix=\" \"/>\n            <text variable=\"section\"/>\n          </group>\n        </group>\n      </if>\n      <else-if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume issue\" match=\"any\">\n            <text variable=\"page\" prefix=\": \"/>\n          </if>\n          <else>\n            <text variable=\"page\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"point-locators\">\n    <choose>\n      <if variable=\"locator\">\n        <choose>\n          <if locator=\"page\" match=\"none\">\n            <choose>\n              <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n                <choose>\n                  <if variable=\"volume\">\n                    <group>\n                      <text term=\"volume\" form=\"short\" suffix=\" \"/>\n                      <number variable=\"volume\" form=\"numeric\"/>\n                      <label variable=\"locator\" form=\"short\" prefix=\", \" suffix=\" \"/>\n                    </group>\n                  </if>\n                  <else>\n                    <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n                  </else>\n                </choose>\n              </if>\n              <else>\n                <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n            <number variable=\"volume\" form=\"numeric\" suffix=\":\"/>\n          </else-if>\n        </choose>\n        <text variable=\"locator\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-prefix\">\n    <text term=\"in\" text-case=\"capitalize-first\"/>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <text macro=\"container-prefix\" suffix=\" \"/>\n      </if>\n    </choose>\n    <choose>\n      <if type=\"webpage\">\n        <text variable=\"container-title\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"legal_case\" match=\"none\">\n        <group delimiter=\" \">\n          <text variable=\"container-title\" text-case=\"title\" font-style=\"italic\"/>\n          <choose>\n            <if type=\"post-weblog\">\n              <text value=\"(blog)\"/>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <group delimiter=\": \">\n      <text variable=\"publisher-place\"/>\n      <text variable=\"publisher\"/>\n    </group>\n  </macro>\n  <macro name=\"date\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"(\" suffix=\")\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\" text-case=\"capitalize-first\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"date-in-text\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"[\" suffix=\"]\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"day-month\">\n    <date variable=\"issued\">\n      <date-part name=\"month\"/>\n      <date-part name=\"day\" prefix=\" \"/>\n    </date>\n  </macro>\n  <macro name=\"collection-title\">\n    <choose>\n      <if match=\"none\" type=\"article-journal\">\n        <choose>\n          <if match=\"none\" is-numeric=\"collection-number\">\n            <group delimiter=\", \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\" \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"collection-title-journal\">\n    <choose>\n      <if type=\"article-journal\">\n        <group delimiter=\" \">\n          <text variable=\"collection-title\"/>\n          <text variable=\"collection-number\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <group>\n      <text term=\"presented at\" suffix=\" \"/>\n      <text variable=\"event\"/>\n    </group>\n  </macro>\n  <macro name=\"description\">\n    <choose>\n      <if type=\"interview\">\n        <group delimiter=\". \">\n          <text macro=\"interviewer\"/>\n          <text variable=\"medium\" text-case=\"capitalize-first\"/>\n        </group>\n      </if>\n      <else-if type=\"patent\">\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"authority\"/>\n          <text variable=\"number\"/>\n        </group>\n      </else-if>\n      <else>\n        <text variable=\"medium\" text-case=\"capitalize-first\" prefix=\". \"/>\n      </else>\n    </choose>\n    <choose>\n      <if variable=\"title\" match=\"none\"/>\n      <else-if type=\"thesis personal_communication speech\" match=\"any\"/>\n      <else>\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          <choose>\n            <if type=\"report\">\n              <text variable=\"number\"/>\n            </if>\n          </choose>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issue\">\n    <choose>\n      <if type=\"legal_case\">\n        <text variable=\"authority\" prefix=\". \"/>\n      </if>\n      <else-if type=\"speech\">\n        <group prefix=\". \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            <text macro=\"event\"/>\n          </group>\n          <text variable=\"event-place\"/>\n          <text macro=\"day-month\"/>\n        </group>\n      </else-if>\n      <else-if type=\"article-newspaper article-magazine personal_communication\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" prefix=\", \"/>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\", \" prefix=\", \">\n          <group delimiter=\" \">\n            <!--Needs Localization-->\n            <text value=\"filed\"/>\n            <date variable=\"submitted\" form=\"text\"/>\n          </group>\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"issued submitted\" match=\"all\">\n                <text term=\"and\"/>\n              </if>\n            </choose>\n            <!--Needs Localization-->\n            <text value=\"issued\"/>\n            <date variable=\"issued\" form=\"text\"/>\n          </group>\n        </group>\n      </else-if>\n      <else>\n        <group prefix=\". \" delimiter=\", \">\n          <choose>\n            <if type=\"thesis\">\n              <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            </if>\n          </choose>\n          <text macro=\"publisher\"/>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <citation et-al-min=\"4\" et-al-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" givenname-disambiguation-rule=\"primary-name\" collapse=\"year\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <choose>\n          <if variable=\"issued accessed\" match=\"any\">\n            <group delimiter=\" \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </if>\n          <!---comma before forthcoming and n.d.-->\n          <else>\n            <group delimiter=\", \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </else>\n        </choose>\n        <text macro=\"point-locators\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"11\" et-al-use-first=\"7\" subsequent-author-substitute=\"&#8212;&#8212;&#8212;\" entry-spacing=\"0\">\n    <sort>\n      <key macro=\"contributors\"/>\n      <key variable=\"issued\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"contributors\"/>\n        <text macro=\"date\"/>\n        <text macro=\"title\"/>\n      </group>\n      <text macro=\"description\"/>\n      <text macro=\"secondary-contributors\" prefix=\". \"/>\n      <text macro=\"container-title\" prefix=\". \"/>\n      <text macro=\"container-contributors\"/>\n      <text macro=\"edition\"/>\n      <text macro=\"locators-chapter\"/>\n      <text macro=\"collection-title-journal\" prefix=\", \" suffix=\", \"/>\n      <text macro=\"locators\"/>\n      <text macro=\"collection-title\" prefix=\". \"/>\n      <text macro=\"issue\"/>\n      <text macro=\"locators-article\"/>\n      <text macro=\"access\" prefix=\". \"/>\n    </layout>\n  </bibliography>\n</style>\n"
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"expanded\">\n  <info>\n    <title>American Psychological Association 6th edition</title>\n    <title-short>APA</title-short>\n    <id>http://www.zotero.org/styles/apa</id>\n    <link href=\"http://www.zotero.org/styles/apa\" rel=\"self\"/>\n    <link href=\"http://owl.english.purdue.edu/owl/resource/560/01/\" rel=\"documentation\"/>\n    <author>\n      <name>Simon Kornblith</name>\n      <email>simon@simonster.com</email>\n    </author>\n    <contributor>\n      <name>Bruce D'Arcus</name>\n    </contributor>\n    <contributor>\n      <name>Curtis M. Humphrey</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name> Brenton M. Wiernik</name>\n      <email>zotero@wiernik.org</email>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"psychology\"/>\n    <category field=\"generic-base\"/>\n    <updated>2016-09-28T13:09:49+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editortranslator\" form=\"short\">\n        <single>ed. &amp; trans.</single>\n        <multiple>eds. &amp; trans.</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">\n        <single>trans.</single>\n        <multiple>trans.</multiple>\n      </term>\n    </terms>\n  </locale>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"any\">\n        <group delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"article-journal chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"none\">\n        <group delimiter=\", \" prefix=\" (\" suffix=\")\">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"all\" and=\"symbol\" sort-separator=\", \" initialize-with=\". \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\" (\" suffix=\")\" text-case=\"capitalize-first\"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <choose>\n          <if type=\"report\">\n            <text variable=\"publisher\"/>\n            <text macro=\"title\"/>\n          </if>\n          <else>\n            <text macro=\"title\"/>\n          </else>\n        </choose>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <choose>\n      <if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\"/>\n      </if>\n      <else>\n        <names variable=\"author\">\n          <name form=\"short\" and=\"symbol\" delimiter=\", \" initialize-with=\". \"/>\n          <substitute>\n            <names variable=\"editor\"/>\n            <names variable=\"translator\"/>\n            <choose>\n              <if type=\"report\">\n                <text variable=\"publisher\"/>\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </if>\n              <else-if type=\"legal_case\">\n                <text variable=\"title\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"book graphic  motion_picture song\" match=\"any\">\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"bill legislation\" match=\"any\">\n                <text variable=\"title\" form=\"short\"/>\n              </else-if>\n              <else-if variable=\"reviewed-author\">\n                <choose>\n                  <if variable=\"reviewed-title\" match=\"none\">\n                    <text variable=\"title\" form=\"short\" font-style=\"italic\" prefix=\"Review of \"/>\n                  </if>\n                  <else>\n                    <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n                  </else>\n                </choose>\n              </else-if>\n              <else>\n                <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n              </else>\n            </choose>\n          </substitute>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"patent-number\">\n    <!-- genre: U.S. Patent number: 123,445-->\n    <group delimiter=\" \">\n      <group delimiter=\" \">\n        <text variable=\"genre\"/>\n        <text term=\"issue\" form=\"short\" text-case=\"capitalize-first\"/>\n      </group>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <choose>\n      <if type=\"thesis report\" match=\"any\">\n        <choose>\n          <if variable=\"DOI\" match=\"any\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else-if variable=\"URL\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"URL\"/>\n            </group>\n          </else-if>\n          <else-if variable=\"archive\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"archive\" suffix=\".\"/>\n              <text variable=\"archive_location\" prefix=\" (\" suffix=\")\"/>\n            </group>\n          </else-if>\n        </choose>\n      </if>\n      <else>\n        <choose>\n          <if variable=\"DOI\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else>\n            <choose>\n              <if type=\"post post-weblog webpage\" match=\"any\">\n                <group delimiter=\" \">\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <group>\n                    <date variable=\"accessed\" form=\"text\" suffix=\", \"/>\n                  </group>\n                  <text term=\"from\"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </if>\n              <else>\n                <group>\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <text term=\"from\" suffix=\" \"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </else>\n            </choose>\n          </else>\n        </choose>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if type=\"book dataset graphic manuscript motion_picture report song speech thesis\" match=\"any\">\n        <choose>\n          <if variable=\"version\" type=\"book\" match=\"all\">\n            <!---This is a hack until we have a computer program type -->\n            <text variable=\"title\"/>\n          </if>\n          <else>\n            <text variable=\"title\" font-style=\"italic\"/>\n          </else>\n        </choose>\n      </if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\" \">\n              <text variable=\"title\"/>\n              <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n                <text variable=\"reviewed-title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\" delimiter=\", \">\n                  <label form=\"verb-short\" suffix=\" \"/>\n                  <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <!-- assume `title` is title of reviewed work -->\n            <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n              <text variable=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\" delimiter=\", \">\n                <label form=\"verb-short\" suffix=\" \"/>\n                <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\" font-style=\"italic\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-plus-extra\">\n    <text macro=\"title\"/>\n    <choose>\n      <if type=\"report thesis\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"genre\" match=\"any\">\n                <text variable=\"genre\"/>\n              </if>\n              <else>\n                <text variable=\"collection-title\"/>\n              </else>\n            </choose>\n            <text variable=\"number\" prefix=\"No. \"/>\n          </group>\n          <group delimiter=\" \">\n            <text term=\"version\" text-case=\"capitalize-first\"/>\n            <text variable=\"version\"/>\n          </group>\n          <text macro=\"edition\"/>\n        </group>\n      </if>\n      <else-if type=\"post-weblog webpage\" match=\"any\">\n        <text variable=\"genre\" prefix=\" [\" suffix=\"]\"/>\n      </else-if>\n      <else-if variable=\"version\">\n        <group delimiter=\" \" prefix=\" (\" suffix=\")\">\n          <text term=\"version\" text-case=\"capitalize-first\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n    </choose>\n    <text macro=\"format\" prefix=\" [\" suffix=\"]\"/>\n  </macro>\n  <macro name=\"format\">\n    <choose>\n      <if match=\"any\" variable=\"medium\">\n        <text variable=\"medium\" text-case=\"capitalize-first\"/>\n      </if>\n      <else-if type=\"dataset\" match=\"any\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <!-- This should be localized -->\n            <text value=\"Data set\"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <choose>\n      <if type=\"report\" match=\"any\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <text variable=\"publisher\"/>\n        </group>\n      </if>\n      <else-if type=\"thesis\" match=\"any\">\n        <group delimiter=\", \">\n          <text variable=\"publisher\"/>\n          <text variable=\"publisher-place\"/>\n        </group>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <choose>\n            <if variable=\"publisher\">\n              <text variable=\"publisher\"/>\n            </if>\n            <else>\n              <text variable=\"authority\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"post-weblog webpage\" match=\"none\">\n        <group delimiter=\", \">\n          <choose>\n            <if variable=\"event version\" type=\"speech dataset motion_picture\" match=\"none\">\n              <!-- Including version is to avoid printing the programming language for computerProgram /-->\n              <text variable=\"genre\"/>\n            </if>\n          </choose>\n          <choose>\n            <if type=\"article-journal article-magazine article-newspaper\" match=\"none\">\n              <group delimiter=\": \">\n                <choose>\n                  <if variable=\"publisher-place\">\n                    <text variable=\"publisher-place\"/>\n                  </if>\n                  <else>\n                    <text variable=\"event-place\"/>\n                  </else>\n                </choose>\n                <text variable=\"publisher\"/>\n              </group>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <choose>\n      <if variable=\"container-title\" match=\"none\">\n        <choose>\n          <if variable=\"event\">\n            <choose>\n              <if variable=\"genre\" match=\"none\">\n                <text term=\"presented at\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <text variable=\"event\"/>\n              </if>\n              <else>\n                <group delimiter=\" \">\n                  <text variable=\"genre\" text-case=\"capitalize-first\"/>\n                  <text term=\"presented at\"/>\n                  <text variable=\"event\"/>\n                </group>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"speech\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </else-if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"issued\">\n            <group prefix=\" (\" suffix=\")\">\n              <date variable=\"issued\">\n                <date-part name=\"year\"/>\n              </date>\n              <text variable=\"year-suffix\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                    <date-part prefix=\" \" name=\"day\"/>\n                  </date>\n                </else-if>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"status\">\n            <group prefix=\" (\" suffix=\")\">\n              <text variable=\"status\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else-if>\n          <else>\n            <group prefix=\" (\" suffix=\")\">\n              <text term=\"no date\" form=\"short\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued-sort\">\n    <choose>\n      <if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n          <date-part name=\"month\"/>\n          <date-part name=\"day\"/>\n        </date>\n      </if>\n      <else>\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n        </date>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issued-year\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\"/\">\n          <date variable=\"original-date\">\n            <date-part name=\"year\"/>\n          </date>\n          <group>\n            <date variable=\"issued\">\n              <date-part name=\"year\"/>\n            </date>\n            <text variable=\"year-suffix\"/>\n          </group>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if is-numeric=\"edition\">\n        <group delimiter=\" \">\n          <number variable=\"edition\" form=\"ordinal\"/>\n          <text term=\"edition\" form=\"short\"/>\n        </group>\n      </if>\n      <else>\n        <text variable=\"edition\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal article-magazine\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <group>\n            <text variable=\"volume\" font-style=\"italic\"/>\n            <text variable=\"issue\" prefix=\"(\" suffix=\")\"/>\n          </group>\n          <text variable=\"page\"/>\n        </group>\n        <choose>\n          <!--for advanced online publication-->\n          <if variable=\"issued\">\n            <choose>\n              <if variable=\"page issue\" match=\"none\">\n                <text variable=\"status\" prefix=\". \"/>\n              </if>\n            </choose>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"article-newspaper\">\n        <group delimiter=\" \" prefix=\", \">\n          <label variable=\"page\" form=\"short\"/>\n          <text variable=\"page\"/>\n        </group>\n      </else-if>\n      <else-if type=\"book graphic motion_picture report song chapter paper-conference entry-encyclopedia entry-dictionary\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <choose>\n            <if type=\"report\" match=\"none\">\n              <!-- edition for report is included in title-plus-extra /-->\n              <text macro=\"edition\"/>\n            </if>\n          </choose>\n          <choose>\n            <if variable=\"volume\" match=\"any\">\n              <group>\n                <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"volume\" form=\"numeric\"/>\n              </group>\n            </if>\n            <else>\n              <group>\n                <text term=\"volume\" form=\"short\" plural=\"true\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"number-of-volumes\" form=\"numeric\" prefix=\"1&#8211;\"/>\n              </group>\n            </else>\n          </choose>\n          <group>\n            <label variable=\"page\" form=\"short\" suffix=\" \"/>\n            <text variable=\"page\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"legal_case\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text variable=\"authority\"/>\n          <choose>\n            <if variable=\"container-title\" match=\"any\">\n              <!--Only print year for cases published in reporters-->\n              <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n            </if>\n            <else>\n              <date variable=\"issued\" form=\"text\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <date variable=\"issued\" prefix=\" (\" suffix=\")\">\n          <date-part name=\"year\"/>\n        </date>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"citation-locator\">\n    <group>\n      <choose>\n        <if locator=\"chapter\">\n          <label variable=\"locator\" form=\"long\" text-case=\"capitalize-first\"/>\n        </if>\n        <else>\n          <label variable=\"locator\" form=\"short\"/>\n        </else>\n      </choose>\n      <text variable=\"locator\" prefix=\" \"/>\n    </group>\n  </macro>\n  <macro name=\"container\">\n    <choose>\n      <if type=\"post-weblog webpage\" match=\"none\">\n        <group>\n          <choose>\n            <if type=\"chapter paper-conference entry-encyclopedia\" match=\"any\">\n              <text term=\"in\" text-case=\"capitalize-first\" suffix=\" \"/>\n            </if>\n          </choose>\n          <group delimiter=\", \">\n            <text macro=\"container-contributors\"/>\n            <text macro=\"secondary-contributors\"/>\n            <text macro=\"container-title\"/>\n          </group>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"article article-journal article-magazine article-newspaper\" match=\"any\">\n        <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"bill legal_case legislation\" match=\"none\">\n        <text variable=\"container-title\" font-style=\"italic\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"legal-cites\">\n    <choose>\n      <if type=\"legal_case\" match=\"any\">\n        <group prefix=\", \" delimiter=\" \">\n          <choose>\n            <if variable=\"container-title\">\n              <text variable=\"volume\"/>\n              <text variable=\"container-title\"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <text variable=\"page\"/>\n            </if>\n            <else>\n              <text variable=\"number\" prefix=\"No. \"/>\n            </else>\n          </choose>\n        </group>\n      </if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <group delimiter=\", \" prefix=\", \">\n          <choose>\n            <if variable=\"number\">\n              <!--There's a public law number-->\n              <text variable=\"number\" prefix=\"Pub. L. No. \"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <text variable=\"page-first\"/>\n              </group>\n            </if>\n            <else>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"original-date\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"original-date\">\n            <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n              <!---This should be localized-->\n              <text value=\"Original work published\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"original-date\" delimiter=\" \">\n                    <date-part name=\"month\"/>\n                    <date-part name=\"year\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"original-date\" form=\"text\"/>\n                </else-if>\n                <else>\n                  <date variable=\"original-date\">\n                    <date-part name=\"year\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"6\" et-al-use-first=\"1\" et-al-subsequent-min=\"3\" et-al-subsequent-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" collapse=\"year\" givenname-disambiguation-rule=\"primary-name\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\"/>\n    </sort>\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <text macro=\"author-short\"/>\n        <text macro=\"issued-year\"/>\n        <text macro=\"citation-locator\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"8\" et-al-use-first=\"6\" et-al-use-last=\"true\" entry-spacing=\"0\" line-spacing=\"2\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\" sort=\"ascending\"/>\n      <key macro=\"title\"/>\n    </sort>\n    <layout>\n      <group suffix=\".\">\n        <group delimiter=\". \">\n          <text macro=\"author\"/>\n          <text macro=\"issued\"/>\n          <text macro=\"title-plus-extra\"/>\n          <text macro=\"container\"/>\n        </group>\n        <text macro=\"legal-cites\"/>\n        <text macro=\"locators\"/>\n        <group delimiter=\", \" prefix=\". \">\n          <text macro=\"event\"/>\n          <text macro=\"publisher\"/>\n        </group>\n      </group>\n      <text macro=\"access\" prefix=\" \"/>\n      <text macro=\"original-date\" prefix=\" \"/>\n    </layout>\n  </bibliography>\n</style>\n"
 
 /***/ }),
 /* 272 */
+/***/ (function(module, exports) {
+
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"minimal-two\">\n  <info>\n    <title>Modern Language Association 8th edition</title>\n    <title-short>MLA</title-short>\n    <id>http://www.zotero.org/styles/modern-language-association</id>\n    <link href=\"http://www.zotero.org/styles/modern-language-association\" rel=\"self\"/>\n    <link href=\"http://style.mla.org\" rel=\"documentation\"/>\n    <author>\n      <name>Sebastian Karcher</name>\n    </author>\n    <category citation-format=\"author\"/>\n    <category field=\"generic-base\"/>\n    <summary>This style adheres to the MLA 8th edition handbook. Follows the structure of references as outlined in the MLA Manual closely</summary>\n    <updated>2014-07-06T20:05:10+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <date form=\"text\">\n      <date-part name=\"day\" suffix=\" \"/>\n      <date-part name=\"month\" suffix=\" \" form=\"short\"/>\n      <date-part name=\"year\"/>\n    </date>\n    <terms>\n      <term name=\"month-01\" form=\"short\">Jan.</term>\n      <term name=\"month-02\" form=\"short\">Feb.</term>\n      <term name=\"month-03\" form=\"short\">Mar.</term>\n      <term name=\"month-04\" form=\"short\">Apr.</term>\n      <term name=\"month-05\" form=\"short\">May</term>\n      <term name=\"month-06\" form=\"short\">June</term>\n      <term name=\"month-07\" form=\"short\">July</term>\n      <term name=\"month-08\" form=\"short\">Aug.</term>\n      <term name=\"month-09\" form=\"short\">Sept.</term>\n      <term name=\"month-10\" form=\"short\">Oct.</term>\n      <term name=\"month-11\" form=\"short\">Nov.</term>\n      <term name=\"month-12\" form=\"short\">Dec.</term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"first\" and=\"text\" delimiter-precedes-last=\"always\" delimiter-precedes-et-al=\"always\" initialize=\"false\" initialize-with=\". \"/>\n      <label form=\"long\" prefix=\", \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <group delimiter=\", \">\n      <names variable=\"author\">\n        <name form=\"short\" initialize-with=\". \" and=\"text\"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <text macro=\"title-short\"/>\n        </substitute>\n      </names>\n      <choose>\n        <if disambiguate=\"true\">\n          <text macro=\"title-short\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-short\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" form=\"short\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" form=\"short\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n  </macro>\n  <macro name=\"other-contributors\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \"/>\n          <name and=\"text\"/>\n        </names>\n      </if>\n      <else>\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \" text-case=\"capitalize-first\"/>\n          <name and=\"text\"/>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"version\">\n    <group delimiter=\", \">\n      <choose>\n        <if is-numeric=\"edition\">\n          <group delimiter=\" \">\n            <number variable=\"edition\" form=\"ordinal\"/>\n            <text term=\"edition\" form=\"short\"/>\n          </group>\n        </if>\n        <else>\n          <text variable=\"edition\" text-case=\"capitalize-first\"/>\n        </else>\n      </choose>\n      <text variable=\"version\"/>\n    </group>\n  </macro>\n  <macro name=\"number\">\n    <group delimiter=\", \">\n      <group>\n        <choose>\n          <!--lowercase if we have a preceding element-->\n          <if variable=\"edition container-title\" match=\"any\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </if>\n          <!--other contributors preceding the volume-->\n          <else-if variable=\"author editor\" match=\"all\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else-if>\n          <else>\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else>\n        </choose>\n      </group>\n      <group delimiter=\" \">\n        <text term=\"issue\" form=\"short\"/>\n        <text variable=\"issue\"/>\n      </group>\n      <choose>\n        <if type=\"report\">\n          <text variable=\"genre\"/>\n        </if>\n      </choose>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"publisher\">\n    <text variable=\"publisher\"/>\n  </macro>\n  <macro name=\"publication-date\">\n    <choose>\n      <if type=\"book chapter paper-conference motion_picture\" match=\"any\">\n        <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n      </if>\n      <else-if type=\"article-journal article-magazine\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" date-parts=\"year-month\"/>\n      </else-if>\n      <else-if type=\"speech\" match=\"none\">\n        <date variable=\"issued\" form=\"text\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"location\">\n    <group delimiter=\", \">\n      <group delimiter=\" \">\n        <label variable=\"page\" form=\"short\"/>\n        <text variable=\"page\"/>\n      </group>\n      <choose>\n        <if variable=\"source\" match=\"none\">\n          <text macro=\"URI\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"container2-title\">\n    <group delimiter=\", \">\n      <choose>\n        <if type=\"speech\">\n          <text variable=\"event\"/>\n          <date variable=\"event-date\" form=\"text\"/>\n          <text variable=\"event-place\"/>\n        </if>\n      </choose>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n      <text variable=\"archive_location\"/>\n    </group>\n  </macro>\n  <macro name=\"container2-location\">\n    <choose>\n      <if variable=\"source\">\n        <choose>\n          <if variable=\"DOI URL\" match=\"any\">\n            <group delimiter=\", \">\n              <text variable=\"source\" font-style=\"italic\"/>\n              <text macro=\"URI\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"URI\">\n    <choose>\n      <if variable=\"DOI\">\n        <text variable=\"DOI\" prefix=\"doi:\"/>\n      </if>\n      <else>\n        <text variable=\"URL\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"accessed\">\n    <!--using accessed where we don't have an issued date; follows recommendation on p. 53 -->\n    <choose>\n      <if variable=\"issued\" match=\"none\">\n        <group delimiter=\" \">\n          <text term=\"accessed\" text-case=\"capitalize-first\"/>\n          <date variable=\"accessed\" form=\"text\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"3\" et-al-use-first=\"1\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <choose>\n        <if locator=\"page\">\n          <group delimiter=\" \">\n            <text macro=\"author-short\"/>\n            <text variable=\"locator\"/>\n          </group>\n        </if>\n        <else>\n          <group delimiter=\", \">\n            <text macro=\"author-short\"/>\n            <group>\n              <label variable=\"locator\" form=\"short\"/>\n              <text variable=\"locator\"/>\n            </group>\n          </group>\n        </else>\n      </choose>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"3\" et-al-use-first=\"1\" line-spacing=\"2\" entry-spacing=\"0\" subsequent-author-substitute=\"---\">\n    <sort>\n      <key macro=\"author\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"author\"/>\n        <text macro=\"title\"/>\n        <date variable=\"original-date\" form=\"numeric\" date-parts=\"year\"/>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 1\"-->\n          <text macro=\"container-title\"/>\n          <text macro=\"other-contributors\"/>\n          <text macro=\"version\"/>\n          <text macro=\"number\"/>\n          <text macro=\"publisher\"/>\n          <text macro=\"publication-date\"/>\n          <text macro=\"location\"/>\n        </group>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 2\"-->\n          <!--currently just using this one for archival info-->\n          <text macro=\"container2-title\"/>\n          <text macro=\"container2-location\"/>\n        </group>\n        <text macro=\"accessed\"/>\n      </group>\n    </layout>\n  </bibliography>\n</style>\n"
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports) {
+
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"display-and-sort\" page-range-format=\"chicago\">\n  <info>\n    <title>Chicago Manual of Style 17th edition (author-date)</title>\n    <id>http://www.zotero.org/styles/chicago-author-date</id>\n    <link href=\"http://www.zotero.org/styles/chicago-author-date\" rel=\"self\"/>\n    <link href=\"http://www.chicagomanualofstyle.org/tools_citationguide.html\" rel=\"documentation\"/>\n    <author>\n      <name>Julian Onions</name>\n      <email>julian.onions@gmail.com</email>\n    </author>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Andrew Dunning</name>\n      <email>andrew.dunning@utoronto.ca</email>\n      <uri>https://orcid.org/0000-0003-0464-5036</uri>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"generic-base\"/>\n    <summary>The author-date variant of the Chicago style</summary>\n    <updated>2018-01-24T12:00:00+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editor\" form=\"verb-short\">ed.</term>\n      <term name=\"container-author\" form=\"verb\">by</term>\n      <term name=\"translator\" form=\"verb-short\">trans.</term>\n      <term name=\"editortranslator\" form=\"verb\">\n        <single>edited and translated by</single>\n        <multiple>edited and translated by</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"none\">\n        <group delimiter=\". \">\n          <names variable=\"editor translator\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"director\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"editor\">\n    <names variable=\"editor\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"translator\">\n    <names variable=\"translator\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"recipient\">\n    <choose>\n      <if type=\"personal_communication\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <text term=\"letter\" text-case=\"capitalize-first\"/>\n          </else>\n        </choose>\n      </if>\n    </choose>\n    <names variable=\"recipient\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"lowercase\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"substitute-title\">\n    <choose>\n      <if type=\"article-magazine article-newspaper review review-book\" match=\"any\">\n        <text macro=\"container-title\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"contributors\">\n    <group delimiter=\". \">\n      <names variable=\"author\">\n        <name and=\"text\" name-as-sort-order=\"first\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n        <label form=\"short\" prefix=\", \"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <names variable=\"director\"/>\n          <text macro=\"substitute-title\"/>\n          <text macro=\"title\"/>\n        </substitute>\n      </names>\n      <text macro=\"recipient\"/>\n    </group>\n  </macro>\n  <macro name=\"contributors-short\">\n    <names variable=\"author\">\n      <name form=\"short\" and=\"text\" delimiter=\", \" initialize-with=\". \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <names variable=\"director\"/>\n        <text macro=\"substitute-title\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"interviewer\">\n    <names variable=\"interviewer\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"capitalize-first\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"archive\">\n    <group delimiter=\". \">\n      <text variable=\"archive_location\" text-case=\"capitalize-first\"/>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <group delimiter=\". \">\n      <choose>\n        <if type=\"graphic report\" match=\"any\">\n          <text macro=\"archive\"/>\n        </if>\n        <else-if type=\"article-journal bill book chapter legal_case legislation motion_picture paper-conference\" match=\"none\">\n          <text macro=\"archive\"/>\n        </else-if>\n      </choose>\n      <choose>\n        <if type=\"webpage post-weblog\" match=\"any\">\n          <date variable=\"issued\" form=\"text\"/>\n        </if>\n      </choose>\n      <choose>\n        <if variable=\"issued\" match=\"none\">\n          <group delimiter=\" \">\n            <text term=\"accessed\" text-case=\"capitalize-first\"/>\n            <date variable=\"accessed\" form=\"text\"/>\n          </group>\n        </if>\n      </choose>\n      <choose>\n        <if type=\"legal_case\" match=\"none\">\n          <choose>\n            <if variable=\"DOI\">\n              <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n            </if>\n            <else>\n              <text variable=\"URL\"/>\n            </else>\n          </choose>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"title\" match=\"none\">\n        <choose>\n          <if type=\"personal_communication\" match=\"none\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"bill book graphic legislation motion_picture song\" match=\"any\">\n        <text variable=\"title\" text-case=\"title\" font-style=\"italic\"/>\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text term=\"version\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\". \">\n              <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n              <group delimiter=\", \">\n                <text variable=\"reviewed-title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\">\n                  <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                  <name and=\"text\" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\", \">\n              <text variable=\"title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\">\n                <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                <name and=\"text\" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"legal_case interview patent\" match=\"any\">\n        <text variable=\"title\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\". \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\" strip-periods=\"true\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" text-case=\"capitalize-first\" prefix=\". \"/>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\", \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume\">\n            <text variable=\"volume\" prefix=\" \"/>\n            <group prefix=\" (\" suffix=\")\">\n              <choose>\n                <if variable=\"issue\">\n                  <text variable=\"issue\"/>\n                </if>\n                <else>\n                  <date variable=\"issued\">\n                    <date-part name=\"month\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"issue\">\n            <group delimiter=\" \" prefix=\", \">\n              <text term=\"issue\" form=\"short\"/>\n              <text variable=\"issue\"/>\n              <date variable=\"issued\" prefix=\"(\" suffix=\")\">\n                <date-part name=\"month\"/>\n              </date>\n            </group>\n          </else-if>\n          <else>\n            <date variable=\"issued\" prefix=\", \">\n              <date-part name=\"month\"/>\n            </date>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"legal_case\">\n        <text variable=\"volume\" prefix=\", \"/>\n        <text variable=\"container-title\" prefix=\" \"/>\n        <text variable=\"page\" prefix=\" \"/>\n      </else-if>\n      <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <group prefix=\". \" delimiter=\". \">\n          <group>\n            <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <number variable=\"volume\" form=\"numeric\"/>\n          </group>\n          <group>\n            <number variable=\"number-of-volumes\" form=\"numeric\"/>\n            <text term=\"volume\" form=\"short\" prefix=\" \" plural=\"true\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\" match=\"none\">\n            <group prefix=\". \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <number variable=\"volume\" form=\"numeric\"/>\n            </group>\n          </if>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators-chapter\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\">\n            <group prefix=\", \">\n              <text variable=\"volume\" suffix=\":\"/>\n              <text variable=\"page\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"locators-article\">\n    <choose>\n      <if type=\"article-newspaper\">\n        <group prefix=\", \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"edition\"/>\n            <text term=\"edition\"/>\n          </group>\n          <group>\n            <text term=\"section\" form=\"short\" suffix=\" \"/>\n            <text variable=\"section\"/>\n          </group>\n        </group>\n      </if>\n      <else-if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume issue\" match=\"any\">\n            <text variable=\"page\" prefix=\": \"/>\n          </if>\n          <else>\n            <text variable=\"page\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"point-locators\">\n    <choose>\n      <if variable=\"locator\">\n        <choose>\n          <if locator=\"page\" match=\"none\">\n            <choose>\n              <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n                <choose>\n                  <if variable=\"volume\">\n                    <group>\n                      <text term=\"volume\" form=\"short\" suffix=\" \"/>\n                      <number variable=\"volume\" form=\"numeric\"/>\n                      <label variable=\"locator\" form=\"short\" prefix=\", \" suffix=\" \"/>\n                    </group>\n                  </if>\n                  <else>\n                    <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n                  </else>\n                </choose>\n              </if>\n              <else>\n                <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n            <number variable=\"volume\" form=\"numeric\" suffix=\":\"/>\n          </else-if>\n        </choose>\n        <text variable=\"locator\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-prefix\">\n    <text term=\"in\" text-case=\"capitalize-first\"/>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <text macro=\"container-prefix\" suffix=\" \"/>\n      </if>\n    </choose>\n    <choose>\n      <if type=\"webpage\">\n        <text variable=\"container-title\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"legal_case\" match=\"none\">\n        <group delimiter=\" \">\n          <text variable=\"container-title\" text-case=\"title\" font-style=\"italic\"/>\n          <choose>\n            <if type=\"post-weblog\">\n              <text value=\"(blog)\"/>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <group delimiter=\": \">\n      <text variable=\"publisher-place\"/>\n      <text variable=\"publisher\"/>\n    </group>\n  </macro>\n  <macro name=\"date\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"(\" suffix=\")\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\" text-case=\"capitalize-first\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"date-in-text\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"[\" suffix=\"]\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"day-month\">\n    <date variable=\"issued\">\n      <date-part name=\"month\"/>\n      <date-part name=\"day\" prefix=\" \"/>\n    </date>\n  </macro>\n  <macro name=\"collection-title\">\n    <choose>\n      <if match=\"none\" type=\"article-journal\">\n        <choose>\n          <if match=\"none\" is-numeric=\"collection-number\">\n            <group delimiter=\", \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\" \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"collection-title-journal\">\n    <choose>\n      <if type=\"article-journal\">\n        <group delimiter=\" \">\n          <text variable=\"collection-title\"/>\n          <text variable=\"collection-number\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <group>\n      <text term=\"presented at\" suffix=\" \"/>\n      <text variable=\"event\"/>\n    </group>\n  </macro>\n  <macro name=\"description\">\n    <choose>\n      <if type=\"interview\">\n        <group delimiter=\". \">\n          <text macro=\"interviewer\"/>\n          <text variable=\"medium\" text-case=\"capitalize-first\"/>\n        </group>\n      </if>\n      <else-if type=\"patent\">\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"authority\"/>\n          <text variable=\"number\"/>\n        </group>\n      </else-if>\n      <else>\n        <text variable=\"medium\" text-case=\"capitalize-first\" prefix=\". \"/>\n      </else>\n    </choose>\n    <choose>\n      <if variable=\"title\" match=\"none\"/>\n      <else-if type=\"thesis personal_communication speech\" match=\"any\"/>\n      <else>\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          <choose>\n            <if type=\"report\">\n              <text variable=\"number\"/>\n            </if>\n          </choose>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issue\">\n    <choose>\n      <if type=\"legal_case\">\n        <text variable=\"authority\" prefix=\". \"/>\n      </if>\n      <else-if type=\"speech\">\n        <group prefix=\". \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            <text macro=\"event\"/>\n          </group>\n          <text variable=\"event-place\"/>\n          <text macro=\"day-month\"/>\n        </group>\n      </else-if>\n      <else-if type=\"article-newspaper article-magazine personal_communication\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" prefix=\", \"/>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\", \" prefix=\", \">\n          <group delimiter=\" \">\n            <!--Needs Localization-->\n            <text value=\"filed\"/>\n            <date variable=\"submitted\" form=\"text\"/>\n          </group>\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"issued submitted\" match=\"all\">\n                <text term=\"and\"/>\n              </if>\n            </choose>\n            <!--Needs Localization-->\n            <text value=\"issued\"/>\n            <date variable=\"issued\" form=\"text\"/>\n          </group>\n        </group>\n      </else-if>\n      <else>\n        <group prefix=\". \" delimiter=\", \">\n          <choose>\n            <if type=\"thesis\">\n              <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            </if>\n          </choose>\n          <text macro=\"publisher\"/>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <citation et-al-min=\"4\" et-al-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" givenname-disambiguation-rule=\"primary-name\" collapse=\"year\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <choose>\n          <if variable=\"issued accessed\" match=\"any\">\n            <group delimiter=\" \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </if>\n          <!---comma before forthcoming and n.d.-->\n          <else>\n            <group delimiter=\", \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </else>\n        </choose>\n        <text macro=\"point-locators\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"11\" et-al-use-first=\"7\" subsequent-author-substitute=\"&#8212;&#8212;&#8212;\" entry-spacing=\"0\">\n    <sort>\n      <key macro=\"contributors\"/>\n      <key variable=\"issued\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"contributors\"/>\n        <text macro=\"date\"/>\n        <text macro=\"title\"/>\n      </group>\n      <text macro=\"description\"/>\n      <text macro=\"secondary-contributors\" prefix=\". \"/>\n      <text macro=\"container-title\" prefix=\". \"/>\n      <text macro=\"container-contributors\"/>\n      <text macro=\"edition\"/>\n      <text macro=\"locators-chapter\"/>\n      <text macro=\"collection-title-journal\" prefix=\", \" suffix=\", \"/>\n      <text macro=\"locators\"/>\n      <text macro=\"collection-title\" prefix=\". \"/>\n      <text macro=\"issue\"/>\n      <text macro=\"locators-article\"/>\n      <text macro=\"access\" prefix=\". \"/>\n    </layout>\n  </bibliography>\n</style>\n"
+
+/***/ }),
+/* 274 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_fin_search_box__ = __webpack_require__(273);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_app_collection_card__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_fin_search_box__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_app_collection_card__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html__ = __webpack_require__(278);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_home_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__);
 
 
@@ -59723,12 +59925,12 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
 customElements.define('app-home', AppHome);
 
 /***/ }),
-/* 273 */
+/* 275 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__ = __webpack_require__(276);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__);
 
 
@@ -59816,41 +60018,41 @@ class FinSearchBox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_
 customElements.define('fin-search-box', FinSearchBox);
 
 /***/ }),
-/* 274 */
+/* 276 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n  .root {\n    display: flex;\n    align-items: center;\n  }\n  input {\n    width: 100%;\n    box-sizing: border-box;\n    padding: 0 5px;\n    background: white;\n    border: none;\n    height: 45px;\n    outline: none;\n    @apply --fin-search-box-input;\n  }\n  button {\n    background: white;\n    height: 45px;\n    border: none;\n    margin: 0;\n    padding: 0 10px;\n    border-radius: 0;\n    cursor: pointer;\n    @apply --fin-search-box-button;\n  }\n  select {\n    margin-left: 20px;\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    height: 45px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n    @apply --fin-search-box-select;\n  }\n  @media(max-width: 600px) {\n    select {\n      margin-left: 10px;\n    }\n  }\n</style>\n\n<div class=\"root\">\n  <div style=\"flex:1\">\n    <input \n      id=\"input\" \n      type=\"text\"\n      on-keyup=\"_onKeyUp\"\n      placeholder=\"[[placeholder]]\" />\n  </div>\n  <button on-click=\"_fireSearch\">\n    <slot name=\"button-content\"></slot>\n  </button>\n  <select id=\"select\" on-change=\"_fireBrowse\">\n    <option>Browse</option>\n  </select>\n</div>";
 
 /***/ }),
-/* 275 */
+/* 277 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: inline-block;\n  }\n\n  .root {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .root:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .root > div  {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<div class=\"root\" style=\"background-image:url('[[collection.thumbnail]]')\" data-id$=\"[[collection.id]]\">\n  <div>[[collection.name]]</div>\n</div>\n";
 
 /***/ }),
-/* 276 */
+/* 278 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <app-collection-card \n        data-id$=\"[[item.id]]\" \n        collection=\"[[item]]\" \n        on-click=\"_onCollectionClicked\">\n      </app-collection-card>\n    </template>\n  </div>\n</div>\n\n<div class=\"text-container\">\n  \n  <h1>About Digital Collections</h1>\n\n  <p>The UC Davis Digital Collections is a locally developed digital repository that was designed to store and manage the digital assets of UC Davis. These Digital Collections are intended to increase access to previously undiscoverable digital assets held by the University Library.</p>\n  \n  <p>Initially launched in 2018, the repository currently stores 14,000 digital assets.</p>\n  \n  <h2>Platform</h2>\n  \n  <p>The Digital Asset Management System is built on the Fedora Linked Data Platform. Custom services are implemented using a Fedora (APIX) extension method as a general methodology. The User Interface was built with web-components anticipating a need for UI flexibility as the digital collection grows. For a more detailed explanation of the development, see our <a href=\"https://github.com/UCDavisLibrary/fin-server/issues/9\">Fin Server Overview.</a>\n  </p>\n  \n  <h2>Contact</h2>\n  <ul>\n    <li>Eric A Nebeker - Digital Assets Specialist</li>\n  </ul>\n  \n  <h2>Implementation Team</h2>\n  <ul>\n    <li>Quinn Hart - Team Lead</li>\n    <li>Justin Merz - Lead Developer</li>\n    <li>Kimmy Hescock - User Experience Designer</li>\n  </ul>\n  \n  <h2>Members of the DAMS Steering Committee</h2>\n  <ul>\n    <li>Kevin Miller</li>\n    <li>Neil Weingarten</li>\n    <li>Amy Azzarito</li>\n    <li>Peter Brantley</li>\n    <li>Carl Stahmer</li>\n    <li>Dale Snapp</li>\n    <li>Robert Heyer-Gray</li>\n    <li>Vessela Ensberg</li>\n    <li>Xiaoli Li</li>\n  </ul>\n  \n  <p>The UC Davis Library DAMS was a project of the Library's <a href=\"https://www.library.ucdavis.edu/service/online-strategy-2/\">Online Strategy team.</a>\n  </p>\n\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>\n";
 
 /***/ }),
-/* 277 */
+/* 279 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_input_paper_input__ = __webpack_require__(278);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_input_paper_input__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html__ = __webpack_require__(287);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_search_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_header__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb__ = __webpack_require__(289);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__results_app_search_results_panel__ = __webpack_require__(291);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__filtering_app_filters_panel__ = __webpack_require__(302);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_header__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb__ = __webpack_require__(291);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__results_app_search_results_panel__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__filtering_app_filters_panel__ = __webpack_require__(304);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__);
 
 
@@ -60030,19 +60232,19 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-search', AppSearch);
 
 /***/ }),
-/* 278 */
+/* 280 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_input_iron_input_js__ = __webpack_require__(279);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_behavior_js__ = __webpack_require__(281);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_input_char_counter_js__ = __webpack_require__(282);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_input_container_js__ = __webpack_require__(283);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_input_error_js__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_input_iron_input_js__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_behavior_js__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_input_char_counter_js__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_input_container_js__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_input_error_js__ = __webpack_require__(286);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_lib_elements_dom_module_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_lib_elements_dom_module_js__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_polymer_element_js__ = __webpack_require__(2);
 
 
@@ -60221,13 +60423,13 @@ Object(__WEBPACK_IMPORTED_MODULE_7__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 279 */
+/* 281 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_announcer_iron_a11y_announcer_js__ = __webpack_require__(280);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_announcer_iron_a11y_announcer_js__ = __webpack_require__(282);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -60514,7 +60716,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 280 */
+/* 282 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60596,13 +60798,13 @@ IronA11yAnnouncer.requestAvailability = function() {
 
 
 /***/ }),
-/* 281 */
+/* 283 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_control_state_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_control_state_js__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_polymer_element_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -61153,13 +61355,13 @@ const PaperInputBehavior = [
 
 
 /***/ }),
-/* 282 */
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_typography_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_input_addon_behavior_js__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_typography_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_input_addon_behavior_js__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -61231,14 +61433,14 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 283 */
+/* 285 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_default_theme_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_typography_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_default_theme_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_typography_js__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_utils_case_map_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
@@ -61814,14 +62016,14 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 284 */
+/* 286 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_typography_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_addon_behavior_js__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_typography_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_addon_behavior_js__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -61887,23 +62089,23 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 285 */
+/* 287 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .search-container {\n    background-color: var(--super-light-background-color);\n    min-height: 500px;\n    display: flex;\n  }\n  .search-content {\n    margin: 15px;\n    flex: 1;\n  }\n  app-filters-panel {\n    width: 350px;\n  }\n\n  #drawer app-filters-panel {\n    width: 300px;\n  }\n  \n  #drawer {\n    position: absolute;\n    top: 0;\n    left: -335px;\n    bottom: 0;\n    background: white;\n    width: 300px;\n    z-index: 10;\n    transition: left 300ms ease-out;\n    background-color: var(--light-background-color);\n  }\n\n  @keyframes fadeIn {\n    from {\n      opacity: 0;\n    }\n    to {\n      opacity: .7;\n    }\n  }\n\n  #drawer-background {\n    opacity: .7;\n    position: absolute;\n    top: 0;\n    left: 0;\n    bottom: 0;\n    right: 0;\n    background: black;\n    z-index: 5;\n    display: none;\n    animation: fadeIn 300ms;\n  }\n\n  #drawer[open] {\n    left: 0;\n  }\n\n  #drawer-background[open] {\n    display: block;\n  }\n\n  #desktop-filter-panel {\n    display: none;\n  }\n\n  @media( min-width: 975px ) {\n    #outerDrawer {\n      display: none;\n    }\n    #desktop-filter-panel {\n      display: block;\n    }\n  }\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<div style=\"position: relative\">\n  <div id=\"outerDrawer\">\n    <div id=\"drawer\" open$=\"[[drawerOpen]]\">\n      <app-filters-panel on-toggle-drawer=\"_toggleDrawer\"></app-filters-panel>\n    </div>\n    <div id=\"drawer-background\" open$=\"[[drawerOpen]]\" on-click=\"_toggleDrawer\"></div>\n  </div>\n\n  <div class=\"search-container\">\n    <app-filters-panel id=\"desktop-filter-panel\"></app-filters-panel>\n    <div class=\"search-content\">\n      <app-search-results-panel \n        id=\"resultsPanel\" \n        on-toggle-drawer=\"_toggleDrawer\" \n        on-page-size-change=\"_onPageSizeChange\"\n        on-page-change=\"_onPaginationChange\">\n      </app-search-results-panel>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 286 */
+/* 288 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_app_auth_header__ = __webpack_require__(287);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_app_auth_header__ = __webpack_require__(289);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html__ = __webpack_require__(290);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_search_header_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface__);
 
 
@@ -62007,12 +62209,12 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 customElements.define('app-search-header', AppSearchHeader);
 
 /***/ }),
-/* 287 */
+/* 289 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__);
 
 
@@ -62042,24 +62244,24 @@ class AppAuthHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_p
 customElements.define('app-auth-header', AppAuthHeader);
 
 /***/ }),
-/* 288 */
+/* 290 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--default-primary-color);\n    color: var(--inverse-text-color);\n    padding: 15px;\n  }\n\n  app-auth-header {\n    margin-left: 10px;\n  }\n  \n  fin-search-box {\n    display: inline-block;\n    width: 100%;\n    box-sizing: border-box;\n    max-width: 525px;\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n  }\n  \n  h2 {\n    margin: 0;\n    white-space: nowrap;\n  }\n  h2 a {\n    color: var(--default-secondary-color);\n    text-decoration: none;\n  }\n  h2 a:visited {\n    color: var(--default-secondary-color);\n    text-decoration: none;\n  }\n\n  img {\n    height: 50px;\n  }\n\n  .logo, h2 {\n    padding-right: 20px;\n    display: none;\n  }\n\n  .filler {\n    flex: .25;\n    display: none;\n  }\n\n  .logo-sm {\n    margin-right: 10px;\n  }\n\n  @media( min-width: 700px ) {\n    .logo {\n      display: block;\n    }\n    .logo-sm {\n      display: none;\n    }\n  }\n\n  @media( min-width: 815px ) {\n    h2 {\n      display: block;\n    }\n  }\n\n  @media( min-width: 1100px ) {\n    .filler {\n      display: block;\n    }\n  }\n</style>\n\n<div class=\"layout\">\n  <img class=\"logo\" src=\"/images/ucd-lib-logo-white.png\" />\n  <img class=\"logo-sm\" src=\"/images/ucd-lib-logo-white-sm.png\" />\n  <h2><a href=\"/\">Digital Collections</a></h2>\n  <div class=\"filler\"></div>\n  <div style=\"flex:1; text-align:right\">\n    <fin-search-box \n      id=\"searchInput\" \n      on-search=\"_onSearch\" \n      on-browse=\"_onBrowse\"\n      placeholder=\"Search Keyword(s)\">\n      <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n    </fin-search-box>\n  </div>\n  <app-auth-header></app-auth-header>\n</div>\n\n";
 
 /***/ }),
-/* 289 */
+/* 291 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__ = __webpack_require__(292);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__);
 
 
@@ -62162,28 +62364,28 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
 customElements.define('app-search-breadcrumb', AppSearchBreadcrumb);
 
 /***/ }),
-/* 290 */
+/* 292 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\">[[collection.name]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">Item</div>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\">[[collection.name]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">[[record.name]]</div>\n</div>";
 
 /***/ }),
-/* 291 */
+/* 293 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_cork_pagination__ = __webpack_require__(292);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_grid_result__ = __webpack_require__(294);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_list_result__ = __webpack_require__(299);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_app_collection_card__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_cork_pagination__ = __webpack_require__(294);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_grid_result__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_list_result__ = __webpack_require__(301);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_app_collection_card__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__ = __webpack_require__(301);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__ = __webpack_require__(303);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__);
 
 
@@ -62448,14 +62650,14 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
 customElements.define('app-search-results-panel', AppSearchResultsPanel);
 
 /***/ }),
-/* 292 */
+/* 294 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_icon_button_paper_icon_button__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_icon_button_paper_icon_button__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__ = __webpack_require__(295);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__);
 
 
@@ -62636,18 +62838,18 @@ class CorkPagination extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 window.customElements.define('cork-pagination', CorkPagination);
 
 /***/ }),
-/* 293 */
+/* 295 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #root {\n    display: flex;\n    align-items: center;\n  }\n\n  .ellipsis {\n    display: none;\n  }\n\n  paper-icon-button {\n    color: var(--cork-color, --default-primary-color);\n  }\n  paper-icon-button[disabled] {\n     color: var(--cork-disabled-color, var(--disabled-color, #ccc));\n  }\n\n  a {\n    color: var(--cork-color, --default-primary-color);\n    cursor: pointer;\n    text-align: center;\n    min-width: 20px;\n    border-radius: 25px;\n    display: inline-block;\n    padding: 5px;\n    margin: 0 3px;\n    font-size: 14px;\n    line-height: 20px;\n  }\n\n  a:hover {\n    background: var(--cork-background-color-light, var(--light-background-color, #eee));\n  }\n\n  a[selected] {\n    background: var(--cork-background-color, var(--medium-background-color, #ccc));\n    color: white;\n  }\n\n  [hidden] {\n    display: none;\n  }\n\n  .text-display {\n    font-style: italic;\n  }\n</style>\n\n<div id=\"root\">\n  <paper-icon-button disabled$=\"[[firstPage]]\" icon=\"arrow-back\" on-click=\"previous\"></paper-icon-button>\n\n  <div style=\"flex:1\"></div>\n\n  <div hidden$=\"[[loading]]\">\n    <div hidden$=\"[[!textMode]]\" class=\"text-display\">[[textDisplay]]</div>\n  </div>\n\n  <div hidden$=\"[[textMode]]\">\n    <a selected$=\"[[firstPage]]\" on-click=\"_selectPage\">1</a>\n    <a id=\"startEllipsis\" class=\"ellipsis\" on-click=\"previousSection\">...</a>\n\n    <template is=\"dom-repeat\" items=\"[[pages]]\">\n      <a selected$=\"[[item.selected]]\" on-click=\"_selectPage\">[[item.index]]</a>\n    </template>\n\n    <a id=\"stopEllipsis\" class=\"ellipsis\" on-click=\"nextSection\">...</a>\n    <a id=\"lastPage\" selected$=\"[[lastPage]]\" on-click=\"_selectPage\">[[lastPageIndex]]</a>\n  </div>\n\n  <div style=\"flex:1\"></div>\n\n  <paper-icon-button disabled$=\"[[lastPage]]\" icon=\"arrow-forward\" on-click=\"next\"></paper-icon-button>\n</div>";
 
 /***/ }),
-/* 294 */
+/* 296 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__ = __webpack_require__(298);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__ = __webpack_require__(300);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__);
 
 
@@ -62663,246 +62865,246 @@ class AppSearchGridResult extends __WEBPACK_IMPORTED_MODULE_0__app_search_result
 customElements.define('app-search-grid-result', AppSearchGridResult);
 
 /***/ }),
-/* 295 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 73,
-	"./af.js": 73,
-	"./ar": 74,
-	"./ar-dz": 75,
-	"./ar-dz.js": 75,
-	"./ar-kw": 76,
-	"./ar-kw.js": 76,
-	"./ar-ly": 77,
-	"./ar-ly.js": 77,
-	"./ar-ma": 78,
-	"./ar-ma.js": 78,
-	"./ar-sa": 79,
-	"./ar-sa.js": 79,
-	"./ar-tn": 80,
-	"./ar-tn.js": 80,
-	"./ar.js": 74,
-	"./az": 81,
-	"./az.js": 81,
-	"./be": 82,
-	"./be.js": 82,
-	"./bg": 83,
-	"./bg.js": 83,
-	"./bm": 84,
-	"./bm.js": 84,
-	"./bn": 85,
-	"./bn.js": 85,
-	"./bo": 86,
-	"./bo.js": 86,
-	"./br": 87,
-	"./br.js": 87,
-	"./bs": 88,
-	"./bs.js": 88,
-	"./ca": 89,
-	"./ca.js": 89,
-	"./cs": 90,
-	"./cs.js": 90,
-	"./cv": 91,
-	"./cv.js": 91,
-	"./cy": 92,
-	"./cy.js": 92,
-	"./da": 93,
-	"./da.js": 93,
-	"./de": 94,
-	"./de-at": 95,
-	"./de-at.js": 95,
-	"./de-ch": 96,
-	"./de-ch.js": 96,
-	"./de.js": 94,
-	"./dv": 97,
-	"./dv.js": 97,
-	"./el": 98,
-	"./el.js": 98,
-	"./en-au": 99,
-	"./en-au.js": 99,
-	"./en-ca": 100,
-	"./en-ca.js": 100,
-	"./en-gb": 101,
-	"./en-gb.js": 101,
-	"./en-ie": 102,
-	"./en-ie.js": 102,
-	"./en-nz": 103,
-	"./en-nz.js": 103,
-	"./eo": 104,
-	"./eo.js": 104,
-	"./es": 105,
-	"./es-do": 106,
-	"./es-do.js": 106,
-	"./es-us": 107,
-	"./es-us.js": 107,
-	"./es.js": 105,
-	"./et": 108,
-	"./et.js": 108,
-	"./eu": 109,
-	"./eu.js": 109,
-	"./fa": 110,
-	"./fa.js": 110,
-	"./fi": 111,
-	"./fi.js": 111,
-	"./fo": 112,
-	"./fo.js": 112,
-	"./fr": 113,
-	"./fr-ca": 114,
-	"./fr-ca.js": 114,
-	"./fr-ch": 115,
-	"./fr-ch.js": 115,
-	"./fr.js": 113,
-	"./fy": 116,
-	"./fy.js": 116,
-	"./gd": 117,
-	"./gd.js": 117,
-	"./gl": 118,
-	"./gl.js": 118,
-	"./gom-latn": 119,
-	"./gom-latn.js": 119,
-	"./gu": 120,
-	"./gu.js": 120,
-	"./he": 121,
-	"./he.js": 121,
-	"./hi": 122,
-	"./hi.js": 122,
-	"./hr": 123,
-	"./hr.js": 123,
-	"./hu": 124,
-	"./hu.js": 124,
-	"./hy-am": 125,
-	"./hy-am.js": 125,
-	"./id": 126,
-	"./id.js": 126,
-	"./is": 127,
-	"./is.js": 127,
-	"./it": 128,
-	"./it.js": 128,
-	"./ja": 129,
-	"./ja.js": 129,
-	"./jv": 130,
-	"./jv.js": 130,
-	"./ka": 131,
-	"./ka.js": 131,
-	"./kk": 132,
-	"./kk.js": 132,
-	"./km": 133,
-	"./km.js": 133,
-	"./kn": 134,
-	"./kn.js": 134,
-	"./ko": 135,
-	"./ko.js": 135,
-	"./ky": 136,
-	"./ky.js": 136,
-	"./lb": 137,
-	"./lb.js": 137,
-	"./lo": 138,
-	"./lo.js": 138,
-	"./lt": 139,
-	"./lt.js": 139,
-	"./lv": 140,
-	"./lv.js": 140,
-	"./me": 141,
-	"./me.js": 141,
-	"./mi": 142,
-	"./mi.js": 142,
-	"./mk": 143,
-	"./mk.js": 143,
-	"./ml": 144,
-	"./ml.js": 144,
-	"./mr": 145,
-	"./mr.js": 145,
-	"./ms": 146,
-	"./ms-my": 147,
-	"./ms-my.js": 147,
-	"./ms.js": 146,
-	"./my": 148,
-	"./my.js": 148,
-	"./nb": 149,
-	"./nb.js": 149,
-	"./ne": 150,
-	"./ne.js": 150,
-	"./nl": 151,
-	"./nl-be": 152,
-	"./nl-be.js": 152,
-	"./nl.js": 151,
-	"./nn": 153,
-	"./nn.js": 153,
-	"./pa-in": 154,
-	"./pa-in.js": 154,
-	"./pl": 155,
-	"./pl.js": 155,
-	"./pt": 156,
-	"./pt-br": 157,
-	"./pt-br.js": 157,
-	"./pt.js": 156,
-	"./ro": 158,
-	"./ro.js": 158,
-	"./ru": 159,
-	"./ru.js": 159,
-	"./sd": 160,
-	"./sd.js": 160,
-	"./se": 161,
-	"./se.js": 161,
-	"./si": 162,
-	"./si.js": 162,
-	"./sk": 163,
-	"./sk.js": 163,
-	"./sl": 164,
-	"./sl.js": 164,
-	"./sq": 165,
-	"./sq.js": 165,
-	"./sr": 166,
-	"./sr-cyrl": 167,
-	"./sr-cyrl.js": 167,
-	"./sr.js": 166,
-	"./ss": 168,
-	"./ss.js": 168,
-	"./sv": 169,
-	"./sv.js": 169,
-	"./sw": 170,
-	"./sw.js": 170,
-	"./ta": 171,
-	"./ta.js": 171,
-	"./te": 172,
-	"./te.js": 172,
-	"./tet": 173,
-	"./tet.js": 173,
-	"./th": 174,
-	"./th.js": 174,
-	"./tl-ph": 175,
-	"./tl-ph.js": 175,
-	"./tlh": 176,
-	"./tlh.js": 176,
-	"./tr": 177,
-	"./tr.js": 177,
-	"./tzl": 178,
-	"./tzl.js": 178,
-	"./tzm": 179,
-	"./tzm-latn": 180,
-	"./tzm-latn.js": 180,
-	"./tzm.js": 179,
-	"./uk": 181,
-	"./uk.js": 181,
-	"./ur": 182,
-	"./ur.js": 182,
-	"./uz": 183,
-	"./uz-latn": 184,
-	"./uz-latn.js": 184,
-	"./uz.js": 183,
-	"./vi": 185,
-	"./vi.js": 185,
-	"./x-pseudo": 186,
-	"./x-pseudo.js": 186,
-	"./yo": 187,
-	"./yo.js": 187,
-	"./zh-cn": 188,
-	"./zh-cn.js": 188,
-	"./zh-hk": 189,
-	"./zh-hk.js": 189,
-	"./zh-tw": 190,
-	"./zh-tw.js": 190
+	"./af": 74,
+	"./af.js": 74,
+	"./ar": 75,
+	"./ar-dz": 76,
+	"./ar-dz.js": 76,
+	"./ar-kw": 77,
+	"./ar-kw.js": 77,
+	"./ar-ly": 78,
+	"./ar-ly.js": 78,
+	"./ar-ma": 79,
+	"./ar-ma.js": 79,
+	"./ar-sa": 80,
+	"./ar-sa.js": 80,
+	"./ar-tn": 81,
+	"./ar-tn.js": 81,
+	"./ar.js": 75,
+	"./az": 82,
+	"./az.js": 82,
+	"./be": 83,
+	"./be.js": 83,
+	"./bg": 84,
+	"./bg.js": 84,
+	"./bm": 85,
+	"./bm.js": 85,
+	"./bn": 86,
+	"./bn.js": 86,
+	"./bo": 87,
+	"./bo.js": 87,
+	"./br": 88,
+	"./br.js": 88,
+	"./bs": 89,
+	"./bs.js": 89,
+	"./ca": 90,
+	"./ca.js": 90,
+	"./cs": 91,
+	"./cs.js": 91,
+	"./cv": 92,
+	"./cv.js": 92,
+	"./cy": 93,
+	"./cy.js": 93,
+	"./da": 94,
+	"./da.js": 94,
+	"./de": 95,
+	"./de-at": 96,
+	"./de-at.js": 96,
+	"./de-ch": 97,
+	"./de-ch.js": 97,
+	"./de.js": 95,
+	"./dv": 98,
+	"./dv.js": 98,
+	"./el": 99,
+	"./el.js": 99,
+	"./en-au": 100,
+	"./en-au.js": 100,
+	"./en-ca": 101,
+	"./en-ca.js": 101,
+	"./en-gb": 102,
+	"./en-gb.js": 102,
+	"./en-ie": 103,
+	"./en-ie.js": 103,
+	"./en-nz": 104,
+	"./en-nz.js": 104,
+	"./eo": 105,
+	"./eo.js": 105,
+	"./es": 106,
+	"./es-do": 107,
+	"./es-do.js": 107,
+	"./es-us": 108,
+	"./es-us.js": 108,
+	"./es.js": 106,
+	"./et": 109,
+	"./et.js": 109,
+	"./eu": 110,
+	"./eu.js": 110,
+	"./fa": 111,
+	"./fa.js": 111,
+	"./fi": 112,
+	"./fi.js": 112,
+	"./fo": 113,
+	"./fo.js": 113,
+	"./fr": 114,
+	"./fr-ca": 115,
+	"./fr-ca.js": 115,
+	"./fr-ch": 116,
+	"./fr-ch.js": 116,
+	"./fr.js": 114,
+	"./fy": 117,
+	"./fy.js": 117,
+	"./gd": 118,
+	"./gd.js": 118,
+	"./gl": 119,
+	"./gl.js": 119,
+	"./gom-latn": 120,
+	"./gom-latn.js": 120,
+	"./gu": 121,
+	"./gu.js": 121,
+	"./he": 122,
+	"./he.js": 122,
+	"./hi": 123,
+	"./hi.js": 123,
+	"./hr": 124,
+	"./hr.js": 124,
+	"./hu": 125,
+	"./hu.js": 125,
+	"./hy-am": 126,
+	"./hy-am.js": 126,
+	"./id": 127,
+	"./id.js": 127,
+	"./is": 128,
+	"./is.js": 128,
+	"./it": 129,
+	"./it.js": 129,
+	"./ja": 130,
+	"./ja.js": 130,
+	"./jv": 131,
+	"./jv.js": 131,
+	"./ka": 132,
+	"./ka.js": 132,
+	"./kk": 133,
+	"./kk.js": 133,
+	"./km": 134,
+	"./km.js": 134,
+	"./kn": 135,
+	"./kn.js": 135,
+	"./ko": 136,
+	"./ko.js": 136,
+	"./ky": 137,
+	"./ky.js": 137,
+	"./lb": 138,
+	"./lb.js": 138,
+	"./lo": 139,
+	"./lo.js": 139,
+	"./lt": 140,
+	"./lt.js": 140,
+	"./lv": 141,
+	"./lv.js": 141,
+	"./me": 142,
+	"./me.js": 142,
+	"./mi": 143,
+	"./mi.js": 143,
+	"./mk": 144,
+	"./mk.js": 144,
+	"./ml": 145,
+	"./ml.js": 145,
+	"./mr": 146,
+	"./mr.js": 146,
+	"./ms": 147,
+	"./ms-my": 148,
+	"./ms-my.js": 148,
+	"./ms.js": 147,
+	"./my": 149,
+	"./my.js": 149,
+	"./nb": 150,
+	"./nb.js": 150,
+	"./ne": 151,
+	"./ne.js": 151,
+	"./nl": 152,
+	"./nl-be": 153,
+	"./nl-be.js": 153,
+	"./nl.js": 152,
+	"./nn": 154,
+	"./nn.js": 154,
+	"./pa-in": 155,
+	"./pa-in.js": 155,
+	"./pl": 156,
+	"./pl.js": 156,
+	"./pt": 157,
+	"./pt-br": 158,
+	"./pt-br.js": 158,
+	"./pt.js": 157,
+	"./ro": 159,
+	"./ro.js": 159,
+	"./ru": 160,
+	"./ru.js": 160,
+	"./sd": 161,
+	"./sd.js": 161,
+	"./se": 162,
+	"./se.js": 162,
+	"./si": 163,
+	"./si.js": 163,
+	"./sk": 164,
+	"./sk.js": 164,
+	"./sl": 165,
+	"./sl.js": 165,
+	"./sq": 166,
+	"./sq.js": 166,
+	"./sr": 167,
+	"./sr-cyrl": 168,
+	"./sr-cyrl.js": 168,
+	"./sr.js": 167,
+	"./ss": 169,
+	"./ss.js": 169,
+	"./sv": 170,
+	"./sv.js": 170,
+	"./sw": 171,
+	"./sw.js": 171,
+	"./ta": 172,
+	"./ta.js": 172,
+	"./te": 173,
+	"./te.js": 173,
+	"./tet": 174,
+	"./tet.js": 174,
+	"./th": 175,
+	"./th.js": 175,
+	"./tl-ph": 176,
+	"./tl-ph.js": 176,
+	"./tlh": 177,
+	"./tlh.js": 177,
+	"./tr": 178,
+	"./tr.js": 178,
+	"./tzl": 179,
+	"./tzl.js": 179,
+	"./tzm": 180,
+	"./tzm-latn": 181,
+	"./tzm-latn.js": 181,
+	"./tzm.js": 180,
+	"./uk": 182,
+	"./uk.js": 182,
+	"./ur": 183,
+	"./ur.js": 183,
+	"./uz": 184,
+	"./uz-latn": 185,
+	"./uz-latn.js": 185,
+	"./uz.js": 184,
+	"./vi": 186,
+	"./vi.js": 186,
+	"./x-pseudo": 187,
+	"./x-pseudo.js": 187,
+	"./yo": 188,
+	"./yo.js": 188,
+	"./zh-cn": 189,
+	"./zh-cn.js": 189,
+	"./zh-hk": 190,
+	"./zh-hk.js": 190,
+	"./zh-tw": 191,
+	"./zh-tw.js": 191
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -62918,15 +63120,15 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 295;
+webpackContext.id = 297;
 
 /***/ }),
-/* 296 */
+/* 298 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__ = __webpack_require__(299);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__);
 
 
@@ -62967,24 +63169,24 @@ class AppSearchResultCreator extends __WEBPACK_IMPORTED_MODULE_0__polymer_polyme
 customElements.define('app-search-result-creator', AppSearchResultCreator);
 
 /***/ }),
-/* 297 */
+/* 299 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .text {\n    display: block;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    width: calc(var(--grid-cell-width) - 30px);\n    color: var(--gray-text);\n  }\n</style>\n\n<a class=\"text\" hidden=\"[[!link]]\" href=\"[[label]]\" target=\"_blank\">[[label]]</a>\n<div class=\"text\" hidden=\"[[link]]\">[[label]]</div>";
 
 /***/ }),
-/* 298 */
+/* 300 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    width: var(--grid-cell-width);\n    background-color: white;\n    cursor: pointer;\n  }\n  :host(:hover) {\n    border: 2px solid var(--default-secondary-color);\n    margin: -2px 0 0 -2px;\n  }\n  .img {\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: transparent;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n</style>\n\n<div hidden$=\"[[!isImage]]\" style=\"position: relative; width: 250px; height:[[imgHeight]]px\">\n  <div style=\"background-image: url('[[imgThumbail]]');height:[[imgHeight]]px\" class=\"img\" ></div>\n  <div style=\"background-image: url('[[imgUrl]]');height:[[imgHeight]]px\" class=\"img\"></div>\n</div>\n\n\n<div style=\"padding: 15px\">\n  <div class=\"collection-name\">[[collectionName]]</div>\n\n  <h4>[[name]]</h4>\n\n  <template is=\"dom-repeat\" items=\"[[creator]]\">\n    <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n  </template>\n\n  <div class=\"footer\">\n    <div class=\"year\">[[year]]</div>\n    <div>\n      <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 299 */
+/* 301 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__ = __webpack_require__(300);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__ = __webpack_require__(302);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__);
 
 
@@ -63000,34 +63202,34 @@ class AppSearchListResult extends __WEBPACK_IMPORTED_MODULE_0__app_search_result
 customElements.define('app-search-list-result', AppSearchListResult);
 
 /***/ }),
-/* 300 */
+/* 302 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: white;\n    margin: 10px;\n  }\n\n  .img {\n    height: 250px;\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: white;\n    background-position: center center;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .spacer {\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  .layout {\n    display: flex;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  .flex-vertical {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n  }\n</style>\n\n<div class=\"layout\">\n    <div style=\"background-image: url('[[imgUrl]]')\" hidden$=\"[[!isImage]]\" class=\"img\" ></div>\n\n  <div style=\"padding: 15px; flex: 1\">\n    <div class=\"flex-vertical\">\n      <div class=\"collection-name\">[[collectionName]]</div>\n      \n      <h4>[[name]]</h4>\n    \n      <template is=\"dom-repeat\" items=\"[[creator]]\">\n        <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n      </template>\n      \n      <div class=\"spacer\"></div>\n\n      <div class=\"footer\">\n        <div class=\"year\">[[year]]</div>\n        <div>\n          <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 301 */
+/* 303 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    max-width: 1150px;\n  }\n\n  .header {\n    font-size: var(--font-size-sm);\n    display: flex;\n    align-items: center;\n    margin-left: -15px;\n  }\n\n  select {\n    margin-left: 10px;\n    border: 1px solid var(--light-background-color);\n    border-radius: 0;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 16px 16px;\n    background-repeat: no-repeat;\n    background-color: transparent;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n  }\n\n  h3 {\n    border-top: 1px solid var(--light-background-color);\n    margin: 15px 0 0 0;\n    padding: 15px 0 0 0;\n    color: var(--default-primary-color);\n  }\n\n  .masonry {\n    margin: 10px;\n    position: relative;\n  }\n\n  .masonry .item {\n    display: block;\n    position: absolute;\n    /* visibility: hidden; */\n    top : 25px;\n    left: 25px;\n    will-change: top, left;\n    transition: top 500ms ease-out, left 500ms ease-out;\n  }\n\n  .list {\n    margin: 10px;\n  }\n\n  .list .item {\n    padding: 10px;\n    margin-bottom: 15px;\n    background-color: #daaa00;\n    height: 250px;\n  }\n\n  .spacer {\n    height: 20px;\n    border-right: 1px solid var(--light-background-color);\n  }\n\n  .total {\n    font-style: italic; \n    padding-left: 10px;\n  }\n\n  .mobile-total {\n    font-style: italic; \n  }\n\n  .filler {\n    flex: 1;\n  }\n\n  cork-pagination {\n    display: inline-block;\n\n    --cork-color : var(--default-primary-color);\n    --cork-background-color : var(--default-secondary-color);\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n    margin-left: -15px;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  .drawer-toggle[disabled] {\n    color: var(--light-background-color);\n  }\n\n  .header {\n    display : none;\n  }\n\n  .mobile-header .row2 {\n    display: flex;\n    align-items: center;\n  }\n\n  .collections {\n    text-align: center;\n  }\n\n  @media( min-width: 975px ) {\n    .header {\n      display: flex;\n    }\n    .mobile-header {\n      display: none;\n    }\n  }\n</style>\n\n<div class=\"header\">\n  <div class=\"total\">[[total]] results found</div>\n  \n  <div class=\"filler\"></div>\n  \n  <paper-icon-button \n    icon=\"fin:grid\" \n    disabled$=\"[[!isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"masonry\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  <paper-icon-button \n    icon=\"fin:list\" \n    disabled$=\"[[isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"list\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  \n  <div>\n    <select id=\"numPerPage\" on-change=\"_onPageSizeChange\">\n      <option>50</option>\n      <option>20</option>\n      <option>10</option>\n    </select>\n  </div>\n  <div style=\"margin-left: 10px; font-style:italic\">Items per page</div>\n</div>\n\n<div class=\"mobile-header\">\n  <div>\n    <div style=\"display:inline-block\">\n      <button class=\"drawer-toggle\" on-click=\"_onToggleDrawer\">\n        <span>Info / Filters</span>\n        <iron-icon icon=\"add\"></iron-icon>\n      </button>\n    </div>\n  </div>\n\n  <div class=\"row2\">\n    <div class=\"total\">[[total]] results</div>\n\n    <div class=\"filler\"></div>\n    \n    <paper-icon-button \n      icon=\"fin:grid\" \n      disabled$=\"[[!isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"masonry\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    <paper-icon-button \n      icon=\"fin:list\" \n      disabled$=\"[[isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"list\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    \n    <div>\n      <select id=\"numPerPageM\" on-change=\"_onPageSizeChange\">\n        <option>50</option>\n        <option>20</option>\n        <option>10</option>\n      </select>\n    </div>\n    <div style=\"margin-left: 10px; font-style:italic\">per page</div>\n  </div>\n</div>\n\n<div class=\"collections\" hidden$=\"[[!showCollectionResults]]\">\n  <div hidden$=\"[[!collectionResults.length]]\">\n    <h3>Collections</h3>\n    <template is=\"dom-repeat\" items=\"[[collectionResults]]\">\n      <app-collection-card collection=\"[[item]]\" on-click=\"_onCollectionClicked\"></app-collection-card>\n    </template>\n    <h3 hidden$=\"[[!results.length]]\">Items</h3>\n  </div>\n</div>\n\n<div class=\"masonry\" id=\"layout\" hidden$=\"[[isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-grid-result data=\"[[item]]\" class=\"item\"></app-search-grid-result>\n  </template>\n</div>\n\n<div class=\"list\" hidden$=\"[[!isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-list-result data=\"[[item]]\"></app-search-list-result>\n  </template>\n</div>\n\n<div style=\"text-align:center\">\n  <cork-pagination \n    total-results=\"[[total]]\" \n    items-per-page=\"[[numPerPage]]\"\n    current-index=\"[[currentIndex]]\"\n    on-nav=\"_onPaginationNav\">\n  </cork-pagination>\n</div>";
 
 /***/ }),
-/* 302 */
+/* 304 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_pages_iron_pages__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_collection_info_panel__ = __webpack_require__(323);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_pages_iron_pages__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel__ = __webpack_require__(309);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_collection_info_panel__ = __webpack_require__(325);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__ = __webpack_require__(325);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__ = __webpack_require__(327);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__lib_config__);
 
 
@@ -63134,7 +63336,7 @@ class AppFiltersPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 customElements.define('app-filters-panel', AppFiltersPanel);
 
 /***/ }),
-/* 303 */
+/* 305 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63208,12 +63410,12 @@ const IronMenubarBehavior = [
 
 
 /***/ }),
-/* 304 */
+/* 306 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selectable_js__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selectable_js__ = __webpack_require__(43);
 
 
 
@@ -63373,11 +63575,11 @@ const IronMultiSelectableBehavior = [
 
 
 /***/ }),
-/* 305 */
+/* 307 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(30);
 
 const $_documentContainer = document.createElement('div');
 $_documentContainer.setAttribute('style', 'display: none;');
@@ -63393,15 +63595,15 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 306 */
+/* 308 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_control_state_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_behaviors_paper_ripple_behavior_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_control_state_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_behaviors_paper_ripple_behavior_js__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -63541,17 +63743,17 @@ Object(__WEBPACK_IMPORTED_MODULE_5__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 307 */
+/* 309 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_toggle_panel_cork_toggle_panel__ = __webpack_require__(308);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter__ = __webpack_require__(310);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__ = __webpack_require__(314);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_toggle_panel_cork_toggle_panel__ = __webpack_require__(310);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter__ = __webpack_require__(312);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__ = __webpack_require__(316);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_facet_filter__ = __webpack_require__(315);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_facet_filter__ = __webpack_require__(317);
   
 
 
@@ -63600,14 +63802,14 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 window.customElements.define('app-filter-panel', AppFilterPanel);
 
 /***/ }),
-/* 308 */
+/* 310 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_icon_iron_icon__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__ = __webpack_require__(309);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_icon_iron_icon__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__ = __webpack_require__(311);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__);
 
 
@@ -63660,21 +63862,21 @@ class CorkTogglePanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('cork-toggle-panel', CorkTogglePanel);
 
 /***/ }),
-/* 309 */
+/* 311 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #label {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    @apply --cork-toggle-panel-label;\n  }\n\n  #content {\n    overflow: hidden;\n    height: 0;\n    transition: height 250ms ease-out;\n    @apply --cork-toggle-panel-content;\n  }\n\n  iron-icon {\n    color: var(--cork-drop-down-arrow-color, #912046);\n    transform: rotateX(0);\n    transition: transform 250ms ease-out;\n  }\n\n  iron-icon[closed] {\n    transform: rotate(-90deg);\n  }\n\n</style>\n\n<div id=\"label\" on-click=\"toggle\">\n  <div style=\"flex:1\">[[label]]</div>\n  <iron-icon icon=\"arrow-drop-down\" closed$=\"[[!opened]]\"></iron-icon>\n</div>\n\n<div id=\"content\">\n  <slot></slot>\n</div>";
 
 /***/ }),
-/* 310 */
+/* 312 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_app_range_slider__ = __webpack_require__(311);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_app_range_slider__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html__ = __webpack_require__(315);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_range_filter_html__);
 
 
@@ -63838,12 +64040,12 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
 customElements.define('app-range-filter', AppRangeFilter);
 
 /***/ }),
-/* 311 */
+/* 313 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__ = __webpack_require__(312);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__ = __webpack_require__(314);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__);
 
 
@@ -64161,34 +64363,34 @@ class AppRangeSlider extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 customElements.define('app-range-slider', AppRangeSlider);
 
 /***/ }),
-/* 312 */
+/* 314 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n    position: relative;\n    height: 50px;\n    margin: 0 13px;\n\n    -webkit-touch-callout: none; /* iOS Safari */\n    -webkit-user-select: none; /* Safari */\n    -khtml-user-select: none; /* Konqueror HTML */\n    -moz-user-select: none; /* Firefox */\n    -ms-user-select: none; /* Internet Explorer/Edge */\n    user-select: none; /* Non-prefixed version, currently */\n  }\n\n  #numberLine {\n    position: absolute;\n    left : 0;\n    right : 0;\n    height: 3px;\n    background-color: var(--light-background-color, #888);\n  }\n\n  #fillLine {\n    position: absolute;\n    cursor: move;\n    background-color: var(--default-primary-color);\n    height: 3px;\n  }\n\n  .btn {\n    position: absolute;\n    height: 25px;\n    width: 25px;\n    cursor: move;\n  }\n\n  .btn > div {\n    margin: 5px;\n    height: 15px;\n    width: 15px;\n    border-radius: 15px;\n    background-color: var(--default-primary-color);\n    transition: all 150ms linear;\n  }\n\n  .btn[moving] > div {\n    margin: 0px;\n    height: 25px;\n    width: 25px;\n    border-radius: 25px;\n  }\n\n  .label {\n    width : 25px;\n    font-size: 12px; \n    position: absolute;\n    text-align: center;\n    transform: scale(0);\n    transition: transform 200ms linear;\n    color: var(--default-primary-color);\n  }\n\n  .label[moving] {\n    transform: scale(1);\n  }\n\n</style>\n\n<div id=\"numberLine\"></div>\n\n<div id=\"fillLine\" prop=\"range\" on-mousedown=\"_onMoveStart\"></div>\n\n<div id=\"lowNumberLabel\" class=\"label\" moving$=\"[[isMoving]]\">[[minValueLabel]]</div>\n<div id=\"highNumberLabel\" class=\"label\" moving$=\"[[isMoving]]\">[[maxValueLabel]]</div>\n\n<div id=\"lowNumberBtn\" class=\"btn\" prop=\"min\" on-mousedown=\"_onMoveStart\" moving$=\"[[movingMin]]\" >\n  <div></div>\n</div>\n\n<div id=\"highNumberBtn\" class=\"btn\" prop=\"max\" on-mousedown=\"_onMoveStart\" moving$=\"[[movingMax]]\">\n  <div></div>\n</div>";
 
 /***/ }),
-/* 313 */
+/* 315 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n  \n  .labels {\n    display: flex;\n    margin: 0 13px;\n    color: var(--gray-text);\n    font-size: var(--font-size-sm);\n  }\n\n  .inputs {\n    display: flex;\n    align-items: center;\n  }\n\n  input[type=\"number\"] {\n    margin: 0 13px;\n    padding: 7px;\n    border: 0;\n    width: 50px;\n    font-size: var(--font-size-sm);\n  }\n\n  .unknown {\n    margin-left: 9px;\n    display: flex;\n    align-items: center;\n  }\n\n  label {\n    font-size: var(--font-size-sm);\n    font-style: italic;\n    padding-left: 5px;\n  }\n\n  app-range-slider {\n    --light-background-color: var(--medium-background-color);\n  }\n</style>\n\n<div class=\"inputs\">\n  <input id=\"minValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n  <span> - </span>\n  <input id=\"maxValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n</div>\n\n<app-range-slider\n  id=\"slider\"\n  on-range-value-change=\"_onRangeSliderChange\"\n  abs-min-value=\"[[absMinValue]]\"\n  abs-max-value=\"[[absMaxValue]]\"\n  min-value=\"[[minValue]]\"\n  max-value=\"[[maxValue]]\">\n</app-range-slider>\n\n<div class=\"labels\">\n  <div style=\"flex:1\">[[absMinValue]]</div>\n  <div>[[absMaxValue]]</div>\n</div>\n\n<div class=\"unknown\" hidden$=\"[[showUnknown]]\">\n  <input type=\"checkbox\" id=\"unknown\" on-click=\"_onRangeNullChange\" checked />\n  <label for=\"unknown\">include unknown / unspecified</label>\n</div>";
 
 /***/ }),
-/* 314 */
+/* 316 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n</style>\n\n<cork-toggle-panel label=\"[[filter.label]]\">\n  <div id=\"filters\"></div>\n</cork-toggle-panel>";
 
 /***/ }),
-/* 315 */
+/* 317 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__ = __webpack_require__(316);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__ = __webpack_require__(318);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_facet_checkbox__ = __webpack_require__(317);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_facet_checkbox__ = __webpack_require__(319);
 
 
 
@@ -64310,18 +64512,18 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
 window.customElements.define('app-facet-filter', AppFacetFilter);
 
 /***/ }),
-/* 316 */
+/* 318 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block\n  }\n\n  .filter {\n    padding: 4px 5px;\n    display: flex;\n    align-items: center;\n  }\n  .filter a {\n    display: inline-block;\n    cursor: pointer;\n    color: black;\n    transition: color 250ms ease-out, transform 250ms ease-out;\n    transform: scale(1);\n  }\n  .filter a span {\n    color: var(--default-primary-color);\n  }\n  .filter a:hover {\n    transform: scale(1.5);\n    color: var(--default-primary-color);\n  }\n\n  .active-filter {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    color: white;\n    font-size: 14px;\n    background: var(--primary-text-color);\n    padding: 5px;\n    border-radius: 3px;\n    margin: 3px;\n  }\n\n  .active-filter:hover {\n    color: var(--default-primary-color);\n    background: #ccc;\n  }\n\n  .count {\n    color: var(--text-disabled);\n    flex: 1;\n    text-align: right;\n  }\n\n  .overflow {\n    overflow: auto;\n    max-height: 200px;\n  }\n\n  paper-checkbox[active] .key {\n    color: var(--default-primary-color);\n    font-weight: bold;\n  }\n\n  paper-checkbox[disabled] .key {\n    color: var(--secondary-text-color);\n    font-style: italic;\n  }\n</style>\n\n<div class=\"overflow\">\n  <div>\n    <template is=\"dom-repeat\" items=\"[[buckets]]\">\n      <div class=\"filter\">\n\n        <app-facet-checkbox\n          type$=\"[[label]]\"\n          index$=\"[[index]]\"\n          value$=\"[[item.key]]\"\n          checked$=\"[[item.active]]\" \n          on-change=\"_toggleFilter\">\n        </app-facet-checkbox>\n\n        <div class=\"count\">[[item.doc_count]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n";
 
 /***/ }),
-/* 317 */
+/* 319 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_normal_checkbox__ = __webpack_require__(318);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_normal_checkbox__ = __webpack_require__(320);
 
 
 
@@ -64396,13 +64598,13 @@ class AppFacetCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
 window.customElements.define('app-facet-checkbox', AppFacetCheckbox);
 
 /***/ }),
-/* 318 */
+/* 320 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_checkbox_paper_checkbox__ = __webpack_require__(319);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__ = __webpack_require__(322);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_checkbox_paper_checkbox__ = __webpack_require__(321);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__ = __webpack_require__(324);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__);
 
 
@@ -64467,16 +64669,16 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 window.customElements.define('app-normal-checkbox', AppNormalCheckbox);
 
 /***/ }),
-/* 319 */
+/* 321 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_checked_element_behavior_js__ = __webpack_require__(320);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_checked_element_behavior_js__ = __webpack_require__(322);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_render_status_js__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_render_status_js__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(51);
 
 
 
@@ -64755,14 +64957,14 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 320 */
+/* 322 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_checked_element_behavior_iron_checked_element_behavior_js__ = __webpack_require__(321);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_inky_focus_behavior_js__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_ripple_behavior_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_checked_element_behavior_iron_checked_element_behavior_js__ = __webpack_require__(323);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_inky_focus_behavior_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_ripple_behavior_js__ = __webpack_require__(29);
 
 
 
@@ -64809,13 +65011,13 @@ const PaperCheckedElementBehavior = [
 
 
 /***/ }),
-/* 321 */
+/* 323 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(69);
 
 
 
@@ -64919,20 +65121,20 @@ const IronCheckedElementBehavior = [
 
 
 /***/ }),
-/* 322 */
+/* 324 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    cursor: pointer;\n  }\n\n  iron-icon {\n    display: none;\n    color: var(--default-secondary-color);\n  }\n\n  div {\n    user-select: none;\n    display: flex;\n    min-height: 24px;\n  }\n\n  span {\n    display: inline-block;\n    padding-top: 3px;\n  }\n\n  div[checked] iron-icon {\n    display: inline-block;\n  }\n\n  div[checked] .value {\n    font-style: italic;\n    font-weight: bold;\n  }\n</style>\n\n<div checked$=\"[[checked]]\" on-click=\"_onClick\">\n  <iron-icon icon=\"close\"></iron-icon>\n  <span class=\"value\">[[realLabel]]</span>\n</div>";
 
 /***/ }),
-/* 323 */
+/* 325 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__ = __webpack_require__(324);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__ = __webpack_require__(326);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__);
 
 
@@ -64998,42 +65200,42 @@ class AppCollectionInfoPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_
 customElements.define('app-collection-info-panel', AppCollectionInfoPanel);
 
 /***/ }),
-/* 324 */
+/* 326 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    padding: 15px;\n  }\n  h3 {\n    color: var(--default-primary-color);\n    margin: 5px 0;\n  }\n  .section {\n    margin-bottom: 20px;\n  }\n</style>\n\n<div class=\"section\" hidden$=\"[[!description]]\">\n  <h3>Description</h3>\n  <div>[[description]]</div>\n</div>\n\n<div class=\"section\" hidden$=\"[[!subject]]\">\n  <h3>Subject</h3>\n  <div>[[subject]]</div>\n</div>\n\n<div class=\"section\" hidden$=\"[[!coverage]]\">\n  <h3>Coverage</h3>\n  <div>[[coverage]]</div>\n</div>\n\n\n<div>[[collection.description]]</div>";
 
 /***/ }),
-/* 325 */
+/* 327 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnailUrl]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.name]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
 
 /***/ }),
-/* 326 */
+/* 328 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html__ = __webpack_require__(327);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html__ = __webpack_require__(329);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_record_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bytes__ = __webpack_require__(193);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bytes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_bytes__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_rights_json__ = __webpack_require__(328);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_rights_json__ = __webpack_require__(330);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_rights_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__lib_rights_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_models_CitationsModel__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_image_viewer__ = __webpack_require__(329);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_image_download__ = __webpack_require__(342);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_record_metadata_layout__ = __webpack_require__(344);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_AppStateInterface__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_models_CitationsModel__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__viewer_app_image_viewer_static__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_image_download__ = __webpack_require__(349);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_record_metadata_layout__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_AppStateInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface__);
 
 
@@ -65085,14 +65287,6 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
         type : String,
         value : ''
       },
-      resolution : {
-        type : String,
-        value : ''
-      },
-      fileFormat : {
-        type : String,
-        value : ''
-      },
       rights : {
         type : Object,
         value : () => {}
@@ -65121,42 +65315,36 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 
     let path = e.location.path.slice(0);
     path.splice(0, 1);
+    if( this.currentRecordId === '/'+path.join('/') ) return;
+
     this.currentRecordId = '/'+path.join('/');
 
-    let record = await this._esGetRecord(this.currentRecordId)
-    this._render(record);
+    let result = await this._esGetRecord(this.currentRecordId);
+    this._setSelectedRecord(result.payload._source);
   }
 
   /**
-   * @method _render
-   * @description from ElasticSearchInterface, called when search state updates
+   * @method _onSelectedRecordUpdate
+   * @description from AppStateInterface, called when a record is selected
    * 
-   * @param {Object} e 
+   * @param {Object} record selected record
    */
-  async _render(e) {
-    if( e.id === this.renderedRecordId ) return;
-    this.renderedRecordId = e.id;
+  async _onSelectedRecordUpdate(record) {
+    if( record.id === this.renderedRecordId ) return;
 
-    this.record = e.payload._source;
-
-    this.resolution = this.record.width+'x'+this.record.height;
-    
-    let imgPath = this._getImgPath(this.record);
-    this.$.imageViewer.render(imgPath);
+    this.renderedRecordId = record.id;
+    this.record = record;
 
     this.name = this.record.name || '';
 
     this.description = this.record.description || '';
     this.$.link.value = window.location.href;
 
-    this.date = this.record.created ? 
-                  __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.record.created).format(this.momentFormat) :
+    this.date = this.record.datePublished ? 
+                  __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.record.datePublished).format(this.momentFormat) :
                   '';
 
-    this.resourceType = this.record.type || this.record.fileFormat || 'Unknown';
-
-    this.size = __WEBPACK_IMPORTED_MODULE_3_bytes___default()(this.record.hasSize ? parseInt(this.record.hasSize) : 0);
-    this.fileFormat = this.record.fileFormat || '';
+    this.resourceType = this.record.type ? this.record.type.join(', ') : 'Unknown';
 
     if( this.record.license && __WEBPACK_IMPORTED_MODULE_4__lib_rights_json___default.a[this.record.license] ) {
       let def = __WEBPACK_IMPORTED_MODULE_4__lib_rights_json___default.a[this.record.license];
@@ -65166,7 +65354,7 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
         icon : `/images/rights-icons/${def.icon}.svg`
       }
     } else {
-      this.record = null;
+      this.rights = null;
     }
 
     // render citations
@@ -65174,20 +65362,36 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
     this.$.apa.innerHTML = __WEBPACK_IMPORTED_MODULE_5__lib_models_CitationsModel__["default"].renderEsRecord(this.record, 'apa');
     this.$.chicago.innerHTML = __WEBPACK_IMPORTED_MODULE_5__lib_models_CitationsModel__["default"].renderEsRecord(this.record, 'chicago');
 
-    this.$.download.render({
-      resolution : [this.record.width, this.record.height],
-      fileFormat : this.fileFormat,
-      size : this.record.hasSize ? parseInt(this.record.hasSize) : 0,
-      url : imgPath
-    });
-
     this.collectionName = this.record.isPartOf || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.name;
     }
 
+    if( record.associatedMedia ) {
+      let imageList = this._getImageMediaList(record);
+      if( imageList.length ) this._setSelectedRecordMedia(imageList[0]);
+      else this._setSelectedRecordMedia(record);
+    } else {
+      this._setSelectedRecordMedia(record);
+    }
+
     this._updateMetadataRows();
+  }
+
+  /**
+   * @method _onSelectedRecordMediaUpdate
+   * @description from AppStateInterface, called when a records media is selected
+   * 
+   * @param {Object} record 
+   */
+  _onSelectedRecordMediaUpdate(record) {
+    this.$.download.render({
+      resolution : [record.width, record.height],
+      fileFormat : record.fileFormat,
+      size : record.fileSize ? parseInt(record.fileSize) : 0,
+      url : this._getImgPath(record)
+    });
   }
 
   /**
@@ -65247,170 +65451,132 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-record', AppRecord);
 
 /***/ }),
-/* 327 */
-/***/ (function(module, exports) {
-
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  img[rights] {\n    height: 22px;\n    width: 22px;\n    vertical-align: sub;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer id=\"imageViewer\"></app-image-viewer>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[name]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <a href$=\"[[rights.link]]\" target=\"_block\">\n          <img src$=\"[[rights.icon]]\" rights />\n          <span>[[rights.label]]</span>\n        </a>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <div class=\"cite-container\">\n        <div class=\"label\">MLA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"mla\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">APA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"apa\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">Chicago</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"chicago\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      \n    </div>\n  </app-record-metadata-layout>\n</div>";
-
-/***/ }),
-/* 328 */
-/***/ (function(module, exports) {
-
-module.exports = {"http://rightsstatements.org/vocab/InC/1.0/":{"text":"IN COPYRIGHT","icon":"InC"},"http://rightsstatements.org/vocab/InC-OW-EU/1.0/":{"text":"IN COPYRIGHT - EU ORPHAN WORK","icon":"InC"},"http://rightsstatements.org/vocab/InC-EDU/1.0/":{"text":"IN COPYRIGHT - EDUCATIONAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-NC/1.0/":{"text":"IN COPYRIGHT - NON-COMMERCIAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-RUU/1.0/":{"text":"IN COPYRIGHT - RIGHTS-HOLDER(S) UNLOCATABLE OR UNIDENTIFIABLE","icon":"InC"},"http://rightsstatements.org/vocab/NoC-NC/1.0/":{"text":"NO COPYRIGHT - NON-COMMERCIAL USE ONLY","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-OKLR/1.0/":{"text":"NO COPYRIGHT - OTHER KNOWN LEGAL RESTRICTIONS","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-US/1.0/":{"text":"NO COPYRIGHT - UNITED STATES","icon":"NoC"},"http://rightsstatements.org/vocab/CNE/1.0/":{"text":"COPYRIGHT NOT EVALUATED","icon":"Other"},"http://rightsstatements.org/vocab/UND/1.0/":{"text":"COPYRIGHT UNDETERMINED","icon":"Other"},"http://rightsstatements.org/vocab/NKC/1.0/":{"text":"NO KNOWN COPYRIGHT","icon":"Other"}}
-
-/***/ }),
 /* 329 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_html__ = __webpack_require__(330);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_viewer_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(331);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet__ = __webpack_require__(334);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leaflet__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__ = __webpack_require__(335);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__);
-
-
-
-
-
-
-
-class AppImageViewer extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */] {
-
-  static get template() {
-    return `<style>${__WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css___default.a}</style>
-            ${__WEBPACK_IMPORTED_MODULE_1__app_image_viewer_html___default.a}`;
-  }
-
-  properties() {
-    return {
-      bounds : {
-        type : Array,
-        value : null
-      },
-      formats : {
-        type : Array,
-        value : () => ['png', 'jpg', 'webp']
-      },
-      loading : {
-        type : Boolean,
-        value : false
-      }
-    }
-  }
-
-  /**
-   * @method _loadImage
-   * @description preload image and set bounds to image dimensions
-   * 
-   * @param {String} url url of image to load
-   * 
-   * @returns {Promise} resolves when image is loaded and bounds array has been set
-   */
-  _loadImage(url) {
-    this.loading = true;
-    return new Promise((resolve, reject) => {
-      var img = new Image();
-      img.onload = () => {
-        let res = [img.naturalHeight, img.naturalWidth];
-        this.bounds = [[0,0], res];
-        this.loading = false;
-        resolve();
-      };
-      img.src = url;
-    });
-  }
-
-  /**
-   * @method render
-   * @description render leaflet canvas based on fedora id
-   * 
-   * @param {String} id record id (uri)
-   */
-  async render(id) {
-    let url = '/fcrepo/rest'+id+'/svc:iiif/full/full/0/default.png';
-    if( this.currentUrl === url ) return;
-
-    if( this.viewer ) this.viewer.remove();
-
-    await this._loadImage(url);
-
-    this.viewer = L.map(this.$.viewer, {
-      crs: L.CRS.Simple,
-      minZoom: -4,
-      dragging :  !L.Browser.mobile,
-      scrollWheelZoom : false,
-      touchZoom : true
-    });
-
-    L.imageOverlay(url, this.bounds).addTo(this.viewer);
-    this.viewer.fitBounds(this.bounds);
-
-    // setTimeout(function(){
-    //   this.viewer.zoomOut();
-    // }.bind(this), 200);
-
-    this.currentUrl = url;
-  }
-
-}
-/* unused harmony export default */
-
-
-customElements.define('app-image-viewer', AppImageViewer);
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  img[rights] {\n    height: 22px;\n    width: 22px;\n    vertical-align: sub;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer-static></app-image-viewer-static>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[name]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <a href$=\"[[rights.link]]\" target=\"_block\">\n          <img src$=\"[[rights.icon]]\" rights />\n          <span>[[rights.label]]</span>\n        </a>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <div class=\"cite-container\">\n        <div class=\"label\">MLA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"mla\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">APA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"apa\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">Chicago</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"chicago\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      \n    </div>\n  </app-record-metadata-layout>\n</div>";
 
 /***/ }),
 /* 330 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  #viewer { \n    height: 450px; \n    background-color: black;\n    position: relative;\n  }\n  paper-spinner-lite {\n    --paper-spinner-color: var(--default-secondary-color);\n  }\n  .spinner-layout {\n    position: absolute;\n    top : 0;\n    right : 0;\n    left : 0;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n</style>\n\n<div id=\"viewer\">\n  <div class=\"spinner-layout\" hidden$=\"[[!loading]]\">\n    <paper-spinner-lite active$=\"[[loading]]\"></paper-spinner-lite>\n  </div>\n</div>\n";
+module.exports = {"http://rightsstatements.org/vocab/InC/1.0/":{"text":"IN COPYRIGHT","icon":"InC"},"http://rightsstatements.org/vocab/InC-OW-EU/1.0/":{"text":"IN COPYRIGHT - EU ORPHAN WORK","icon":"InC"},"http://rightsstatements.org/vocab/InC-EDU/1.0/":{"text":"IN COPYRIGHT - EDUCATIONAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-NC/1.0/":{"text":"IN COPYRIGHT - NON-COMMERCIAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-RUU/1.0/":{"text":"IN COPYRIGHT - RIGHTS-HOLDER(S) UNLOCATABLE OR UNIDENTIFIABLE","icon":"InC"},"http://rightsstatements.org/vocab/NoC-NC/1.0/":{"text":"NO COPYRIGHT - NON-COMMERCIAL USE ONLY","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-OKLR/1.0/":{"text":"NO COPYRIGHT - OTHER KNOWN LEGAL RESTRICTIONS","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-US/1.0/":{"text":"NO COPYRIGHT - UNITED STATES","icon":"NoC"},"http://rightsstatements.org/vocab/CNE/1.0/":{"text":"COPYRIGHT NOT EVALUATED","icon":"Other"},"http://rightsstatements.org/vocab/UND/1.0/":{"text":"COPYRIGHT UNDETERMINED","icon":"Other"},"http://rightsstatements.org/vocab/NKC/1.0/":{"text":"NO KNOWN COPYRIGHT","icon":"Other"}}
 
 /***/ }),
 /* 331 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_color_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_spinner_behavior_js__ = __webpack_require__(332);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__ = __webpack_require__(333);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html__ = __webpack_require__(334);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_image_viewer_nav__ = __webpack_require__(335);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_image_viewer_lightbox__ = __webpack_require__(339);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__);
 
 
 
 
 
-const $_documentContainer = document.createElement('div');
-$_documentContainer.setAttribute('style', 'display: none;');
 
-$_documentContainer.innerHTML = `<dom-module id="paper-spinner-lite">
-  <template strip-whitespace="">
-    <style include="paper-spinner-styles"></style>
 
-    <div id="spinnerContainer" class-name="[[__computeContainerClasses(active, __coolingDown)]]" on-animationend="__reset" on-webkit-animation-end="__reset">
-      <div class="spinner-layer">
-        <div class="circle-clipper left"></div>
-        <div class="circle-clipper right"></div>
-      </div>
-    </div>
-  </template>
 
+
+
+class AppImageViewerStatic extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
+  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface___default.a) {
   
-</dom-module>`;
+    static get template() {
+    return __WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html___default.a;
+  }
 
-document.head.appendChild($_documentContainer);
-Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Polymer */])({
-  is: 'paper-spinner-lite',
+  static get properties() {
+    return {
+      record : {
+        type : Object,
+        value : () => {}
+      },
+      media : {
+        type : Object,
+        value : () => {}
+      },
+      loading: {
+        type : Boolean,
+        value : false
+      },
+      height : {
+        type : Number,
+        value : 600
+      }
+    }
+  }
 
-  behaviors: [
-    __WEBPACK_IMPORTED_MODULE_2__paper_spinner_behavior_js__["a" /* PaperSpinnerBehavior */]
-  ]
-});
+  constructor() {
+    super();
+    this.active = true;
+  }
 
+  /**
+   * @method _onSelectedRecordUpdate
+   * @description from AppStateInterface, called when a record is selected
+   * 
+   * @param {Object} record selected record
+   */
+  _onSelectedRecordUpdate(record) {
+    
+  }
+
+  /**
+   * @method _onSelectedRecordMediaUpdate
+   * @description from AppStateInterface, called when a records media is selected
+   * 
+   * @param {Object} media 
+   */
+  _onSelectedRecordMediaUpdate(media) {
+    this.media = media;
+    this._renderImg();
+  }
+
+  _renderImg() {
+    let url = this._getImgUrl(this.media.id, '', this.height);
+    let r = 600 / this.media.height;
+    let w = this.media.width * r;
+    let eleWidth = this.offsetWidth-20;
+    let startHeight = Math.ceil(eleWidth > w ? this.height : ((eleWidth/w)*this.height));
+
+    let img = new Image();
+    this.loading = true;
+    
+    this.$.loading.style.height = startHeight+'px';
+    
+    img.onload = () => {
+      this.loading = false;
+      this.$.img.style.height = 'auto';
+    };
+    img.src = url;
+
+    this.$.img.style.maxWidth = w + 'px';
+    this.$.img.src = url; 
+  }
+
+  /**
+   * @method _onZoomIn
+   * @description bound to zoom event from viewer nav. 
+   * 
+   * @param {Object} e custom HTML event
+   */
+  _onZoomIn(e) {
+    this.$.lightbox.show();
+  }
+}
+/* unused harmony export default */
+
+
+customElements.define('app-image-viewer-static', AppImageViewerStatic);
 
 /***/ }),
 /* 332 */
@@ -65832,6 +65998,656 @@ document.head.appendChild($_documentContainer);
 
 /***/ }),
 /* 334 */
+/***/ (function(module, exports) {
+
+module.exports = "<style>\n  :host {\n    display: block;\n    background: black;\n    padding: 20px 10px;\n    position: relative;\n    box-sizing: border-box;\n  }\n\n  paper-spinner-lite {\n    --paper-spinner-color: var(--default-secondary-color);\n  }\n\n  #loading {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  img {\n    width: 100%;\n  }\n\n  app-image-viewer-nav {\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    right: 0;\n  }\n\n  .layout {\n    text-align: center;\n  }\n\n  [hidden] {\n    display: none !important;\n  }\n</style>\n\n<div id=\"loading\" hidden$=\"[[!loading]]\">\n  <paper-spinner-lite active$=\"[[loading]]\"></paper-spinner-lite>\n</div>\n\n<div class=\"layout\" hidden$=\"[[loading]]\" style=\"line-height: 0\">\n  <img id=\"img\" />\n</div>\n\n\n<app-image-viewer-lightbox id=\"lightbox\"></app-image-viewer-lightbox>\n<app-image-viewer-nav on-zoom-in=\"_onZoomIn\"></app-image-viewer-nav>";
+
+/***/ }),
+/* 335 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_nav_html__ = __webpack_require__(336);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_nav_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_viewer_nav_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_app_share_btn__ = __webpack_require__(337);
+
+
+
+
+
+
+
+class AppImageViewerNav extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
+  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface___default.a) {
+
+  static get template() {
+    return __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_nav_html___default.a;
+  }
+
+  static get properties() {
+    return {
+      mediaList : {
+        type : Array,
+        value : () => []
+      },
+      // thumbnail width w/ border and margin
+      totalThumbnailWidth : {
+        type : Number,
+        value : 64,
+      },
+      iconWidth : {
+        type : Number,
+        value : 40
+      },
+      thumbnails : {
+        type : Array,
+        value : () => []
+      },
+      thumbnailsPerFrame : {
+        type : Number,
+        value : 8
+      },
+      leftMostThumbnail : {
+        type : Number,
+        value : 0
+      },
+      breakControls : {
+        type : Boolean,
+        value : false
+      },
+      showNavLeft : {
+        type : Boolean,
+        value : false
+      },
+      showNavRight : {
+        type : Boolean,
+        value : false
+      },
+      isLightbox : {
+        type : Boolean,
+        value : false
+      },
+      singleImage : {
+        type : Boolean,
+        value : true
+      }
+    }
+  }
+
+  constructor() {
+    super();
+    this.active = true;
+    window.addEventListener('resize', () => this._resize());
+    window.addEventListener('touchend', (e) => this._onTouchEnd(e));
+    window.addEventListener('touchcancel', (e) => this._onTouchEnd(e));
+    window.addEventListener('touchmove', (e) => this._onTouchMove(e));
+    this.addEventListener('touchstart', (e) => this._onTouchStart(e));
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._resize();
+  }
+
+  /**
+   * @method _onTouchEnd
+   * @description bound to window touch end/cancel events. if we are
+   * performing a touch (swipe) action, see if we have reached the 
+   * threshold for swipe and if so, page left/right
+   *  
+   * @param {Object} e HTML touch event
+   */
+  _onTouchEnd(e) {
+    if( !this.touchAction ) return;
+    this.touchAction = false;
+
+    let diff = this.touchStartX - this.touchCurrentX;
+    let sdiff = Math.abs(diff);
+
+    if( sdiff > this.totalThumbnailWidth / 2 ) {
+      if( diff < 0 ) this._pageLeft();
+      else this._pageRight();
+    }
+  }
+
+  /**
+   * @method _onTouchMove
+   * @description bound to windows touch move event. if we are performing 
+   * a touch (swipe) action, need to keep track of current x offset
+   * 
+   * @param {Object} e HTML touch event
+   */
+  _onTouchMove(e) {
+    if( !this.touchAction ) return;
+    this.touchCurrentX = e.touches[0].clientX;
+  }
+
+  /**
+   * @method _onTouchStart
+   * @description bound to this elements touchstart event.
+   * start performing a touch (swipe) action
+   * 
+   * @param {Object} e HTML touch event
+   */
+  _onTouchStart(e) {
+    this.touchAction = true;
+    this.touchStartX = e.touches[0].clientX;
+  }
+
+  /**
+   * @method _resize
+   * @description update thumbnail preview on resize
+   * 
+   */
+  _resize() {
+    let w = this.offsetWidth;
+
+    // grrrr
+    if( w === 0 ) {
+      setTimeout(() => this._resize(), 200);
+      return;
+    }
+
+    w -= 16; // padding
+
+    this._setNavBreak(w);
+    this.showNavLeft = (this.leftMostThumbnail !== 0);
+
+    let iconsWidth;
+    if( this.breakControls ) {
+      iconsWidth = this.iconWidth * 2;
+    } else {
+      iconsWidth = this.iconWidth * 4;
+      if( this.isLightbox ) iconsWidth += this.iconWidth * 2;
+    }
+
+    let availableThumbSpace = Math.min(w - iconsWidth, 512);
+    this.thumbnailsPerFrame = Math.max(Math.floor(availableThumbSpace / this.totalThumbnailWidth), 1);
+
+    this.showNavRight = !this._showingLastThumbFrame();
+    this._updateThumbnailContainerPos();
+  }
+
+  _getTotalIconWidth() {
+    let totalIconWidth = this.iconWidth * 4; // nav icons and default icons
+    if( this.isLightbox ) totalIconWidth += this.iconWidth * 2;
+    return ;
+  }
+
+  _setNavBreak(width) {
+    let totalIconWidth = this.iconWidth * 4; // nav icons and default icons
+    if( this.isLightbox ) totalIconWidth += this.iconWidth * 2;
+
+    if( totalIconWidth + (this.totalThumbnailWidth * 4) > width ) {
+      this.breakControls = true;
+    } else {
+      this.breakControls = false;
+    }
+  }
+
+  _pageLeft() {
+    this.leftMostThumbnail = this.leftMostThumbnail - this.thumbnailsPerFrame;
+    if( this.leftMostThumbnail < 0 ) this.leftMostThumbnail = 0;
+    this._resize();
+  }
+
+  _pageRight() {
+    if( this._showingLastThumbFrame() ) return;
+    this.leftMostThumbnail = this.leftMostThumbnail + this.thumbnailsPerFrame;
+    this._resize();
+  }
+
+  _showingLastThumbFrame() {
+    if( this.leftMostThumbnail + this.thumbnailsPerFrame > this.thumbnails.length-1 ) {
+      return true;
+    }
+    return false;
+  }
+
+  _updateThumbnailContainerPos() {
+    // that +1 is a hack, what am I missing !?
+    this.$.thumbnailContainer.style.marginLeft = (-1 * this.leftMostThumbnail * (this.totalThumbnailWidth + 1)) + 'px';
+  }
+
+  /**
+   * @method _onSelectedRecordUpdate
+   * @description from AppStateInterface, called when a record is selected
+   * 
+   * @param {Object} record selected record
+   */
+  _onSelectedRecordUpdate(record) {
+    this.mediaList = this._getImageMediaList(record);
+
+    this.thumbnails = this.mediaList.map(record => {
+
+      let thumbnail = {
+        id : record.id,
+        position : record.position,
+        selected : false,
+        src : ''
+      }
+
+      if( record.width > record.height ) {
+        thumbnail.src = this._getImgUrl(record.id, '', 50);
+      }
+      thumbnail.src = this._getImgUrl(record.id, 50, '');
+
+      return thumbnail;
+    });
+
+    this.singleImage = (this.thumbnails.length > 1) ? false : true;
+    if( this.singleImage ) this.classList.add('single');
+    else this.classList.remove('single');
+
+    this._resize();
+  }
+
+  /**
+   * @method _onSelectedRecordMediaUpdate
+   * @description from AppStateInterface, called when a records media is selected
+   * 
+   * @param {Object} media 
+   */
+  _onSelectedRecordMediaUpdate(media) {
+    this.media = media;
+    
+    this.thumbnails.forEach((thumbnail, index) => {
+      this.set(`thumbnails.${index}.selected`, (media.id === thumbnail.id));
+    });
+  }
+
+  /**
+   * @method _onThumbnailClicked
+   * @description bound to thumbnail click event.  select a media object
+   * 
+   * @param {Object} e HTML click event
+   */
+  _onThumbnailClicked(e) {
+    let id = e.currentTarget.getAttribute('media-id');
+    let media = this.mediaList.find(item => item.id === id);
+    this._setSelectedRecordMedia(media);
+  }
+
+  /**
+   * @method _onZoomInClicked
+   * @description bound to zoom icon click event.  emit zoom event
+   * 
+   * @param {Object} e HTML click event
+   */
+  _onZoomInClicked(e) {
+    this.dispatchEvent(new CustomEvent('zoom-in'));
+  }
+
+  /**
+   * @method _onZoomOutClicked
+   * @description bound to zoom icon click event.  emit zoom event
+   * 
+   * @param {Object} e HTML click event
+   */
+  _onZoomOutClicked(e) {
+    this.dispatchEvent(new CustomEvent('zoom-out'));
+  }
+
+  /**
+   * @method _onCloseClicked
+   * @description bound to close icon click event.  emit close event
+   * 
+   * @param {Object} e HTML click event
+   */
+  _onCloseClicked(e) {
+    this.dispatchEvent(new CustomEvent('close'));
+  }
+
+}
+/* unused harmony export default */
+
+
+customElements.define('app-image-viewer-nav', AppImageViewerNav);
+
+/***/ }),
+/* 336 */
+/***/ (function(module, exports) {
+
+module.exports = "<style>\n  :host {\n    display: block;\n    background-color: rgb(0, 38, 85, 0.9);\n    padding: 8px;\n  }\n\n  :host(.single) {\n    background-color: transparent;\n  }\n\n  :host(.single) paper-icon-button {\n    background-color: var(--default-primary-color);\n  }\n  :host(.single) app-share-btn {\n    background-color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n  }\n\n  #thumbnails {\n    overflow: hidden;\n    /* (50px width + 10px margin + 4px border) * 8 thumbnails */\n    max-width: 512px;\n  }\n\n  #thumbnails > div {\n    white-space: nowrap;\n    margin-left: 0;\n    will-change: margin-left;\n    transition: margin-left 250ms ease-out;\n  }\n\n  .thumbnail {\n    display: inline-block;\n    width: 50px;\n    height: 50px;\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    margin: 0 5px;\n    border: 2px solid transparent;\n    cursor: pointer;\n  }\n\n  .thumbnail[selected] {\n    border: 2px solid var(--default-secondary-color);\n  }\n\n  paper-icon-button {\n    color: var(--default-secondary-color);\n    min-width: 40px;\n  }\n\n  paper-icon-button[disabled] {\n    color: var(--gray-text);\n    min-width: 40px;\n  }\n</style>\n\n<div class=\"layout\">\n  <div id=\"navLeft\" hidden$=\"[[singleImage]]\">\n    <paper-icon-button icon=\"chevron-left\" disabled$=\"[[!showNavLeft]]\" on-click=\"_pageLeft\"></paper-icon-button>\n  </div>\n  <div id=\"thumbnails\" hidden$=\"[[singleImage]]\">\n    <div id=\"thumbnailContainer\">\n      <template is=\"dom-repeat\" items=\"[[thumbnails]]\">\n        <button \n          class=\"thumbnail\" \n          selected$=\"[[item.selected]]\" \n          style=\"background-image:url([[item.src]])\"\n          media-id$=\"[[item.id]]\"\n          alt$=\"Item #[[item.position]]\"\n          on-click=\"_onThumbnailClicked\">\n        </button>\n      </template>\n\n    </div>\n  </div>\n  <div id=\"navRight\" hidden$=\"[[singleImage]]\">\n    <paper-icon-button icon=\"chevron-right\" disabled$=\"[[!showNavRight]]\" on-click=\"_pageRight\"></paper-icon-button>\n  </div>\n\n  <div style=\"flex:1\"></div>\n  \n  <div hidden$=\"[[breakControls]]\" style=\"white-space: nowrap\">\n    <paper-icon-button icon=\"zoom-out\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomOutClicked\"></paper-icon-button>\n    <paper-icon-button icon=\"zoom-in\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n    <app-share-btn></app-share-btn>\n    <paper-icon-button icon=\"zoom-in\" hidden$=\"[[isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n    <paper-icon-button icon=\"close\" hidden$=\"[[!isLightbox]]\" on-click=\"_onCloseClicked\"></paper-icon-button>\n  </div>\n</div>\n\n<div hidden$=\"[[!breakControls]]\" style=\"text-align: right\">\n  <paper-icon-button icon=\"zoom-out\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomOutClicked\"></paper-icon-button>\n  <paper-icon-button icon=\"zoom-in\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n  <app-share-btn></app-share-btn>\n  <paper-icon-button icon=\"zoom-in\" hidden$=\"[[isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n  <paper-icon-button icon=\"close\" hidden$=\"[[!isLightbox]]\" on-click=\"_onCloseClicked\"></paper-icon-button>\n</div>";
+
+/***/ }),
+/* 337 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_share_btn_html__ = __webpack_require__(338);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_share_btn_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_share_btn_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__);
+
+
+
+
+
+const BASE_SHARE_LINKS = {
+  facebook : 'https://www.facebook.com/sharer/sharer.php?u=',
+  google : 'https://plus.google.com/share?url=',
+  twitter : 'https://twitter.com/home?status=',
+  // pinterest can also add ?media and ?description
+  pinterest : 'https://pinterest.com/pin/create/button/?url='
+}
+
+class AppShareBtn extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
+  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface___default.a) {
+
+  static get template() {
+    return __WEBPACK_IMPORTED_MODULE_1__app_share_btn_html___default.a;
+  }
+
+  static get properties() {
+    return {
+      visible : {
+        type : Boolean,
+        value : false
+      }
+    }
+  }
+
+  ready() {
+    super.ready();
+
+    // handle outside clicks
+    window.addEventListener('click', () => {
+      if( this.visible ) this.hide();
+    });
+
+    this.$.popup.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+  }
+
+  _onAppStateUpdate() {
+    this.$.link.value = window.location.href;
+  }
+
+  /**
+   * @method hide
+   * @description hide popup
+   */
+  hide() {
+    this.visible = false;
+    this.$.popup.style.display = 'none';
+  }
+
+  /**
+   * @method _onBtnClicked
+   * @description bound to main icon, toggles popup when clicked
+   * 
+   * @param {Object} e HTML click event
+   */
+  _onBtnClicked(e) {
+    this.visible = !this.visible;
+    this.$.popup.style.display = this.visible ? 'block' : 'none';
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  /**
+   * @method _onSocialIconClick
+   * @description bound to social icon buttons.  Called when one os clicked
+   * 
+   * @param {Object} e HTML click event 
+   */
+  _onSocialIconClick(e) {
+    let id = e.currentTarget.id;
+    let url = BASE_SHARE_LINKS[id]+encodeURIComponent(window.location.href);
+    window.open(url, '_blank', 'height=400,width=500');
+  }
+
+  /**
+   * @method _copyLink
+   * @description bound to click event on button.  Copy text to clipboard
+   * show UI interaction.
+   */
+  _copyLink() {
+    this.$.link.select();
+    document.execCommand("Copy");
+
+    this.$.copyIcon.icon = 'check';
+    this.$.copyButton.setAttribute('active', 'active');
+
+    setTimeout(() => {
+      this.$.copyIcon.icon = 'content-copy';
+      this.$.copyButton.removeAttribute('active', 'active');
+    }, 3000);
+  }
+
+}
+/* unused harmony export default */
+
+
+customElements.define('app-share-btn', AppShareBtn);
+
+/***/ }),
+/* 338 */
+/***/ (function(module, exports) {
+
+module.exports = "<style>\n  :host {\n    display: inline-block;\n    position: relative;\n  }\n\n  #popup {\n    display: none;\n    background: white;\n    padding: 10px;\n    position: absolute;\n    bottom: 70px;\n    right: -20px;\n  }\n\n  .layout {\n    display: flex;\n    margin-bottom: 5px;\n  }\n\n  input {\n    font-size: var(--font-size);\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  #link {\n    width: 100%;\n    border-top: 1px solid var(--medium-background-color);\n    border-left: 1px solid var(--medium-background-color);\n    border-bottom: 1px solid var(--medium-background-color);\n    box-sizing: border-box;\n  }\n\n  .social {\n    margin: 8px;\n    display: inline-block;\n    cursor: pointer;\n    height: 40px;\n    width: 40px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  #main {\n    color: var(--default-secondary-color);\n  }\n\n  .arrow-down {\n    position: absolute;\n    width: 0; \n    height: 0; \n    border-left: 20px solid transparent;\n    border-right: 20px solid transparent;\n    border-top: 20px solid white;\n    bottom: -20px;\n    right: 20px;\n  }\n</style>\n\n\n<div id=\"popup\">\n  <div class=\"layout\">\n    <img id=\"facebook\" src=\"/images/social-icons/icon-facebook.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n    <img id=\"twitter\" src=\"/images/social-icons/icon-twitter.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n    <img id=\"google\" src=\"/images/social-icons/icon-googleplus.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n    <img id=\"pinterest\" src=\"/images/social-icons/icon-pinterest.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n  </div>\n  <div>\n    <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n      <div style=\"flex:1\">\n        <input id=\"link\" type=\"text\" />\n      </div>\n      <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n        <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n      </button>\n    </div>\n  </div>\n  <div class=\"arrow-down\"></div>\n</div>\n\n<paper-icon-button id=\"main\" icon=\"social:share\" on-click=\"_onBtnClicked\"></paper-icon-button>\n\n";
+
+/***/ }),
+/* 339 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html__ = __webpack_require__(340);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet__ = __webpack_require__(341);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leaflet__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__ = __webpack_require__(342);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__);
+
+
+
+
+
+
+
+
+
+
+class AppImageViewer extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
+  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface___default.a) {
+
+  static get template() {
+    return `<style>${__WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css___default.a}</style>
+            ${__WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html___default.a}`;
+  }
+
+  properties() {
+    return {
+      bounds : {
+        type : Array,
+        value : null
+      },
+
+      maxImageSize : {
+        type : Number,
+        value : 2048
+      },
+
+      media : {
+        type : Object,
+        value : () => {}
+      },
+
+      visible : {
+        type : Boolean,
+        value : false
+      },
+
+      loading : {
+        type : Boolean,
+        value : false
+      }
+    }
+  }
+
+  constructor() {
+    super();
+    this.active = true;
+  }
+
+  ready() {
+    super.ready();
+    this.parentNode.removeChild(this);
+    document.body.appendChild(this);
+  }
+
+  /**
+   * @method _onSelectedRecordMediaUpdate
+   * @description from AppStateInterface, called when a records media is selected
+   * 
+   * @param {Object} media 
+   */
+  _onSelectedRecordMediaUpdate(media) {
+    this.media = media;
+    if( this.visible ) this.render();
+  }
+
+  /**
+   * @method show
+   */
+  async show() {
+    this.style.display = 'block';
+    this.render();
+    document.body.style.overflow = 'hidden';
+    this.visible = true;
+  }
+
+  /**
+   * @method hide
+   */
+  async hide() {
+    this.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    this.visible = false;
+  }
+
+  /**
+   * @method _loadImage
+   * @description preload image and set bounds to image dimensions
+   * 
+   * @param {String} url url of image to load
+   * 
+   * @returns {Promise} resolves when image is loaded and bounds array has been set
+   */
+  _loadImage(url) {
+    this.loading = true;
+
+    return new Promise((resolve, reject) => {
+      var img = new Image();
+      img.onload = () => {
+        let res = [img.naturalHeight, img.naturalWidth];
+        this.bounds = [[0,0], res];
+        this.loading = false;
+        resolve();
+      };
+      img.src = url;
+    });
+  }
+
+  /**
+   * @method render
+   * @description render leaflet canvas based on fedora id
+   * 
+   */
+  async render() {
+    if( this.renderedMedia === this.media ) return;
+    this.renderedMedia = this.media;
+
+    let height = this.media.height;
+    let width = this.media.width;
+    if( this.media.height > this.media.width ) {
+      if( this.media.height > this.maxImageSize ) {
+        let scale = this.maxImageSize / this.media.height;
+        height = Math.floor(this.media.height * scale);
+        width = '';
+      }
+    } else {
+      if( this.media.width > this.maxImageSize ) {
+        let scale = this.maxImageSize / this.media.width;
+        width = Math.floor(this.media.width * scale);
+        height = '';
+      }
+    }
+
+    let url = this._getImgUrl(this.media.id, width, height);
+
+    if( this.viewer ) this.viewer.remove();
+
+    await this._loadImage(url);
+
+    this.viewer = L.map(this.$.viewer, {
+      crs: L.CRS.Simple,
+      minZoom: -4,
+      // dragging :  !L.Browser.mobile,
+      // scrollWheelZoom : false,
+      // touchZoom : true,
+      zoomControl : false
+    });
+
+    L.imageOverlay(url, this.bounds).addTo(this.viewer);
+    this.viewer.fitBounds(this.bounds);
+
+    this.shadowRoot.querySelector('.leaflet-control-attribution').style.display = 'none';
+  }
+
+  /**
+   * @method _onCloseClicked
+   * @description bound to view nav close event
+   */
+  _onCloseClicked() {
+    this.hide();
+  }
+
+  /**
+   * @method _onZoomInClicked
+   * @description bound to view nav zoom-in event
+   */
+  _onZoomInClicked() {
+    this.viewer.zoomIn();
+  }
+
+  /**
+   * @method _onZoomOutClicked
+   * @description bound to view nav zoom-out event
+   */
+  _onZoomOutClicked() {
+    this.viewer.zoomOut();
+  }
+
+}
+/* unused harmony export default */
+
+
+customElements.define('app-image-viewer-lightbox', AppImageViewer);
+
+/***/ }),
+/* 340 */
+/***/ (function(module, exports) {
+
+module.exports = "<style include=\"shared-styles\">\n\n  :host {\n    display: none;\n    position: absolute;\n    z-index: 1000;\n    top : 0;\n    right : 0;\n    bottom : 0;\n    left : 0;\n    background-color: black;\n  }\n\n  #viewer { \n    top : 0;\n    right : 0;\n    bottom : 0;\n    left : 0;\n    position: absolute;\n    background-color: black;\n  }\n\n  paper-spinner-lite {\n    --paper-spinner-color: var(--default-secondary-color);\n  }\n  \n  .spinner-layout {\n    position: absolute;\n    top : 0;\n    right : 0;\n    left : 0;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  app-image-viewer-nav {\n    z-index: 2000;\n    position: absolute;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n</style>\n\n<div id=\"viewer\">\n  <div class=\"spinner-layout\" hidden$=\"[[!loading]]\">\n    <paper-spinner-lite active$=\"[[loading]]\"></paper-spinner-lite>\n  </div>\n</div>\n\n<app-image-viewer-nav \n  is-lightbox\n  on-zoom-in=\"_onZoomInClicked\"\n  on-zoom-out=\"_onZoomOutClicked\"\n  on-close=\"_onCloseClicked\">\n</app-image-viewer-nav>";
+
+/***/ }),
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -79446,11 +80262,11 @@ exports.map = createMap;
 
 
 /***/ }),
-/* 335 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-        var result = __webpack_require__(336);
+        var result = __webpack_require__(343);
 
         if (typeof result === "string") {
             module.exports = result;
@@ -79460,22 +80276,22 @@ exports.map = createMap;
     
 
 /***/ }),
-/* 336 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var escape = __webpack_require__(337);
-exports = module.exports = __webpack_require__(338)(false);
+var escape = __webpack_require__(344);
+exports = module.exports = __webpack_require__(345)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/* required styles */\r\n\r\n.leaflet-pane,\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-tile-container,\r\n.leaflet-pane > svg,\r\n.leaflet-pane > canvas,\r\n.leaflet-zoom-box,\r\n.leaflet-image-layer,\r\n.leaflet-layer {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\ttop: 0;\r\n\t}\r\n.leaflet-container {\r\n\toverflow: hidden;\r\n\t}\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\t  -webkit-user-drag: none;\r\n\t}\r\n/* Safari renders non-retina tile on retina better with this, but Chrome is worse */\r\n.leaflet-safari .leaflet-tile {\r\n\timage-rendering: -webkit-optimize-contrast;\r\n\t}\r\n/* hack that prevents hw layers \"stretching\" when loading new tiles */\r\n.leaflet-safari .leaflet-tile-container {\r\n\twidth: 1600px;\r\n\theight: 1600px;\r\n\t-webkit-transform-origin: 0 0;\r\n\t}\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\tdisplay: block;\r\n\t}\r\n/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */\r\n/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */\r\n.leaflet-container .leaflet-overlay-pane svg,\r\n.leaflet-container .leaflet-marker-pane img,\r\n.leaflet-container .leaflet-shadow-pane img,\r\n.leaflet-container .leaflet-tile-pane img,\r\n.leaflet-container img.leaflet-image-layer {\r\n\tmax-width: none !important;\r\n\t}\r\n\r\n.leaflet-container.leaflet-touch-zoom {\r\n\t-ms-touch-action: pan-x pan-y;\r\n\ttouch-action: pan-x pan-y;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag {\r\n\t-ms-touch-action: pinch-zoom;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {\r\n\t-ms-touch-action: none;\r\n\ttouch-action: none;\r\n}\r\n.leaflet-container {\r\n\t-webkit-tap-highlight-color: transparent;\r\n}\r\n.leaflet-container a {\r\n\t-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);\r\n}\r\n.leaflet-tile {\r\n\tfilter: inherit;\r\n\tvisibility: hidden;\r\n\t}\r\n.leaflet-tile-loaded {\r\n\tvisibility: inherit;\r\n\t}\r\n.leaflet-zoom-box {\r\n\twidth: 0;\r\n\theight: 0;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\tz-index: 800;\r\n\t}\r\n/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */\r\n.leaflet-overlay-pane svg {\r\n\t-moz-user-select: none;\r\n\t}\r\n\r\n.leaflet-pane         { z-index: 400; }\r\n\r\n.leaflet-tile-pane    { z-index: 200; }\r\n.leaflet-overlay-pane { z-index: 400; }\r\n.leaflet-shadow-pane  { z-index: 500; }\r\n.leaflet-marker-pane  { z-index: 600; }\r\n.leaflet-tooltip-pane   { z-index: 650; }\r\n.leaflet-popup-pane   { z-index: 700; }\r\n\r\n.leaflet-map-pane canvas { z-index: 100; }\r\n.leaflet-map-pane svg    { z-index: 200; }\r\n\r\n.leaflet-vml-shape {\r\n\twidth: 1px;\r\n\theight: 1px;\r\n\t}\r\n.lvml {\r\n\tbehavior: url(#default#VML);\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\t}\r\n\r\n\r\n/* control positioning */\r\n\r\n.leaflet-control {\r\n\tposition: relative;\r\n\tz-index: 800;\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-top,\r\n.leaflet-bottom {\r\n\tposition: absolute;\r\n\tz-index: 1000;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-top {\r\n\ttop: 0;\r\n\t}\r\n.leaflet-right {\r\n\tright: 0;\r\n\t}\r\n.leaflet-bottom {\r\n\tbottom: 0;\r\n\t}\r\n.leaflet-left {\r\n\tleft: 0;\r\n\t}\r\n.leaflet-control {\r\n\tfloat: left;\r\n\tclear: both;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tfloat: right;\r\n\t}\r\n.leaflet-top .leaflet-control {\r\n\tmargin-top: 10px;\r\n\t}\r\n.leaflet-bottom .leaflet-control {\r\n\tmargin-bottom: 10px;\r\n\t}\r\n.leaflet-left .leaflet-control {\r\n\tmargin-left: 10px;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tmargin-right: 10px;\r\n\t}\r\n\r\n\r\n/* zoom and fade animations */\r\n\r\n.leaflet-fade-anim .leaflet-tile {\r\n\twill-change: opacity;\r\n\t}\r\n.leaflet-fade-anim .leaflet-popup {\r\n\topacity: 0;\r\n\t-webkit-transition: opacity 0.2s linear;\r\n\t   -moz-transition: opacity 0.2s linear;\r\n\t     -o-transition: opacity 0.2s linear;\r\n\t        transition: opacity 0.2s linear;\r\n\t}\r\n.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {\r\n\topacity: 1;\r\n\t}\r\n.leaflet-zoom-animated {\r\n\t-webkit-transform-origin: 0 0;\r\n\t    -ms-transform-origin: 0 0;\r\n\t        transform-origin: 0 0;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\twill-change: transform;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\t-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t     -o-transition:      -o-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t}\r\n.leaflet-zoom-anim .leaflet-tile,\r\n.leaflet-pan-anim .leaflet-tile {\r\n\t-webkit-transition: none;\r\n\t   -moz-transition: none;\r\n\t     -o-transition: none;\r\n\t        transition: none;\r\n\t}\r\n\r\n.leaflet-zoom-anim .leaflet-zoom-hide {\r\n\tvisibility: hidden;\r\n\t}\r\n\r\n\r\n/* cursors */\r\n\r\n.leaflet-interactive {\r\n\tcursor: pointer;\r\n\t}\r\n.leaflet-grab {\r\n\tcursor: -webkit-grab;\r\n\tcursor:    -moz-grab;\r\n\t}\r\n.leaflet-crosshair,\r\n.leaflet-crosshair .leaflet-interactive {\r\n\tcursor: crosshair;\r\n\t}\r\n.leaflet-popup-pane,\r\n.leaflet-control {\r\n\tcursor: auto;\r\n\t}\r\n.leaflet-dragging .leaflet-grab,\r\n.leaflet-dragging .leaflet-grab .leaflet-interactive,\r\n.leaflet-dragging .leaflet-marker-draggable {\r\n\tcursor: move;\r\n\tcursor: -webkit-grabbing;\r\n\tcursor:    -moz-grabbing;\r\n\t}\r\n\r\n/* marker & overlays interactivity */\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-image-layer,\r\n.leaflet-pane > svg path,\r\n.leaflet-tile-container {\r\n\tpointer-events: none;\r\n\t}\r\n\r\n.leaflet-marker-icon.leaflet-interactive,\r\n.leaflet-image-layer.leaflet-interactive,\r\n.leaflet-pane > svg path.leaflet-interactive {\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n\r\n/* visual tweaks */\r\n\r\n.leaflet-container {\r\n\tbackground: #ddd;\r\n\toutline: 0;\r\n\t}\r\n.leaflet-container a {\r\n\tcolor: #0078A8;\r\n\t}\r\n.leaflet-container a.leaflet-active {\r\n\toutline: 2px solid orange;\r\n\t}\r\n.leaflet-zoom-box {\r\n\tborder: 2px dotted #38f;\r\n\tbackground: rgba(255,255,255,0.5);\r\n\t}\r\n\r\n\r\n/* general typography */\r\n.leaflet-container {\r\n\tfont: 12px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif;\r\n\t}\r\n\r\n\r\n/* general toolbar styles */\r\n\r\n.leaflet-bar {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.65);\r\n\tborder-radius: 4px;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #fff;\r\n\tborder-bottom: 1px solid #ccc;\r\n\twidth: 26px;\r\n\theight: 26px;\r\n\tline-height: 26px;\r\n\tdisplay: block;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tcolor: black;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-control-layers-toggle {\r\n\tbackground-position: 50% 50%;\r\n\tbackground-repeat: no-repeat;\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #f4f4f4;\r\n\t}\r\n.leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 4px;\r\n\tborder-top-right-radius: 4px;\r\n\t}\r\n.leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 4px;\r\n\tborder-bottom-right-radius: 4px;\r\n\tborder-bottom: none;\r\n\t}\r\n.leaflet-bar a.leaflet-disabled {\r\n\tcursor: default;\r\n\tbackground-color: #f4f4f4;\r\n\tcolor: #bbb;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-bar a {\r\n\twidth: 30px;\r\n\theight: 30px;\r\n\tline-height: 30px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 2px;\r\n\tborder-top-right-radius: 2px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 2px;\r\n\tborder-bottom-right-radius: 2px;\r\n\t}\r\n\r\n/* zoom control */\r\n\r\n.leaflet-control-zoom-in,\r\n.leaflet-control-zoom-out {\r\n\tfont: bold 18px 'Lucida Console', Monaco, monospace;\r\n\ttext-indent: 1px;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {\r\n\tfont-size: 22px;\r\n\t}\r\n\r\n\r\n/* layers control */\r\n\r\n.leaflet-control-layers {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.4);\r\n\tbackground: #fff;\r\n\tborder-radius: 5px;\r\n\t}\r\n.leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(339)) + ");\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\t}\r\n.leaflet-retina .leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(340)) + ");\r\n\tbackground-size: 26px 26px;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers-toggle {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\t}\r\n.leaflet-control-layers .leaflet-control-layers-list,\r\n.leaflet-control-layers-expanded .leaflet-control-layers-toggle {\r\n\tdisplay: none;\r\n\t}\r\n.leaflet-control-layers-expanded .leaflet-control-layers-list {\r\n\tdisplay: block;\r\n\tposition: relative;\r\n\t}\r\n.leaflet-control-layers-expanded {\r\n\tpadding: 6px 10px 6px 6px;\r\n\tcolor: #333;\r\n\tbackground: #fff;\r\n\t}\r\n.leaflet-control-layers-scrollbar {\r\n\toverflow-y: scroll;\r\n\toverflow-x: hidden;\r\n\tpadding-right: 5px;\r\n\t}\r\n.leaflet-control-layers-selector {\r\n\tmargin-top: 2px;\r\n\tposition: relative;\r\n\ttop: 1px;\r\n\t}\r\n.leaflet-control-layers label {\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-control-layers-separator {\r\n\theight: 0;\r\n\tborder-top: 1px solid #ddd;\r\n\tmargin: 5px -10px 5px -6px;\r\n\t}\r\n\r\n/* Default icon URLs */\r\n.leaflet-default-icon-path {\r\n\tbackground-image: url(" + escape(__webpack_require__(341)) + ");\r\n\t}\r\n\r\n\r\n/* attribution and scale controls */\r\n\r\n.leaflet-container .leaflet-control-attribution {\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.7);\r\n\tmargin: 0;\r\n\t}\r\n.leaflet-control-attribution,\r\n.leaflet-control-scale-line {\r\n\tpadding: 0 5px;\r\n\tcolor: #333;\r\n\t}\r\n.leaflet-control-attribution a {\r\n\ttext-decoration: none;\r\n\t}\r\n.leaflet-control-attribution a:hover {\r\n\ttext-decoration: underline;\r\n\t}\r\n.leaflet-container .leaflet-control-attribution,\r\n.leaflet-container .leaflet-control-scale {\r\n\tfont-size: 11px;\r\n\t}\r\n.leaflet-left .leaflet-control-scale {\r\n\tmargin-left: 5px;\r\n\t}\r\n.leaflet-bottom .leaflet-control-scale {\r\n\tmargin-bottom: 5px;\r\n\t}\r\n.leaflet-control-scale-line {\r\n\tborder: 2px solid #777;\r\n\tborder-top: none;\r\n\tline-height: 1.1;\r\n\tpadding: 2px 5px 1px;\r\n\tfont-size: 11px;\r\n\twhite-space: nowrap;\r\n\toverflow: hidden;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.5);\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child) {\r\n\tborder-top: 2px solid #777;\r\n\tborder-bottom: none;\r\n\tmargin-top: -2px;\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child):not(:last-child) {\r\n\tborder-bottom: 2px solid #777;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-attribution,\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tbox-shadow: none;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tborder: 2px solid rgba(0,0,0,0.2);\r\n\tbackground-clip: padding-box;\r\n\t}\r\n\r\n\r\n/* popup */\r\n\r\n.leaflet-popup {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tmargin-bottom: 20px;\r\n\t}\r\n.leaflet-popup-content-wrapper {\r\n\tpadding: 1px;\r\n\ttext-align: left;\r\n\tborder-radius: 12px;\r\n\t}\r\n.leaflet-popup-content {\r\n\tmargin: 13px 19px;\r\n\tline-height: 1.4;\r\n\t}\r\n.leaflet-popup-content p {\r\n\tmargin: 18px 0;\r\n\t}\r\n.leaflet-popup-tip-container {\r\n\twidth: 40px;\r\n\theight: 20px;\r\n\tposition: absolute;\r\n\tleft: 50%;\r\n\tmargin-left: -20px;\r\n\toverflow: hidden;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-popup-tip {\r\n\twidth: 17px;\r\n\theight: 17px;\r\n\tpadding: 1px;\r\n\r\n\tmargin: -10px auto 0;\r\n\r\n\t-webkit-transform: rotate(45deg);\r\n\t   -moz-transform: rotate(45deg);\r\n\t    -ms-transform: rotate(45deg);\r\n\t     -o-transform: rotate(45deg);\r\n\t        transform: rotate(45deg);\r\n\t}\r\n.leaflet-popup-content-wrapper,\r\n.leaflet-popup-tip {\r\n\tbackground: white;\r\n\tcolor: #333;\r\n\tbox-shadow: 0 3px 14px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\tpadding: 4px 4px 0 0;\r\n\tborder: none;\r\n\ttext-align: center;\r\n\twidth: 18px;\r\n\theight: 14px;\r\n\tfont: 16px/14px Tahoma, Verdana, sans-serif;\r\n\tcolor: #c3c3c3;\r\n\ttext-decoration: none;\r\n\tfont-weight: bold;\r\n\tbackground: transparent;\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button:hover {\r\n\tcolor: #999;\r\n\t}\r\n.leaflet-popup-scrolled {\r\n\toverflow: auto;\r\n\tborder-bottom: 1px solid #ddd;\r\n\tborder-top: 1px solid #ddd;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-popup-content-wrapper {\r\n\tzoom: 1;\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\twidth: 24px;\r\n\tmargin: 0 auto;\r\n\r\n\t-ms-filter: \"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)\";\r\n\tfilter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip-container {\r\n\tmargin-top: -1px;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-control-zoom,\r\n.leaflet-oldie .leaflet-control-layers,\r\n.leaflet-oldie .leaflet-popup-content-wrapper,\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\tborder: 1px solid #999;\r\n\t}\r\n\r\n\r\n/* div icon */\r\n\r\n.leaflet-div-icon {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #666;\r\n\t}\r\n\r\n\r\n/* Tooltip */\r\n/* Base styles for the element that has a tooltip */\r\n.leaflet-tooltip {\r\n\tposition: absolute;\r\n\tpadding: 6px;\r\n\tbackground-color: #fff;\r\n\tborder: 1px solid #fff;\r\n\tborder-radius: 3px;\r\n\tcolor: #222;\r\n\twhite-space: nowrap;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\tuser-select: none;\r\n\tpointer-events: none;\r\n\tbox-shadow: 0 1px 3px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-tooltip.leaflet-clickable {\r\n\tcursor: pointer;\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-tooltip-top:before,\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\tborder: 6px solid transparent;\r\n\tbackground: transparent;\r\n\tcontent: \"\";\r\n\t}\r\n\r\n/* Directions */\r\n\r\n.leaflet-tooltip-bottom {\r\n\tmargin-top: 6px;\r\n}\r\n.leaflet-tooltip-top {\r\n\tmargin-top: -6px;\r\n}\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-top:before {\r\n\tleft: 50%;\r\n\tmargin-left: -6px;\r\n\t}\r\n.leaflet-tooltip-top:before {\r\n\tbottom: 0;\r\n\tmargin-bottom: -12px;\r\n\tborder-top-color: #fff;\r\n\t}\r\n.leaflet-tooltip-bottom:before {\r\n\ttop: 0;\r\n\tmargin-top: -12px;\r\n\tmargin-left: -6px;\r\n\tborder-bottom-color: #fff;\r\n\t}\r\n.leaflet-tooltip-left {\r\n\tmargin-left: -6px;\r\n}\r\n.leaflet-tooltip-right {\r\n\tmargin-left: 6px;\r\n}\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\ttop: 50%;\r\n\tmargin-top: -6px;\r\n\t}\r\n.leaflet-tooltip-left:before {\r\n\tright: 0;\r\n\tmargin-right: -12px;\r\n\tborder-left-color: #fff;\r\n\t}\r\n.leaflet-tooltip-right:before {\r\n\tleft: 0;\r\n\tmargin-left: -12px;\r\n\tborder-right-color: #fff;\r\n\t}\r\n", ""]);
+exports.push([module.i, "/* required styles */\r\n\r\n.leaflet-pane,\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-tile-container,\r\n.leaflet-pane > svg,\r\n.leaflet-pane > canvas,\r\n.leaflet-zoom-box,\r\n.leaflet-image-layer,\r\n.leaflet-layer {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\ttop: 0;\r\n\t}\r\n.leaflet-container {\r\n\toverflow: hidden;\r\n\t}\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\t  -webkit-user-drag: none;\r\n\t}\r\n/* Safari renders non-retina tile on retina better with this, but Chrome is worse */\r\n.leaflet-safari .leaflet-tile {\r\n\timage-rendering: -webkit-optimize-contrast;\r\n\t}\r\n/* hack that prevents hw layers \"stretching\" when loading new tiles */\r\n.leaflet-safari .leaflet-tile-container {\r\n\twidth: 1600px;\r\n\theight: 1600px;\r\n\t-webkit-transform-origin: 0 0;\r\n\t}\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\tdisplay: block;\r\n\t}\r\n/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */\r\n/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */\r\n.leaflet-container .leaflet-overlay-pane svg,\r\n.leaflet-container .leaflet-marker-pane img,\r\n.leaflet-container .leaflet-shadow-pane img,\r\n.leaflet-container .leaflet-tile-pane img,\r\n.leaflet-container img.leaflet-image-layer {\r\n\tmax-width: none !important;\r\n\t}\r\n\r\n.leaflet-container.leaflet-touch-zoom {\r\n\t-ms-touch-action: pan-x pan-y;\r\n\ttouch-action: pan-x pan-y;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag {\r\n\t-ms-touch-action: pinch-zoom;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {\r\n\t-ms-touch-action: none;\r\n\ttouch-action: none;\r\n}\r\n.leaflet-container {\r\n\t-webkit-tap-highlight-color: transparent;\r\n}\r\n.leaflet-container a {\r\n\t-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);\r\n}\r\n.leaflet-tile {\r\n\tfilter: inherit;\r\n\tvisibility: hidden;\r\n\t}\r\n.leaflet-tile-loaded {\r\n\tvisibility: inherit;\r\n\t}\r\n.leaflet-zoom-box {\r\n\twidth: 0;\r\n\theight: 0;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\tz-index: 800;\r\n\t}\r\n/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */\r\n.leaflet-overlay-pane svg {\r\n\t-moz-user-select: none;\r\n\t}\r\n\r\n.leaflet-pane         { z-index: 400; }\r\n\r\n.leaflet-tile-pane    { z-index: 200; }\r\n.leaflet-overlay-pane { z-index: 400; }\r\n.leaflet-shadow-pane  { z-index: 500; }\r\n.leaflet-marker-pane  { z-index: 600; }\r\n.leaflet-tooltip-pane   { z-index: 650; }\r\n.leaflet-popup-pane   { z-index: 700; }\r\n\r\n.leaflet-map-pane canvas { z-index: 100; }\r\n.leaflet-map-pane svg    { z-index: 200; }\r\n\r\n.leaflet-vml-shape {\r\n\twidth: 1px;\r\n\theight: 1px;\r\n\t}\r\n.lvml {\r\n\tbehavior: url(#default#VML);\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\t}\r\n\r\n\r\n/* control positioning */\r\n\r\n.leaflet-control {\r\n\tposition: relative;\r\n\tz-index: 800;\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-top,\r\n.leaflet-bottom {\r\n\tposition: absolute;\r\n\tz-index: 1000;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-top {\r\n\ttop: 0;\r\n\t}\r\n.leaflet-right {\r\n\tright: 0;\r\n\t}\r\n.leaflet-bottom {\r\n\tbottom: 0;\r\n\t}\r\n.leaflet-left {\r\n\tleft: 0;\r\n\t}\r\n.leaflet-control {\r\n\tfloat: left;\r\n\tclear: both;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tfloat: right;\r\n\t}\r\n.leaflet-top .leaflet-control {\r\n\tmargin-top: 10px;\r\n\t}\r\n.leaflet-bottom .leaflet-control {\r\n\tmargin-bottom: 10px;\r\n\t}\r\n.leaflet-left .leaflet-control {\r\n\tmargin-left: 10px;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tmargin-right: 10px;\r\n\t}\r\n\r\n\r\n/* zoom and fade animations */\r\n\r\n.leaflet-fade-anim .leaflet-tile {\r\n\twill-change: opacity;\r\n\t}\r\n.leaflet-fade-anim .leaflet-popup {\r\n\topacity: 0;\r\n\t-webkit-transition: opacity 0.2s linear;\r\n\t   -moz-transition: opacity 0.2s linear;\r\n\t     -o-transition: opacity 0.2s linear;\r\n\t        transition: opacity 0.2s linear;\r\n\t}\r\n.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {\r\n\topacity: 1;\r\n\t}\r\n.leaflet-zoom-animated {\r\n\t-webkit-transform-origin: 0 0;\r\n\t    -ms-transform-origin: 0 0;\r\n\t        transform-origin: 0 0;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\twill-change: transform;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\t-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t     -o-transition:      -o-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t}\r\n.leaflet-zoom-anim .leaflet-tile,\r\n.leaflet-pan-anim .leaflet-tile {\r\n\t-webkit-transition: none;\r\n\t   -moz-transition: none;\r\n\t     -o-transition: none;\r\n\t        transition: none;\r\n\t}\r\n\r\n.leaflet-zoom-anim .leaflet-zoom-hide {\r\n\tvisibility: hidden;\r\n\t}\r\n\r\n\r\n/* cursors */\r\n\r\n.leaflet-interactive {\r\n\tcursor: pointer;\r\n\t}\r\n.leaflet-grab {\r\n\tcursor: -webkit-grab;\r\n\tcursor:    -moz-grab;\r\n\t}\r\n.leaflet-crosshair,\r\n.leaflet-crosshair .leaflet-interactive {\r\n\tcursor: crosshair;\r\n\t}\r\n.leaflet-popup-pane,\r\n.leaflet-control {\r\n\tcursor: auto;\r\n\t}\r\n.leaflet-dragging .leaflet-grab,\r\n.leaflet-dragging .leaflet-grab .leaflet-interactive,\r\n.leaflet-dragging .leaflet-marker-draggable {\r\n\tcursor: move;\r\n\tcursor: -webkit-grabbing;\r\n\tcursor:    -moz-grabbing;\r\n\t}\r\n\r\n/* marker & overlays interactivity */\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-image-layer,\r\n.leaflet-pane > svg path,\r\n.leaflet-tile-container {\r\n\tpointer-events: none;\r\n\t}\r\n\r\n.leaflet-marker-icon.leaflet-interactive,\r\n.leaflet-image-layer.leaflet-interactive,\r\n.leaflet-pane > svg path.leaflet-interactive {\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n\r\n/* visual tweaks */\r\n\r\n.leaflet-container {\r\n\tbackground: #ddd;\r\n\toutline: 0;\r\n\t}\r\n.leaflet-container a {\r\n\tcolor: #0078A8;\r\n\t}\r\n.leaflet-container a.leaflet-active {\r\n\toutline: 2px solid orange;\r\n\t}\r\n.leaflet-zoom-box {\r\n\tborder: 2px dotted #38f;\r\n\tbackground: rgba(255,255,255,0.5);\r\n\t}\r\n\r\n\r\n/* general typography */\r\n.leaflet-container {\r\n\tfont: 12px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif;\r\n\t}\r\n\r\n\r\n/* general toolbar styles */\r\n\r\n.leaflet-bar {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.65);\r\n\tborder-radius: 4px;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #fff;\r\n\tborder-bottom: 1px solid #ccc;\r\n\twidth: 26px;\r\n\theight: 26px;\r\n\tline-height: 26px;\r\n\tdisplay: block;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tcolor: black;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-control-layers-toggle {\r\n\tbackground-position: 50% 50%;\r\n\tbackground-repeat: no-repeat;\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #f4f4f4;\r\n\t}\r\n.leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 4px;\r\n\tborder-top-right-radius: 4px;\r\n\t}\r\n.leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 4px;\r\n\tborder-bottom-right-radius: 4px;\r\n\tborder-bottom: none;\r\n\t}\r\n.leaflet-bar a.leaflet-disabled {\r\n\tcursor: default;\r\n\tbackground-color: #f4f4f4;\r\n\tcolor: #bbb;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-bar a {\r\n\twidth: 30px;\r\n\theight: 30px;\r\n\tline-height: 30px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 2px;\r\n\tborder-top-right-radius: 2px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 2px;\r\n\tborder-bottom-right-radius: 2px;\r\n\t}\r\n\r\n/* zoom control */\r\n\r\n.leaflet-control-zoom-in,\r\n.leaflet-control-zoom-out {\r\n\tfont: bold 18px 'Lucida Console', Monaco, monospace;\r\n\ttext-indent: 1px;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {\r\n\tfont-size: 22px;\r\n\t}\r\n\r\n\r\n/* layers control */\r\n\r\n.leaflet-control-layers {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.4);\r\n\tbackground: #fff;\r\n\tborder-radius: 5px;\r\n\t}\r\n.leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(346)) + ");\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\t}\r\n.leaflet-retina .leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(347)) + ");\r\n\tbackground-size: 26px 26px;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers-toggle {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\t}\r\n.leaflet-control-layers .leaflet-control-layers-list,\r\n.leaflet-control-layers-expanded .leaflet-control-layers-toggle {\r\n\tdisplay: none;\r\n\t}\r\n.leaflet-control-layers-expanded .leaflet-control-layers-list {\r\n\tdisplay: block;\r\n\tposition: relative;\r\n\t}\r\n.leaflet-control-layers-expanded {\r\n\tpadding: 6px 10px 6px 6px;\r\n\tcolor: #333;\r\n\tbackground: #fff;\r\n\t}\r\n.leaflet-control-layers-scrollbar {\r\n\toverflow-y: scroll;\r\n\toverflow-x: hidden;\r\n\tpadding-right: 5px;\r\n\t}\r\n.leaflet-control-layers-selector {\r\n\tmargin-top: 2px;\r\n\tposition: relative;\r\n\ttop: 1px;\r\n\t}\r\n.leaflet-control-layers label {\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-control-layers-separator {\r\n\theight: 0;\r\n\tborder-top: 1px solid #ddd;\r\n\tmargin: 5px -10px 5px -6px;\r\n\t}\r\n\r\n/* Default icon URLs */\r\n.leaflet-default-icon-path {\r\n\tbackground-image: url(" + escape(__webpack_require__(348)) + ");\r\n\t}\r\n\r\n\r\n/* attribution and scale controls */\r\n\r\n.leaflet-container .leaflet-control-attribution {\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.7);\r\n\tmargin: 0;\r\n\t}\r\n.leaflet-control-attribution,\r\n.leaflet-control-scale-line {\r\n\tpadding: 0 5px;\r\n\tcolor: #333;\r\n\t}\r\n.leaflet-control-attribution a {\r\n\ttext-decoration: none;\r\n\t}\r\n.leaflet-control-attribution a:hover {\r\n\ttext-decoration: underline;\r\n\t}\r\n.leaflet-container .leaflet-control-attribution,\r\n.leaflet-container .leaflet-control-scale {\r\n\tfont-size: 11px;\r\n\t}\r\n.leaflet-left .leaflet-control-scale {\r\n\tmargin-left: 5px;\r\n\t}\r\n.leaflet-bottom .leaflet-control-scale {\r\n\tmargin-bottom: 5px;\r\n\t}\r\n.leaflet-control-scale-line {\r\n\tborder: 2px solid #777;\r\n\tborder-top: none;\r\n\tline-height: 1.1;\r\n\tpadding: 2px 5px 1px;\r\n\tfont-size: 11px;\r\n\twhite-space: nowrap;\r\n\toverflow: hidden;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.5);\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child) {\r\n\tborder-top: 2px solid #777;\r\n\tborder-bottom: none;\r\n\tmargin-top: -2px;\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child):not(:last-child) {\r\n\tborder-bottom: 2px solid #777;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-attribution,\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tbox-shadow: none;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tborder: 2px solid rgba(0,0,0,0.2);\r\n\tbackground-clip: padding-box;\r\n\t}\r\n\r\n\r\n/* popup */\r\n\r\n.leaflet-popup {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tmargin-bottom: 20px;\r\n\t}\r\n.leaflet-popup-content-wrapper {\r\n\tpadding: 1px;\r\n\ttext-align: left;\r\n\tborder-radius: 12px;\r\n\t}\r\n.leaflet-popup-content {\r\n\tmargin: 13px 19px;\r\n\tline-height: 1.4;\r\n\t}\r\n.leaflet-popup-content p {\r\n\tmargin: 18px 0;\r\n\t}\r\n.leaflet-popup-tip-container {\r\n\twidth: 40px;\r\n\theight: 20px;\r\n\tposition: absolute;\r\n\tleft: 50%;\r\n\tmargin-left: -20px;\r\n\toverflow: hidden;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-popup-tip {\r\n\twidth: 17px;\r\n\theight: 17px;\r\n\tpadding: 1px;\r\n\r\n\tmargin: -10px auto 0;\r\n\r\n\t-webkit-transform: rotate(45deg);\r\n\t   -moz-transform: rotate(45deg);\r\n\t    -ms-transform: rotate(45deg);\r\n\t     -o-transform: rotate(45deg);\r\n\t        transform: rotate(45deg);\r\n\t}\r\n.leaflet-popup-content-wrapper,\r\n.leaflet-popup-tip {\r\n\tbackground: white;\r\n\tcolor: #333;\r\n\tbox-shadow: 0 3px 14px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\tpadding: 4px 4px 0 0;\r\n\tborder: none;\r\n\ttext-align: center;\r\n\twidth: 18px;\r\n\theight: 14px;\r\n\tfont: 16px/14px Tahoma, Verdana, sans-serif;\r\n\tcolor: #c3c3c3;\r\n\ttext-decoration: none;\r\n\tfont-weight: bold;\r\n\tbackground: transparent;\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button:hover {\r\n\tcolor: #999;\r\n\t}\r\n.leaflet-popup-scrolled {\r\n\toverflow: auto;\r\n\tborder-bottom: 1px solid #ddd;\r\n\tborder-top: 1px solid #ddd;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-popup-content-wrapper {\r\n\tzoom: 1;\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\twidth: 24px;\r\n\tmargin: 0 auto;\r\n\r\n\t-ms-filter: \"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)\";\r\n\tfilter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip-container {\r\n\tmargin-top: -1px;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-control-zoom,\r\n.leaflet-oldie .leaflet-control-layers,\r\n.leaflet-oldie .leaflet-popup-content-wrapper,\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\tborder: 1px solid #999;\r\n\t}\r\n\r\n\r\n/* div icon */\r\n\r\n.leaflet-div-icon {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #666;\r\n\t}\r\n\r\n\r\n/* Tooltip */\r\n/* Base styles for the element that has a tooltip */\r\n.leaflet-tooltip {\r\n\tposition: absolute;\r\n\tpadding: 6px;\r\n\tbackground-color: #fff;\r\n\tborder: 1px solid #fff;\r\n\tborder-radius: 3px;\r\n\tcolor: #222;\r\n\twhite-space: nowrap;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\tuser-select: none;\r\n\tpointer-events: none;\r\n\tbox-shadow: 0 1px 3px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-tooltip.leaflet-clickable {\r\n\tcursor: pointer;\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-tooltip-top:before,\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\tborder: 6px solid transparent;\r\n\tbackground: transparent;\r\n\tcontent: \"\";\r\n\t}\r\n\r\n/* Directions */\r\n\r\n.leaflet-tooltip-bottom {\r\n\tmargin-top: 6px;\r\n}\r\n.leaflet-tooltip-top {\r\n\tmargin-top: -6px;\r\n}\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-top:before {\r\n\tleft: 50%;\r\n\tmargin-left: -6px;\r\n\t}\r\n.leaflet-tooltip-top:before {\r\n\tbottom: 0;\r\n\tmargin-bottom: -12px;\r\n\tborder-top-color: #fff;\r\n\t}\r\n.leaflet-tooltip-bottom:before {\r\n\ttop: 0;\r\n\tmargin-top: -12px;\r\n\tmargin-left: -6px;\r\n\tborder-bottom-color: #fff;\r\n\t}\r\n.leaflet-tooltip-left {\r\n\tmargin-left: -6px;\r\n}\r\n.leaflet-tooltip-right {\r\n\tmargin-left: 6px;\r\n}\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\ttop: 50%;\r\n\tmargin-top: -6px;\r\n\t}\r\n.leaflet-tooltip-left:before {\r\n\tright: 0;\r\n\tmargin-right: -12px;\r\n\tborder-left-color: #fff;\r\n\t}\r\n.leaflet-tooltip-right:before {\r\n\tleft: 0;\r\n\tmargin-left: -12px;\r\n\tborder-right-color: #fff;\r\n\t}\r\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 337 */
+/* 344 */
 /***/ (function(module, exports) {
 
 module.exports = function escape(url) {
@@ -79497,7 +80313,7 @@ module.exports = function escape(url) {
 
 
 /***/ }),
-/* 338 */
+/* 345 */
 /***/ (function(module, exports) {
 
 /*
@@ -79579,30 +80395,30 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 339 */
+/* 346 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAQAAAADQ4RFAAACf0lEQVR4AY1UM3gkARTePdvdoTxXKc+qTl3aU5U6b2Kbkz3Gtq3Zw6ziLGNPzrYx7946Tr6/ee/XeCQ4D3ykPtL5tHno4n0d/h3+xfuWHGLX81cn7r0iTNzjr7LrlxCqPtkbTQEHeqOrTy4Yyt3VCi/IOB0v7rVC7q45Q3Gr5K6jt+3Gl5nCoDD4MtO+j96Wu8atmhGqcNGHObuf8OM/x3AMx38+4Z2sPqzCxRFK2aF2e5Jol56XTLyggAMTL56XOMoS1W4pOyjUcGGQdZxU6qRh7B9Zp+PfpOFlqt0zyDZckPi1ttmIp03jX8gyJ8a/PG2yutpS/Vol7peZIbZcKBAEEheEIAgFbDkz5H6Zrkm2hVWGiXKiF4Ycw0RWKdtC16Q7qe3X4iOMxruonzegJzWaXFrU9utOSsLUmrc0YjeWYjCW4PDMADElpJSSQ0vQvA1Tm6/JlKnqFs1EGyZiFCqnRZTEJJJiKRYzVYzJck2Rm6P4iH+cmSY0YzimYa8l0EtTODFWhcMIMVqdsI2uiTvKmTisIDHJ3od5GILVhBCarCfVRmo4uTjkhrhzkiBV7SsaqS+TzrzM1qpGGUFt28pIySQHR6h7F6KSwGWm97ay+Z+ZqMcEjEWebE7wxCSQwpkhJqoZA5ivCdZDjJepuJ9IQjGGUmuXJdBFUygxVqVsxFsLMbDe8ZbDYVCGKxs+W080max1hFCarCfV+C1KATwcnvE9gRRuMP2prdbWGowm1KB1y+zwMMENkM755cJ2yPDtqhTI6ED1M/82yIDtC/4j4BijjeObflpO9I9MwXTCsSX8jWAFeHr05WoLTJ5G8IQVS/7vwR6ohirYM7f6HzYpogfS3R2OAAAAAElFTkSuQmCC"
 
 /***/ }),
-/* 340 */
+/* 347 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAQAAABvcdNgAAAEsklEQVR4AWL4TydIhpZK1kpWOlg0w3ZXP6D2soBtG42jeI6ZmQTHzAxiTbSJsYLjO9HhP+WOmcuhciVnmHVQcJnp7DFvScowZorad/+V/fVzMdMT2g9Cv9guXGv/7pYOrXh2U+RRR3dSd9JRx6bIFc/ekqHI29JC6pJ5ZEh1yWkhkbcFeSjxgx3L2m1cb1C7bceyxA+CNjT/Ifff+/kDk2u/w/33/IeCMOSaWZ4glosqT3DNnNZQ7Cs58/3Ce5HL78iZH/vKVIaYlqzfdLu8Vi7dnvUbEza5Idt36tquZFldl6N5Z/POLof0XLK61mZCmJSWjVF9tEjUluu74IUXvgttuVIHE7YxSkaYhJZam7yiM9Pv82JYfl9nptxZaxMJE4YSPty+vF0+Y2up9d3wwijfjZbabqm/3bZ9ecKHsiGmRflnn1MW4pjHf9oLufyn2z3y1D6n8g8TZhxyzipLNPnAUpsOiuWimg52psrTZYnOWYNDTMuWBWa0tJb4rgq1UvmutpaYEbZlwU3CLJm/ayYjHW5/h7xWLn9Hh1vepDkyf7dE7MtT5LR4e7yYpHrkhOUpEfssBLq2pPhAqoSWKUkk7EDqkmK6RrCEzqDjhNDWNE+XSMvkJRDWlZTmCW0l0PHQGRZY5t1L83kT0Y3l2SItk5JAWHl2dCOBm+fPu3fo5/3v61RMCO9Jx2EEYYhb0rmNQMX/vm7gqOEJLcXTGw3CAuRNeyaPWwjR8PRqKQ1PDA/dpv+on9Shox52WFnx0KY8onHayrJzm87i5h9xGw/tfkev0jGsQizqezUKjk12hBMKJ4kbCqGPVNXudyyrShovGw5CgxsRICxF6aRmSjlBnHRzg7Gx8fKqEubI2rahQYdR1YgDIRQO7JvQyD52hoIQx0mxa0ODtW2Iozn1le2iIRdzwWewedyZzewidueOGqlsn1MvcnQpuVwLGG3/IR1hIKxCjelIDZ8ldqWz25jWAsnldEnK0Zxro19TGVb2ffIZEsIO89EIEDvKMPrzmBOQcKQ+rroye6NgRRxqR4U8EAkz0CL6uSGOm6KQCdWjvjRiSP1BPalCRS5iQYiEIvxuBMJEWgzSoHADcVMuN7IuqqTeyUPq22qFimFtxDyBBJEwNyt6TM88blFHao/6tWWhuuOM4SAK4EI4QmFHA+SEyWlp4EQoJ13cYGzMu7yszEIBOm2rVmHUNqwAIQabISNMRstmdhNWcFLsSm+0tjJH1MdRxO5Nx0WDMhCtgD6OKgZeljJqJKc9po8juskR9XN0Y1lZ3mWjLR9JCO1jRDMd0fpYC2VnvjBSEFg7wBENc0R9HFlb0xvF1+TBEpF68d+DHR6IOWVv2BECtxo46hOFUBd/APU57WIoEwJhIi2CdpyZX0m93BZicktMj1AS9dClteUFAUNUIEygRZCtik5zSxI9MubTBH1GOiHsiLJ3OCoSZkILa9PxiN0EbvhsAo8tdAf9Seepd36lGWHmtNANTv5Jd0z4QYyeo/UEJqxKRpg5LZx6btLPsOaEmdMyxYdlc8LMaJnikDlhclqmPiQnTEpLUIZEwkRagjYkEibQErwhkTAKCLQEbUgkzJQWc/0PstHHcfEdQ+UAAAAASUVORK5CYII="
 
 /***/ }),
-/* 341 */
+/* 348 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RfEmN8VNAsQhPqF55xHkMzz3jSmChWU6f7/XZKNH+9+hBLOHYozuKQPxyMPUKkrX/K0uWnfFaJGS1QPRtZsOPtr3NsW0uyh6NNCOkU3Yz+bXbT3I8G3xE5EXLXtCXbbqwCO9zPQYPRTZ5vIDXD7U+w7rFDEoUUf7ibHIR4y6bLVPXrz8JVZEql13trxwue/uDivd3fkWRbS6/IA2bID4uk0UpF1N8qLlbBlXs4Ee7HLTfV1j54APvODnSfOWBqtKVvjgLKzF5YdEk5ewRkGlK0i33Eofffc7HT56jD7/6U+qH3Cx7SBLNntH5YIPvODnyfIXZYRVDPqgHtLs5ABHD3YzLuespb7t79FY34DjMwrVrcTuwlT55YMPvOBnRrJ4VXTdNnYug5ucHLBjEpt30701A3Ts+HEa73u6dT3FNWwflY86eMHPk+Yu+i6pzUpRrW7SNDg5JHR4KapmM5Wv2E8Tfcb1HoqqHMHU+uWDD7zg54mz5/2BSnizi9T1Dg4QQXLToGNCkb6tb1NU+QAlGr1++eADrzhn/u8Q2YZhQVlZ5+CAOtqfbhmaUCS1ezNFVm2imDbPmPng5wmz+gwh+oHDce0eUtQ6OGDIyR0uUhUsoO3vfDmmgOezH0mZN59x7MBi++WDL1g/eEiU3avlidO671bkLfwbw5XV2P8Pzo0ydy4t2/0eu33xYSOMOD8hTf4CrBtGMSoXfPLchX+J0ruSePw3LZeK0juPJbYzrhkH0io7B3k164hiGvawhOKMLkrQLyVpZg8rHFW7E2uHOL888IBPlNZ1FPzstSJM694fWr6RwpvcJK60+0HCILTBzZLFNdtAzJaohze60T8qBzyh5ZuOg5e7uwQppofEmf2++DYvmySqGBuKaicF1blQjhuHdvCIMvp8whTTfZzI7RldpwtSzL+F1+wkdZ2TBOW2gIF88PBTzD/gpeREAMEbxnJcaJHNHrpzji0gQCS6hdkEeYt9DF/2qPcEC8RM28Hwmr3sdNyht00byAut2k3gufWNtgtOEOFGUwcXWNDbdNbpgBGxEvKkOQsxivJx33iow0Vw5S6SVTrpVq11ysA2Rp7gTfPfktc6zhtXBBC+adRLshf6sG2RfHPZ5EAc4sVZ83yCN00Fk/4kggu40ZTvIEm5g24qtU4KjBrx/BTTH8ifVASAG7gKrnWxJDcU7x8X6Ecczhm3o6YicvsLXWfh3Ch1W0k8x0nXF+0fFxgt4phz8QvypiwCCFKMqXCnqXExjq10beH+UUA7+nG6mdG/Pu0f3LgFcGrl2s0kNNjpmoJ9o4B29CMO8dMT4Q5ox8uitF6fqsrJOr8qnwNbRzv6hSnG5wP+64C7h9lp30hKNtKdWjtdkbuPA19nJ7Tz3zR/ibgARbhb4AlhavcBebmTHcFl2fvYEnW0ox9xMxKBS8btJ+KiEbq9zA4RthQXDhPa0T9TEe69gWupwc6uBUphquXgf+/FrIjweHQS4/pduMe5ERUMHUd9xv8ZR98CxkS4F2n3EUrUZ10EYNw7BWm9x1GiPssi3GgiGRDKWRYZfXlON+dfNbM+GgIwYdwAAAAASUVORK5CYII="
 
 /***/ }),
-/* 342 */
+/* 349 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html__ = __webpack_require__(343);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html__ = __webpack_require__(350);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_download_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes__ = __webpack_require__(193);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_bytes__);
@@ -79807,22 +80623,22 @@ class AppImageDownload extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
 customElements.define('app-image-download', AppImageDownload);
 
 /***/ }),
-/* 343 */
+/* 350 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  button {\n    border: none;\n    border-radius: 0;\n    cursor: pointer;\n    color : var(--default-primary-color);\n    background-color: var(--medium-background-color);\n    width: 35px;\n    height: 35px;\n    font-weight: var(--font-weight-heavy);\n    margin: 4px;\n  }\n  button[selected] {\n    background : var(--default-primary-color);\n    color : var(--default-secondary-color);\n  }\n  .info {\n    margin: 10px 0;\n    font-size: var(--font-size-sm);\n  }\n  a {\n    display: inline-block;\n    padding: 8px;\n    color : var(--default-primary-color);\n    background-color : var(--default-secondary-color);\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n  }\n  select {\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    margin-right: 15px;\n    height: 40px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2IiB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojZGFhYTAwO308L3N0eWxlPjwvZGVmcz48Zz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMCAwIDEwIDAgNSA2IDAgMCIvPjwvZz48L3N2Zz4=');\n    @apply --fin-search-box-select-inverse;\n  }\n  select option {\n    text-transform: uppercase;\n  }\n</style>\n\n<div>\n  <template is=\"dom-repeat\" items=\"[[sizes]]\">\n    <button index$=\"[[index]]\" selected$=\"[[item.selected]]\" on-click=\"_onSizeSelected\">[[item.label]]</button>\n  </template>\n</div>\n\n<div class=\"info\">\n  [[resolutionTitle]] | [[resolution]] <span hidden$=\"[[!defaultImage]]\">| [[size]]</span>\n</div>\n\n<div style=\"display:flex; align-items: center\">\n  <select id=\"format\" on-change=\"_onFormatSelected\">\n    <template is=\"dom-repeat\" items=\"[[formats]]\">\n      <option value=\"[[item]]\">[[item]]</option>\n    </template>\n  </select>\n\n  <a href=\"[[href]]\" download target=\"_blank\">\n    <iron-icon icon=\"file-download\"></iron-icon>\n    Download\n  </a>\n</div>";
 
 /***/ }),
-/* 344 */
+/* 351 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__ = __webpack_require__(345);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__ = __webpack_require__(352);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_tabs_paper_tabs__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_iron_pages_iron_pages__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_iron_media_query_iron_media_query__ = __webpack_require__(346);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_tabs_paper_tabs__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_iron_pages_iron_pages__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_iron_media_query_iron_media_query__ = __webpack_require__(353);
 
 
 
@@ -79881,13 +80697,13 @@ class AppRecordMetadataLayout extends __WEBPACK_IMPORTED_MODULE_0__polymer_polym
 customElements.define('app-record-metadata-layout', AppRecordMetadataLayout);
 
 /***/ }),
-/* 345 */
+/* 352 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n\n  .layout {\n    display: flex;\n  }\n  .layout > * {\n    flex : 1;\n  }\n\n  h2 {\n    border-bottom: 1px solid var(--medium-background-color);\n    color: var(--default-primary-color);\n    padding-bottom: 10px;\n  }\n</style>\n\n<iron-media-query query=\"(max-width: 900px)\" query-matches=\"{{mobile}}\"></iron-media-query>\n\n\n<paper-tabs selected=\"{{selectedTab}}\" hidden$=\"[[!mobile]]\">\n  <paper-tab>Item Data</paper-tab>\n  <paper-tab>Cite Item</paper-tab>\n</paper-tabs>\n\n<div class=\"layout\">\n  <div hidden$=\"[[!showLeft]]\">\n    <h2>Item Data</h2>\n    <slot name=\"left\"></slot>\n  </div>\n  <div hidden$=\"[[!showRight]]\">\n      <h2>Cite this Item</h2>\n    <slot name=\"right\"></slot>\n  </div>\n</div>";
 
 /***/ }),
-/* 346 */
+/* 353 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -79990,19 +80806,19 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 347 */
+/* 354 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__auth_app_auth_footer__ = __webpack_require__(348);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__auth_app_auth_footer__ = __webpack_require__(355);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html__ = __webpack_require__(357);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__app_footer_html__);
 
 
@@ -80058,14 +80874,14 @@ class AppFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-footer', AppFooter);
 
 /***/ }),
-/* 348 */
+/* 355 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__ = __webpack_require__(349);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__ = __webpack_require__(356);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__);
 
 
@@ -80113,19 +80929,19 @@ class AppAuthFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_p
 customElements.define('app-auth-footer', AppAuthFooter);
 
 /***/ }),
-/* 349 */
+/* 356 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    color: var(--inverse-text-color);\n  }\n  a {\n    color: var(--inverse-text-color);\n    cursor: pointer;\n  }\n  .icon-container {\n    display: flex;\n    align-items: center;\n  }\n</style>\n\n<div hidden$=\"[[!loggedIn]]\">\n  <div>Logged in as:</div>\n  <div class=\"icon-container\">\n    <iron-icon icon=\"fin:account\"></iron-icon>&nbsp;&nbsp;\n    <div>[[user.username]]</div>\n  </div>\n  <div>\n    <a on-click=\"_logout\" class=\"gold\">Log Out</a>\n  </div>\n</div>\n<div hidden$=\"[[loggedIn]]\">\n  <a on-click=\"_login\">Login</a>\n</div>";
 
 /***/ }),
-/* 350 */
+/* 357 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background: var(--secondary-background-color);\n    color: var(--inverse-text-color);\n    max-width: var(--max-width);\n    padding: 20px 0;\n  }\n\n  a, a:visited {\n    cursor: pointer;\n    color: var(--inverse-text-color);\n    text-decoration: none;\n  }\n\n  .lib-logo  {\n    height: 45px;\n  }\n\n  .row {\n    display: flex;\n    justify-content: center;\n  }\n\n  .row > div {\n    padding: 15px;\n  }\n\n  .menu.horizontal li {\n    padding: 0 10px;\n    border-right: 1px solid white;\n  }\n  .menu.horizontal li:last-child {\n    border-right: none;\n  }\n  .menu a {\n    cursor: pointer;\n  }\n\n  @media( max-width: 768px ) {\n    ul.menu.horizontal {\n      display: block;\n      text-align: left;\n    }\n  }\n\n  .logo {\n    display: inline-block;\n    width: 100%;\n    position: relative;\n    margin: 70px 0 30px;\n  }\n  .logo hr {\n    position: absolute;\n    top: 50%;\n    width: 100%;\n    margin-top: 0;\n    margin-bottom: 0;\n    border-top: 1px solid rgba(255,255,255,.25);\n    border-bottom: none;\n    border-right: none;\n    border-left: none;\n  }\n  .logo .logo-img {\n    display: inline-block;\n    position: relative;\n  }\n  .logo img {\n    height: 100px;\n    padding: 0 25px;\n    background: var(--default-primary-color);\n  }\n\n  @media(max-width: 768px) {\n    .row {\n      display: block;\n    }\n  }\n</style>\n\n<footer role=\"contentinfo\">\n\n  <div class=\"row\">\n    <div> <!-- col start -->\n      <div>\n          <a href=\"https://library.ucdavis.edu\" target=\"_blank\">\n              <img class=\"lib-logo\" src=\"/images/ucd-lib-logo-white.png\">\n          </a>\n      </div>\n      <div>UC Davis Library</div>\n      <p>\n        100 NW Quad<br />\n        University of California, Davis<br />\n        Davis, CA 95616<br />\n        (530) 752-8792<br /><br />\n        <a href=\"mailto:library@ucdavis.edu\">library@ucdavis.edu</a>\n      </p>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Digital Collections</h2>\n      <ul class=\"menu\">\n        <template is=\"dom-repeat\" items=\"[[collections]]\">\n          <li><a on-click=\"_onBrowseCollection\" data-id$=\"[[item.id]]\">[[item.name]]</a></li>\n        </template>\n      </ul>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Library Info</h2>\n      <ul class=\"menu\">\n        <li><a href=\"https://library.ucdavis.edu/news/\" target=\"_blank\">News</a></li>\n        <li><a href=\"https://library.ucdavis.edu/about/\" target=\"_blank\">About</a></li>\n        <li><a href=\"https://library.ucdavis.edu/library/\" target=\"_blank\">Visit</a></li>\n        <li><a href=\"https://library.ucdavis.edu/service/careers/\" target=\"_blank\">Careers</a></li>\n      </ul>\n      <div class=\"donate\"><a href=\"http://give.ucdavis.edu/ULIB\" target=\"_blank\">Give to the UC Davis Library</a></div>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Account</h2>\n      <ul class=\"menu\">\n        <li>\n          <app-auth-footer></app-auth-footer>\n        </li>\n      </ul>\n    </div><!-- col end -->\n  </div><!-- row end -->\n\n  <div style=\"text-align:center\">\n    <div class=\"logo\"><!-- logo -->\n        <hr>\n        <div class=\"logo-img\">\n            <img src=\"/images/ucd-logo.svg\" alt=\"UC Davis Logo\">\n        </div>\n    </div>\n\n    <div>\n      <p>University of California, Davis, One Shields Avenue, Davis, CA 95616 | 530-752-1011</p>\n      <ul class=\"menu horizontal\">\n        <li><a href=\"/help/\">Help</a></li>\n        <li><a href=\"/general-support/\">Questions or comments?</a></li>\n        <li><a href=\"https://www.ucdavis.edu/help/privacy-accessibility/\" target=\"_blank\">Privacy &amp; Accessibility</a></li>\n        <li><a href=\"https://occr.ucdavis.edu/poc/\" target=\"_blank\">Principles of Community</a></li>\n        <li><a href=\"https://www.ucdavis.edu/\" target=\"_blank\">UC Davis</a></li>\n        <li><a href=\"https://www.universityofcalifornia.edu/\" target=\"_blank\">University of California</a></li>\n      </ul>\n      <p>Copyright &copy; 2017 The Regents of the University of California, Davis campus. All rights reserved.</p>\n    </div>\n  </div>\n\n</footer>";
 
 /***/ }),
-/* 351 */
+/* 358 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -80193,7 +81009,7 @@ class AppHeaderColorbar extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 customElements.define('app-header-colorbar', AppHeaderColorbar);
 
 /***/ }),
-/* 352 */
+/* 359 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n    background: var(--default-primary-color);\n  }\n  app-header {\n    \n  }\n  .content {\n    display: flex;\n    justify-content: center;\n  }\n  .content > div {\n    max-width: 1000px;\n    min-width: 300px;\n  }\n  paper-material {\n    background: white;\n    display: block;\n    padding: 10px;\n    margin: 10px;\n  }\n  paper-button {\n    background: white;\n  }\n  a[button] {\n    text-decoration: none;\n    color: var(--primary-text-color);\n  }\n</style>\n\n<app-route app-routes=\"[[appRoutes]]\"></app-route>\n\n<iron-pages selected=\"[[page]]\" attr-for-selected=\"id\" selected-attribute=\"visible\">\n  <app-home id=\"home\"></app-home>\n  <app-search id=\"search\"></app-search>\n  <app-record id=\"record\"></app-record>\n</iron-pages>\n\n<div style=\"display:flex; justify-content:center\">\n  <app-footer></app-footer>\n</div>";

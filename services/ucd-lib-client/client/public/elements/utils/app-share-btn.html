@@ -35,7 +35,11 @@
   }
 
   .social {
-    margin: 5px;
+    margin: 8px;
+    display: inline-block;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
   }
 
   .copyButton {
@@ -78,10 +82,10 @@
 
 <div id="popup">
   <div class="layout">
-    <paper-icon-button id="facebook" class="social" icon="3d-rotation" on-click="_onSocialIconClick" ></paper-icon-button>
-    <paper-icon-button id="twitter" class="social" icon="3d-rotation" on-click="_onSocialIconClick" ></paper-icon-button>
-    <paper-icon-button id="google" class="social" icon="3d-rotation" on-click="_onSocialIconClick" ></paper-icon-button>
-    <paper-icon-button id="pinterest" class="social" icon="3d-rotation" on-click="_onSocialIconClick" ></paper-icon-button>
+    <img id="facebook" src="/images/social-icons/icon-facebook.svg" class="social" on-click="_onSocialIconClick" />
+    <img id="twitter" src="/images/social-icons/icon-twitter.svg" class="social" on-click="_onSocialIconClick" />
+    <img id="google" src="/images/social-icons/icon-googleplus.svg" class="social" on-click="_onSocialIconClick" />
+    <img id="pinterest" src="/images/social-icons/icon-pinterest.svg" class="social" on-click="_onSocialIconClick" />
   </div>
   <div>
     <div style="display: flex; align-items: center" class="section bordered">
