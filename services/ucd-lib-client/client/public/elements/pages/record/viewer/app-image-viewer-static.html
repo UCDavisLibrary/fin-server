@@ -11,12 +11,7 @@
     --paper-spinner-color: var(--default-secondary-color);
   }
 
-  .spinner-layout {
-    position: absolute;
-    top : 0;
-    right : 0;
-    left : 0;
-    bottom: 0;
+  #loading {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,14 +37,12 @@
   }
 </style>
 
-<div id="loadingLayout" hidden$="[[!loading]]"></div>
+<div id="loading" hidden$="[[!loading]]">
+  <paper-spinner-lite active$="[[loading]]"></paper-spinner-lite>
+</div>
 
 <div class="layout" hidden$="[[loading]]" style="line-height: 0">
   <img id="img" />
-</div>
-
-<div class="spinner-layout" hidden$="[[!loading]]" >
-  <paper-spinner-lite active$="[[loading]]"></paper-spinner-lite>
 </div>
 
 

@@ -67,11 +67,13 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
     let r = 600 / this.media.height;
     let w = this.media.width * r;
     let eleWidth = this.offsetWidth-20;
-    let startHeight = eleWidth > w ? this.height : ((eleWidth/w)*this.height);
+    let startHeight = Math.ceil(eleWidth > w ? this.height : ((eleWidth/w)*this.height));
 
     let img = new Image();
     this.loading = true;
-    this.$.loadingLayout.style.height = startHeight+'px';
+    
+    this.$.loading.style.height = startHeight+'px';
+    
     img.onload = () => {
       this.loading = false;
       this.$.img.style.height = 'auto';
