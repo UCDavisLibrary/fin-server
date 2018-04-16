@@ -13402,7 +13402,7 @@ var ElasticSearchStoreImpl = function (_ElasticSearchStore) {
     key: 'setSearchCollectionLoaded',
     value: function setSearchCollectionLoaded(query, payload) {
       payload = payload.hits.hits.map(function (item) {
-        item._source.thumbnail = '/fcrepo/rest' + item._source.workExample + '/svc:iiif/full/,320/0/default.png';
+        item._source.thumbnail = '/fcrepo/rest' + item._source.workExample + '/svc:iiif/full/,320/0/default.jpg';
         return item._source;
       });
 
@@ -44092,7 +44092,7 @@ var MediaModel = function (_BaseModel) {
       if (width === null) width = '';
       if (height === null) height = '';
 
-      return '' + config.fcrepoBasePath + path + '/svc:iiif/full/' + width + ',' + height + '/0/default.png';
+      return '' + config.fcrepoBasePath + path + '/svc:iiif/full/' + width + ',' + height + '/0/default.jpg';
     }
 
     /**
@@ -44304,7 +44304,7 @@ var AppHome = function (_Mixin$with) {
 
       overview.forEach(function (item) {
         browse[item.id] = item.name;
-        item.thumbnail = '/fcrepo/rest' + item.workExample + '/svc:iiif/full/,320/0/default.png';
+        item.thumbnail = '/fcrepo/rest' + item.workExample + '/svc:iiif/full/,320/0/default.jpg';
       });
 
       this.$.searchBox.browse = browse;
@@ -51079,9 +51079,11 @@ var AppImageViewer = function (_Mixin$with) {
                 this.style.display = 'block';
                 this.render();
                 document.body.style.overflow = 'hidden';
+                document.body.style.height = '100vh';
+                document.body.style.width = '100vw';
                 this.visible = true;
 
-              case 4:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -51110,9 +51112,11 @@ var AppImageViewer = function (_Mixin$with) {
               case 0:
                 this.style.display = 'none';
                 document.body.style.overflow = 'auto';
+                document.body.style.height = '';
+                document.body.style.width = '';
                 this.visible = false;
 
-              case 3:
+              case 5:
               case "end":
                 return _context2.stop();
             }
@@ -51285,7 +51289,7 @@ customElements.define('app-image-viewer-lightbox', AppImageViewer);
 /* 340 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n\n  :host {\n    display: none;\n    position: absolute;\n    z-index: 1000;\n    top : 0;\n    right : 0;\n    bottom : 0;\n    left : 0;\n    background-color: black;\n  }\n\n  #viewer { \n    top : 0;\n    right : 0;\n    bottom : 0;\n    left : 0;\n    position: absolute;\n    background-color: black;\n  }\n\n  paper-spinner-lite {\n    --paper-spinner-color: var(--default-secondary-color);\n  }\n  \n  .spinner-layout {\n    position: absolute;\n    top : 0;\n    right : 0;\n    left : 0;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  app-image-viewer-nav {\n    z-index: 2000;\n    position: absolute;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n</style>\n\n<div id=\"viewer\">\n  <div class=\"spinner-layout\" hidden$=\"[[!loading]]\">\n    <paper-spinner-lite active$=\"[[loading]]\"></paper-spinner-lite>\n  </div>\n</div>\n\n<app-image-viewer-nav \n  is-lightbox\n  on-zoom-in=\"_onZoomInClicked\"\n  on-zoom-out=\"_onZoomOutClicked\"\n  on-close=\"_onCloseClicked\">\n</app-image-viewer-nav>";
+module.exports = "<style include=\"shared-styles\">\n\n  :host {\n    display: none;\n    position: absolute;\n    z-index: 1000;\n    height: 100vh;\n    width: 100vw;\n    top : 0;\n    left : 0;\n    background-color: black;    \n    animation: show 350ms ease-out;\n  }\n\n  @keyframes show {\n    from {\n      /* top: -100vh; */\n      opacity: 0.5;\n      transform: scale(1.3);\n    }\n    to {\n      /* top: 0; */\n      opacity: 1;\n      transform: scale(1);\n    }\n  }\n\n  #viewer { \n    top : 0;\n    right : 0;\n    bottom : 0;\n    left : 0;\n    position: absolute;\n    background-color: black;\n  }\n\n  paper-spinner-lite {\n    --paper-spinner-color: var(--default-secondary-color);\n  }\n  \n  .spinner-layout {\n    position: absolute;\n    top : 0;\n    right : 0;\n    left : 0;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  app-image-viewer-nav {\n    z-index: 2000;\n    position: absolute;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n</style>\n\n<div id=\"viewer\">\n  <div class=\"spinner-layout\" hidden$=\"[[!loading]]\">\n    <paper-spinner-lite active$=\"[[loading]]\"></paper-spinner-lite>\n  </div>\n</div>\n\n<app-image-viewer-nav \n  is-lightbox\n  on-zoom-in=\"_onZoomInClicked\"\n  on-zoom-out=\"_onZoomOutClicked\"\n  on-close=\"_onCloseClicked\">\n</app-image-viewer-nav>";
 
 /***/ }),
 /* 341 */
