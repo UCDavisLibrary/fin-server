@@ -1,0 +1,50 @@
+<style>
+  :host {
+    display: block;
+    background: black;
+    padding: 20px 10px;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  paper-spinner-lite {
+    --paper-spinner-color: var(--default-secondary-color);
+  }
+
+  #loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  app-image-viewer-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .layout {
+    text-align: center;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+</style>
+
+<div id="loading" hidden$="[[!loading]]">
+  <paper-spinner-lite active$="[[loading]]"></paper-spinner-lite>
+</div>
+
+<div class="layout" hidden$="[[loading]]" style="line-height: 0">
+  <img id="img" />
+</div>
+
+
+<app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
+<app-image-viewer-nav on-zoom-in="_onZoomIn"></app-image-viewer-nav>

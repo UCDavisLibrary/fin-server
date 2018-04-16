@@ -41,9 +41,48 @@ class MediaModel extends BaseModel {
     if( width === null ) width = '';
     if( height === null ) height = '';
 
-    return `${config.fcrepoBasePath}${path}/svc:iiif/full/${width},${height}/0/default.png`;
+    return `${config.fcrepoBasePath}${path}/svc:iiif/full/${width},${height}/0/default.jpg`;
   }
 
+  /**
+   * @method getImageMediaList
+   * @description given a root record that has been has it's hasParts/associatedMedia
+   * filled in, return the first image list found.
+   * 
+   * @param {Object} rootRecord a filled in root record
+   * @returns {Array}
+   */
+  getImageMediaList(rootRecord) {
+    if( rootRecord._imageList ) return rootRecord._imageList;
+    if( !rootRecord._associatedMedia ) return [];
+
+    // see if we have an image list
+    for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
+      let ef = rootRecord._associatedMedia[i].encodingFormat;
+      if( ef && ef.toLowerCase() === 'image list' ) {
+        rootRecord._imageList = rootRecord._associatedMedia[i]._hasPart || [];
+        rootRecord._imageList.sort((a, b) => {
+          if( a.position > b.position ) return 1;
+          if( a.position < b.position ) return -1;
+          return 1;
+        });
+
+        return rootRecord._associatedMedia[i]._hasPart;
+      }
+    }
+
+    // if no image list, return list of images
+    let imageRecords = [];
+    for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
+      let ff = rootRecord._associatedMedia[i].fileFormat;
+      if( ff && ff.match(/^image/i) ) {
+        imageRecords.push(rootRecord._associatedMedia[i]);
+      }
+    }
+    rootRecord._imageList = imageRecords;
+
+    return imageRecords;
+  }
 
 }
 

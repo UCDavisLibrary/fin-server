@@ -7,6 +7,7 @@ import "@polymer/paper-styles/paper-styles"
 import "@polymer/paper-button/paper-button"
 import "@polymer/iron-pages/iron-pages"
 import "@polymer/iron-icons/iron-icons"
+import "@polymer/iron-icons/social-icons"
 import "@ucd-lib/fin-icons/fin-icons"
 
 // sets globals Mixin and EventInterface

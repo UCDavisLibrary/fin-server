@@ -30,6 +30,9 @@
     "publisher" : {
       "@id": "schema:publisher"
     },
+    "position" : {
+      "@id": "schema:position"
+    },
     "createdBy" : {
       "@id": "fedora:createdBy"
     },
@@ -67,6 +70,10 @@
       "@id" : "schema:about",
       "@type" : "@id"
     },
+    "workExample" : {
+      "@id" : "schema:workExample",
+      "@type" : "@id"
+    },
     "datePublished" : {
       "@id" : "schema:datePublished",
       "@type" : "http://www.w3.org/2001/XMLSchema#date"
@@ -84,13 +91,12 @@
     "fileFormat" : {
       "@id" : "ebucore:hasMimeType"
     },
+    "encodingFormat" : {
+      "@id" : "schema:encodingFormat"
+    },
     "fileSize" : {
       "@id" : "premis:hasSize",
-      "@type" : "http://www.w3.org/2001/XMLSchema#long"
-    },
-    "premis:hasSize" : {
-      "@id" : "premis:hasSize",
-      "@type" : "http://www.w3.org/2001/XMLSchema#long"
+      "@type": "http://www.w3.org/2001/XMLSchema#long"
     },
     "filename" : {
       "@id" : "ebucore:filename"
@@ -109,10 +115,16 @@
   "about" : {
     "@default" : ""
   },
+  "workExample" : {
+    "@default" : ""
+  },
   "creator" : {
     "@default" : ""
   },
   "publisher" : {
+    "@default" : ""
+  },
+  "position" : {
     "@default" : ""
   },
   "datePublished" : {
@@ -136,6 +148,9 @@
   "fileFormat" : {
     "@default" : ""
   },
+  "encodingFormat" : {
+    "@default" : ""
+  },
   "lastModified" : {
     "@default" : ""
   },
@@ -155,7 +170,7 @@
     "@default" : ""
   },
   "fileSize" : {
-    "@default" : 0
+    "@default" : ""
   },
   "filename" : {
     "@default" : ""

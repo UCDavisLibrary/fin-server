@@ -1,0 +1,104 @@
+<style>
+  :host {
+    display: block;
+    background-color: rgb(0, 38, 85, 0.9);
+    padding: 8px;
+  }
+
+  :host(.single) {
+    background-color: transparent;
+  }
+
+  :host(.single) paper-icon-button {
+    background-color: var(--default-primary-color);
+  }
+  :host(.single) app-share-btn {
+    background-color: var(--default-primary-color);
+  }
+
+  .layout {
+    display: flex;
+    align-items: center;
+  }
+
+  #thumbnails {
+    overflow: hidden;
+    /* (50px width + 10px margin + 4px border) * 8 thumbnails */
+    max-width: 512px;
+  }
+
+  #thumbnails > div {
+    white-space: nowrap;
+    margin-left: 0;
+    will-change: margin-left;
+    transition: margin-left 250ms ease-out;
+  }
+
+  .thumbnail {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0 5px;
+    border: 2px solid transparent;
+    cursor: pointer;
+  }
+
+  .thumbnail[selected] {
+    border: 2px solid var(--default-secondary-color);
+  }
+
+  paper-icon-button {
+    color: var(--default-secondary-color);
+    min-width: 40px;
+  }
+
+  paper-icon-button[disabled] {
+    color: var(--gray-text);
+    min-width: 40px;
+  }
+</style>
+
+<div class="layout">
+  <div id="navLeft" hidden$="[[singleImage]]">
+    <paper-icon-button icon="chevron-left" disabled$="[[!showNavLeft]]" on-click="_pageLeft"></paper-icon-button>
+  </div>
+  <div id="thumbnails" hidden$="[[singleImage]]">
+    <div id="thumbnailContainer">
+      <template is="dom-repeat" items="[[thumbnails]]">
+        <button 
+          class="thumbnail" 
+          selected$="[[item.selected]]" 
+          style="background-image:url([[item.src]])"
+          media-id$="[[item.id]]"
+          alt$="Item #[[item.position]]"
+          on-click="_onThumbnailClicked">
+        </button>
+      </template>
+
+    </div>
+  </div>
+  <div id="navRight" hidden$="[[singleImage]]">
+    <paper-icon-button icon="chevron-right" disabled$="[[!showNavRight]]" on-click="_pageRight"></paper-icon-button>
+  </div>
+
+  <div style="flex:1"></div>
+  
+  <div hidden$="[[breakControls]]" style="white-space: nowrap">
+    <paper-icon-button icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
+    <paper-icon-button icon="zoom-in" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+    <app-share-btn></app-share-btn>
+    <paper-icon-button icon="zoom-in" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+    <paper-icon-button icon="close" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
+  </div>
+</div>
+
+<div hidden$="[[!breakControls]]" style="text-align: right">
+  <paper-icon-button icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
+  <paper-icon-button icon="zoom-in" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+  <app-share-btn></app-share-btn>
+  <paper-icon-button icon="zoom-in" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+  <paper-icon-button icon="close" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
+</div>

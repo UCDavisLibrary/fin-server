@@ -12,6 +12,7 @@ const AttributeReducer = require('./attribute-reducer');
 // everything depends on indexer, so placing this here...
 process.on('unhandledRejection', err => logger.error(err));
 
+const NULL_VALUE = '';
 const COLLECTION = 'http://schema.org/Collection';
 const CREATIVE_WORK = 'http://schema.org/CreativeWork';
 const MEDIA_OBJECT = 'http://schema.org/MediaObject';
@@ -319,17 +320,17 @@ class EsIndexer {
    */
   async frameToEs(frame) {
     frame = this.getRecordOrCollectionFrame(frame);
+    frame.id = frame['@id'];
+
     this.stripFinHost(frame);
     await this.setThumbnail(frame);
     await this.setImageResolution(frame);
-    await this.setYearFromDate(frame);
+    this.setYearFromDate(frame);
 
     if( this.isRecord(frame['@type']) ) {
       frame.collectionId = frame['@id'].split('/').splice(0, 3).join('/');
       this.setRootRecord(frame);
     }
-
-    frame.id = frame['@id'];
 
     return frame;
   }
@@ -452,7 +453,8 @@ class EsIndexer {
 
   /**
    * @method stripFinHost
-   * @description short id's removing fin host and base path
+   * @description short id's removing fin host and base path.  this also
+   * removes empty values
    * 
    * @param {Object} json
    * 
@@ -473,6 +475,7 @@ class EsIndexer {
           this.stripFinHost(json[key]);
         } else if( typeof json[key] === 'string' ) {
           json[key] = json[key].replace(this.finUrlRegex, '');
+          if( json[key] === NULL_VALUE ) delete json[key];
         }
       }
     }
