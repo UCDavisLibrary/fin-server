@@ -41,7 +41,7 @@ class MediaModel extends BaseModel {
     if( width === null ) width = '';
     if( height === null ) height = '';
 
-    return `${config.fcrepoBasePath}${path}/svc:iiif/full/${width},${height}/0/default.png`;
+    return `${config.fcrepoBasePath}${path}/svc:iiif/full/${width},${height}/0/default.jpg`;
   }
 
   /**

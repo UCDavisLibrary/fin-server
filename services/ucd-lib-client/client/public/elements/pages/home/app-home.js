@@ -47,7 +47,7 @@ class AppHome extends Mixin(PolymerElement)
 
     overview.forEach(item => {
       browse[item.id] = item.name;
-      item.thumbnail = '/fcrepo/rest'+item.workExample+'/svc:iiif/full/,320/0/default.png'
+      item.thumbnail = '/fcrepo/rest'+item.workExample+'/svc:iiif/full/,320/0/default.jpg'
     });
 
     this.$.searchBox.browse = browse;

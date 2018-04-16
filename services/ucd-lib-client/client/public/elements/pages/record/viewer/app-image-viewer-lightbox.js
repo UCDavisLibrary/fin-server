@@ -74,6 +74,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     this.style.display = 'block';
     this.render();
     document.body.style.overflow = 'hidden';
+    document.body.style.height = '100vh';
+    document.body.style.width= '100vw';
     this.visible = true;
   }
 
@@ -83,6 +85,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
   async hide() {
     this.style.display = 'none';
     document.body.style.overflow = 'auto';
+    document.body.style.height = '';
+    document.body.style.width= '';
     this.visible = false;
   }
 

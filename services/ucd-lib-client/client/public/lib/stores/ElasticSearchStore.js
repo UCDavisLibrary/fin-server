@@ -54,7 +54,7 @@ class ElasticSearchStoreImpl extends ElasticSearchStore {
   setSearchCollectionLoaded(query, payload) {
     payload = payload
       .hits.hits.map(item => {
-        item._source.thumbnail = '/fcrepo/rest'+item._source.workExample+'/svc:iiif/full/,320/0/default.png'
+        item._source.thumbnail = '/fcrepo/rest'+item._source.workExample+'/svc:iiif/full/,320/0/default.jpg'
         return item._source;
       });
 
