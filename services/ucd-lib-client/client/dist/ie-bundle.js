@@ -17446,6 +17446,10 @@ var CitationsModel = function () {
         }
       };
 
+      if (record.collectionName) {
+        cslJson['collection-title'] = record.collectionName;
+      }
+
       if (record.author) {
         cslJson.author = [{
           family: record.author
@@ -44499,7 +44503,7 @@ module.exports = "<style>\n  :host {\n    display: inline-block;\n  }\n\n  .root
 /* 278 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <app-collection-card \n        data-id$=\"[[item.id]]\" \n        collection=\"[[item]]\" \n        on-click=\"_onCollectionClicked\">\n      </app-collection-card>\n    </template>\n  </div>\n</div>\n\n<div class=\"text-container\">\n  \n  <h1>About Digital Collections</h1>\n\n  <p>The UC Davis Digital Collections is a locally developed digital repository that was designed to store and manage the digital assets of UC Davis. These Digital Collections are intended to increase access to previously undiscoverable digital assets held by the University Library.</p>\n  \n  <p>Initially launched in 2018, the repository currently stores 14,000 digital assets.</p>\n  \n  <h2>Platform</h2>\n  \n  <p>The Digital Asset Management System is built on the Fedora Linked Data Platform. Custom services are implemented using a Fedora (APIX) extension method as a general methodology. The User Interface was built with web-components anticipating a need for UI flexibility as the digital collection grows. For a more detailed explanation of the development, see our <a href=\"https://github.com/UCDavisLibrary/fin-server/issues/9\">Fin Server Overview.</a>\n  </p>\n  \n  <h2>Contact</h2>\n  <ul>\n    <li>Eric A Nebeker - Digital Assets Specialist</li>\n  </ul>\n  \n  <h2>Implementation Team</h2>\n  <ul>\n    <li>Quinn Hart - Team Lead</li>\n    <li>Justin Merz - Lead Developer</li>\n    <li>Kimmy Hescock - User Experience Designer</li>\n  </ul>\n  \n  <h2>Members of the DAMS Steering Committee</h2>\n  <ul>\n    <li>Kevin Miller</li>\n    <li>Neil Weingarten</li>\n    <li>Amy Azzarito</li>\n    <li>Peter Brantley</li>\n    <li>Carl Stahmer</li>\n    <li>Dale Snapp</li>\n    <li>Robert Heyer-Gray</li>\n    <li>Vessela Ensberg</li>\n    <li>Xiaoli Li</li>\n  </ul>\n  \n  <p>The UC Davis Library DAMS was a project of the Library's <a href=\"https://www.library.ucdavis.edu/service/online-strategy-2/\">Online Strategy team.</a>\n  </p>\n\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>\n";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <app-collection-card \n        data-id$=\"[[item.id]]\" \n        collection=\"[[item]]\" \n        on-click=\"_onCollectionClicked\">\n      </app-collection-card>\n    </template>\n  </div>\n</div>\n\n<div class=\"text-container\">\n  \n  <h1>About Digital Collections</h1>\n\n  <p>The UC Davis Digital Collections is a locally developed digital repository that was designed to store and manage the digital assets of UC Davis. These Digital Collections are intended to increase access to previously undiscoverable digital assets held by the University Library.</p>\n  \n  <p>Initially launched in 2018, the repository currently stores 14,000 digital assets.</p>\n  \n  <h2>Platform</h2>\n  \n  <p>The Digital Asset Management System is built on the Fedora Linked Data Platform. Custom services are implemented using a Fedora (APIX) extension method as a general methodology. The User Interface was built with web-components anticipating a need for UI flexibility as the digital collection grows. For a more detailed explanation of the development, see our <a href=\"https://github.com/UCDavisLibrary/fin-server/issues/9\">Fin Server Overview.</a>\n  </p>\n  \n  <h2>Contact</h2>\n  <ul>\n    <li><a href=\"mailto:eanebeker@ucdavis.edu\">Eric A Nebeker - Digital Assets Specialist</a></li>\n  </ul>\n  \n  <h2>Implementation Team</h2>\n  <ul>\n    <li>Quinn Hart - Team Lead</li>\n    <li>Justin Merz - Lead Developer</li>\n    <li>Kimmy Hescock - User Experience Designer</li>\n  </ul>\n  \n  <h2>Members of the DAMS Steering Committee</h2>\n  <ul>\n    <li>Kevin Miller</li>\n    <li>Neil Weingarten</li>\n    <li>Amy Azzarito</li>\n    <li>Peter Brantley</li>\n    <li>Carl Stahmer</li>\n    <li>Dale Snapp</li>\n    <li>Robert Heyer-Gray</li>\n    <li>Vessela Ensberg</li>\n    <li>Xiaoli Li</li>\n  </ul>\n  \n  <p>The UC Davis Library DAMS was a project of the Library's <a href=\"https://www.library.ucdavis.edu/service/online-strategy-2/\">Online Strategy team.</a>\n  </p>\n\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>\n";
 
 /***/ }),
 /* 279 */
@@ -49972,27 +49976,28 @@ var AppRecord = function (_Mixin$with) {
                   this.rights = null;
                 }
 
+                this.collectionName = this.record.isPartOf || '';
+
+                if (!this.collectionName) {
+                  _context2.next = 17;
+                  break;
+                }
+
+                _context2.next = 14;
+                return this._getCollection(this.collectionName);
+
+              case 14:
+                collection = _context2.sent;
+
+                this.collectionName = collection.name;
+                this.record.collectionName = collection.name;
+
+              case 17:
+
                 // render citations
                 this.$.mla.innerHTML = _CitationsModel2.default.renderEsRecord(this.record, 'mla');
                 this.$.apa.innerHTML = _CitationsModel2.default.renderEsRecord(this.record, 'apa');
                 this.$.chicago.innerHTML = _CitationsModel2.default.renderEsRecord(this.record, 'chicago');
-
-                this.collectionName = this.record.isPartOf || '';
-
-                if (!this.collectionName) {
-                  _context2.next = 19;
-                  break;
-                }
-
-                _context2.next = 17;
-                return this._getCollection(this.collectionName);
-
-              case 17:
-                collection = _context2.sent;
-
-                this.collectionName = collection.name;
-
-              case 19:
 
                 if (record.associatedMedia) {
                   imageList = this._getImageMediaList(record);
@@ -50004,7 +50009,7 @@ var AppRecord = function (_Mixin$with) {
 
                 this._updateMetadataRows();
 
-              case 21:
+              case 22:
               case "end":
                 return _context2.stop();
             }
