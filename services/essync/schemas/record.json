@@ -26,6 +26,10 @@
       }
     },
 
+    "license" : {
+      "type" : "keyword"
+    },
+
     "collectionId" : {
       "type" : "keyword"
     },

@@ -14,6 +14,11 @@ export class AppFilterPanel extends PolymerElement {
         type : Object,
         value : null,
         observer : '_render'
+      },
+      opened : {
+        type : Boolean,
+        value : false,
+        observer : '_toggleOpened'
       }
     };
   }
@@ -30,13 +35,23 @@ export class AppFilterPanel extends PolymerElement {
     ele.label = this.filter.label;
     ele.filter = this.filter.filter;
     ele.ignore = this.filter.ignore;
+    ele.valueMap = this.filter.valueMap || {};
     ele.isDollar = this.filter.isDollar;
 
     ele.addEventListener('update-visibility', (e) => {
       this.style.display = e.detail.show ? 'block' : 'none';
     });
+
+    this.ele = ele;
     
     this.$.filters.appendChild(ele);
+  }
+
+  _toggleOpened() {
+    if( !this.opened ) return;
+    if( this.ele && this.ele.resize ) {
+      this.ele.resize();
+    }
   }
 
 }

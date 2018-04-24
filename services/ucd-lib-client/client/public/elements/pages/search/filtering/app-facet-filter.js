@@ -19,15 +19,19 @@ class AppFacetFilter extends Mixin(PolymerElement)
       },
       ignore : {
         type : Array,
-        value : []
+        value : () => []
+      },
+      valueMap : {
+        type : Object,
+        value : () => {},
       },
       buckets : {
         type : Array,
-        value : []
+        value : () => []
       },
       activeFilters : {
         type : Array,
-        value : []
+        value : () => []
       },
       allFilters : {
         type : Array,
@@ -86,8 +90,10 @@ class AppFacetFilter extends Mixin(PolymerElement)
     if( !this.activeFilters ) return;
 
     this.buckets = this.buckets.map(item => {
+      item = Object.assign({}, item);
       item.active = (this.activeFilters.indexOf(item.key) > -1) ? true : false;
-      return Object.assign({}, item);
+
+      return item;
     });
 
     this.dispatchEvent(

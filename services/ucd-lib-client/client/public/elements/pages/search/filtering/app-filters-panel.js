@@ -17,6 +17,7 @@ for( var key in config.elasticSearch.facets ) {
     label : config.elasticSearch.facets[key].label,
     type : config.elasticSearch.facets[key].type,
     ignore : config.elasticSearch.facets[key].ignore,
+    valueMap : config.elasticSearch.facets[key].valueMap,
     isDollar : config.elasticSearch.facets[key].isDollar,
     filter : key
   });

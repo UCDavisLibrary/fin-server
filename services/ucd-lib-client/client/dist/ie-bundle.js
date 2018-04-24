@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 195);
+/******/ 	return __webpack_require__(__webpack_require__.s = 196);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1906,7 +1906,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             try {
                 oldLocale = globalLocale._abbr;
                 var aliasedRequire = require;
-                __webpack_require__(297)("./" + name);
+                __webpack_require__(298)("./" + name);
                 getSetGlobalLocale(oldLocale);
             } catch (e) {}
         }
@@ -4480,7 +4480,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     return hooks;
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(67)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(68)(module)))
 
 /***/ }),
 /* 1 */
@@ -4498,8 +4498,6 @@ var _legacyElementMixin = __webpack_require__(54);
 
 __webpack_require__(3);
 
-__webpack_require__(207);
-
 __webpack_require__(208);
 
 __webpack_require__(209);
@@ -4510,7 +4508,9 @@ __webpack_require__(211);
 
 __webpack_require__(212);
 
-__webpack_require__(214);
+__webpack_require__(213);
+
+__webpack_require__(215);
 
 var Base = exports.Base = (0, _legacyElementMixin.LegacyElementMixin)(HTMLElement).prototype;
 
@@ -4559,7 +4559,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Polymer = undefined;
 
-var _class = __webpack_require__(206);
+var _class = __webpack_require__(207);
 
 var Polymer = exports.Polymer = function Polymer(info) {
   // if input is a `class` (aka a function with a prototype), use the prototype
@@ -4606,7 +4606,7 @@ __webpack_require__(4);
 
 __webpack_require__(19);
 
-var _flattenedNodesObserver = __webpack_require__(205);
+var _flattenedNodesObserver = __webpack_require__(206);
 
 var _flush = __webpack_require__(22);
 
@@ -4956,11 +4956,11 @@ exports.addDebouncer = _flush.enqueueDebouncer;
 
 
 module.exports = {
-  BaseModel: __webpack_require__(233),
-  BaseStore: __webpack_require__(235),
-  BaseService: __webpack_require__(236),
-  Mixin: __webpack_require__(238),
-  EventInterface: __webpack_require__(239),
+  BaseModel: __webpack_require__(234),
+  BaseStore: __webpack_require__(236),
+  BaseService: __webpack_require__(237),
+  Mixin: __webpack_require__(239),
+  EventInterface: __webpack_require__(240),
   fetch: __webpack_require__(62)
 };
 
@@ -6406,7 +6406,7 @@ document.head.appendChild($_documentContainer);
 
 __webpack_require__(1);
 
-__webpack_require__(224);
+__webpack_require__(225);
 
 var $_documentContainer = document.createElement('div');
 $_documentContainer.setAttribute('style', 'display: none;');
@@ -7100,7 +7100,7 @@ exports.PaperRippleBehavior = undefined;
 
 __webpack_require__(1);
 
-__webpack_require__(227);
+__webpack_require__(228);
 
 var _ironButtonState = __webpack_require__(27);
 
@@ -7461,10 +7461,10 @@ var _polymerDom = __webpack_require__(5);
 
 
 module.exports = {
-  ElasticSearchInterface: __webpack_require__(261),
-  ElasticSearchModel: __webpack_require__(262),
-  ElasticSearchService: __webpack_require__(263),
-  ElasticSearchStore: __webpack_require__(264)
+  ElasticSearchInterface: __webpack_require__(262),
+  ElasticSearchModel: __webpack_require__(263),
+  ElasticSearchService: __webpack_require__(264),
+  ElasticSearchStore: __webpack_require__(265)
 };
 
 /***/ }),
@@ -8456,9 +8456,9 @@ var _caseMap = __webpack_require__(15);
 
 var caseMap = _interopRequireWildcard(_caseMap);
 
-var _propertyAccessors = __webpack_require__(196);
+var _propertyAccessors = __webpack_require__(197);
 
-var _templateStamp = __webpack_require__(197);
+var _templateStamp = __webpack_require__(198);
 
 var _settings = __webpack_require__(19);
 
@@ -12640,7 +12640,7 @@ exports.IronSelectableBehavior = undefined;
 
 __webpack_require__(1);
 
-var _ironSelection = __webpack_require__(229);
+var _ironSelection = __webpack_require__(230);
 
 var _polymerDom = __webpack_require__(5);
 
@@ -13229,7 +13229,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var EventEmitter = __webpack_require__(234).EventEmitter;
+var EventEmitter = __webpack_require__(235).EventEmitter;
 
 /**
  * @class MasterController
@@ -13313,9 +13313,9 @@ module.exports = new MasterController();
 
 module.exports = {
   AppStateInterface: __webpack_require__(64),
-  AppStateModel: __webpack_require__(248),
-  AppStateStore: __webpack_require__(249),
-  'app-route': __webpack_require__(250)
+  AppStateModel: __webpack_require__(249),
+  AppStateStore: __webpack_require__(250),
+  'app-route': __webpack_require__(251)
 };
 
 /***/ }),
@@ -13446,6 +13446,13 @@ module.exports = new ElasticSearchStoreImpl();
 "use strict";
 
 
+var rights = __webpack_require__(65);
+
+var rightsMap = {};
+for (var key in rights) {
+  rightsMap[key] = rights[key].text;
+}
+
 module.exports = {
   fcrepoBasePath: '/fcrepo/rest',
 
@@ -13467,6 +13474,11 @@ module.exports = {
       yearPublished: {
         label: 'Published',
         type: 'range'
+      },
+      license: {
+        label: 'Rights',
+        type: 'facet',
+        valueMap: rightsMap
       },
       type: {
         label: 'Type',
@@ -13621,23 +13633,23 @@ __webpack_require__(12);
 
 __webpack_require__(14);
 
-var _ironMenubarBehavior = __webpack_require__(305);
+var _ironMenubarBehavior = __webpack_require__(306);
 
 var _ironResizableBehavior = __webpack_require__(41);
 
-__webpack_require__(72);
+__webpack_require__(73);
 
 __webpack_require__(25);
 
-__webpack_require__(307);
-
 __webpack_require__(308);
+
+__webpack_require__(309);
 
 var _polymerFn = __webpack_require__(3);
 
 var _polymerDom = __webpack_require__(5);
 
-var _ironMenuBehavior = __webpack_require__(192);
+var _ironMenuBehavior = __webpack_require__(193);
 
 (0, _polymerFn.Polymer)({
   _template: '\n    <style>\n      :host {\n        @apply --layout;\n        @apply --layout-center;\n\n        height: 48px;\n        font-size: 14px;\n        font-weight: 500;\n        overflow: hidden;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        -webkit-user-select: none;\n        user-select: none;\n\n        /* NOTE: Both values are needed, since some phones require the value to be `transparent`. */\n        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n        -webkit-tap-highlight-color: transparent;\n\n        @apply --paper-tabs;\n      }\n\n      :host-context([dir=rtl]) {\n        @apply --layout-horizontal-reverse;\n      }\n\n      #tabsContainer {\n        position: relative;\n        height: 100%;\n        white-space: nowrap;\n        overflow: hidden;\n        @apply --layout-flex-auto;\n        @apply --paper-tabs-container;\n      }\n\n      #tabsContent {\n        height: 100%;\n        -moz-flex-basis: auto;\n        -ms-flex-basis: auto;\n        flex-basis: auto;\n        @apply --paper-tabs-content;\n      }\n\n      #tabsContent.scrollable {\n        position: absolute;\n        white-space: nowrap;\n      }\n\n      #tabsContent:not(.scrollable),\n      #tabsContent.scrollable.fit-container {\n        @apply --layout-horizontal;\n      }\n\n      #tabsContent.scrollable.fit-container {\n        min-width: 100%;\n      }\n\n      #tabsContent.scrollable.fit-container > ::slotted(*) {\n        /* IE - prevent tabs from compressing when they should scroll. */\n        -ms-flex: 1 0 auto;\n        -webkit-flex: 1 0 auto;\n        flex: 1 0 auto;\n      }\n\n      .hidden {\n        display: none;\n      }\n\n      .not-visible {\n        opacity: 0;\n        cursor: default;\n      }\n\n      paper-icon-button {\n        width: 48px;\n        height: 48px;\n        padding: 12px;\n        margin: 0 4px;\n      }\n\n      #selectionBar {\n        position: absolute;\n        height: 0;\n        bottom: 0;\n        left: 0;\n        right: 0;\n        border-bottom: 2px solid var(--paper-tabs-selection-bar-color, var(--paper-yellow-a100));\n          -webkit-transform: scale(0);\n        transform: scale(0);\n          -webkit-transform-origin: left center;\n        transform-origin: left center;\n          transition: -webkit-transform;\n        transition: transform;\n\n        @apply --paper-tabs-selection-bar;\n      }\n\n      #selectionBar.align-bottom {\n        top: 0;\n        bottom: auto;\n      }\n\n      #selectionBar.expand {\n        transition-duration: 0.15s;\n        transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);\n      }\n\n      #selectionBar.contract {\n        transition-duration: 0.18s;\n        transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);\n      }\n\n      #tabsContent > ::slotted(:not(#selectionBar)) {\n        height: 100%;\n      }\n    </style>\n\n    <paper-icon-button icon="paper-tabs:chevron-left" class$="[[_computeScrollButtonClass(_leftHidden, scrollable, hideScrollButtons)]]" on-up="_onScrollButtonUp" on-down="_onLeftScrollButtonDown" tabindex="-1"></paper-icon-button>\n\n    <div id="tabsContainer" on-track="_scroll" on-down="_down">\n      <div id="tabsContent" class$="[[_computeTabsContentClass(scrollable, fitContainer)]]">\n        <div id="selectionBar" class$="[[_computeSelectionBarClass(noBar, alignBottom)]]" on-transitionend="_onBarTransitionEnd"></div>\n        <slot></slot>\n      </div>\n    </div>\n\n    <paper-icon-button icon="paper-tabs:chevron-right" class$="[[_computeScrollButtonClass(_rightHidden, scrollable, hideScrollButtons)]]" on-up="_onScrollButtonUp" on-down="_onRightScrollButtonDown" tabindex="-1"></paper-icon-button>\n',
@@ -14174,7 +14186,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-__webpack_require__(199);
+__webpack_require__(200);
 
 var _elementMixin = __webpack_require__(32);
 
@@ -14182,11 +14194,11 @@ var _gestureEventListeners = __webpack_require__(59);
 
 var _mixin = __webpack_require__(10);
 
-var _importHref = __webpack_require__(203);
+var _importHref = __webpack_require__(204);
 
 __webpack_require__(39);
 
-__webpack_require__(204);
+__webpack_require__(205);
 
 var _polymerDom = __webpack_require__(5);
 
@@ -15355,7 +15367,7 @@ var _cssParse = __webpack_require__(36);
 
 var _commonRegex = __webpack_require__(37);
 
-var _unscopedStyleHandler = __webpack_require__(201);
+var _unscopedStyleHandler = __webpack_require__(202);
 
 /**
  * @param {string|StyleNode} rules
@@ -17089,7 +17101,7 @@ exports.calculateSplices = calculateSplices;
 // on the global object (window or self)
 //
 // Return that as the export for use in Webpack, Browserify etc.
-__webpack_require__(237);
+__webpack_require__(238);
 module.exports = self.fetch.bind(self);
 
 /***/ }),
@@ -17231,6 +17243,12 @@ module.exports = function (subclass) {
 
 /***/ }),
 /* 65 */
+/***/ (function(module, exports) {
+
+module.exports = {"http://rightsstatements.org/vocab/InC/1.0/":{"text":"IN COPYRIGHT","icon":"InC"},"http://rightsstatements.org/vocab/InC-OW-EU/1.0/":{"text":"IN COPYRIGHT - EU ORPHAN WORK","icon":"InC"},"http://rightsstatements.org/vocab/InC-EDU/1.0/":{"text":"IN COPYRIGHT - EDUCATIONAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-NC/1.0/":{"text":"IN COPYRIGHT - NON-COMMERCIAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-RUU/1.0/":{"text":"IN COPYRIGHT - RIGHTS-HOLDER(S) UNLOCATABLE OR UNIDENTIFIABLE","icon":"InC"},"http://rightsstatements.org/vocab/NoC-NC/1.0/":{"text":"NO COPYRIGHT - NON-COMMERCIAL USE ONLY","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-OKLR/1.0/":{"text":"NO COPYRIGHT - OTHER KNOWN LEGAL RESTRICTIONS","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-US/1.0/":{"text":"NO COPYRIGHT - UNITED STATES","icon":"NoC"},"http://rightsstatements.org/vocab/CNE/1.0/":{"text":"COPYRIGHT NOT EVALUATED","icon":"Other"},"http://rightsstatements.org/vocab/UND/1.0/":{"text":"COPYRIGHT UNDETERMINED","icon":"Other"},"http://rightsstatements.org/vocab/NKC/1.0/":{"text":"NO KNOWN COPYRIGHT","icon":"Other"}}
+
+/***/ }),
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17329,7 +17347,7 @@ var CollectionStore = function (_BaseStore) {
 module.exports = new CollectionStore();
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17341,23 +17359,23 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _citeproc = __webpack_require__(269);
+var _citeproc = __webpack_require__(270);
 
 var _citeproc2 = _interopRequireDefault(_citeproc);
 
-var _localesEnUS = __webpack_require__(270);
+var _localesEnUS = __webpack_require__(271);
 
 var _localesEnUS2 = _interopRequireDefault(_localesEnUS);
 
-var _apa = __webpack_require__(271);
+var _apa = __webpack_require__(272);
 
 var _apa2 = _interopRequireDefault(_apa);
 
-var _modernLanguageAssociation = __webpack_require__(272);
+var _modernLanguageAssociation = __webpack_require__(273);
 
 var _modernLanguageAssociation2 = _interopRequireDefault(_modernLanguageAssociation);
 
-var _chicagoAuthorDate = __webpack_require__(273);
+var _chicagoAuthorDate = __webpack_require__(274);
 
 var _chicagoAuthorDate2 = _interopRequireDefault(_chicagoAuthorDate);
 
@@ -17481,7 +17499,7 @@ var CitationsModel = function () {
 exports.default = new CitationsModel();
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17511,7 +17529,7 @@ module.exports = function (module) {
 };
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17525,7 +17543,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-var _appCollectionCard = __webpack_require__(277);
+var _appCollectionCard = __webpack_require__(278);
 
 var _appCollectionCard2 = _interopRequireDefault(_appCollectionCard);
 
@@ -17572,7 +17590,7 @@ exports.default = AppCollectionCard;
 customElements.define('app-collection-card', AppCollectionCard);
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17653,7 +17671,7 @@ var IronFormElementBehavior = exports.IronFormElementBehavior = {
 };
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17753,7 +17771,7 @@ var IronValidatableBehavior = exports.IronValidatableBehavior = {
 };
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17791,7 +17809,7 @@ var PaperInputAddonBehavior = exports.PaperInputAddonBehavior = {
 };
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17861,7 +17879,7 @@ document.head.appendChild($_documentContainer);
 });
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17881,7 +17899,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-__webpack_require__(298);
+__webpack_require__(299);
 
 var _CollectionInterface = __webpack_require__(9);
 
@@ -18087,7 +18105,7 @@ var AppSearchResult = function (_Mixin$with) {
 exports.default = AppSearchResult;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18170,7 +18188,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18308,7 +18326,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18376,7 +18394,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18444,7 +18462,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18566,7 +18584,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18635,7 +18653,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18749,7 +18767,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18817,7 +18835,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18933,7 +18951,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19075,7 +19093,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19174,7 +19192,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19243,7 +19261,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19369,7 +19387,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19495,7 +19513,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19612,7 +19630,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19764,7 +19782,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19858,7 +19876,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20053,7 +20071,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20125,7 +20143,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20214,7 +20232,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20283,7 +20301,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20370,7 +20388,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20458,7 +20476,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20545,7 +20563,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20633,7 +20651,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20743,7 +20761,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20816,7 +20834,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20885,7 +20903,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20958,7 +20976,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21031,7 +21049,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21104,7 +21122,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21186,7 +21204,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21287,7 +21305,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21387,7 +21405,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21479,7 +21497,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21568,7 +21586,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21643,7 +21661,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21760,7 +21778,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21873,7 +21891,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21942,7 +21960,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22034,7 +22052,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22117,7 +22135,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22204,7 +22222,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22288,7 +22306,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22371,7 +22389,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22457,7 +22475,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22588,7 +22606,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22721,7 +22739,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22830,7 +22848,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22963,7 +22981,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23117,7 +23135,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23235,7 +23253,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23340,7 +23358,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23432,7 +23450,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23568,7 +23586,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23647,7 +23665,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23736,7 +23754,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23828,7 +23846,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23925,7 +23943,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24021,7 +24039,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24088,7 +24106,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24223,7 +24241,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24315,7 +24333,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24411,7 +24429,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24558,7 +24576,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24637,7 +24655,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24763,7 +24781,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24869,7 +24887,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24981,7 +24999,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25054,7 +25072,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25153,7 +25171,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25241,7 +25259,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25429,7 +25447,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25520,7 +25538,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25612,7 +25630,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25717,7 +25735,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25789,7 +25807,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25921,7 +25939,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26018,7 +26036,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26115,7 +26133,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26184,7 +26202,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26317,7 +26335,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26450,7 +26468,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26523,7 +26541,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26593,7 +26611,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26677,7 +26695,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26869,7 +26887,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26955,7 +26973,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27024,7 +27042,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27105,7 +27123,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27275,7 +27293,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27446,7 +27464,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27525,7 +27543,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27636,7 +27654,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27747,7 +27765,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27844,7 +27862,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27919,7 +27937,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27987,7 +28005,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28126,7 +28144,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28224,7 +28242,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28298,7 +28316,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28374,7 +28392,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28445,7 +28463,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28562,7 +28580,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28662,7 +28680,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28763,7 +28781,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28830,7 +28848,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28897,7 +28915,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29052,7 +29070,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29139,7 +29157,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29206,7 +29224,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29273,7 +29291,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29362,7 +29380,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29436,7 +29454,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29505,7 +29523,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29624,7 +29642,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29738,7 +29756,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29851,7 +29869,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29864,7 +29882,7 @@ exports.IronMenuBehavior = exports.IronMenuBehaviorImpl = undefined;
 
 __webpack_require__(1);
 
-var _ironMultiSelectable = __webpack_require__(306);
+var _ironMultiSelectable = __webpack_require__(307);
 
 var _ironA11yKeysBehavior = __webpack_require__(28);
 
@@ -30247,7 +30265,7 @@ IronMenuBehaviorImpl._shiftTabPressed = false;
 var IronMenuBehavior = exports.IronMenuBehavior = [_ironMultiSelectable.IronMultiSelectableBehavior, _ironA11yKeysBehavior.IronA11yKeysBehavior, IronMenuBehaviorImpl];
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30412,7 +30430,7 @@ function parse(val) {
 }
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30441,7 +30459,7 @@ document.head.appendChild($_documentContainer);
 });
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30458,39 +30476,39 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(198);
-
-__webpack_require__(219);
+__webpack_require__(199);
 
 __webpack_require__(220);
 
 __webpack_require__(221);
 
-__webpack_require__(223);
+__webpack_require__(222);
 
-__webpack_require__(225);
+__webpack_require__(224);
+
+__webpack_require__(226);
 
 __webpack_require__(42);
 
 __webpack_require__(44);
 
-__webpack_require__(230);
-
 __webpack_require__(231);
+
+__webpack_require__(232);
 
 __webpack_require__(6);
 
-__webpack_require__(240);
+__webpack_require__(241);
 
-__webpack_require__(242);
+__webpack_require__(243);
 
-__webpack_require__(244);
+__webpack_require__(245);
 
-__webpack_require__(274);
+__webpack_require__(275);
 
-__webpack_require__(279);
+__webpack_require__(280);
 
-__webpack_require__(328);
+__webpack_require__(329);
 
 __webpack_require__(354);
 
@@ -30625,7 +30643,7 @@ var FinApp = exports.FinApp = function (_Mixin$with) {
 customElements.define('fin-app', FinApp);
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31314,7 +31332,7 @@ var PropertyAccessors = exports.PropertyAccessors = (0, _mixin.dedupingMixin)(fu
 });
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31828,7 +31846,7 @@ var TemplateStamp = exports.TemplateStamp = (0, _mixin.dedupingMixin)(function (
 });
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31838,9 +31856,9 @@ __webpack_require__(1);
 
 __webpack_require__(12);
 
-var _appScrollEffectsBehavior = __webpack_require__(215);
+var _appScrollEffectsBehavior = __webpack_require__(216);
 
-var _appLayoutBehavior = __webpack_require__(218);
+var _appLayoutBehavior = __webpack_require__(219);
 
 var _polymerFn = __webpack_require__(3);
 
@@ -32201,7 +32219,7 @@ var _polymerDom = __webpack_require__(5);
 });
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32220,7 +32238,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // eslint-disable-line no-unused-vars
 
 
-var _applyShim = __webpack_require__(200);
+var _applyShim = __webpack_require__(201);
 
 var _applyShim2 = _interopRequireDefault(_applyShim);
 
@@ -32230,7 +32248,7 @@ var _templateMap2 = _interopRequireDefault(_templateMap);
 
 var _styleUtil = __webpack_require__(55);
 
-var _applyShimUtils = __webpack_require__(202);
+var _applyShimUtils = __webpack_require__(203);
 
 var ApplyShimUtils = _interopRequireWildcard(_applyShimUtils);
 
@@ -32460,7 +32478,7 @@ if (!window.ShadyCSS || !window.ShadyCSS.ScopingShim) {
 window.ShadyCSS.ApplyShim = applyShim;
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33041,7 +33059,7 @@ Object.defineProperty(ApplyShim.prototype, 'invalidCallback', {
 exports.default = ApplyShim;
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33093,7 +33111,7 @@ function isUnscopedStyle(style) {
 }
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33269,7 +33287,7 @@ function elementsAreInvalid() {
 }
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33352,7 +33370,7 @@ var importHref = exports.importHref = function importHref(href, onload, onerror,
 };
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33369,7 +33387,7 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
 }
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33659,7 +33677,7 @@ var FlattenedNodesObserver = function () {
 exports.FlattenedNodesObserver = FlattenedNodesObserver;
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33965,7 +33983,7 @@ var Class = exports.Class = function Class(info) {
 exports.mixinBehaviors = mixinBehaviors;
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34116,7 +34134,7 @@ var Templatizer = {
 exports.Templatizer = Templatizer;
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34278,7 +34296,7 @@ customElements.define('dom-bind', DomBind);
 exports.DomBind = DomBind;
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35065,7 +35083,7 @@ customElements.define(DomRepeat.is, DomRepeat);
 exports.DomRepeat = DomRepeat;
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35380,7 +35398,7 @@ customElements.define(DomIf.is, DomIf);
 exports.DomIf = DomIf;
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35880,7 +35898,7 @@ customElements.define(ArraySelector.is, ArraySelector);
 exports.ArraySelector = ArraySelector;
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35893,7 +35911,7 @@ exports.CustomStyle = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(213);
+__webpack_require__(214);
 
 var _styleGather = __webpack_require__(53);
 
@@ -36003,7 +36021,7 @@ window.customElements.define('custom-style', CustomStyle);
 exports.CustomStyle = CustomStyle;
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36086,7 +36104,7 @@ if (!window.ShadyCSS) {
 window.ShadyCSS.CustomStyleInterface = customStyleInterface;
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36165,7 +36183,7 @@ var OptionalMutableDataBehavior = exports.OptionalMutableDataBehavior = {
 };
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36178,9 +36196,9 @@ exports.AppScrollEffectsBehavior = undefined;
 
 __webpack_require__(1);
 
-var _ironScrollTargetBehavior = __webpack_require__(216);
+var _ironScrollTargetBehavior = __webpack_require__(217);
 
-var _helpers = __webpack_require__(217);
+var _helpers = __webpack_require__(218);
 
 var AppScrollEffectsBehavior = exports.AppScrollEffectsBehavior = [_ironScrollTargetBehavior.IronScrollTargetBehavior, {
 
@@ -36465,7 +36483,7 @@ var AppScrollEffectsBehavior = exports.AppScrollEffectsBehavior = [_ironScrollTa
 }];
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36713,7 +36731,7 @@ var IronScrollTargetBehavior = exports.IronScrollTargetBehavior = {
 };
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36828,7 +36846,7 @@ var scroll = exports.scroll = function scroll(options) {
 };
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36923,7 +36941,7 @@ var AppLayoutBehavior = exports.AppLayoutBehavior = [_ironResizableBehavior.Iron
 }];
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36942,7 +36960,7 @@ var _polymerFn = __webpack_require__(3);
 });
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37436,7 +37454,7 @@ var _polymerDom = __webpack_require__(5);
   } });
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37446,7 +37464,7 @@ __webpack_require__(1);
 
 __webpack_require__(24);
 
-__webpack_require__(222);
+__webpack_require__(223);
 
 var _polymerFn = __webpack_require__(3);
 
@@ -37488,7 +37506,7 @@ var _polymerFn = __webpack_require__(3);
 });
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37504,7 +37522,7 @@ $_documentContainer.innerHTML = '<dom-module id="paper-material-shared-styles">\
 document.head.appendChild($_documentContainer);
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37521,7 +37539,7 @@ __webpack_require__(24);
 __webpack_require__(26);
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37534,7 +37552,7 @@ $_documentContainer.innerHTML = '\n<link rel="stylesheet" type="text/css" href="
 document.head.appendChild($_documentContainer);
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37544,9 +37562,9 @@ __webpack_require__(1);
 
 __webpack_require__(12);
 
-var _paperButtonBehavior = __webpack_require__(226);
+var _paperButtonBehavior = __webpack_require__(227);
 
-__webpack_require__(228);
+__webpack_require__(229);
 
 var _polymerFn = __webpack_require__(3);
 
@@ -37591,7 +37609,7 @@ document.head.appendChild($_documentContainer);
 });
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37683,7 +37701,7 @@ var PaperButtonBehaviorImpl = exports.PaperButtonBehaviorImpl = {
 var PaperButtonBehavior = exports.PaperButtonBehavior = [_ironButtonState.IronButtonState, _ironControlState.IronControlState, _paperRippleBehavior.PaperRippleBehavior, PaperButtonBehaviorImpl];
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38275,7 +38293,7 @@ Ripple.prototype = {
 });
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38293,7 +38311,7 @@ $_documentContainer.innerHTML = '<dom-module id="paper-material-styles">\n  <tem
 document.head.appendChild($_documentContainer);
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38406,7 +38424,7 @@ IronSelection.prototype = {
 };
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38424,7 +38442,7 @@ $_documentContainer.innerHTML = '<iron-iconset-svg name="social" size="24">\n<sv
 document.head.appendChild($_documentContainer);
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38434,7 +38452,7 @@ __webpack_require__(14);
 
 __webpack_require__(30);
 
-var _finIcons = __webpack_require__(232);
+var _finIcons = __webpack_require__(233);
 
 var _finIcons2 = _interopRequireDefault(_finIcons);
 
@@ -38446,13 +38464,13 @@ ele.innerHTML = _finIcons2.default;
 document.head.appendChild(ele);
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports) {
 
 module.exports = "<iron-iconset-svg name=\"fin\" size=\"24\">\n  <svg>\n    <defs>\n  \n      <g id=\"account\">\n        <clipPath id=\"account-clip-path\">\n          <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        </clipPath>  \n        <style type=\"text/css\">.cls-1{fill:#008eaa;}.cls-2{clip-path:url(#account-clip-path);}.cls-3{fill:#f3f3f3;}</style>\n        \n        <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        <g class=\"cls-2\">\n          <circle class=\"cls-3\" cx=\"12\" cy=\"9.88\" r=\"3.5\"/>\n          <ellipse class=\"cls-3\" cx=\"12\" cy=\"22.66\" rx=\"7\" ry=\"8.05\"/>\n        </g>         \n      </g>\n\n      <g id=\"blank-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n      </g>\n\n      <g id=\"blank\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n      </g>\n\n      <g id=\"check\">\n        <polygon points=\"8.57 19.54 2.12 13.08 3.88 11.31 8.57 16 20.12 4.46 21.88 6.23 8.57 19.54\"/>\n      </g>\n\n      <g id=\"copy\">\n        <path d=\"M21.22,5.54H18.46V2.78A1.28,1.28,0,0,0,17.18,1.5H2.78A1.28,1.28,0,0,0,1.5,2.78v14.4a1.28,1.28,0,0,0,1.28,1.28H5.54v2.76A1.28,1.28,0,0,0,6.82,22.5h14.4a1.28,1.28,0,0,0,1.28-1.28V6.82A1.28,1.28,0,0,0,21.22,5.54ZM5.54,6.82V17.65H2.78a.47.47,0,0,1-.47-.47V2.78a.47.47,0,0,1,.47-.47h14.4a.47.47,0,0,1,.47.47V5.54H6.82A1.28,1.28,0,0,0,5.54,6.82ZM19,15.15H15.15V19h-2.1V15.15H9.2v-2.1h3.85V9.2h2.1v3.85H19Z\"/>\n      </g>\n\n      <g id=\"grid\">\n        <rect x=\"17.08\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"17.08\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n      </g>\n\n      <g id=\"image-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <circle cx=\"6.33\" cy=\"5.84\" r=\"1.97\"/>\n        <polygon points=\"3.13 12.93 3.13 15.55 15.61 15.55 15.61 10.83 11.98 7.2 7.4 11.78 5.93 10.32 3.13 12.93\"/>\n      </g>\n\n      <g id=\"image\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <circle cx=\"7.99\" cy=\"7.35\" r=\"2.6\"/>\n        <polygon points=\"3.79 16.69 3.79 20.14 20.21 20.14 20.21 13.92 15.44 9.14 9.4 15.18 7.47 13.25 3.79 16.69\"/>\n      </g>\n\n      <g id=\"list\">\n        <rect x=\"1.5\" y=\"5.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"5.51\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"10.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"10.5\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"15.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"15.5\" width=\"15.89\" height=\"3\"/>\n      </g>\n\n      <g id=\"search\">\n        <path d=\"M22.16,20.08l-5.25-5.24a8.38,8.38,0,1,0-1.53,1.77l5.13,5.12a1.15,1.15,0,0,0,.82.35,1.18,1.18,0,0,0,.83-2ZM9.88,16.35a6,6,0,1,1,6-6.05A6.06,6.06,0,0,1,9.88,16.35Z\"/>\n      </g>\n\n      <g id=\"multiple-sound\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.45.45,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.2,1.2,0,0,1,21.19,22.35Z\"/>\n        <path d=\"M6.88,5.39v5.76a1.76,1.76,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.78h0v-5L13,6.48V10a1.73,1.73,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.79v0h0V4Z\"/>\n      </g>\n\n      <g id=\"sound\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <path d=\"M8.72,6.75v7.59a2.3,2.3,0,0,0-1.33-.41,2.35,2.35,0,1,0,2.35,2.34v0h0V9.63l7-1.43v4.57a2.29,2.29,0,0,0-1.33-.42,2.35,2.35,0,1,0,2.34,2.34h0V4.92Z\"/>\n      </g>\n\n      <g id=\"text-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <rect x=\"5.2\" y=\"7.74\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"10.28\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"12.83\" width=\"4.18\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"5.2\" width=\"8.37\" height=\"0.74\"/>\n      </g>\n\n      <g id=\"text\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <rect x=\"6.5\" y=\"9.84\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"13.18\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"16.53\" width=\"5.5\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"6.5\" width=\"11\" height=\"0.97\"/>\n      </g>\n\n      <g id=\"triangle-dropdown\">\n        <polygon points=\"1.5 5.7 22.5 5.7 12 18.3 1.5 5.7\"/>\n      </g>\n\n      <g id=\"video-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <polygon points=\"12.75 9.36 6.6 13.37 6.6 5.24 12.75 9.36\"/>\n      </g>\n\n      <g id=\"video\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <polygon points=\"16.45 11.99 8.35 17.27 8.35 6.57 16.45 11.99\"/>\n      </g>\n    </defs>\n  </svg>\n</iron-iconset-svg>";
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38561,7 +38579,7 @@ var BaseModel = function () {
 module.exports = BaseModel;
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38840,7 +38858,7 @@ function isUndefined(arg) {
 }
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38949,7 +38967,7 @@ var BaseStore = function () {
 module.exports = BaseStore;
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39311,7 +39329,7 @@ var BaseService = function () {
 module.exports = BaseService;
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39776,7 +39794,7 @@ module.exports = BaseService;
 })(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39825,7 +39843,7 @@ if (typeof window !== 'undefined') {
 module.exports = Mixin;
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40224,13 +40242,13 @@ if (typeof window !== 'undefined') {
 module.exports = EventInterface;
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _styleProperties = __webpack_require__(241);
+var _styleProperties = __webpack_require__(242);
 
 var _styleProperties2 = _interopRequireDefault(_styleProperties);
 
@@ -40242,19 +40260,19 @@ styleWrapper.innerHTML = _styleProperties2.default;
 document.head.appendChild(styleWrapper);
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports) {
 
 module.exports = "<custom-style>\n  <style>\n    html {\n      --default-primary-color : #002655;\n      --light-primary-color   : #335379;\n      \n      --default-secondary-color : #daaa00;\n      --light-secondary-color   : #9be7ff;\n      --dark-secondary-color    : #2286c3;\n\n      --medium-background-color : #B2BDCF;\n      --light-background-color : #D6DCE6;\n      --super-light-background-color: #f3f3f3;\n    \n      --text-primary-color      : black;\n      --primary-text-color      : var(--text-primary-color);\n      --secondary-text-color    : var(--default-secondary-color);\n      --inverse-text-color      : white;\n      --gray-text               : #8B8B8B;\n      --text-disabled           : var(--gray-text);\n\n      --max-width               : 1200px;\n      --max-text-width          : 650px;\n      --font-size               : 16px;\n      --font-size-sm            : 14px;\n      --font-weight             : 400;\n      --font-weight-heavy       : 700;\n\n      --layout-sm               : 768px;\n      --grid-cell-width         : 250px;\n\n     /**\n      * Custom mixins\n      */\n      --fin-search-box-select: {\n        font-size: var(--font-size);\n        font-weight: var(--font-weight);\n        color: var(--default-primary-color);\n        background-color: var(--default-secondary-color);\n        width: 100px;\n      }\n      --fin-search-box-select-inverse: {\n        @apply(--fin-search-box-select);\n        color: var(--default-secondary-color);\n        background-color: var(--default-primary-color);\n      }\n      --fin-search-box-input: {\n        font-size: var(--font-size);\n      }\n      --cork-drop-down-arrow-color: var(--default-primary-color);\n      --cork-toggle-panel-label : {\n        padding: 10px 0;\n        color: var(--default-primary-color);\n        font-weight: var(--font-weight-heavy);\n      }\n    }\n    body, html {\n      /* @apply --paper-font-common-base; */\n      font-family: \"proxima-nova\",\"Montserrat\",\"Lucida Grande\",\"Lucida Sans\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\n      font-size        : var(--font-size);\n      font-weight      : var(--font-weight);\n      line-height      : calc(var(--font-size) * 1.625);\n      margin           : 0;\n      padding          : 0;\n      height           : 100%;\n      background-color : var(--default-background-color);\n      color            : var(--text-primary-color);\n    }\n  </style>\n</custom-style>";
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _sharedStyles = __webpack_require__(243);
+var _sharedStyles = __webpack_require__(244);
 
 var _sharedStyles2 = _interopRequireDefault(_sharedStyles);
 
@@ -40266,29 +40284,29 @@ styleWrapper.innerHTML = _sharedStyles2.default;
 document.head.appendChild(styleWrapper);
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports) {
 
 module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n      paper-material {\n        background: white;\n        display: block;\n        padding: 10px;\n        margin: 10px;\n      }\n\n      paper-tabs {\n        --paper-tabs-selection-bar: {\n          border-bottom: 3px solid var(--default-primary-color);\n        }\n      }\n      paper-tab {\n        --paper-tab-content-unselected : {    \n          text-transform: uppercase;\n          color: var(--text-disabled);\n        }\n        --paper-tab-content : {\n          text-transform: uppercase;\n          color: var(--default-primary-color);\n        }\n      }\n\n      [hidden] {\n        display: none !important;\n      }\n\n      input, select, button {\n        font-size        : var(--font-size);\n        font-weight      : var(--font-weight);\n        color            : var(--text-primary-color);\n      }\n\n      main {\n        display: flex;\n        justify-content: center;\n      }\n\n      main > * {\n        max-width: 1000px;\n        width: 100%;\n      }\n\n      ul.menu {\n        list-style: none;\n        margin: 0;\n        padding: 0;\n      }\n\n      ul.menu.horizontal {\n        display: flex;\n      }\n\n      a {\n        text-decoration: none;\n        color: var(--default-primary-color);\n      }\n\n      a.italic {\n        color: var(--default-secondary-color);\n        font-style: italic;\n      }\n\n      a.gold {\n        color: var(--default-secondary-color);\n      }\n\n      .text-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n      }\n      \n      .text-container > * {\n        max-width: var(--max-text-width);\n        width: 100%;\n      }\n\n      .container {\n        display: flex;\n        justify-content: center;\n        flex-direction: column;\n        align-items: center;\n      }\n\n      .container > * {\n        max-width: var(--max-width);\n        width: 100%;\n        justify-content: center;\n      }\n\n      fin-search-box > iron-icon {\n        color: var(--default-secondary-color);\n      }\n    </style>\n  </template>\n</dom-module>";
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 module.exports = {
-  AuthModel: __webpack_require__(245),
-  AppStateModel: __webpack_require__(247),
-  ElasticSearchModel: __webpack_require__(260),
-  CollectionModel: __webpack_require__(266),
-  MediaModel: __webpack_require__(268),
-  CitationModel: __webpack_require__(66)
+  AuthModel: __webpack_require__(246),
+  AppStateModel: __webpack_require__(248),
+  ElasticSearchModel: __webpack_require__(261),
+  CollectionModel: __webpack_require__(267),
+  MediaModel: __webpack_require__(269),
+  CitationModel: __webpack_require__(67)
 };
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40308,7 +40326,7 @@ var _require = __webpack_require__(6),
     BaseModel = _require.BaseModel;
 
 var AuthStore = __webpack_require__(63);
-var AuthService = __webpack_require__(246);
+var AuthService = __webpack_require__(247);
 
 var AuthModel = function (_BaseModel) {
   _inherits(AuthModel, _BaseModel);
@@ -40371,7 +40389,7 @@ var AuthModel = function (_BaseModel) {
 module.exports = new AuthModel();
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40457,7 +40475,7 @@ var AuthSerivce = function (_BaseService) {
 module.exports = new AuthSerivce();
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40474,7 +40492,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var _require = __webpack_require__(47),
     AppStateModel = _require.AppStateModel;
 
-var AppStateStore = __webpack_require__(259);
+var AppStateStore = __webpack_require__(260);
 
 var AppStateModelImpl = function (_AppStateModel) {
   _inherits(AppStateModelImpl, _AppStateModel);
@@ -40516,7 +40534,7 @@ var AppStateModelImpl = function (_AppStateModel) {
 module.exports = new AppStateModelImpl();
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40635,7 +40653,7 @@ var AppStateModel = function (_BaseModel) {
 module.exports = AppStateModel;
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40689,7 +40707,7 @@ var AppStateStore = function (_BaseStore) {
 module.exports = AppStateStore;
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40699,11 +40717,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(251);
+__webpack_require__(252);
 
 var _corkAppUtils = __webpack_require__(6);
 
-var _queryString = __webpack_require__(255);
+var _queryString = __webpack_require__(256);
 
 var _queryString2 = _interopRequireDefault(_queryString);
 
@@ -40826,7 +40844,7 @@ var AppRoute = function (_Mixin$with) {
 customElements.define('app-route', AppRoute);
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40834,11 +40852,11 @@ customElements.define('app-route', AppRoute);
 
 __webpack_require__(1);
 
-__webpack_require__(252);
-
 __webpack_require__(253);
 
-var _appRouteConverterBehavior = __webpack_require__(254);
+__webpack_require__(254);
+
+var _appRouteConverterBehavior = __webpack_require__(255);
 
 var _polymerFn = __webpack_require__(3);
 
@@ -40962,7 +40980,7 @@ var _polymerFn = __webpack_require__(3);
 });
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41313,7 +41331,7 @@ function resolveURL(path, base) {
 });
 
 /***/ }),
-/* 253 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41400,7 +41418,7 @@ var _polymerFn = __webpack_require__(3);
 });
 
 /***/ }),
-/* 254 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41494,7 +41512,7 @@ var AppRouteConverterBehavior = exports.AppRouteConverterBehavior = {
 };
 
 /***/ }),
-/* 255 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41502,9 +41520,9 @@ var AppRouteConverterBehavior = exports.AppRouteConverterBehavior = {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var strictUriEncode = __webpack_require__(256);
-var objectAssign = __webpack_require__(257);
-var decodeComponent = __webpack_require__(258);
+var strictUriEncode = __webpack_require__(257);
+var objectAssign = __webpack_require__(258);
+var decodeComponent = __webpack_require__(259);
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -41694,7 +41712,7 @@ exports.stringify = function (obj, opts) {
 };
 
 /***/ }),
-/* 256 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41707,7 +41725,7 @@ module.exports = function (str) {
 };
 
 /***/ }),
-/* 257 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41803,7 +41821,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 };
 
 /***/ }),
-/* 258 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41906,7 +41924,7 @@ module.exports = function (encodedURI) {
 };
 
 /***/ }),
-/* 259 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41969,7 +41987,7 @@ var ImplAppStateStore = function (_AppStateStore) {
 module.exports = new ImplAppStateStore();
 
 /***/ }),
-/* 260 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41991,7 +42009,7 @@ var _require = __webpack_require__(31),
     ElasticSearchModel = _require.ElasticSearchModel;
 
 var ElasticSearchStore = __webpack_require__(48);
-var ElasticSearchService = __webpack_require__(265);
+var ElasticSearchService = __webpack_require__(266);
 var config = __webpack_require__(49);
 
 var ElasticSearchModelImpl = function (_ElasticSearchModel) {
@@ -42157,7 +42175,7 @@ var ElasticSearchModelImpl = function (_ElasticSearchModel) {
 module.exports = new ElasticSearchModelImpl();
 
 /***/ }),
-/* 261 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42472,7 +42490,7 @@ module.exports = function (subclass) {
 };
 
 /***/ }),
-/* 262 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43264,7 +43282,7 @@ var ElasticSearchModel = function (_BaseModel) {
 module.exports = ElasticSearchModel;
 
 /***/ }),
-/* 263 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43422,7 +43440,7 @@ var ElasticSearchService = function (_BaseService) {
 module.exports = ElasticSearchService;
 
 /***/ }),
-/* 264 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43637,7 +43655,7 @@ var ElasticSearchStore = function (_BaseStore) {
 module.exports = ElasticSearchStore;
 
 /***/ }),
-/* 265 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43783,7 +43801,7 @@ var ElasticSearchServiceImpl = function (_ElasticSearchService) {
 module.exports = new ElasticSearchServiceImpl();
 
 /***/ }),
-/* 266 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43802,8 +43820,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var _require = __webpack_require__(6),
     BaseModel = _require.BaseModel;
 
-var CollectionStore = __webpack_require__(65);
-var CollectionService = __webpack_require__(267);
+var CollectionStore = __webpack_require__(66);
+var CollectionService = __webpack_require__(268);
 // it's ok to import other stores & services, just not models
 var ElasticSearchStore = __webpack_require__(48);
 
@@ -43938,7 +43956,7 @@ var CollectionModel = function (_BaseModel) {
 module.exports = new CollectionModel();
 
 /***/ }),
-/* 267 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43957,7 +43975,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var _require = __webpack_require__(6),
     BaseService = _require.BaseService;
 
-var CollectionStore = __webpack_require__(65);
+var CollectionStore = __webpack_require__(66);
 
 var CollectionService = function (_BaseService) {
   _inherits(CollectionService, _BaseService);
@@ -44025,7 +44043,7 @@ var CollectionService = function (_BaseService) {
 module.exports = new CollectionService();
 
 /***/ }),
-/* 268 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44149,7 +44167,7 @@ var MediaModel = function (_BaseModel) {
 module.exports = new MediaModel();
 
 /***/ }),
-/* 269 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44189,34 +44207,34 @@ blob=this._join([given,non_dropping_particle,family]," ");}else if(this.state.tm
 if(name["dropping-particle"]&&name.family&&!name["non-dropping-particle"]){if(["'","\u02BC","\u2019","-"].indexOf(name["dropping-particle"].slice(-1))>-1){family=this._join([dropping_particle,family],"");dropping_particle=false;}}if(!this.state.tmp.term_predecessor){}var space=" ";if(this.state.inheritOpt(this.name,"initialize-with")&&this.state.inheritOpt(this.name,"initialize-with").match(/[\u00a0\ufeff]/)&&["fr","ru","cs"].indexOf(this.state.opt["default-locale"][0].slice(0,2))>-1){space="\xA0";}if(has_hyphenated_non_dropping_particle){second=this._join([non_dropping_particle,family],"");second=this._join([dropping_particle,second],space);}else{second=this._join([dropping_particle,non_dropping_particle,family],space);}second=this._join([second,suffix],suffix_sep);if(second&&this.family){second.strings.prefix=this.family.strings.prefix;second.strings.suffix=this.family.strings.suffix;}if(given&&this.given){given.strings.prefix=this.given.strings.prefix;given.strings.suffix=this.given.strings.suffix;}if(second.strings.prefix){name["comma-dropping-particle"]="";}blob=this._join([given,second],name["comma-dropping-particle"]+space);}this.state.tmp.group_context.tip.variable_success=true;this.state.tmp.can_substitute.replace(false,CSL.LITERAL);this.state.tmp.term_predecessor=true;this.state.tmp.name_node.children.push(blob);return blob;};CSL.NameOutput.prototype._normalizeNameInput=function(value){var name={literal:value.literal,family:value.family,isInstitution:value.isInstitution,given:value.given,suffix:value.suffix,"comma-suffix":value["comma-suffix"],"non-dropping-particle":value["non-dropping-particle"],"dropping-particle":value["dropping-particle"],"static-ordering":value["static-ordering"],"static-particles":value["static-particles"],"reverse-ordering":value["reverse-ordering"],"full-form-always":value["full-form-always"],"parse-names":value["parse-names"],"comma-dropping-particle":"",block_initialize:value.block_initialize,multi:value.multi};this._parseName(name);return name;};CSL.NameOutput.prototype._stripPeriods=function(tokname,str){var decor_tok=this[tokname+"_decor"];if(str){if(this.state.tmp.strip_periods){str=str.replace(/\./g,"");}else if(decor_tok){for(var i=0,ilen=decor_tok.decorations.length;i<ilen;i+=1){if("@strip-periods"===decor_tok.decorations[i][0]&&"true"===decor_tok.decorations[i][1]){str=str.replace(/\./g,"");break;}}}}return str;};CSL.NameOutput.prototype._nonDroppingParticle=function(name){var ndp=name["non-dropping-particle"];if(ndp&&this.state.tmp.sort_key_flag){ndp=ndp.replace(/[\'\u2019]/,"");}var str=this._stripPeriods("family",ndp);if(this.state.output.append(str,this.family_decor,true)){return this.state.output.pop();}return false;};CSL.NameOutput.prototype._droppingParticle=function(name,pos,j){var dp=name["dropping-particle"];if(dp&&this.state.tmp.sort_key_flag){dp=dp.replace(/[\'\u2019]/,"");}var str=this._stripPeriods("given",dp);if(name["dropping-particle"]&&name["dropping-particle"].match(/^et.?al[^a-z]$/)){if(this.state.inheritOpt(this.name,"et-al-use-last")){if("undefined"===typeof j){this.etal_spec[pos].freeters=2;}else{this.etal_spec[pos].persons=2;}}else{if("undefined"===typeof j){this.etal_spec[pos].freeters=1;}else{this.etal_spec[pos].persons=1;}}name["comma-dropping-particle"]="";}else if(this.state.output.append(str,this.given_decor,true)){return this.state.output.pop();}return false;};CSL.NameOutput.prototype._familyName=function(name){var str=this._stripPeriods("family",name.family);if(this.state.output.append(str,this.family_decor,true)){return this.state.output.pop();}return false;};CSL.NameOutput.prototype._givenName=function(name,pos,i){var ret;var formIsShort=this.state.inheritOpt(this.name,"form","name-form","long")!=="long";var initializeIsTurnedOn=!(this.state.inheritOpt(this.name,"initialize")===false);var hasInitializeWith="string"===typeof this.state.inheritOpt(this.name,"initialize-with")&&!name.block_initialize;var inBibliography=this.state.tmp.area.slice(0,12)==="bibliography";var defaultLevel;var useLevel;if(name["full-form-always"]){useLevel=2;}else{if(formIsShort){defaultLevel=0;}else if(hasInitializeWith){defaultLevel=1;}else{defaultLevel=2;}var requestedLevel=this.state.tmp.disambig_settings.givens[pos][i];if(requestedLevel>defaultLevel){useLevel=requestedLevel;}else{useLevel=defaultLevel;}}var gdropt=this.state.citation.opt["givenname-disambiguation-rule"];if(gdropt&&gdropt.slice(-14)==="-with-initials"){hasInitializeWith=true;}if(name.family&&useLevel===1){if(hasInitializeWith){var initialize_with=this.state.inheritOpt(this.name,"initialize-with",false,"");name.given=CSL.Util.Names.initializeWith(this.state,name.given,initialize_with,!initializeIsTurnedOn);}else{name.given=CSL.Util.Names.unInitialize(this.state,name.given);}}else if(useLevel===0){return false;}else if(useLevel===2){name.given=CSL.Util.Names.unInitialize(this.state,name.given);}var str=this._stripPeriods("given",name.given);var rendered=this.state.output.append(str,this.given_decor,true);if(rendered){ret=this.state.output.pop();return ret;}return false;};CSL.NameOutput.prototype._nameSuffix=function(name){var str=name.suffix,ret;if("string"===typeof this.state.inheritOpt(this.name,"initialize-with")){str=CSL.Util.Names.initializeWith(this.state,name.suffix,this.state.inheritOpt(this.name,"initialize-with"),true);}str=this._stripPeriods("family",str);var toSuffix='';if(str&&str.slice(-1)==='.'){str=str.slice(0,-1);toSuffix='.';}var rendered=this.state.output.append(str,"empty",true);if(rendered){ret=this.state.output.pop();ret.strings.suffix=toSuffix+ret.strings.suffix;return ret;}return false;};CSL.NameOutput.prototype._getLongStyle=function(name,v,i){var long_style,short_style;if(name["short"].length){if(this.institutionpart["long-with-short"]){long_style=this.institutionpart["long-with-short"];}else{long_style=this.institutionpart["long"];}}else{long_style=this.institutionpart["long"];}if(!long_style){long_style=new CSL.Token();}return long_style;};CSL.NameOutput.prototype._getShortStyle=function(){var short_style;if(this.institutionpart["short"]){short_style=this.institutionpart["short"];}else{short_style=new CSL.Token();}return short_style;};CSL.NameOutput.prototype._parseName=function(name){var m,idx;if(!name["parse-names"]&&"undefined"!==typeof name["parse-names"]){return name;}if(name.family&&!name.given&&name.isInstitution){name.literal=name.family;name.family=undefined;name.isInstitution=undefined;}var noparse;if(name.family&&name.family.slice(0,1)==='"'&&name.family.slice(-1)==='"'||!name["parse-names"]&&"undefined"!==typeof name["parse-names"]){name.family=name.family.slice(1,-1);noparse=true;name["parse-names"]=0;}else{noparse=false;}if(this.state.opt.development_extensions.parse_names){if(!name["non-dropping-particle"]&&name.family&&!noparse&&name.given){if(!name["static-particles"]){CSL.parseParticles(name,true);}}}};CSL.NameOutput.prototype.getName=function(name,slotLocaleset,fallback,stopOrig){if(stopOrig&&slotLocaleset==='locale-orig'){return{name:false,usedOrig:stopOrig};}if(!name.family){name.family="";}if(!name.given){name.given="";}var name_params={};name_params["static-ordering"]=this.getStaticOrder(name);var foundTag=true;if(slotLocaleset!=='locale-orig'){foundTag=false;if(name.multi){var langTags=this.state.opt[slotLocaleset];for(var i=0,ilen=langTags.length;i<ilen;i+=1){langTag=langTags[i];if(name.multi._key[langTag]){foundTag=true;var isInstitution=name.isInstitution;name=name.multi._key[langTag];name.isInstitution=isInstitution;name_params=this.getNameParams(langTag);name_params.transliterated=true;break;}}}}if(!foundTag){var langTag=false;if(name.multi&&name.multi.main){langTag=name.multi.main;}else if(this.Item.language){langTag=this.Item.language;}if(langTag){name_params=this.getNameParams(langTag);}}if(!fallback&&!foundTag){return{name:false,usedOrig:stopOrig};}if(!name.family){name.family="";}if(!name.given){name.given="";}name={family:name.family,given:name.given,"non-dropping-particle":name["non-dropping-particle"],"dropping-particle":name["dropping-particle"],suffix:name.suffix,"static-ordering":name_params["static-ordering"],"static-particles":name["static-particles"],"reverse-ordering":name_params["reverse-ordering"],"full-form-always":name_params["full-form-always"],"parse-names":name["parse-names"],"comma-suffix":name["comma-suffix"],"comma-dropping-particle":name["comma-dropping-particle"],transliterated:name_params.transliterated,block_initialize:name_params["block-initialize"],literal:name.literal,isInstitution:name.isInstitution,multi:name.multi};if(!name.literal&&!name.given&&name.family&&name.isInstitution){name.literal=name.family;}if(name.literal){delete name.family;delete name.given;}name=this._normalizeNameInput(name);var usedOrig;if(stopOrig){usedOrig=stopOrig;}else{usedOrig=!foundTag;}return{name:name,usedOrig:usedOrig};};CSL.NameOutput.prototype.getNameParams=function(langTag){var ret={};var langspec=CSL.localeResolve(this.Item.language,this.state.opt["default-locale"][0]);var try_locale=this.state.locale[langspec.best]?langspec.best:this.state.opt["default-locale"][0];var name_as_sort_order=this.state.locale[try_locale].opts["name-as-sort-order"];var name_as_reverse_order=this.state.locale[try_locale].opts["name-as-reverse-order"];var name_never_short=this.state.locale[try_locale].opts["name-never-short"];var field_lang_bare=langTag.split("-")[0];if(name_as_sort_order&&name_as_sort_order[field_lang_bare]){ret["static-ordering"]=true;ret["reverse-ordering"]=false;}if(name_as_reverse_order&&name_as_reverse_order[field_lang_bare]){ret["reverse-ordering"]=true;ret["static-ordering"]=false;}if(name_never_short&&name_never_short[field_lang_bare]){ret["full-form-always"]=true;}if(ret["static-ordering"]){ret["block-initialize"]=true;}return ret;};CSL.NameOutput.prototype.setRenderedName=function(name){if(this.state.tmp.area==="bibliography"){var strname="";for(var j=0,jlen=CSL.NAME_PARTS.length;j<jlen;j+=1){if(name[CSL.NAME_PARTS[j]]){strname+=name[CSL.NAME_PARTS[j]];}}this.state.tmp.rendered_name.push(strname);}};CSL.NameOutput.prototype.fixupInstitution=function(name,varname,listpos){if(this.state.sys.getHumanForm&&"legal_case"===this.Item.type&&"authority"===varname){name.literal=this.state.sys.getHumanForm(this.Item.jurisdiction,name.literal,true);}name=this._splitInstitution(name,varname,listpos);if(this.institution.strings["reverse-order"]){name["long"].reverse();}var long_form=name["long"];var short_form=name["long"].slice();var use_short_form=false;if(this.state.sys.getAbbreviation){var jurisdiction=this.Item.jurisdiction;for(var j=0,jlen=long_form.length;j<jlen;j+=1){var normalizedKey=long_form[j];if(this.state.sys.normalizeAbbrevsKey){normalizedKey=this.state.sys.normalizeAbbrevsKey(varname,long_form[j]);}jurisdiction=this.state.transform.loadAbbreviation(jurisdiction,"institution-part",normalizedKey);if(this.state.transform.abbrevs[jurisdiction]["institution-part"][normalizedKey]){short_form[j]=this.state.transform.abbrevs[jurisdiction]["institution-part"][normalizedKey];use_short_form=true;}}}if(use_short_form){name["short"]=short_form;}else{name["short"]=[];}return name;};CSL.NameOutput.prototype.getStaticOrder=function(name,refresh){var static_ordering_val=false;if(!refresh&&name["static-ordering"]){static_ordering_val=true;}else if(this._isRomanesque(name)===0){static_ordering_val=true;}else if((!name.multi||!name.multi.main)&&this.Item.language&&['vi','hu'].indexOf(this.Item.language)>-1){static_ordering_val=true;}else if(name.multi&&name.multi.main&&['vi','hu'].indexOf(name.multi.main.slice(0,2))>-1){static_ordering_val=true;}else{if(this.state.opt['auto-vietnamese-names']&&CSL.VIETNAMESE_NAMES.exec(name.family+" "+name.given)&&CSL.VIETNAMESE_SPECIALS.exec(name.family+name.given)){static_ordering_val=true;}}return static_ordering_val;};CSL.NameOutput.prototype._splitInstitution=function(value,v,i){var ret={};if(!value.literal&&value.family){value.literal=value.family;delete value.family;}var splitInstitution=value.literal.replace(/\s*\|\s*/g,"|");splitInstitution=splitInstitution.split("|");if(this.institution.strings.form==="short"&&this.state.sys.getAbbreviation){var jurisdiction=this.Item.jurisdiction;for(var j=splitInstitution.length;j>0;j+=-1){var str=splitInstitution.slice(0,j).join("|");var normalizedKey=str;if(this.state.sys.normalizeAbbrevsKey){normalizedKey=this.state.sys.normalizeAbbrevsKey(v,str);}jurisdiction=this.state.transform.loadAbbreviation(jurisdiction,"institution-entire",normalizedKey);if(this.state.transform.abbrevs[jurisdiction]["institution-entire"][normalizedKey]){var splitLst=this.state.transform.abbrevs[jurisdiction]["institution-entire"][normalizedKey];splitLst=this.state.transform.quashCheck(splitLst);var splitSplitLst=splitLst.split(/>>[0-9]{4}>>/);var m=splitLst.match(/>>([0-9]{4})>>/);splitLst=splitSplitLst.pop();if(splitSplitLst.length>0&&this.Item["original-date"]&&this.Item["original-date"].year){for(var k=m.length-1;k>0;k+=-1){if(parseInt(this.Item["original-date"].year,10)>=parseInt(m[k],10)){break;}splitLst=splitSplitLst.pop();}}splitLst=splitLst.replace(/\s*\|\s*/g,"|");splitInstitution=[splitLst];break;}}}splitInstitution.reverse();ret["long"]=this._trimInstitution(splitInstitution,v,i);return ret;};CSL.NameOutput.prototype._trimInstitution=function(subunits,v,i){var use_first=false;var append_last=false;var s=subunits.slice();var stop_last=false;if(this.institution){if("undefined"!==typeof this.institution.strings["use-first"]){use_first=this.institution.strings["use-first"];}if("undefined"!==typeof this.institution.strings["stop-last"]){stop_last=this.institution.strings["stop-last"];}else if("authority"===v&&this.state.tmp.authority_stop_last){stop_last=this.state.tmp.authority_stop_last;}if(stop_last){s=s.slice(0,stop_last);subunits=subunits.slice(0,stop_last);}if("undefined"!==typeof this.institution.strings["use-last"]){append_last=this.institution.strings["use-last"];}if("authority"===v){if(stop_last){this.state.tmp.authority_stop_last=stop_last;}if(append_last){this.state.tmp.authority_stop_last+=append_last*-1;}}}if(false===use_first){if(this.persons[v].length===0){use_first=this.institution.strings["substitute-use-first"];}if(!use_first){use_first=0;}}if(false===append_last){if(!use_first){append_last=subunits.length;}else{append_last=0;}}if(use_first>subunits.length-append_last){use_first=subunits.length-append_last;}subunits=subunits.slice(0,use_first);s=s.slice(use_first);if(append_last){if(append_last>s.length){append_last=s.length;}if(append_last){subunits=subunits.concat(s.slice(s.length-append_last));}}return subunits;};module.exports=CSL;CSL.PublisherOutput=function(state,group_tok){this.state=state;this.group_tok=group_tok;this.varlist=[];};CSL.PublisherOutput.prototype.render=function(){this.clearVars();this.composeAndBlob();this.composeElements();this.composePublishers();this.joinPublishers();};CSL.PublisherOutput.prototype.composeAndBlob=function(){this.and_blob={};var and_term=false;if(this.group_tok.strings.and==="text"){and_term=this.state.getTerm("and");}else if(this.group_tok.strings.and==="symbol"){and_term="&";}var tok=new CSL.Token();tok.strings.suffix=" ";tok.strings.prefix=" ";this.state.output.append(and_term,tok,true);var no_delim=this.state.output.pop();tok.strings.prefix=this.group_tok.strings["subgroup-delimiter"];this.state.output.append(and_term,tok,true);var with_delim=this.state.output.pop();this.and_blob.single=false;this.and_blob.multiple=false;if(and_term){if(this.group_tok.strings["subgroup-delimiter-precedes-last"]==="always"){this.and_blob.single=with_delim;}else if(this.group_tok.strings["subgroup-delimiter-precedes-last"]==="never"){this.and_blob.single=no_delim;this.and_blob.multiple=no_delim;}else{this.and_blob.single=no_delim;this.and_blob.multiple=with_delim;}}};CSL.PublisherOutput.prototype.composeElements=function(){for(var i=0,ilen=2;i<ilen;i+=1){var varname=["publisher","publisher-place"][i];for(var j=0,jlen=this["publisher-list"].length;j<jlen;j+=1){var str=this[varname+"-list"][j];var tok=this[varname+"-token"];this.state.output.append(str,tok,true);this[varname+"-list"][j]=this.state.output.pop();}}};CSL.PublisherOutput.prototype.composePublishers=function(){var blobs;for(var i=0,ilen=this["publisher-list"].length;i<ilen;i+=1){var ordered_list=[];blobs=[this[this.varlist[0]+"-list"][i],this[this.varlist[1]+"-list"][i]];this["publisher-list"][i]=this._join(blobs,this.group_tok.strings.delimiter);}};CSL.PublisherOutput.prototype.joinPublishers=function(){var blobs=this["publisher-list"];var delim=this.name_delimiter;var publishers=this._join(blobs,this.group_tok.strings["subgroup-delimiter"],this.and_blob.single,this.and_blob.multiple,this.group_tok);this.state.output.append(publishers,"literal");};CSL.PublisherOutput.prototype._join=CSL.NameOutput.prototype._join;CSL.PublisherOutput.prototype._getToken=CSL.NameOutput.prototype._getToken;CSL.PublisherOutput.prototype.clearVars=function(){this.state.tmp["publisher-list"]=false;this.state.tmp["publisher-place-list"]=false;this.state.tmp["publisher-group-token"]=false;this.state.tmp["publisher-token"]=false;this.state.tmp["publisher-place-token"]=false;};module.exports=CSL;CSL.evaluateLabel=function(node,state,Item,item){var myterm;if("locator"===node.strings.term){if(item&&item.label){if(item.label==="sub verbo"){myterm="sub-verbo";}else{myterm=item.label;}}if(!myterm){myterm="page";}}else{myterm=node.strings.term;}var plural=node.strings.plural;if("number"!==typeof plural){var theItem=node.strings.term==="locator"?item:Item;state.processNumber(false,theItem,node.strings.term,Item.type);plural=state.tmp.shadow_numbers[node.strings.term].plural;if(!state.tmp.shadow_numbers[node.strings.term].labelForm&&!state.tmp.shadow_numbers[node.strings.term].labelDecorations){state.tmp.shadow_numbers[node.strings.term].labelForm=node.strings.form;state.tmp.shadow_numbers[node.strings.term].labelCapitalizeIfFirst=node.strings.capitalize_if_first;state.tmp.shadow_numbers[node.strings.term].labelDecorations=node.decorations.slice();}if(["locator","number","page"].indexOf(node.strings.term)>-1&&state.tmp.shadow_numbers[node.strings.term].label){myterm=state.tmp.shadow_numbers[node.strings.term].label;}if(node.decorations&&(state.opt.development_extensions.csl_reverse_lookup_support||state.sys.csl_reverse_lookup_support)){node.decorations.reverse();node.decorations.push(["@showid","true",node.cslid]);node.decorations.reverse();}}return CSL.castLabel(state,node,myterm,plural,CSL.TOLERANT);};CSL.castLabel=function(state,node,term,plural,mode){var label_form=node.strings.form;var label_capitalize_if_first=node.strings.capitalize_if_first;if(state.tmp.group_context.tip.label_form&&label_form!=="static"){label_form=state.tmp.group_context.tip.label_form;}if(state.tmp.group_context.tip.label_capitalize_if_first){label_capitalize_if_first=state.tmp.group_context.tip.label_capitalize_if_first;}var ret=state.getTerm(term,label_form,plural,false,mode,node.default_locale);if(label_capitalize_if_first){ret=CSL.Output.Formatters["capitalize-first"](state,ret);}if(state.tmp.strip_periods){ret=ret.replace(/\./g,"");}else{for(var i=0,ilen=node.decorations.length;i<ilen;i+=1){if("@strip-periods"===node.decorations[i][0]&&"true"===node.decorations[i][1]){ret=ret.replace(/\./g,"");break;}}}return ret;};module.exports=CSL;CSL.Node.name={build:function build(state,target){var func,pos,len,attrname;if([CSL.SINGLETON,CSL.START].indexOf(this.tokentype)>-1){if("undefined"===typeof state.tmp.root){var oldTmpRoot=undefined;state.tmp.root="citation";}else{var oldTmpRoot=state.tmp.root;}if(state.inheritOpt(this,"et-al-subsequent-min")&&state.inheritOpt(this,"et-al-subsequent-min")!==state.inheritOpt(this,"et-al-min")){state.opt.update_mode=CSL.POSITION;}if(state.inheritOpt(this,"et-al-subsequent-use-first")&&state.inheritOpt(this,"et-al-subsequent-use-first")!==state.inheritOpt(this,"et-al-use-first")){state.opt.update_mode=CSL.POSITION;}state.tmp.root=oldTmpRoot;func=function func(state,Item){state.tmp.etal_term="et-al";state.tmp.name_delimiter=state.inheritOpt(this,"delimiter","name-delimiter",", ");state.tmp["delimiter-precedes-et-al"]=state.inheritOpt(this,"delimiter-precedes-et-al");if("text"===state.inheritOpt(this,"and")){this.and_term=state.getTerm("and","long",0);}else if("symbol"===state.inheritOpt(this,"and")){if(state.opt.development_extensions.expect_and_symbol_form){this.and_term=state.getTerm("and","symbol",0);}else{this.and_term="&";}}state.tmp.and_term=this.and_term;if(CSL.STARTSWITH_ROMANESQUE_REGEXP.test(this.and_term)){this.and_prefix_single=" ";this.and_prefix_multiple=", ";if("string"===typeof state.tmp.name_delimiter){this.and_prefix_multiple=state.tmp.name_delimiter;}this.and_suffix=" ";}else{this.and_prefix_single="";this.and_prefix_multiple="";this.and_suffix="";}if(state.inheritOpt(this,"delimiter-precedes-last")==="always"){this.and_prefix_single=state.tmp.name_delimiter;}else if(state.inheritOpt(this,"delimiter-precedes-last")==="never"){if(this.and_prefix_multiple){this.and_prefix_multiple=" ";}}else if(state.inheritOpt(this,"delimiter-precedes-last")==="after-inverted-name"){if(this.and_prefix_single){this.and_prefix_single=state.tmp.name_delimiter;}if(this.and_prefix_multiple){this.and_prefix_multiple=" ";}}this.and={};if(state.inheritOpt(this,"and")){state.output.append(this.and_term,"empty",true);this.and.single=state.output.pop();this.and.single.strings.prefix=this.and_prefix_single;this.and.single.strings.suffix=this.and_suffix;state.output.append(this.and_term,"empty",true);this.and.multiple=state.output.pop();this.and.multiple.strings.prefix=this.and_prefix_multiple;this.and.multiple.strings.suffix=this.and_suffix;}else if(state.tmp.name_delimiter){this.and.single=new CSL.Blob(state.tmp.name_delimiter);this.and.single.strings.prefix="";this.and.single.strings.suffix="";this.and.multiple=new CSL.Blob(state.tmp.name_delimiter);this.and.multiple.strings.prefix="";this.and.multiple.strings.suffix="";}this.ellipsis={};if(state.inheritOpt(this,"et-al-use-last")){this.ellipsis_term="\u2026";this.ellipsis_prefix_single=" ";this.ellipsis_prefix_multiple=state.inheritOpt(this,"delimiter","name-delimiter",", ");this.ellipsis_suffix=" ";this.ellipsis.single=new CSL.Blob(this.ellipsis_term);this.ellipsis.single.strings.prefix=this.ellipsis_prefix_single;this.ellipsis.single.strings.suffix=this.ellipsis_suffix;this.ellipsis.multiple=new CSL.Blob(this.ellipsis_term);this.ellipsis.multiple.strings.prefix=this.ellipsis_prefix_multiple;this.ellipsis.multiple.strings.suffix=this.ellipsis_suffix;}if("undefined"===typeof state.tmp["et-al-min"]){state.tmp["et-al-min"]=state.inheritOpt(this,"et-al-min");}if("undefined"===typeof state.tmp["et-al-use-first"]){state.tmp["et-al-use-first"]=state.inheritOpt(this,"et-al-use-first");}if("undefined"===typeof state.tmp["et-al-use-last"]){state.tmp["et-al-use-last"]=state.inheritOpt(this,"et-al-use-last");}state.nameOutput.name=this;};state.build.name_flag=true;this.execs.push(func);}target.push(this);}};module.exports=CSL;CSL.Node["name-part"]={build:function build(state,target){state.build[this.strings.name]=this;}};module.exports=CSL;CSL.Node.names={build:function build(state,target){var func,len,pos,attrname;var debug=false;if(this.tokentype===CSL.START||this.tokentype===CSL.SINGLETON){CSL.Util.substituteStart.call(this,state,target);state.build.substitute_level.push(1);}if(this.tokentype===CSL.SINGLETON){state.build.names_variables.push(this.variables);func=function func(state,Item,item){var labelVariable=state.nameOutput.labelVariable;state.nameOutput.reinit(this,labelVariable);};this.execs.push(func);}if(this.tokentype===CSL.START){state.build.names_flag=true;state.build.names_level+=1;if(state.build.names_level===1){state.build.names_variables=[];state.build.name_label={};}state.build.names_variables.push(this.variables);func=function func(state,Item,item){state.tmp.can_substitute.push(true);state.parallel.StartVariable("names",this.variables[0]);state.nameOutput.init(this);};this.execs.push(func);}if(this.tokentype===CSL.END){for(var i=0,ilen=3;i<ilen;i+=1){var key=["family","given","et-al"][i];this[key]=state.build[key];if(state.build.names_level===1){state.build[key]=undefined;}}this.label=state.build.name_label;if(state.build.names_level===1){state.build.name_label={};}state.build.names_level+=-1;state.build.names_variables.pop();func=function func(state,Item,item){if(state.tmp.etal_node){this.etal_style=state.tmp.etal_node;}else{this.etal_style="empty";}this.etal_term=state.getTerm(state.tmp.etal_term,"long",0);if(CSL.STARTSWITH_ROMANESQUE_REGEXP.test(this.etal_term)){this.etal_prefix_single=" ";this.etal_prefix_multiple=state.tmp.name_delimiter;if(state.tmp["delimiter-precedes-et-al"]==="always"){this.etal_prefix_single=state.tmp.name_delimiter;}else if(state.tmp["delimiter-precedes-et-al"]==="never"){this.etal_prefix_multiple=" ";}else if(state.tmp["delimiter-precedes-et-al"]==="after-inverted-name"){this.etal_prefix_single=state.tmp.name_delimiter;this.etal_prefix_multiple=" ";}this.etal_suffix="";}else{this.etal_prefix_single="";this.etal_prefix_multiple="";this.etal_suffix="";}for(var i=0,ilen=3;i<ilen;i+=1){var key=["family","given"][i];state.nameOutput[key]=this[key];}state.nameOutput["with"]=this["with"];var mywith="with";var with_default_prefix="";var with_suffix="";if(CSL.STARTSWITH_ROMANESQUE_REGEXP.test(mywith)){with_default_prefix=" ";with_suffix=" ";}var thewith={};thewith.single=new CSL.Blob(mywith);thewith.single.strings.suffix=with_suffix;thewith.multiple=new CSL.Blob(mywith);thewith.multiple.strings.suffix=with_suffix;if(state.inheritOpt(state.nameOutput.name,"delimiter-precedes-last")==="always"){thewith.single.strings.prefix=state.inheritOpt(this,"delimiter","names-delimiter");thewith.multiple.strings.prefix=state.inheritOpt(this,"delimiter","names-delimiter");}else if(state.inheritOpt(state.nameOutput.name,"delimiter-precedes-last")==="contextual"){thewith.single.strings.prefix=with_default_prefix;thewith.multiple.strings.prefix=state.inheritOpt(this,"delimiter","names-delimiter");}else if(state.inheritOpt(state.nameOutput.name,"delimiter-precedes-last")==="after-inverted-name"){thewith.single.strings.prefix=state.inheritOpt(this,"delimiter","names-delimiter");thewith.multiple.strings.prefix=with_default_prefix;}else{thewith.single.strings.prefix=with_default_prefix;thewith.multiple.strings.prefix=with_default_prefix;}state.nameOutput["with"]=thewith;state.nameOutput.label=this.label;state.nameOutput.etal_style=this.etal_style;state.nameOutput.etal_term=this.etal_term;state.nameOutput.etal_prefix_single=this.etal_prefix_single;state.nameOutput.etal_prefix_multiple=this.etal_prefix_multiple;state.nameOutput.etal_suffix=this.etal_suffix;state.nameOutput.outputNames();state.tmp["et-al-use-first"]=undefined;state.tmp["et-al-min"]=undefined;state.tmp["et-al-use-last"]=undefined;};this.execs.push(func);func=function func(state,Item){if(!state.tmp.can_substitute.pop()){state.tmp.can_substitute.replace(false,CSL.LITERAL);}state.parallel.CloseVariable("names");if(state.tmp.can_substitute.mystack.length===1){state.tmp.can_block_substitute=false;}};this.execs.push(func);state.build.name_flag=false;}target.push(this);if(this.tokentype===CSL.END||this.tokentype===CSL.SINGLETON){state.build.substitute_level.pop();CSL.Util.substituteEnd.call(this,state,target);}}};module.exports=CSL;CSL.Node.number={build:function build(state,target){var func;CSL.Util.substituteStart.call(this,state,target);if(this.strings.form==="roman"){this.formatter=state.fun.romanizer;}else if(this.strings.form==="ordinal"){this.formatter=state.fun.ordinalizer;}else if(this.strings.form==="long-ordinal"){this.formatter=state.fun.long_ordinalizer;}if("undefined"===typeof this.successor_prefix){this.successor_prefix=state[state.build.area].opt.layout_delimiter;}if("undefined"===typeof this.splice_prefix){this.splice_prefix=state[state.build.area].opt.layout_delimiter;}func=function func(state,Item,item){var i,ilen,newlst,lst;if(this.variables.length===0){return;}if("undefined"===typeof item){var item={};}var varname,num,number,m,j,jlen;varname=this.variables[0];if(varname==="locator"&&state.tmp.just_looking){return;}state.parallel.StartVariable(this.variables[0]);if(this.variables[0]==="locator"){state.parallel.AppendToVariable(Item.section);}else{state.parallel.AppendToVariable(Item[this.variables[0]]);}var rex=new RegExp("(?:&|, | and |"+state.getTerm("page-range-delimiter")+")");if(varname==='collection-number'&&Item.type==='legal_case'){state.tmp.renders_collection_number=true;}var value=Item[this.variables[0]];var node=this;if(state.tmp.group_context.tip.force_suppress){return false;}if(varname==="locator"){state.processNumber(node,item,varname,Item.type);}else{if(!state.tmp.group_context.tip.condition&&Item[varname]){state.tmp.just_did_number=true;}state.processNumber(node,Item,varname,Item.type);}CSL.Util.outputNumericField(state,varname,Item.id);state.parallel.CloseVariable("number");if(["locator","locator-extra"].indexOf(this.variables_real[0])>-1&&!state.tmp.just_looking){state.tmp.done_vars.push(this.variables_real[0]);state.tmp.group_context.tip.done_vars.push(this.variables_real[0]);}};this.execs.push(func);target.push(this);CSL.Util.substituteEnd.call(this,state,target);}};module.exports=CSL;CSL.Node.sort={build:function build(state,target){target=state[state.build.root+"_sort"].tokens;if(this.tokentype===CSL.START){if(state.build.area==="citation"){state.parallel.use_parallels=false;state.opt.sort_citations=true;}state.build.area=state.build.root+"_sort";state.build.extension="_sort";var func=function func(state,Item){if(state.opt.has_layout_locale){var langspec=CSL.localeResolve(Item.language,state.opt["default-locale"][0]);var sort_locales=state[state.tmp.area.slice(0,-5)].opt.sort_locales;var langForItem;for(var i=0,ilen=sort_locales.length;i<ilen;i+=1){langForItem=sort_locales[i][langspec.bare];if(!langForItem){langForItem=sort_locales[i][langspec.best];}if(langForItem){break;}}if(!langForItem){langForItem=state.opt["default-locale"][0];}state.tmp.lang_sort_hold=state.opt.lang;state.opt.lang=langForItem;}};this.execs.push(func);}if(this.tokentype===CSL.END){state.build.area=state.build.root;state.build.extension="";var func=function func(state,Item){if(state.opt.has_layout_locale){state.opt.lang=state.tmp.lang_sort_hold;delete state.tmp.lang_sort_hold;}};this.execs.push(func);}target.push(this);}};module.exports=CSL;CSL.Node.substitute={build:function build(state,target){var func;if(this.tokentype===CSL.START){func=function func(state,Item){state.tmp.can_block_substitute=true;if(state.tmp.value.length){state.tmp.can_substitute.replace(false,CSL.LITERAL);}};this.execs.push(func);}target.push(this);}};module.exports=CSL;CSL.Node.text={build:function build(state,target){var variable,func,form,plural,id,num,number,formatter,firstoutput,specialdelimiter,label,myname,names,name,year,suffix,term,dp,len,pos,n,m,value,flag;if(this.postponed_macro){var group_start=CSL.Util.cloneToken(this);group_start.name="group";group_start.tokentype=CSL.START;CSL.Node.group.build.call(group_start,state,target);CSL.expandMacro.call(state,this,target);var group_end=CSL.Util.cloneToken(this);group_end.name="group";group_end.tokentype=CSL.END;if(this.postponed_macro==='juris-locator-label'){group_end.isJurisLocatorLabel=true;}CSL.Node.group.build.call(group_end,state,target);}else{CSL.Util.substituteStart.call(this,state,target);if(!this.variables_real){this.variables_real=[];}if(!this.variables){this.variables=[];}form="long";plural=0;if(this.strings.form){form=this.strings.form;}if(this.strings.plural){plural=this.strings.plural;}if("citation-number"===this.variables_real[0]||"year-suffix"===this.variables_real[0]||"citation-label"===this.variables_real[0]){if(this.variables_real[0]==="citation-number"){if(state.build.root==="citation"){state.opt.update_mode=CSL.NUMERIC;}if(state.build.root==="bibliography"){state.opt.bib_mode=CSL.NUMERIC;}if(state.build.area==="bibliography_sort"){state.opt.citation_number_sort_used=true;}if("citation-number"===state[state.tmp.area].opt.collapse){this.range_prefix=state.getTerm("citation-range-delimiter");}this.successor_prefix=state[state.build.area].opt.layout_delimiter;this.splice_prefix=state[state.build.area].opt.layout_delimiter;func=function func(state,Item,item){id=""+Item.id;if(!state.tmp.just_looking){if(item&&item["author-only"]){state.tmp.element_trace.replace("do-not-suppress-me");var reference_term=state.getTerm("reference","long","singular");if("undefined"===typeof reference_term){reference_term="reference";}term=CSL.Output.Formatters["capitalize-first"](state,reference_term);state.output.append(term+" ");state.tmp.last_element_trace=true;}if(item&&item["suppress-author"]){if(state.tmp.last_element_trace){state.tmp.element_trace.replace("suppress-me");}state.tmp.last_element_trace=false;}num=state.registry.registry[id].seq;if(state.opt.citation_number_slug){state.output.append(state.opt.citation_number_slug,this);}else{number=new CSL.NumericBlob(false,num,this,Item.id);if(state.tmp.in_cite_predecessor){if(!state.tmp.just_looking){}number.suppress_splice_prefix=true;}state.output.append(number,"literal");}}};this.execs.push(func);}else if(this.variables_real[0]==="year-suffix"){state.opt.has_year_suffix=true;if(state[state.tmp.area].opt.collapse==="year-suffix-ranged"){this.range_prefix=state.getTerm("citation-range-delimiter");}this.successor_prefix=state[state.build.area].opt.layout_delimiter;if(state[state.tmp.area].opt["year-suffix-delimiter"]){this.successor_prefix=state[state.build.area].opt["year-suffix-delimiter"];}func=function func(state,Item){if(state.registry.registry[Item.id]&&state.registry.registry[Item.id].disambig.year_suffix!==false&&!state.tmp.just_looking){num=parseInt(state.registry.registry[Item.id].disambig.year_suffix,10);if(state[state.tmp.area].opt.cite_group_delimiter){this.successor_prefix=state[state.tmp.area].opt.cite_group_delimiter;}number=new CSL.NumericBlob(false,num,this,Item.id);formatter=new CSL.Util.Suffixator(CSL.SUFFIX_CHARS);number.setFormatter(formatter);state.output.append(number,"literal");firstoutput=false;for(var i=0,ilen=state.tmp.group_context.mystack.length;i<ilen;i++){var flags=state.tmp.group_context.mystack[i];if(!flags.variable_success&&(flags.variable_attempt||!flags.variable_attempt&&!flags.term_intended)){firstoutput=true;break;}}specialdelimiter=state[state.tmp.area].opt["year-suffix-delimiter"];if(firstoutput&&specialdelimiter&&!state.tmp.sort_key_flag){state.tmp.splice_delimiter=state[state.tmp.area].opt["year-suffix-delimiter"];}}};this.execs.push(func);}else if(this.variables_real[0]==="citation-label"){state.opt.has_year_suffix=true;func=function func(state,Item){label=Item["citation-label"];if(!label){label=state.getCitationLabel(Item);}if(!state.tmp.just_looking){suffix="";if(state.registry.registry[Item.id]&&state.registry.registry[Item.id].disambig.year_suffix!==false){num=parseInt(state.registry.registry[Item.id].disambig.year_suffix,10);suffix=state.fun.suffixator.format(num);}label+=suffix;}state.output.append(label,this);};this.execs.push(func);}}else{if(this.strings.term){func=function func(state,Item,item){var gender=state.opt.gender[Item.type];var term=this.strings.term;term=state.getTerm(term,form,plural,gender,CSL.TOLERANT,this.default_locale);var myterm;if(term!==""){state.tmp.group_context.tip.term_intended=true;}CSL.UPDATE_GROUP_CONTEXT_CONDITION(state,term);if(!state.tmp.term_predecessor&&!(state.opt["class"]==="in-text"&&state.tmp.area==="citation")){myterm=CSL.Output.Formatters["capitalize-first"](state,term);}else{myterm=term;}if(state.tmp.strip_periods){myterm=myterm.replace(/\./g,"");}else{for(var i=0,ilen=this.decorations.length;i<ilen;i+=1){if("@strip-periods"===this.decorations[i][0]&&"true"===this.decorations[i][1]){myterm=myterm.replace(/\./g,"");break;}}}state.output.append(myterm,this);};this.execs.push(func);state.build.term=false;state.build.form=false;state.build.plural=false;}else if(this.variables_real.length){func=function func(state,Item,item){if(this.variables_real[0]!=="locator"){state.tmp.have_collapsed=false;}var parallel_variable=this.variables[0];if(parallel_variable==="title"&&(form==="short"||Item["title-short"])){parallel_variable="title-short";}state.parallel.StartVariable(parallel_variable);state.parallel.AppendToVariable(Item[parallel_variable],parallel_variable);if(!state.tmp.group_context.tip.condition&&Item[this.variables[0]]){state.tmp.just_did_number=false;}};this.execs.push(func);if(CSL.MULTI_FIELDS.indexOf(this.variables_real[0])>-1||["language-name","language-name-original"].indexOf(this.variables_real[0])>-1){var abbrevfam=this.variables[0];var abbrfall=false;var altvar=false;var transfall=false;if(form==="short"||["country","jurisdiction"].indexOf(this.variables_real[0])>-1){if(this.variables_real[0]==="container-title"){altvar="journalAbbreviation";}else if(this.variables_real[0]==="title"){altvar="title-short";}}else{abbrevfam=false;}if(state.build.extension){transfall=true;}else{transfall=true;abbrfall=true;}func=state.transform.getOutputFunction(this.variables,abbrevfam,abbrfall,altvar,transfall);}else{if(CSL.CITE_FIELDS.indexOf(this.variables_real[0])>-1){func=function func(state,Item,item){if(item&&item[this.variables[0]]){state.processNumber(this,item,this.variables[0],Item.type);CSL.Util.outputNumericField(state,this.variables[0],Item.id);if(["locator","locator-extra"].indexOf(this.variables_real[0])>-1&&!state.tmp.just_looking){state.tmp.done_vars.push(this.variables_real[0]);}}};}else if(["page","page-first","chapter-number","collection-number","edition","issue","number","number-of-pages","number-of-volumes","volume"].indexOf(this.variables_real[0])>-1){func=function func(state,Item){state.processNumber(this,Item,this.variables[0],Item.type);CSL.Util.outputNumericField(state,this.variables[0],Item.id);};}else if(["URL","DOI"].indexOf(this.variables_real[0])>-1){func=function func(state,Item){var value;if(this.variables[0]){value=state.getVariable(Item,this.variables[0],form);if(value){if(state.opt.development_extensions.wrap_url_and_doi){if(!this.decorations.length||this.decorations[0][0]!=="@"+this.variables[0]){if(this.variables_real[0]==="DOI"&&this.strings.prefix==="https://doi.org/"){var clonetoken=CSL.Util.cloneToken(this);var groupblob=new CSL.Blob(null,null,"url-wrapper");groupblob.decorations.push(["@DOI","true"]);value=value.replace(/^https?:\/\/doi\.org\//,"");if(value.match(/^https?:\/\//)){var prefix="";}else{var prefix="https://doi.org/";}var prefixblob=new CSL.Blob(prefix);var valueblob=new CSL.Blob(value);clonetoken.strings.prefix="";groupblob.push(prefixblob);groupblob.push(valueblob);state.output.append(groupblob,clonetoken,false,false,true);}else{this.decorations=[["@"+this.variables[0],"true"]].concat(this.decorations);state.output.append(value,this,false,false,true);}}else{state.output.append(value,this,false,false,true);}}else{if(this.decorations.length){for(var i=this.decorations.length-1;i>-1;i--){if(this.decorations[i][0]==="@"+this.variables[0]){this.decorations=this.decorations.slice(0,i).concat(this.decorations.slice(i+1));}}}state.output.append(value,this,false,false,true);}}}};}else if(this.variables_real[0]==="section"){func=function func(state,Item){var value;value=state.getVariable(Item,this.variables[0],form);if(value){state.output.append(value,this);}};}else if(this.variables_real[0]==="hereinafter"){func=function func(state,Item){var value=state.transform.abbrevs["default"]["hereinafter"][Item.id];if(value){state.output.append(value,this);state.tmp.group_context.tip.variable_success=true;}};}else{func=function func(state,Item){var value;if(this.variables[0]){value=state.getVariable(Item,this.variables[0],form);if(value){value=""+value;value=value.split("\\").join("");state.output.append(value,this);}}};}}this.execs.push(func);func=function func(state,Item){state.parallel.CloseVariable("text");};this.execs.push(func);}else if(this.strings.value){func=function func(state,Item){state.tmp.group_context.tip.term_intended=true;CSL.UPDATE_GROUP_CONTEXT_CONDITION(state,this.strings.value,true);state.output.append(this.strings.value,this);};this.execs.push(func);}}target.push(this);CSL.Util.substituteEnd.call(this,state,target);}}};module.exports=CSL;CSL.Attributes={};CSL.Attributes["@genre"]=function(state,arg){arg=arg.replace("-"," ");var func=function func(Item,item){var ret;if(arg===Item.genre){return true;}return false;};this.tests.push(func);};CSL.Attributes["@disambiguate"]=function(state,arg){if(arg==="true"){state.opt.has_disambiguate=true;var func=function func(Item,item){if(state.tmp.area==="bibliography"){if(state.tmp.disambiguate_count<state.registry.registry[Item.id].disambig.disambiguate){state.tmp.disambiguate_count+=1;return true;}}else{state.tmp.disambiguate_maxMax+=1;if(state.tmp.disambig_settings.disambiguate&&state.tmp.disambiguate_count<state.tmp.disambig_settings.disambiguate){state.tmp.disambiguate_count+=1;return true;}}return false;};this.tests.push(func);}else if(arg==="check-ambiguity-and-backreference"){var func=function func(Item,item){if(state.registry.registry[Item.id].disambig.disambiguate&&state.registry.registry[Item.id]["citation-count"]>1){return true;}return false;};this.tests.push(func);}};CSL.Attributes["@is-numeric"]=function(state,arg,joiner){var variables=arg.split(/\s+/);var maketest=function maketest(variable){return function(Item,item){var myitem=Item;if(["locator","locator-extra"].indexOf(variable)>-1){myitem=item;}if("undefined"===typeof myitem){return false;}if(CSL.NUMERIC_VARIABLES.indexOf(variable)>-1){if(!state.tmp.shadow_numbers[variable]){state.processNumber(false,myitem,variable,Item.type);}if(myitem[variable]&&state.tmp.shadow_numbers[variable].numeric){return true;}}else if(["title","locator-extra","version"].indexOf(variable)>-1){if(myitem[variable]){if(myitem[variable].slice(-1)===""+parseInt(myitem[variable].slice(-1),10)){return true;}}}return false;};};for(var i=0;i<variables.length;i+=1){this.tests.push(maketest(variables[i]));}};CSL.Attributes["@is-uncertain-date"]=function(state,arg){var variables=arg.split(/\s+/);var maketest=function maketest(myvariable){return function(Item,item){if(Item[myvariable]&&Item[myvariable].circa){return true;}else{return false;}};};for(var i=0,ilen=variables.length;i<ilen;i+=1){this.tests.push(maketest(variables[i]));};};CSL.Attributes["@locator"]=function(state,arg){var trylabels=arg.replace("sub verbo","sub-verbo");trylabels=trylabels.split(/\s+/);var maketest=function maketest(trylabel){return function(Item,item){var label;state.processNumber(false,item,"locator");label=state.tmp.shadow_numbers.locator.label;if(trylabel===label){return true;}else{return false;}};};for(var i=0,ilen=trylabels.length;i<ilen;i+=1){this.tests.push(maketest(trylabels[i]));}};CSL.Attributes["@position"]=function(state,arg){var tryposition;state.opt.update_mode=CSL.POSITION;state.parallel.use_parallels=null;var trypositions=arg.split(/\s+/);var maketest=function maketest(tryposition){return function(Item,item){if(state.tmp.area==="bibliography"){return false;}if(item&&"undefined"===typeof item.position){item.position=0;}if(item&&typeof item.position==="number"){if(item.position===0&&tryposition===0){return true;}else if(tryposition>0&&item.position>=tryposition){return true;}}else if(tryposition===0){return true;}return false;};};for(var i=0,ilen=trypositions.length;i<ilen;i+=1){var tryposition=trypositions[i];if(tryposition==="first"){tryposition=CSL.POSITION_FIRST;}else if(tryposition==="subsequent"){tryposition=CSL.POSITION_SUBSEQUENT;}else if(tryposition==="ibid"){tryposition=CSL.POSITION_IBID;}else if(tryposition==="ibid-with-locator"){tryposition=CSL.POSITION_IBID_WITH_LOCATOR;}if("near-note"===tryposition){this.tests.push(function(Item,item){if(item&&item.position>=CSL.POSITION_SUBSEQUENT&&item["near-note"]){return true;}return false;});}else if("far-note"===tryposition){this.tests.push(function(Item,item){if(item&&item.position==CSL.POSITION_SUBSEQUENT&&!item["near-note"]){return true;}return false;});}else{this.tests.push(maketest(tryposition));}}};CSL.Attributes["@type"]=function(state,arg){var types=arg.split(/\s+/);var maketest=function maketest(mytype){return function(Item,item){var ret=Item.type===mytype;if(ret){return true;}else{return false;}};};var tests=[];for(var i=0,ilen=types.length;i<ilen;i+=1){tests.push(maketest(types[i]));}this.tests.push(state.fun.match.any(this,state,tests));};CSL.Attributes["@variable"]=function(state,arg){var func;this.variables=arg.split(/\s+/);this.variables_real=this.variables.slice();if("label"===this.name&&this.variables[0]){this.strings.term=this.variables[0];}else if(["names","date","text","number"].indexOf(this.name)>-1){func=function func(state,Item,item){for(var i=this.variables.length-1;i>-1;i+=-1){this.variables.pop();}for(var i=0,ilen=this.variables_real.length;i<ilen;i++){if(state.tmp.done_vars.indexOf(this.variables_real[i])===-1&&!(item&&Item.type==="legal_case"&&item["suppress-author"]&&this.variables_real[i]==="title")){this.variables.push(this.variables_real[i]);}if(state.tmp.can_block_substitute){state.tmp.done_vars.push(this.variables_real[i]);}}};this.execs.push(func);func=function func(state,Item,item){var mydate;var output=false;for(var i=0,ilen=this.variables.length;i<ilen;i++){var variable=this.variables[i];if(["authority","committee"].indexOf(variable)>-1&&"string"===typeof Item[variable]&&"names"===this.name){var creatorParents=[];var isValid=true;var rawNames=Item[variable].split(/\s*;\s*/);var rawMultiNames={};if(Item.multi&&Item.multi._keys[variable]){for(var langTag in Item.multi._keys[variable]){rawMultiNames[langTag]=Item.multi._keys[variable][langTag].split(/\s*;\s*/);if(rawMultiNames[langTag].length!==rawNames.length){isValid=false;break;}}}if(!isValid){rawNames=[Item[variable]];rawMultiNames=Item.multi._keys[variable];}for(var j=0,jlen=rawNames.length;j<jlen;j++){var creatorParent={literal:rawNames[j],multi:{_key:{}}};for(var langTag in rawMultiNames){var creatorChild={literal:rawMultiNames[langTag][j]};creatorParent.multi._key[langTag]=creatorChild;}rawNames[j]=creatorParent;}Item[variable]=rawNames;}if(this.strings.form==="short"&&!Item[variable]){if(variable==="title"){variable="title-short";}else if(variable==="container-title"){variable="journalAbbreviation";}}if(variable==="year-suffix"){output=true;break;}else if(CSL.DATE_VARIABLES.indexOf(variable)>-1){if(state.opt.development_extensions.locator_date_and_revision&&"locator-date"===variable){output=true;break;}if(Item[variable]){for(var key in Item[variable]){if(this.dateparts.indexOf(key)===-1&&"literal"!==key){continue;}if(Item[variable][key]){output=true;break;}}if(output){break;}}}else if("locator"===variable){if(item&&item.locator){output=true;}break;}else if("locator-extra"===variable){if(item&&item["locator-extra"]){output=true;}break;}else if(["citation-number","citation-label"].indexOf(variable)>-1){output=true;break;}else if("first-reference-note-number"===variable){if(item&&item["first-reference-note-number"]){output=true;}break;}else if("hereinafter"===variable){if(state.transform.abbrevs["default"].hereinafter[Item.id]&&state.sys.getAbbreviation&&Item.id){output=true;}break;}else if("object"===_typeof(Item[variable])){if(Item[variable].length){}break;}else if("string"===typeof Item[variable]&&Item[variable]){output=true;break;}else if("number"===typeof Item[variable]){output=true;break;}if(output){break;}}if(output){for(var i=0,ilen=this.variables_real.length;i<ilen;i++){var variable=this.variables_real[i];if(variable!=="citation-number"||state.tmp.area!=="bibliography"){state.tmp.cite_renders_content=true;}state.tmp.group_context.tip.variable_success=true;if(state.tmp.can_substitute.value()&&state.tmp.area==="bibliography"&&"string"===typeof Item[variable]){state.tmp.name_node.top=state.output.current.value();state.tmp.rendered_name.push(Item[variable]);}}state.tmp.can_substitute.replace(false,CSL.LITERAL);}else{state.tmp.group_context.tip.variable_attempt=true;}};this.execs.push(func);}else if(["if","else-if","condition"].indexOf(this.name)>-1){var maketest=function maketest(variable){return function(Item,item){var myitem=Item;if(item&&["locator","locator-extra","first-reference-note-number","locator-date"].indexOf(variable)>-1){myitem=item;}if(variable==="hereinafter"&&state.sys.getAbbreviation&&myitem.id){if(state.transform.abbrevs["default"].hereinafter[myitem.id]){return true;}}else if(myitem[variable]){if("number"===typeof myitem[variable]||"string"===typeof myitem[variable]){return true;}else if("object"===_typeof(myitem[variable])){for(var key in myitem[variable]){if(myitem[variable][key]){return true;}}}}return false;};};for(var i=0,ilen=this.variables.length;i<ilen;i+=1){this.tests.push(maketest(this.variables[i]));}}};CSL.Attributes["@page"]=function(state,arg){var trylabels=arg.replace("sub verbo","sub-verbo");trylabels=trylabels.split(/\s+/);var maketest=function maketest(trylabel){return function(Item,item){var label;state.processNumber(false,Item,"page",Item.type);if(!state.tmp.shadow_numbers.page.label){label="page";}else if(state.tmp.shadow_numbers.page.label==="sub verbo"){label="sub-verbo";}else{label=state.tmp.shadow_numbers.page.label;}if(trylabel===label){return true;}else{return false;}};};for(var i=0,ilen=trylabels.length;i<ilen;i+=1){this.tests.push(maketest(trylabels[i]));}};CSL.Attributes["@number"]=function(state,arg){var trylabels=arg.replace("sub verbo","sub-verbo");trylabels=trylabels.split(/\s+/);var maketest=function maketest(trylabel){return function(Item,item){var label;state.processNumber(false,Item,"number",Item.type);if(!state.tmp.shadow_numbers.number.label){label="number";}else if(state.tmp.shadow_numbers.number.label==="sub verbo"){label="sub-verbo";}else{label=state.tmp.shadow_numbers.number.label;}if(trylabel===label){return true;}else{return false;}};};for(var i=0,ilen=trylabels.length;i<ilen;i+=1){this.tests.push(maketest(trylabels[i]));}};CSL.Attributes["@jurisdiction"]=function(state,arg){var tryjurisdictions=arg.split(/\s+/);for(var i=0,ilen=tryjurisdictions.length;i<ilen;i+=1){tryjurisdictions[i]=tryjurisdictions[i].split(":");}var maketests=function maketests(tryjurisdiction){return function(Item,item){if(!Item.jurisdiction){return false;}var jurisdictions=Item.jurisdiction.split(":");for(var i=0,ilen=jurisdictions.length;i<ilen;i+=1){jurisdictions[i]=jurisdictions[i].split(":");}for(i=tryjurisdiction.length;i>0;i+=-1){var tryjurisdictionStr=tryjurisdiction.slice(0,i).join(":");var jurisdiction=jurisdictions.slice(0,i).join(":");if(tryjurisdictionStr!==jurisdiction){return false;}}return true;};};for(var i=0,ilen=tryjurisdictions.length;i<ilen;i+=1){var tryjurisdictionSlice=tryjurisdictions[i].slice();this.tests.push(maketests(tryjurisdictionSlice));}};CSL.Attributes["@context"]=function(state,arg){var func=function func(Item,item){var area=state.tmp.area.slice(0,arg.length);if(area===arg){return true;}return false;};this.tests.push(func);};CSL.Attributes["@has-year-only"]=function(state,arg){var trydates=arg.split(/\s+/);var maketest=function maketest(trydate){return function(Item,item){var date=Item[trydate];if(!date||date.month||date.season){return false;}else{return true;}};};for(var i=0,ilen=trydates.length;i<ilen;i+=1){this.tests.push(maketest(trydates[i]));}};CSL.Attributes["@has-to-month-or-season"]=function(state,arg){var trydates=arg.split(/\s+/);var maketest=function maketest(trydate){return function(Item,item){var date=Item[trydate];if(!date||!date.month&&!date.season||date.day){return false;}else{return true;}};};for(var i=0,ilen=trydates.length;i<ilen;i+=1){this.tests.push(maketest(trydates[i]));}};CSL.Attributes["@has-day"]=function(state,arg){var trydates=arg.split(/\s+/);var maketest=function maketest(trydate){return function(Item,item){var date=Item[trydate];if(!date||!date.day){return false;}else{return true;}};};for(var i=0,ilen=trydates.length;i<ilen;i+=1){this.tests.push(maketest(trydates[i]));};};CSL.Attributes["@subjurisdictions"]=function(state,arg){var trysubjurisdictions=parseInt(arg,10);var func=function func(Item,item){var subjurisdictions=0;if(Item.jurisdiction){subjurisdictions=Item.jurisdiction.split(":").length;}if(subjurisdictions){subjurisdictions+=-1;}if(subjurisdictions>=trysubjurisdictions){return true;}return false;};this.tests.push(func);};CSL.Attributes["@is-plural"]=function(state,arg){var func=function func(Item,item){var nameList=Item[arg];if(nameList&&nameList.length){var persons=0;var institutions=0;var last_is_person=false;for(var i=0,ilen=nameList.length;i<ilen;i+=1){if(state.opt.development_extensions.spoof_institutional_affiliations&&(nameList[i].literal||nameList[i].isInstitution&&nameList[i].family&&!nameList[i].given)){institutions+=1;last_is_person=false;}else{persons+=1;last_is_person=true;}}if(persons>1){return true;}else if(institutions>1){return true;}else if(institutions&&last_is_person){return true;}}return false;};this.tests.push(func);};CSL.Attributes["@locale"]=function(state,arg){var func,ret,len,pos,variable,myitem,langspec,lang,lst,i,ilen,fallback;var locale_default=state.opt["default-locale"][0];if(this.name==="layout"){this.locale_raw=arg;if(this.tokentype===CSL.START){var locales=arg.split(/\s+/);var sort_locale={};var localeMaster=CSL.localeResolve(locales[0],locale_default);if(localeMaster.generic){sort_locale[localeMaster.generic]=localeMaster.best;}else{sort_locale[localeMaster.best]=localeMaster.best;}for(var i=1,ilen=locales.length;i<ilen;i+=1){var localeServant=CSL.localeResolve(locales[i],locale_default);if(localeServant.generic){sort_locale[localeServant.generic]=localeMaster.best;}else{sort_locale[localeServant.best]=localeMaster.best;}}state[state.build.area].opt.sort_locales.push(sort_locale);}state.opt.has_layout_locale=true;}else{lst=arg.split(/\s+/);var locale_bares=[];for(i=0,ilen=lst.length;i<ilen;i+=1){lang=lst[i];langspec=CSL.localeResolve(lang,locale_default);if(lst[i].length===2){locale_bares.push(langspec.bare);}state.localeConfigure(langspec,true);lst[i]=langspec;}var locale_list=lst.slice();var maketest=function maketest(locale_list,locale_default,locale_bares){return function(Item,item){var key,res;ret=[];res=false;var langspec=false;var lang;if(!Item.language){lang=locale_default;}else{lang=Item.language;}langspec=CSL.localeResolve(lang,locale_default);for(i=0,ilen=locale_list.length;i<ilen;i+=1){if(langspec.best===locale_list[i].best){res=true;break;}}if(!res&&locale_bares.indexOf(langspec.bare)>-1){res=true;}return res;};};this.tests.push(maketest(locale_list,locale_default,locale_bares));}};CSL.Attributes["@authority-residue"]=function(state,arg){var maketest=function maketest(){var succeed=arg==="true"?true:false;return function(Item,item){if(!Item.authority||!Item.authority[0]||!Item.authority[0].family)return!succeed;var varLen=Item.authority[0].family.split("|").length;var stopLast=state.tmp.authority_stop_last;if(varLen+stopLast>0){return succeed;}else{return!succeed;}};};this.tests.push(maketest());};CSL.Attributes["@locale-internal"]=function(state,arg){var func,ret,len,pos,variable,myitem,langspec,lang,lst,i,ilen,fallback;lst=arg.split(/\s+/);this.locale_bares=[];for(i=0,ilen=lst.length;i<ilen;i+=1){lang=lst[i];langspec=CSL.localeResolve(lang,state.opt["default-locale"][0]);if(lst[i].length===2){this.locale_bares.push(langspec.bare);}state.localeConfigure(langspec);lst[i]=langspec;}this.locale_default=state.opt["default-locale"][0];this.locale=lst[0].best;this.locale_list=lst.slice();var maketest=function maketest(me){return function(Item,item){var key,res;ret=[];res=false;var langspec=false;if(Item.language){lang=Item.language;langspec=CSL.localeResolve(lang,state.opt["default-locale"][0]);if(langspec.best===state.opt["default-locale"][0]){langspec=false;}}if(langspec){for(i=0,ilen=me.locale_list.length;i<ilen;i+=1){if(langspec.best===me.locale_list[i].best){state.opt.lang=me.locale;state.tmp.last_cite_locale=me.locale;state.output.openLevel("empty");state.output.current.value().new_locale=me.locale;res=true;break;}}if(!res&&me.locale_bares.indexOf(langspec.bare)>-1){state.opt.lang=me.locale;state.tmp.last_cite_locale=me.locale;state.output.openLevel("empty");state.output.current.value().new_locale=me.locale;res=true;}}return res;};};var me=this;this.tests.push(maketest(me));};CSL.Attributes["@is-parallel"]=function(state,arg){var values=arg.split(" ");for(var i=0,ilen=values.length;i<ilen;i+=1){if(values[i]==="true"){values[i]=true;}else if(values[i]==="false"){values[i]=false;}}this.strings.set_parallel_condition=values;};CSL.Attributes["@jurisdiction-depth"]=function(state,arg){this.strings.jurisdiction_depth=parseInt(arg,10);};CSL.Attributes["@require"]=function(state,arg){this.strings.require=arg;};CSL.Attributes["@reject"]=function(state,arg){this.strings.reject=arg;};CSL.Attributes["@gender"]=function(state,arg){this.gender=arg;};CSL.Attributes["@cslid"]=function(state,arg){this.cslid=parseInt(arg,10);};CSL.Attributes["@capitalize-if-first"]=function(state,arg){this.strings.capitalize_if_first_override=arg;};CSL.Attributes["@label-capitalize-if-first"]=function(state,arg){this.strings.label_capitalize_if_first_override=arg;};CSL.Attributes["@label-form"]=function(state,arg){this.strings.label_form_override=arg;};CSL.Attributes["@part-separator"]=function(state,arg){this.strings["part-separator"]=arg;};CSL.Attributes["@leading-noise-words"]=function(state,arg){this["leading-noise-words"]=arg;};CSL.Attributes["@name-never-short"]=function(state,arg){this["name-never-short"]=arg;};CSL.Attributes["@class"]=function(state,arg){state.opt["class"]=arg;};CSL.Attributes["@version"]=function(state,arg){state.opt.version=arg;};CSL.Attributes["@value"]=function(state,arg){this.strings.value=arg;};CSL.Attributes["@name"]=function(state,arg){this.strings.name=arg;};CSL.Attributes["@form"]=function(state,arg){this.strings.form=arg;};CSL.Attributes["@date-parts"]=function(state,arg){this.strings["date-parts"]=arg;};CSL.Attributes["@range-delimiter"]=function(state,arg){this.strings["range-delimiter"]=arg;};CSL.Attributes["@macro"]=function(state,arg){this.postponed_macro=arg;};CSL.Attributes["@term"]=function(state,arg){if(arg==="sub verbo"){this.strings.term="sub-verbo";}else{this.strings.term=arg;}};CSL.Attributes["@xmlns"]=function(state,arg){};CSL.Attributes["@lang"]=function(state,arg){if(arg){state.build.lang=arg;}};CSL.Attributes["@lingo"]=function(state,arg){};CSL.Attributes["@macro-has-date"]=function(state,arg){this["macro-has-date"]=true;};CSL.Attributes["@suffix"]=function(state,arg){this.strings.suffix=arg;};CSL.Attributes["@prefix"]=function(state,arg){this.strings.prefix=arg;};CSL.Attributes["@delimiter"]=function(state,arg){this.strings.delimiter=arg;};CSL.Attributes["@match"]=function(state,arg){this.match=arg;};CSL.Attributes["@names-min"]=function(state,arg){var val=parseInt(arg,10);if(state[state.build.area].opt.max_number_of_names<val){state[state.build.area].opt.max_number_of_names=val;}this.strings["et-al-min"]=val;};CSL.Attributes["@names-use-first"]=function(state,arg){this.strings["et-al-use-first"]=parseInt(arg,10);};CSL.Attributes["@names-use-last"]=function(state,arg){if(arg==="true"){this.strings["et-al-use-last"]=true;}else{this.strings["et-al-use-last"]=false;}};CSL.Attributes["@sort"]=function(state,arg){if(arg==="descending"){this.strings.sort_direction=CSL.DESCENDING;}};CSL.Attributes["@plural"]=function(state,arg){if("always"===arg||"true"===arg){this.strings.plural=1;}else if("never"===arg||"false"===arg){this.strings.plural=0;}else if("contextual"===arg){this.strings.plural=false;}};CSL.Attributes["@has-publisher-and-publisher-place"]=function(state,arg){this.strings["has-publisher-and-publisher-place"]=true;};CSL.Attributes["@publisher-delimiter-precedes-last"]=function(state,arg){this.strings["publisher-delimiter-precedes-last"]=arg;};CSL.Attributes["@publisher-delimiter"]=function(state,arg){this.strings["publisher-delimiter"]=arg;};CSL.Attributes["@publisher-and"]=function(state,arg){this.strings["publisher-and"]=arg;};CSL.Attributes["@newdate"]=function(state,arg){};CSL.Attributes["@givenname-disambiguation-rule"]=function(state,arg){if(CSL.GIVENNAME_DISAMBIGUATION_RULES.indexOf(arg)>-1){state.citation.opt["givenname-disambiguation-rule"]=arg;}};CSL.Attributes["@collapse"]=function(state,arg){if(arg){state[this.name].opt.collapse=arg;}};CSL.Attributes["@cite-group-delimiter"]=function(state,arg){if(arg){state[state.tmp.area].opt.cite_group_delimiter=arg;}};CSL.Attributes["@names-delimiter"]=function(state,arg){state.setOpt(this,"names-delimiter",arg);};CSL.Attributes["@name-form"]=function(state,arg){state.setOpt(this,"name-form",arg);};CSL.Attributes["@subgroup-delimiter"]=function(state,arg){this.strings["subgroup-delimiter"]=arg;};CSL.Attributes["@subgroup-delimiter-precedes-last"]=function(state,arg){this.strings["subgroup-delimiter-precedes-last"]=arg;};CSL.Attributes["@name-delimiter"]=function(state,arg){state.setOpt(this,"name-delimiter",arg);};CSL.Attributes["@et-al-min"]=function(state,arg){var val=parseInt(arg,10);if(state[state.build.area].opt.max_number_of_names<val){state[state.build.area].opt.max_number_of_names=val;}state.setOpt(this,"et-al-min",val);};CSL.Attributes["@et-al-use-first"]=function(state,arg){state.setOpt(this,"et-al-use-first",parseInt(arg,10));};CSL.Attributes["@et-al-use-last"]=function(state,arg){if(arg==="true"){state.setOpt(this,"et-al-use-last",true);}else{state.setOpt(this,"et-al-use-last",false);}};CSL.Attributes["@et-al-subsequent-min"]=function(state,arg){var val=parseInt(arg,10);if(state[state.build.area].opt.max_number_of_names<val){state[state.build.area].opt.max_number_of_names=val;}state.setOpt(this,"et-al-subsequent-min",val);};CSL.Attributes["@et-al-subsequent-use-first"]=function(state,arg){state.setOpt(this,"et-al-subsequent-use-first",parseInt(arg,10));};CSL.Attributes["@suppress-min"]=function(state,arg){this.strings["suppress-min"]=parseInt(arg,10);};CSL.Attributes["@suppress-max"]=function(state,arg){this.strings["suppress-max"]=parseInt(arg,10);};CSL.Attributes["@and"]=function(state,arg){state.setOpt(this,"and",arg);};CSL.Attributes["@delimiter-precedes-last"]=function(state,arg){state.setOpt(this,"delimiter-precedes-last",arg);};CSL.Attributes["@delimiter-precedes-et-al"]=function(state,arg){state.setOpt(this,"delimiter-precedes-et-al",arg);};CSL.Attributes["@initialize-with"]=function(state,arg){state.setOpt(this,"initialize-with",arg);};CSL.Attributes["@initialize"]=function(state,arg){if(arg==="false"){state.setOpt(this,"initialize",false);}};CSL.Attributes["@name-as-reverse-order"]=function(state,arg){this["name-as-reverse-order"]=arg;};CSL.Attributes["@name-as-sort-order"]=function(state,arg){if(this.name==="style-options"){this["name-as-sort-order"]=arg;}else{state.setOpt(this,"name-as-sort-order",arg);}};CSL.Attributes["@sort-separator"]=function(state,arg){state.setOpt(this,"sort-separator",arg);};CSL.Attributes["@year-suffix-delimiter"]=function(state,arg){state[this.name].opt["year-suffix-delimiter"]=arg;};CSL.Attributes["@after-collapse-delimiter"]=function(state,arg){state[this.name].opt["after-collapse-delimiter"]=arg;};CSL.Attributes["@subsequent-author-substitute"]=function(state,arg){state[this.name].opt["subsequent-author-substitute"]=arg;};CSL.Attributes["@subsequent-author-substitute-rule"]=function(state,arg){state[this.name].opt["subsequent-author-substitute-rule"]=arg;};CSL.Attributes["@disambiguate-add-names"]=function(state,arg){if(arg==="true"){state.opt["disambiguate-add-names"]=true;}};CSL.Attributes["@disambiguate-add-givenname"]=function(state,arg){if(arg==="true"){state.opt["disambiguate-add-givenname"]=true;}};CSL.Attributes["@disambiguate-add-year-suffix"]=function(state,arg){if(arg==="true"&&state.opt.xclass!=="numeric"){state.opt["disambiguate-add-year-suffix"]=true;}};CSL.Attributes["@second-field-align"]=function(state,arg){if(arg==="flush"||arg==="margin"){state[this.name].opt["second-field-align"]=arg;}};CSL.Attributes["@hanging-indent"]=function(state,arg){if(arg==="true"){state[this.name].opt.hangingindent=2;}};CSL.Attributes["@line-spacing"]=function(state,arg){if(arg&&arg.match(/^[.0-9]+$/)){state[this.name].opt["line-spacing"]=parseFloat(arg,10);}};CSL.Attributes["@entry-spacing"]=function(state,arg){if(arg&&arg.match(/^[.0-9]+$/)){state[this.name].opt["entry-spacing"]=parseFloat(arg,10);}};CSL.Attributes["@near-note-distance"]=function(state,arg){state[this.name].opt["near-note-distance"]=parseInt(arg,10);};CSL.Attributes["@text-case"]=function(state,arg){var func=function func(state,Item){if(arg==="normal"){this.text_case_normal=true;}else{this.strings["text-case"]=arg;if(arg==="title"){var m=false;var default_locale=state.opt["default-locale"][0].slice(0,2);if(Item.jurisdiction){this.strings["text-case"]="passthrough";}}}};this.execs.push(func);};CSL.Attributes["@page-range-format"]=function(state,arg){state.opt["page-range-format"]=arg;};CSL.Attributes["@year-range-format"]=function(state,arg){state.opt["year-range-format"]=arg;};CSL.Attributes["@default-locale"]=function(state,arg){if(this.name==='style'){var lst,len,pos,m,ret;var m=arg.match(/-x-(sort|translit|translat)-/g);if(m){for(pos=0,len=m.length;pos<len;pos+=1){m[pos]=m[pos].replace(/^-x-/,"").replace(/-$/,"");}}lst=arg.split(/-x-(?:sort|translit|translat)-/);ret=[lst[0]];for(pos=1,len=lst.length;pos<len;pos+=1){ret.push(m[pos-1]);ret.push(lst[pos]);}lst=ret.slice();len=lst.length;for(pos=1;pos<len;pos+=2){state.opt["locale-"+lst[pos]].push(lst[pos+1].replace(/^\s*/g,"").replace(/\s*$/g,""));}if(lst.length){state.opt["default-locale"]=lst.slice(0,1);}else{state.opt["default-locale"]=["en"];}}else if(arg==="true"){this.default_locale=true;}};CSL.Attributes["@default-locale-sort"]=function(state,arg){var lst,len,pos,m,ret;state.opt["default-locale-sort"]=arg;};CSL.Attributes["@demote-non-dropping-particle"]=function(state,arg){state.opt["demote-non-dropping-particle"]=arg;};CSL.Attributes["@initialize-with-hyphen"]=function(state,arg){if(arg==="false"){state.opt["initialize-with-hyphen"]=false;}};CSL.Attributes["@institution-parts"]=function(state,arg){this.strings["institution-parts"]=arg;};CSL.Attributes["@if-short"]=function(state,arg){if(arg==="true"){this.strings["if-short"]=true;}};CSL.Attributes["@substitute-use-first"]=function(state,arg){this.strings["substitute-use-first"]=parseInt(arg,10);};CSL.Attributes["@use-first"]=function(state,arg){this.strings["use-first"]=parseInt(arg,10);};CSL.Attributes["@stop-last"]=function(state,arg){this.strings["stop-last"]=parseInt(arg,10)*-1;};CSL.Attributes["@use-last"]=function(state,arg){this.strings["use-last"]=parseInt(arg,10);};CSL.Attributes["@reverse-order"]=function(state,arg){if("true"===arg){this.strings["reverse-order"]=true;}};CSL.Attributes["@display"]=function(state,arg){if(state.bibliography.tokens.length===2){state.opt.using_display=true;}this.strings.cls=arg;};module.exports=CSL;CSL.Stack=function(val,literal){this.mystack=[];if(literal||val){this.mystack.push(val);}this.tip=this.mystack[0];};CSL.Stack.prototype.push=function(val,literal){if(literal||val){this.mystack.push(val);}else{this.mystack.push("");}this.tip=this.mystack[this.mystack.length-1];};CSL.Stack.prototype.clear=function(){this.mystack=[];this.tip={};};CSL.Stack.prototype.replace=function(val,literal){if(this.mystack.length===0){throw"Internal CSL processor error: attempt to replace nonexistent stack item with "+val;}if(literal||val){this.mystack[this.mystack.length-1]=val;}else{this.mystack[this.mystack.length-1]="";}this.tip=this.mystack[this.mystack.length-1];};CSL.Stack.prototype.pop=function(){var ret=this.mystack.pop();if(this.mystack.length){this.tip=this.mystack[this.mystack.length-1];}else{this.tip={};}return ret;};CSL.Stack.prototype.value=function(){return this.mystack.slice(-1)[0];};CSL.Stack.prototype.length=function(){return this.mystack.length;};module.exports=CSL;CSL.Parallel=function(state){this.state=state;this.sets=new CSL.Stack([]);this.try_cite=true;this.use_parallels=false;this.midVars=["section","volume","container-title","collection-number","issue","page-first","page","number"];this.ignoreVarsLawGeneral=["first-reference-note-number","locator","label","page-first","page","genre"];this.ignoreVarsLawProceduralHistory=["issued","first-reference-note-number","locator","label","page-first","page","genre","jurisdiction"];this.ignoreVarsOrders=["first-reference-note-number"];this.ignoreVarsOther=["first-reference-note-number","locator","label","section","page-first","page"];};CSL.Parallel.prototype.isMid=function(variable){return this.midVars.indexOf(variable)>-1;};CSL.Parallel.prototype.StartCitation=function(sortedItems,out){this.parallel_conditional_blobs_list=[];if(this.use_parallels){this.sortedItems=sortedItems;this.sortedItemsPos=-1;this.sets.clear();this.sets.push([]);this.in_series=true;this.delim_counter=0;this.delim_pointers=[];if(out){this.out=out;}else{this.out=this.state.output.queue;}this.master_was_neutral_cite=true;}};CSL.Parallel.prototype.StartCite=function(Item,item,prevItemID){var position,len,pos,x,curr,master,last_id,prev_locator,curr_locator,is_master,parallel;if(this.use_parallels){if(this.sets.value().length&&this.sets.value()[0].itemId==Item.id){this.ComposeSet();}this.sortedItemsPos+=1;if(item){position=item.position;}this.try_cite=true;var has_required_var=false;for(var i=0,ilen=CSL.PARALLEL_MATCH_VARS.length;i<ilen;i+=1){if(Item[CSL.PARALLEL_MATCH_VARS[i]]){has_required_var=true;break;}}var basics_ok=true;var last_cite=this.sets.value().slice(-1)[0];if(last_cite&&last_cite.Item){var lastJuris=last_cite.Item.jurisdiction?last_cite.Item.jurisdiction.split(":")[0]:"";var thisJuris=Item.jurisdiction?Item.jurisdiction.split(":")[0]:"";if(last_cite.Item.title!==Item.title){basics_ok=false;}else if(lastJuris!==thisJuris){basics_ok=false;}else if(last_cite.Item.type!==Item.type){basics_ok=false;}else if(["article-journal","article-magazine"].indexOf(Item.type)>-1){if(!this.state.opt.development_extensions.handle_parallel_articles||last_cite.Item["container-title"]!==Item["container-title"]){basics_ok=false;}}}if(!basics_ok||!has_required_var||CSL.PARALLEL_TYPES.indexOf(Item.type)===-1){this.try_cite=true;if(this.in_series){this.in_series=false;}}this.cite={};this.cite.front=[];this.cite.mid=[];this.cite.back=[];this.cite.front_collapse={};this.cite.back_forceme=[];this.cite.position=position;this.cite.Item=Item;this.cite.itemId=""+Item.id;this.cite.prevItemID=""+prevItemID;this.target="front";if(["treaty"].indexOf(Item.type)>-1){this.ignoreVars=this.ignoreVarsOrders;}else if(["article-journal","article-magazine"].indexOf(Item.type)>-1){this.ignoreVars=this.ignoreVarsOther;}else if(item&&item.prefix){this.ignoreVars=this.ignoreVarsLawProceduralHistory;this.cite.useProceduralHistory=true;var prev=this.sets.value()[this.sets.value().length-1];if(prev&&prev.back){for(var i=prev.back.length-1;i>-1;i+=-1){if(prev.back[i]&&prev[prev.back[i]]){delete prev[prev.back[i]];}}}}else{this.ignoreVars=this.ignoreVarsLawGeneral;}if(this.sortedItems&&this.sortedItemsPos>0&&this.sortedItemsPos<this.sortedItems.length){curr=this.sortedItems[this.sortedItemsPos][1];last_id=""+this.sortedItems[this.sortedItemsPos-1][1].id;master=this.state.registry.registry[last_id].parallel;prev_locator=false;if(master==curr.id){len=this.sortedItemsPos-1;for(pos=len;pos>-1;pos+=-1){if(this.sortedItems[pos][1].id==Item.id){prev_locator=this.sortedItems[pos][1].locator;break;}}curr_locator=this.sortedItems[this.sortedItemsPos][1].locator;if(!prev_locator&&curr_locator){curr.position=CSL.POSITION_IBID_WITH_LOCATOR;}else if(curr_locator===prev_locator){curr.position=CSL.POSITION_IBID;}else{curr.position=CSL.POSITION_IBID_WITH_LOCATOR;}}}else if(this.state.registry.registry[Item.id]){this.state.registry.registry[Item.id].parallel=false;}else{this.try_cite=false;this.force_collapse=false;return;}this.force_collapse=false;if(this.state.registry.registry[Item.id].parallel){this.force_collapse=true;}}};CSL.Parallel.prototype.StartVariable=function(variable,real_variable){if(this.use_parallels&&(this.try_cite||this.force_collapse)){if(variable==="names"){this.variable=variable+":"+this.target;}else{this.variable=variable;}if(this.ignoreVars.indexOf(variable)>-1){return;}if(variable==="container-title"&&this.sets.value().length===0){this.master_was_neutral_cite=false;}this.data={};this.data.value="";this.data.blobs=[];var is_mid=this.isMid(variable);if(real_variable==="authority"&&this.variable==="names:front"&&this.sets.value().length){var prev=this.sets.value()[this.sets.value().length-1].Item;var thisAuthority=false;if(this.cite.Item.authority&&this.cite.Item.authority.length){thisAuthority=this.cite.Item.authority[0].literal;}var thatAuthority=false;if(prev.authority&&prev.authority.length){thatAuthority=prev.authority[0].literal;}if(thisAuthority!==thatAuthority){this.try_cite=true;this.in_series=false;}}else if(this.target==="front"&&is_mid){this.target="mid";}else if(this.target==="mid"&&!is_mid&&this.cite.Item.title&&variable!=="names"){this.target="back";}else if(this.target==="back"&&is_mid){this.try_cite=true;this.in_series=false;}if(variable==="number"){this.cite.front.push(this.variable);}else if(CSL.PARALLEL_COLLAPSING_MID_VARSET.indexOf(variable)>-1){if(["article-journal","article-magazine"].indexOf(this.cite.Item.type)>-1){this.cite.mid.push(this.variable);}else{this.cite.front.push(this.variable);}}else{this.cite[this.target].push(this.variable);}}};CSL.Parallel.prototype.AppendBlobPointer=function(blob){if(this.use_parallels){if(this.ignoreVars.indexOf(this.variable)>-1){return;}if(this.use_parallels&&(this.force_collapse||this.try_cite)){if(["article-journal","article-magazine"].indexOf(this.cite.Item.type)>-1){if(["volume","page","page-first","issue"].indexOf(this.variable)>-1){return;}if("container-title"===this.variable&&this.cite.mid.length>1){return;}}if(this.variable&&(this.try_cite||this.force_collapse)&&blob&&blob.blobs){if(!(this.cite.useProceduralHistory&&this.target==="back")){this.data.blobs.push([blob,blob.blobs.length]);}}}}};CSL.Parallel.prototype.AppendToVariable=function(str,varname){if(this.use_parallels){if(this.ignoreVars.indexOf(this.variable)>-1){return;}if(this.try_cite||this.force_collapse){if(this.target!=="back"||true){this.data.value+="::"+str;}else{var prev=this.sets.value()[this.sets.value().length-1];if(prev){if(prev[this.variable]){if(prev[this.variable].value){this.data.value+="::"+str;}}}}}}};CSL.Parallel.prototype.CloseVariable=function(){if(this.use_parallels){if(this.ignoreVars.indexOf(this.variable)>-1){return;}if(this.try_cite||this.force_collapse){this.cite[this.variable]=this.data;if(this.sets.value().length>0){var prev=this.sets.value()[this.sets.value().length-1];if(this.target==="front"&&this.variable==="issued"){if(this.data.value&&this.master_was_neutral_cite){this.target="mid";}}if(this.target==="front"){if((prev[this.variable]||this.data.value)&&(!prev[this.variable]||this.data.value!==prev[this.variable].value)){if("issued"!==this.variable){this.in_series=false;}}}else if(this.target==="mid"){if(CSL.PARALLEL_COLLAPSING_MID_VARSET.indexOf(this.variable)>-1){if(prev[this.variable]){if(prev[this.variable].value===this.data.value){this.cite.front_collapse[this.variable]=true;}else{this.cite.front_collapse[this.variable]=false;}}else{this.cite.front_collapse[this.variable]=false;}}}else if(this.target==="back"){if(prev[this.variable]){if(this.data.value!==prev[this.variable].value&&this.sets.value().slice(-1)[0].back_forceme.indexOf(this.variable)===-1){this.in_series=false;}}}}}this.variable=false;}};CSL.Parallel.prototype.CloseCite=function(){var x,pos,len,has_issued,use_journal_info,volume_pos,container_title_pos,section_pos;if(this.use_parallels&&(this.force_collapse||this.try_cite)){use_journal_info=false;if(!this.cite.front_collapse["container-title"]){use_journal_info=true;}if(this.cite.front_collapse.volume===false){use_journal_info=true;}if(this.cite.front_collapse["collection-number"]===false){use_journal_info=true;}if(this.cite.front_collapse.section===false){use_journal_info=true;}if(use_journal_info){this.cite.use_journal_info=true;section_pos=this.cite.front.indexOf("section");if(section_pos>-1){this.cite.front=this.cite.front.slice(0,section_pos).concat(this.cite.front.slice(section_pos+1));}volume_pos=this.cite.front.indexOf("volume");if(volume_pos>-1){this.cite.front=this.cite.front.slice(0,volume_pos).concat(this.cite.front.slice(volume_pos+1));}container_title_pos=this.cite.front.indexOf("container-title");if(container_title_pos>-1){this.cite.front=this.cite.front.slice(0,container_title_pos).concat(this.cite.front.slice(container_title_pos+1));}var collection_number_pos=this.cite.front.indexOf("collection-number");if(collection_number_pos>-1){this.cite.front=this.cite.front.slice(0,collection_number_pos).concat(this.cite.front.slice(collection_number_pos+1));}}if(!this.in_series&&!this.force_collapse){this.ComposeSet(true);}if(this.sets.value().length===0){var has_date=false;for(pos=0,len=this.cite.back.length;pos<len;pos+=1){x=this.cite.back[pos];if(x==="issued"&&this.cite["issued"]&&this.cite["issued"].value){has_date=true;break;}}if(!has_date){this.cite.back_forceme.push("issued");}}else{var idx=this.cite.front.indexOf("issued");if(idx===-1||this.master_was_neutral_cite){this.cite.back_forceme=this.sets.value().slice(-1)[0].back_forceme;}if(idx>-1){var prev=this.sets.value()[this.sets.value().length-1];if(!prev["issued"]){this.cite.front=this.cite.front.slice(0,idx).concat(this.cite.front.slice(idx+1));}}if(this.master_was_neutral_cite&&this.cite.mid.indexOf("names:mid")>-1){this.cite.front.push("names:mid");}}this.sets.value().push(this.cite);}};CSL.Parallel.prototype.ComposeSet=function(next_output_in_progress){var cite,pos,master,len;if(this.use_parallels&&(this.force_collapse||this.try_cite)){var lengthCheck=this.sets.value().length;if(this.sets.value().length===1){if(!this.in_series){this.sets.value().pop();this.delim_counter+=1;}}else{len=this.sets.value().length;for(pos=0;pos<len;pos+=1){cite=this.sets.value()[pos];if(pos===0){this.delim_counter+=1;}else{if(!cite.Item.title&&cite.use_journal_info){this.delim_pointers.push(false);}else{this.delim_pointers.push(this.delim_counter);}this.delim_counter+=1;}if(CSL.POSITION_FIRST===cite.position){if(pos===0){this.state.registry.registry[cite.itemId].master=true;this.state.registry.registry[cite.itemId].siblings=[];this.state.registry.registry[cite.itemId].parallel=false;}else{if(cite.prevItemID){if(!this.state.registry.registry[cite.prevItemID].parallel){this.state.registry.registry[cite.itemId].parallel=cite.prevItemID;}else{this.state.registry.registry[cite.itemId].parallel=this.state.registry.registry[cite.prevItemID].parallel;}this.state.registry.registry[cite.itemId].siblings=this.state.registry.registry[cite.prevItemID].siblings;if(!this.state.registry.registry[cite.itemId].siblings){this.state.registry.registry[cite.itemId].siblings=[];CSL.debug("WARNING: adding missing siblings array to registry object");}this.state.registry.registry[cite.itemId].siblings.push(cite.itemId);}}}}this.sets.push([]);}if(lengthCheck<2){this.purgeGroupsIfParallel(false);}else{this.purgeGroupsIfParallel(true);}this.in_series=true;}};CSL.Parallel.prototype.PruneOutputQueue=function(){var len,pos,series,ppos,llen,cite;if(this.use_parallels){len=this.sets.mystack.length;for(pos=0;pos<len;pos+=1){series=this.sets.mystack[pos];if(series.length>1){llen=series.length;for(ppos=0;ppos<llen;ppos+=1){cite=series[ppos];if(ppos===0){this.purgeVariableBlobs(cite,cite.back);}else if(ppos===series.length-1){this.purgeVariableBlobs(cite,cite.front.concat(cite.back_forceme));}else{this.purgeVariableBlobs(cite,cite.front.concat(cite.back));}}}}}};CSL.Parallel.prototype.purgeVariableBlobs=function(cite,varnames){var len,pos,varname,b,llen,ppos,out;if(this.use_parallels){out=this.state.output.current.value();if("undefined"===typeof out.length){out=out.blobs;}for(pos=0,len=this.delim_pointers.length;pos<len;pos+=1){ppos=this.delim_pointers[pos];if(ppos!==false){out[ppos].parallel_delimiter=", ";}}len=varnames.length-1;for(pos=len;pos>-1;pos+=-1){varname=varnames[pos];if(cite[varname]){llen=cite[varname].blobs.length-1;for(ppos=llen;ppos>-1;ppos+=-1){b=cite[varname].blobs[ppos];b[0].blobs=b[0].blobs.slice(0,b[1]).concat(b[0].blobs.slice(b[1]+1));this.state.tmp.has_purged_parallel=true;if(b[0]&&b[0].strings&&"string"==typeof b[0].strings.oops&&b[0].parent&&b[0].parent){b[0].parent.parent.strings.delimiter=b[0].strings.oops;}}}}}};CSL.Parallel.prototype.purgeGroupsIfParallel=function(original_condition){for(var i=this.parallel_conditional_blobs_list.length-1;i>-1;i+=-1){var obj=this.parallel_conditional_blobs_list[i];var purgeme=true;for(var j=0,jlen=obj.conditions.length;j<jlen;j+=1){if(!(!obj.conditions[j]===!!original_condition||"master"===obj.conditions[j]&&!this.state.registry.registry[obj.id].master||"servant"===obj.conditions[j]&&!this.state.registry.registry[obj.id].parallel)){var purgeme=false;break;}}if(purgeme){var buffer=[];while(obj.blobs.length>obj.pos){buffer.push(obj.blobs.pop());}if(buffer.length){buffer.pop();}while(buffer.length){obj.blobs.push(buffer.pop());}}this.parallel_conditional_blobs_list.pop();}};module.exports=CSL;CSL.Util={};CSL.Util.Match=function(){this.any=function(token,state,tests){return function(Item,item){for(var i=0,ilen=tests.length;i<ilen;i+=1){var result=tests[i](Item,item);if(result){return true;}}return false;};};this.none=function(token,state,tests){return function(Item,item){for(var i=0,ilen=tests.length;i<ilen;i+=1){var result=tests[i](Item,item);if(result){return false;}}return true;};};this.all=function(token,state,tests){return function(Item,item){for(var i=0,ilen=tests.length;i<ilen;i+=1){var result=tests[i](Item,item);if(!result){return false;}}return true;};};this[undefined]=this.all;this.nand=function(token,state,tests){return function(Item,item){for(var i=0,ilen=tests.length;i<ilen;i+=1){var result=tests[i](Item,item);if(!result){return true;}}return false;};};};module.exports=CSL;CSL.Transform=function(state){var debug=false,abbreviations,token,fieldname,abbrev_family,opt;this.abbrevs={};this.abbrevs["default"]=new state.sys.AbbreviationSegments();this.getTextSubField=getTextSubField;function abbreviate(state,tok,Item,altvar,basevalue,family_var,use_field,form){var value="";var myabbrev_family=CSL.FIELD_CATEGORY_REMAP[family_var];if(!myabbrev_family){return basevalue;}var variable=family_var;if(state.sys.getAbbreviation){var normalizedKey=basevalue;if(state.sys.normalizeAbbrevsKey){normalizedKey=state.sys.normalizeAbbrevsKey(family_var,basevalue);}if(["jurisdiction","country"].indexOf(variable)>-1){var loadJurisdiction="default";}else if(Item.jurisdiction){var loadJurisdiction=Item.jurisdiction;}else{var loadJurisdiction="default";}var jurisdiction=state.transform.loadAbbreviation(loadJurisdiction,myabbrev_family,normalizedKey,Item.type);if(state.transform.abbrevs[jurisdiction][myabbrev_family]&&normalizedKey){var abbrev=state.transform.abbrevs[jurisdiction][myabbrev_family][normalizedKey];if(tok.strings.form==="short"&&abbrev){value=abbrev;}else{if(variable==="country"){if(state.sys.getHumanForm){value=state.sys.getHumanForm(normalizedKey.toLowerCase(),false,true);value=value.split("|")[0];}}else if(variable==="jurisdiction"){if(state.sys.getHumanForm){value=state.sys.getHumanForm(normalizedKey.toLowerCase(),false,true);if(normalizedKey.indexOf(":")>-1){value=value.split("|").slice(1).join(", ");}else{value="";}}}}}}if(!value&&(!state.opt.development_extensions.require_explicit_legal_case_title_short||Item.type!=='legal_case')&&altvar&&Item[altvar]&&use_field){value=Item[altvar];}if(!value&&(!state.sys.getHumanForm||variable!=="jurisdiction")){value=basevalue;}return value;}function getFieldLocale(Item,field){var ret=state.opt["default-locale"][0].slice(0,2);var localeRex;if(state.opt.development_extensions.strict_text_case_locales){localeRex=new RegExp("^([a-zA-Z]{2})(?:$|-.*| .*)");}else{localeRex=new RegExp("^([a-zA-Z]{2})(?:$|-.*|.*)");}if(Item.language){var m=(""+Item.language).match(localeRex);if(m){ret=m[1];}else{ret="tlh";}}if(Item.multi&&Item.multi&&Item.multi.main&&Item.multi.main[field]){ret=Item.multi.main[field];}if(!state.opt.development_extensions.strict_text_case_locales||state.opt.development_extensions.normalize_lang_keys_to_lowercase){ret=ret.toLowerCase();}return ret;};function getTextSubField(Item,field,locale_type,use_default,stopOrig){var m,lst,opt,o,oo,pos,key,ret,len,myret,opts;var usedOrig=stopOrig;var usingOrig=false;if(!Item[field]){return{name:"",usedOrig:stopOrig,token:CSL.Util.cloneToken(this)};}ret={name:"",usedOrig:stopOrig,locale:getFieldLocale(Item,field)};opts=state.opt[locale_type];var hasVal=false;var jurisdictionName=false;if(locale_type==='locale-orig'){if(stopOrig){ret={name:"",usedOrig:stopOrig};}else{ret={name:Item[field],usedOrig:false,locale:getFieldLocale(Item,field)};}hasVal=true;usingOrig=true;}else if(use_default&&("undefined"===typeof opts||opts.length===0)){var ret={name:Item[field],usedOrig:true,locale:getFieldLocale(Item,field)};hasVal=true;usingOrig=true;}if(!hasVal){for(var i=0,ilen=opts.length;i<ilen;i+=1){opt=opts[i];o=opt.split(/[\-_]/)[0];if(opt&&Item.multi&&Item.multi._keys[field]&&Item.multi._keys[field][opt]){ret.name=Item.multi._keys[field][opt];ret.locale=opt;break;}else if(o&&Item.multi&&Item.multi._keys[field]&&Item.multi._keys[field][o]){ret.name=Item.multi._keys[field][o];ret.locale=o;break;}}if(!ret.name&&use_default){ret={name:Item[field],usedOrig:true,locale:getFieldLocale(Item,field)};usingOrig=true;}}ret.token=CSL.Util.cloneToken(this);if(["title","container-title"].indexOf(field)>-1){if(!usedOrig&&(!ret.token.strings["text-case"]||ret.token.strings["text-case"]==="sentence"||ret.token.strings["text-case"]==="normal")){var locale=usingOrig?false:ret.locale;var seg=field.slice(0,-5);var sentenceCase=ret.token.strings["text-case"]==="sentence"?true:false;ret.name=CSL.titlecaseSentenceOrNormal(state,Item,seg,locale,sentenceCase);delete ret.token.strings["text-case"];}}return ret;}function loadAbbreviation(jurisdiction,category,orig,itemType){var pos,len;if(!jurisdiction){jurisdiction="default";}if(!orig){if(!state.transform.abbrevs[jurisdiction]){state.transform.abbrevs[jurisdiction]=new state.sys.AbbreviationSegments();}if(!state.transform.abbrevs[jurisdiction][category]){state.transform.abbrevs[jurisdiction][category]={};}return jurisdiction;}if(state.sys.getAbbreviation){jurisdiction=state.sys.getAbbreviation(state.opt.styleID,state.transform.abbrevs,jurisdiction,category,orig,itemType,true);if(!jurisdiction){jurisdiction="default";}}return jurisdiction;}this.loadAbbreviation=loadAbbreviation;function publisherCheck(tok,Item,primary,family_var){var varname=tok.variables[0];if(state.publisherOutput&&primary){if(["publisher","publisher-place"].indexOf(varname)===-1){return false;}else{state.publisherOutput[varname+"-token"]=tok;state.publisherOutput.varlist.push(varname);var lst=primary.split(/;\s*/);if(lst.length===state.publisherOutput[varname+"-list"].length){state.publisherOutput[varname+"-list"]=lst;}for(var i=0,ilen=lst.length;i<ilen;i+=1){lst[i]=abbreviate(state,tok,Item,false,lst[i],family_var,true);}state.tmp[varname+"-token"]=tok;return true;}}return false;}function getOutputFunction(variables,family_var,abbreviation_fallback,alternative_varname,transform_fallback){var localesets;var langPrefs=CSL.LangPrefsMap[variables[0]];if(!langPrefs){localesets=false;}else{localesets=state.opt['cite-lang-prefs'][langPrefs];}return function(state,Item,item,usedOrig){var primary,primary_locale,secondary,secondary_locale,tertiary,tertiary_locale,primary_tok,group_tok,key;if(!variables[0]||!Item[variables[0]]&&!Item[alternative_varname]){return null;}var slot={primary:false,secondary:false,tertiary:false};if(state.tmp.area.slice(-5)==="_sort"){slot.primary='locale-sort';}else{if(localesets){var slotnames=["primary","secondary","tertiary"];for(var i=0,ilen=slotnames.length;i<ilen;i+=1){if(localesets.length-1<i){break;}if(localesets[i]){slot[slotnames[i]]='locale-'+localesets[i];}}}else{slot.primary='locale-orig';}}if(variables[0]==="title-short"||state.tmp.area!=="bibliography"&&!(state.tmp.area==="citation"&&state.opt.xclass==="note"&&item&&!item.position)){slot.secondary=false;slot.tertiary=false;}if(state.tmp["publisher-list"]){if(variables[0]==="publisher"){state.tmp["publisher-token"]=this;}else if(variables[0]==="publisher-place"){state.tmp["publisher-place-token"]=this;}return null;}var res=getTextSubField.call(this,Item,variables[0],slot.primary,true);primary=res.name;primary_locale=res.locale;var primary_tok=res.token;var primaryUsedOrig=res.usedOrig;if(publisherCheck(this,Item,primary,family_var)){return null;}secondary=false;tertiary=false;if(slot.secondary){res=getTextSubField.call(this,Item,variables[0],slot.secondary,false,res.usedOrig);secondary=res.name;secondary_locale=res.locale;var secondary_tok=res.token;}if(slot.tertiary){res=getTextSubField.call(this,Item,variables[0],slot.tertiary,false,res.usedOrig);tertiary=res.name;tertiary_locale=res.locale;var tertiary_tok=res.token;}if(family_var){primary=abbreviate(state,primary_tok,Item,alternative_varname,primary,family_var,true);if(primary){primary=quashCheck(primary);}secondary=abbreviate(state,secondary_tok,Item,false,secondary,family_var,true);tertiary=abbreviate(state,tertiary_tok,Item,false,tertiary,family_var,true);}var primaryPrefix;if(slot.primary==="locale-translit"){primaryPrefix=state.opt.citeAffixes[langPrefs][slot.primary].prefix;}if(primaryPrefix==="<i>"&&variables[0]==='title'&&!primaryUsedOrig){var hasItalic=false;for(var i=0,ilen=primary_tok.decorations.length;i<ilen;i+=1){if(primary_tok.decorations[i][0]==="@font-style"&&primary_tok.decorations[i][1]==="italic"){hasItalic=true;}}if(!hasItalic){primary_tok.decorations.push(["@font-style","italic"]);}}if(primary_locale!=="en"&&primary_tok.strings["text-case"]==="title"){primary_tok.strings["text-case"]="passthrough";}if("title"===variables[0]){primary=CSL.demoteNoiseWords(state,primary,this["leading-noise-words"]);}if(secondary||tertiary){state.output.openLevel("empty");primary_tok.strings.suffix=primary_tok.strings.suffix.replace(/[ .,]+$/,"");state.output.append(primary,primary_tok);if(secondary){secondary_tok.strings.prefix=state.opt.citeAffixes[langPrefs][slot.secondary].prefix;secondary_tok.strings.suffix=state.opt.citeAffixes[langPrefs][slot.secondary].suffix;if(!secondary_tok.strings.prefix){secondary_tok.strings.prefix=" ";}for(var i=secondary_tok.decorations.length-1;i>-1;i+=-1){if(['@quotes/true','@font-style/italic','@font-style/oblique','@font-weight/bold'].indexOf(secondary_tok.decorations[i].join('/'))>-1){secondary_tok.decorations=secondary_tok.decorations.slice(0,i).concat(secondary_tok.decorations.slice(i+1));}}if(secondary_locale!=="en"&&secondary_tok.strings["text-case"]==="title"){secondary_tok.strings["text-case"]="passthrough";}var secondary_outer=new CSL.Token();secondary_outer.decorations.push(["@font-style","normal"]);secondary_outer.decorations.push(["@font-weight","normal"]);state.output.openLevel(secondary_outer);state.output.append(secondary,secondary_tok);state.output.closeLevel();var blob_obj=state.output.current.value();var blobs_pos=state.output.current.value().blobs.length-1;if(state.parallel.use_parallels){state.parallel.cite.front.push(variables[0]+":secondary");state.parallel.cite[variables[0]+":secondary"]={blobs:[[blob_obj,blobs_pos]]};}}if(tertiary){tertiary_tok.strings.prefix=state.opt.citeAffixes[langPrefs][slot.tertiary].prefix;tertiary_tok.strings.suffix=state.opt.citeAffixes[langPrefs][slot.tertiary].suffix;if(!tertiary_tok.strings.prefix){tertiary_tok.strings.prefix=" ";}for(var i=tertiary_tok.decorations.length-1;i>-1;i+=-1){if(['@quotes/true','@font-style/italic','@font-style/oblique','@font-weight/bold'].indexOf(tertiary_tok.decorations[i].join('/'))>-1){tertiary_tok.decorations=tertiary_tok.decorations.slice(0,i).concat(tertiary_tok.decorations.slice(i+1));}}if(tertiary_locale!=="en"&&tertiary_tok.strings["text-case"]==="title"){tertiary_tok.strings["text-case"]="passthrough";}var tertiary_outer=new CSL.Token();tertiary_outer.decorations.push(["@font-style","normal"]);tertiary_outer.decorations.push(["@font-weight","normal"]);state.output.openLevel(tertiary_outer);state.output.append(tertiary,tertiary_tok);state.output.closeLevel();var blob_obj=state.output.current.value();var blobs_pos=state.output.current.value().blobs.length-1;if(state.parallel.use_parallels){state.parallel.cite.front.push(variables[0]+":tertiary");state.parallel.cite[variables[0]+":tertiary"]={blobs:[[blob_obj,blobs_pos]]};}}state.output.closeLevel();}else{state.output.append(primary,primary_tok);}return null;};}this.getOutputFunction=getOutputFunction;function quashCheck(value){var m=value.match(/^!([-,_a-z]+)>>>/);if(m){var fields=m[1].split(",");value=value.slice(m[0].length);for(var i=0,ilen=fields.length;i<ilen;i+=1){if(state.tmp.done_vars.indexOf(fields[i])===-1){state.tmp.done_vars.push(fields[i]);}}}return value;}this.quashCheck=quashCheck;};module.exports=CSL;CSL.Token=function(name,tokentype){this.name=name;this.strings={};this.strings.delimiter=undefined;this.strings.prefix="";this.strings.suffix="";this.decorations=[];this.variables=[];this.execs=[];this.tokentype=tokentype;this.evaluator=false;this.tests=[];this.rawtests=[];this.succeed=false;this.fail=false;this.next=false;};CSL.Util.cloneToken=function(token){var newtok,key,pos,len;if("string"===typeof token){return token;}newtok=new CSL.Token(token.name,token.tokentype);for(var key in token.strings){if(token.strings.hasOwnProperty(key)){newtok.strings[key]=token.strings[key];}}if(token.decorations){newtok.decorations=[];for(pos=0,len=token.decorations.length;pos<len;pos+=1){newtok.decorations.push(token.decorations[pos].slice());}}if(token.variables){newtok.variables=token.variables.slice();}if(token.execs){newtok.execs=token.execs.slice();newtok.tests=token.tests.slice();newtok.rawtests=token.tests.slice();}return newtok;};module.exports=CSL;CSL.AmbigConfig=function(){this.maxvals=[];this.minval=1;this.names=[];this.givens=[];this.year_suffix=false;this.disambiguate=0;};module.exports=CSL;CSL.Blob=function(str,token,levelname){var len,pos,key;this.levelname=levelname;if(token){this.strings={"prefix":"","suffix":""};for(var key in token.strings){if(token.strings.hasOwnProperty(key)){this.strings[key]=token.strings[key];}}this.decorations=[];if(token.decorations===undefined){len=0;}else{len=token.decorations.length;}for(pos=0;pos<len;pos+=1){this.decorations.push(token.decorations[pos].slice());}}else{this.strings={};this.strings.prefix="";this.strings.suffix="";this.strings.delimiter="";this.decorations=[];}if("string"===typeof str){this.blobs=str;}else if(str){this.blobs=[str];}else{this.blobs=[];}this.alldecor=[this.decorations];};CSL.Blob.prototype.push=function(blob){if("string"===typeof this.blobs){throw"Attempt to push blob onto string object";}else if(false!==blob){blob.alldecor=blob.alldecor.concat(this.alldecor);this.blobs.push(blob);}};module.exports=CSL;CSL.NumericBlob=function(particle,num,mother_token,id){this.id=id;this.alldecor=[];this.num=num;this.particle=particle;this.blobs=num.toString();this.status=CSL.START;this.strings={};if(mother_token){this.gender=mother_token.gender;this.decorations=mother_token.decorations;this.strings.prefix=mother_token.strings.prefix;this.strings.suffix=mother_token.strings.suffix;this.strings["text-case"]=mother_token.strings["text-case"];this.successor_prefix=mother_token.successor_prefix;this.range_prefix=mother_token.range_prefix;this.splice_prefix=mother_token.splice_prefix;this.formatter=mother_token.formatter;if(!this.formatter){this.formatter=new CSL.Output.DefaultFormatter();}if(this.formatter){this.type=this.formatter.format(1);}}else{this.decorations=[];this.strings.prefix="";this.strings.suffix="";this.successor_prefix="";this.range_prefix="";this.splice_prefix="";this.formatter=new CSL.Output.DefaultFormatter();}};CSL.NumericBlob.prototype.setFormatter=function(formatter){this.formatter=formatter;this.type=this.formatter.format(1);};CSL.Output.DefaultFormatter=function(){};CSL.Output.DefaultFormatter.prototype.format=function(num){return num.toString();};CSL.NumericBlob.prototype.checkNext=function(next,start){if(start){this.status=CSL.START;if("object"===(typeof next==="undefined"?"undefined":_typeof(next))){if(next.num===this.num+1){next.status=CSL.SUCCESSOR;}else{next.status=CSL.SEEN;}}}else if(!next||!next.num||this.type!==next.type||next.num!==this.num+1){if(this.status===CSL.SUCCESSOR_OF_SUCCESSOR){this.status=CSL.END;}if("object"===(typeof next==="undefined"?"undefined":_typeof(next))){next.status=CSL.SEEN;}}else{// next number is in the sequence
 if(this.status===CSL.START||this.status===CSL.SEEN){next.status=CSL.SUCCESSOR;}else if(this.status===CSL.SUCCESSOR||this.status===CSL.SUCCESSOR_OF_SUCCESSOR){if(this.range_prefix){next.status=CSL.SUCCESSOR_OF_SUCCESSOR;this.status=CSL.SUPPRESS;}else{next.status=CSL.SUCCESSOR;}}}};CSL.NumericBlob.prototype.checkLast=function(last){if(this.status===CSL.SEEN||last.num!==this.num-1&&this.status===CSL.SUCCESSOR){this.status=CSL.SUCCESSOR;return true;}return false;};module.exports=CSL;CSL.Util.fixDateNode=function(parent,pos,node){var form,variable,datexml,subnode,partname,attr,val,prefix,suffix,children,key,subchildren,kkey,display,cslid;var lingo=this.cslXml.getAttributeValue(node,"lingo");var default_locale=this.cslXml.getAttributeValue(node,"default-locale");this.build.date_key=true;form=this.cslXml.getAttributeValue(node,"form");var lingo;if(default_locale){lingo=this.opt["default-locale"][0];}else{lingo=this.cslXml.getAttributeValue(node,"lingo");}if(!this.getDate(form,default_locale)){return parent;}var dateparts=this.cslXml.getAttributeValue(node,"date-parts");variable=this.cslXml.getAttributeValue(node,"variable");prefix=this.cslXml.getAttributeValue(node,"prefix");suffix=this.cslXml.getAttributeValue(node,"suffix");display=this.cslXml.getAttributeValue(node,"display");cslid=this.cslXml.getAttributeValue(node,"cslid");datexml=this.cslXml.nodeCopy(this.getDate(form,default_locale));this.cslXml.setAttribute(datexml,'lingo',this.opt.lang);this.cslXml.setAttribute(datexml,'form',form);this.cslXml.setAttribute(datexml,'date-parts',dateparts);this.cslXml.setAttribute(datexml,"cslid",cslid);this.cslXml.setAttribute(datexml,'variable',variable);this.cslXml.setAttribute(datexml,'default-locale',default_locale);if(prefix){this.cslXml.setAttribute(datexml,"prefix",prefix);}if(suffix){this.cslXml.setAttribute(datexml,"suffix",suffix);}if(display){this.cslXml.setAttribute(datexml,"display",display);}children=this.cslXml.children(datexml);for(var key in children){subnode=children[key];if("date-part"===this.cslXml.nodename(subnode)){partname=this.cslXml.getAttributeValue(subnode,"name");if(default_locale){this.cslXml.setAttributeOnNodeIdentifiedByNameAttribute(datexml,"date-part",partname,"@default-locale","true");}}}children=this.cslXml.children(node);for(var key in children){subnode=children[key];if("date-part"===this.cslXml.nodename(subnode)){partname=this.cslXml.getAttributeValue(subnode,"name");subchildren=this.cslXml.attributes(subnode);for(attr in subchildren){if("@name"===attr){continue;}if(lingo&&lingo!==this.opt.lang){if(["@suffix","@prefix","@form"].indexOf(attr)>-1){continue;}}val=subchildren[attr];this.cslXml.setAttributeOnNodeIdentifiedByNameAttribute(datexml,"date-part",partname,attr,val);}}}if("year"===this.cslXml.getAttributeValue(node,"date-parts")){this.cslXml.deleteNodeByNameAttribute(datexml,'month');this.cslXml.deleteNodeByNameAttribute(datexml,'day');}else if("year-month"===this.cslXml.getAttributeValue(node,"date-parts")){this.cslXml.deleteNodeByNameAttribute(datexml,'day');}else if("month-day"===this.cslXml.getAttributeValue(node,"date-parts")){var childNodes=this.cslXml.children(datexml);for(var i=1,ilen=this.cslXml.numberofnodes(childNodes);i<ilen;i++){if(this.cslXml.getAttributeValue(childNodes[i],'name')==="year"){this.cslXml.setAttribute(childNodes[i-1],"suffix","");break;}}this.cslXml.deleteNodeByNameAttribute(datexml,'year');}return this.cslXml.insertChildNodeAfter(parent,node,pos,datexml);};module.exports=CSL;CSL.dateMacroAsSortKey=function(state,Item){CSL.dateAsSortKey.call(this,state,Item,true);};CSL.dateAsSortKey=function(state,Item,isMacro){var dp,elem,value,e,yr,prefix,i,ilen,num;var variable=this.variables[0];var macroFlag="empty";if(isMacro&&state.tmp.extension){macroFlag="macro-with-date";}dp=Item[variable];if("undefined"===typeof dp){dp={"date-parts":[[0]]};if(!dp.year){state.tmp.empty_date=true;}}if("undefined"===typeof this.dateparts){this.dateparts=["year","month","day"];}if(dp.raw){dp=state.fun.dateparser.parseDateToArray(dp.raw);}else if(dp["date-parts"]){dp=state.dateParseArray(dp);}if("undefined"===typeof dp){dp={};}for(i=0,ilen=CSL.DATE_PARTS_INTERNAL.length;i<ilen;i+=1){elem=CSL.DATE_PARTS_INTERNAL[i];value=0;e=elem;if(e.slice(-4)==="_end"){e=e.slice(0,-4);}if(dp[elem]&&this.dateparts.indexOf(e)>-1){value=dp[elem];}if(elem.slice(0,4)==="year"){yr=CSL.Util.Dates[e].numeric(state,value);var prefix="Y";if(yr[0]==="-"){prefix="X";yr=yr.slice(1);yr=9999-parseInt(yr,10);}state.output.append(CSL.Util.Dates[elem.slice(0,4)].numeric(state,prefix+yr),macroFlag);}else{value=CSL.Util.Dates[e]["numeric-leading-zeros"](state,value);if(!value){value="00";}state.output.append(value,macroFlag);}}};CSL.Engine.prototype.dateParseArray=function(date_obj){var ret,field,dpos,ppos,dp,exts,llen,pos,len,pppos,lllen;ret={};for(field in date_obj){if(field==="date-parts"){dp=date_obj["date-parts"];if(dp.length>1){if(dp[0].length!==dp[1].length){CSL.error("CSL data error: element mismatch in date range input.");}}exts=["","_end"];for(var i=0,ilen=dp.length;i<ilen;i+=1){for(var j=0,jlen=CSL.DATE_PARTS.length;j<jlen;j+=1){if(isNaN(parseInt(dp[i][j],10))){ret[CSL.DATE_PARTS[j]+exts[i]]=undefined;}else{ret[CSL.DATE_PARTS[j]+exts[i]]=parseInt(dp[i][j],10);}}}}else if(date_obj.hasOwnProperty(field)){if(field==="literal"&&"object"===_typeof(date_obj.literal)&&"string"===typeof date_obj.literal.part){CSL.debug("Warning: fixing up weird literal date value");ret.literal=date_obj.literal.part;}else{ret[field]=date_obj[field];}}}return ret;};module.exports=CSL;CSL.Util.Names={};CSL.Util.Names.compareNamesets=CSL.NameOutput.prototype._compareNamesets;CSL.Util.Names.unInitialize=function(state,name){var i,ilen,namelist,punctlist,ret;if(!name){return"";}namelist=name.split(/(?:\-|\s+)/);punctlist=name.match(/(\-|\s+)/g);ret="";for(i=0,ilen=namelist.length;i<ilen;i+=1){ret+=namelist[i];if(i<ilen-1){ret+=punctlist[i];}}return ret;};CSL.Util.Names.initializeWith=function(state,name,terminator,normalizeOnly){var i,ilen,j,jlen,n,m,mm,str,lst,ret;if(!name){return"";}if(!terminator){terminator="";}if(["Lord","Lady"].indexOf(name)>-1||!name.match(CSL.STARTSWITH_ROMANESQUE_REGEXP)&&!terminator.match("%s")){return name;}var namelist=name;if(state.opt["initialize-with-hyphen"]===false){namelist=namelist.replace(/\-/g," ");}namelist=namelist.replace(/\s*\-\s*/g,"-").replace(/\s+/g," ");namelist=namelist.replace(/-([a-z])/g,"\u2013$1");mm=namelist.match(/[\-\s]+/g);lst=namelist.split(/[\-\s]+/);if(lst.length===0){namelist=mm;}else{namelist=[lst[0]];for(i=1,ilen=lst.length;i<ilen;i+=1){namelist.push(mm[i-1]);namelist.push(lst[i]);}}lst=namelist;for(i=lst.length-1;i>-1;i+=-1){if(lst[i]&&lst[i].slice(0,-1).indexOf(".")>-1){var lstend=lst.slice(i+1);var lstmid=lst[i].slice(0,-1).split(".");lst=lst.slice(0,i);for(j=0,jlen=lstmid.length;j<jlen;j+=1){lst.push(lstmid[j]+".");if(j<lstmid.length-1){lst.push(" ");}}lst=lst.concat(lstend);}}if(normalizeOnly){ret=CSL.Util.Names.doNormalize(state,lst,terminator);}else{ret=CSL.Util.Names.doInitialize(state,lst,terminator);}ret=ret.replace(/\u2013([a-z])/g,"-$1");return ret;};CSL.Util.Names.doNormalize=function(state,namelist,terminator,mode){var i,ilen;terminator=terminator?terminator:"";var isAbbrev=[];for(i=0,ilen=namelist.length;i<ilen;i+=1){if(namelist[i].length>1&&namelist[i].slice(-1)==="."){namelist[i]=namelist[i].slice(0,-1);isAbbrev.push(true);}else if(namelist[i].length===1&&namelist[i].toUpperCase()===namelist[i]){isAbbrev.push(true);}else{isAbbrev.push(false);}}var ret=[];for(i=0,ilen=namelist.length;i<ilen;i+=2){if(isAbbrev[i]){if(i<namelist.length-2){namelist[i+1]="";var onlySpace=terminator.match(/^[\u0009\u000a\u000b\u000c\u000d\u0020\u00a0]+$/);if(onlySpace||(!terminator||terminator.slice(-1)&&!terminator.slice(-1).match(/[\u0009\u000a\u000b\u000c\u000d\u0020\u00a0]/))&&namelist[i].length&&namelist[i].match(CSL.ALL_ROMANESQUE_REGEXP)&&(namelist[i].length>1||namelist[i+2].length>1)){namelist[i+1]=" ";}if(namelist[i+2].length>1){namelist[i]=namelist[i]+terminator.replace(/\ufeff$/,"");}else{namelist[i]=namelist[i]+terminator;}}if(i===namelist.length-1){namelist[i]=namelist[i]+terminator;}}}return namelist.join("").replace(/[\u0009\u000a\u000b\u000c\u000d\u0020\ufeff\u00a0]+$/,"").replace(/\s*\-\s*/g,"-").replace(/[\u0009\u000a\u000b\u000c\u000d\u0020]+/g," ");};CSL.Util.Names.doInitialize=function(state,namelist,terminator,mode){var i,ilen,m,j,jlen,lst,n;for(i=0,ilen=namelist.length;i<ilen;i+=2){n=namelist[i];if(!n){continue;}m=n.match(CSL.NAME_INITIAL_REGEXP);if(!m&&!n.match(CSL.STARTSWITH_ROMANESQUE_REGEXP)&&n.length>1&&terminator.match("%s")){m=n.match(/(.)(.*)/);}if(m&&m[1]===m[1].toUpperCase()){var extra="";if(m[2]){var s="";lst=m[2].split("");for(j=0,jlen=lst.length;j<jlen;j+=1){var c=lst[j];if(c===c.toUpperCase()){s+=c;}else{break;}}if(s.length<m[2].length){extra=s.toLocaleLowerCase();}}namelist[i]=m[1].toLocaleUpperCase()+extra;if(i<ilen-1){if(terminator.match("%s")){namelist[i]=terminator.replace("%s",namelist[i]);}else{if(namelist[i+1].indexOf("-")>-1){namelist[i+1]=terminator+namelist[i+1];}else{namelist[i+1]=terminator;}}}else{if(terminator.match("%s")){namelist[i]=terminator.replace("%s",namelist[i]);}else{namelist.push(terminator);}}}else if(n.match(CSL.ROMANESQUE_REGEXP)){namelist[i]=" "+n;}}var ret=namelist.join("");ret=ret.replace(/[\u0009\u000a\u000b\u000c\u000d\u0020\ufeff\u00a0]+$/,"").replace(/\s*\-\s*/g,"-").replace(/[\u0009\u000a\u000b\u000c\u000d\u0020]+/g," ");return ret;};CSL.Util.Names.getRawName=function(name){var ret=[];if(name.given){ret.push(name.given);}if(name.family){ret.push(name.family);}return ret.join(" ");};module.exports=CSL;CSL.Util.Dates={};CSL.Util.Dates.year={};CSL.Util.Dates.year["long"]=function(state,num){if(!num){if("boolean"===typeof num){num="";}else{num=0;}}return num.toString();};CSL.Util.Dates.year.imperial=function(state,num,end,makeShort){var year="";if(!num){if("boolean"===typeof num){num="";}else{num=0;}}end=end?"_end":"";var month=state.tmp.date_object["month"+end];month=month?""+month:"1";while(month.length<2){month="0"+month;}var day=state.tmp.date_object["day"+end];day=day?""+day:"1";while(day.length<2){day="0"+day;}var date=parseInt(num+month+day,10);var label;var offset;if(date>=18680908&&date<19120730){label="\u660E\u6CBB";offset=1867;}else if(date>=19120730&&date<19261225){label="\u5927\u6B63";offset=1911;}else if(date>=19261225&&date<19890108){label="\u662D\u548C";offset=1925;}else if(date>=19890108){label="\u5E73\u6210";offset=1988;}if(label&&offset){var normalizedKey=label;if(state.sys.normalizeAbbrevsKey){normalizedKey=state.sys.normalizeAbbrevsKey("number",label);}if(!state.transform.abbrevs['default']['number'][normalizedKey]){state.transform.loadAbbreviation('default',"number",normalizedKey);}if(state.transform.abbrevs['default']['number'][normalizedKey]){label=state.transform.abbrevs['default']['number'][normalizedKey];};year=label+(num-offset);}return year;};CSL.Util.Dates.year["short"]=function(state,num){num=num.toString();if(num&&num.length===4){return num.substr(2);}};CSL.Util.Dates.year.numeric=function(state,num){var m,pre;num=""+num;var m=num.match(/([0-9]*)$/);if(m){pre=num.slice(0,m[1].length*-1);num=m[1];}else{pre=num;num="";}while(num.length<4){num="0"+num;}return pre+num;};CSL.Util.Dates.normalizeMonth=function(num,useSeason){var ret;if(!num){num=0;}num=""+num;if(!num.match(/^[0-9]+$/)){num=0;}num=parseInt(num,10);if(useSeason){var res={stub:"month-",num:num};if(res.num<1||res.num>20){res.num=0;}else if(res.num>16){res.stub="season-";res.num=res.num-16;}else if(res.num>12){res.stub="season-";res.num=res.num-12;}ret=res;}else{if(num<1||num>12){num=0;}ret=num;}return ret;};CSL.Util.Dates.month={};CSL.Util.Dates.month.numeric=function(state,num){var num=CSL.Util.Dates.normalizeMonth(num);if(!num){num="";}return num;};CSL.Util.Dates.month["numeric-leading-zeros"]=function(state,num){var num=CSL.Util.Dates.normalizeMonth(num);if(!num){num="";}else{num=""+num;while(num.length<2){num="0"+num;}}return num;};CSL.Util.Dates.month["long"]=function(state,num,gender,forceDefaultLocale){var res=CSL.Util.Dates.normalizeMonth(num,true);var num=res.num;if(!num){num="";}else{num=""+num;while(num.length<2){num="0"+num;}num=state.getTerm(res.stub+num,"long",0,0,false,forceDefaultLocale);}return num;};CSL.Util.Dates.month["short"]=function(state,num,gender,forceDefaultLocale){var res=CSL.Util.Dates.normalizeMonth(num,true);var num=res.num;if(!num){num="";}else{num=""+num;while(num.length<2){num="0"+num;}num=state.getTerm(res.stub+num,"short",0,0,false,forceDefaultLocale);}return num;};CSL.Util.Dates.day={};CSL.Util.Dates.day.numeric=function(state,num){return num.toString();};CSL.Util.Dates.day["long"]=CSL.Util.Dates.day.numeric;CSL.Util.Dates.day["numeric-leading-zeros"]=function(state,num){if(!num){num=0;}num=num.toString();while(num.length<2){num="0"+num;}return num.toString();};CSL.Util.Dates.day.ordinal=function(state,num,gender){return state.fun.ordinalizer.format(num,gender);};module.exports=CSL;CSL.Util.Sort={};CSL.Util.Sort.strip_prepositions=function(str){var m;if("string"===typeof str){m=str.toLocaleLowerCase();m=str.match(/^((a|an|the)\s+)/);}if(m){str=str.substr(m[1].length);}return str;};module.exports=CSL;CSL.Util.substituteStart=function(state,target){var element_trace,display,bib_first,func,choose_start,if_start,nodetypes;func=function func(state,Item){for(var i=0,ilen=this.decorations.length;i<ilen;i+=1){if("@strip-periods"===this.decorations[i][0]&&"true"===this.decorations[i][1]){state.tmp.strip_periods+=1;break;}}};this.execs.push(func);if(this.decorations&&(state.opt.development_extensions.csl_reverse_lookup_support||state.sys.csl_reverse_lookup_support)){this.decorations.reverse();this.decorations.push(["@showid","true",this.cslid]);this.decorations.reverse();}nodetypes=["number","date","names"];if("text"===this.name&&!this.postponed_macro||nodetypes.indexOf(this.name)>-1){element_trace=function element_trace(state,Item,item){if(state.tmp.element_trace.value()==="author"||"names"===this.name){if(item&&item["author-only"]){state.tmp.element_trace.push("do-not-suppress-me");}else if(item&&item["suppress-author"]){}}else{if(item&&item["author-only"]){state.tmp.element_trace.push("suppress-me");}else if(item&&item["suppress-author"]){state.tmp.element_trace.push("do-not-suppress-me");}}};this.execs.push(element_trace);}display=this.strings.cls;this.strings.cls=false;if(state.build.render_nesting_level===0){if(state.build.area==="bibliography"&&state.bibliography.opt["second-field-align"]){bib_first=new CSL.Token("group",CSL.START);bib_first.decorations=[["@display","left-margin"]];func=function func(state,Item){if(!state.tmp.render_seen){bib_first.strings.first_blob=Item.id;state.output.startTag("bib_first",bib_first);}};bib_first.execs.push(func);target.push(bib_first);}else if(CSL.DISPLAY_CLASSES.indexOf(display)>-1){bib_first=new CSL.Token("group",CSL.START);bib_first.decorations=[["@display",display]];func=function func(state,Item){bib_first.strings.first_blob=Item.id;state.output.startTag("bib_first",bib_first);};bib_first.execs.push(func);target.push(bib_first);}state.build.cls=display;}state.build.render_nesting_level+=1;if(state.build.substitute_level.value()===1){choose_start=new CSL.Token("choose",CSL.START);CSL.Node.choose.build.call(choose_start,state,target);if_start=new CSL.Token("if",CSL.START);func=function func(Item,item){if(state.tmp.can_substitute.value()){return true;}return false;};if_start.tests.push(func);if_start.test=state.fun.match.any(this,state,if_start.tests);target.push(if_start);}if(state.sys.variableWrapper&&this.variables_real&&this.variables_real.length){func=function func(state,Item,item){if(!state.tmp.just_looking&&!state.tmp.suppress_decorations){var variable_entry=new CSL.Token("text",CSL.START);variable_entry.decorations=[["@showid","true"]];state.output.startTag("variable_entry",variable_entry);var position=null;if(item){position=item.position;}if(!position)position=0;var positionMap=["first","subsequent","ibid","ibid-with-locator"];var noteNumber=0;if(item&&item.noteIndex){noteNumber=item.noteIndex;}var firstReferenceNoteNumber=0;if(item&&item['first-reference-note-number']){firstReferenceNoteNumber=item['first-reference-note-number'];}var citationNumber=0;if(item&&item['citation-number']){citationNumber=item['citation-number'];}var index=0;if(item&&item.index){index=item.index;}var params={itemData:Item,variableNames:this.variables,context:state.tmp.area,xclass:state.opt.xclass,position:positionMap[position],"note-number":noteNumber,"first-reference-note-number":firstReferenceNoteNumber,"citation-number":citationNumber,"index":index,"mode":state.opt.mode};state.output.current.value().params=params;}};this.execs.push(func);}};CSL.Util.substituteEnd=function(state,target){var func,bib_first_end,bib_other,if_end,choose_end,toplevel,hasval,author_substitute,str;if(state.sys.variableWrapper&&(this.hasVariable||this.variables_real&&this.variables_real.length)){func=function func(state,Item){if(!state.tmp.just_looking&&!state.tmp.suppress_decorations){state.output.endTag("variable_entry");}};this.execs.push(func);}func=function func(state,Item){for(var i=0,ilen=this.decorations.length;i<ilen;i+=1){if("@strip-periods"===this.decorations[i][0]&&"true"===this.decorations[i][1]){state.tmp.strip_periods+=-1;break;}}};this.execs.push(func);state.build.render_nesting_level+=-1;if(state.build.render_nesting_level===0){if(state.build.cls){func=function func(state,Item){state.output.endTag("bib_first");};this.execs.push(func);state.build.cls=false;}else if(state.build.area==="bibliography"&&state.bibliography.opt["second-field-align"]){bib_first_end=new CSL.Token("group",CSL.END);func=function func(state,Item){if(!state.tmp.render_seen){state.output.endTag("bib_first");// closes bib_first
 }};bib_first_end.execs.push(func);target.push(bib_first_end);bib_other=new CSL.Token("group",CSL.START);bib_other.decorations=[["@display","right-inline"]];func=function func(state,Item){if(!state.tmp.render_seen){state.tmp.render_seen=true;state.output.startTag("bib_other",bib_other);}};bib_other.execs.push(func);target.push(bib_other);}}if(state.build.substitute_level.value()===1){if_end=new CSL.Token("if",CSL.END);target.push(if_end);choose_end=new CSL.Token("choose",CSL.END);CSL.Node.choose.build.call(choose_end,state,target);}if("names"===this.name||"text"===this.name&&this.variables_real!=="title"){author_substitute=new CSL.Token("text",CSL.SINGLETON);func=function func(state,Item){if(state.tmp.area!=="bibliography")return;if("string"!==typeof state.bibliography.opt["subsequent-author-substitute"])return;if(this.variables_real&&!Item[this.variables_real])return;if(state.tmp.substituted_variable!==this.variables_real){return;}var subrule=state.bibliography.opt["subsequent-author-substitute-rule"];var i,ilen;var printing=!state.tmp.suppress_decorations;if(printing&&state.tmp.subsequent_author_substitute_ok){if(state.tmp.rendered_name){if("partial-each"===subrule||"partial-first"===subrule){var dosub=true;var rendered_name=[];for(i=0,ilen=state.tmp.name_node.children.length;i<ilen;i+=1){var name=state.tmp.rendered_name[i];if(dosub&&state.tmp.last_rendered_name&&state.tmp.last_rendered_name.length>i-1&&name&&!name.localeCompare(state.tmp.last_rendered_name[i])){str=new CSL.Blob(state[state.tmp.area].opt["subsequent-author-substitute"]);state.tmp.name_node.children[i].blobs=[str];if("partial-first"===subrule){dosub=false;}}else{dosub=false;}rendered_name.push(name);}state.tmp.last_rendered_name=rendered_name;}else if("complete-each"===subrule){var rendered_name=state.tmp.rendered_name.join(",");if(rendered_name){if(state.tmp.last_rendered_name&&!rendered_name.localeCompare(state.tmp.last_rendered_name)){for(i=0,ilen=state.tmp.name_node.children.length;i<ilen;i+=1){str=new CSL.Blob(state[state.tmp.area].opt["subsequent-author-substitute"]);state.tmp.name_node.children[i].blobs=[str];}}state.tmp.last_rendered_name=rendered_name;}}else{var rendered_name=state.tmp.rendered_name.join(",");if(rendered_name){if(state.tmp.last_rendered_name&&!rendered_name.localeCompare(state.tmp.last_rendered_name)){str=new CSL.Blob(state[state.tmp.area].opt["subsequent-author-substitute"]);if(state.tmp.label_blob){state.tmp.name_node.top.blobs=[str,state.tmp.label_blob];}else if(state.tmp.name_node.top.blobs.length){state.tmp.name_node.top.blobs[0].blobs=[str];}else{state.tmp.name_node.top.blobs=[str];}state.tmp.substituted_variable=this.variables_real;}state.tmp.last_rendered_name=rendered_name;}}state.tmp.subsequent_author_substitute_ok=false;}}};this.execs.push(func);}if("text"===this.name&&!this.postponed_macro||["number","date","names"].indexOf(this.name)>-1){func=function func(state,Item){state.tmp.element_trace.pop();};this.execs.push(func);}};module.exports=CSL;CSL.Util.padding=function(num){var m=num.match(/\s*(-{0,1}[0-9]+)/);if(m){num=parseInt(m[1],10);if(num<0){num=99999999999999999999+num;}num=""+num;while(num.length<20){num="0"+num;}}return num;};CSL.Util.LongOrdinalizer=function(){};CSL.Util.LongOrdinalizer.prototype.init=function(state){this.state=state;};CSL.Util.LongOrdinalizer.prototype.format=function(num,gender){if(num<10){num="0"+num;}var ret=CSL.Engine.getField(CSL.LOOSE,this.state.locale[this.state.opt.lang].terms,"long-ordinal-"+num,"long",0,gender);if(!ret){ret=this.state.fun.ordinalizer.format(num,gender);}this.state.tmp.cite_renders_content=true;return ret;};CSL.Util.Ordinalizer=function(state){this.state=state;this.suffixes={};};CSL.Util.Ordinalizer.prototype.init=function(){if(!this.suffixes[this.state.opt.lang]){this.suffixes[this.state.opt.lang]={};for(var i=0,ilen=3;i<ilen;i+=1){var gender=[undefined,"masculine","feminine"][i];this.suffixes[this.state.opt.lang][gender]=[];for(var j=1;j<5;j+=1){var ordinal=this.state.getTerm("ordinal-0"+j,"long",false,gender);if("undefined"===typeof ordinal){delete this.suffixes[this.state.opt.lang][gender];break;}this.suffixes[this.state.opt.lang][gender].push(ordinal);}}}};CSL.Util.Ordinalizer.prototype.format=function(num,gender){var str;num=parseInt(num,10);str=""+num;var suffix="";var trygenders=[];if(gender){trygenders.push(gender);}trygenders.push("neuter");if(this.state.locale[this.state.opt.lang].ord["1.0.1"]){suffix=this.state.getTerm("ordinal",false,0,gender);var trygender;for(var i=0,ilen=trygenders.length;i<ilen;i+=1){trygender=trygenders[i];var ordinfo=this.state.locale[this.state.opt.lang].ord["1.0.1"];if(ordinfo["whole-number"][str]&&ordinfo["whole-number"][str][trygender]){suffix=this.state.getTerm(this.state.locale[this.state.opt.lang].ord["1.0.1"]["whole-number"][str][trygender],false,0,gender);}else if(ordinfo["last-two-digits"][str.slice(str.length-2)]&&ordinfo["last-two-digits"][str.slice(str.length-2)][trygender]){suffix=this.state.getTerm(this.state.locale[this.state.opt.lang].ord["1.0.1"]["last-two-digits"][str.slice(str.length-2)][trygender],false,0,gender);}else if(ordinfo["last-digit"][str.slice(str.length-1)]&&ordinfo["last-digit"][str.slice(str.length-1)][trygender]){suffix=this.state.getTerm(this.state.locale[this.state.opt.lang].ord["1.0.1"]["last-digit"][str.slice(str.length-1)][trygender],false,0,gender);}if(suffix){break;}}}else{if(!gender){gender=undefined;}this.state.fun.ordinalizer.init();if(num/10%10===1||num>10&&num<20){suffix=this.suffixes[this.state.opt.lang][gender][3];}else if(num%10===1&&num%100!==11){suffix=this.suffixes[this.state.opt.lang][gender][0];}else if(num%10===2&&num%100!==12){suffix=this.suffixes[this.state.opt.lang][gender][1];}else if(num%10===3&&num%100!==13){suffix=this.suffixes[this.state.opt.lang][gender][2];}else{suffix=this.suffixes[this.state.opt.lang][gender][3];}}str=str+=suffix;return str;};CSL.Util.Romanizer=function(){};CSL.Util.Romanizer.prototype.format=function(num){var ret,pos,n,numstr,len;ret="";if(num<6000){numstr=num.toString().split("");numstr.reverse();pos=0;n=0;len=numstr.length;for(pos=0;pos<len;pos+=1){n=parseInt(numstr[pos],10);ret=CSL.ROMAN_NUMERALS[pos][n]+ret;}}return ret;};CSL.Util.Suffixator=function(slist){if(!slist){slist=CSL.SUFFIX_CHARS;}this.slist=slist.split(",");};CSL.Util.Suffixator.prototype.format=function(N){var X;N+=1;var key="";do{X=N%26===0?26:N%26;var key=this.slist[X-1]+key;N=(N-X)/26;}while(N!==0);return key;};CSL.Engine.prototype.processNumber=function(node,ItemObject,variable,type){var val,m,i,ilen,j,jlen;var debug=false;var me=this;function normalizeFieldValue(str,defaultLabel){str=str.trim();var m=str.match(/^([^ ]+)/);if(m&&!CSL.STATUTE_SUBDIV_STRINGS[m[1]]){var embeddedLabel=null;if(variable==="locator"){if(ItemObject.label){embeddedLabel=CSL.STATUTE_SUBDIV_STRINGS_REVERSE[ItemObject.label];}else{embeddedLabel="p.";}}else{embeddedLabel=CSL.STATUTE_SUBDIV_STRINGS_REVERSE[variable];}if(embeddedLabel){str=embeddedLabel+" "+str;}}return str;}function composeNumberInfo(origLabel,label,val,joiningSuffix){joiningSuffix=joiningSuffix?joiningSuffix:"";var info={};if(!label&&!CSL.STATUTE_SUBDIV_STRINGS_REVERSE[variable]){label="var:"+variable;}if(label){var m=label.match(/(\s*)([^\s]+)(\s*)/);info.label=m[2];info.origLabel=origLabel;info.labelSuffix=m[3]?m[3]:"";info.plural=0;info.labelVisibility=false;}var m=val.match(/^([0-9]*[a-zA-Z]+0*)?([0-9]+(?:[a-zA-Z]*|[-,a-zA-Z]+))$/);if(m){info.particle=m[1]?m[1]:"";info.value=m[2];}else{info.particle="";info.value=val;}info.joiningSuffix=joiningSuffix.replace(/\s*-\s*/,"-");return info;};function fixupSubsections(elems){for(var i=elems.length-2;i>-1;i-=2){if(elems[i]==="-"&&elems[i-1].match(/^(?:(?:[a-z]|[a-z][a-z]|[a-z][a-z][a-z]|[a-z][a-z][a-z][a-z])\.  *)*[0-9]+[,a-zA-Z]+$/)&&elems[i+1].match(/^[,a-zA-Z]+$/)){elems[i-1]=elems.slice(i-1,i+2).join("");elems=elems.slice(0,i).concat(elems.slice(i+2));}}return elems;}function parseString(str,defaultLabel){defaultLabel=defaultLabel?defaultLabel:"";str=normalizeFieldValue(str,defaultLabel);var elems=[];var m=str.match(/(;\s+|,\s+|\s*\\*[\-\u2013]+\s*|\s*&\s*)/g);if(m){var lst=str.split(/(?:;\s+|,\s+|\s*\\*[\-\u2013]+\s*|\s*&\s*)/);for(var i=0,ilen=lst.length-1;i<ilen;i++){elems.push(lst[i]);elems.push(m[i]);}elems.push(lst[lst.length-1]);elems=fixupSubsections(elems);}else{var elems=[str];}var values=[];var label=defaultLabel;var origLabel="";for(var i=0,ilen=elems.length;i<ilen;i+=2){var m=elems[i].match(/((?:^| )(?:[a-z]|[a-z][a-z]|[a-z][a-z][a-z]|[a-z][a-z][a-z][a-z])(?:\.| ) *)/g);if(m){var lst=elems[i].split(/(?:(?:^| )(?:[a-z]|[a-z][a-z]|[a-z][a-z][a-z]|[a-z][a-z][a-z][a-z])(?:\.| ) *)/);for(var j=lst.length-1;j>0;j--){if(lst[j-1]&&(!lst[j].match(/^[0-9]+([-;,:a-zA-Z]*)$/)||!lst[j-1].match(/^[0-9]+([-;,:a-zA-Z]*)$/))){lst[j-1]=lst[j-1]+m[j-1]+lst[j];lst=lst.slice(0,j).concat(lst.slice(j+1));m=m.slice(0,j-1).concat(m.slice(j));}}if(m.length>0){var slug=m[0].trim();var notAlabel=!CSL.STATUTE_SUBDIV_STRINGS[slug]||!me.getTerm(CSL.STATUTE_SUBDIV_STRINGS[slug])||["locator","number"].indexOf(variable)===-1&&CSL.STATUTE_SUBDIV_STRINGS[slug]!==variable;if(notAlabel){if(i===0){m=m.slice(1);lst[0]=lst[0]+" "+slug+" "+lst[1];lst=lst.slice(0,1).concat(lst.slice(2));}}else{origLabel=slug;}}for(var j=0,jlen=lst.length;j<jlen;j++){if(lst[j]||j===lst.length-1){var filteredOrigLabel;label=m[j-1]?m[j-1]:label;if(origLabel===label.trim()){filteredOrigLabel="";}else{filteredOrigLabel=origLabel;}var str=lst[j]?lst[j].trim():"";if(j===lst.length-1){values.push(composeNumberInfo(filteredOrigLabel,label,str,elems[i+1]));}else{values.push(composeNumberInfo(filteredOrigLabel,label,str));}}}}else{var filteredOrigLabel;if(origLabel===label.trim()){filteredOrigLabel="";}else{filteredOrigLabel=origLabel;}values.push(composeNumberInfo(filteredOrigLabel,label,elems[i],elems[i+1]));}}return values;}function setSpaces(values){for(var i=0,ilen=values.length-1;i<ilen;i++){if(!values[i].joiningSuffix&&values[i+1].label){values[i].joiningSuffix=" ";}}}function fixNumericAndCount(values,i,currentLabelInfo){var master=values[currentLabelInfo.pos];var val=values[i].value;var isEscapedHyphen=master.joiningSuffix==="\\-";if(val.particle&&val.particle!==master.particle){currentLabelInfo.collapsible=false;}var mVal=val.match(/^[0-9]+([-,:a-zA-Z]*)$/);var mCurrentLabel=master.value.match(/^[0-9]+([-,:a-zA-Z]*)$/);if(!val||!mVal||!mCurrentLabel||isEscapedHyphen){currentLabelInfo.collapsible=false;if(!val||!mCurrentLabel){currentLabelInfo.numeric=false;}if(isEscapedHyphen){currentLabelInfo.count--;}}if(mVal&&mVal[1]||mCurrentLabel&&mCurrentLabel[1]){currentLabelInfo.collapsible=false;}if(undefined===values[i].collapsible){for(var j=i,jlen=i+currentLabelInfo.count;j<jlen;j++){if(isNaN(parseInt(values[j].value))&&!values[j].value.match(/^[ivxlcmIVXLCM]+$/)){values[j].collapsible=false;}else{values[j].collapsible=true;}}currentLabelInfo.collapsible=values[i].collapsible;}var isCollapsible=currentLabelInfo.collapsible;for(var j=currentLabelInfo.pos,jlen=currentLabelInfo.pos+currentLabelInfo.count;j<jlen;j++){if(currentLabelInfo.count>1&&isCollapsible){values[j].plural=1;}values[j].numeric=currentLabelInfo.numeric;values[j].collapsible=currentLabelInfo.collapsible;}}function fixLabelVisibility(values,groupStartPos,currentLabelInfo){if(currentLabelInfo.label.slice(0,4)!=="var:"){if(currentLabelInfo.pos===0){if(variable==="locator"||variable==="number"){if(!me.getTerm(CSL.STATUTE_SUBDIV_STRINGS[currentLabelInfo.label])){values[currentLabelInfo.pos].labelVisibility=true;}}if(["locator","number"].indexOf(variable)===-1){if(CSL.STATUTE_SUBDIV_STRINGS[currentLabelInfo.label]!==variable){values[0].labelVisibility=true;}}}else{values[currentLabelInfo.pos].labelVisibility=true;}}}function setPluralsAndNumerics(values){if(values.length===0)return;var groupStartPos=0;var groupCount=1;for(var i=1,ilen=values.length;i<ilen;i++){var lastVal=values[i-1];var thisVal=values[i];if(lastVal.label===thisVal.label&&lastVal.particle===lastVal.particle){groupCount++;}else{var currentLabelInfo=JSON.parse(JSON.stringify(values[groupStartPos]));currentLabelInfo.pos=groupStartPos;currentLabelInfo.count=groupCount;currentLabelInfo.numeric=true;fixNumericAndCount(values,groupStartPos,currentLabelInfo);if(i===0||lastVal.label!==thisVal.label){fixLabelVisibility(values,groupStartPos,currentLabelInfo);}groupStartPos=i;groupCount=1;}}var currentLabelInfo=JSON.parse(JSON.stringify(values[groupStartPos]));currentLabelInfo.pos=groupStartPos;currentLabelInfo.count=groupCount;currentLabelInfo.numeric=true;fixNumericAndCount(values,groupStartPos,currentLabelInfo);fixLabelVisibility(values,groupStartPos,currentLabelInfo);if(values.length&&values[0].numeric&&variable.slice(0,10)==="number-of-"){if(parseInt(ItemObject[variable],10)>1){values[0].plural=1;}}}function setStyling(values){var masterNode=CSL.Util.cloneToken(node);var masterStyling=new CSL.Token();if(!me.tmp.just_looking){for(var j=masterNode.decorations.length-1;j>-1;j--){if(masterNode.decorations[j][0]==="@quotes"){masterStyling.decorations=masterStyling.decorations.concat(masterNode.decorations.slice(j,j+1));masterNode.decorations=masterNode.decorations.slice(0,j).concat(masterNode.decorations.slice(j+1));}}masterStyling.strings.prefix=masterNode.strings.prefix;masterNode.strings.prefix="";masterStyling.strings.suffix=masterNode.strings.suffix;masterNode.strings.suffix="";}var masterLabel=values.length?values[0].label:null;if(values.length){for(var i=0,ilen=values.length;i<ilen;i++){var val=values[i];var newnode=CSL.Util.cloneToken(masterNode);newnode.gender=node.gender;if(masterLabel===val.label){newnode.formatter=node.formatter;}if(val.numeric){newnode.successor_prefix=val.successor_prefix;}newnode.strings.suffix=newnode.strings.suffix+stripHyphenBackslash(val.joiningSuffix);val.styling=newnode;}if(!me.tmp.just_looking){if(values[0].value.slice(0,1)==="\""&&values[values.length-1].value.slice(-1)==="\""){values[0].value=values[0].value.slice(1);values[values.length-1].value=values[values.length-1].value.slice(0,-1);masterStyling.decorations.push(["@quotes",true]);}}}return masterStyling;}function stripHyphenBackslash(joiningSuffix){return joiningSuffix.replace("\\-","-");}function fixupRangeDelimiter(variable,val,rangeDelimiter,isNumeric){var isPage=checkPage(variable,val);var hasTerm=checkTerm(variable,val);if(hasTerm&&rangeDelimiter==="-"){if(isNumeric){if(isPage||["locator","issue","volume","edition","number"].indexOf(variable)>-1){rangeDelimiter=me.getTerm("page-range-delimiter");if(!rangeDelimiter){rangeDelimiter="\u2013";}}if(variable==="collection-number"){rangeDelimiter=me.getTerm("year-range-delimiter");if(!rangeDelimiter){rangeDelimiter="\u2013";}}}}return rangeDelimiter;}function checkPage(variable,val){return variable==="page"||variable==="locator"&&(["p."].indexOf(val.label)>-1||["p."].indexOf(val.origLabel)>-1);}function checkTerm(variable,val){var ret=true;if(variable==="locator"){var label;if(val.origLabel){label=val.origLabel;}else{label=val.label;}ret=!!me.getTerm(CSL.STATUTE_SUBDIV_STRINGS[label]);}return ret;}function manglePageNumbers(values,i,currentInfo){if(i<1)return;if(currentInfo.count!==2){return;}if(values[i-1].particle!==values[i].particle){return;}if(values[i-1].joiningSuffix!=="-"){currentInfo.count=1;return;}if(!me.opt["page-range-format"]&&parseInt(values[i-1].value,10)>parseInt(values[i].value,10)){values[i-1].joiningSuffix=fixupRangeDelimiter(variable,values[i],values[i-1].joiningSuffix,true);return;}var val=values[i];var isPage=checkPage(variable,val);if(isPage&&!isNaN(parseInt(values[i-1].value))&&!isNaN(parseInt(values[i].value))){var str=values[i-1].particle+values[i-1].value+" - "+values[i].particle+values[i].value;str=me.fun.page_mangler(str);}else{if((""+values[i-1].value).match(/^([0-9]+|[ivxlcmIVXLCM]+)$/)&&(""+values[i].value).match(/^([0-9]+|[ivxlcmIVXLCM]+)$/)){values[i-1].joiningSuffix=me.getTerm("page-range-delimiter");}str=values[i-1].value+stripHyphenBackslash(values[i-1].joiningSuffix)+values[i].value;}var m=str.match(/^((?:[0-9]*[a-zA-Z]+0*))?([0-9]+)(\s*[^0-9]+\s*)([-,a-zA-Z]?0*)([0-9]+)$/);if(m){var rangeDelimiter=m[3];rangeDelimiter=fixupRangeDelimiter(variable,val,rangeDelimiter,values[i].numeric);values[i-1].particle=m[1];values[i-1].value=m[2];values[i-1].joiningSuffix=rangeDelimiter;values[i].particle=m[4];values[i].value=m[5];}currentInfo.count=0;}function fixRanges(values){if(!node)return;if(["page","page-first","chapter-number","collection-number","edition","issue","number","number-of-pages","number-of-volumes","volume","locator"].indexOf(variable)===-1)return;var currentInfo={count:0,label:null,lastHadRangeDelimiter:false};for(var i=0,ilen=values.length;i<ilen;i++){var val=values[i];if(!val.collapsible){currentInfo.count=0;currentInfo.label=null;var isNumeric=val.numeric;val.joiningSuffix=fixupRangeDelimiter(variable,val,val.joiningSuffix,isNumeric);}else if(currentInfo.label===val.label&&val.joiningSuffix==="-"){currentInfo.count=1;}else if(currentInfo.label===val.label&&val.joiningSuffix!=="-"){currentInfo.count++;if(currentInfo.count===2){manglePageNumbers(values,i,currentInfo);}}else if(currentInfo.label!==val.label){currentInfo.label=val.label;currentInfo.count=1;}else{currentInfo.count=1;currentInfo.label=val.label;}}if(currentInfo.count===2){manglePageNumbers(values,values.length-1,currentInfo);}}function setVariableParams(shadow_numbers,variable,values){var obj=shadow_numbers[variable];if(values.length){obj.numeric=values[0].numeric;obj.collapsible=values[0].collapsible;obj.plural=values[0].plural;obj.label=CSL.STATUTE_SUBDIV_STRINGS[values[0].label];if(variable==="number"&&obj.label==="issue"&&me.getTerm("number")){obj.label="number";}}}if(node&&this.tmp.shadow_numbers[variable]&&this.tmp.shadow_numbers[variable].values.length){var values=this.tmp.shadow_numbers[variable].values;fixRanges(values);this.tmp.shadow_numbers[variable].masterStyling=setStyling(values);return;}if(!this.tmp.shadow_numbers[variable]){this.tmp.shadow_numbers[variable]={values:[]};}if(!ItemObject){return;}var languageRole=CSL.LangPrefsMap[variable];if(languageRole){var localeType=this.opt["cite-lang-prefs"][languageRole][0];val=this.transform.getTextSubField(ItemObject,variable,"locale-"+localeType,true);val=val.name;}else{val=ItemObject[variable];}if(val&&this.sys.getAbbreviation){var jurisdiction=this.transform.loadAbbreviation(ItemObject.jurisdiction,"number",val);if(this.transform.abbrevs[jurisdiction].number){if(this.transform.abbrevs[jurisdiction].number[val]){val=this.transform.abbrevs[jurisdiction].number[val];}else{if("undefined"!==typeof this.transform.abbrevs[jurisdiction].number[val]){delete this.transform.abbrevs[jurisdiction].number[val];}}}}if("undefined"!==typeof val&&("string"===typeof val||"number"===typeof val)){if("number"===typeof val){val=""+val;}var defaultLabel=CSL.STATUTE_SUBDIV_STRINGS_REVERSE[variable];if(!this.tmp.shadow_numbers.values){var values=parseString(val,defaultLabel);setSpaces(values);setPluralsAndNumerics(values);this.tmp.shadow_numbers[variable].values=values;}if(node){fixRanges(values);this.tmp.shadow_numbers[variable].masterStyling=setStyling(values);}setVariableParams(this.tmp.shadow_numbers,variable,values);}};CSL.Util.outputNumericField=function(state,varname,itemID){state.output.openLevel(state.tmp.shadow_numbers[varname].masterStyling);var nums=state.tmp.shadow_numbers[varname].values;var masterLabel=nums.length?nums[0].label:null;var labelForm=state.tmp.shadow_numbers[varname].labelForm;var embeddedLabelForm;if(labelForm){embeddedLabelForm=labelForm;}else{embeddedLabelForm="short";}var labelCapitalizeIfFirst=state.tmp.shadow_numbers[varname].labelCapitalizeIfFirst;var labelDecorations=state.tmp.shadow_numbers[varname].labelDecorations;var lastLabelName=null;for(var i=0,ilen=nums.length;i<ilen;i++){var num=nums[i];var label="";if(num.label){var labelName;if('var:'===num.label.slice(0,4)){labelName=num.label.slice(4);}else{labelName=CSL.STATUTE_SUBDIV_STRINGS[num.label];}if(labelName){if(num.label===masterLabel){label=state.getTerm(labelName,labelForm,num.plural);}else{label=state.getTerm(labelName,embeddedLabelForm,num.plural);}if(labelCapitalizeIfFirst){label=CSL.Output.Formatters["capitalize-first"](state,label);}}}var labelPlaceholderPos=-1;if(label){labelPlaceholderPos=label.indexOf("%s");}var numStyling=CSL.Util.cloneToken(num.styling);numStyling.formatter=num.styling.formatter;numStyling.type=num.styling.type;numStyling.num=num.styling.num;numStyling.gender=num.styling.gender;if(labelPlaceholderPos>0&&labelPlaceholderPos<label.length-2){numStyling.strings.prefix+=label.slice(0,labelPlaceholderPos);numStyling.strings.suffix=label.slice(labelPlaceholderPos+2)+numStyling.strings.suffix;}else if(num.labelVisibility){if(!label){label=num.label;labelName=num.label;}if(labelPlaceholderPos>0){var prefixLabelStyling=new CSL.Token();prefixLabelStyling.decorations=labelDecorations;state.output.append(label.slice(0,labelPlaceholderPos),prefixLabelStyling);}else if(labelPlaceholderPos===label.length-2||labelPlaceholderPos===-1){state.output.append(label+num.labelSuffix,"empty");}}if(num.collapsible){if(num.value.match(/^[1-9][0-9]*$/)){var blob=new CSL.NumericBlob(num.particle,parseInt(num.value,10),numStyling,itemID);}else{var blob=new CSL.NumericBlob(num.particle,num.value,numStyling,itemID);}if("undefined"===typeof blob.gender){blob.gender=state.locale[state.opt.lang]["noun-genders"][varname];}state.output.append(blob,"literal");}else{state.output.append(num.particle+num.value,numStyling);}if(labelPlaceholderPos===0&&labelPlaceholderPos<label.length-2){if(lastLabelName===null){lastLabelName=labelName;}if(labelName!==lastLabelName||i===nums.length-1){var suffixLabelStyling=new CSL.Token();suffixLabelStyling.decorations=labelDecorations;state.output.append(label.slice(labelPlaceholderPos+2),suffixLabelStyling);}}lastLabelName===labelName;state.tmp.term_predecessor=true;}state.output.closeLevel();};module.exports=CSL;CSL.Util.PageRangeMangler={};CSL.Util.PageRangeMangler.getFunction=function(state,rangeType){var rangerex,pos,len,stringify,listify,expand,minimize,minimize_internal,chicago,lst,m,b,e,ret,begin,end,ret_func,ppos,llen;var range_delimiter=state.getTerm(rangeType+"-range-delimiter");rangerex=/([0-9]*[a-zA-Z]+0*)?([0-9]+)\s*(?:\u2013|-)\s*([0-9]*[a-zA-Z]+0*)?([0-9]+)/;stringify=function stringify(lst){len=lst.length;for(pos=1;pos<len;pos+=2){if("object"===_typeof(lst[pos])){lst[pos]=lst[pos].join("");}}var ret=lst.join("");ret=ret.replace(/([^\\])\-/g,"$1"+state.getTerm(rangeType+"-range-delimiter"));return ret;};listify=function listify(str){var m,lst,ret;var hyphens="\\s+\\-\\s+";var this_range_delimiter=range_delimiter==="-"?"":range_delimiter;var delimRex=new RegExp("([^\\\\])[-"+this_range_delimiter+"\\u2013]","g");str=str.replace(delimRex,"$1 - ").replace(/\s+-\s+/g," - ");var rexm=new RegExp("((?:[0-9]*[a-zA-Z]+0*)?[0-9]+"+hyphens+"(?:[0-9]*[a-zA-Z]+0*)?[0-9]+)","g");var rexlst=new RegExp("(?:[0-9]*[a-zA-Z]+0*)?[0-9]+"+hyphens+"(?:[0-9]*[a-zA-Z]+0*)?[0-9]+");m=str.match(rexm);lst=str.split(rexlst);if(lst.length===0){ret=m;}else{ret=[lst[0]];for(pos=1,len=lst.length;pos<len;pos+=1){ret.push(m[pos-1].replace(/\s*\-\s*/g,"-"));ret.push(lst[pos]);}}return ret;};expand=function expand(str){str=""+str;lst=listify(str);len=lst.length;for(pos=1;pos<len;pos+=2){m=lst[pos].match(rangerex);if(m){if(!m[3]||m[1]===m[3]){if(m[4].length<m[2].length){m[4]=m[2].slice(0,m[2].length-m[4].length)+m[4];}if(parseInt(m[2],10)<parseInt(m[4],10)){m[3]=range_delimiter+(m[1]?m[1]:"");lst[pos]=m.slice(1);}}}if("string"===typeof lst[pos]){lst[pos]=lst[pos].replace(/\-/g,range_delimiter);}}return lst;};minimize=function minimize(lst,minchars,isyear){len=lst.length;for(var i=1,ilen=lst.length;i<ilen;i+=2){lst[i][3]=minimize_internal(lst[i][1],lst[i][3],minchars,isyear);if(lst[i][2].slice(1)===lst[i][0]){lst[i][2]=range_delimiter;}}return stringify(lst);};minimize_internal=function minimize_internal(begin,end,minchars,isyear){if(!minchars){minchars=0;}b=(""+begin).split("");e=(""+end).split("");ret=e.slice();ret.reverse();if(b.length===e.length){for(var i=0,ilen=b.length;i<ilen;i+=1){if(b[i]===e[i]&&ret.length>minchars){ret.pop();}else{if(minchars&&isyear&&ret.length===3){var front=b.slice(0,i);front.reverse();ret=ret.concat(front);}break;}}}ret.reverse();return ret.join("");};chicago=function chicago(lst){len=lst.length;for(pos=1;pos<len;pos+=2){if("object"===_typeof(lst[pos])){m=lst[pos];begin=parseInt(m[1],10);end=parseInt(m[3],10);if(begin>100&&begin%100&&parseInt(begin/100,10)===parseInt(end/100,10)){m[3]=""+end%100;}else if(begin>=10000){m[3]=""+end%1000;}}if(m[2].slice(1)===m[0]){m[2]=range_delimiter;}}return stringify(lst);};var sniff=function sniff(str,func,minchars,isyear){var ret;str=""+str;var lst=expand(str);var ret=func(lst,minchars,isyear);return ret;};if(!state.opt[rangeType+"-range-format"]){ret_func=function ret_func(str){return sniff(str,stringify);};}else if(state.opt[rangeType+"-range-format"]==="expanded"){ret_func=function ret_func(str){return sniff(str,stringify);};}else if(state.opt[rangeType+"-range-format"]==="minimal"){ret_func=function ret_func(str){return sniff(str,minimize);};}else if(state.opt[rangeType+"-range-format"]==="minimal-two"){ret_func=function ret_func(str,isyear){return sniff(str,minimize,2,isyear);};}else if(state.opt[rangeType+"-range-format"]==="chicago"){ret_func=function ret_func(str){return sniff(str,chicago);};}return ret_func;};module.exports=CSL;CSL.Util.FlipFlopper=function(state){this.processTags=processTags;var _nestingState=[];var _nestingData={"<span class=\"nocase\">":{type:"nocase",opener:"<span class=\"nocase\">",closer:"</span>",attr:null,outer:null,flipflop:null},"<span class=\"nodecor\">":{type:"nodecor",opener:"<span class=\"nodecor\">",closer:"</span>",attr:"@class",outer:"nodecor",flipflop:{"nodecor":"nodecor"}},"<span style=\"font-variant:small-caps;\">":{type:"tag",opener:"<span style=\"font-variant:small-caps;\">",closer:"</span>",attr:"@font-variant",outer:"small-caps",flipflop:{"small-caps":"normal","normal":"small-caps"}},"<sc>":{type:"tag",opener:"<sc>",closer:"</sc>",attr:"@font-variant",outer:"small-caps",flipflop:{"small-caps":"normal","normal":"small-caps"}},"<i>":{type:"tag",opener:"<i>",closer:"</i>",attr:"@font-style",outer:"italic",flipflop:{"italic":"normal","normal":"italic"}},"<b>":{type:"tag",opener:"<b>",closer:"</b>",attr:"@font-weight",outer:"bold",flipflop:{"bold":"normal","normal":"bold"}},"<sup>":{type:"tag",opener:"<sup>",closer:"</sup>",attr:"@vertical-align",outer:"sup",flipflop:{"sub":"sup","sup":"sup"}},"<sub>":{type:"tag",opener:"<sub>",closer:"</sub>",attr:"@vertical-align",outer:"sub",flipflop:{"sup":"sub","sub":"sub"}}," \"":{type:"quote",opener:" \"",closer:"\"",attr:"@quotes",outer:"true",flipflop:{"true":"inner","inner":"true","false":"true"}}," \'":{type:"quote",opener:" \'",closer:"\'",attr:"@quotes",outer:"inner",flipflop:{"true":"inner","inner":"true","false":"true"}}};_nestingData["(\""]=_nestingData[" \""];_nestingData["(\'"]=_nestingData[" \'"];var localeOpenQuote=state.getTerm("open-quote");var localeCloseQuote=state.getTerm("close-quote");var localeOpenInnerQuote=state.getTerm("open-inner-quote");var localeCloseInnerQuote=state.getTerm("close-inner-quote");if(localeOpenQuote&&localeCloseQuote&&[" \""," \'","\"","\'"].indexOf(localeOpenQuote)===-1){_nestingData[localeOpenQuote]=JSON.parse(JSON.stringify(_nestingData[" \""]));_nestingData[localeOpenQuote].opener=localeOpenQuote;_nestingData[localeOpenQuote].closer=localeCloseQuote;}if(localeOpenInnerQuote&&localeCloseInnerQuote&&[" \""," \'","\"","\'"].indexOf(localeOpenInnerQuote)===-1){_nestingData[localeOpenInnerQuote]=JSON.parse(JSON.stringify(_nestingData[" \'"]));_nestingData[localeOpenInnerQuote].opener=localeOpenInnerQuote;_nestingData[localeOpenInnerQuote].closer=localeCloseInnerQuote;}var _nestingQuoteReverse=function(){var ret={};var keys=Object.keys(_nestingData);for(var i=0,l=keys.length;i<l;i++){var key=keys[i];if(_nestingData[key].type==="quote"){ret[_nestingData[key].closer]=_nestingData[key];}}return ret;}();var _nestingDataAttr=function(){var ret={};var keys=Object.keys(_nestingData);for(var i=0,l=keys.length;i<l;i++){var key=keys[i];if(_nestingData[key].type==="nocase")continue;var attr=_nestingData[key].attr;var outer=_nestingData[key].outer;var inner=_nestingData[key].flipflop[_nestingData[key].outer];ret[attr+"/"+outer]=_nestingData[key];ret[attr+"/"+inner]=_nestingData[key];}return ret;}();function _setOuterQuoteForm(quot){var flip={" \'":" \""," \"":" \'","(\"":"(\'","(\'":"(\""};_nestingData[quot].outer="true";_nestingData[flip[quot]].outer="inner";}function _getNestingOpenerParams(opener){var openers=[];var closer;var keys=Object.keys(_nestingData);for(var i=0,l=keys.length;i<l;i++){var key=keys[i];if(_nestingData[opener].type!=="quote"||!_nestingData[opener]){openers.push(key);}}var ret=_nestingData[opener];ret.opener=new RegExp("^(?:"+openers.map(function(str){return str.replace("(","\\(");}).join("|")+")");return ret;}var _nestingParams=function(){var ret={};var keys=Object.keys(_nestingData);for(var i=0,l=keys.length;i<l;i++){var key=keys[i];ret[key]=_getNestingOpenerParams(key);}return ret;}();var _tagRex=function(){var openers=[];var closers=[];var vals={};for(var opener in _nestingParams){openers.push(opener);vals[_nestingParams[opener].closer]=true;}var keys=Object.keys(vals);for(var i=0,l=keys.length;i<l;i++){var closer=keys[i];closers.push(closer);}var all=openers.concat(closers).map(function(str){return str.replace("(","\\(");}).join("|");return{matchAll:new RegExp("((?:"+all+"))","g"),splitAll:new RegExp("(?:"+all+")","g"),open:new RegExp("(^(?:"+openers.map(function(str){return str.replace("(","\\(");}).join("|")+")$)"),close:new RegExp("(^(?:"+closers.join("|")+")$)")};}();function _nestingFix(tag,pos){return _pushNestingState(tag,pos);}function _pushNestingState(tag,pos){if(tag.match(_tagRex.open)){return _tryOpen(tag,pos);}else{return _tryClose(tag,pos);}}function _tryOpen(tag,pos){var params=_nestingState[_nestingState.length-1];if(!params||tag.match(params.opener)){_nestingState.push({type:_nestingParams[tag].type,opener:_nestingParams[tag].opener,closer:_nestingParams[tag].closer,pos:pos});return false;}else{_nestingState.pop();_nestingState.push({type:_nestingParams[tag].type,opener:_nestingParams[tag].opener,closer:_nestingParams[tag].closer,pos:pos});return{fixtag:params.pos};}}function _tryClose(tag,pos){var params=_nestingState[_nestingState.length-1];if(params&&tag===params.closer){_nestingState.pop();if(params.type==="nocase"){return{nocase:{open:params.pos,close:pos}};}else{return false;}}else{if(params){return{fixtag:params.pos};}else{return{fixtag:pos};}}}function _doppelString(str){var forcedSpaces=[];str=str.replace(/(<span)\s+(style=\"font-variant:)\s*(small-caps);?\"[^>]*(>)/g,"$1 $2$3;\"$4");str=str.replace(/(<span)\s+(class=\"no(?:case|decor)\")[^>]*(>)/g,"$1 $2$3");var match=str.match(_tagRex.matchAll);if(!match){return{tags:[],strings:[str],forcedSpaces:[]};}var split=str.split(_tagRex.splitAll);for(var i=0,ilen=match.length-1;i<ilen;i++){if(_nestingData[match[i]]){if(split[i+1]===""&&["\"","'"].indexOf(match[i+1])>-1){match[i+1]=" "+match[i+1];forcedSpaces.push(true);}else{forcedSpaces.push(false);}}}return{tags:match,strings:split,forcedSpaces:forcedSpaces};}function _undoppelString(obj){var lst=obj.strings.slice(-1);for(var i=obj.tags.length-1;i>-1;i+=-1){lst.push(obj.tags[i]);lst.push(obj.strings[i]);}lst.reverse();return lst.join("|");}var _TagReg=function _TagReg(blob){this.set=set;this.pair=pair;this.pop=pop;var _stack=[];function set(tag){var attr=_nestingData[tag].attr;var decor=null;for(var i=_stack.length-1;i>-1;i--){var _decor=_stack[i];if(_decor[0]===attr){decor=_decor;break;}}if(!decor){var allTheDecor=[state[state.tmp.area].opt.layout_decorations].concat(blob.alldecor);outer:for(var i=allTheDecor.length-1;i>-1;i--){var decorset=allTheDecor[i];if(!decorset)continue;for(var j=decorset.length-1;j>-1;j--){var _decor=decorset[j];if(_decor[0]===attr){decor=_decor;break outer;}}}}if(!decor){decor=[attr,_nestingData[tag].outer];}else{decor=[attr,_nestingData[tag].flipflop[decor[1]]];}_stack.push(decor);}function pair(){return _stack[_stack.length-1];}function pop(){_stack.pop();}};function _apostropheForce(tag,str){if(tag==="\'"){if(str&&str.match(/^[^\,\.\?\:\;\ ]/)){return true;}}else if(tag===" \'"&&str&&str.match(/^[\ ]/)){return true;}return false;}function _undoppelToQueue(blob,doppel,leadingSpace){var TOP=blob;var firstString=true;var tagReg=new _TagReg(blob);blob.blobs=[];function Stack(blob){this.stack=[blob];this.latest=blob;this.addStyling=function(str,decor,forcedSpace){if(firstString){if(str.slice(0,1)===" "){str=str.slice(1);}if(str.slice(0,1)===" "){str=str.slice(1);}firstString=false;}this.latest=this.stack[this.stack.length-1];if(decor){if("string"===typeof this.latest.blobs){var child=new CSL.Blob();child.blobs=this.latest.blobs;child.alldecor=this.latest.alldecor.slice();this.latest.blobs=[child];}var tok=new CSL.Token();var newblob=new CSL.Blob(null,tok);newblob.alldecor=this.latest.alldecor.slice();if(decor[0]==="@class"&&decor[1]==="nodecor"){var newdecorset=[];var seen={};var allTheDecor=[state[state.tmp.area].opt.layout_decorations].concat(newblob.alldecor);for(var i=allTheDecor.length-1;i>-1;i--){var _decorset=allTheDecor[i];if(!_decorset)continue;for(var j=_decorset.length-1;j>-1;j--){var _olddecor=_decorset[j];if(["@font-weight","@font-style","@font-variant"].indexOf(_olddecor[0])>-1&&!seen[_olddecor[0]]){if(decor[1]!=="normal"){newblob.decorations.push([_olddecor[0],"normal"]);newdecorset.push([_olddecor[0],"normal"]);}seen[_olddecor[0]]=true;}}}newblob.alldecor.push(newdecorset);}else{newblob.decorations.push(decor);newblob.alldecor.push([decor]);}this.latest.blobs.push(newblob);this.stack.push(newblob);this.latest=newblob;if(str){var tok=new CSL.Token();var newblob=new CSL.Blob(null,tok);newblob.blobs=str;newblob.alldecor=this.latest.alldecor.slice();this.latest.blobs.push(newblob);}}else{if(str){var child=new CSL.Blob();child.blobs=str;child.alldecor=this.latest.alldecor.slice();this.latest.blobs.push(child);}}};this.popStyling=function(){this.stack.pop();};};var stack=new Stack(blob);if(doppel.strings.length){var str=doppel.strings[0];if(leadingSpace){str=" "+str;}stack.addStyling(str);}for(var i=0,ilen=doppel.tags.length;i<ilen;i++){var tag=doppel.tags[i];var str=doppel.strings[i+1];if(tag.match(_tagRex.open)){tagReg.set(tag);stack.addStyling(str,tagReg.pair());}else{tagReg.pop();stack.popStyling();stack.addStyling(str);}}}function processTags(blob){var str=blob.blobs;var leadingSpace=false;if(str.slice(0,1)===" "&&!str.match(/^\s+[\'\"]/)){leadingSpace=true;}var rex=new RegExp("("+CSL.ROMANESQUE_REGEXP.source+")\u2019("+CSL.ROMANESQUE_REGEXP.source+")","g");var str=" "+str.replace(rex,"$1\'$2");var doppel=_doppelString(str);if(doppel.tags.length===0)return;var quoteFormSeen=false;for(var i=0,ilen=doppel.tags.length;i<ilen;i++){var tag=doppel.tags[i];var str=doppel.strings[i+1];if(_apostropheForce(tag,str)){if(tag===" \'"){doppel.strings[i+1]=" \u2019"+doppel.strings[i+1];}else{doppel.strings[i+1]="\u2019"+doppel.strings[i+1];}doppel.tags[i]="";}else{var tagInfo;while(true){tagInfo=_nestingFix(tag,i);if(tagInfo){if(Object.keys(tagInfo).indexOf("fixtag")>-1){if(tag.match(_tagRex.close)&&tag==="\'"){doppel.strings[i+1]="\u2019"+doppel.strings[i+1];doppel.tags[i]="";}else{var failedTag=doppel.tags[tagInfo.fixtag];if(doppel.forcedSpaces[tagInfo.fixtag-1]){failedTag=failedTag.slice(1);}doppel.strings[tagInfo.fixtag+1]=failedTag+doppel.strings[tagInfo.fixtag+1];doppel.tags[tagInfo.fixtag]="";}if(_nestingState.length>0){_nestingState.pop();}else{break;}}else if(tagInfo.nocase){doppel.tags[tagInfo.nocase.open]="";doppel.tags[tagInfo.nocase.close]="";break;}else{break;}}else{break;}}if(tagInfo&&(tagInfo.fixtag||tagInfo.fixtag===0)){doppel.strings[i+1]=doppel.tags[i]+doppel.strings[i+1];doppel.tags[i]="";}}}for(var i=_nestingState.length-1;i>-1;i--){var tagPos=_nestingState[i].pos;var tag=doppel.tags[tagPos];if(tag===" \'"||tag==="\'"){doppel.strings[tagPos+1]=" \u2019"+doppel.strings[tagPos+1];}else{doppel.strings[tagPos+1]=doppel.tags[tagPos]+doppel.strings[tagPos+1];}doppel.tags[tagPos]="";_nestingState.pop();}for(var i=doppel.tags.length-1;i>-1;i--){if(!doppel.tags[i]){doppel.tags=doppel.tags.slice(0,i).concat(doppel.tags.slice(i+1));doppel.strings[i]=doppel.strings[i]+doppel.strings[i+1];doppel.strings=doppel.strings.slice(0,i+1).concat(doppel.strings.slice(i+2));}}for(var i=0,ilen=doppel.tags.length;i<ilen;i++){var tag=doppel.tags[i];var forcedSpace=doppel.forcedSpaces[i-1];if([" \""," \'","(\"","(\'"].indexOf(tag)>-1){if(!quoteFormSeen){_setOuterQuoteForm(tag);quoteFormSeen=true;}if(!forcedSpace){doppel.strings[i]+=tag.slice(0,1);}}}_undoppelToQueue(blob,doppel,leadingSpace);}};module.exports=CSL;CSL.Output.Formatters=new function(){this.passthrough=passthrough;this.lowercase=lowercase;this.uppercase=uppercase;this.sentence=sentence;this.title=title;this["capitalize-first"]=capitalizeFirst;this["capitalize-all"]=capitalizeAll;var rexStr="(?:\u2018|\u2019|\u201C|\u201D| \"| '|\"|'|[-\u2013\u2014/.,;?!:]|\\[|\\]|\\(|\\)|<span style=\"font-variant: small-caps;\">|<span class=\"no(?:case|decor)\">|</span>|</?(?:i|sc|b|sub|sup)>)";var tagDoppel=new CSL.Doppeler(rexStr,function(str){return str.replace(/(<span)\s+(class=\"no(?:case|decor)\")[^>]*(>)/g,"$1 $2$3").replace(/(<span)\s+(style=\"font-variant:)\s*(small-caps);?(\")[^>]*(>)/g,"$1 $2 $3;$4$5");});var wordDoppel=new CSL.Doppeler("(?:[ \xA0\u2000-\u200B\u205F\u3000]+)");var _tagParams={"<span style=\"font-variant: small-caps;\">":"</span>","<span class=\"nocase\">":"</span>","<span class=\"nodecor\">":"</span>"};function _capitalise(word,force){var m=word.match(/(^\s*)((?:[\0-\t\x0B\f\x0E-\u2027\u202A-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]))(.*)/);if(m&&!(m[2].match(/^[\u0370-\u03FF]$/)&&!m[3])){return m[1]+m[2].toUpperCase()+m[3];}return word;}function _textcaseEngine(config,string){if(!string){return"";}config.doppel=tagDoppel.split(string);var quoteParams={" \"":{opener:" \'",closer:"\""}," \'":{opener:" \"",closer:"\'"},"\u2018":{opener:"\u2018",closer:"\u2019"},"\u201C":{opener:"\u201C",closer:"\u201D"}};function quoteFix(tag,positions){var m=tag.match(/(^(?:\u2018|\u2019|\u201C|\u201D|\"|\')|(?: \"| \')$)/);if(m){return pushQuoteState(m[1],positions);}}function pushQuoteState(tag,pos){var isOpener=["\u201C","\u2018"," \""," \'"].indexOf(tag)>-1?true:false;if(isOpener){return tryOpen(tag,pos);}else{return tryClose(tag,pos);}}function tryOpen(tag,pos){if(config.quoteState.length===0||tag===config.quoteState[config.quoteState.length-1].opener){config.quoteState.push({opener:quoteParams[tag].opener,closer:quoteParams[tag].closer,pos:pos});return false;}else{var prevPos=config.quoteState[config.quoteState.length-1].pos;config.quoteState.pop();config.quoteState.push({opener:quoteParams[tag].opener,closer:quoteParams[tag].closer,positions:pos});return prevPos;}}function tryClose(tag,pos){if(config.quoteState.length>0&&tag===config.quoteState[config.quoteState.length-1].closer){config.quoteState.pop();}else{return pos;}}if(config.doppel.strings.length&&config.doppel.strings[0].trim()){config.doppel.strings[0]=config.capitaliseWords(config.doppel.strings[0],0,config.doppel.tags[0]);}for(var i=0,ilen=config.doppel.tags.length;i<ilen;i++){var tag=config.doppel.tags[i];var str=config.doppel.strings[i+1];if(config.tagState!==null){if(_tagParams[tag]){config.tagState.push(_tagParams[tag]);}else if(config.tagState.length&&tag===config.tagState[config.tagState.length-1]){config.tagState.pop();}}if(config.afterPunct!==null){if(tag.match(/[\!\?\:]$/)){config.afterPunct=true;}}if(config.tagState.length===0){config.doppel.strings[i+1]=config.capitaliseWords(str,i+1,config.doppel,config.doppel.tags[i+1]);}else if(config.doppel.strings[i+1].trim()){config.lastWordPos=null;}if(config.quoteState!==null){var quotePos=quoteFix(tag,i);if(quotePos||quotePos===0){var origChar=config.doppel.origStrings[quotePos+1].slice(0,1);config.doppel.strings[quotePos+1]=origChar+config.doppel.strings[quotePos+1].slice(1);config.lastWordPos=null;}}if(config.isFirst){if(str.trim()){config.isFirst=false;}}if(config.afterPunct){if(str.trim()){config.afterPunct=false;}}}if(config.quoteState){for(var i=0,ilen=config.quoteState.length;i<ilen;i++){var quotePos=config.quoteState[i].pos;if(typeof quotePos!=='undefined'){var origChar=config.doppel.origStrings[quotePos+1].slice(0,1);config.doppel.strings[quotePos+1]=origChar+config.doppel.strings[quotePos+1].slice(1);}}}if(config.lastWordPos){var lastWords=wordDoppel.split(config.doppel.strings[config.lastWordPos.strings]);var lastWord=_capitalise(lastWords.strings[config.lastWordPos.words]);lastWords.strings[config.lastWordPos.words]=lastWord;config.doppel.strings[config.lastWordPos.strings]=wordDoppel.join(lastWords);}return tagDoppel.join(config.doppel);}function passthrough(state,str){return str;}function lowercase(state,string){var config={quoteState:null,capitaliseWords:function capitaliseWords(str){var words=str.split(" ");for(var i=0,ilen=words.length;i<ilen;i++){var word=words[i];if(word){words[i]=word.toLowerCase();}}return words.join(" ");},skipWordsRex:null,tagState:[],afterPunct:null,isFirst:null};return _textcaseEngine(config,string);}function uppercase(state,string){var config={quoteState:null,capitaliseWords:function capitaliseWords(str){var words=str.split(" ");for(var i=0,ilen=words.length;i<ilen;i++){var word=words[i];if(word){words[i]=word.toUpperCase();}}return words.join(" ");},skipWordsRex:null,tagState:[],afterPunct:null,isFirst:null};return _textcaseEngine(config,string);}function sentence(state,string){var config={quoteState:[],capitaliseWords:function capitaliseWords(str){var words=str.split(" ");for(var i=0,ilen=words.length;i<ilen;i++){var word=words[i];if(word){if(config.isFirst){words[i]=_capitalise(word);config.isFirst=false;}else{words[i]=word.toLowerCase();}}}return words.join(" ");},skipWordsRex:null,tagState:[],afterPunct:null,isFirst:true};return _textcaseEngine(config,string);}function title(state,string){var config={quoteState:[],capitaliseWords:function capitaliseWords(str,i,followingTag){if(str.trim()){var words=str.split(/[ \u00A0]+/);var wordle=wordDoppel.split(str);var words=wordle.strings;for(var j=0,jlen=words.length;j<jlen;j++){var word=words[j];if(!word)continue;if(word.length>1&&!word.toLowerCase().match(config.skipWordsRex)){words[j]=_capitalise(words[j]);}else if(j===words.length-1&&followingTag==="-"){words[j]=_capitalise(words[j]);}else if(config.isFirst){words[j]=_capitalise(words[j]);}else if(config.afterPunct){words[j]=_capitalise(words[j]);}config.afterPunct=false;config.isFirst=false;config.lastWordPos={strings:i,words:j};}str=wordDoppel.join(wordle);}return str;},skipWordsRex:state.locale[state.opt.lang].opts["skip-words-regexp"],tagState:[],afterPunct:false,isFirst:true};return _textcaseEngine(config,string);}function capitalizeFirst(state,string){var config={quoteState:[],capitaliseWords:function capitaliseWords(str){var words=str.split(" ");for(var i=0,ilen=words.length;i<ilen;i++){var word=words[i];if(word){if(config.isFirst){words[i]=_capitalise(word);config.isFirst=false;break;}}}return words.join(" ");},skipWordsRex:null,tagState:[],afterPunct:null,isFirst:true};return _textcaseEngine(config,string);}function capitalizeAll(state,string){var config={quoteState:[],capitaliseWords:function capitaliseWords(str){var words=str.split(" ");for(var i=0,ilen=words.length;i<ilen;i++){var word=words[i];if(word){words[i]=_capitalise(word);}}return words.join(" ");},skipWordsRex:null,tagState:[],afterPunct:null,isFirst:null};return _textcaseEngine(config,string);}}();module.exports=CSL;CSL.Output.Formats=function(){};CSL.Output.Formats.prototype.html={"text_escape":function text_escape(text){if(!text){text="";}return text.replace(/&/g,"&#38;").replace(/</g,"&#60;").replace(/>/g,"&#62;").replace(/\s\s/g,"\xA0 ").replace(CSL.SUPERSCRIPTS_REGEXP,function(aChar){return"<sup>"+CSL.SUPERSCRIPTS[aChar]+"</sup>";});},"bibstart":"<div class=\"csl-bib-body\">\n","bibend":"</div>","@font-style/italic":"<i>%%STRING%%</i>","@font-style/oblique":"<em>%%STRING%%</em>","@font-style/normal":"<span style=\"font-style:normal;\">%%STRING%%</span>","@font-variant/small-caps":"<span style=\"font-variant:small-caps;\">%%STRING%%</span>","@passthrough/true":CSL.Output.Formatters.passthrough,"@font-variant/normal":"<span style=\"font-variant:normal;\">%%STRING%%</span>","@font-weight/bold":"<b>%%STRING%%</b>","@font-weight/normal":"<span style=\"font-weight:normal;\">%%STRING%%</span>","@font-weight/light":false,"@text-decoration/none":"<span style=\"text-decoration:none;\">%%STRING%%</span>","@text-decoration/underline":"<span style=\"text-decoration:underline;\">%%STRING%%</span>","@vertical-align/sup":"<sup>%%STRING%%</sup>","@vertical-align/sub":"<sub>%%STRING%%</sub>","@vertical-align/baseline":"<span style=\"baseline\">%%STRING%%</span>","@strip-periods/true":CSL.Output.Formatters.passthrough,"@strip-periods/false":CSL.Output.Formatters.passthrough,"@quotes/true":function quotesTrue(state,str){if("undefined"===typeof str){return state.getTerm("open-quote");}return state.getTerm("open-quote")+str+state.getTerm("close-quote");},"@quotes/inner":function quotesInner(state,str){if("undefined"===typeof str){return"\u2019";}return state.getTerm("open-inner-quote")+str+state.getTerm("close-inner-quote");},"@quotes/false":false,"@cite/entry":function citeEntry(state,str){return state.sys.wrapCitationEntry(str,this.item_id,this.locator_txt,this.suffix_txt);},"@bibliography/entry":function bibliographyEntry(state,str){var insert="";if(state.sys.embedBibliographyEntry){insert=state.sys.embedBibliographyEntry(this.item_id)+"\n";}return"  <div class=\"csl-entry\">"+str+"</div>\n"+insert;},"@display/block":function displayBlock(state,str){return"\n\n    <div class=\"csl-block\">"+str+"</div>\n";},"@display/left-margin":function displayLeftMargin(state,str){return"\n    <div class=\"csl-left-margin\">"+str+"</div>";},"@display/right-inline":function displayRightInline(state,str){return"<div class=\"csl-right-inline\">"+str+"</div>\n  ";},"@display/indent":function displayIndent(state,str){return"<div class=\"csl-indent\">"+str+"</div>\n  ";},"@showid/true":function showidTrue(state,str,cslid){if(!state.tmp.just_looking&&!state.tmp.suppress_decorations){if(cslid){return"<span class=\""+state.opt.nodenames[cslid]+"\" cslid=\""+cslid+"\">"+str+"</span>";}else if(this.params&&"string"===typeof str){var prePunct="";if(str){var m=str.match(CSL.VARIABLE_WRAPPER_PREPUNCT_REX);prePunct=m[1];str=m[2];}var postPunct="";if(str&&CSL.SWAPPING_PUNCTUATION.indexOf(str.slice(-1))>-1){postPunct=str.slice(-1);str=str.slice(0,-1);}return state.sys.variableWrapper(this.params,prePunct,str,postPunct);}else{return str;}}else{return str;}},"@URL/true":function URLTrue(state,str){return"<a href=\""+str+"\">"+str+"</a>";},"@DOI/true":function DOITrue(state,str){var doiurl=str;if(!str.match(/^https?:\/\//)){doiurl="https://doi.org/"+str;}return"<a href=\""+doiurl+"\">"+str+"</a>";}};CSL.Output.Formats.prototype.text={"text_escape":function text_escape(text){if(!text){text="";}return text;},"bibstart":"","bibend":"","@font-style/italic":false,"@font-style/oblique":false,"@font-style/normal":false,"@font-variant/small-caps":false,"@passthrough/true":CSL.Output.Formatters.passthrough,"@font-variant/normal":false,"@font-weight/bold":false,"@font-weight/normal":false,"@font-weight/light":false,"@text-decoration/none":false,"@text-decoration/underline":false,"@vertical-align/baseline":false,"@vertical-align/sup":false,"@vertical-align/sub":false,"@strip-periods/true":CSL.Output.Formatters.passthrough,"@strip-periods/false":CSL.Output.Formatters.passthrough,"@quotes/true":function quotesTrue(state,str){if("undefined"===typeof str){return state.getTerm("open-quote");}return state.getTerm("open-quote")+str+state.getTerm("close-quote");},"@quotes/inner":function quotesInner(state,str){if("undefined"===typeof str){return"\u2019";}return state.getTerm("open-inner-quote")+str+state.getTerm("close-inner-quote");},"@quotes/false":false,"@cite/entry":function citeEntry(state,str){return state.sys.wrapCitationEntry(str,this.item_id,this.locator_txt,this.suffix_txt);},"@bibliography/entry":function bibliographyEntry(state,str){return str+"\n";},"@display/block":function displayBlock(state,str){return"\n"+str;},"@display/left-margin":function displayLeftMargin(state,str){return str;},"@display/right-inline":function displayRightInline(state,str){return str;},"@display/indent":function displayIndent(state,str){return"\n    "+str;},"@showid/true":function showidTrue(state,str,cslid){return str;},"@URL/true":function URLTrue(state,str){return str;},"@DOI/true":function DOITrue(state,str){return str;}};CSL.Output.Formats.prototype.rtf={"text_escape":function text_escape(text){if(!text){text="";}return text.replace(/([\\{}])/g,"\\$1").replace(CSL.SUPERSCRIPTS_REGEXP,function(aChar){return"\\super "+CSL.SUPERSCRIPTS[aChar]+"\\nosupersub{}";}).replace(/[\u007F-\uFFFF]/g,function(aChar){return"\\uc0\\u"+aChar.charCodeAt(0).toString()+"{}";}).split("\t").join("\\tab{}");},"@passthrough/true":CSL.Output.Formatters.passthrough,"@font-style/italic":"{\\i{}%%STRING%%}","@font-style/normal":"{\\i0{}%%STRING%%}","@font-style/oblique":"{\\i{}%%STRING%%}","@font-variant/small-caps":"{\\scaps %%STRING%%}","@font-variant/normal":"{\\scaps0{}%%STRING%%}","@font-weight/bold":"{\\b{}%%STRING%%}","@font-weight/normal":"{\\b0{}%%STRING%%}","@font-weight/light":false,"@text-decoration/none":false,"@text-decoration/underline":"{\\ul{}%%STRING%%}","@vertical-align/baseline":false,"@vertical-align/sup":"\\super %%STRING%%\\nosupersub{}","@vertical-align/sub":"\\sub %%STRING%%\\nosupersub{}","@strip-periods/true":CSL.Output.Formatters.passthrough,"@strip-periods/false":CSL.Output.Formatters.passthrough,"@quotes/true":function quotesTrue(state,str){if("undefined"===typeof str){return CSL.Output.Formats.rtf.text_escape(state.getTerm("open-quote"));}return CSL.Output.Formats.rtf.text_escape(state.getTerm("open-quote"))+str+CSL.Output.Formats.rtf.text_escape(state.getTerm("close-quote"));},"@quotes/inner":function quotesInner(state,str){if("undefined"===typeof str){return CSL.Output.Formats.rtf.text_escape("\u2019");}return CSL.Output.Formats.rtf.text_escape(state.getTerm("open-inner-quote"))+str+CSL.Output.Formats.rtf.text_escape(state.getTerm("close-inner-quote"));},"@quotes/false":false,"bibstart":"{\\rtf ","bibend":"}","@display/block":"\\line{}%%STRING%%\\line\r\n","@cite/entry":function citeEntry(state,str){return state.sys.wrapCitationEntry(str,this.item_id,this.locator_txt,this.suffix_txt);},"@bibliography/entry":function bibliographyEntry(state,str){return str;},"@display/left-margin":function displayLeftMargin(state,str){return str+"\\tab ";},"@display/right-inline":function displayRightInline(state,str){return str+"\r\n";},"@display/indent":function displayIndent(state,str){return"\n\\tab "+str+"\\line\r\n";},"@showid/true":function showidTrue(state,str,cslid){if(!state.tmp.just_looking&&!state.tmp.suppress_decorations){var prePunct="";if(str){var m=str.match(CSL.VARIABLE_WRAPPER_PREPUNCT_REX);prePunct=m[1];str=m[2];}var postPunct="";if(str&&CSL.SWAPPING_PUNCTUATION.indexOf(str.slice(-1))>-1){postPunct=str.slice(-1);str=str.slice(0,-1);}return state.sys.variableWrapper(this.params,prePunct,str,postPunct);}else{return str;}},"@URL/true":function URLTrue(state,str){return str;},"@DOI/true":function DOITrue(state,str){return str;}};CSL.Output.Formats=new CSL.Output.Formats();module.exports=CSL;CSL.Registry=function(state){var pos,len,ret,i,ilen;this.debug=false;this.state=state;this.registry={};this.reflist=[];this.refhash={};this.namereg=new CSL.Registry.NameReg(state);this.citationreg=new CSL.Registry.CitationReg(state);this.authorstrings={};this.mylist=[];this.myhash={};this.deletes=[];this.inserts=[];this.uncited={};this.refreshes={};this.akeys={};this.oldseq={};this.return_data={};this.ambigcites={};this.ambigresets={};this.sorter=new CSL.Registry.Comparifier(state,"bibliography_sort");this.getSortedIds=function(){var ret=[];for(var i=0,ilen=this.reflist.length;i<ilen;i+=1){ret.push(""+this.reflist[i].id);}return ret;};this.getSortedRegistryItems=function(){var ret=[];for(var i=0,ilen=this.reflist.length;i<ilen;i+=1){ret.push(this.reflist[i]);}return ret;};};CSL.Registry.prototype.init=function(itemIDs,uncited_flag){var i,ilen;this.oldseq={};if(uncited_flag){this.uncited={};for(var i=0,ilen=itemIDs.length;i<ilen;i+=1){if(!this.myhash[itemIDs[i]]){this.mylist.push(""+itemIDs[i]);}this.uncited[itemIDs[i]]=true;this.myhash[itemIDs[i]]=true;}}else{for(var key in this.uncited){itemIDs.push(key);}var myhash={};for(i=itemIDs.length-1;i>-1;i+=-1){if(myhash[itemIDs[i]]){itemIDs=itemIDs.slice(0,i).concat(itemIDs.slice(i+1));}else{myhash[itemIDs[i]]=true;}}this.mylist=[];for(var i=0,ilen=itemIDs.length;i<ilen;i+=1){this.mylist.push(""+itemIDs[i]);}this.myhash=myhash;}this.refreshes={};this.touched={};this.ambigsTouched={};this.ambigresets={};};CSL.Registry.prototype.dopurge=function(myhash){for(var i=this.mylist.length-1;i>-1;i+=-1){if(this.citationreg.citationsByItemId){if(!this.citationreg.citationsByItemId[this.mylist[i]]&&!myhash[this.mylist[i]]){delete this.myhash[this.mylist[i]];this.mylist=this.mylist.slice(0,i).concat(this.mylist.slice(i+1));}}}this.dodeletes(this.myhash);};CSL.Registry.prototype.dodeletes=function(myhash){var otheritems,key,ambig,pos,len,items,kkey,mypos,id;if("string"===typeof myhash){myhash={};myhash[myhash]=true;}for(var key in this.registry){if(!myhash[key]){if(this.uncited[key]){continue;}otheritems=this.namereg.delitems(key);for(kkey in otheritems){this.refreshes[kkey]=true;}ambig=this.registry[key].ambig;mypos=this.ambigcites[ambig].indexOf(key);if(mypos>-1){items=this.ambigcites[ambig].slice();this.ambigcites[ambig]=items.slice(0,mypos).concat(items.slice(mypos+1,items.length));this.ambigresets[ambig]=this.ambigcites[ambig].length;}len=this.ambigcites[ambig].length;for(pos=0;pos<len;pos+=1){id=""+this.ambigcites[ambig][pos];this.refreshes[id]=true;}if(this.registry[key].siblings){if(this.registry[key].siblings.length==1){var loneSiblingID=this.registry[key].siblings[0];this.registry[loneSiblingID].master=true;this.registry[loneSiblingID].siblings.pop();this.registry[loneSiblingID].parallel=false;}else if(this.registry[key].siblings.length>1){var removeIDs=[key];if(this.registry[key].master){var newmasterID=this.registry[key].siblings[0];var newmaster=this.registry[newmasterID];newmaster.master=true;newmaster.parallel=false;removeIDs.push(newmasterID);for(var k=0,klen=this.registry[key].siblings.length;k<klen;k+=1){this.registry[this.registry[key].siblings[k]].parallel=newmasterID;}}var buffer=[];for(var k=this.registry[key].siblings.length-1;k>-1;k+=-1){var siblingID=this.registry[key].siblings.pop();if(removeIDs.indexOf(siblingID)===-1){buffer.push(siblingID);}}for(var k=buffer.length-1;k>-1;k+=-1){this.registry[key].siblings.push(buffer[k]);}}}delete this.registry[key];delete this.refhash[key];this.return_data.bibchange=true;}}};CSL.Registry.prototype.doinserts=function(mylist){var len,pos,item,Item,akey,newitem,abase,j,jlen,k,klen,i,ilen;if("string"===typeof mylist){mylist=[mylist];}for(var i=0,ilen=mylist.length;i<ilen;i+=1){item=mylist[i];if(!this.registry[item]){Item=this.state.retrieveItem(item);akey=CSL.getAmbiguousCite.call(this.state,Item);this.ambigsTouched[akey]=true;if(!Item.legislation_id){this.akeys[akey]=true;}newitem={"id":""+item,"seq":0,"offset":0,"sortkeys":false,"ambig":false,"rendered":false,"disambig":false,"ref":Item};this.registry[item]=newitem;if(this.citationreg.citationsByItemId&&this.citationreg.citationsByItemId[item]){this.registry[item]["first-reference-note-number"]=this.citationreg.citationsByItemId[item][0].properties.noteIndex;}abase=CSL.getAmbigConfig.call(this.state);this.registerAmbigToken(akey,item,abase);this.touched[item]=true;this.return_data.bibchange=true;}}};CSL.Registry.prototype.rebuildlist=function(){var count,len,pos,item;this.reflist=[];if(this.state.opt.citation_number_sort_direction===CSL.DESCENDING&&this.state.opt.citation_number_sort_used){}len=this.mylist.length;for(pos=0;pos<len;pos+=1){item=this.mylist[pos];this.reflist.push(this.registry[item]);this.oldseq[item]=this.registry[item].seq;this.registry[item].seq=pos+1;}if(this.state.opt.citation_number_sort_direction===CSL.DESCENDING&&this.state.opt.citation_number_sort_used){}};CSL.Registry.prototype.dorefreshes=function(){var key,regtoken,Item,old_akey,akey,abase;for(var key in this.refreshes){regtoken=this.registry[key];if(!regtoken){continue;}regtoken.sortkeys=undefined;Item=this.state.retrieveItem(key);var akey=regtoken.ambig;if("undefined"===typeof akey){this.state.tmp.disambig_settings=false;akey=CSL.getAmbiguousCite.call(this.state,Item);abase=CSL.getAmbigConfig.call(this.state);this.registerAmbigToken(akey,key,abase);}for(var akkey in this.ambigresets){if(this.ambigresets[akkey]===1){var loneKey=this.ambigcites[akey][0];var Item=this.state.retrieveItem(loneKey);this.registry[loneKey].disambig=new CSL.AmbigConfig();this.state.tmp.disambig_settings=false;var akey=CSL.getAmbiguousCite.call(this.state,Item);var abase=CSL.getAmbigConfig.call(this.state);this.registerAmbigToken(akey,loneKey,abase);}}this.state.tmp.taintedItemIDs[key]=true;this.ambigsTouched[akey]=true;if(!Item.legislation_id){this.akeys[akey]=true;}this.touched[key]=true;}};CSL.Registry.prototype.setdisambigs=function(){var akey,leftovers,key,pos,len,id;this.leftovers=[];for(akey in this.ambigsTouched){this.state.disambiguate.run(akey);}this.ambigsTouched={};this.akeys={};};CSL.Registry.prototype.renumber=function(){var len,pos,item;if(this.state.opt.citation_number_sort_direction===CSL.DESCENDING&&this.state.opt.citation_number_sort_used){}len=this.reflist.length;for(pos=0;pos<len;pos+=1){item=this.reflist[pos];item.seq=pos+1;if(this.state.opt.update_mode===CSL.NUMERIC&&item.seq!=this.oldseq[item.id]){this.state.tmp.taintedItemIDs[item.id]=true;}if(this.state.opt.bib_mode===CSL.NUMERIC&&item.seq!=this.oldseq[item.id]){this.return_data.bibchange=true;}}if(this.state.opt.citation_number_sort_direction===CSL.DESCENDING&&this.state.opt.citation_number_sort_used){this.reflist.reverse();}};CSL.Registry.prototype.setsortkeys=function(){var key;for(var i=0,ilen=this.mylist.length;i<ilen;i+=1){var key=this.mylist[i];if(this.touched[key]||this.state.tmp.taintedItemIDs[key]||!this.registry[key].sortkeys){this.registry[key].sortkeys=CSL.getSortKeys.call(this.state,this.state.retrieveItem(key),"bibliography_sort");}}};CSL.Registry.prototype.sorttokens=function(){this.reflist.sort(this.sorter.compareKeys);};CSL.Registry.Comparifier=function(state,keyset){var sort_directions,len,pos,compareKeys;var sortCompare=CSL.getSortCompare(state.opt["default-locale-sort"]);sort_directions=state[keyset].opt.sort_directions;this.compareKeys=function(a,b){len=a.sortkeys?a.sortkeys.length:0;for(pos=0;pos<len;pos+=1){var cmp=0;if(a.sortkeys[pos]===b.sortkeys[pos]){cmp=0;}else if("undefined"===typeof a.sortkeys[pos]){cmp=sort_directions[pos][1];}else if("undefined"===typeof b.sortkeys[pos]){cmp=sort_directions[pos][0];}else{cmp=sortCompare(a.sortkeys[pos],b.sortkeys[pos]);}if(0<cmp){return sort_directions[pos][1];}else if(0>cmp){return sort_directions[pos][0];}}if(a.seq>b.seq){return 1;}else if(a.seq<b.seq){return-1;}return 0;};compareKeys=this.compareKeys;this.compareCompositeKeys=function(a,b){return compareKeys(a[1],b[1]);};};CSL.Registry.prototype.compareRegistryTokens=function(a,b){if(a.seq>b.seq){return 1;}else if(a.seq<b.seq){return-1;}return 0;};CSL.Registry.prototype.registerAmbigToken=function(akey,id,ambig_config){if(this.registry[id]&&this.registry[id].disambig&&this.registry[id].disambig.names){for(var i=0,ilen=ambig_config.names.length;i<ilen;i+=1){var new_names_params=ambig_config.names[i];var old_names_params=this.registry[id].disambig.names[i];if(new_names_params!==old_names_params){this.state.tmp.taintedItemIDs[id]=true;}else if(ambig_config.givens[i]){for(var j=0,jlen=ambig_config.givens[i].length;j<jlen;j+=1){var new_gnames_params=ambig_config.givens[i][j];var old_gnames_params=this.registry[id].disambig.givens[i][j];if(new_gnames_params!==old_gnames_params){this.state.tmp.taintedItemIDs[id]=true;}}}}}if(!this.ambigcites[akey]){this.ambigcites[akey]=[];}if(this.ambigcites[akey].indexOf(""+id)===-1){this.ambigcites[akey].push(""+id);}this.registry[id].ambig=akey;var dome=false;this.registry[id].disambig=CSL.cloneAmbigConfig(ambig_config);};CSL.getSortKeys=function(Item,key_type){var area,root,extension,strip_prepositions,use_parallels,len,pos;area=this.tmp.area;root=this.tmp.root;extension=this.tmp.extension;strip_prepositions=CSL.Util.Sort.strip_prepositions;this.tmp.area=key_type;this.tmp.root=key_type.indexOf("_")>-1?key_type.slice(0,-5):key_type;this.tmp.extension="_sort";this.tmp.disambig_override=true;this.tmp.disambig_request=false;this.parallel.use_parallels=this.parallel.use_parallels===true||this.parallel.use_parallels===null?null:false;this.tmp.suppress_decorations=true;CSL.getCite.call(this,Item);this.tmp.suppress_decorations=false;this.parallel.use_parallels=this.parallel.use_parallels===null?true:false;this.tmp.disambig_override=false;len=this[key_type].keys.length;for(pos=0;pos<len;pos+=1){this[key_type].keys[pos]=strip_prepositions(this[key_type].keys[pos]);}this.tmp.area=area;this.tmp.root=root;this.tmp.extension=extension;return this[key_type].keys;};module.exports=CSL;CSL.Registry.NameReg=function(state){var pkey,ikey,skey,floor,ceiling,dagopt,gdropt,ret,pos,items,strip_periods,set_keys,evalname,delitems,addname,key,myitems,i,ilen;this.state=state;this.namereg={};this.nameind={};this.nameindpkeys={};this.itemkeyreg={};strip_periods=function strip_periods(str){if(!str){str="";}return str.replace(/\./g," ").replace(/\s+/g," ").replace(/\s+$/,"");};set_keys=function set_keys(state,itemid,nameobj){pkey=strip_periods(nameobj.family);skey=strip_periods(nameobj.given);var m=skey.match(/[,\!]* ([^,]+)$/);if(m&&m[1]===m[1].toLowerCase()){skey=skey.replace(/[,\!]* [^,]+$/,"");}ikey=CSL.Util.Names.initializeWith(state,skey,"%s");if(state.citation.opt["givenname-disambiguation-rule"]==="by-cite"){pkey=""+itemid+pkey;}};evalname=function evalname(item_id,nameobj,namenum,request_base,form,initials){var pos,len,items,param;if(state.tmp.area.slice(0,12)==="bibliography"&&!form){if("string"===typeof initials){return 1;}else{return 2;}}var res=state.nameOutput.getName(nameobj,"locale-translit",true);nameobj=res.name;set_keys(this.state,""+item_id,nameobj);param=2;dagopt=state.opt["disambiguate-add-givenname"];gdropt=state.citation.opt["givenname-disambiguation-rule"];var gdropt_orig=gdropt;if(gdropt==="by-cite"){gdropt="all-names";}if("short"===form){param=0;}else if("string"===typeof initials){param=1;}if("undefined"===typeof this.namereg[pkey]||"undefined"===typeof this.namereg[pkey].ikey[ikey]){return param;}if(gdropt_orig==="by-cite"&&param<=request_base){return request_base;}if(!dagopt){return param;}if("string"===typeof gdropt&&gdropt.slice(0,12)==="primary-name"&&namenum>0){return param;}if(!gdropt||gdropt==="all-names"||gdropt==="primary-name"){if(this.namereg[pkey].count>1){param=1;}if(this.namereg[pkey].ikey&&this.namereg[pkey].ikey[ikey].count>1||this.namereg[pkey].count>1&&"string"!==typeof initials){param=2;}}else if(gdropt==="all-names-with-initials"||gdropt==="primary-name-with-initials"){if(this.namereg[pkey].count>1){param=1;}else{param=0;}}if(!state.registry.registry[item_id]){if(form=="short"){return 0;}else if("string"==typeof initials){return 1;}}else{return param;}};delitems=function delitems(ids){var item,pos,len,posA,posB,id,fullkey,llen,ppos,otherid;if("string"===typeof ids||"number"===typeof ids){ids=[""+ids];}var ret={};len=ids.length;for(pos=0;pos<len;pos+=1){id=""+ids[pos];if(!this.nameind[id]){continue;}for(fullkey in this.nameind[id]){if(this.nameind[id].hasOwnProperty(fullkey)){var key=fullkey.split("::");pkey=key[0];ikey=key[1];skey=key[2];if("undefined"===typeof this.namereg[pkey]){continue;}items=this.namereg[pkey].items;if(skey&&this.namereg[pkey].ikey[ikey]&&this.namereg[pkey].ikey[ikey].skey[skey]){myitems=this.namereg[pkey].ikey[ikey].skey[skey].items;posB=myitems.indexOf(""+id);if(posB>-1){this.namereg[pkey].ikey[ikey].skey[skey].items=myitems.slice(0,posB).concat(myitems.slice([posB+1]));}if(this.namereg[pkey].ikey[ikey].skey[skey].items.length===0){delete this.namereg[pkey].ikey[ikey].skey[skey];this.namereg[pkey].ikey[ikey].count+=-1;if(this.namereg[pkey].ikey[ikey].count<2){for(var i=0,ilen=this.namereg[pkey].ikey[ikey].items.length;i<ilen;i+=1){state.tmp.taintedItemIDs[this.namereg[pkey].ikey[ikey].items[i]]=true;}}}}if(ikey&&this.namereg[pkey].ikey[ikey]){posB=this.namereg[pkey].ikey[ikey].items.indexOf(""+id);if(posB>-1){items=this.namereg[pkey].ikey[ikey].items.slice();this.namereg[pkey].ikey[ikey].items=items.slice(0,posB).concat(items.slice([posB+1]));}if(this.namereg[pkey].ikey[ikey].items.length===0){delete this.namereg[pkey].ikey[ikey];this.namereg[pkey].count+=-1;if(this.namereg[pkey].count<2){for(var i=0,ilen=this.namereg[pkey].items.length;i<ilen;i+=1){state.tmp.taintedItemIDs[this.namereg[pkey].items[i]]=true;}}}}if(pkey){posB=this.namereg[pkey].items.indexOf(""+id);if(posB>-1){items=this.namereg[pkey].items.slice();this.namereg[pkey].items=items.slice(0,posB).concat(items.slice([posB+1],items.length));}if(this.namereg[pkey].items.length<2){delete this.namereg[pkey];}}delete this.nameind[id][fullkey];}}delete this.nameind[id];delete this.nameindpkeys[id];}return ret;};addname=function addname(item_id,nameobj,pos){var i,ilen;var res=state.nameOutput.getName(nameobj,"locale-translit",true);nameobj=res.name;if(state.citation.opt["givenname-disambiguation-rule"]&&state.citation.opt["givenname-disambiguation-rule"].slice(0,8)==="primary-"&&pos!==0){return;}set_keys(this.state,""+item_id,nameobj);if(pkey){if("undefined"===typeof this.namereg[pkey]){this.namereg[pkey]={};this.namereg[pkey].count=0;this.namereg[pkey].ikey={};this.namereg[pkey].items=[item_id];}else if(this.namereg[pkey].items.indexOf(item_id)===-1){this.namereg[pkey].items.push(item_id);}}if(pkey&&ikey){if("undefined"===typeof this.namereg[pkey].ikey[ikey]){this.namereg[pkey].ikey[ikey]={};this.namereg[pkey].ikey[ikey].count=0;this.namereg[pkey].ikey[ikey].skey={};this.namereg[pkey].ikey[ikey].items=[item_id];this.namereg[pkey].count+=1;if(this.namereg[pkey].count===2){for(var i=0,ilen=this.namereg[pkey].items.length;i<ilen;i+=1){state.tmp.taintedItemIDs[this.namereg[pkey].items[i]]=true;}}}else if(this.namereg[pkey].ikey[ikey].items.indexOf(item_id)===-1){this.namereg[pkey].ikey[ikey].items.push(item_id);}}if(pkey&&ikey&&skey){if("undefined"===typeof this.namereg[pkey].ikey[ikey].skey[skey]){this.namereg[pkey].ikey[ikey].skey[skey]={};this.namereg[pkey].ikey[ikey].skey[skey].items=[item_id];this.namereg[pkey].ikey[ikey].count+=1;if(this.namereg[pkey].ikey[ikey].count===2){for(var i=0,ilen=this.namereg[pkey].ikey[ikey].items.length;i<ilen;i+=1){state.tmp.taintedItemIDs[this.namereg[pkey].ikey[ikey].items[i]]=true;}}}else if(this.namereg[pkey].ikey[ikey].skey[skey].items.indexOf(item_id)===-1){this.namereg[pkey].ikey[ikey].skey[skey].items.push(item_id);}}if("undefined"===typeof this.nameind[item_id]){this.nameind[item_id]={};this.nameindpkeys[item_id]={};}if(pkey){this.nameind[item_id][pkey+"::"+ikey+"::"+skey]=true;this.nameindpkeys[item_id][pkey]=this.namereg[pkey];}};this.addname=addname;this.delitems=delitems;this.evalname=evalname;};module.exports=CSL;CSL.Registry.CitationReg=function(state){this.citationById={};this.citationByIndex=[];};module.exports=CSL;CSL.Disambiguation=function(state){this.state=state;this.sys=this.state.sys;this.registry=state.registry.registry;this.ambigcites=state.registry.ambigcites;this.configModes();this.debug=false;};CSL.Disambiguation.prototype.run=function(akey){if(!this.modes.length){return;}this.akey=akey;if(this.initVars(akey)){this.runDisambig();}};CSL.Disambiguation.prototype.runDisambig=function(){var pos,len,ppos,llen,pppos,lllen,ismax;this.initGivens=true;while(this.lists.length){this.gnameset=0;this.gname=0;this.clashes=[1,0];while(this.lists[0][1].length){this.listpos=0;if(!this.base){this.base=this.lists[0][0];}var names_used=[];ismax=this.incrementDisambig();this.scanItems(this.lists[0]);this.evalScan(ismax);}this.lists=this.lists.slice(1);}};CSL.Disambiguation.prototype.scanItems=function(list){var pos,len,Item,otherItem,ItemCite,ignore,base;this.Item=list[1][0];this.ItemCite=CSL.getAmbiguousCite.call(this.state,this.Item,this.base,true);this.scanlist=list[1];this.partners=[];this.partners.push(this.Item);this.nonpartners=[];var clashes=0;for(var pos=1,len=list[1].length;pos<len;pos+=1){otherItem=list[1][pos];var otherItemCite=CSL.getAmbiguousCite.call(this.state,otherItem,this.base,true);if(this.ItemCite===otherItemCite){clashes+=1;this.partners.push(otherItem);}else{this.nonpartners.push(otherItem);}}this.clashes[0]=this.clashes[1];this.clashes[1]=clashes;};CSL.Disambiguation.prototype.evalScan=function(maxed){this[this.modes[this.modeindex]](maxed);if(maxed){if(this.modeindex<this.modes.length-1){this.modeindex+=1;}else{this.lists[this.listpos+1]=[this.base,[]];}}};CSL.Disambiguation.prototype.disNames=function(ismax){var pos,len,mybase,i,ilen;if(this.clashes[1]===0&&this.nonpartners.length===1){this.captureStepToBase();this.state.registry.registerAmbigToken(this.akey,""+this.nonpartners[0].id,this.betterbase);this.state.registry.registerAmbigToken(this.akey,""+this.partners[0].id,this.betterbase);this.lists[this.listpos]=[this.betterbase,[]];}else if(this.clashes[1]===0){this.captureStepToBase();this.state.registry.registerAmbigToken(this.akey,""+this.partners[0].id,this.betterbase);this.lists[this.listpos]=[this.betterbase,this.nonpartners];if(this.nonpartners.length){this.initGivens=true;}}else if(this.nonpartners.length===1){this.captureStepToBase();this.state.registry.registerAmbigToken(this.akey,""+this.nonpartners[0].id,this.betterbase);this.lists[this.listpos]=[this.betterbase,this.partners];}else if(this.clashes[1]<this.clashes[0]){this.captureStepToBase();this.lists[this.listpos]=[this.betterbase,this.partners];this.lists.push([this.betterbase,this.nonpartners]);}else{if(ismax){this.lists[this.listpos]=[this.betterbase,this.nonpartners];this.lists.push([this.betterbase,this.partners]);if(this.modeindex===this.modes.length-1){for(var i=0,ilen=this.partners.length;i<ilen;i+=1){this.state.registry.registerAmbigToken(this.akey,""+this.partners[i].id,this.betterbase);}this.lists[this.listpos]=[this.betterbase,[]];}}}};CSL.Disambiguation.prototype.disExtraText=function(){var pos,len,mybase;var done=false;if(this.clashes[1]===0&&this.nonpartners.length<2){done=true;}if(!done&&(!this.base.disambiguate||this.state.tmp.disambiguate_count!==this.state.tmp.disambiguate_maxMax)){this.modeindex=0;this.base.disambiguate=this.state.tmp.disambiguate_count;this.betterbase.disambiguate=this.state.tmp.disambiguate_count;if(!this.base.disambiguate){this.initGivens=true;this.base.disambiguate=1;for(var i=0,ilen=this.lists[this.listpos][1].length;i<ilen;i+=1){this.state.tmp.taintedItemIDs[this.lists[this.listpos][1][i].id]=true;}}else{this.disNames();}}else if(done||this.state.tmp.disambiguate_count===this.state.tmp.disambiguate_maxMax){if(done||this.modeindex===this.modes.length-1){var base=this.lists[this.listpos][0];for(var i=0,ilen=this.lists[this.listpos][1].length;i<ilen;i+=1){this.state.tmp.taintedItemIDs[this.lists[this.listpos][1][i].id]=true;this.state.registry.registerAmbigToken(this.akey,""+this.lists[this.listpos][1][i].id,base);}this.lists[this.listpos]=[this.betterbase,[]];}else{this.modeindex=this.modes.length-1;var base=this.lists[this.listpos][0];base.disambiguate=true;for(var i=0,ilen=this.lists[this.listpos][1].length;i<ilen;i+=1){this.state.tmp.taintedItemIDs[this.lists[this.listpos][1][i].id]=true;this.state.registry.registerAmbigToken(this.akey,""+this.lists[this.listpos][1][i].id,base);}}}};CSL.Disambiguation.prototype.disYears=function(){var pos,len,tokens,token,item;tokens=[];var base=this.lists[this.listpos][0];if(this.clashes[1]){for(var i=0,ilen=this.state.registry.mylist.length;i<ilen;i+=1){var origid=this.state.registry.mylist[i];for(var j=0,jlen=this.lists[this.listpos][1].length;j<jlen;j+=1){var token=this.lists[this.listpos][1][j];if(token.id==origid){tokens.push(this.registry[token.id]);break;}}}}tokens.sort(this.state.registry.sorter.compareKeys);for(var pos=0,len=tokens.length;pos<len;pos+=1){base.year_suffix=""+pos;var oldBase=this.state.registry.registry[tokens[pos].id].disambig;this.state.registry.registerAmbigToken(this.akey,""+tokens[pos].id,base);if(CSL.ambigConfigDiff(oldBase,base)){this.state.tmp.taintedItemIDs[tokens[pos].id]=true;}}this.lists[this.listpos]=[this.betterbase,[]];};CSL.Disambiguation.prototype.incrementDisambig=function(){var val;if(this.initGivens){this.initGivens=false;return false;}var maxed=false;var increment_names=true;var increment_givens=true;if("disNames"===this.modes[this.modeindex]){increment_names=false;if("number"!==typeof this.givensMax){increment_names=true;}var increment_namesets=false;if("number"!==typeof this.namesMax){increment_namesets=true;}if("number"===typeof this.givensMax){if(this.base.givens.length&&this.base.givens[this.gnameset][this.gname]<this.givensMax){this.base.givens[this.gnameset][this.gname]+=1;}else{increment_names=true;}}if("number"===typeof this.namesMax&&increment_names){if(this.state.opt["disambiguate-add-names"]){increment_namesets=false;if(this.gname<this.namesMax){this.base.names[this.gnameset]+=1;this.gname+=1;}else{increment_namesets=true;}}else{increment_namesets=true;}}if("number"===typeof this.namesetsMax&&increment_namesets){if(this.gnameset<this.namesetsMax){this.gnameset+=1;this.base.names[this.gnameset]=1;this.gname=0;}else{var increment_mode=true;}}if(("number"!==typeof this.namesetsMax||this.namesetsMax===-1||this.gnameset===this.namesetsMax)&&(!this.state.opt["disambiguate-add-names"]||"number"!==typeof this.namesMax||this.gname===this.namesMax)&&("number"!=typeof this.givensMax||"undefined"===typeof this.base.givens[this.gnameset]||"undefined"===typeof this.base.givens[this.gnameset][this.gname]||this.base.givens[this.gnameset][this.gname]===this.givensMax)){maxed=true;}}else if("disExtraText"===this.modes[this.modeindex]){this.base.disambiguate+=1;this.betterbase.disambiguate+=1;}return maxed;};CSL.Disambiguation.prototype.initVars=function(akey){var i,ilen,myIds,myItemBundles,myItems;this.lists=[];this.base=false;this.betterbase=false;this.akey=akey;this.maxNamesByItemId={};myItemBundles=[];myIds=this.ambigcites[akey];if(!myIds||!myIds.length){return false;}var Item=false;var myItem=this.state.retrieveItem(""+myIds[0]);this.getCiteData(myItem);this.base=CSL.getAmbigConfig.call(this.state);if(myIds&&myIds.length>1){myItemBundles.push([this.maxNamesByItemId[myItem.id],myItem]);for(var i=1,ilen=myIds.length;i<ilen;i+=1){myItem=this.state.retrieveItem(""+myIds[i]);this.getCiteData(myItem,this.base);myItemBundles.push([this.maxNamesByItemId[myItem.id],myItem]);}myItemBundles.sort(function(a,b){if(a[0]>b[0]){return 1;}else if(a[0]<b[0]){return-1;}else{if(a[1].id>b[1].id){return 1;}else if(a[1].id<b[1].id){return-1;}else{return 0;}}});myItems=[];for(var i=0,ilen=myItemBundles.length;i<ilen;i+=1){myItems.push(myItemBundles[i][1]);}this.lists.push([this.base,myItems]);this.Item=this.lists[0][1][0];}else{this.Item=this.state.retrieveItem(""+myIds[0]);}this.modeindex=0;if(this.state.citation.opt["disambiguate-add-names"]||true){this.namesMax=this.maxNamesByItemId[this.Item.id][0];}else{var namesMax=this.base.names[0];for(var i=1,ilen=this.base.names.length;i<ilen;i+=1){namesMax=Math.max(namesMax,this.base.names.names[i]);}}this.padBase(this.base);this.padBase(this.betterbase);this.base.year_suffix=false;this.base.disambiguate=false;this.betterbase.year_suffix=false;this.betterbase.disambiguate=false;if(this.state.citation.opt["givenname-disambiguation-rule"]==="by-cite"&&this.state.opt["disambiguate-add-givenname"]){this.givensMax=2;}return true;};CSL.Disambiguation.prototype.padBase=function(base){for(var i=0,ilen=base.names.length;i<ilen;i+=1){if(!base.givens[i]){base.givens[i]=[];}for(var j=0,jlen=base.names[i];j<jlen;j+=1){if(!base.givens[i][j]){base.givens[i][j]=0;}}}};CSL.Disambiguation.prototype.configModes=function(){var dagopt,gdropt;this.modes=[];dagopt=this.state.opt["disambiguate-add-givenname"];gdropt=this.state.citation.opt["givenname-disambiguation-rule"];if(this.state.opt['disambiguate-add-names']||dagopt&&gdropt==="by-cite"){this.modes.push("disNames");}if(this.state.opt.has_disambiguate){this.modes.push("disExtraText");}if(this.state.opt["disambiguate-add-year-suffix"]){this.modes.push("disYears");}};CSL.Disambiguation.prototype.getCiteData=function(Item,base){if(!this.maxNamesByItemId[Item.id]){CSL.getAmbiguousCite.call(this.state,Item,base);base=CSL.getAmbigConfig.call(this.state);this.maxNamesByItemId[Item.id]=CSL.getMaxVals.call(this.state);this.state.registry.registry[Item.id].disambig.givens=this.state.tmp.disambig_settings.givens.slice();for(var i=0,ilen=this.state.registry.registry[Item.id].disambig.givens.length;i<ilen;i+=1){this.state.registry.registry[Item.id].disambig.givens[i]=this.state.tmp.disambig_settings.givens[i].slice();}this.namesetsMax=this.state.registry.registry[Item.id].disambig.names.length-1;if(!this.base){this.base=base;this.betterbase=CSL.cloneAmbigConfig(base);}if(base.names.length<this.base.names.length){this.base=base;}var update=false;for(var i=0,ilen=base.names.length;i<ilen;i+=1){if(base.names[i]>this.base.names[i]){this.base.givens[i]=base.givens[i].slice();this.base.names[i]=base.names[i];this.betterbase.names=this.base.names.slice();this.betterbase.givens=this.base.givens.slice();this.padBase(this.base);this.padBase(this.betterbase);}}this.betterbase.givens=this.base.givens.slice();for(var j=0,jlen=this.base.givens.length;j<jlen;j+=1){this.betterbase.givens[j]=this.base.givens[j].slice();}}};CSL.Disambiguation.prototype.captureStepToBase=function(){if(this.state.citation.opt["givenname-disambiguation-rule"]==="by-cite"&&this.base.givens&&this.base.givens.length){if("undefined"!==typeof this.base.givens[this.gnameset][this.gname]){this.betterbase.givens[this.gnameset][this.gname]=this.base.givens[this.gnameset][this.gname];}}this.betterbase.names[this.gnameset]=this.base.names[this.gnameset];};module.exports=CSL;CSL.Engine.prototype.getJurisdictionList=function(jurisdiction){var jurisdictionList=[];var jurisdictionElems=jurisdiction.split(":");for(var j=jurisdictionElems.length;j>0;j--){jurisdictionList.push(jurisdictionElems.slice(0,j).join(":"));}if(jurisdictionList.indexOf("us")===-1){jurisdictionList.push("us");}return jurisdictionList;};CSL.Engine.prototype.retrieveAllStyleModules=function(jurisdictionList){var ret={};var preferences=this.locale[this.opt.lang].opts["jurisdiction-preference"];preferences=preferences?preferences:[];preferences=[""].concat(preferences);for(var i=preferences.length-1;i>-1;i--){var preference=preferences[i];for(var j=0,jlen=jurisdictionList.length;j<jlen;j++){var jurisdiction=jurisdictionList[j];if(this.opt.jurisdictions_seen[jurisdiction])continue;var res=this.sys.retrieveStyleModule(jurisdiction,preference);if(!res&&!preference||res){this.opt.jurisdictions_seen[jurisdiction]=true;}if(!res)continue;ret[jurisdiction]=res;}}return ret;};module.exports=CSL;CSL.ParticleList=function(){var always_dropping_1=[[[0,1],null]];var always_dropping_2=[[[0,2],null]];var always_dropping_3=[[[0,3],null]];var always_non_dropping_1=[[null,[0,1]]];var always_non_dropping_2=[[null,[0,2]]];var always_non_dropping_3=[[null,[0,3]]];var either_1=[[null,[0,1]],[[0,1],null]];var either_2=[[null,[0,2]],[[0,2],null]];var either_1_dropping_best=[[[0,1],null],[null,[0,1]]];var either_2_dropping_best=[[[0,2],null],[null,[0,2]]];var either_3_dropping_best=[[[0,3],null],[null,[0,3]]];var non_dropping_2_alt_dropping_1_non_dropping_1=[[null,[0,2]],[[0,1],[1,2]]];var PARTICLES=[["'s",always_non_dropping_1],["'s-",always_non_dropping_1],["'t",always_non_dropping_1],["a",always_non_dropping_1],["aan 't",always_non_dropping_2],["aan de",always_non_dropping_2],["aan den",always_non_dropping_2],["aan der",always_non_dropping_2],["aan het",always_non_dropping_2],["aan t",always_non_dropping_2],["aan",always_non_dropping_1],["ad-",either_1],["adh-",either_1],["af",either_1],["al",either_1],["al-",either_1],["am de",always_non_dropping_2],["am",always_non_dropping_1],["an-",either_1],["ar-",either_1],["as-",either_1],["ash-",either_1],["at-",either_1],["ath-",either_1],["auf dem",either_2_dropping_best],["auf den",either_2_dropping_best],["auf der",either_2_dropping_best],["auf ter",always_non_dropping_2],["auf",either_1_dropping_best],["aus 'm",either_2_dropping_best],["aus dem",either_2_dropping_best],["aus den",either_2_dropping_best],["aus der",either_2_dropping_best],["aus m",either_2_dropping_best],["aus",either_1_dropping_best],["aus'm",either_2_dropping_best],["az-",either_1],["aš-",either_1],["aḍ-",either_1],["aḏ-",either_1],["aṣ-",either_1],["aṭ-",either_1],["aṯ-",either_1],["aẓ-",either_1],["ben",always_non_dropping_1],["bij 't",always_non_dropping_2],["bij de",always_non_dropping_2],["bij den",always_non_dropping_2],["bij het",always_non_dropping_2],["bij t",always_non_dropping_2],["bij",always_non_dropping_1],["bin",always_non_dropping_1],["boven d",always_non_dropping_2],["boven d'",always_non_dropping_2],["d",always_non_dropping_1],["d'",either_1],["da",either_1],["dal",always_non_dropping_1],["dal'",always_non_dropping_1],["dall'",always_non_dropping_1],["dalla",always_non_dropping_1],["das",either_1],["de die le",always_non_dropping_3],["de die",always_non_dropping_2],["de l",always_non_dropping_2],["de l'",always_non_dropping_2],["de la",non_dropping_2_alt_dropping_1_non_dropping_1],["de las",non_dropping_2_alt_dropping_1_non_dropping_1],["de le",always_non_dropping_2],["de li",either_2],["de van der",always_non_dropping_3],["de",either_1],["de'",either_1],["deca",always_non_dropping_1],["degli",either_1],["dei",either_1],["del",either_1],["dela",always_dropping_1],["dell'",either_1],["della",either_1],["delle",either_1],["dello",either_1],["den",either_1],["der",either_1],["des",either_1],["di",either_1],["die le",always_non_dropping_2],["do",always_non_dropping_1],["don",always_non_dropping_1],["dos",either_1],["du",either_1],["ed-",either_1],["edh-",either_1],["el",either_1],["el-",either_1],["en-",either_1],["er-",either_1],["es-",either_1],["esh-",either_1],["et-",either_1],["eth-",either_1],["ez-",either_1],["eš-",either_1],["eḍ-",either_1],["eḏ-",either_1],["eṣ-",either_1],["eṭ-",either_1],["eṯ-",either_1],["eẓ-",either_1],["het",always_non_dropping_1],["i",always_non_dropping_1],["il",always_dropping_1],["im",always_non_dropping_1],["in 't",always_non_dropping_2],["in de",always_non_dropping_2],["in den",always_non_dropping_2],["in der",either_2],["in het",always_non_dropping_2],["in t",always_non_dropping_2],["in",always_non_dropping_1],["l",always_non_dropping_1],["l'",always_non_dropping_1],["la",always_non_dropping_1],["las",always_non_dropping_1],["le",always_non_dropping_1],["les",either_1],["lo",either_1],["los",always_non_dropping_1],["lou",always_non_dropping_1],["of",always_non_dropping_1],["onder 't",always_non_dropping_2],["onder de",always_non_dropping_2],["onder den",always_non_dropping_2],["onder het",always_non_dropping_2],["onder t",always_non_dropping_2],["onder",always_non_dropping_1],["op 't",always_non_dropping_2],["op de",either_2],["op den",always_non_dropping_2],["op der",always_non_dropping_2],["op gen",always_non_dropping_2],["op het",always_non_dropping_2],["op t",always_non_dropping_2],["op ten",always_non_dropping_2],["op",always_non_dropping_1],["over 't",always_non_dropping_2],["over de",always_non_dropping_2],["over den",always_non_dropping_2],["over het",always_non_dropping_2],["over t",always_non_dropping_2],["over",always_non_dropping_1],["s",always_non_dropping_1],["s'",always_non_dropping_1],["sen",always_dropping_1],["t",always_non_dropping_1],["te",always_non_dropping_1],["ten",always_non_dropping_1],["ter",always_non_dropping_1],["tho",always_non_dropping_1],["thoe",always_non_dropping_1],["thor",always_non_dropping_1],["to",always_non_dropping_1],["toe",always_non_dropping_1],["tot",always_non_dropping_1],["uijt 't",always_non_dropping_2],["uijt de",always_non_dropping_2],["uijt den",always_non_dropping_2],["uijt te de",always_non_dropping_3],["uijt ten",always_non_dropping_2],["uijt",always_non_dropping_1],["uit 't",always_non_dropping_2],["uit de",always_non_dropping_2],["uit den",always_non_dropping_2],["uit het",always_non_dropping_2],["uit t",always_non_dropping_2],["uit te de",always_non_dropping_3],["uit ten",always_non_dropping_2],["uit",always_non_dropping_1],["unter",always_non_dropping_1],["v",always_non_dropping_1],["v.",always_non_dropping_1],["v.d.",always_non_dropping_1],["van 't",always_non_dropping_2],["van de l",always_non_dropping_3],["van de l'",always_non_dropping_3],["van de",always_non_dropping_2],["van de",always_non_dropping_2],["van den",always_non_dropping_2],["van der",always_non_dropping_2],["van gen",always_non_dropping_2],["van het",always_non_dropping_2],["van la",always_non_dropping_2],["van t",always_non_dropping_2],["van ter",always_non_dropping_2],["van van de",always_non_dropping_3],["van",either_1],["vander",always_non_dropping_1],["vd",always_non_dropping_1],["ver",always_non_dropping_1],["vom und zum",always_dropping_3],["vom",either_1],["von 't",always_non_dropping_2],["von dem",either_2_dropping_best],["von den",either_2_dropping_best],["von der",either_2_dropping_best],["von t",always_non_dropping_2],["von und zu",either_3_dropping_best],["von zu",either_2_dropping_best],["von",either_1_dropping_best],["voor 't",always_non_dropping_2],["voor de",always_non_dropping_2],["voor den",always_non_dropping_2],["voor in 't",always_non_dropping_3],["voor in t",always_non_dropping_3],["voor",always_non_dropping_1],["vor der",either_2_dropping_best],["vor",either_1_dropping_best],["z",always_dropping_1],["ze",always_dropping_1],["zu",either_1_dropping_best],["zum",either_1],["zur",either_1]];return PARTICLES;}();CSL.parseParticles=function(){function splitParticles(nameValue,firstNameFlag,caseOverride){var origNameValue=nameValue;nameValue=caseOverride?nameValue.toLowerCase():nameValue;var particleList=[];var apostrophe;var rex;if(firstNameFlag){nameValue=nameValue.split("").reverse().join("");rex=CSL.PARTICLE_GIVEN_REGEXP;}else{rex=CSL.PARTICLE_FAMILY_REGEXP;}var m=nameValue.match(rex);while(m){var m1=firstNameFlag?m[1].split("").reverse().join(""):m[1];var firstChar=m?m1:false;var firstChar=firstChar?m1.replace(/^[-\'\u02bb\u2019\s]*(.).*$/,"$1"):false;var hasParticle=firstChar?firstChar.toUpperCase()!==firstChar:false;if(!hasParticle)break;if(firstNameFlag){particleList.push(origNameValue.slice(m1.length*-1));origNameValue=origNameValue.slice(0,m1.length*-1);}else{particleList.push(origNameValue.slice(0,m1.length));origNameValue=origNameValue.slice(m1.length);}nameValue=m[2];m=nameValue.match(rex);}if(firstNameFlag){nameValue=nameValue.split("").reverse().join("");particleList.reverse();for(var i=1,ilen=particleList.length;i<ilen;i++){if(particleList[i].slice(0,1)==" "){particleList[i-1]+=" ";}}for(var i=0,ilen=particleList.length;i<ilen;i++){if(particleList[i].slice(0,1)==" "){particleList[i]=particleList[i].slice(1);}}nameValue=origNameValue.slice(0,nameValue.length);}else{nameValue=origNameValue.slice(nameValue.length*-1);}return[hasParticle,nameValue,particleList];}function trimLast(str){var lastChar=str.slice(-1);str=str.trim();if(lastChar===" "&&["\'","\u2019"].indexOf(str.slice(-1))>-1){str+=" ";}return str;}function parseSuffix(nameObj){if(!nameObj.suffix&&nameObj.given){var m=nameObj.given.match(/(\s*,!*\s*)/);if(m){var idx=nameObj.given.indexOf(m[1]);var possible_suffix=nameObj.given.slice(idx+m[1].length);var possible_comma=nameObj.given.slice(idx,idx+m[1].length).replace(/\s*/g,"");if(possible_suffix.replace(/\./g,"")==='et al'&&!nameObj["dropping-particle"]){nameObj["dropping-particle"]=possible_suffix;nameObj["comma-dropping-particle"]=",";}else{if(possible_comma.length===2){nameObj["comma-suffix"]=true;}nameObj.suffix=possible_suffix;}nameObj.given=nameObj.given.slice(0,idx);}}}return function(nameObj){var res=splitParticles(nameObj.family);var hasLastParticle=res[0];var lastNameValue=res[1];var lastParticleList=res[2];nameObj.family=lastNameValue;var nonDroppingParticle=trimLast(lastParticleList.join(""));if(nonDroppingParticle){nameObj['non-dropping-particle']=nonDroppingParticle;}parseSuffix(nameObj);var res=splitParticles(nameObj.given,true);var hasFirstParticle=res[0];var firstNameValue=res[1];var firstParticleList=res[2];nameObj.given=firstNameValue;var droppingParticle=firstParticleList.join("").trim();if(droppingParticle){nameObj['dropping-particle']=droppingParticle;}};}();module.exports=CSL;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(67)(module)))
-
-/***/ }),
-/* 270 */
-/***/ (function(module, exports) {
-
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<locale xmlns=\"http://purl.org/net/xbiblio/csl\" version=\"1.0\" xml:lang=\"en-US\">\n  <info>\n    <translator>\n      <name>Andrew Dunning</name>\n    </translator>\n    <translator>\n      <name>Sebastian Karcher</name>\n    </translator>\n    <translator>\n      <name>Rintze M. Zelle</name>\n    </translator>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n    <updated>2015-10-10T23:31:02+00:00</updated>\n  </info>\n  <style-options punctuation-in-quote=\"true\"/>\n  <date form=\"text\">\n    <date-part name=\"month\" suffix=\" \"/>\n    <date-part name=\"day\" suffix=\", \"/>\n    <date-part name=\"year\"/>\n  </date>\n  <date form=\"numeric\">\n    <date-part name=\"month\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"day\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"year\"/>\n  </date>\n  <terms>\n    <term name=\"accessed\">accessed</term>\n    <term name=\"and\">and</term>\n    <term name=\"and others\">and others</term>\n    <term name=\"anonymous\">anonymous</term>\n    <term name=\"anonymous\" form=\"short\">anon.</term>\n    <term name=\"at\">at</term>\n    <term name=\"available at\">available at</term>\n    <term name=\"by\">by</term>\n    <term name=\"circa\">circa</term>\n    <term name=\"circa\" form=\"short\">c.</term>\n    <term name=\"cited\">cited</term>\n    <term name=\"edition\">\n      <single>edition</single>\n      <multiple>editions</multiple>\n    </term>\n    <term name=\"edition\" form=\"short\">ed.</term>\n    <term name=\"et-al\">et al.</term>\n    <term name=\"forthcoming\">forthcoming</term>\n    <term name=\"from\">from</term>\n    <term name=\"ibid\">ibid.</term>\n    <term name=\"in\">in</term>\n    <term name=\"in press\">in press</term>\n    <term name=\"internet\">internet</term>\n    <term name=\"interview\">interview</term>\n    <term name=\"letter\">letter</term>\n    <term name=\"no date\">no date</term>\n    <term name=\"no date\" form=\"short\">n.d.</term>\n    <term name=\"online\">online</term>\n    <term name=\"presented at\">presented at the</term>\n    <term name=\"reference\">\n      <single>reference</single>\n      <multiple>references</multiple>\n    </term>\n    <term name=\"reference\" form=\"short\">\n      <single>ref.</single>\n      <multiple>refs.</multiple>\n    </term>\n    <term name=\"retrieved\">retrieved</term>\n    <term name=\"scale\">scale</term>\n    <term name=\"version\">version</term>\n\n    <!-- ANNO DOMINI; BEFORE CHRIST -->\n    <term name=\"ad\">AD</term>\n    <term name=\"bc\">BC</term>\n\n    <!-- PUNCTUATION -->\n    <term name=\"open-quote\">“</term>\n    <term name=\"close-quote\">”</term>\n    <term name=\"open-inner-quote\">‘</term>\n    <term name=\"close-inner-quote\">’</term>\n    <term name=\"page-range-delimiter\">–</term>\n\n    <!-- ORDINALS -->\n    <term name=\"ordinal\">th</term>\n    <term name=\"ordinal-01\">st</term>\n    <term name=\"ordinal-02\">nd</term>\n    <term name=\"ordinal-03\">rd</term>\n    <term name=\"ordinal-11\">th</term>\n    <term name=\"ordinal-12\">th</term>\n    <term name=\"ordinal-13\">th</term>\n\n    <!-- LONG ORDINALS -->\n    <term name=\"long-ordinal-01\">first</term>\n    <term name=\"long-ordinal-02\">second</term>\n    <term name=\"long-ordinal-03\">third</term>\n    <term name=\"long-ordinal-04\">fourth</term>\n    <term name=\"long-ordinal-05\">fifth</term>\n    <term name=\"long-ordinal-06\">sixth</term>\n    <term name=\"long-ordinal-07\">seventh</term>\n    <term name=\"long-ordinal-08\">eighth</term>\n    <term name=\"long-ordinal-09\">ninth</term>\n    <term name=\"long-ordinal-10\">tenth</term>\n\n    <!-- LONG LOCATOR FORMS -->\n    <term name=\"book\">\n      <single>book</single>\n      <multiple>books</multiple>\n    </term>\n    <term name=\"chapter\">\n      <single>chapter</single>\n      <multiple>chapters</multiple>\n    </term>\n    <term name=\"column\">\n      <single>column</single>\n      <multiple>columns</multiple>\n    </term>\n    <term name=\"figure\">\n      <single>figure</single>\n      <multiple>figures</multiple>\n    </term>\n    <term name=\"folio\">\n      <single>folio</single>\n      <multiple>folios</multiple>\n    </term>\n    <term name=\"issue\">\n      <single>number</single>\n      <multiple>numbers</multiple>\n    </term>\n    <term name=\"line\">\n      <single>line</single>\n      <multiple>lines</multiple>\n    </term>\n    <term name=\"note\">\n      <single>note</single>\n      <multiple>notes</multiple>\n    </term>\n    <term name=\"opus\">\n      <single>opus</single>\n      <multiple>opera</multiple>\n    </term>\n    <term name=\"page\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"number-of-pages\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"paragraph\">\n      <single>paragraph</single>\n      <multiple>paragraphs</multiple>\n    </term>\n    <term name=\"part\">\n      <single>part</single>\n      <multiple>parts</multiple>\n    </term>\n    <term name=\"section\">\n      <single>section</single>\n      <multiple>sections</multiple>\n    </term>\n    <term name=\"sub verbo\">\n      <single>sub verbo</single>\n      <multiple>sub verbis</multiple>\n    </term>\n    <term name=\"verse\">\n      <single>verse</single>\n      <multiple>verses</multiple>\n    </term>\n    <term name=\"volume\">\n      <single>volume</single>\n      <multiple>volumes</multiple>\n    </term>\n\n    <!-- SHORT LOCATOR FORMS -->\n    <term name=\"book\" form=\"short\">\n      <single>bk.</single>\n      <multiple>bks.</multiple>\n    </term>\n    <term name=\"chapter\" form=\"short\">\n      <single>chap.</single>\n      <multiple>chaps.</multiple>\n    </term>\n    <term name=\"column\" form=\"short\">\n      <single>col.</single>\n      <multiple>cols.</multiple>\n    </term>\n    <term name=\"figure\" form=\"short\">\n      <single>fig.</single>\n      <multiple>figs.</multiple>\n    </term>\n    <term name=\"folio\" form=\"short\">\n      <single>fol.</single>\n      <multiple>fols.</multiple>\n    </term>\n    <term name=\"issue\" form=\"short\">\n      <single>no.</single>\n      <multiple>nos.</multiple>\n    </term>\n    <term name=\"line\" form=\"short\">\n      <single>l.</single>\n      <multiple>ll.</multiple>\n    </term>\n    <term name=\"note\" form=\"short\">\n      <single>n.</single>\n      <multiple>nn.</multiple>\n    </term>\n    <term name=\"opus\" form=\"short\">\n      <single>op.</single>\n      <multiple>opp.</multiple>\n    </term>\n    <term name=\"page\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"number-of-pages\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"paragraph\" form=\"short\">\n      <single>para.</single>\n      <multiple>paras.</multiple>\n    </term>\n    <term name=\"part\" form=\"short\">\n      <single>pt.</single>\n      <multiple>pts.</multiple>\n    </term>\n    <term name=\"section\" form=\"short\">\n      <single>sec.</single>\n      <multiple>secs.</multiple>\n    </term>\n    <term name=\"sub verbo\" form=\"short\">\n      <single>s.v.</single>\n      <multiple>s.vv.</multiple>\n    </term>\n    <term name=\"verse\" form=\"short\">\n      <single>v.</single>\n      <multiple>vv.</multiple>\n    </term>\n    <term name=\"volume\" form=\"short\">\n      <single>vol.</single>\n      <multiple>vols.</multiple>\n    </term>\n\n    <!-- SYMBOL LOCATOR FORMS -->\n    <term name=\"paragraph\" form=\"symbol\">\n      <single>¶</single>\n      <multiple>¶¶</multiple>\n    </term>\n    <term name=\"section\" form=\"symbol\">\n      <single>§</single>\n      <multiple>§§</multiple>\n    </term>\n\n    <!-- LONG ROLE FORMS -->\n    <term name=\"director\">\n      <single>director</single>\n      <multiple>directors</multiple>\n    </term>\n    <term name=\"editor\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"editorial-director\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"illustrator\">\n      <single>illustrator</single>\n      <multiple>illustrators</multiple>\n    </term>\n    <term name=\"translator\">\n      <single>translator</single>\n      <multiple>translators</multiple>\n    </term>\n    <term name=\"editortranslator\">\n      <single>editor &amp; translator</single>\n      <multiple>editors &amp; translators</multiple>\n    </term>\n\n    <!-- SHORT ROLE FORMS -->\n    <term name=\"director\" form=\"short\">\n      <single>dir.</single>\n      <multiple>dirs.</multiple>\n    </term>\n    <term name=\"editor\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"editorial-director\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"illustrator\" form=\"short\">\n      <single>ill.</single>\n      <multiple>ills.</multiple>\n    </term>\n    <term name=\"translator\" form=\"short\">\n      <single>tran.</single>\n      <multiple>trans.</multiple>\n    </term>\n    <term name=\"editortranslator\" form=\"short\">\n      <single>ed. &amp; tran.</single>\n      <multiple>eds. &amp; trans.</multiple>\n    </term>\n\n    <!-- VERB ROLE FORMS -->\n    <term name=\"container-author\" form=\"verb\">by</term>\n    <term name=\"director\" form=\"verb\">directed by</term>\n    <term name=\"editor\" form=\"verb\">edited by</term>\n    <term name=\"editorial-director\" form=\"verb\">edited by</term>\n    <term name=\"illustrator\" form=\"verb\">illustrated by</term>\n    <term name=\"interviewer\" form=\"verb\">interview by</term>\n    <term name=\"recipient\" form=\"verb\">to</term>\n    <term name=\"reviewed-author\" form=\"verb\">by</term>\n    <term name=\"translator\" form=\"verb\">translated by</term>\n    <term name=\"editortranslator\" form=\"verb\">edited &amp; translated by</term>\n\n    <!-- SHORT VERB ROLE FORMS -->\n    <term name=\"director\" form=\"verb-short\">dir. by</term>\n    <term name=\"editor\" form=\"verb-short\">ed. by</term>\n    <term name=\"editorial-director\" form=\"verb-short\">ed. by</term>\n    <term name=\"illustrator\" form=\"verb-short\">illus. by</term>\n    <term name=\"translator\" form=\"verb-short\">trans. by</term>\n    <term name=\"editortranslator\" form=\"verb-short\">ed. &amp; trans. by</term>\n\n    <!-- LONG MONTH FORMS -->\n    <term name=\"month-01\">January</term>\n    <term name=\"month-02\">February</term>\n    <term name=\"month-03\">March</term>\n    <term name=\"month-04\">April</term>\n    <term name=\"month-05\">May</term>\n    <term name=\"month-06\">June</term>\n    <term name=\"month-07\">July</term>\n    <term name=\"month-08\">August</term>\n    <term name=\"month-09\">September</term>\n    <term name=\"month-10\">October</term>\n    <term name=\"month-11\">November</term>\n    <term name=\"month-12\">December</term>\n\n    <!-- SHORT MONTH FORMS -->\n    <term name=\"month-01\" form=\"short\">Jan.</term>\n    <term name=\"month-02\" form=\"short\">Feb.</term>\n    <term name=\"month-03\" form=\"short\">Mar.</term>\n    <term name=\"month-04\" form=\"short\">Apr.</term>\n    <term name=\"month-05\" form=\"short\">May</term>\n    <term name=\"month-06\" form=\"short\">Jun.</term>\n    <term name=\"month-07\" form=\"short\">Jul.</term>\n    <term name=\"month-08\" form=\"short\">Aug.</term>\n    <term name=\"month-09\" form=\"short\">Sep.</term>\n    <term name=\"month-10\" form=\"short\">Oct.</term>\n    <term name=\"month-11\" form=\"short\">Nov.</term>\n    <term name=\"month-12\" form=\"short\">Dec.</term>\n\n    <!-- SEASONS -->\n    <term name=\"season-01\">Spring</term>\n    <term name=\"season-02\">Summer</term>\n    <term name=\"season-03\">Autumn</term>\n    <term name=\"season-04\">Winter</term>\n  </terms>\n</locale>\n"
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(68)(module)))
 
 /***/ }),
 /* 271 */
 /***/ (function(module, exports) {
 
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"expanded\">\n  <info>\n    <title>American Psychological Association 6th edition</title>\n    <title-short>APA</title-short>\n    <id>http://www.zotero.org/styles/apa</id>\n    <link href=\"http://www.zotero.org/styles/apa\" rel=\"self\"/>\n    <link href=\"http://owl.english.purdue.edu/owl/resource/560/01/\" rel=\"documentation\"/>\n    <author>\n      <name>Simon Kornblith</name>\n      <email>simon@simonster.com</email>\n    </author>\n    <contributor>\n      <name>Bruce D'Arcus</name>\n    </contributor>\n    <contributor>\n      <name>Curtis M. Humphrey</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name> Brenton M. Wiernik</name>\n      <email>zotero@wiernik.org</email>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"psychology\"/>\n    <category field=\"generic-base\"/>\n    <updated>2016-09-28T13:09:49+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editortranslator\" form=\"short\">\n        <single>ed. &amp; trans.</single>\n        <multiple>eds. &amp; trans.</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">\n        <single>trans.</single>\n        <multiple>trans.</multiple>\n      </term>\n    </terms>\n  </locale>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"any\">\n        <group delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"article-journal chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"none\">\n        <group delimiter=\", \" prefix=\" (\" suffix=\")\">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"all\" and=\"symbol\" sort-separator=\", \" initialize-with=\". \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\" (\" suffix=\")\" text-case=\"capitalize-first\"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <choose>\n          <if type=\"report\">\n            <text variable=\"publisher\"/>\n            <text macro=\"title\"/>\n          </if>\n          <else>\n            <text macro=\"title\"/>\n          </else>\n        </choose>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <choose>\n      <if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\"/>\n      </if>\n      <else>\n        <names variable=\"author\">\n          <name form=\"short\" and=\"symbol\" delimiter=\", \" initialize-with=\". \"/>\n          <substitute>\n            <names variable=\"editor\"/>\n            <names variable=\"translator\"/>\n            <choose>\n              <if type=\"report\">\n                <text variable=\"publisher\"/>\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </if>\n              <else-if type=\"legal_case\">\n                <text variable=\"title\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"book graphic  motion_picture song\" match=\"any\">\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"bill legislation\" match=\"any\">\n                <text variable=\"title\" form=\"short\"/>\n              </else-if>\n              <else-if variable=\"reviewed-author\">\n                <choose>\n                  <if variable=\"reviewed-title\" match=\"none\">\n                    <text variable=\"title\" form=\"short\" font-style=\"italic\" prefix=\"Review of \"/>\n                  </if>\n                  <else>\n                    <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n                  </else>\n                </choose>\n              </else-if>\n              <else>\n                <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n              </else>\n            </choose>\n          </substitute>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"patent-number\">\n    <!-- genre: U.S. Patent number: 123,445-->\n    <group delimiter=\" \">\n      <group delimiter=\" \">\n        <text variable=\"genre\"/>\n        <text term=\"issue\" form=\"short\" text-case=\"capitalize-first\"/>\n      </group>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <choose>\n      <if type=\"thesis report\" match=\"any\">\n        <choose>\n          <if variable=\"DOI\" match=\"any\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else-if variable=\"URL\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"URL\"/>\n            </group>\n          </else-if>\n          <else-if variable=\"archive\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"archive\" suffix=\".\"/>\n              <text variable=\"archive_location\" prefix=\" (\" suffix=\")\"/>\n            </group>\n          </else-if>\n        </choose>\n      </if>\n      <else>\n        <choose>\n          <if variable=\"DOI\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else>\n            <choose>\n              <if type=\"post post-weblog webpage\" match=\"any\">\n                <group delimiter=\" \">\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <group>\n                    <date variable=\"accessed\" form=\"text\" suffix=\", \"/>\n                  </group>\n                  <text term=\"from\"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </if>\n              <else>\n                <group>\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <text term=\"from\" suffix=\" \"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </else>\n            </choose>\n          </else>\n        </choose>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if type=\"book dataset graphic manuscript motion_picture report song speech thesis\" match=\"any\">\n        <choose>\n          <if variable=\"version\" type=\"book\" match=\"all\">\n            <!---This is a hack until we have a computer program type -->\n            <text variable=\"title\"/>\n          </if>\n          <else>\n            <text variable=\"title\" font-style=\"italic\"/>\n          </else>\n        </choose>\n      </if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\" \">\n              <text variable=\"title\"/>\n              <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n                <text variable=\"reviewed-title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\" delimiter=\", \">\n                  <label form=\"verb-short\" suffix=\" \"/>\n                  <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <!-- assume `title` is title of reviewed work -->\n            <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n              <text variable=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\" delimiter=\", \">\n                <label form=\"verb-short\" suffix=\" \"/>\n                <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\" font-style=\"italic\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-plus-extra\">\n    <text macro=\"title\"/>\n    <choose>\n      <if type=\"report thesis\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"genre\" match=\"any\">\n                <text variable=\"genre\"/>\n              </if>\n              <else>\n                <text variable=\"collection-title\"/>\n              </else>\n            </choose>\n            <text variable=\"number\" prefix=\"No. \"/>\n          </group>\n          <group delimiter=\" \">\n            <text term=\"version\" text-case=\"capitalize-first\"/>\n            <text variable=\"version\"/>\n          </group>\n          <text macro=\"edition\"/>\n        </group>\n      </if>\n      <else-if type=\"post-weblog webpage\" match=\"any\">\n        <text variable=\"genre\" prefix=\" [\" suffix=\"]\"/>\n      </else-if>\n      <else-if variable=\"version\">\n        <group delimiter=\" \" prefix=\" (\" suffix=\")\">\n          <text term=\"version\" text-case=\"capitalize-first\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n    </choose>\n    <text macro=\"format\" prefix=\" [\" suffix=\"]\"/>\n  </macro>\n  <macro name=\"format\">\n    <choose>\n      <if match=\"any\" variable=\"medium\">\n        <text variable=\"medium\" text-case=\"capitalize-first\"/>\n      </if>\n      <else-if type=\"dataset\" match=\"any\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <!-- This should be localized -->\n            <text value=\"Data set\"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <choose>\n      <if type=\"report\" match=\"any\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <text variable=\"publisher\"/>\n        </group>\n      </if>\n      <else-if type=\"thesis\" match=\"any\">\n        <group delimiter=\", \">\n          <text variable=\"publisher\"/>\n          <text variable=\"publisher-place\"/>\n        </group>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <choose>\n            <if variable=\"publisher\">\n              <text variable=\"publisher\"/>\n            </if>\n            <else>\n              <text variable=\"authority\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"post-weblog webpage\" match=\"none\">\n        <group delimiter=\", \">\n          <choose>\n            <if variable=\"event version\" type=\"speech dataset motion_picture\" match=\"none\">\n              <!-- Including version is to avoid printing the programming language for computerProgram /-->\n              <text variable=\"genre\"/>\n            </if>\n          </choose>\n          <choose>\n            <if type=\"article-journal article-magazine article-newspaper\" match=\"none\">\n              <group delimiter=\": \">\n                <choose>\n                  <if variable=\"publisher-place\">\n                    <text variable=\"publisher-place\"/>\n                  </if>\n                  <else>\n                    <text variable=\"event-place\"/>\n                  </else>\n                </choose>\n                <text variable=\"publisher\"/>\n              </group>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <choose>\n      <if variable=\"container-title\" match=\"none\">\n        <choose>\n          <if variable=\"event\">\n            <choose>\n              <if variable=\"genre\" match=\"none\">\n                <text term=\"presented at\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <text variable=\"event\"/>\n              </if>\n              <else>\n                <group delimiter=\" \">\n                  <text variable=\"genre\" text-case=\"capitalize-first\"/>\n                  <text term=\"presented at\"/>\n                  <text variable=\"event\"/>\n                </group>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"speech\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </else-if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"issued\">\n            <group prefix=\" (\" suffix=\")\">\n              <date variable=\"issued\">\n                <date-part name=\"year\"/>\n              </date>\n              <text variable=\"year-suffix\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                    <date-part prefix=\" \" name=\"day\"/>\n                  </date>\n                </else-if>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"status\">\n            <group prefix=\" (\" suffix=\")\">\n              <text variable=\"status\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else-if>\n          <else>\n            <group prefix=\" (\" suffix=\")\">\n              <text term=\"no date\" form=\"short\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued-sort\">\n    <choose>\n      <if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n          <date-part name=\"month\"/>\n          <date-part name=\"day\"/>\n        </date>\n      </if>\n      <else>\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n        </date>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issued-year\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\"/\">\n          <date variable=\"original-date\">\n            <date-part name=\"year\"/>\n          </date>\n          <group>\n            <date variable=\"issued\">\n              <date-part name=\"year\"/>\n            </date>\n            <text variable=\"year-suffix\"/>\n          </group>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if is-numeric=\"edition\">\n        <group delimiter=\" \">\n          <number variable=\"edition\" form=\"ordinal\"/>\n          <text term=\"edition\" form=\"short\"/>\n        </group>\n      </if>\n      <else>\n        <text variable=\"edition\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal article-magazine\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <group>\n            <text variable=\"volume\" font-style=\"italic\"/>\n            <text variable=\"issue\" prefix=\"(\" suffix=\")\"/>\n          </group>\n          <text variable=\"page\"/>\n        </group>\n        <choose>\n          <!--for advanced online publication-->\n          <if variable=\"issued\">\n            <choose>\n              <if variable=\"page issue\" match=\"none\">\n                <text variable=\"status\" prefix=\". \"/>\n              </if>\n            </choose>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"article-newspaper\">\n        <group delimiter=\" \" prefix=\", \">\n          <label variable=\"page\" form=\"short\"/>\n          <text variable=\"page\"/>\n        </group>\n      </else-if>\n      <else-if type=\"book graphic motion_picture report song chapter paper-conference entry-encyclopedia entry-dictionary\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <choose>\n            <if type=\"report\" match=\"none\">\n              <!-- edition for report is included in title-plus-extra /-->\n              <text macro=\"edition\"/>\n            </if>\n          </choose>\n          <choose>\n            <if variable=\"volume\" match=\"any\">\n              <group>\n                <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"volume\" form=\"numeric\"/>\n              </group>\n            </if>\n            <else>\n              <group>\n                <text term=\"volume\" form=\"short\" plural=\"true\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"number-of-volumes\" form=\"numeric\" prefix=\"1&#8211;\"/>\n              </group>\n            </else>\n          </choose>\n          <group>\n            <label variable=\"page\" form=\"short\" suffix=\" \"/>\n            <text variable=\"page\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"legal_case\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text variable=\"authority\"/>\n          <choose>\n            <if variable=\"container-title\" match=\"any\">\n              <!--Only print year for cases published in reporters-->\n              <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n            </if>\n            <else>\n              <date variable=\"issued\" form=\"text\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <date variable=\"issued\" prefix=\" (\" suffix=\")\">\n          <date-part name=\"year\"/>\n        </date>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"citation-locator\">\n    <group>\n      <choose>\n        <if locator=\"chapter\">\n          <label variable=\"locator\" form=\"long\" text-case=\"capitalize-first\"/>\n        </if>\n        <else>\n          <label variable=\"locator\" form=\"short\"/>\n        </else>\n      </choose>\n      <text variable=\"locator\" prefix=\" \"/>\n    </group>\n  </macro>\n  <macro name=\"container\">\n    <choose>\n      <if type=\"post-weblog webpage\" match=\"none\">\n        <group>\n          <choose>\n            <if type=\"chapter paper-conference entry-encyclopedia\" match=\"any\">\n              <text term=\"in\" text-case=\"capitalize-first\" suffix=\" \"/>\n            </if>\n          </choose>\n          <group delimiter=\", \">\n            <text macro=\"container-contributors\"/>\n            <text macro=\"secondary-contributors\"/>\n            <text macro=\"container-title\"/>\n          </group>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"article article-journal article-magazine article-newspaper\" match=\"any\">\n        <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"bill legal_case legislation\" match=\"none\">\n        <text variable=\"container-title\" font-style=\"italic\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"legal-cites\">\n    <choose>\n      <if type=\"legal_case\" match=\"any\">\n        <group prefix=\", \" delimiter=\" \">\n          <choose>\n            <if variable=\"container-title\">\n              <text variable=\"volume\"/>\n              <text variable=\"container-title\"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <text variable=\"page\"/>\n            </if>\n            <else>\n              <text variable=\"number\" prefix=\"No. \"/>\n            </else>\n          </choose>\n        </group>\n      </if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <group delimiter=\", \" prefix=\", \">\n          <choose>\n            <if variable=\"number\">\n              <!--There's a public law number-->\n              <text variable=\"number\" prefix=\"Pub. L. No. \"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <text variable=\"page-first\"/>\n              </group>\n            </if>\n            <else>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"original-date\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"original-date\">\n            <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n              <!---This should be localized-->\n              <text value=\"Original work published\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"original-date\" delimiter=\" \">\n                    <date-part name=\"month\"/>\n                    <date-part name=\"year\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"original-date\" form=\"text\"/>\n                </else-if>\n                <else>\n                  <date variable=\"original-date\">\n                    <date-part name=\"year\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"6\" et-al-use-first=\"1\" et-al-subsequent-min=\"3\" et-al-subsequent-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" collapse=\"year\" givenname-disambiguation-rule=\"primary-name\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\"/>\n    </sort>\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <text macro=\"author-short\"/>\n        <text macro=\"issued-year\"/>\n        <text macro=\"citation-locator\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"8\" et-al-use-first=\"6\" et-al-use-last=\"true\" entry-spacing=\"0\" line-spacing=\"2\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\" sort=\"ascending\"/>\n      <key macro=\"title\"/>\n    </sort>\n    <layout>\n      <group suffix=\".\">\n        <group delimiter=\". \">\n          <text macro=\"author\"/>\n          <text macro=\"issued\"/>\n          <text macro=\"title-plus-extra\"/>\n          <text macro=\"container\"/>\n        </group>\n        <text macro=\"legal-cites\"/>\n        <text macro=\"locators\"/>\n        <group delimiter=\", \" prefix=\". \">\n          <text macro=\"event\"/>\n          <text macro=\"publisher\"/>\n        </group>\n      </group>\n      <text macro=\"access\" prefix=\" \"/>\n      <text macro=\"original-date\" prefix=\" \"/>\n    </layout>\n  </bibliography>\n</style>\n"
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<locale xmlns=\"http://purl.org/net/xbiblio/csl\" version=\"1.0\" xml:lang=\"en-US\">\n  <info>\n    <translator>\n      <name>Andrew Dunning</name>\n    </translator>\n    <translator>\n      <name>Sebastian Karcher</name>\n    </translator>\n    <translator>\n      <name>Rintze M. Zelle</name>\n    </translator>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n    <updated>2015-10-10T23:31:02+00:00</updated>\n  </info>\n  <style-options punctuation-in-quote=\"true\"/>\n  <date form=\"text\">\n    <date-part name=\"month\" suffix=\" \"/>\n    <date-part name=\"day\" suffix=\", \"/>\n    <date-part name=\"year\"/>\n  </date>\n  <date form=\"numeric\">\n    <date-part name=\"month\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"day\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"year\"/>\n  </date>\n  <terms>\n    <term name=\"accessed\">accessed</term>\n    <term name=\"and\">and</term>\n    <term name=\"and others\">and others</term>\n    <term name=\"anonymous\">anonymous</term>\n    <term name=\"anonymous\" form=\"short\">anon.</term>\n    <term name=\"at\">at</term>\n    <term name=\"available at\">available at</term>\n    <term name=\"by\">by</term>\n    <term name=\"circa\">circa</term>\n    <term name=\"circa\" form=\"short\">c.</term>\n    <term name=\"cited\">cited</term>\n    <term name=\"edition\">\n      <single>edition</single>\n      <multiple>editions</multiple>\n    </term>\n    <term name=\"edition\" form=\"short\">ed.</term>\n    <term name=\"et-al\">et al.</term>\n    <term name=\"forthcoming\">forthcoming</term>\n    <term name=\"from\">from</term>\n    <term name=\"ibid\">ibid.</term>\n    <term name=\"in\">in</term>\n    <term name=\"in press\">in press</term>\n    <term name=\"internet\">internet</term>\n    <term name=\"interview\">interview</term>\n    <term name=\"letter\">letter</term>\n    <term name=\"no date\">no date</term>\n    <term name=\"no date\" form=\"short\">n.d.</term>\n    <term name=\"online\">online</term>\n    <term name=\"presented at\">presented at the</term>\n    <term name=\"reference\">\n      <single>reference</single>\n      <multiple>references</multiple>\n    </term>\n    <term name=\"reference\" form=\"short\">\n      <single>ref.</single>\n      <multiple>refs.</multiple>\n    </term>\n    <term name=\"retrieved\">retrieved</term>\n    <term name=\"scale\">scale</term>\n    <term name=\"version\">version</term>\n\n    <!-- ANNO DOMINI; BEFORE CHRIST -->\n    <term name=\"ad\">AD</term>\n    <term name=\"bc\">BC</term>\n\n    <!-- PUNCTUATION -->\n    <term name=\"open-quote\">“</term>\n    <term name=\"close-quote\">”</term>\n    <term name=\"open-inner-quote\">‘</term>\n    <term name=\"close-inner-quote\">’</term>\n    <term name=\"page-range-delimiter\">–</term>\n\n    <!-- ORDINALS -->\n    <term name=\"ordinal\">th</term>\n    <term name=\"ordinal-01\">st</term>\n    <term name=\"ordinal-02\">nd</term>\n    <term name=\"ordinal-03\">rd</term>\n    <term name=\"ordinal-11\">th</term>\n    <term name=\"ordinal-12\">th</term>\n    <term name=\"ordinal-13\">th</term>\n\n    <!-- LONG ORDINALS -->\n    <term name=\"long-ordinal-01\">first</term>\n    <term name=\"long-ordinal-02\">second</term>\n    <term name=\"long-ordinal-03\">third</term>\n    <term name=\"long-ordinal-04\">fourth</term>\n    <term name=\"long-ordinal-05\">fifth</term>\n    <term name=\"long-ordinal-06\">sixth</term>\n    <term name=\"long-ordinal-07\">seventh</term>\n    <term name=\"long-ordinal-08\">eighth</term>\n    <term name=\"long-ordinal-09\">ninth</term>\n    <term name=\"long-ordinal-10\">tenth</term>\n\n    <!-- LONG LOCATOR FORMS -->\n    <term name=\"book\">\n      <single>book</single>\n      <multiple>books</multiple>\n    </term>\n    <term name=\"chapter\">\n      <single>chapter</single>\n      <multiple>chapters</multiple>\n    </term>\n    <term name=\"column\">\n      <single>column</single>\n      <multiple>columns</multiple>\n    </term>\n    <term name=\"figure\">\n      <single>figure</single>\n      <multiple>figures</multiple>\n    </term>\n    <term name=\"folio\">\n      <single>folio</single>\n      <multiple>folios</multiple>\n    </term>\n    <term name=\"issue\">\n      <single>number</single>\n      <multiple>numbers</multiple>\n    </term>\n    <term name=\"line\">\n      <single>line</single>\n      <multiple>lines</multiple>\n    </term>\n    <term name=\"note\">\n      <single>note</single>\n      <multiple>notes</multiple>\n    </term>\n    <term name=\"opus\">\n      <single>opus</single>\n      <multiple>opera</multiple>\n    </term>\n    <term name=\"page\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"number-of-pages\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"paragraph\">\n      <single>paragraph</single>\n      <multiple>paragraphs</multiple>\n    </term>\n    <term name=\"part\">\n      <single>part</single>\n      <multiple>parts</multiple>\n    </term>\n    <term name=\"section\">\n      <single>section</single>\n      <multiple>sections</multiple>\n    </term>\n    <term name=\"sub verbo\">\n      <single>sub verbo</single>\n      <multiple>sub verbis</multiple>\n    </term>\n    <term name=\"verse\">\n      <single>verse</single>\n      <multiple>verses</multiple>\n    </term>\n    <term name=\"volume\">\n      <single>volume</single>\n      <multiple>volumes</multiple>\n    </term>\n\n    <!-- SHORT LOCATOR FORMS -->\n    <term name=\"book\" form=\"short\">\n      <single>bk.</single>\n      <multiple>bks.</multiple>\n    </term>\n    <term name=\"chapter\" form=\"short\">\n      <single>chap.</single>\n      <multiple>chaps.</multiple>\n    </term>\n    <term name=\"column\" form=\"short\">\n      <single>col.</single>\n      <multiple>cols.</multiple>\n    </term>\n    <term name=\"figure\" form=\"short\">\n      <single>fig.</single>\n      <multiple>figs.</multiple>\n    </term>\n    <term name=\"folio\" form=\"short\">\n      <single>fol.</single>\n      <multiple>fols.</multiple>\n    </term>\n    <term name=\"issue\" form=\"short\">\n      <single>no.</single>\n      <multiple>nos.</multiple>\n    </term>\n    <term name=\"line\" form=\"short\">\n      <single>l.</single>\n      <multiple>ll.</multiple>\n    </term>\n    <term name=\"note\" form=\"short\">\n      <single>n.</single>\n      <multiple>nn.</multiple>\n    </term>\n    <term name=\"opus\" form=\"short\">\n      <single>op.</single>\n      <multiple>opp.</multiple>\n    </term>\n    <term name=\"page\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"number-of-pages\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"paragraph\" form=\"short\">\n      <single>para.</single>\n      <multiple>paras.</multiple>\n    </term>\n    <term name=\"part\" form=\"short\">\n      <single>pt.</single>\n      <multiple>pts.</multiple>\n    </term>\n    <term name=\"section\" form=\"short\">\n      <single>sec.</single>\n      <multiple>secs.</multiple>\n    </term>\n    <term name=\"sub verbo\" form=\"short\">\n      <single>s.v.</single>\n      <multiple>s.vv.</multiple>\n    </term>\n    <term name=\"verse\" form=\"short\">\n      <single>v.</single>\n      <multiple>vv.</multiple>\n    </term>\n    <term name=\"volume\" form=\"short\">\n      <single>vol.</single>\n      <multiple>vols.</multiple>\n    </term>\n\n    <!-- SYMBOL LOCATOR FORMS -->\n    <term name=\"paragraph\" form=\"symbol\">\n      <single>¶</single>\n      <multiple>¶¶</multiple>\n    </term>\n    <term name=\"section\" form=\"symbol\">\n      <single>§</single>\n      <multiple>§§</multiple>\n    </term>\n\n    <!-- LONG ROLE FORMS -->\n    <term name=\"director\">\n      <single>director</single>\n      <multiple>directors</multiple>\n    </term>\n    <term name=\"editor\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"editorial-director\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"illustrator\">\n      <single>illustrator</single>\n      <multiple>illustrators</multiple>\n    </term>\n    <term name=\"translator\">\n      <single>translator</single>\n      <multiple>translators</multiple>\n    </term>\n    <term name=\"editortranslator\">\n      <single>editor &amp; translator</single>\n      <multiple>editors &amp; translators</multiple>\n    </term>\n\n    <!-- SHORT ROLE FORMS -->\n    <term name=\"director\" form=\"short\">\n      <single>dir.</single>\n      <multiple>dirs.</multiple>\n    </term>\n    <term name=\"editor\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"editorial-director\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"illustrator\" form=\"short\">\n      <single>ill.</single>\n      <multiple>ills.</multiple>\n    </term>\n    <term name=\"translator\" form=\"short\">\n      <single>tran.</single>\n      <multiple>trans.</multiple>\n    </term>\n    <term name=\"editortranslator\" form=\"short\">\n      <single>ed. &amp; tran.</single>\n      <multiple>eds. &amp; trans.</multiple>\n    </term>\n\n    <!-- VERB ROLE FORMS -->\n    <term name=\"container-author\" form=\"verb\">by</term>\n    <term name=\"director\" form=\"verb\">directed by</term>\n    <term name=\"editor\" form=\"verb\">edited by</term>\n    <term name=\"editorial-director\" form=\"verb\">edited by</term>\n    <term name=\"illustrator\" form=\"verb\">illustrated by</term>\n    <term name=\"interviewer\" form=\"verb\">interview by</term>\n    <term name=\"recipient\" form=\"verb\">to</term>\n    <term name=\"reviewed-author\" form=\"verb\">by</term>\n    <term name=\"translator\" form=\"verb\">translated by</term>\n    <term name=\"editortranslator\" form=\"verb\">edited &amp; translated by</term>\n\n    <!-- SHORT VERB ROLE FORMS -->\n    <term name=\"director\" form=\"verb-short\">dir. by</term>\n    <term name=\"editor\" form=\"verb-short\">ed. by</term>\n    <term name=\"editorial-director\" form=\"verb-short\">ed. by</term>\n    <term name=\"illustrator\" form=\"verb-short\">illus. by</term>\n    <term name=\"translator\" form=\"verb-short\">trans. by</term>\n    <term name=\"editortranslator\" form=\"verb-short\">ed. &amp; trans. by</term>\n\n    <!-- LONG MONTH FORMS -->\n    <term name=\"month-01\">January</term>\n    <term name=\"month-02\">February</term>\n    <term name=\"month-03\">March</term>\n    <term name=\"month-04\">April</term>\n    <term name=\"month-05\">May</term>\n    <term name=\"month-06\">June</term>\n    <term name=\"month-07\">July</term>\n    <term name=\"month-08\">August</term>\n    <term name=\"month-09\">September</term>\n    <term name=\"month-10\">October</term>\n    <term name=\"month-11\">November</term>\n    <term name=\"month-12\">December</term>\n\n    <!-- SHORT MONTH FORMS -->\n    <term name=\"month-01\" form=\"short\">Jan.</term>\n    <term name=\"month-02\" form=\"short\">Feb.</term>\n    <term name=\"month-03\" form=\"short\">Mar.</term>\n    <term name=\"month-04\" form=\"short\">Apr.</term>\n    <term name=\"month-05\" form=\"short\">May</term>\n    <term name=\"month-06\" form=\"short\">Jun.</term>\n    <term name=\"month-07\" form=\"short\">Jul.</term>\n    <term name=\"month-08\" form=\"short\">Aug.</term>\n    <term name=\"month-09\" form=\"short\">Sep.</term>\n    <term name=\"month-10\" form=\"short\">Oct.</term>\n    <term name=\"month-11\" form=\"short\">Nov.</term>\n    <term name=\"month-12\" form=\"short\">Dec.</term>\n\n    <!-- SEASONS -->\n    <term name=\"season-01\">Spring</term>\n    <term name=\"season-02\">Summer</term>\n    <term name=\"season-03\">Autumn</term>\n    <term name=\"season-04\">Winter</term>\n  </terms>\n</locale>\n"
 
 /***/ }),
 /* 272 */
 /***/ (function(module, exports) {
 
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"minimal-two\">\n  <info>\n    <title>Modern Language Association 8th edition</title>\n    <title-short>MLA</title-short>\n    <id>http://www.zotero.org/styles/modern-language-association</id>\n    <link href=\"http://www.zotero.org/styles/modern-language-association\" rel=\"self\"/>\n    <link href=\"http://style.mla.org\" rel=\"documentation\"/>\n    <author>\n      <name>Sebastian Karcher</name>\n    </author>\n    <category citation-format=\"author\"/>\n    <category field=\"generic-base\"/>\n    <summary>This style adheres to the MLA 8th edition handbook. Follows the structure of references as outlined in the MLA Manual closely</summary>\n    <updated>2014-07-06T20:05:10+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <date form=\"text\">\n      <date-part name=\"day\" suffix=\" \"/>\n      <date-part name=\"month\" suffix=\" \" form=\"short\"/>\n      <date-part name=\"year\"/>\n    </date>\n    <terms>\n      <term name=\"month-01\" form=\"short\">Jan.</term>\n      <term name=\"month-02\" form=\"short\">Feb.</term>\n      <term name=\"month-03\" form=\"short\">Mar.</term>\n      <term name=\"month-04\" form=\"short\">Apr.</term>\n      <term name=\"month-05\" form=\"short\">May</term>\n      <term name=\"month-06\" form=\"short\">June</term>\n      <term name=\"month-07\" form=\"short\">July</term>\n      <term name=\"month-08\" form=\"short\">Aug.</term>\n      <term name=\"month-09\" form=\"short\">Sept.</term>\n      <term name=\"month-10\" form=\"short\">Oct.</term>\n      <term name=\"month-11\" form=\"short\">Nov.</term>\n      <term name=\"month-12\" form=\"short\">Dec.</term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"first\" and=\"text\" delimiter-precedes-last=\"always\" delimiter-precedes-et-al=\"always\" initialize=\"false\" initialize-with=\". \"/>\n      <label form=\"long\" prefix=\", \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <group delimiter=\", \">\n      <names variable=\"author\">\n        <name form=\"short\" initialize-with=\". \" and=\"text\"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <text macro=\"title-short\"/>\n        </substitute>\n      </names>\n      <choose>\n        <if disambiguate=\"true\">\n          <text macro=\"title-short\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-short\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" form=\"short\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" form=\"short\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n  </macro>\n  <macro name=\"other-contributors\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \"/>\n          <name and=\"text\"/>\n        </names>\n      </if>\n      <else>\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \" text-case=\"capitalize-first\"/>\n          <name and=\"text\"/>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"version\">\n    <group delimiter=\", \">\n      <choose>\n        <if is-numeric=\"edition\">\n          <group delimiter=\" \">\n            <number variable=\"edition\" form=\"ordinal\"/>\n            <text term=\"edition\" form=\"short\"/>\n          </group>\n        </if>\n        <else>\n          <text variable=\"edition\" text-case=\"capitalize-first\"/>\n        </else>\n      </choose>\n      <text variable=\"version\"/>\n    </group>\n  </macro>\n  <macro name=\"number\">\n    <group delimiter=\", \">\n      <group>\n        <choose>\n          <!--lowercase if we have a preceding element-->\n          <if variable=\"edition container-title\" match=\"any\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </if>\n          <!--other contributors preceding the volume-->\n          <else-if variable=\"author editor\" match=\"all\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else-if>\n          <else>\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else>\n        </choose>\n      </group>\n      <group delimiter=\" \">\n        <text term=\"issue\" form=\"short\"/>\n        <text variable=\"issue\"/>\n      </group>\n      <choose>\n        <if type=\"report\">\n          <text variable=\"genre\"/>\n        </if>\n      </choose>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"publisher\">\n    <text variable=\"publisher\"/>\n  </macro>\n  <macro name=\"publication-date\">\n    <choose>\n      <if type=\"book chapter paper-conference motion_picture\" match=\"any\">\n        <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n      </if>\n      <else-if type=\"article-journal article-magazine\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" date-parts=\"year-month\"/>\n      </else-if>\n      <else-if type=\"speech\" match=\"none\">\n        <date variable=\"issued\" form=\"text\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"location\">\n    <group delimiter=\", \">\n      <group delimiter=\" \">\n        <label variable=\"page\" form=\"short\"/>\n        <text variable=\"page\"/>\n      </group>\n      <choose>\n        <if variable=\"source\" match=\"none\">\n          <text macro=\"URI\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"container2-title\">\n    <group delimiter=\", \">\n      <choose>\n        <if type=\"speech\">\n          <text variable=\"event\"/>\n          <date variable=\"event-date\" form=\"text\"/>\n          <text variable=\"event-place\"/>\n        </if>\n      </choose>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n      <text variable=\"archive_location\"/>\n    </group>\n  </macro>\n  <macro name=\"container2-location\">\n    <choose>\n      <if variable=\"source\">\n        <choose>\n          <if variable=\"DOI URL\" match=\"any\">\n            <group delimiter=\", \">\n              <text variable=\"source\" font-style=\"italic\"/>\n              <text macro=\"URI\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"URI\">\n    <choose>\n      <if variable=\"DOI\">\n        <text variable=\"DOI\" prefix=\"doi:\"/>\n      </if>\n      <else>\n        <text variable=\"URL\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"accessed\">\n    <!--using accessed where we don't have an issued date; follows recommendation on p. 53 -->\n    <choose>\n      <if variable=\"issued\" match=\"none\">\n        <group delimiter=\" \">\n          <text term=\"accessed\" text-case=\"capitalize-first\"/>\n          <date variable=\"accessed\" form=\"text\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"3\" et-al-use-first=\"1\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <choose>\n        <if locator=\"page\">\n          <group delimiter=\" \">\n            <text macro=\"author-short\"/>\n            <text variable=\"locator\"/>\n          </group>\n        </if>\n        <else>\n          <group delimiter=\", \">\n            <text macro=\"author-short\"/>\n            <group>\n              <label variable=\"locator\" form=\"short\"/>\n              <text variable=\"locator\"/>\n            </group>\n          </group>\n        </else>\n      </choose>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"3\" et-al-use-first=\"1\" line-spacing=\"2\" entry-spacing=\"0\" subsequent-author-substitute=\"---\">\n    <sort>\n      <key macro=\"author\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"author\"/>\n        <text macro=\"title\"/>\n        <date variable=\"original-date\" form=\"numeric\" date-parts=\"year\"/>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 1\"-->\n          <text macro=\"container-title\"/>\n          <text macro=\"other-contributors\"/>\n          <text macro=\"version\"/>\n          <text macro=\"number\"/>\n          <text macro=\"publisher\"/>\n          <text macro=\"publication-date\"/>\n          <text macro=\"location\"/>\n        </group>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 2\"-->\n          <!--currently just using this one for archival info-->\n          <text macro=\"container2-title\"/>\n          <text macro=\"container2-location\"/>\n        </group>\n        <text macro=\"accessed\"/>\n      </group>\n    </layout>\n  </bibliography>\n</style>\n"
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"expanded\">\n  <info>\n    <title>American Psychological Association 6th edition</title>\n    <title-short>APA</title-short>\n    <id>http://www.zotero.org/styles/apa</id>\n    <link href=\"http://www.zotero.org/styles/apa\" rel=\"self\"/>\n    <link href=\"http://owl.english.purdue.edu/owl/resource/560/01/\" rel=\"documentation\"/>\n    <author>\n      <name>Simon Kornblith</name>\n      <email>simon@simonster.com</email>\n    </author>\n    <contributor>\n      <name>Bruce D'Arcus</name>\n    </contributor>\n    <contributor>\n      <name>Curtis M. Humphrey</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name> Brenton M. Wiernik</name>\n      <email>zotero@wiernik.org</email>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"psychology\"/>\n    <category field=\"generic-base\"/>\n    <updated>2016-09-28T13:09:49+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editortranslator\" form=\"short\">\n        <single>ed. &amp; trans.</single>\n        <multiple>eds. &amp; trans.</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">\n        <single>trans.</single>\n        <multiple>trans.</multiple>\n      </term>\n    </terms>\n  </locale>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"any\">\n        <group delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"article-journal chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"none\">\n        <group delimiter=\", \" prefix=\" (\" suffix=\")\">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"all\" and=\"symbol\" sort-separator=\", \" initialize-with=\". \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\" (\" suffix=\")\" text-case=\"capitalize-first\"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <choose>\n          <if type=\"report\">\n            <text variable=\"publisher\"/>\n            <text macro=\"title\"/>\n          </if>\n          <else>\n            <text macro=\"title\"/>\n          </else>\n        </choose>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <choose>\n      <if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\"/>\n      </if>\n      <else>\n        <names variable=\"author\">\n          <name form=\"short\" and=\"symbol\" delimiter=\", \" initialize-with=\". \"/>\n          <substitute>\n            <names variable=\"editor\"/>\n            <names variable=\"translator\"/>\n            <choose>\n              <if type=\"report\">\n                <text variable=\"publisher\"/>\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </if>\n              <else-if type=\"legal_case\">\n                <text variable=\"title\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"book graphic  motion_picture song\" match=\"any\">\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"bill legislation\" match=\"any\">\n                <text variable=\"title\" form=\"short\"/>\n              </else-if>\n              <else-if variable=\"reviewed-author\">\n                <choose>\n                  <if variable=\"reviewed-title\" match=\"none\">\n                    <text variable=\"title\" form=\"short\" font-style=\"italic\" prefix=\"Review of \"/>\n                  </if>\n                  <else>\n                    <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n                  </else>\n                </choose>\n              </else-if>\n              <else>\n                <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n              </else>\n            </choose>\n          </substitute>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"patent-number\">\n    <!-- genre: U.S. Patent number: 123,445-->\n    <group delimiter=\" \">\n      <group delimiter=\" \">\n        <text variable=\"genre\"/>\n        <text term=\"issue\" form=\"short\" text-case=\"capitalize-first\"/>\n      </group>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <choose>\n      <if type=\"thesis report\" match=\"any\">\n        <choose>\n          <if variable=\"DOI\" match=\"any\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else-if variable=\"URL\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"URL\"/>\n            </group>\n          </else-if>\n          <else-if variable=\"archive\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"archive\" suffix=\".\"/>\n              <text variable=\"archive_location\" prefix=\" (\" suffix=\")\"/>\n            </group>\n          </else-if>\n        </choose>\n      </if>\n      <else>\n        <choose>\n          <if variable=\"DOI\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else>\n            <choose>\n              <if type=\"post post-weblog webpage\" match=\"any\">\n                <group delimiter=\" \">\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <group>\n                    <date variable=\"accessed\" form=\"text\" suffix=\", \"/>\n                  </group>\n                  <text term=\"from\"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </if>\n              <else>\n                <group>\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <text term=\"from\" suffix=\" \"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </else>\n            </choose>\n          </else>\n        </choose>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if type=\"book dataset graphic manuscript motion_picture report song speech thesis\" match=\"any\">\n        <choose>\n          <if variable=\"version\" type=\"book\" match=\"all\">\n            <!---This is a hack until we have a computer program type -->\n            <text variable=\"title\"/>\n          </if>\n          <else>\n            <text variable=\"title\" font-style=\"italic\"/>\n          </else>\n        </choose>\n      </if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\" \">\n              <text variable=\"title\"/>\n              <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n                <text variable=\"reviewed-title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\" delimiter=\", \">\n                  <label form=\"verb-short\" suffix=\" \"/>\n                  <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <!-- assume `title` is title of reviewed work -->\n            <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n              <text variable=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\" delimiter=\", \">\n                <label form=\"verb-short\" suffix=\" \"/>\n                <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\" font-style=\"italic\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-plus-extra\">\n    <text macro=\"title\"/>\n    <choose>\n      <if type=\"report thesis\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"genre\" match=\"any\">\n                <text variable=\"genre\"/>\n              </if>\n              <else>\n                <text variable=\"collection-title\"/>\n              </else>\n            </choose>\n            <text variable=\"number\" prefix=\"No. \"/>\n          </group>\n          <group delimiter=\" \">\n            <text term=\"version\" text-case=\"capitalize-first\"/>\n            <text variable=\"version\"/>\n          </group>\n          <text macro=\"edition\"/>\n        </group>\n      </if>\n      <else-if type=\"post-weblog webpage\" match=\"any\">\n        <text variable=\"genre\" prefix=\" [\" suffix=\"]\"/>\n      </else-if>\n      <else-if variable=\"version\">\n        <group delimiter=\" \" prefix=\" (\" suffix=\")\">\n          <text term=\"version\" text-case=\"capitalize-first\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n    </choose>\n    <text macro=\"format\" prefix=\" [\" suffix=\"]\"/>\n  </macro>\n  <macro name=\"format\">\n    <choose>\n      <if match=\"any\" variable=\"medium\">\n        <text variable=\"medium\" text-case=\"capitalize-first\"/>\n      </if>\n      <else-if type=\"dataset\" match=\"any\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <!-- This should be localized -->\n            <text value=\"Data set\"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <choose>\n      <if type=\"report\" match=\"any\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <text variable=\"publisher\"/>\n        </group>\n      </if>\n      <else-if type=\"thesis\" match=\"any\">\n        <group delimiter=\", \">\n          <text variable=\"publisher\"/>\n          <text variable=\"publisher-place\"/>\n        </group>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <choose>\n            <if variable=\"publisher\">\n              <text variable=\"publisher\"/>\n            </if>\n            <else>\n              <text variable=\"authority\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"post-weblog webpage\" match=\"none\">\n        <group delimiter=\", \">\n          <choose>\n            <if variable=\"event version\" type=\"speech dataset motion_picture\" match=\"none\">\n              <!-- Including version is to avoid printing the programming language for computerProgram /-->\n              <text variable=\"genre\"/>\n            </if>\n          </choose>\n          <choose>\n            <if type=\"article-journal article-magazine article-newspaper\" match=\"none\">\n              <group delimiter=\": \">\n                <choose>\n                  <if variable=\"publisher-place\">\n                    <text variable=\"publisher-place\"/>\n                  </if>\n                  <else>\n                    <text variable=\"event-place\"/>\n                  </else>\n                </choose>\n                <text variable=\"publisher\"/>\n              </group>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <choose>\n      <if variable=\"container-title\" match=\"none\">\n        <choose>\n          <if variable=\"event\">\n            <choose>\n              <if variable=\"genre\" match=\"none\">\n                <text term=\"presented at\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <text variable=\"event\"/>\n              </if>\n              <else>\n                <group delimiter=\" \">\n                  <text variable=\"genre\" text-case=\"capitalize-first\"/>\n                  <text term=\"presented at\"/>\n                  <text variable=\"event\"/>\n                </group>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"speech\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </else-if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"issued\">\n            <group prefix=\" (\" suffix=\")\">\n              <date variable=\"issued\">\n                <date-part name=\"year\"/>\n              </date>\n              <text variable=\"year-suffix\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                    <date-part prefix=\" \" name=\"day\"/>\n                  </date>\n                </else-if>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"status\">\n            <group prefix=\" (\" suffix=\")\">\n              <text variable=\"status\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else-if>\n          <else>\n            <group prefix=\" (\" suffix=\")\">\n              <text term=\"no date\" form=\"short\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued-sort\">\n    <choose>\n      <if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n          <date-part name=\"month\"/>\n          <date-part name=\"day\"/>\n        </date>\n      </if>\n      <else>\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n        </date>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issued-year\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\"/\">\n          <date variable=\"original-date\">\n            <date-part name=\"year\"/>\n          </date>\n          <group>\n            <date variable=\"issued\">\n              <date-part name=\"year\"/>\n            </date>\n            <text variable=\"year-suffix\"/>\n          </group>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if is-numeric=\"edition\">\n        <group delimiter=\" \">\n          <number variable=\"edition\" form=\"ordinal\"/>\n          <text term=\"edition\" form=\"short\"/>\n        </group>\n      </if>\n      <else>\n        <text variable=\"edition\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal article-magazine\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <group>\n            <text variable=\"volume\" font-style=\"italic\"/>\n            <text variable=\"issue\" prefix=\"(\" suffix=\")\"/>\n          </group>\n          <text variable=\"page\"/>\n        </group>\n        <choose>\n          <!--for advanced online publication-->\n          <if variable=\"issued\">\n            <choose>\n              <if variable=\"page issue\" match=\"none\">\n                <text variable=\"status\" prefix=\". \"/>\n              </if>\n            </choose>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"article-newspaper\">\n        <group delimiter=\" \" prefix=\", \">\n          <label variable=\"page\" form=\"short\"/>\n          <text variable=\"page\"/>\n        </group>\n      </else-if>\n      <else-if type=\"book graphic motion_picture report song chapter paper-conference entry-encyclopedia entry-dictionary\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <choose>\n            <if type=\"report\" match=\"none\">\n              <!-- edition for report is included in title-plus-extra /-->\n              <text macro=\"edition\"/>\n            </if>\n          </choose>\n          <choose>\n            <if variable=\"volume\" match=\"any\">\n              <group>\n                <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"volume\" form=\"numeric\"/>\n              </group>\n            </if>\n            <else>\n              <group>\n                <text term=\"volume\" form=\"short\" plural=\"true\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"number-of-volumes\" form=\"numeric\" prefix=\"1&#8211;\"/>\n              </group>\n            </else>\n          </choose>\n          <group>\n            <label variable=\"page\" form=\"short\" suffix=\" \"/>\n            <text variable=\"page\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"legal_case\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text variable=\"authority\"/>\n          <choose>\n            <if variable=\"container-title\" match=\"any\">\n              <!--Only print year for cases published in reporters-->\n              <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n            </if>\n            <else>\n              <date variable=\"issued\" form=\"text\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <date variable=\"issued\" prefix=\" (\" suffix=\")\">\n          <date-part name=\"year\"/>\n        </date>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"citation-locator\">\n    <group>\n      <choose>\n        <if locator=\"chapter\">\n          <label variable=\"locator\" form=\"long\" text-case=\"capitalize-first\"/>\n        </if>\n        <else>\n          <label variable=\"locator\" form=\"short\"/>\n        </else>\n      </choose>\n      <text variable=\"locator\" prefix=\" \"/>\n    </group>\n  </macro>\n  <macro name=\"container\">\n    <choose>\n      <if type=\"post-weblog webpage\" match=\"none\">\n        <group>\n          <choose>\n            <if type=\"chapter paper-conference entry-encyclopedia\" match=\"any\">\n              <text term=\"in\" text-case=\"capitalize-first\" suffix=\" \"/>\n            </if>\n          </choose>\n          <group delimiter=\", \">\n            <text macro=\"container-contributors\"/>\n            <text macro=\"secondary-contributors\"/>\n            <text macro=\"container-title\"/>\n          </group>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"article article-journal article-magazine article-newspaper\" match=\"any\">\n        <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"bill legal_case legislation\" match=\"none\">\n        <text variable=\"container-title\" font-style=\"italic\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"legal-cites\">\n    <choose>\n      <if type=\"legal_case\" match=\"any\">\n        <group prefix=\", \" delimiter=\" \">\n          <choose>\n            <if variable=\"container-title\">\n              <text variable=\"volume\"/>\n              <text variable=\"container-title\"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <text variable=\"page\"/>\n            </if>\n            <else>\n              <text variable=\"number\" prefix=\"No. \"/>\n            </else>\n          </choose>\n        </group>\n      </if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <group delimiter=\", \" prefix=\", \">\n          <choose>\n            <if variable=\"number\">\n              <!--There's a public law number-->\n              <text variable=\"number\" prefix=\"Pub. L. No. \"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <text variable=\"page-first\"/>\n              </group>\n            </if>\n            <else>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"original-date\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"original-date\">\n            <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n              <!---This should be localized-->\n              <text value=\"Original work published\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"original-date\" delimiter=\" \">\n                    <date-part name=\"month\"/>\n                    <date-part name=\"year\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"original-date\" form=\"text\"/>\n                </else-if>\n                <else>\n                  <date variable=\"original-date\">\n                    <date-part name=\"year\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"6\" et-al-use-first=\"1\" et-al-subsequent-min=\"3\" et-al-subsequent-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" collapse=\"year\" givenname-disambiguation-rule=\"primary-name\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\"/>\n    </sort>\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <text macro=\"author-short\"/>\n        <text macro=\"issued-year\"/>\n        <text macro=\"citation-locator\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"8\" et-al-use-first=\"6\" et-al-use-last=\"true\" entry-spacing=\"0\" line-spacing=\"2\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\" sort=\"ascending\"/>\n      <key macro=\"title\"/>\n    </sort>\n    <layout>\n      <group suffix=\".\">\n        <group delimiter=\". \">\n          <text macro=\"author\"/>\n          <text macro=\"issued\"/>\n          <text macro=\"title-plus-extra\"/>\n          <text macro=\"container\"/>\n        </group>\n        <text macro=\"legal-cites\"/>\n        <text macro=\"locators\"/>\n        <group delimiter=\", \" prefix=\". \">\n          <text macro=\"event\"/>\n          <text macro=\"publisher\"/>\n        </group>\n      </group>\n      <text macro=\"access\" prefix=\" \"/>\n      <text macro=\"original-date\" prefix=\" \"/>\n    </layout>\n  </bibliography>\n</style>\n"
 
 /***/ }),
 /* 273 */
 /***/ (function(module, exports) {
 
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"display-and-sort\" page-range-format=\"chicago\">\n  <info>\n    <title>Chicago Manual of Style 17th edition (author-date)</title>\n    <id>http://www.zotero.org/styles/chicago-author-date</id>\n    <link href=\"http://www.zotero.org/styles/chicago-author-date\" rel=\"self\"/>\n    <link href=\"http://www.chicagomanualofstyle.org/tools_citationguide.html\" rel=\"documentation\"/>\n    <author>\n      <name>Julian Onions</name>\n      <email>julian.onions@gmail.com</email>\n    </author>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Andrew Dunning</name>\n      <email>andrew.dunning@utoronto.ca</email>\n      <uri>https://orcid.org/0000-0003-0464-5036</uri>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"generic-base\"/>\n    <summary>The author-date variant of the Chicago style</summary>\n    <updated>2018-01-24T12:00:00+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editor\" form=\"verb-short\">ed.</term>\n      <term name=\"container-author\" form=\"verb\">by</term>\n      <term name=\"translator\" form=\"verb-short\">trans.</term>\n      <term name=\"editortranslator\" form=\"verb\">\n        <single>edited and translated by</single>\n        <multiple>edited and translated by</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"none\">\n        <group delimiter=\". \">\n          <names variable=\"editor translator\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"director\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"editor\">\n    <names variable=\"editor\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"translator\">\n    <names variable=\"translator\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"recipient\">\n    <choose>\n      <if type=\"personal_communication\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <text term=\"letter\" text-case=\"capitalize-first\"/>\n          </else>\n        </choose>\n      </if>\n    </choose>\n    <names variable=\"recipient\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"lowercase\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"substitute-title\">\n    <choose>\n      <if type=\"article-magazine article-newspaper review review-book\" match=\"any\">\n        <text macro=\"container-title\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"contributors\">\n    <group delimiter=\". \">\n      <names variable=\"author\">\n        <name and=\"text\" name-as-sort-order=\"first\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n        <label form=\"short\" prefix=\", \"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <names variable=\"director\"/>\n          <text macro=\"substitute-title\"/>\n          <text macro=\"title\"/>\n        </substitute>\n      </names>\n      <text macro=\"recipient\"/>\n    </group>\n  </macro>\n  <macro name=\"contributors-short\">\n    <names variable=\"author\">\n      <name form=\"short\" and=\"text\" delimiter=\", \" initialize-with=\". \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <names variable=\"director\"/>\n        <text macro=\"substitute-title\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"interviewer\">\n    <names variable=\"interviewer\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"capitalize-first\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"archive\">\n    <group delimiter=\". \">\n      <text variable=\"archive_location\" text-case=\"capitalize-first\"/>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <group delimiter=\". \">\n      <choose>\n        <if type=\"graphic report\" match=\"any\">\n          <text macro=\"archive\"/>\n        </if>\n        <else-if type=\"article-journal bill book chapter legal_case legislation motion_picture paper-conference\" match=\"none\">\n          <text macro=\"archive\"/>\n        </else-if>\n      </choose>\n      <choose>\n        <if type=\"webpage post-weblog\" match=\"any\">\n          <date variable=\"issued\" form=\"text\"/>\n        </if>\n      </choose>\n      <choose>\n        <if variable=\"issued\" match=\"none\">\n          <group delimiter=\" \">\n            <text term=\"accessed\" text-case=\"capitalize-first\"/>\n            <date variable=\"accessed\" form=\"text\"/>\n          </group>\n        </if>\n      </choose>\n      <choose>\n        <if type=\"legal_case\" match=\"none\">\n          <choose>\n            <if variable=\"DOI\">\n              <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n            </if>\n            <else>\n              <text variable=\"URL\"/>\n            </else>\n          </choose>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"title\" match=\"none\">\n        <choose>\n          <if type=\"personal_communication\" match=\"none\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"bill book graphic legislation motion_picture song\" match=\"any\">\n        <text variable=\"title\" text-case=\"title\" font-style=\"italic\"/>\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text term=\"version\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\". \">\n              <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n              <group delimiter=\", \">\n                <text variable=\"reviewed-title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\">\n                  <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                  <name and=\"text\" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\", \">\n              <text variable=\"title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\">\n                <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                <name and=\"text\" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"legal_case interview patent\" match=\"any\">\n        <text variable=\"title\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\". \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\" strip-periods=\"true\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" text-case=\"capitalize-first\" prefix=\". \"/>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\", \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume\">\n            <text variable=\"volume\" prefix=\" \"/>\n            <group prefix=\" (\" suffix=\")\">\n              <choose>\n                <if variable=\"issue\">\n                  <text variable=\"issue\"/>\n                </if>\n                <else>\n                  <date variable=\"issued\">\n                    <date-part name=\"month\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"issue\">\n            <group delimiter=\" \" prefix=\", \">\n              <text term=\"issue\" form=\"short\"/>\n              <text variable=\"issue\"/>\n              <date variable=\"issued\" prefix=\"(\" suffix=\")\">\n                <date-part name=\"month\"/>\n              </date>\n            </group>\n          </else-if>\n          <else>\n            <date variable=\"issued\" prefix=\", \">\n              <date-part name=\"month\"/>\n            </date>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"legal_case\">\n        <text variable=\"volume\" prefix=\", \"/>\n        <text variable=\"container-title\" prefix=\" \"/>\n        <text variable=\"page\" prefix=\" \"/>\n      </else-if>\n      <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <group prefix=\". \" delimiter=\". \">\n          <group>\n            <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <number variable=\"volume\" form=\"numeric\"/>\n          </group>\n          <group>\n            <number variable=\"number-of-volumes\" form=\"numeric\"/>\n            <text term=\"volume\" form=\"short\" prefix=\" \" plural=\"true\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\" match=\"none\">\n            <group prefix=\". \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <number variable=\"volume\" form=\"numeric\"/>\n            </group>\n          </if>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators-chapter\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\">\n            <group prefix=\", \">\n              <text variable=\"volume\" suffix=\":\"/>\n              <text variable=\"page\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"locators-article\">\n    <choose>\n      <if type=\"article-newspaper\">\n        <group prefix=\", \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"edition\"/>\n            <text term=\"edition\"/>\n          </group>\n          <group>\n            <text term=\"section\" form=\"short\" suffix=\" \"/>\n            <text variable=\"section\"/>\n          </group>\n        </group>\n      </if>\n      <else-if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume issue\" match=\"any\">\n            <text variable=\"page\" prefix=\": \"/>\n          </if>\n          <else>\n            <text variable=\"page\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"point-locators\">\n    <choose>\n      <if variable=\"locator\">\n        <choose>\n          <if locator=\"page\" match=\"none\">\n            <choose>\n              <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n                <choose>\n                  <if variable=\"volume\">\n                    <group>\n                      <text term=\"volume\" form=\"short\" suffix=\" \"/>\n                      <number variable=\"volume\" form=\"numeric\"/>\n                      <label variable=\"locator\" form=\"short\" prefix=\", \" suffix=\" \"/>\n                    </group>\n                  </if>\n                  <else>\n                    <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n                  </else>\n                </choose>\n              </if>\n              <else>\n                <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n            <number variable=\"volume\" form=\"numeric\" suffix=\":\"/>\n          </else-if>\n        </choose>\n        <text variable=\"locator\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-prefix\">\n    <text term=\"in\" text-case=\"capitalize-first\"/>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <text macro=\"container-prefix\" suffix=\" \"/>\n      </if>\n    </choose>\n    <choose>\n      <if type=\"webpage\">\n        <text variable=\"container-title\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"legal_case\" match=\"none\">\n        <group delimiter=\" \">\n          <text variable=\"container-title\" text-case=\"title\" font-style=\"italic\"/>\n          <choose>\n            <if type=\"post-weblog\">\n              <text value=\"(blog)\"/>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <group delimiter=\": \">\n      <text variable=\"publisher-place\"/>\n      <text variable=\"publisher\"/>\n    </group>\n  </macro>\n  <macro name=\"date\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"(\" suffix=\")\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\" text-case=\"capitalize-first\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"date-in-text\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"[\" suffix=\"]\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"day-month\">\n    <date variable=\"issued\">\n      <date-part name=\"month\"/>\n      <date-part name=\"day\" prefix=\" \"/>\n    </date>\n  </macro>\n  <macro name=\"collection-title\">\n    <choose>\n      <if match=\"none\" type=\"article-journal\">\n        <choose>\n          <if match=\"none\" is-numeric=\"collection-number\">\n            <group delimiter=\", \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\" \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"collection-title-journal\">\n    <choose>\n      <if type=\"article-journal\">\n        <group delimiter=\" \">\n          <text variable=\"collection-title\"/>\n          <text variable=\"collection-number\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <group>\n      <text term=\"presented at\" suffix=\" \"/>\n      <text variable=\"event\"/>\n    </group>\n  </macro>\n  <macro name=\"description\">\n    <choose>\n      <if type=\"interview\">\n        <group delimiter=\". \">\n          <text macro=\"interviewer\"/>\n          <text variable=\"medium\" text-case=\"capitalize-first\"/>\n        </group>\n      </if>\n      <else-if type=\"patent\">\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"authority\"/>\n          <text variable=\"number\"/>\n        </group>\n      </else-if>\n      <else>\n        <text variable=\"medium\" text-case=\"capitalize-first\" prefix=\". \"/>\n      </else>\n    </choose>\n    <choose>\n      <if variable=\"title\" match=\"none\"/>\n      <else-if type=\"thesis personal_communication speech\" match=\"any\"/>\n      <else>\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          <choose>\n            <if type=\"report\">\n              <text variable=\"number\"/>\n            </if>\n          </choose>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issue\">\n    <choose>\n      <if type=\"legal_case\">\n        <text variable=\"authority\" prefix=\". \"/>\n      </if>\n      <else-if type=\"speech\">\n        <group prefix=\". \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            <text macro=\"event\"/>\n          </group>\n          <text variable=\"event-place\"/>\n          <text macro=\"day-month\"/>\n        </group>\n      </else-if>\n      <else-if type=\"article-newspaper article-magazine personal_communication\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" prefix=\", \"/>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\", \" prefix=\", \">\n          <group delimiter=\" \">\n            <!--Needs Localization-->\n            <text value=\"filed\"/>\n            <date variable=\"submitted\" form=\"text\"/>\n          </group>\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"issued submitted\" match=\"all\">\n                <text term=\"and\"/>\n              </if>\n            </choose>\n            <!--Needs Localization-->\n            <text value=\"issued\"/>\n            <date variable=\"issued\" form=\"text\"/>\n          </group>\n        </group>\n      </else-if>\n      <else>\n        <group prefix=\". \" delimiter=\", \">\n          <choose>\n            <if type=\"thesis\">\n              <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            </if>\n          </choose>\n          <text macro=\"publisher\"/>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <citation et-al-min=\"4\" et-al-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" givenname-disambiguation-rule=\"primary-name\" collapse=\"year\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <choose>\n          <if variable=\"issued accessed\" match=\"any\">\n            <group delimiter=\" \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </if>\n          <!---comma before forthcoming and n.d.-->\n          <else>\n            <group delimiter=\", \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </else>\n        </choose>\n        <text macro=\"point-locators\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"11\" et-al-use-first=\"7\" subsequent-author-substitute=\"&#8212;&#8212;&#8212;\" entry-spacing=\"0\">\n    <sort>\n      <key macro=\"contributors\"/>\n      <key variable=\"issued\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"contributors\"/>\n        <text macro=\"date\"/>\n        <text macro=\"title\"/>\n      </group>\n      <text macro=\"description\"/>\n      <text macro=\"secondary-contributors\" prefix=\". \"/>\n      <text macro=\"container-title\" prefix=\". \"/>\n      <text macro=\"container-contributors\"/>\n      <text macro=\"edition\"/>\n      <text macro=\"locators-chapter\"/>\n      <text macro=\"collection-title-journal\" prefix=\", \" suffix=\", \"/>\n      <text macro=\"locators\"/>\n      <text macro=\"collection-title\" prefix=\". \"/>\n      <text macro=\"issue\"/>\n      <text macro=\"locators-article\"/>\n      <text macro=\"access\" prefix=\". \"/>\n    </layout>\n  </bibliography>\n</style>\n"
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"minimal-two\">\n  <info>\n    <title>Modern Language Association 8th edition</title>\n    <title-short>MLA</title-short>\n    <id>http://www.zotero.org/styles/modern-language-association</id>\n    <link href=\"http://www.zotero.org/styles/modern-language-association\" rel=\"self\"/>\n    <link href=\"http://style.mla.org\" rel=\"documentation\"/>\n    <author>\n      <name>Sebastian Karcher</name>\n    </author>\n    <category citation-format=\"author\"/>\n    <category field=\"generic-base\"/>\n    <summary>This style adheres to the MLA 8th edition handbook. Follows the structure of references as outlined in the MLA Manual closely</summary>\n    <updated>2014-07-06T20:05:10+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <date form=\"text\">\n      <date-part name=\"day\" suffix=\" \"/>\n      <date-part name=\"month\" suffix=\" \" form=\"short\"/>\n      <date-part name=\"year\"/>\n    </date>\n    <terms>\n      <term name=\"month-01\" form=\"short\">Jan.</term>\n      <term name=\"month-02\" form=\"short\">Feb.</term>\n      <term name=\"month-03\" form=\"short\">Mar.</term>\n      <term name=\"month-04\" form=\"short\">Apr.</term>\n      <term name=\"month-05\" form=\"short\">May</term>\n      <term name=\"month-06\" form=\"short\">June</term>\n      <term name=\"month-07\" form=\"short\">July</term>\n      <term name=\"month-08\" form=\"short\">Aug.</term>\n      <term name=\"month-09\" form=\"short\">Sept.</term>\n      <term name=\"month-10\" form=\"short\">Oct.</term>\n      <term name=\"month-11\" form=\"short\">Nov.</term>\n      <term name=\"month-12\" form=\"short\">Dec.</term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"first\" and=\"text\" delimiter-precedes-last=\"always\" delimiter-precedes-et-al=\"always\" initialize=\"false\" initialize-with=\". \"/>\n      <label form=\"long\" prefix=\", \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <group delimiter=\", \">\n      <names variable=\"author\">\n        <name form=\"short\" initialize-with=\". \" and=\"text\"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <text macro=\"title-short\"/>\n        </substitute>\n      </names>\n      <choose>\n        <if disambiguate=\"true\">\n          <text macro=\"title-short\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-short\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" form=\"short\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" form=\"short\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n  </macro>\n  <macro name=\"other-contributors\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \"/>\n          <name and=\"text\"/>\n        </names>\n      </if>\n      <else>\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \" text-case=\"capitalize-first\"/>\n          <name and=\"text\"/>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"version\">\n    <group delimiter=\", \">\n      <choose>\n        <if is-numeric=\"edition\">\n          <group delimiter=\" \">\n            <number variable=\"edition\" form=\"ordinal\"/>\n            <text term=\"edition\" form=\"short\"/>\n          </group>\n        </if>\n        <else>\n          <text variable=\"edition\" text-case=\"capitalize-first\"/>\n        </else>\n      </choose>\n      <text variable=\"version\"/>\n    </group>\n  </macro>\n  <macro name=\"number\">\n    <group delimiter=\", \">\n      <group>\n        <choose>\n          <!--lowercase if we have a preceding element-->\n          <if variable=\"edition container-title\" match=\"any\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </if>\n          <!--other contributors preceding the volume-->\n          <else-if variable=\"author editor\" match=\"all\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else-if>\n          <else>\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else>\n        </choose>\n      </group>\n      <group delimiter=\" \">\n        <text term=\"issue\" form=\"short\"/>\n        <text variable=\"issue\"/>\n      </group>\n      <choose>\n        <if type=\"report\">\n          <text variable=\"genre\"/>\n        </if>\n      </choose>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"publisher\">\n    <text variable=\"publisher\"/>\n  </macro>\n  <macro name=\"publication-date\">\n    <choose>\n      <if type=\"book chapter paper-conference motion_picture\" match=\"any\">\n        <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n      </if>\n      <else-if type=\"article-journal article-magazine\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" date-parts=\"year-month\"/>\n      </else-if>\n      <else-if type=\"speech\" match=\"none\">\n        <date variable=\"issued\" form=\"text\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"location\">\n    <group delimiter=\", \">\n      <group delimiter=\" \">\n        <label variable=\"page\" form=\"short\"/>\n        <text variable=\"page\"/>\n      </group>\n      <choose>\n        <if variable=\"source\" match=\"none\">\n          <text macro=\"URI\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"container2-title\">\n    <group delimiter=\", \">\n      <choose>\n        <if type=\"speech\">\n          <text variable=\"event\"/>\n          <date variable=\"event-date\" form=\"text\"/>\n          <text variable=\"event-place\"/>\n        </if>\n      </choose>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n      <text variable=\"archive_location\"/>\n    </group>\n  </macro>\n  <macro name=\"container2-location\">\n    <choose>\n      <if variable=\"source\">\n        <choose>\n          <if variable=\"DOI URL\" match=\"any\">\n            <group delimiter=\", \">\n              <text variable=\"source\" font-style=\"italic\"/>\n              <text macro=\"URI\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"URI\">\n    <choose>\n      <if variable=\"DOI\">\n        <text variable=\"DOI\" prefix=\"doi:\"/>\n      </if>\n      <else>\n        <text variable=\"URL\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"accessed\">\n    <!--using accessed where we don't have an issued date; follows recommendation on p. 53 -->\n    <choose>\n      <if variable=\"issued\" match=\"none\">\n        <group delimiter=\" \">\n          <text term=\"accessed\" text-case=\"capitalize-first\"/>\n          <date variable=\"accessed\" form=\"text\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"3\" et-al-use-first=\"1\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <choose>\n        <if locator=\"page\">\n          <group delimiter=\" \">\n            <text macro=\"author-short\"/>\n            <text variable=\"locator\"/>\n          </group>\n        </if>\n        <else>\n          <group delimiter=\", \">\n            <text macro=\"author-short\"/>\n            <group>\n              <label variable=\"locator\" form=\"short\"/>\n              <text variable=\"locator\"/>\n            </group>\n          </group>\n        </else>\n      </choose>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"3\" et-al-use-first=\"1\" line-spacing=\"2\" entry-spacing=\"0\" subsequent-author-substitute=\"---\">\n    <sort>\n      <key macro=\"author\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"author\"/>\n        <text macro=\"title\"/>\n        <date variable=\"original-date\" form=\"numeric\" date-parts=\"year\"/>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 1\"-->\n          <text macro=\"container-title\"/>\n          <text macro=\"other-contributors\"/>\n          <text macro=\"version\"/>\n          <text macro=\"number\"/>\n          <text macro=\"publisher\"/>\n          <text macro=\"publication-date\"/>\n          <text macro=\"location\"/>\n        </group>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 2\"-->\n          <!--currently just using this one for archival info-->\n          <text macro=\"container2-title\"/>\n          <text macro=\"container2-location\"/>\n        </group>\n        <text macro=\"accessed\"/>\n      </group>\n    </layout>\n  </bibliography>\n</style>\n"
 
 /***/ }),
 /* 274 */
+/***/ (function(module, exports) {
+
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"display-and-sort\" page-range-format=\"chicago\">\n  <info>\n    <title>Chicago Manual of Style 17th edition (author-date)</title>\n    <id>http://www.zotero.org/styles/chicago-author-date</id>\n    <link href=\"http://www.zotero.org/styles/chicago-author-date\" rel=\"self\"/>\n    <link href=\"http://www.chicagomanualofstyle.org/tools_citationguide.html\" rel=\"documentation\"/>\n    <author>\n      <name>Julian Onions</name>\n      <email>julian.onions@gmail.com</email>\n    </author>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Andrew Dunning</name>\n      <email>andrew.dunning@utoronto.ca</email>\n      <uri>https://orcid.org/0000-0003-0464-5036</uri>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"generic-base\"/>\n    <summary>The author-date variant of the Chicago style</summary>\n    <updated>2018-01-24T12:00:00+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editor\" form=\"verb-short\">ed.</term>\n      <term name=\"container-author\" form=\"verb\">by</term>\n      <term name=\"translator\" form=\"verb-short\">trans.</term>\n      <term name=\"editortranslator\" form=\"verb\">\n        <single>edited and translated by</single>\n        <multiple>edited and translated by</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"none\">\n        <group delimiter=\". \">\n          <names variable=\"editor translator\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"director\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"editor\">\n    <names variable=\"editor\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"translator\">\n    <names variable=\"translator\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"recipient\">\n    <choose>\n      <if type=\"personal_communication\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <text term=\"letter\" text-case=\"capitalize-first\"/>\n          </else>\n        </choose>\n      </if>\n    </choose>\n    <names variable=\"recipient\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"lowercase\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"substitute-title\">\n    <choose>\n      <if type=\"article-magazine article-newspaper review review-book\" match=\"any\">\n        <text macro=\"container-title\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"contributors\">\n    <group delimiter=\". \">\n      <names variable=\"author\">\n        <name and=\"text\" name-as-sort-order=\"first\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n        <label form=\"short\" prefix=\", \"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <names variable=\"director\"/>\n          <text macro=\"substitute-title\"/>\n          <text macro=\"title\"/>\n        </substitute>\n      </names>\n      <text macro=\"recipient\"/>\n    </group>\n  </macro>\n  <macro name=\"contributors-short\">\n    <names variable=\"author\">\n      <name form=\"short\" and=\"text\" delimiter=\", \" initialize-with=\". \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <names variable=\"director\"/>\n        <text macro=\"substitute-title\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"interviewer\">\n    <names variable=\"interviewer\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"capitalize-first\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"archive\">\n    <group delimiter=\". \">\n      <text variable=\"archive_location\" text-case=\"capitalize-first\"/>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <group delimiter=\". \">\n      <choose>\n        <if type=\"graphic report\" match=\"any\">\n          <text macro=\"archive\"/>\n        </if>\n        <else-if type=\"article-journal bill book chapter legal_case legislation motion_picture paper-conference\" match=\"none\">\n          <text macro=\"archive\"/>\n        </else-if>\n      </choose>\n      <choose>\n        <if type=\"webpage post-weblog\" match=\"any\">\n          <date variable=\"issued\" form=\"text\"/>\n        </if>\n      </choose>\n      <choose>\n        <if variable=\"issued\" match=\"none\">\n          <group delimiter=\" \">\n            <text term=\"accessed\" text-case=\"capitalize-first\"/>\n            <date variable=\"accessed\" form=\"text\"/>\n          </group>\n        </if>\n      </choose>\n      <choose>\n        <if type=\"legal_case\" match=\"none\">\n          <choose>\n            <if variable=\"DOI\">\n              <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n            </if>\n            <else>\n              <text variable=\"URL\"/>\n            </else>\n          </choose>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"title\" match=\"none\">\n        <choose>\n          <if type=\"personal_communication\" match=\"none\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"bill book graphic legislation motion_picture song\" match=\"any\">\n        <text variable=\"title\" text-case=\"title\" font-style=\"italic\"/>\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text term=\"version\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\". \">\n              <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n              <group delimiter=\", \">\n                <text variable=\"reviewed-title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\">\n                  <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                  <name and=\"text\" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\", \">\n              <text variable=\"title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\">\n                <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                <name and=\"text\" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"legal_case interview patent\" match=\"any\">\n        <text variable=\"title\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\". \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\" strip-periods=\"true\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" text-case=\"capitalize-first\" prefix=\". \"/>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\", \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume\">\n            <text variable=\"volume\" prefix=\" \"/>\n            <group prefix=\" (\" suffix=\")\">\n              <choose>\n                <if variable=\"issue\">\n                  <text variable=\"issue\"/>\n                </if>\n                <else>\n                  <date variable=\"issued\">\n                    <date-part name=\"month\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"issue\">\n            <group delimiter=\" \" prefix=\", \">\n              <text term=\"issue\" form=\"short\"/>\n              <text variable=\"issue\"/>\n              <date variable=\"issued\" prefix=\"(\" suffix=\")\">\n                <date-part name=\"month\"/>\n              </date>\n            </group>\n          </else-if>\n          <else>\n            <date variable=\"issued\" prefix=\", \">\n              <date-part name=\"month\"/>\n            </date>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"legal_case\">\n        <text variable=\"volume\" prefix=\", \"/>\n        <text variable=\"container-title\" prefix=\" \"/>\n        <text variable=\"page\" prefix=\" \"/>\n      </else-if>\n      <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <group prefix=\". \" delimiter=\". \">\n          <group>\n            <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <number variable=\"volume\" form=\"numeric\"/>\n          </group>\n          <group>\n            <number variable=\"number-of-volumes\" form=\"numeric\"/>\n            <text term=\"volume\" form=\"short\" prefix=\" \" plural=\"true\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\" match=\"none\">\n            <group prefix=\". \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <number variable=\"volume\" form=\"numeric\"/>\n            </group>\n          </if>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators-chapter\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\">\n            <group prefix=\", \">\n              <text variable=\"volume\" suffix=\":\"/>\n              <text variable=\"page\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"locators-article\">\n    <choose>\n      <if type=\"article-newspaper\">\n        <group prefix=\", \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"edition\"/>\n            <text term=\"edition\"/>\n          </group>\n          <group>\n            <text term=\"section\" form=\"short\" suffix=\" \"/>\n            <text variable=\"section\"/>\n          </group>\n        </group>\n      </if>\n      <else-if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume issue\" match=\"any\">\n            <text variable=\"page\" prefix=\": \"/>\n          </if>\n          <else>\n            <text variable=\"page\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"point-locators\">\n    <choose>\n      <if variable=\"locator\">\n        <choose>\n          <if locator=\"page\" match=\"none\">\n            <choose>\n              <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n                <choose>\n                  <if variable=\"volume\">\n                    <group>\n                      <text term=\"volume\" form=\"short\" suffix=\" \"/>\n                      <number variable=\"volume\" form=\"numeric\"/>\n                      <label variable=\"locator\" form=\"short\" prefix=\", \" suffix=\" \"/>\n                    </group>\n                  </if>\n                  <else>\n                    <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n                  </else>\n                </choose>\n              </if>\n              <else>\n                <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n            <number variable=\"volume\" form=\"numeric\" suffix=\":\"/>\n          </else-if>\n        </choose>\n        <text variable=\"locator\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-prefix\">\n    <text term=\"in\" text-case=\"capitalize-first\"/>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <text macro=\"container-prefix\" suffix=\" \"/>\n      </if>\n    </choose>\n    <choose>\n      <if type=\"webpage\">\n        <text variable=\"container-title\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"legal_case\" match=\"none\">\n        <group delimiter=\" \">\n          <text variable=\"container-title\" text-case=\"title\" font-style=\"italic\"/>\n          <choose>\n            <if type=\"post-weblog\">\n              <text value=\"(blog)\"/>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <group delimiter=\": \">\n      <text variable=\"publisher-place\"/>\n      <text variable=\"publisher\"/>\n    </group>\n  </macro>\n  <macro name=\"date\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"(\" suffix=\")\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\" text-case=\"capitalize-first\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"date-in-text\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"[\" suffix=\"]\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"day-month\">\n    <date variable=\"issued\">\n      <date-part name=\"month\"/>\n      <date-part name=\"day\" prefix=\" \"/>\n    </date>\n  </macro>\n  <macro name=\"collection-title\">\n    <choose>\n      <if match=\"none\" type=\"article-journal\">\n        <choose>\n          <if match=\"none\" is-numeric=\"collection-number\">\n            <group delimiter=\", \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\" \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"collection-title-journal\">\n    <choose>\n      <if type=\"article-journal\">\n        <group delimiter=\" \">\n          <text variable=\"collection-title\"/>\n          <text variable=\"collection-number\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <group>\n      <text term=\"presented at\" suffix=\" \"/>\n      <text variable=\"event\"/>\n    </group>\n  </macro>\n  <macro name=\"description\">\n    <choose>\n      <if type=\"interview\">\n        <group delimiter=\". \">\n          <text macro=\"interviewer\"/>\n          <text variable=\"medium\" text-case=\"capitalize-first\"/>\n        </group>\n      </if>\n      <else-if type=\"patent\">\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"authority\"/>\n          <text variable=\"number\"/>\n        </group>\n      </else-if>\n      <else>\n        <text variable=\"medium\" text-case=\"capitalize-first\" prefix=\". \"/>\n      </else>\n    </choose>\n    <choose>\n      <if variable=\"title\" match=\"none\"/>\n      <else-if type=\"thesis personal_communication speech\" match=\"any\"/>\n      <else>\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          <choose>\n            <if type=\"report\">\n              <text variable=\"number\"/>\n            </if>\n          </choose>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issue\">\n    <choose>\n      <if type=\"legal_case\">\n        <text variable=\"authority\" prefix=\". \"/>\n      </if>\n      <else-if type=\"speech\">\n        <group prefix=\". \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            <text macro=\"event\"/>\n          </group>\n          <text variable=\"event-place\"/>\n          <text macro=\"day-month\"/>\n        </group>\n      </else-if>\n      <else-if type=\"article-newspaper article-magazine personal_communication\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" prefix=\", \"/>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\", \" prefix=\", \">\n          <group delimiter=\" \">\n            <!--Needs Localization-->\n            <text value=\"filed\"/>\n            <date variable=\"submitted\" form=\"text\"/>\n          </group>\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"issued submitted\" match=\"all\">\n                <text term=\"and\"/>\n              </if>\n            </choose>\n            <!--Needs Localization-->\n            <text value=\"issued\"/>\n            <date variable=\"issued\" form=\"text\"/>\n          </group>\n        </group>\n      </else-if>\n      <else>\n        <group prefix=\". \" delimiter=\", \">\n          <choose>\n            <if type=\"thesis\">\n              <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            </if>\n          </choose>\n          <text macro=\"publisher\"/>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <citation et-al-min=\"4\" et-al-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" givenname-disambiguation-rule=\"primary-name\" collapse=\"year\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <choose>\n          <if variable=\"issued accessed\" match=\"any\">\n            <group delimiter=\" \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </if>\n          <!---comma before forthcoming and n.d.-->\n          <else>\n            <group delimiter=\", \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </else>\n        </choose>\n        <text macro=\"point-locators\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"11\" et-al-use-first=\"7\" subsequent-author-substitute=\"&#8212;&#8212;&#8212;\" entry-spacing=\"0\">\n    <sort>\n      <key macro=\"contributors\"/>\n      <key variable=\"issued\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"contributors\"/>\n        <text macro=\"date\"/>\n        <text macro=\"title\"/>\n      </group>\n      <text macro=\"description\"/>\n      <text macro=\"secondary-contributors\" prefix=\". \"/>\n      <text macro=\"container-title\" prefix=\". \"/>\n      <text macro=\"container-contributors\"/>\n      <text macro=\"edition\"/>\n      <text macro=\"locators-chapter\"/>\n      <text macro=\"collection-title-journal\" prefix=\", \" suffix=\", \"/>\n      <text macro=\"locators\"/>\n      <text macro=\"collection-title\" prefix=\". \"/>\n      <text macro=\"issue\"/>\n      <text macro=\"locators-article\"/>\n      <text macro=\"access\" prefix=\". \"/>\n    </layout>\n  </bibliography>\n</style>\n"
+
+/***/ }),
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44226,11 +44244,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(275);
+__webpack_require__(276);
 
-__webpack_require__(68);
+__webpack_require__(69);
 
-var _appHome = __webpack_require__(278);
+var _appHome = __webpack_require__(279);
 
 var _appHome2 = _interopRequireDefault(_appHome);
 
@@ -44373,7 +44391,7 @@ var AppHome = function (_Mixin$with) {
 customElements.define('app-home', AppHome);
 
 /***/ }),
-/* 275 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44388,7 +44406,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-var _finSearchBox = __webpack_require__(276);
+var _finSearchBox = __webpack_require__(277);
 
 var _finSearchBox2 = _interopRequireDefault(_finSearchBox);
 
@@ -44488,25 +44506,25 @@ var FinSearchBox = exports.FinSearchBox = function (_PolymerElement) {
 customElements.define('fin-search-box', FinSearchBox);
 
 /***/ }),
-/* 276 */
+/* 277 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n  .root {\n    display: flex;\n    align-items: center;\n  }\n  input {\n    width: 100%;\n    box-sizing: border-box;\n    padding: 0 5px;\n    background: white;\n    border: none;\n    height: 45px;\n    outline: none;\n    @apply --fin-search-box-input;\n  }\n  button {\n    background: white;\n    height: 45px;\n    border: none;\n    margin: 0;\n    padding: 0 10px;\n    border-radius: 0;\n    cursor: pointer;\n    @apply --fin-search-box-button;\n  }\n  select {\n    margin-left: 20px;\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    height: 45px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n    @apply --fin-search-box-select;\n  }\n  @media(max-width: 600px) {\n    select {\n      margin-left: 10px;\n    }\n  }\n</style>\n\n<div class=\"root\">\n  <div style=\"flex:1\">\n    <input \n      id=\"input\" \n      type=\"text\"\n      on-keyup=\"_onKeyUp\"\n      placeholder=\"[[placeholder]]\" />\n  </div>\n  <button on-click=\"_fireSearch\">\n    <slot name=\"button-content\"></slot>\n  </button>\n  <select id=\"select\" on-change=\"_fireBrowse\">\n    <option>Browse</option>\n  </select>\n</div>";
 
 /***/ }),
-/* 277 */
+/* 278 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: inline-block;\n  }\n\n  .root {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .root:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .root > div  {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<div class=\"root\" style=\"background-image:url('[[collection.thumbnail]]')\" data-id$=\"[[collection.id]]\">\n  <div>[[collection.name]]</div>\n</div>\n";
 
 /***/ }),
-/* 278 */
+/* 279 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <app-collection-card \n        data-id$=\"[[item.id]]\" \n        collection=\"[[item]]\" \n        on-click=\"_onCollectionClicked\">\n      </app-collection-card>\n    </template>\n  </div>\n</div>\n\n<div class=\"text-container\">\n  \n  <h1>About Digital Collections</h1>\n\n  <p>The UC Davis Digital Collections is a locally developed digital repository that was designed to store and manage the digital assets of UC Davis. These Digital Collections are intended to increase access to previously undiscoverable digital assets held by the University Library.</p>\n  \n  <p>Initially launched in 2018, the repository currently stores 14,000 digital assets.</p>\n  \n  <h2>Platform</h2>\n  \n  <p>The Digital Asset Management System is built on the Fedora Linked Data Platform. Custom services are implemented using a Fedora (APIX) extension method as a general methodology. The User Interface was built with web-components anticipating a need for UI flexibility as the digital collection grows. For a more detailed explanation of the development, see our <a href=\"https://github.com/UCDavisLibrary/fin-server/issues/9\">Fin Server Overview.</a>\n  </p>\n  \n  <h2>Contact</h2>\n  <ul>\n    <li><a href=\"mailto:eanebeker@ucdavis.edu\">Eric A Nebeker - Digital Assets Specialist</a></li>\n  </ul>\n  \n  <h2>Implementation Team</h2>\n  <ul>\n    <li>Quinn Hart - Team Lead</li>\n    <li>Justin Merz - Lead Developer</li>\n    <li>Kimmy Hescock - User Experience Designer</li>\n  </ul>\n  \n  <h2>Members of the DAMS Steering Committee</h2>\n  <ul>\n    <li>Kevin Miller</li>\n    <li>Neil Weingarten</li>\n    <li>Amy Azzarito</li>\n    <li>Peter Brantley</li>\n    <li>Carl Stahmer</li>\n    <li>Dale Snapp</li>\n    <li>Robert Heyer-Gray</li>\n    <li>Vessela Ensberg</li>\n    <li>Xiaoli Li</li>\n  </ul>\n  \n  <p>The UC Davis Library DAMS was a project of the Library's <a href=\"https://www.library.ucdavis.edu/service/online-strategy-2/\">Online Strategy team.</a>\n  </p>\n\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>\n";
 
 /***/ }),
-/* 279 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44521,19 +44539,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(280);
+__webpack_require__(281);
 
-var _appSearch = __webpack_require__(287);
+var _appSearch = __webpack_require__(288);
 
 var _appSearch2 = _interopRequireDefault(_appSearch);
 
-__webpack_require__(288);
+__webpack_require__(289);
 
-__webpack_require__(291);
+__webpack_require__(292);
 
-__webpack_require__(293);
+__webpack_require__(294);
 
-__webpack_require__(304);
+__webpack_require__(305);
 
 var _AppStateInterface = __webpack_require__(7);
 
@@ -44781,7 +44799,7 @@ var AppSearch = exports.AppSearch = function (_Mixin$with) {
 customElements.define('app-search', AppSearch);
 
 /***/ }),
-/* 280 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44789,17 +44807,17 @@ customElements.define('app-search', AppSearch);
 
 __webpack_require__(1);
 
-var _ironFormElementBehavior = __webpack_require__(69);
+var _ironFormElementBehavior = __webpack_require__(70);
 
-__webpack_require__(281);
+__webpack_require__(282);
 
-var _paperInputBehavior = __webpack_require__(283);
-
-__webpack_require__(284);
+var _paperInputBehavior = __webpack_require__(284);
 
 __webpack_require__(285);
 
 __webpack_require__(286);
+
+__webpack_require__(287);
 
 var _polymerFn = __webpack_require__(3);
 
@@ -44863,7 +44881,7 @@ document.head.appendChild($_documentContainer);
 });
 
 /***/ }),
-/* 281 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44871,9 +44889,9 @@ document.head.appendChild($_documentContainer);
 
 __webpack_require__(1);
 
-var _ironA11yAnnouncer = __webpack_require__(282);
+var _ironA11yAnnouncer = __webpack_require__(283);
 
-var _ironValidatableBehavior = __webpack_require__(70);
+var _ironValidatableBehavior = __webpack_require__(71);
 
 var _polymerFn = __webpack_require__(3);
 
@@ -45144,7 +45162,7 @@ var _polymerDom = __webpack_require__(5);
 });
 
 /***/ }),
-/* 282 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45220,7 +45238,7 @@ IronA11yAnnouncer.requestAvailability = function () {
 };
 
 /***/ }),
-/* 283 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45768,7 +45786,7 @@ var PaperInputBehaviorImpl = exports.PaperInputBehaviorImpl = {
 var PaperInputBehavior = exports.PaperInputBehavior = [_ironControlState.IronControlState, _ironA11yKeysBehavior.IronA11yKeysBehavior, PaperInputBehaviorImpl];
 
 /***/ }),
-/* 284 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45778,7 +45796,7 @@ __webpack_require__(1);
 
 __webpack_require__(26);
 
-var _paperInputAddonBehavior = __webpack_require__(71);
+var _paperInputAddonBehavior = __webpack_require__(72);
 
 var _polymerFn = __webpack_require__(3);
 
@@ -45825,7 +45843,7 @@ var _polymerFn = __webpack_require__(3);
 });
 
 /***/ }),
-/* 285 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46152,7 +46170,7 @@ var _polymerDom = __webpack_require__(5);
 });
 
 /***/ }),
-/* 286 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46164,7 +46182,7 @@ __webpack_require__(16);
 
 __webpack_require__(26);
 
-var _paperInputAddonBehavior = __webpack_require__(71);
+var _paperInputAddonBehavior = __webpack_require__(72);
 
 var _polymerFn = __webpack_require__(3);
 
@@ -46203,13 +46221,13 @@ var _polymerFn = __webpack_require__(3);
 });
 
 /***/ }),
-/* 287 */
+/* 288 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .search-container {\n    background-color: var(--super-light-background-color);\n    min-height: 500px;\n    display: flex;\n  }\n  .search-content {\n    margin: 15px;\n    flex: 1;\n  }\n  app-filters-panel {\n    width: 350px;\n  }\n\n  #drawer app-filters-panel {\n    width: 300px;\n  }\n  \n  #drawer {\n    position: absolute;\n    top: 0;\n    left: -335px;\n    bottom: 0;\n    background: white;\n    width: 300px;\n    z-index: 10;\n    transition: left 300ms ease-out;\n    background-color: var(--light-background-color);\n  }\n\n  @keyframes fadeIn {\n    from {\n      opacity: 0;\n    }\n    to {\n      opacity: .7;\n    }\n  }\n\n  #drawer-background {\n    opacity: .7;\n    position: absolute;\n    top: 0;\n    left: 0;\n    bottom: 0;\n    right: 0;\n    background: black;\n    z-index: 5;\n    display: none;\n    animation: fadeIn 300ms;\n  }\n\n  #drawer[open] {\n    left: 0;\n  }\n\n  #drawer-background[open] {\n    display: block;\n  }\n\n  #desktop-filter-panel {\n    display: none;\n  }\n\n  @media( min-width: 975px ) {\n    #outerDrawer {\n      display: none;\n    }\n    #desktop-filter-panel {\n      display: block;\n    }\n  }\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<div style=\"position: relative\">\n  <div id=\"outerDrawer\">\n    <div id=\"drawer\" open$=\"[[drawerOpen]]\">\n      <app-filters-panel on-toggle-drawer=\"_toggleDrawer\"></app-filters-panel>\n    </div>\n    <div id=\"drawer-background\" open$=\"[[drawerOpen]]\" on-click=\"_toggleDrawer\"></div>\n  </div>\n\n  <div class=\"search-container\">\n    <app-filters-panel id=\"desktop-filter-panel\"></app-filters-panel>\n    <div class=\"search-content\">\n      <app-search-results-panel \n        id=\"resultsPanel\" \n        on-toggle-drawer=\"_toggleDrawer\" \n        on-page-size-change=\"_onPageSizeChange\"\n        on-page-change=\"_onPaginationChange\">\n      </app-search-results-panel>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 288 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46219,9 +46237,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(289);
+__webpack_require__(290);
 
-var _appSearchHeader = __webpack_require__(290);
+var _appSearchHeader = __webpack_require__(291);
 
 var _appSearchHeader2 = _interopRequireDefault(_appSearchHeader);
 
@@ -46363,7 +46381,7 @@ var AppSearchHeader = function (_Mixin$with) {
 customElements.define('app-search-header', AppSearchHeader);
 
 /***/ }),
-/* 289 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46423,13 +46441,13 @@ var AppAuthHeader = function (_Mixin$with) {
 customElements.define('app-auth-header', AppAuthHeader);
 
 /***/ }),
-/* 290 */
+/* 291 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--default-primary-color);\n    color: var(--inverse-text-color);\n    padding: 15px;\n  }\n\n  app-auth-header {\n    margin-left: 10px;\n  }\n  \n  fin-search-box {\n    display: inline-block;\n    width: 100%;\n    box-sizing: border-box;\n    max-width: 525px;\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n  }\n  \n  h2 {\n    margin: 0;\n    white-space: nowrap;\n  }\n  h2 a {\n    color: var(--default-secondary-color);\n    text-decoration: none;\n  }\n  h2 a:visited {\n    color: var(--default-secondary-color);\n    text-decoration: none;\n  }\n\n  img {\n    height: 50px;\n  }\n\n  .logo, h2 {\n    padding-right: 20px;\n    display: none;\n  }\n\n  .filler {\n    flex: .25;\n    display: none;\n  }\n\n  .logo-sm {\n    margin-right: 10px;\n  }\n\n  @media( min-width: 700px ) {\n    .logo {\n      display: block;\n    }\n    .logo-sm {\n      display: none;\n    }\n  }\n\n  @media( min-width: 815px ) {\n    h2 {\n      display: block;\n    }\n  }\n\n  @media( min-width: 1100px ) {\n    .filler {\n      display: block;\n    }\n  }\n</style>\n\n<div class=\"layout\">\n  <img class=\"logo\" src=\"/images/ucd-lib-logo-white.png\" />\n  <img class=\"logo-sm\" src=\"/images/ucd-lib-logo-white-sm.png\" />\n  <h2><a href=\"/\">Digital Collections</a></h2>\n  <div class=\"filler\"></div>\n  <div style=\"flex:1; text-align:right\">\n    <fin-search-box \n      id=\"searchInput\" \n      on-search=\"_onSearch\" \n      on-browse=\"_onBrowse\"\n      placeholder=\"Search Keyword(s)\">\n      <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n    </fin-search-box>\n  </div>\n  <app-auth-header></app-auth-header>\n</div>\n\n";
 
 /***/ }),
-/* 291 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46453,7 +46471,7 @@ var _AppStateInterface = __webpack_require__(7);
 
 var _AppStateInterface2 = _interopRequireDefault(_AppStateInterface);
 
-var _appSearchBreadcrumb = __webpack_require__(292);
+var _appSearchBreadcrumb = __webpack_require__(293);
 
 var _appSearchBreadcrumb2 = _interopRequireDefault(_appSearchBreadcrumb);
 
@@ -46634,13 +46652,13 @@ var AppSearchBreadcrumb = function (_Mixin$with) {
 customElements.define('app-search-breadcrumb', AppSearchBreadcrumb);
 
 /***/ }),
-/* 292 */
+/* 293 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\">[[collection.name]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">[[record.name]]</div>\n</div>";
 
 /***/ }),
-/* 293 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46650,13 +46668,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(294);
+__webpack_require__(295);
 
-__webpack_require__(296);
+__webpack_require__(297);
 
-__webpack_require__(301);
+__webpack_require__(302);
 
-__webpack_require__(68);
+__webpack_require__(69);
 
 var _ElasticSearchInterface = __webpack_require__(8);
 
@@ -46670,7 +46688,7 @@ var _CollectionInterface = __webpack_require__(9);
 
 var _CollectionInterface2 = _interopRequireDefault(_CollectionInterface);
 
-var _appSearchResultsPanel = __webpack_require__(303);
+var _appSearchResultsPanel = __webpack_require__(304);
 
 var _appSearchResultsPanel2 = _interopRequireDefault(_appSearchResultsPanel);
 
@@ -46995,7 +47013,7 @@ var AppSearchResultsPanel = function (_Mixin$with) {
 customElements.define('app-search-results-panel', AppSearchResultsPanel);
 
 /***/ }),
-/* 294 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47009,11 +47027,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(72);
+__webpack_require__(73);
 
 __webpack_require__(44);
 
-var _corkPagination = __webpack_require__(295);
+var _corkPagination = __webpack_require__(296);
 
 var _corkPagination2 = _interopRequireDefault(_corkPagination);
 
@@ -47221,13 +47239,13 @@ exports.default = CorkPagination;
 window.customElements.define('cork-pagination', CorkPagination);
 
 /***/ }),
-/* 295 */
+/* 296 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #root {\n    display: flex;\n    align-items: center;\n  }\n\n  .ellipsis {\n    display: none;\n  }\n\n  paper-icon-button {\n    color: var(--cork-color, --default-primary-color);\n  }\n  paper-icon-button[disabled] {\n     color: var(--cork-disabled-color, var(--disabled-color, #ccc));\n  }\n\n  a {\n    color: var(--cork-color, --default-primary-color);\n    cursor: pointer;\n    text-align: center;\n    min-width: 20px;\n    border-radius: 25px;\n    display: inline-block;\n    padding: 5px;\n    margin: 0 3px;\n    font-size: 14px;\n    line-height: 20px;\n  }\n\n  a:hover {\n    background: var(--cork-background-color-light, var(--light-background-color, #eee));\n  }\n\n  a[selected] {\n    background: var(--cork-background-color, var(--medium-background-color, #ccc));\n    color: white;\n  }\n\n  [hidden] {\n    display: none;\n  }\n\n  .text-display {\n    font-style: italic;\n  }\n</style>\n\n<div id=\"root\">\n  <paper-icon-button disabled$=\"[[firstPage]]\" icon=\"arrow-back\" on-click=\"previous\"></paper-icon-button>\n\n  <div style=\"flex:1\"></div>\n\n  <div hidden$=\"[[loading]]\">\n    <div hidden$=\"[[!textMode]]\" class=\"text-display\">[[textDisplay]]</div>\n  </div>\n\n  <div hidden$=\"[[textMode]]\">\n    <a selected$=\"[[firstPage]]\" on-click=\"_selectPage\">1</a>\n    <a id=\"startEllipsis\" class=\"ellipsis\" on-click=\"previousSection\">...</a>\n\n    <template is=\"dom-repeat\" items=\"[[pages]]\">\n      <a selected$=\"[[item.selected]]\" on-click=\"_selectPage\">[[item.index]]</a>\n    </template>\n\n    <a id=\"stopEllipsis\" class=\"ellipsis\" on-click=\"nextSection\">...</a>\n    <a id=\"lastPage\" selected$=\"[[lastPage]]\" on-click=\"_selectPage\">[[lastPageIndex]]</a>\n  </div>\n\n  <div style=\"flex:1\"></div>\n\n  <paper-icon-button disabled$=\"[[lastPage]]\" icon=\"arrow-forward\" on-click=\"next\"></paper-icon-button>\n</div>";
 
 /***/ }),
-/* 296 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47240,11 +47258,11 @@ exports.AppSearchGridResult = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _appSearchResult = __webpack_require__(73);
+var _appSearchResult = __webpack_require__(74);
 
 var _appSearchResult2 = _interopRequireDefault(_appSearchResult);
 
-var _appSearchGridResult = __webpack_require__(300);
+var _appSearchGridResult = __webpack_require__(301);
 
 var _appSearchGridResult2 = _interopRequireDefault(_appSearchGridResult);
 
@@ -47278,246 +47296,246 @@ var AppSearchGridResult = exports.AppSearchGridResult = function (_AppSearchResu
 customElements.define('app-search-grid-result', AppSearchGridResult);
 
 /***/ }),
-/* 297 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 74,
-	"./af.js": 74,
-	"./ar": 75,
-	"./ar-dz": 76,
-	"./ar-dz.js": 76,
-	"./ar-kw": 77,
-	"./ar-kw.js": 77,
-	"./ar-ly": 78,
-	"./ar-ly.js": 78,
-	"./ar-ma": 79,
-	"./ar-ma.js": 79,
-	"./ar-sa": 80,
-	"./ar-sa.js": 80,
-	"./ar-tn": 81,
-	"./ar-tn.js": 81,
-	"./ar.js": 75,
-	"./az": 82,
-	"./az.js": 82,
-	"./be": 83,
-	"./be.js": 83,
-	"./bg": 84,
-	"./bg.js": 84,
-	"./bm": 85,
-	"./bm.js": 85,
-	"./bn": 86,
-	"./bn.js": 86,
-	"./bo": 87,
-	"./bo.js": 87,
-	"./br": 88,
-	"./br.js": 88,
-	"./bs": 89,
-	"./bs.js": 89,
-	"./ca": 90,
-	"./ca.js": 90,
-	"./cs": 91,
-	"./cs.js": 91,
-	"./cv": 92,
-	"./cv.js": 92,
-	"./cy": 93,
-	"./cy.js": 93,
-	"./da": 94,
-	"./da.js": 94,
-	"./de": 95,
-	"./de-at": 96,
-	"./de-at.js": 96,
-	"./de-ch": 97,
-	"./de-ch.js": 97,
-	"./de.js": 95,
-	"./dv": 98,
-	"./dv.js": 98,
-	"./el": 99,
-	"./el.js": 99,
-	"./en-au": 100,
-	"./en-au.js": 100,
-	"./en-ca": 101,
-	"./en-ca.js": 101,
-	"./en-gb": 102,
-	"./en-gb.js": 102,
-	"./en-ie": 103,
-	"./en-ie.js": 103,
-	"./en-nz": 104,
-	"./en-nz.js": 104,
-	"./eo": 105,
-	"./eo.js": 105,
-	"./es": 106,
-	"./es-do": 107,
-	"./es-do.js": 107,
-	"./es-us": 108,
-	"./es-us.js": 108,
-	"./es.js": 106,
-	"./et": 109,
-	"./et.js": 109,
-	"./eu": 110,
-	"./eu.js": 110,
-	"./fa": 111,
-	"./fa.js": 111,
-	"./fi": 112,
-	"./fi.js": 112,
-	"./fo": 113,
-	"./fo.js": 113,
-	"./fr": 114,
-	"./fr-ca": 115,
-	"./fr-ca.js": 115,
-	"./fr-ch": 116,
-	"./fr-ch.js": 116,
-	"./fr.js": 114,
-	"./fy": 117,
-	"./fy.js": 117,
-	"./gd": 118,
-	"./gd.js": 118,
-	"./gl": 119,
-	"./gl.js": 119,
-	"./gom-latn": 120,
-	"./gom-latn.js": 120,
-	"./gu": 121,
-	"./gu.js": 121,
-	"./he": 122,
-	"./he.js": 122,
-	"./hi": 123,
-	"./hi.js": 123,
-	"./hr": 124,
-	"./hr.js": 124,
-	"./hu": 125,
-	"./hu.js": 125,
-	"./hy-am": 126,
-	"./hy-am.js": 126,
-	"./id": 127,
-	"./id.js": 127,
-	"./is": 128,
-	"./is.js": 128,
-	"./it": 129,
-	"./it.js": 129,
-	"./ja": 130,
-	"./ja.js": 130,
-	"./jv": 131,
-	"./jv.js": 131,
-	"./ka": 132,
-	"./ka.js": 132,
-	"./kk": 133,
-	"./kk.js": 133,
-	"./km": 134,
-	"./km.js": 134,
-	"./kn": 135,
-	"./kn.js": 135,
-	"./ko": 136,
-	"./ko.js": 136,
-	"./ky": 137,
-	"./ky.js": 137,
-	"./lb": 138,
-	"./lb.js": 138,
-	"./lo": 139,
-	"./lo.js": 139,
-	"./lt": 140,
-	"./lt.js": 140,
-	"./lv": 141,
-	"./lv.js": 141,
-	"./me": 142,
-	"./me.js": 142,
-	"./mi": 143,
-	"./mi.js": 143,
-	"./mk": 144,
-	"./mk.js": 144,
-	"./ml": 145,
-	"./ml.js": 145,
-	"./mr": 146,
-	"./mr.js": 146,
-	"./ms": 147,
-	"./ms-my": 148,
-	"./ms-my.js": 148,
-	"./ms.js": 147,
-	"./my": 149,
-	"./my.js": 149,
-	"./nb": 150,
-	"./nb.js": 150,
-	"./ne": 151,
-	"./ne.js": 151,
-	"./nl": 152,
-	"./nl-be": 153,
-	"./nl-be.js": 153,
-	"./nl.js": 152,
-	"./nn": 154,
-	"./nn.js": 154,
-	"./pa-in": 155,
-	"./pa-in.js": 155,
-	"./pl": 156,
-	"./pl.js": 156,
-	"./pt": 157,
-	"./pt-br": 158,
-	"./pt-br.js": 158,
-	"./pt.js": 157,
-	"./ro": 159,
-	"./ro.js": 159,
-	"./ru": 160,
-	"./ru.js": 160,
-	"./sd": 161,
-	"./sd.js": 161,
-	"./se": 162,
-	"./se.js": 162,
-	"./si": 163,
-	"./si.js": 163,
-	"./sk": 164,
-	"./sk.js": 164,
-	"./sl": 165,
-	"./sl.js": 165,
-	"./sq": 166,
-	"./sq.js": 166,
-	"./sr": 167,
-	"./sr-cyrl": 168,
-	"./sr-cyrl.js": 168,
-	"./sr.js": 167,
-	"./ss": 169,
-	"./ss.js": 169,
-	"./sv": 170,
-	"./sv.js": 170,
-	"./sw": 171,
-	"./sw.js": 171,
-	"./ta": 172,
-	"./ta.js": 172,
-	"./te": 173,
-	"./te.js": 173,
-	"./tet": 174,
-	"./tet.js": 174,
-	"./th": 175,
-	"./th.js": 175,
-	"./tl-ph": 176,
-	"./tl-ph.js": 176,
-	"./tlh": 177,
-	"./tlh.js": 177,
-	"./tr": 178,
-	"./tr.js": 178,
-	"./tzl": 179,
-	"./tzl.js": 179,
-	"./tzm": 180,
-	"./tzm-latn": 181,
-	"./tzm-latn.js": 181,
-	"./tzm.js": 180,
-	"./uk": 182,
-	"./uk.js": 182,
-	"./ur": 183,
-	"./ur.js": 183,
-	"./uz": 184,
-	"./uz-latn": 185,
-	"./uz-latn.js": 185,
-	"./uz.js": 184,
-	"./vi": 186,
-	"./vi.js": 186,
-	"./x-pseudo": 187,
-	"./x-pseudo.js": 187,
-	"./yo": 188,
-	"./yo.js": 188,
-	"./zh-cn": 189,
-	"./zh-cn.js": 189,
-	"./zh-hk": 190,
-	"./zh-hk.js": 190,
-	"./zh-tw": 191,
-	"./zh-tw.js": 191
+	"./af": 75,
+	"./af.js": 75,
+	"./ar": 76,
+	"./ar-dz": 77,
+	"./ar-dz.js": 77,
+	"./ar-kw": 78,
+	"./ar-kw.js": 78,
+	"./ar-ly": 79,
+	"./ar-ly.js": 79,
+	"./ar-ma": 80,
+	"./ar-ma.js": 80,
+	"./ar-sa": 81,
+	"./ar-sa.js": 81,
+	"./ar-tn": 82,
+	"./ar-tn.js": 82,
+	"./ar.js": 76,
+	"./az": 83,
+	"./az.js": 83,
+	"./be": 84,
+	"./be.js": 84,
+	"./bg": 85,
+	"./bg.js": 85,
+	"./bm": 86,
+	"./bm.js": 86,
+	"./bn": 87,
+	"./bn.js": 87,
+	"./bo": 88,
+	"./bo.js": 88,
+	"./br": 89,
+	"./br.js": 89,
+	"./bs": 90,
+	"./bs.js": 90,
+	"./ca": 91,
+	"./ca.js": 91,
+	"./cs": 92,
+	"./cs.js": 92,
+	"./cv": 93,
+	"./cv.js": 93,
+	"./cy": 94,
+	"./cy.js": 94,
+	"./da": 95,
+	"./da.js": 95,
+	"./de": 96,
+	"./de-at": 97,
+	"./de-at.js": 97,
+	"./de-ch": 98,
+	"./de-ch.js": 98,
+	"./de.js": 96,
+	"./dv": 99,
+	"./dv.js": 99,
+	"./el": 100,
+	"./el.js": 100,
+	"./en-au": 101,
+	"./en-au.js": 101,
+	"./en-ca": 102,
+	"./en-ca.js": 102,
+	"./en-gb": 103,
+	"./en-gb.js": 103,
+	"./en-ie": 104,
+	"./en-ie.js": 104,
+	"./en-nz": 105,
+	"./en-nz.js": 105,
+	"./eo": 106,
+	"./eo.js": 106,
+	"./es": 107,
+	"./es-do": 108,
+	"./es-do.js": 108,
+	"./es-us": 109,
+	"./es-us.js": 109,
+	"./es.js": 107,
+	"./et": 110,
+	"./et.js": 110,
+	"./eu": 111,
+	"./eu.js": 111,
+	"./fa": 112,
+	"./fa.js": 112,
+	"./fi": 113,
+	"./fi.js": 113,
+	"./fo": 114,
+	"./fo.js": 114,
+	"./fr": 115,
+	"./fr-ca": 116,
+	"./fr-ca.js": 116,
+	"./fr-ch": 117,
+	"./fr-ch.js": 117,
+	"./fr.js": 115,
+	"./fy": 118,
+	"./fy.js": 118,
+	"./gd": 119,
+	"./gd.js": 119,
+	"./gl": 120,
+	"./gl.js": 120,
+	"./gom-latn": 121,
+	"./gom-latn.js": 121,
+	"./gu": 122,
+	"./gu.js": 122,
+	"./he": 123,
+	"./he.js": 123,
+	"./hi": 124,
+	"./hi.js": 124,
+	"./hr": 125,
+	"./hr.js": 125,
+	"./hu": 126,
+	"./hu.js": 126,
+	"./hy-am": 127,
+	"./hy-am.js": 127,
+	"./id": 128,
+	"./id.js": 128,
+	"./is": 129,
+	"./is.js": 129,
+	"./it": 130,
+	"./it.js": 130,
+	"./ja": 131,
+	"./ja.js": 131,
+	"./jv": 132,
+	"./jv.js": 132,
+	"./ka": 133,
+	"./ka.js": 133,
+	"./kk": 134,
+	"./kk.js": 134,
+	"./km": 135,
+	"./km.js": 135,
+	"./kn": 136,
+	"./kn.js": 136,
+	"./ko": 137,
+	"./ko.js": 137,
+	"./ky": 138,
+	"./ky.js": 138,
+	"./lb": 139,
+	"./lb.js": 139,
+	"./lo": 140,
+	"./lo.js": 140,
+	"./lt": 141,
+	"./lt.js": 141,
+	"./lv": 142,
+	"./lv.js": 142,
+	"./me": 143,
+	"./me.js": 143,
+	"./mi": 144,
+	"./mi.js": 144,
+	"./mk": 145,
+	"./mk.js": 145,
+	"./ml": 146,
+	"./ml.js": 146,
+	"./mr": 147,
+	"./mr.js": 147,
+	"./ms": 148,
+	"./ms-my": 149,
+	"./ms-my.js": 149,
+	"./ms.js": 148,
+	"./my": 150,
+	"./my.js": 150,
+	"./nb": 151,
+	"./nb.js": 151,
+	"./ne": 152,
+	"./ne.js": 152,
+	"./nl": 153,
+	"./nl-be": 154,
+	"./nl-be.js": 154,
+	"./nl.js": 153,
+	"./nn": 155,
+	"./nn.js": 155,
+	"./pa-in": 156,
+	"./pa-in.js": 156,
+	"./pl": 157,
+	"./pl.js": 157,
+	"./pt": 158,
+	"./pt-br": 159,
+	"./pt-br.js": 159,
+	"./pt.js": 158,
+	"./ro": 160,
+	"./ro.js": 160,
+	"./ru": 161,
+	"./ru.js": 161,
+	"./sd": 162,
+	"./sd.js": 162,
+	"./se": 163,
+	"./se.js": 163,
+	"./si": 164,
+	"./si.js": 164,
+	"./sk": 165,
+	"./sk.js": 165,
+	"./sl": 166,
+	"./sl.js": 166,
+	"./sq": 167,
+	"./sq.js": 167,
+	"./sr": 168,
+	"./sr-cyrl": 169,
+	"./sr-cyrl.js": 169,
+	"./sr.js": 168,
+	"./ss": 170,
+	"./ss.js": 170,
+	"./sv": 171,
+	"./sv.js": 171,
+	"./sw": 172,
+	"./sw.js": 172,
+	"./ta": 173,
+	"./ta.js": 173,
+	"./te": 174,
+	"./te.js": 174,
+	"./tet": 175,
+	"./tet.js": 175,
+	"./th": 176,
+	"./th.js": 176,
+	"./tl-ph": 177,
+	"./tl-ph.js": 177,
+	"./tlh": 178,
+	"./tlh.js": 178,
+	"./tr": 179,
+	"./tr.js": 179,
+	"./tzl": 180,
+	"./tzl.js": 180,
+	"./tzm": 181,
+	"./tzm-latn": 182,
+	"./tzm-latn.js": 182,
+	"./tzm.js": 181,
+	"./uk": 183,
+	"./uk.js": 183,
+	"./ur": 184,
+	"./ur.js": 184,
+	"./uz": 185,
+	"./uz-latn": 186,
+	"./uz-latn.js": 186,
+	"./uz.js": 185,
+	"./vi": 187,
+	"./vi.js": 187,
+	"./x-pseudo": 188,
+	"./x-pseudo.js": 188,
+	"./yo": 189,
+	"./yo.js": 189,
+	"./zh-cn": 190,
+	"./zh-cn.js": 190,
+	"./zh-hk": 191,
+	"./zh-hk.js": 191,
+	"./zh-tw": 192,
+	"./zh-tw.js": 192
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -47533,10 +47551,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 297;
+webpackContext.id = 298;
 
 /***/ }),
-/* 298 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47550,7 +47568,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-var _appSearchResultCreator = __webpack_require__(299);
+var _appSearchResultCreator = __webpack_require__(300);
 
 var _appSearchResultCreator2 = _interopRequireDefault(_appSearchResultCreator);
 
@@ -47614,19 +47632,19 @@ exports.default = AppSearchResultCreator;
 customElements.define('app-search-result-creator', AppSearchResultCreator);
 
 /***/ }),
-/* 299 */
+/* 300 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .text {\n    display: block;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    width: calc(var(--grid-cell-width) - 30px);\n    color: var(--gray-text);\n  }\n</style>\n\n<a class=\"text\" hidden=\"[[!link]]\" href=\"[[label]]\" target=\"_blank\">[[label]]</a>\n<div class=\"text\" hidden=\"[[link]]\">[[label]]</div>";
 
 /***/ }),
-/* 300 */
+/* 301 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    width: var(--grid-cell-width);\n    background-color: white;\n    cursor: pointer;\n  }\n  :host(:hover) {\n    border: 2px solid var(--default-secondary-color);\n    margin: -2px 0 0 -2px;\n  }\n  .img {\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: transparent;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n</style>\n\n<div hidden$=\"[[!isImage]]\" style=\"position: relative; width: 250px; height:[[imgHeight]]px\">\n  <div style=\"background-image: url('[[imgThumbail]]');height:[[imgHeight]]px\" class=\"img\" ></div>\n  <div style=\"background-image: url('[[imgUrl]]');height:[[imgHeight]]px\" class=\"img\"></div>\n</div>\n\n\n<div style=\"padding: 15px\">\n  <div class=\"collection-name\">[[collectionName]]</div>\n\n  <h4>[[name]]</h4>\n\n  <template is=\"dom-repeat\" items=\"[[creator]]\">\n    <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n  </template>\n\n  <div class=\"footer\">\n    <div class=\"year\">[[year]]</div>\n    <div>\n      <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 301 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47639,11 +47657,11 @@ exports.AppSearchListResult = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _appSearchResult = __webpack_require__(73);
+var _appSearchResult = __webpack_require__(74);
 
 var _appSearchResult2 = _interopRequireDefault(_appSearchResult);
 
-var _appSearchListResult = __webpack_require__(302);
+var _appSearchListResult = __webpack_require__(303);
 
 var _appSearchListResult2 = _interopRequireDefault(_appSearchListResult);
 
@@ -47677,19 +47695,19 @@ var AppSearchListResult = exports.AppSearchListResult = function (_AppSearchResu
 customElements.define('app-search-list-result', AppSearchListResult);
 
 /***/ }),
-/* 302 */
+/* 303 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: white;\n    margin: 10px;\n  }\n\n  .img {\n    height: 250px;\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: white;\n    background-position: center center;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .spacer {\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  .layout {\n    display: flex;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  .flex-vertical {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n  }\n</style>\n\n<div class=\"layout\">\n    <div style=\"background-image: url('[[imgUrl]]')\" hidden$=\"[[!isImage]]\" class=\"img\" ></div>\n\n  <div style=\"padding: 15px; flex: 1\">\n    <div class=\"flex-vertical\">\n      <div class=\"collection-name\">[[collectionName]]</div>\n      \n      <h4>[[name]]</h4>\n    \n      <template is=\"dom-repeat\" items=\"[[creator]]\">\n        <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n      </template>\n      \n      <div class=\"spacer\"></div>\n\n      <div class=\"footer\">\n        <div class=\"year\">[[year]]</div>\n        <div>\n          <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 303 */
+/* 304 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    max-width: 1150px;\n  }\n\n  .header {\n    font-size: var(--font-size-sm);\n    display: flex;\n    align-items: center;\n    margin-left: -15px;\n  }\n\n  select {\n    margin-left: 10px;\n    border: 1px solid var(--light-background-color);\n    border-radius: 0;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 16px 16px;\n    background-repeat: no-repeat;\n    background-color: transparent;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n  }\n\n  h3 {\n    border-top: 1px solid var(--light-background-color);\n    margin: 15px 0 0 0;\n    padding: 15px 0 0 0;\n    color: var(--default-primary-color);\n  }\n\n  .masonry {\n    margin: 10px;\n    position: relative;\n  }\n\n  .masonry .item {\n    display: block;\n    position: absolute;\n    /* visibility: hidden; */\n    top : 25px;\n    left: 25px;\n    will-change: top, left;\n    transition: top 500ms ease-out, left 500ms ease-out;\n  }\n\n  .list {\n    margin: 10px;\n  }\n\n  .list .item {\n    padding: 10px;\n    margin-bottom: 15px;\n    background-color: #daaa00;\n    height: 250px;\n  }\n\n  .spacer {\n    height: 20px;\n    border-right: 1px solid var(--light-background-color);\n  }\n\n  .total {\n    font-style: italic; \n    padding-left: 10px;\n  }\n\n  .mobile-total {\n    font-style: italic; \n  }\n\n  .filler {\n    flex: 1;\n  }\n\n  cork-pagination {\n    display: inline-block;\n\n    --cork-color : var(--default-primary-color);\n    --cork-background-color : var(--default-secondary-color);\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n    margin-left: -15px;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  .drawer-toggle[disabled] {\n    color: var(--light-background-color);\n  }\n\n  .header {\n    display : none;\n  }\n\n  .mobile-header .row2 {\n    display: flex;\n    align-items: center;\n  }\n\n  .collections {\n    text-align: center;\n  }\n\n  @media( min-width: 975px ) {\n    .header {\n      display: flex;\n    }\n    .mobile-header {\n      display: none;\n    }\n  }\n</style>\n\n<div class=\"header\">\n  <div class=\"total\">[[total]] results found</div>\n  \n  <div class=\"filler\"></div>\n  \n  <paper-icon-button \n    icon=\"fin:grid\" \n    disabled$=\"[[!isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"masonry\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  <paper-icon-button \n    icon=\"fin:list\" \n    disabled$=\"[[isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"list\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  \n  <div>\n    <select id=\"numPerPage\" on-change=\"_onPageSizeChange\">\n      <option>50</option>\n      <option>20</option>\n      <option>10</option>\n    </select>\n  </div>\n  <div style=\"margin-left: 10px; font-style:italic\">Items per page</div>\n</div>\n\n<div class=\"mobile-header\">\n  <div>\n    <div style=\"display:inline-block\">\n      <button class=\"drawer-toggle\" on-click=\"_onToggleDrawer\">\n        <span>Info / Filters</span>\n        <iron-icon icon=\"add\"></iron-icon>\n      </button>\n    </div>\n  </div>\n\n  <div class=\"row2\">\n    <div class=\"total\">[[total]] results</div>\n\n    <div class=\"filler\"></div>\n    \n    <paper-icon-button \n      icon=\"fin:grid\" \n      disabled$=\"[[!isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"masonry\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    <paper-icon-button \n      icon=\"fin:list\" \n      disabled$=\"[[isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"list\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    \n    <div>\n      <select id=\"numPerPageM\" on-change=\"_onPageSizeChange\">\n        <option>50</option>\n        <option>20</option>\n        <option>10</option>\n      </select>\n    </div>\n    <div style=\"margin-left: 10px; font-style:italic\">per page</div>\n  </div>\n</div>\n\n<div class=\"collections\" hidden$=\"[[!showCollectionResults]]\">\n  <div hidden$=\"[[!collectionResults.length]]\">\n    <h3>Collections</h3>\n    <template is=\"dom-repeat\" items=\"[[collectionResults]]\">\n      <app-collection-card collection=\"[[item]]\" on-click=\"_onCollectionClicked\"></app-collection-card>\n    </template>\n    <h3 hidden$=\"[[!results.length]]\">Items</h3>\n  </div>\n</div>\n\n<div class=\"masonry\" id=\"layout\" hidden$=\"[[isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-grid-result data=\"[[item]]\" class=\"item\"></app-search-grid-result>\n  </template>\n</div>\n\n<div class=\"list\" hidden$=\"[[!isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-list-result data=\"[[item]]\"></app-search-list-result>\n  </template>\n</div>\n\n<div style=\"text-align:center\">\n  <cork-pagination \n    total-results=\"[[total]]\" \n    items-per-page=\"[[numPerPage]]\"\n    current-index=\"[[currentIndex]]\"\n    on-nav=\"_onPaginationNav\">\n  </cork-pagination>\n</div>";
 
 /***/ }),
-/* 304 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47705,9 +47723,9 @@ __webpack_require__(52);
 
 __webpack_require__(42);
 
-__webpack_require__(309);
+__webpack_require__(310);
 
-__webpack_require__(325);
+__webpack_require__(326);
 
 var _ElasticSearchInterface = __webpack_require__(8);
 
@@ -47717,7 +47735,7 @@ var _CollectionInterface = __webpack_require__(9);
 
 var _CollectionInterface2 = _interopRequireDefault(_CollectionInterface);
 
-var _appFiltersPanel = __webpack_require__(327);
+var _appFiltersPanel = __webpack_require__(328);
 
 var _appFiltersPanel2 = _interopRequireDefault(_appFiltersPanel);
 
@@ -47742,6 +47760,7 @@ for (var key in _config2.default.elasticSearch.facets) {
     label: _config2.default.elasticSearch.facets[key].label,
     type: _config2.default.elasticSearch.facets[key].type,
     ignore: _config2.default.elasticSearch.facets[key].ignore,
+    valueMap: _config2.default.elasticSearch.facets[key].valueMap,
     isDollar: _config2.default.elasticSearch.facets[key].isDollar,
     filter: key
   });
@@ -47849,7 +47868,7 @@ var AppFiltersPanel = function (_Mixin$with) {
 customElements.define('app-filters-panel', AppFiltersPanel);
 
 /***/ }),
-/* 305 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47862,7 +47881,7 @@ exports.IronMenubarBehavior = exports.IronMenubarBehaviorImpl = undefined;
 
 __webpack_require__(1);
 
-var _ironMenuBehavior = __webpack_require__(192);
+var _ironMenuBehavior = __webpack_require__(193);
 
 var IronMenubarBehaviorImpl = exports.IronMenubarBehaviorImpl = {
 
@@ -47921,7 +47940,7 @@ var IronMenubarBehaviorImpl = exports.IronMenubarBehaviorImpl = {
 var IronMenubarBehavior = exports.IronMenubarBehavior = [_ironMenuBehavior.IronMenuBehavior, IronMenubarBehaviorImpl];
 
 /***/ }),
-/* 306 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48081,7 +48100,7 @@ var IronMultiSelectableBehaviorImpl = exports.IronMultiSelectableBehaviorImpl = 
 var IronMultiSelectableBehavior = exports.IronMultiSelectableBehavior = [_ironSelectable.IronSelectableBehavior, IronMultiSelectableBehaviorImpl];
 
 /***/ }),
-/* 307 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48097,7 +48116,7 @@ $_documentContainer.innerHTML = '<iron-iconset-svg name="paper-tabs" size="24">\
 document.head.appendChild($_documentContainer);
 
 /***/ }),
-/* 308 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48180,7 +48199,7 @@ var _polymerDom = __webpack_require__(5);
 });
 
 /***/ }),
-/* 309 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48197,15 +48216,15 @@ var _polymerElement = __webpack_require__(2);
 
 __webpack_require__(52);
 
-__webpack_require__(310);
+__webpack_require__(311);
 
-__webpack_require__(312);
+__webpack_require__(313);
 
-var _appFilterPanel = __webpack_require__(316);
+var _appFilterPanel = __webpack_require__(317);
 
 var _appFilterPanel2 = _interopRequireDefault(_appFilterPanel);
 
-__webpack_require__(317);
+__webpack_require__(318);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48236,13 +48255,24 @@ var AppFilterPanel = exports.AppFilterPanel = function (_PolymerElement) {
       ele.label = this.filter.label;
       ele.filter = this.filter.filter;
       ele.ignore = this.filter.ignore;
+      ele.valueMap = this.filter.valueMap || {};
       ele.isDollar = this.filter.isDollar;
 
       ele.addEventListener('update-visibility', function (e) {
         _this2.style.display = e.detail.show ? 'block' : 'none';
       });
 
+      this.ele = ele;
+
       this.$.filters.appendChild(ele);
+    }
+  }, {
+    key: "_toggleOpened",
+    value: function _toggleOpened() {
+      if (!this.opened) return;
+      if (this.ele && this.ele.resize) {
+        this.ele.resize();
+      }
     }
   }], [{
     key: "properties",
@@ -48252,6 +48282,11 @@ var AppFilterPanel = exports.AppFilterPanel = function (_PolymerElement) {
           type: Object,
           value: null,
           observer: '_render'
+        },
+        opened: {
+          type: Boolean,
+          value: false,
+          observer: '_toggleOpened'
         }
       };
     }
@@ -48268,7 +48303,7 @@ var AppFilterPanel = exports.AppFilterPanel = function (_PolymerElement) {
 window.customElements.define('app-filter-panel', AppFilterPanel);
 
 /***/ }),
-/* 310 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48287,7 +48322,7 @@ __webpack_require__(14);
 
 __webpack_require__(44);
 
-var _corkTogglePanel = __webpack_require__(311);
+var _corkTogglePanel = __webpack_require__(312);
 
 var _corkTogglePanel2 = _interopRequireDefault(_corkTogglePanel);
 
@@ -48335,7 +48370,8 @@ var CorkTogglePanel = exports.CorkTogglePanel = function (_PolymerElement) {
       return {
         opened: {
           type: Boolean,
-          value: false
+          value: false,
+          notify: true
         },
         label: {
           type: String,
@@ -48356,13 +48392,13 @@ var CorkTogglePanel = exports.CorkTogglePanel = function (_PolymerElement) {
 customElements.define('cork-toggle-panel', CorkTogglePanel);
 
 /***/ }),
-/* 311 */
+/* 312 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #label {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    @apply --cork-toggle-panel-label;\n  }\n\n  #content {\n    overflow: hidden;\n    height: 0;\n    transition: height 250ms ease-out;\n    @apply --cork-toggle-panel-content;\n  }\n\n  iron-icon {\n    color: var(--cork-drop-down-arrow-color, #912046);\n    transform: rotateX(0);\n    transition: transform 250ms ease-out;\n  }\n\n  iron-icon[closed] {\n    transform: rotate(-90deg);\n  }\n\n</style>\n\n<div id=\"label\" on-click=\"toggle\">\n  <div style=\"flex:1\">[[label]]</div>\n  <iron-icon icon=\"arrow-drop-down\" closed$=\"[[!opened]]\"></iron-icon>\n</div>\n\n<div id=\"content\">\n  <slot></slot>\n</div>";
 
 /***/ }),
-/* 312 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48378,13 +48414,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(313);
+__webpack_require__(314);
 
 var _ElasticSearchInterface = __webpack_require__(8);
 
 var _ElasticSearchInterface2 = _interopRequireDefault(_ElasticSearchInterface);
 
-var _appRangeFilter = __webpack_require__(315);
+var _appRangeFilter = __webpack_require__(316);
 
 var _appRangeFilter2 = _interopRequireDefault(_appRangeFilter);
 
@@ -48456,9 +48492,17 @@ var AppRangeFilter = function (_Mixin$with) {
   _createClass(AppRangeFilter, [{
     key: "connectedCallback",
     value: function connectedCallback() {
+      _get(AppRangeFilter.prototype.__proto__ || Object.getPrototypeOf(AppRangeFilter.prototype), "connectedCallback", this).call(this);
+      this.resize();
+    }
+  }, {
+    key: "resize",
+    value: function resize() {
       var _this2 = this;
 
-      _get(AppRangeFilter.prototype.__proto__ || Object.getPrototypeOf(AppRangeFilter.prototype), "connectedCallback", this).call(this);
+      console.log('resize');
+      this.$.slider._onResize();
+
       setTimeout(function () {
         _this2.$.slider._onResize();
       }, 100);
@@ -48574,7 +48618,7 @@ exports.default = AppRangeFilter;
 customElements.define('app-range-filter', AppRangeFilter);
 
 /***/ }),
-/* 313 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48590,7 +48634,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-var _appRangeSlider = __webpack_require__(314);
+var _appRangeSlider = __webpack_require__(315);
 
 var _appRangeSlider2 = _interopRequireDefault(_appRangeSlider);
 
@@ -48961,25 +49005,25 @@ exports.default = AppRangeSlider;
 customElements.define('app-range-slider', AppRangeSlider);
 
 /***/ }),
-/* 314 */
+/* 315 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n    position: relative;\n    height: 50px;\n    margin: 0 13px;\n\n    -webkit-touch-callout: none; /* iOS Safari */\n    -webkit-user-select: none; /* Safari */\n    -khtml-user-select: none; /* Konqueror HTML */\n    -moz-user-select: none; /* Firefox */\n    -ms-user-select: none; /* Internet Explorer/Edge */\n    user-select: none; /* Non-prefixed version, currently */\n  }\n\n  #numberLine {\n    position: absolute;\n    left : 0;\n    right : 0;\n    height: 3px;\n    background-color: var(--light-background-color, #888);\n  }\n\n  #fillLine {\n    position: absolute;\n    cursor: move;\n    background-color: var(--default-primary-color);\n    height: 3px;\n  }\n\n  .btn {\n    position: absolute;\n    height: 25px;\n    width: 25px;\n    cursor: move;\n  }\n\n  .btn > div {\n    margin: 5px;\n    height: 15px;\n    width: 15px;\n    border-radius: 15px;\n    background-color: var(--default-primary-color);\n    transition: all 150ms linear;\n  }\n\n  .btn[moving] > div {\n    margin: 0px;\n    height: 25px;\n    width: 25px;\n    border-radius: 25px;\n  }\n\n  .label {\n    width : 25px;\n    font-size: 12px; \n    position: absolute;\n    text-align: center;\n    transform: scale(0);\n    transition: transform 200ms linear;\n    color: var(--default-primary-color);\n  }\n\n  .label[moving] {\n    transform: scale(1);\n  }\n\n</style>\n\n<div id=\"numberLine\"></div>\n\n<div id=\"fillLine\" prop=\"range\" on-mousedown=\"_onMoveStart\"></div>\n\n<div id=\"lowNumberLabel\" class=\"label\" moving$=\"[[isMoving]]\">[[minValueLabel]]</div>\n<div id=\"highNumberLabel\" class=\"label\" moving$=\"[[isMoving]]\">[[maxValueLabel]]</div>\n\n<div id=\"lowNumberBtn\" class=\"btn\" prop=\"min\" on-mousedown=\"_onMoveStart\" moving$=\"[[movingMin]]\" >\n  <div></div>\n</div>\n\n<div id=\"highNumberBtn\" class=\"btn\" prop=\"max\" on-mousedown=\"_onMoveStart\" moving$=\"[[movingMax]]\">\n  <div></div>\n</div>";
 
 /***/ }),
-/* 315 */
+/* 316 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n  \n  .labels {\n    display: flex;\n    margin: 0 13px;\n    color: var(--gray-text);\n    font-size: var(--font-size-sm);\n  }\n\n  .inputs {\n    display: flex;\n    align-items: center;\n  }\n\n  input[type=\"number\"] {\n    margin: 0 13px;\n    padding: 7px;\n    border: 0;\n    width: 50px;\n    font-size: var(--font-size-sm);\n  }\n\n  .unknown {\n    margin-left: 9px;\n    display: flex;\n    align-items: center;\n  }\n\n  label {\n    font-size: var(--font-size-sm);\n    font-style: italic;\n    padding-left: 5px;\n  }\n\n  app-range-slider {\n    --light-background-color: var(--medium-background-color);\n  }\n</style>\n\n<div class=\"inputs\">\n  <input id=\"minValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n  <span> - </span>\n  <input id=\"maxValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n</div>\n\n<app-range-slider\n  id=\"slider\"\n  on-range-value-change=\"_onRangeSliderChange\"\n  abs-min-value=\"[[absMinValue]]\"\n  abs-max-value=\"[[absMaxValue]]\"\n  min-value=\"[[minValue]]\"\n  max-value=\"[[maxValue]]\">\n</app-range-slider>\n\n<div class=\"labels\">\n  <div style=\"flex:1\">[[absMinValue]]</div>\n  <div>[[absMaxValue]]</div>\n</div>\n\n<div class=\"unknown\" hidden$=\"[[showUnknown]]\">\n  <input type=\"checkbox\" id=\"unknown\" on-click=\"_onRangeNullChange\" checked />\n  <label for=\"unknown\">include unknown / unspecified</label>\n</div>";
 
 /***/ }),
-/* 316 */
+/* 317 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n</style>\n\n<cork-toggle-panel label=\"[[filter.label]]\">\n  <div id=\"filters\"></div>\n</cork-toggle-panel>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n</style>\n\n<cork-toggle-panel label=\"[[filter.label]]\" opened=\"{{opened}}\">\n  <div id=\"filters\"></div>\n</cork-toggle-panel>";
 
 /***/ }),
-/* 317 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48993,11 +49037,11 @@ var _ElasticSearchInterface = __webpack_require__(8);
 
 var _ElasticSearchInterface2 = _interopRequireDefault(_ElasticSearchInterface);
 
-var _appFacetFilter = __webpack_require__(318);
+var _appFacetFilter = __webpack_require__(319);
 
 var _appFacetFilter2 = _interopRequireDefault(_appFacetFilter);
 
-__webpack_require__(319);
+__webpack_require__(320);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49024,15 +49068,25 @@ var AppFacetFilter = function (_Mixin$with) {
         },
         ignore: {
           type: Array,
-          value: []
+          value: function value() {
+            return [];
+          }
+        },
+        valueMap: {
+          type: Object,
+          value: function value() {}
         },
         buckets: {
           type: Array,
-          value: []
+          value: function value() {
+            return [];
+          }
         },
         activeFilters: {
           type: Array,
-          value: []
+          value: function value() {
+            return [];
+          }
         },
         allFilters: {
           type: Array,
@@ -49100,8 +49154,10 @@ var AppFacetFilter = function (_Mixin$with) {
       if (!this.activeFilters) return;
 
       this.buckets = this.buckets.map(function (item) {
+        item = Object.assign({}, item);
         item.active = _this3.activeFilters.indexOf(item.key) > -1 ? true : false;
-        return Object.assign({}, item);
+
+        return item;
       });
 
       this.dispatchEvent(new CustomEvent('update-visibility', {
@@ -49140,13 +49196,13 @@ var AppFacetFilter = function (_Mixin$with) {
 window.customElements.define('app-facet-filter', AppFacetFilter);
 
 /***/ }),
-/* 318 */
+/* 319 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block\n  }\n\n  .filter {\n    padding: 4px 5px;\n    display: flex;\n    align-items: center;\n  }\n  .filter a {\n    display: inline-block;\n    cursor: pointer;\n    color: black;\n    transition: color 250ms ease-out, transform 250ms ease-out;\n    transform: scale(1);\n  }\n  .filter a span {\n    color: var(--default-primary-color);\n  }\n  .filter a:hover {\n    transform: scale(1.5);\n    color: var(--default-primary-color);\n  }\n\n  .active-filter {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    color: white;\n    font-size: 14px;\n    background: var(--primary-text-color);\n    padding: 5px;\n    border-radius: 3px;\n    margin: 3px;\n  }\n\n  .active-filter:hover {\n    color: var(--default-primary-color);\n    background: #ccc;\n  }\n\n  .count {\n    color: var(--text-disabled);\n    flex: 1;\n    text-align: right;\n  }\n\n  .overflow {\n    overflow: auto;\n    max-height: 200px;\n  }\n\n  paper-checkbox[active] .key {\n    color: var(--default-primary-color);\n    font-weight: bold;\n  }\n\n  paper-checkbox[disabled] .key {\n    color: var(--secondary-text-color);\n    font-style: italic;\n  }\n</style>\n\n<div class=\"overflow\">\n  <div>\n    <template is=\"dom-repeat\" items=\"[[buckets]]\">\n      <div class=\"filter\">\n\n        <app-facet-checkbox\n          type$=\"[[label]]\"\n          index$=\"[[index]]\"\n          value$=\"[[item.key]]\"\n          checked$=\"[[item.active]]\" \n          on-change=\"_toggleFilter\">\n        </app-facet-checkbox>\n\n        <div class=\"count\">[[item.doc_count]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block\n  }\n\n  .filter {\n    padding: 4px 5px;\n    display: flex;\n    align-items: center;\n  }\n  .filter a {\n    display: inline-block;\n    cursor: pointer;\n    color: black;\n    transition: color 250ms ease-out, transform 250ms ease-out;\n    transform: scale(1);\n  }\n  .filter a span {\n    color: var(--default-primary-color);\n  }\n  .filter a:hover {\n    transform: scale(1.5);\n    color: var(--default-primary-color);\n  }\n\n  .active-filter {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    color: white;\n    font-size: 14px;\n    background: var(--primary-text-color);\n    padding: 5px;\n    border-radius: 3px;\n    margin: 3px;\n  }\n\n  .active-filter:hover {\n    color: var(--default-primary-color);\n    background: #ccc;\n  }\n\n  .count {\n    color: var(--text-disabled);\n    flex: 1;\n    text-align: right;\n  }\n\n  .overflow {\n    overflow: auto;\n    max-height: 200px;\n  }\n\n  paper-checkbox[active] .key {\n    color: var(--default-primary-color);\n    font-weight: bold;\n  }\n\n  paper-checkbox[disabled] .key {\n    color: var(--secondary-text-color);\n    font-style: italic;\n  }\n</style>\n\n<div class=\"overflow\">\n  <div>\n    <template is=\"dom-repeat\" items=\"[[buckets]]\">\n      <div class=\"filter\">\n\n        <app-facet-checkbox\n          type$=\"[[label]]\"\n          index$=\"[[index]]\"\n          value$=\"[[item.key]]\"\n          label-map=\"[[valueMap]]\"\n          checked$=\"[[item.active]]\" \n          on-change=\"_toggleFilter\">\n        </app-facet-checkbox>\n\n        <div class=\"count\">[[item.doc_count]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n";
 
 /***/ }),
-/* 319 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49158,7 +49214,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(320);
+__webpack_require__(321);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -49183,7 +49239,7 @@ var AppFacetCheckbox = function (_PolymerElement) {
       _get(AppFacetCheckbox.prototype.__proto__ || Object.getPrototypeOf(AppFacetCheckbox.prototype), "ready", this).call(this);
 
       this.ele = document.createElement('app-normal-checkbox');
-      this.ele.label = this.labelMap[this.value] || this.value;
+      this.ele.label = this._getLabel();
 
       this._setValue();
       if (this.checked) {
@@ -49201,8 +49257,16 @@ var AppFacetCheckbox = function (_PolymerElement) {
     value: function _setValue() {
       if (this.value) {
         this.ele.value = this.value;
-        this.ele.label = this.labelMap[this.value] || this.value;
+        this.ele.label = this._getLabel();
       }
+    }
+  }, {
+    key: "_getLabel",
+    value: function _getLabel() {
+      if (this.labelMap && this.labelMap[this.value]) {
+        return this.labelMap[this.value];
+      }
+      return this.value;
     }
   }, {
     key: "_onCheckedChange",
@@ -49216,11 +49280,6 @@ var AppFacetCheckbox = function (_PolymerElement) {
       if (!this.ele) return;
       this.ele.setAttribute('value', this.value);
     }
-  }, {
-    key: "labelMap",
-    get: function get() {
-      return {};
-    }
   }], [{
     key: "properties",
     get: function get() {
@@ -49233,6 +49292,10 @@ var AppFacetCheckbox = function (_PolymerElement) {
           type: String,
           value: '',
           observer: '_onValueChange'
+        },
+        labelMap: {
+          type: Object,
+          value: function value() {}
         },
         checked: {
           type: Boolean,
@@ -49255,7 +49318,7 @@ var AppFacetCheckbox = function (_PolymerElement) {
 window.customElements.define('app-facet-checkbox', AppFacetCheckbox);
 
 /***/ }),
-/* 320 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49270,9 +49333,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(321);
+__webpack_require__(322);
 
-var _appNormalCheckbox = __webpack_require__(324);
+var _appNormalCheckbox = __webpack_require__(325);
 
 var _appNormalCheckbox2 = _interopRequireDefault(_appNormalCheckbox);
 
@@ -49358,7 +49421,7 @@ var AppNormalCheckbox = exports.AppNormalCheckbox = function (_PolymerElement) {
 window.customElements.define('app-normal-checkbox', AppNormalCheckbox);
 
 /***/ }),
-/* 321 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49368,7 +49431,7 @@ __webpack_require__(1);
 
 __webpack_require__(16);
 
-var _paperCheckedElementBehavior = __webpack_require__(322);
+var _paperCheckedElementBehavior = __webpack_require__(323);
 
 var _polymerFn = __webpack_require__(3);
 
@@ -49465,7 +49528,7 @@ document.head.appendChild($_documentContainer);
 });
 
 /***/ }),
-/* 322 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49478,7 +49541,7 @@ exports.PaperCheckedElementBehavior = exports.PaperCheckedElementBehaviorImpl = 
 
 __webpack_require__(1);
 
-var _ironCheckedElementBehavior = __webpack_require__(323);
+var _ironCheckedElementBehavior = __webpack_require__(324);
 
 var _paperInkyFocusBehavior = __webpack_require__(51);
 
@@ -49516,7 +49579,7 @@ var PaperCheckedElementBehaviorImpl = exports.PaperCheckedElementBehaviorImpl = 
 var PaperCheckedElementBehavior = exports.PaperCheckedElementBehavior = [_paperInkyFocusBehavior.PaperInkyFocusBehavior, _ironCheckedElementBehavior.IronCheckedElementBehavior, PaperCheckedElementBehaviorImpl];
 
 /***/ }),
-/* 323 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49529,9 +49592,9 @@ exports.IronCheckedElementBehavior = exports.IronCheckedElementBehaviorImpl = un
 
 __webpack_require__(1);
 
-var _ironValidatableBehavior = __webpack_require__(70);
+var _ironValidatableBehavior = __webpack_require__(71);
 
-var _ironFormElementBehavior = __webpack_require__(69);
+var _ironFormElementBehavior = __webpack_require__(70);
 
 var IronCheckedElementBehaviorImpl = exports.IronCheckedElementBehaviorImpl = {
 
@@ -49621,13 +49684,13 @@ var IronCheckedElementBehaviorImpl = exports.IronCheckedElementBehaviorImpl = {
 var IronCheckedElementBehavior = exports.IronCheckedElementBehavior = [_ironFormElementBehavior.IronFormElementBehavior, _ironValidatableBehavior.IronValidatableBehavior, IronCheckedElementBehaviorImpl];
 
 /***/ }),
-/* 324 */
+/* 325 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    cursor: pointer;\n  }\n\n  iron-icon {\n    display: none;\n    color: var(--default-secondary-color);\n  }\n\n  div {\n    user-select: none;\n    display: flex;\n    min-height: 24px;\n  }\n\n  span {\n    display: inline-block;\n    padding-top: 3px;\n  }\n\n  div[checked] iron-icon {\n    display: inline-block;\n  }\n\n  div[checked] .value {\n    font-style: italic;\n    font-weight: bold;\n  }\n</style>\n\n<div checked$=\"[[checked]]\" on-click=\"_onClick\">\n  <iron-icon icon=\"close\"></iron-icon>\n  <span class=\"value\">[[realLabel]]</span>\n</div>";
 
 /***/ }),
-/* 325 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49641,7 +49704,7 @@ var _CollectionInterface = __webpack_require__(9);
 
 var _CollectionInterface2 = _interopRequireDefault(_CollectionInterface);
 
-var _appCollectionInfoPanel = __webpack_require__(326);
+var _appCollectionInfoPanel = __webpack_require__(327);
 
 var _appCollectionInfoPanel2 = _interopRequireDefault(_appCollectionInfoPanel);
 
@@ -49726,19 +49789,19 @@ var AppCollectionInfoPanel = function (_Mixin$with) {
 customElements.define('app-collection-info-panel', AppCollectionInfoPanel);
 
 /***/ }),
-/* 326 */
+/* 327 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    padding: 15px;\n  }\n  h3 {\n    color: var(--default-primary-color);\n    margin: 5px 0;\n  }\n  .section {\n    margin-bottom: 20px;\n  }\n</style>\n\n<div class=\"section\" hidden$=\"[[!description]]\">\n  <h3>Description</h3>\n  <div>[[description]]</div>\n</div>\n\n<div class=\"section\" hidden$=\"[[!subject]]\">\n  <h3>Subject</h3>\n  <div>[[subject]]</div>\n</div>\n\n<div class=\"section\" hidden$=\"[[!coverage]]\">\n  <h3>Coverage</h3>\n  <div>[[coverage]]</div>\n</div>\n\n\n<div>[[collection.description]]</div>";
 
 /***/ }),
-/* 327 */
+/* 328 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnailUrl]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.name]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
 
 /***/ }),
-/* 328 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49752,7 +49815,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-var _appRecord = __webpack_require__(329);
+var _appRecord = __webpack_require__(330);
 
 var _appRecord2 = _interopRequireDefault(_appRecord);
 
@@ -49760,15 +49823,15 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bytes = __webpack_require__(193);
+var _bytes = __webpack_require__(194);
 
 var _bytes2 = _interopRequireDefault(_bytes);
 
-var _rights = __webpack_require__(330);
+var _rights = __webpack_require__(65);
 
 var _rights2 = _interopRequireDefault(_rights);
 
-var _CitationsModel = __webpack_require__(66);
+var _CitationsModel = __webpack_require__(67);
 
 var _CitationsModel2 = _interopRequireDefault(_CitationsModel);
 
@@ -50113,16 +50176,10 @@ exports.default = AppRecord;
 customElements.define('app-record', AppRecord);
 
 /***/ }),
-/* 329 */
-/***/ (function(module, exports) {
-
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  img[rights] {\n    height: 22px;\n    width: 22px;\n    vertical-align: sub;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer-static></app-image-viewer-static>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[name]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <a href$=\"[[rights.link]]\" target=\"_block\">\n          <img src$=\"[[rights.icon]]\" rights />\n          <span>[[rights.label]]</span>\n        </a>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <div class=\"cite-container\">\n        <div class=\"label\">MLA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"mla\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">APA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"apa\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">Chicago</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"chicago\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      \n    </div>\n  </app-record-metadata-layout>\n</div>";
-
-/***/ }),
 /* 330 */
 /***/ (function(module, exports) {
 
-module.exports = {"http://rightsstatements.org/vocab/InC/1.0/":{"text":"IN COPYRIGHT","icon":"InC"},"http://rightsstatements.org/vocab/InC-OW-EU/1.0/":{"text":"IN COPYRIGHT - EU ORPHAN WORK","icon":"InC"},"http://rightsstatements.org/vocab/InC-EDU/1.0/":{"text":"IN COPYRIGHT - EDUCATIONAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-NC/1.0/":{"text":"IN COPYRIGHT - NON-COMMERCIAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-RUU/1.0/":{"text":"IN COPYRIGHT - RIGHTS-HOLDER(S) UNLOCATABLE OR UNIDENTIFIABLE","icon":"InC"},"http://rightsstatements.org/vocab/NoC-NC/1.0/":{"text":"NO COPYRIGHT - NON-COMMERCIAL USE ONLY","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-OKLR/1.0/":{"text":"NO COPYRIGHT - OTHER KNOWN LEGAL RESTRICTIONS","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-US/1.0/":{"text":"NO COPYRIGHT - UNITED STATES","icon":"NoC"},"http://rightsstatements.org/vocab/CNE/1.0/":{"text":"COPYRIGHT NOT EVALUATED","icon":"Other"},"http://rightsstatements.org/vocab/UND/1.0/":{"text":"COPYRIGHT UNDETERMINED","icon":"Other"},"http://rightsstatements.org/vocab/NKC/1.0/":{"text":"NO KNOWN COPYRIGHT","icon":"Other"}}
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  img[rights] {\n    height: 22px;\n    width: 22px;\n    vertical-align: sub;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer-static></app-image-viewer-static>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[name]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <a href$=\"[[rights.link]]\" target=\"_block\">\n          <img src$=\"[[rights.icon]]\" rights />\n          <span>[[rights.label]]</span>\n        </a>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <div class=\"cite-container\">\n        <div class=\"label\">MLA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"mla\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">APA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"apa\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">Chicago</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"chicago\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      \n    </div>\n  </app-record-metadata-layout>\n</div>";
 
 /***/ }),
 /* 331 */
@@ -50139,7 +50196,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _polymerElement = __webpack_require__(2);
 
-__webpack_require__(194);
+__webpack_require__(195);
 
 var _appImageViewerStatic = __webpack_require__(334);
 
@@ -50970,7 +51027,7 @@ var _appImageViewerLightbox = __webpack_require__(340);
 
 var _appImageViewerLightbox2 = _interopRequireDefault(_appImageViewerLightbox);
 
-__webpack_require__(194);
+__webpack_require__(195);
 
 var _leaflet = __webpack_require__(341);
 
@@ -65165,7 +65222,7 @@ var _appImageDownload = __webpack_require__(350);
 
 var _appImageDownload2 = _interopRequireDefault(_appImageDownload);
 
-var _bytes = __webpack_require__(193);
+var _bytes = __webpack_require__(194);
 
 var _bytes2 = _interopRequireDefault(_bytes);
 

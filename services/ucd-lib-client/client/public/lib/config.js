@@ -1,3 +1,10 @@
+let rights = require('./rights');
+
+let rightsMap = {};
+for( var key in rights ) {
+  rightsMap[key] =  rights[key].text;
+}
+
 module.exports = {
   fcrepoBasePath : '/fcrepo/rest',
 
@@ -19,6 +26,11 @@ module.exports = {
       yearPublished : {
         label : 'Published',
         type : 'range'
+      },
+      license : {
+        label : 'Rights',
+        type : 'facet',
+        valueMap : rightsMap
       },
       type : {
         label : 'Type',

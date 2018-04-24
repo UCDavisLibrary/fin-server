@@ -15,6 +15,10 @@ class AppFacetCheckbox extends PolymerElement {
         value : '',
         observer : '_onValueChange'
       },
+      labelMap : {
+        type : Object,
+        value : () => {}
+      },
       checked : {
         type : Boolean,
         value : false,
@@ -28,15 +32,11 @@ class AppFacetCheckbox extends PolymerElement {
     return ' ';
   }
 
-  get labelMap() {
-    return {}
-  }
-
   ready() {
     super.ready();
 
     this.ele = document.createElement('app-normal-checkbox');
-    this.ele.label = this.labelMap[this.value] || this.value;
+    this.ele.label = this._getLabel();
     
     this._setValue();
     if( this.checked ) {
@@ -53,8 +53,15 @@ class AppFacetCheckbox extends PolymerElement {
   _setValue() {
     if( this.value ) {
       this.ele.value = this.value;
-      this.ele.label = this.labelMap[this.value] || this.value;
+      this.ele.label = this._getLabel();
     }
+  }
+
+  _getLabel() {
+    if( this.labelMap && this.labelMap[this.value] ) {
+      return this.labelMap[this.value];
+    }
+    return this.value;
   }
 
   _onCheckedChange() {

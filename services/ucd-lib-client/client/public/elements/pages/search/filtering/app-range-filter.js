@@ -54,6 +54,13 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
 
   connectedCallback() {
     super.connectedCallback();
+    this.resize();
+  }
+
+  resize() {
+    console.log('resize');
+    this.$.slider._onResize();
+
     setTimeout(() => {
       this.$.slider._onResize();
     }, 100);

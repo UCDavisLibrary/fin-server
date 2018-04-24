@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 195);
+/******/ 	return __webpack_require__(__webpack_require__.s = 196);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1911,7 +1911,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(297)("./" + name);
+            __webpack_require__(298)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -4583,7 +4583,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(67)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(68)(module)))
 
 /***/ }),
 /* 1 */
@@ -4592,13 +4592,13 @@ return hooks;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_legacy_legacy_element_mixin_js__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_legacy_polymer_fn_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_legacy_templatizer_behavior_js__ = __webpack_require__(207);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_elements_dom_bind_js__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_elements_dom_repeat_js__ = __webpack_require__(209);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_elements_dom_if_js__ = __webpack_require__(210);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_elements_array_selector_js__ = __webpack_require__(211);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_elements_custom_style_js__ = __webpack_require__(212);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_legacy_mutable_data_behavior_js__ = __webpack_require__(214);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_legacy_templatizer_behavior_js__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_elements_dom_bind_js__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_elements_dom_repeat_js__ = __webpack_require__(210);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_elements_dom_if_js__ = __webpack_require__(211);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_elements_array_selector_js__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_elements_custom_style_js__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_legacy_mutable_data_behavior_js__ = __webpack_require__(215);
 
 
 
@@ -4647,7 +4647,7 @@ const Element = Object(__WEBPACK_IMPORTED_MODULE_0__lib_mixins_element_mixin_js_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__class_js__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__class_js__ = __webpack_require__(207);
 
 
 const Polymer = function(info) {
@@ -4686,7 +4686,7 @@ let Polymer;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_flattened_nodes_observer_js__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_flattened_nodes_observer_js__ = __webpack_require__(206);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(22);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__["b"]; });
 /* unused harmony reexport addDebouncer */
@@ -4988,11 +4988,11 @@ const dom = function(obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  BaseModel : __webpack_require__(233),
-  BaseStore : __webpack_require__(235),
-  BaseService : __webpack_require__(236),
-  Mixin : __webpack_require__(238),
-  EventInterface : __webpack_require__(239),
+  BaseModel : __webpack_require__(234),
+  BaseStore : __webpack_require__(236),
+  BaseService : __webpack_require__(237),
+  Mixin : __webpack_require__(239),
+  EventInterface : __webpack_require__(240),
   fetch : __webpack_require__(62)
 }
 
@@ -7003,7 +7003,7 @@ document.head.appendChild($_documentContainer);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js__ = __webpack_require__(224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js__ = __webpack_require__(225);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__font_roboto_roboto_js__);
 
 
@@ -7867,7 +7867,7 @@ const IronA11yKeysBehavior = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_ripple_paper_ripple_js__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_ripple_paper_ripple_js__ = __webpack_require__(228);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_button_state_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -8232,10 +8232,10 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  ElasticSearchInterface : __webpack_require__(261),
-  ElasticSearchModel : __webpack_require__(262),
-  ElasticSearchService : __webpack_require__(263),
-  ElasticSearchStore : __webpack_require__(264)
+  ElasticSearchInterface : __webpack_require__(262),
+  ElasticSearchModel : __webpack_require__(263),
+  ElasticSearchService : __webpack_require__(264),
+  ElasticSearchStore : __webpack_require__(265)
 }
 
 /***/ }),
@@ -9129,8 +9129,8 @@ customElements.define('dom-module', DomModule);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_path_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_case_map_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__property_accessors_js__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__template_stamp_js__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__property_accessors_js__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__template_stamp_js__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_settings_js__ = __webpack_require__(19);
 
 
@@ -13072,7 +13072,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selection_js__ = __webpack_require__(229);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selection_js__ = __webpack_require__(230);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_case_map_js__ = __webpack_require__(13);
 
@@ -13966,7 +13966,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var EventEmitter = __webpack_require__(234).EventEmitter;
+var EventEmitter = __webpack_require__(235).EventEmitter;
 
 /**
  * @class MasterController
@@ -14032,9 +14032,9 @@ module.exports = new MasterController();
 
 module.exports = {
   AppStateInterface : __webpack_require__(64),
-  AppStateModel : __webpack_require__(248),
-  AppStateStore : __webpack_require__(249),
-  'app-route' : __webpack_require__(250)
+  AppStateModel : __webpack_require__(249),
+  AppStateStore : __webpack_require__(250),
+  'app-route' : __webpack_require__(251)
 }
 
 /***/ }),
@@ -14131,7 +14131,14 @@ module.exports = new ElasticSearchStoreImpl();
 
 /***/ }),
 /* 49 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+let rights = __webpack_require__(65);
+
+let rightsMap = {};
+for( var key in rights ) {
+  rightsMap[key] =  rights[key].text;
+}
 
 module.exports = {
   fcrepoBasePath : '/fcrepo/rest',
@@ -14154,6 +14161,11 @@ module.exports = {
       yearPublished : {
         label : 'Published',
         type : 'range'
+      },
+      license : {
+        label : 'Rights',
+        type : 'facet',
+        valueMap : rightsMap
       },
       type : {
         label : 'Type',
@@ -14260,15 +14272,15 @@ const PaperInkyFocusBehavior = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_icon_iron_icon_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(305);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(306);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_icon_button_paper_icon_button_js__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_icon_button_paper_icon_button_js__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_styles_color_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(308);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(308);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(309);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__iron_menu_behavior_iron_menu_behavior_js__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__iron_menu_behavior_iron_menu_behavior_js__ = __webpack_require__(193);
 
 
 
@@ -14944,13 +14956,13 @@ function _cssFromModuleImports(module) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_apply_shim_js__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_apply_shim_js__ = __webpack_require__(200);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_element_mixin_js__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_gesture_event_listeners_js__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_import_href_js__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_import_href_js__ = __webpack_require__(204);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_render_status_js__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__ = __webpack_require__(205);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_gestures_js__ = __webpack_require__(60);
@@ -15912,7 +15924,7 @@ const LegacyElementMixin = Object(__WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__[
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_settings_js__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__css_parse_js__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_regex_js__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__unscoped_style_handler_js__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__unscoped_style_handler_js__ = __webpack_require__(202);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -17615,7 +17627,7 @@ function equals(currentValue, previousValue) {
 // on the global object (window or self)
 //
 // Return that as the export for use in Webpack, Browserify etc.
-__webpack_require__(237);
+__webpack_require__(238);
 module.exports = self.fetch.bind(self);
 
 
@@ -17705,6 +17717,12 @@ module.exports = subclass =>
 
 /***/ }),
 /* 65 */
+/***/ (function(module, exports) {
+
+module.exports = {"http://rightsstatements.org/vocab/InC/1.0/":{"text":"IN COPYRIGHT","icon":"InC"},"http://rightsstatements.org/vocab/InC-OW-EU/1.0/":{"text":"IN COPYRIGHT - EU ORPHAN WORK","icon":"InC"},"http://rightsstatements.org/vocab/InC-EDU/1.0/":{"text":"IN COPYRIGHT - EDUCATIONAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-NC/1.0/":{"text":"IN COPYRIGHT - NON-COMMERCIAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-RUU/1.0/":{"text":"IN COPYRIGHT - RIGHTS-HOLDER(S) UNLOCATABLE OR UNIDENTIFIABLE","icon":"InC"},"http://rightsstatements.org/vocab/NoC-NC/1.0/":{"text":"NO COPYRIGHT - NON-COMMERCIAL USE ONLY","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-OKLR/1.0/":{"text":"NO COPYRIGHT - OTHER KNOWN LEGAL RESTRICTIONS","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-US/1.0/":{"text":"NO COPYRIGHT - UNITED STATES","icon":"NoC"},"http://rightsstatements.org/vocab/CNE/1.0/":{"text":"COPYRIGHT NOT EVALUATED","icon":"Other"},"http://rightsstatements.org/vocab/UND/1.0/":{"text":"COPYRIGHT UNDETERMINED","icon":"Other"},"http://rightsstatements.org/vocab/NKC/1.0/":{"text":"NO KNOWN COPYRIGHT","icon":"Other"}}
+
+/***/ }),
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseStore} = __webpack_require__(6);
@@ -17777,20 +17795,20 @@ class CollectionStore extends BaseStore {
 module.exports = new CollectionStore();
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_citeproc__ = __webpack_require__(269);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_citeproc__ = __webpack_require__(270);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_citeproc___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_citeproc__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml__ = __webpack_require__(270);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml__ = __webpack_require__(271);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_apa_csl__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_apa_csl__ = __webpack_require__(272);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_apa_csl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__styles_apa_csl__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl__ = __webpack_require__(272);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl__ = __webpack_require__(273);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl__ = __webpack_require__(274);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl__);
 
 
@@ -17900,7 +17918,7 @@ class CitationsModel {
 /* harmony default export */ __webpack_exports__["default"] = (new CitationsModel());
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -17928,12 +17946,12 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__ = __webpack_require__(278);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__);
 
 
@@ -17960,7 +17978,7 @@ class AppCollectionCard extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 customElements.define('app-collection-card', AppCollectionCard);
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18038,7 +18056,7 @@ const IronFormElementBehavior = {
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18140,7 +18158,7 @@ const IronValidatableBehavior = {
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18176,7 +18194,7 @@ const PaperInputAddonBehavior = {
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18307,14 +18325,14 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_result_creator__ = __webpack_require__(298);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_result_creator__ = __webpack_require__(299);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__ = __webpack_require__(7);
@@ -18454,7 +18472,7 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18532,7 +18550,7 @@ return af;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18679,7 +18697,7 @@ return ar;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18743,7 +18761,7 @@ return arDz;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18807,7 +18825,7 @@ return arKw;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18938,7 +18956,7 @@ return arLy;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19003,7 +19021,7 @@ return arMa;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19113,7 +19131,7 @@ return arSa;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19177,7 +19195,7 @@ return arTn;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19287,7 +19305,7 @@ return az;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19426,7 +19444,7 @@ return be;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19521,7 +19539,7 @@ return bg;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19585,7 +19603,7 @@ return bm;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19709,7 +19727,7 @@ return bn;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19833,7 +19851,7 @@ return bo;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19946,7 +19964,7 @@ return br;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20094,7 +20112,7 @@ return bs;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20187,7 +20205,7 @@ return ca;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20364,7 +20382,7 @@ return cs;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20432,7 +20450,7 @@ return cv;
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20518,7 +20536,7 @@ return cy;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20583,7 +20601,7 @@ return da;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20666,7 +20684,7 @@ return de;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20750,7 +20768,7 @@ return deAt;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20833,7 +20851,7 @@ return deCh;
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20938,7 +20956,7 @@ return dv;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21043,7 +21061,7 @@ return el;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21115,7 +21133,7 @@ return enAu;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21183,7 +21201,7 @@ return enCa;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21255,7 +21273,7 @@ return enGb;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21327,7 +21345,7 @@ return enIe;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21399,7 +21417,7 @@ return enNz;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21477,7 +21495,7 @@ return eo;
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21574,7 +21592,7 @@ return es;
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21670,7 +21688,7 @@ return esDo;
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21758,7 +21776,7 @@ return esUs;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21843,7 +21861,7 @@ return et;
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21914,7 +21932,7 @@ return eu;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22026,7 +22044,7 @@ return fa;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22138,7 +22156,7 @@ return fi;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22203,7 +22221,7 @@ return fo;
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22291,7 +22309,7 @@ return fr;
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22370,7 +22388,7 @@ return frCa;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22453,7 +22471,7 @@ return frCh;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22533,7 +22551,7 @@ return fy;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22614,7 +22632,7 @@ return gd;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22696,7 +22714,7 @@ return gl;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22823,7 +22841,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22952,7 +22970,7 @@ return gu;
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23056,7 +23074,7 @@ return he;
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23185,7 +23203,7 @@ return hi;
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23335,7 +23353,7 @@ return hr;
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23449,7 +23467,7 @@ return hu;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23549,7 +23567,7 @@ return hyAm;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23637,7 +23655,7 @@ return id;
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23769,7 +23787,7 @@ return is;
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23844,7 +23862,7 @@ return it;
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -23929,7 +23947,7 @@ return ja;
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24017,7 +24035,7 @@ return jv;
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24111,7 +24129,7 @@ return ka;
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24203,7 +24221,7 @@ return kk;
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24266,7 +24284,7 @@ return km;
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24397,7 +24415,7 @@ return kn;
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24485,7 +24503,7 @@ return ko;
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24578,7 +24596,7 @@ return ky;
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24720,7 +24738,7 @@ return lb;
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24795,7 +24813,7 @@ return lo;
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -24917,7 +24935,7 @@ return lt;
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25019,7 +25037,7 @@ return lv;
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25135,7 +25153,7 @@ return me;
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25204,7 +25222,7 @@ return mi;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25299,7 +25317,7 @@ return mk;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25385,7 +25403,7 @@ return ml;
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25549,7 +25567,7 @@ return mr;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25636,7 +25654,7 @@ return ms;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25724,7 +25742,7 @@ return msMy;
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25825,7 +25843,7 @@ return my;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -25893,7 +25911,7 @@ return nb;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26021,7 +26039,7 @@ return ne;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26114,7 +26132,7 @@ return nl;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26207,7 +26225,7 @@ return nlBe;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26272,7 +26290,7 @@ return nn;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26401,7 +26419,7 @@ return paIn;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26530,7 +26548,7 @@ return pl;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26600,7 +26618,7 @@ return pt;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26667,7 +26685,7 @@ return ptBr;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26747,7 +26765,7 @@ return ro;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26935,7 +26953,7 @@ return ru;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27038,7 +27056,7 @@ return sd;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27104,7 +27122,7 @@ return se;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27180,7 +27198,7 @@ return si;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27335,7 +27353,7 @@ return sk;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27502,7 +27520,7 @@ return sl;
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27577,7 +27595,7 @@ return sq;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27692,7 +27710,7 @@ return sr;
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27807,7 +27825,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27901,7 +27919,7 @@ return ss;
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27975,7 +27993,7 @@ return sv;
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28039,7 +28057,7 @@ return sw;
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28174,7 +28192,7 @@ return ta;
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28268,7 +28286,7 @@ return te;
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28341,7 +28359,7 @@ return tet;
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28413,7 +28431,7 @@ return th;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28480,7 +28498,7 @@ return tlPh;
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28605,7 +28623,7 @@ return tlh;
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28700,7 +28718,7 @@ return tr;
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28796,7 +28814,7 @@ return tzl;
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28859,7 +28877,7 @@ return tzm;
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28922,7 +28940,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29078,7 +29096,7 @@ return uk;
 
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29182,7 +29200,7 @@ return ur;
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29245,7 +29263,7 @@ return uz;
 
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29308,7 +29326,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29392,7 +29410,7 @@ return vi;
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29465,7 +29483,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29530,7 +29548,7 @@ return yo;
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29646,7 +29664,7 @@ return zhCn;
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29756,7 +29774,7 @@ return zhHk;
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29865,12 +29883,12 @@ return zhTw;
 
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selector_iron_multi_selectable_js__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selector_iron_multi_selectable_js__ = __webpack_require__(307);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_selector_iron_selectable_js__ = __webpack_require__(43);
@@ -30286,7 +30304,7 @@ const IronMenuBehavior = [
 
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30452,7 +30470,7 @@ function parse(val) {
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30496,31 +30514,31 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_layout_app_header_app_header__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_app_layout_app_toolbar_app_toolbar__ = __webpack_require__(219);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_app_layout_app_drawer_app_drawer__ = __webpack_require__(220);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_paper_material_paper_material__ = __webpack_require__(221);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_paper_styles_paper_styles__ = __webpack_require__(223);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_paper_button_paper_button__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_layout_app_header_app_header__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_app_layout_app_toolbar_app_toolbar__ = __webpack_require__(220);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_app_layout_app_drawer_app_drawer__ = __webpack_require__(221);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_paper_material_paper_material__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_paper_styles_paper_styles__ = __webpack_require__(224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_paper_button_paper_button__ = __webpack_require__(226);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_iron_pages_iron_pages__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_iron_icons_iron_icons__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_iron_icons_social_icons__ = __webpack_require__(230);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ucd_lib_fin_icons_fin_icons__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_iron_icons_social_icons__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ucd_lib_fin_icons_fin_icons__ = __webpack_require__(232);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ucd_lib_cork_app_utils__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ucd_lib_cork_app_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__ucd_lib_cork_app_utils__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__styles_style_properties__ = __webpack_require__(240);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__styles_shared_styles__ = __webpack_require__(242);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib__ = __webpack_require__(244);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__styles_style_properties__ = __webpack_require__(241);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__styles_shared_styles__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib__ = __webpack_require__(245);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__lib__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_home_app_home__ = __webpack_require__(274);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_search_app_search__ = __webpack_require__(279);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_record_app_record__ = __webpack_require__(328);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_home_app_home__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_search_app_search__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_record_app_record__ = __webpack_require__(329);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__app_footer__ = __webpack_require__(354);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__utils_app_header_colorbar__ = __webpack_require__(358);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface__ = __webpack_require__(7);
@@ -30635,7 +30653,7 @@ class FinApp extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_
 customElements.define('fin-app', FinApp);
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31232,7 +31250,7 @@ const PropertyAccessors = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__["
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31696,14 +31714,14 @@ const TemplateStamp = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__["a" /
 
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_scroll_effects_app_scroll_effects_behavior_js__ = __webpack_require__(215);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_layout_behavior_app_layout_behavior_js__ = __webpack_require__(218);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_scroll_effects_app_scroll_effects_behavior_js__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_layout_behavior_app_layout_behavior_js__ = __webpack_require__(219);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -32157,14 +32175,14 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_apply_shim_js__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_apply_shim_js__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_template_map_js__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_util_js__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_apply_shim_utils_js__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_apply_shim_utils_js__ = __webpack_require__(203);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_document_wait_js__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_common_utils_js__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_custom_style_interface_js__ = __webpack_require__(58);
@@ -32365,7 +32383,7 @@ if (!window.ShadyCSS || !window.ShadyCSS.ScopingShim) {
 window.ShadyCSS.ApplyShim = applyShim;
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32852,7 +32870,7 @@ Object.defineProperty(ApplyShim.prototype, 'invalidCallback', {
 /* harmony default export */ __webpack_exports__["a"] = (ApplyShim);
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32902,7 +32920,7 @@ function isUnscopedStyle(style) {
 }
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33068,7 +33086,7 @@ function elementsAreInvalid() {
 }
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33149,7 +33167,7 @@ const importHref = function(href, onload, onerror, optAsync) {
 
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports) {
 
 function resolve() {
@@ -33164,7 +33182,7 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
 
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33412,7 +33430,7 @@ class FlattenedNodesObserver {
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33683,7 +33701,7 @@ const Class = function(info) {
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33828,7 +33846,7 @@ let Templatizer = {
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33956,7 +33974,7 @@ customElements.define('dom-bind', DomBind);
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -34656,7 +34674,7 @@ customElements.define(DomRepeat.is, DomRepeat);
 
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -34927,7 +34945,7 @@ customElements.define(DomIf.is, DomIf);
 
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35348,12 +35366,12 @@ customElements.define(ArraySelector.is, ArraySelector);
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export CustomStyle */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_custom_style_interface_js__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_custom_style_interface_js__ = __webpack_require__(214);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_style_gather_js__ = __webpack_require__(53);
 
 
@@ -35445,7 +35463,7 @@ window.customElements.define('custom-style', CustomStyle);
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35519,7 +35537,7 @@ if (!window.ShadyCSS) {
 window.ShadyCSS.CustomStyleInterface = customStyleInterface;
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35597,13 +35615,13 @@ const OptionalMutableDataBehavior = {
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_scroll_target_behavior_iron_scroll_target_behavior_js__ = __webpack_require__(216);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_helpers_js__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_scroll_target_behavior_iron_scroll_target_behavior_js__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_helpers_js__ = __webpack_require__(218);
 
 
 
@@ -35901,7 +35919,7 @@ const AppScrollEffectsBehavior = [
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36152,7 +36170,7 @@ const IronScrollTargetBehavior = {
 
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36277,7 +36295,7 @@ const scroll = function scroll(options) {
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36370,7 +36388,7 @@ const AppLayoutBehavior = [
 
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36436,7 +36454,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37063,13 +37081,13 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_shadow_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_material_shared_styles_js__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_material_shared_styles_js__ = __webpack_require__(223);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -37126,7 +37144,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37170,7 +37188,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37187,7 +37205,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports) {
 
 const $_documentContainer = document.createElement('div');
@@ -37200,14 +37218,14 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_button_behavior_js__ = __webpack_require__(226);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_element_styles_paper_material_styles_js__ = __webpack_require__(228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_button_behavior_js__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_element_styles_paper_material_styles_js__ = __webpack_require__(229);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -37345,7 +37363,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37444,7 +37462,7 @@ const PaperButtonBehavior = [
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38141,7 +38159,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38202,7 +38220,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38312,7 +38330,7 @@ IronSelection.prototype = {
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38362,13 +38380,13 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_iron_icon_iron_icon__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_iconset_svg_iron_iconset_svg__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html__ = __webpack_require__(232);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html__ = __webpack_require__(233);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__fin_icons_html__);
 
 
@@ -38380,13 +38398,13 @@ ele.innerHTML = __WEBPACK_IMPORTED_MODULE_2__fin_icons_html___default.a;
 document.head.appendChild(ele);
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports) {
 
 module.exports = "<iron-iconset-svg name=\"fin\" size=\"24\">\n  <svg>\n    <defs>\n  \n      <g id=\"account\">\n        <clipPath id=\"account-clip-path\">\n          <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        </clipPath>  \n        <style type=\"text/css\">.cls-1{fill:#008eaa;}.cls-2{clip-path:url(#account-clip-path);}.cls-3{fill:#f3f3f3;}</style>\n        \n        <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        <g class=\"cls-2\">\n          <circle class=\"cls-3\" cx=\"12\" cy=\"9.88\" r=\"3.5\"/>\n          <ellipse class=\"cls-3\" cx=\"12\" cy=\"22.66\" rx=\"7\" ry=\"8.05\"/>\n        </g>         \n      </g>\n\n      <g id=\"blank-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n      </g>\n\n      <g id=\"blank\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n      </g>\n\n      <g id=\"check\">\n        <polygon points=\"8.57 19.54 2.12 13.08 3.88 11.31 8.57 16 20.12 4.46 21.88 6.23 8.57 19.54\"/>\n      </g>\n\n      <g id=\"copy\">\n        <path d=\"M21.22,5.54H18.46V2.78A1.28,1.28,0,0,0,17.18,1.5H2.78A1.28,1.28,0,0,0,1.5,2.78v14.4a1.28,1.28,0,0,0,1.28,1.28H5.54v2.76A1.28,1.28,0,0,0,6.82,22.5h14.4a1.28,1.28,0,0,0,1.28-1.28V6.82A1.28,1.28,0,0,0,21.22,5.54ZM5.54,6.82V17.65H2.78a.47.47,0,0,1-.47-.47V2.78a.47.47,0,0,1,.47-.47h14.4a.47.47,0,0,1,.47.47V5.54H6.82A1.28,1.28,0,0,0,5.54,6.82ZM19,15.15H15.15V19h-2.1V15.15H9.2v-2.1h3.85V9.2h2.1v3.85H19Z\"/>\n      </g>\n\n      <g id=\"grid\">\n        <rect x=\"17.08\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"17.08\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n      </g>\n\n      <g id=\"image-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <circle cx=\"6.33\" cy=\"5.84\" r=\"1.97\"/>\n        <polygon points=\"3.13 12.93 3.13 15.55 15.61 15.55 15.61 10.83 11.98 7.2 7.4 11.78 5.93 10.32 3.13 12.93\"/>\n      </g>\n\n      <g id=\"image\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <circle cx=\"7.99\" cy=\"7.35\" r=\"2.6\"/>\n        <polygon points=\"3.79 16.69 3.79 20.14 20.21 20.14 20.21 13.92 15.44 9.14 9.4 15.18 7.47 13.25 3.79 16.69\"/>\n      </g>\n\n      <g id=\"list\">\n        <rect x=\"1.5\" y=\"5.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"5.51\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"10.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"10.5\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"15.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"15.5\" width=\"15.89\" height=\"3\"/>\n      </g>\n\n      <g id=\"search\">\n        <path d=\"M22.16,20.08l-5.25-5.24a8.38,8.38,0,1,0-1.53,1.77l5.13,5.12a1.15,1.15,0,0,0,.82.35,1.18,1.18,0,0,0,.83-2ZM9.88,16.35a6,6,0,1,1,6-6.05A6.06,6.06,0,0,1,9.88,16.35Z\"/>\n      </g>\n\n      <g id=\"multiple-sound\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.45.45,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.2,1.2,0,0,1,21.19,22.35Z\"/>\n        <path d=\"M6.88,5.39v5.76a1.76,1.76,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.78h0v-5L13,6.48V10a1.73,1.73,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.79v0h0V4Z\"/>\n      </g>\n\n      <g id=\"sound\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <path d=\"M8.72,6.75v7.59a2.3,2.3,0,0,0-1.33-.41,2.35,2.35,0,1,0,2.35,2.34v0h0V9.63l7-1.43v4.57a2.29,2.29,0,0,0-1.33-.42,2.35,2.35,0,1,0,2.34,2.34h0V4.92Z\"/>\n      </g>\n\n      <g id=\"text-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <rect x=\"5.2\" y=\"7.74\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"10.28\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"12.83\" width=\"4.18\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"5.2\" width=\"8.37\" height=\"0.74\"/>\n      </g>\n\n      <g id=\"text\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <rect x=\"6.5\" y=\"9.84\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"13.18\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"16.53\" width=\"5.5\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"6.5\" width=\"11\" height=\"0.97\"/>\n      </g>\n\n      <g id=\"triangle-dropdown\">\n        <polygon points=\"1.5 5.7 22.5 5.7 12 18.3 1.5 5.7\"/>\n      </g>\n\n      <g id=\"video-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <polygon points=\"12.75 9.36 6.6 13.37 6.6 5.24 12.75 9.36\"/>\n      </g>\n\n      <g id=\"video\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <polygon points=\"16.45 11.99 8.35 17.27 8.35 6.57 16.45 11.99\"/>\n      </g>\n    </defs>\n  </svg>\n</iron-iconset-svg>";
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MasterController = __webpack_require__(46);
@@ -38471,7 +38489,7 @@ class BaseModel {
 module.exports = BaseModel;
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -38779,7 +38797,7 @@ function isUndefined(arg) {
 
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MasterController = __webpack_require__(46);
@@ -38871,7 +38889,7 @@ class BaseStore {
 module.exports = BaseStore;
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // help: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
@@ -39110,7 +39128,7 @@ class BaseService {
 module.exports = BaseService;
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -39577,7 +39595,7 @@ module.exports = BaseService;
 
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports) {
 
  /**
@@ -39602,7 +39620,7 @@ if( typeof window !== 'undefined' ) {
 module.exports = Mixin;
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {Debouncer} = __webpack_require__(14);
@@ -39943,11 +39961,11 @@ if( typeof window !== 'undefined' ) {
 module.exports = EventInterface;
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_properties_html__ = __webpack_require__(241);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_properties_html__ = __webpack_require__(242);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_properties_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__style_properties_html__);
 
 let styleWrapper = document.createElement('div');
@@ -39956,17 +39974,17 @@ styleWrapper.innerHTML = __WEBPACK_IMPORTED_MODULE_0__style_properties_html___de
 document.head.appendChild(styleWrapper);
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports) {
 
 module.exports = "<custom-style>\n  <style>\n    html {\n      --default-primary-color : #002655;\n      --light-primary-color   : #335379;\n      \n      --default-secondary-color : #daaa00;\n      --light-secondary-color   : #9be7ff;\n      --dark-secondary-color    : #2286c3;\n\n      --medium-background-color : #B2BDCF;\n      --light-background-color : #D6DCE6;\n      --super-light-background-color: #f3f3f3;\n    \n      --text-primary-color      : black;\n      --primary-text-color      : var(--text-primary-color);\n      --secondary-text-color    : var(--default-secondary-color);\n      --inverse-text-color      : white;\n      --gray-text               : #8B8B8B;\n      --text-disabled           : var(--gray-text);\n\n      --max-width               : 1200px;\n      --max-text-width          : 650px;\n      --font-size               : 16px;\n      --font-size-sm            : 14px;\n      --font-weight             : 400;\n      --font-weight-heavy       : 700;\n\n      --layout-sm               : 768px;\n      --grid-cell-width         : 250px;\n\n     /**\n      * Custom mixins\n      */\n      --fin-search-box-select: {\n        font-size: var(--font-size);\n        font-weight: var(--font-weight);\n        color: var(--default-primary-color);\n        background-color: var(--default-secondary-color);\n        width: 100px;\n      }\n      --fin-search-box-select-inverse: {\n        @apply(--fin-search-box-select);\n        color: var(--default-secondary-color);\n        background-color: var(--default-primary-color);\n      }\n      --fin-search-box-input: {\n        font-size: var(--font-size);\n      }\n      --cork-drop-down-arrow-color: var(--default-primary-color);\n      --cork-toggle-panel-label : {\n        padding: 10px 0;\n        color: var(--default-primary-color);\n        font-weight: var(--font-weight-heavy);\n      }\n    }\n    body, html {\n      /* @apply --paper-font-common-base; */\n      font-family: \"proxima-nova\",\"Montserrat\",\"Lucida Grande\",\"Lucida Sans\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\n      font-size        : var(--font-size);\n      font-weight      : var(--font-weight);\n      line-height      : calc(var(--font-size) * 1.625);\n      margin           : 0;\n      padding          : 0;\n      height           : 100%;\n      background-color : var(--default-background-color);\n      color            : var(--text-primary-color);\n    }\n  </style>\n</custom-style>";
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_styles_html__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_styles_html__ = __webpack_require__(244);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_styles_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__shared_styles_html__);
 
 let styleWrapper = document.createElement('div');
@@ -39975,31 +39993,31 @@ styleWrapper.innerHTML = __WEBPACK_IMPORTED_MODULE_0__shared_styles_html___defau
 document.head.appendChild(styleWrapper);
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports) {
 
 module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n      paper-material {\n        background: white;\n        display: block;\n        padding: 10px;\n        margin: 10px;\n      }\n\n      paper-tabs {\n        --paper-tabs-selection-bar: {\n          border-bottom: 3px solid var(--default-primary-color);\n        }\n      }\n      paper-tab {\n        --paper-tab-content-unselected : {    \n          text-transform: uppercase;\n          color: var(--text-disabled);\n        }\n        --paper-tab-content : {\n          text-transform: uppercase;\n          color: var(--default-primary-color);\n        }\n      }\n\n      [hidden] {\n        display: none !important;\n      }\n\n      input, select, button {\n        font-size        : var(--font-size);\n        font-weight      : var(--font-weight);\n        color            : var(--text-primary-color);\n      }\n\n      main {\n        display: flex;\n        justify-content: center;\n      }\n\n      main > * {\n        max-width: 1000px;\n        width: 100%;\n      }\n\n      ul.menu {\n        list-style: none;\n        margin: 0;\n        padding: 0;\n      }\n\n      ul.menu.horizontal {\n        display: flex;\n      }\n\n      a {\n        text-decoration: none;\n        color: var(--default-primary-color);\n      }\n\n      a.italic {\n        color: var(--default-secondary-color);\n        font-style: italic;\n      }\n\n      a.gold {\n        color: var(--default-secondary-color);\n      }\n\n      .text-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n      }\n      \n      .text-container > * {\n        max-width: var(--max-text-width);\n        width: 100%;\n      }\n\n      .container {\n        display: flex;\n        justify-content: center;\n        flex-direction: column;\n        align-items: center;\n      }\n\n      .container > * {\n        max-width: var(--max-width);\n        width: 100%;\n        justify-content: center;\n      }\n\n      fin-search-box > iron-icon {\n        color: var(--default-secondary-color);\n      }\n    </style>\n  </template>\n</dom-module>";
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  AuthModel : __webpack_require__(245),
-  AppStateModel : __webpack_require__(247),
-  ElasticSearchModel : __webpack_require__(260),
-  CollectionModel : __webpack_require__(266),
-  MediaModel : __webpack_require__(268),
-  CitationModel : __webpack_require__(66)
+  AuthModel : __webpack_require__(246),
+  AppStateModel : __webpack_require__(248),
+  ElasticSearchModel : __webpack_require__(261),
+  CollectionModel : __webpack_require__(267),
+  MediaModel : __webpack_require__(269),
+  CitationModel : __webpack_require__(67)
 }
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseModel} = __webpack_require__(6);
 var AuthStore = __webpack_require__(63);
-var AuthService = __webpack_require__(246);
+var AuthService = __webpack_require__(247);
 
 
 class AuthModel extends BaseModel {
@@ -40029,7 +40047,7 @@ class AuthModel extends BaseModel {
 module.exports = new AuthModel();
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
@@ -40066,11 +40084,11 @@ class AuthSerivce extends BaseService {
 module.exports = new AuthSerivce();
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {AppStateModel} = __webpack_require__(47);
-var AppStateStore = __webpack_require__(259);
+var AppStateStore = __webpack_require__(260);
 
 class AppStateModelImpl extends AppStateModel {
 
@@ -40100,7 +40118,7 @@ class AppStateModelImpl extends AppStateModel {
 module.exports = new AppStateModelImpl();
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseModel} = __webpack_require__(6);
@@ -40164,7 +40182,7 @@ class AppStateModel extends BaseModel {
 module.exports = AppStateModel;
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseStore} = __webpack_require__(6);
@@ -40197,16 +40215,16 @@ class AppStateStore extends BaseStore {
 module.exports = AppStateStore;
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_route_app_location__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_route_app_location__ = __webpack_require__(252);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string__ = __webpack_require__(256);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_query_string__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__);
@@ -40295,14 +40313,14 @@ class AppRoute extends Object(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_util
 customElements.define('app-route', AppRoute);
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_location_iron_location_js__ = __webpack_require__(252);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_location_iron_query_params_js__ = __webpack_require__(253);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_route_converter_behavior_js__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_location_iron_location_js__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_location_iron_query_params_js__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_route_converter_behavior_js__ = __webpack_require__(255);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -40439,7 +40457,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40801,7 +40819,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 253 */
+/* 254 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40896,7 +40914,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 254 */
+/* 255 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40994,14 +41012,14 @@ const AppRouteConverterBehavior = {
 
 
 /***/ }),
-/* 255 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(256);
-var objectAssign = __webpack_require__(257);
-var decodeComponent = __webpack_require__(258);
+var strictUriEncode = __webpack_require__(257);
+var objectAssign = __webpack_require__(258);
+var decodeComponent = __webpack_require__(259);
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -41211,7 +41229,7 @@ exports.stringify = function (obj, opts) {
 
 
 /***/ }),
-/* 256 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41224,7 +41242,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 257 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41321,7 +41339,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 258 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41422,7 +41440,7 @@ module.exports = function (encodedURI) {
 
 
 /***/ }),
-/* 259 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {AppStateStore} = __webpack_require__(47);
@@ -41462,12 +41480,12 @@ class ImplAppStateStore extends AppStateStore {
 module.exports = new ImplAppStateStore();
 
 /***/ }),
-/* 260 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {ElasticSearchModel} = __webpack_require__(31);
 const ElasticSearchStore = __webpack_require__(48);
-const ElasticSearchService = __webpack_require__(265);
+const ElasticSearchService = __webpack_require__(266);
 var config = __webpack_require__(49);
 
 class ElasticSearchModelImpl extends ElasticSearchModel {
@@ -41551,7 +41569,7 @@ class ElasticSearchModelImpl extends ElasticSearchModel {
 module.exports = new ElasticSearchModelImpl();
 
 /***/ }),
-/* 261 */
+/* 262 */
 /***/ (function(module, exports) {
 
 module.exports = subclass => 
@@ -41619,7 +41637,7 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 262 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
@@ -42187,7 +42205,7 @@ class ElasticSearchModel extends BaseModel {
 module.exports = ElasticSearchModel;
 
 /***/ }),
-/* 263 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
@@ -42252,7 +42270,7 @@ class ElasticSearchService extends BaseService {
 module.exports = ElasticSearchService;
 
 /***/ }),
-/* 264 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseStore} = __webpack_require__(6);
@@ -42424,7 +42442,7 @@ class ElasticSearchStore extends BaseStore {
 module.exports = ElasticSearchStore;
 
 /***/ }),
-/* 265 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {ElasticSearchService} = __webpack_require__(31);
@@ -42478,12 +42496,12 @@ class ElasticSearchServiceImpl extends ElasticSearchService {
 module.exports = new ElasticSearchServiceImpl();
 
 /***/ }),
-/* 266 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
-const CollectionStore = __webpack_require__(65);
-const CollectionService = __webpack_require__(267);
+const CollectionStore = __webpack_require__(66);
+const CollectionService = __webpack_require__(268);
 // it's ok to import other stores & services, just not models
 const ElasticSearchStore = __webpack_require__(48);
 
@@ -42549,11 +42567,11 @@ class CollectionModel extends BaseModel {
 module.exports = new CollectionModel();
 
 /***/ }),
-/* 267 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
-const CollectionStore = __webpack_require__(65);
+const CollectionStore = __webpack_require__(66);
 
 class CollectionService extends BaseService {
 
@@ -42581,7 +42599,7 @@ class CollectionService extends BaseService {
 module.exports = new CollectionService();
 
 /***/ }),
-/* 268 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
@@ -42675,7 +42693,7 @@ class MediaModel extends BaseModel {
 module.exports = new MediaModel();
 
 /***/ }),
-/* 269 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {/*
@@ -59787,41 +59805,41 @@ CSL.parseParticles = function(){
 }();
 module.exports = CSL;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(67)(module)))
-
-/***/ }),
-/* 270 */
-/***/ (function(module, exports) {
-
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<locale xmlns=\"http://purl.org/net/xbiblio/csl\" version=\"1.0\" xml:lang=\"en-US\">\n  <info>\n    <translator>\n      <name>Andrew Dunning</name>\n    </translator>\n    <translator>\n      <name>Sebastian Karcher</name>\n    </translator>\n    <translator>\n      <name>Rintze M. Zelle</name>\n    </translator>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n    <updated>2015-10-10T23:31:02+00:00</updated>\n  </info>\n  <style-options punctuation-in-quote=\"true\"/>\n  <date form=\"text\">\n    <date-part name=\"month\" suffix=\" \"/>\n    <date-part name=\"day\" suffix=\", \"/>\n    <date-part name=\"year\"/>\n  </date>\n  <date form=\"numeric\">\n    <date-part name=\"month\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"day\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"year\"/>\n  </date>\n  <terms>\n    <term name=\"accessed\">accessed</term>\n    <term name=\"and\">and</term>\n    <term name=\"and others\">and others</term>\n    <term name=\"anonymous\">anonymous</term>\n    <term name=\"anonymous\" form=\"short\">anon.</term>\n    <term name=\"at\">at</term>\n    <term name=\"available at\">available at</term>\n    <term name=\"by\">by</term>\n    <term name=\"circa\">circa</term>\n    <term name=\"circa\" form=\"short\">c.</term>\n    <term name=\"cited\">cited</term>\n    <term name=\"edition\">\n      <single>edition</single>\n      <multiple>editions</multiple>\n    </term>\n    <term name=\"edition\" form=\"short\">ed.</term>\n    <term name=\"et-al\">et al.</term>\n    <term name=\"forthcoming\">forthcoming</term>\n    <term name=\"from\">from</term>\n    <term name=\"ibid\">ibid.</term>\n    <term name=\"in\">in</term>\n    <term name=\"in press\">in press</term>\n    <term name=\"internet\">internet</term>\n    <term name=\"interview\">interview</term>\n    <term name=\"letter\">letter</term>\n    <term name=\"no date\">no date</term>\n    <term name=\"no date\" form=\"short\">n.d.</term>\n    <term name=\"online\">online</term>\n    <term name=\"presented at\">presented at the</term>\n    <term name=\"reference\">\n      <single>reference</single>\n      <multiple>references</multiple>\n    </term>\n    <term name=\"reference\" form=\"short\">\n      <single>ref.</single>\n      <multiple>refs.</multiple>\n    </term>\n    <term name=\"retrieved\">retrieved</term>\n    <term name=\"scale\">scale</term>\n    <term name=\"version\">version</term>\n\n    <!-- ANNO DOMINI; BEFORE CHRIST -->\n    <term name=\"ad\">AD</term>\n    <term name=\"bc\">BC</term>\n\n    <!-- PUNCTUATION -->\n    <term name=\"open-quote\">“</term>\n    <term name=\"close-quote\">”</term>\n    <term name=\"open-inner-quote\">‘</term>\n    <term name=\"close-inner-quote\">’</term>\n    <term name=\"page-range-delimiter\">–</term>\n\n    <!-- ORDINALS -->\n    <term name=\"ordinal\">th</term>\n    <term name=\"ordinal-01\">st</term>\n    <term name=\"ordinal-02\">nd</term>\n    <term name=\"ordinal-03\">rd</term>\n    <term name=\"ordinal-11\">th</term>\n    <term name=\"ordinal-12\">th</term>\n    <term name=\"ordinal-13\">th</term>\n\n    <!-- LONG ORDINALS -->\n    <term name=\"long-ordinal-01\">first</term>\n    <term name=\"long-ordinal-02\">second</term>\n    <term name=\"long-ordinal-03\">third</term>\n    <term name=\"long-ordinal-04\">fourth</term>\n    <term name=\"long-ordinal-05\">fifth</term>\n    <term name=\"long-ordinal-06\">sixth</term>\n    <term name=\"long-ordinal-07\">seventh</term>\n    <term name=\"long-ordinal-08\">eighth</term>\n    <term name=\"long-ordinal-09\">ninth</term>\n    <term name=\"long-ordinal-10\">tenth</term>\n\n    <!-- LONG LOCATOR FORMS -->\n    <term name=\"book\">\n      <single>book</single>\n      <multiple>books</multiple>\n    </term>\n    <term name=\"chapter\">\n      <single>chapter</single>\n      <multiple>chapters</multiple>\n    </term>\n    <term name=\"column\">\n      <single>column</single>\n      <multiple>columns</multiple>\n    </term>\n    <term name=\"figure\">\n      <single>figure</single>\n      <multiple>figures</multiple>\n    </term>\n    <term name=\"folio\">\n      <single>folio</single>\n      <multiple>folios</multiple>\n    </term>\n    <term name=\"issue\">\n      <single>number</single>\n      <multiple>numbers</multiple>\n    </term>\n    <term name=\"line\">\n      <single>line</single>\n      <multiple>lines</multiple>\n    </term>\n    <term name=\"note\">\n      <single>note</single>\n      <multiple>notes</multiple>\n    </term>\n    <term name=\"opus\">\n      <single>opus</single>\n      <multiple>opera</multiple>\n    </term>\n    <term name=\"page\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"number-of-pages\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"paragraph\">\n      <single>paragraph</single>\n      <multiple>paragraphs</multiple>\n    </term>\n    <term name=\"part\">\n      <single>part</single>\n      <multiple>parts</multiple>\n    </term>\n    <term name=\"section\">\n      <single>section</single>\n      <multiple>sections</multiple>\n    </term>\n    <term name=\"sub verbo\">\n      <single>sub verbo</single>\n      <multiple>sub verbis</multiple>\n    </term>\n    <term name=\"verse\">\n      <single>verse</single>\n      <multiple>verses</multiple>\n    </term>\n    <term name=\"volume\">\n      <single>volume</single>\n      <multiple>volumes</multiple>\n    </term>\n\n    <!-- SHORT LOCATOR FORMS -->\n    <term name=\"book\" form=\"short\">\n      <single>bk.</single>\n      <multiple>bks.</multiple>\n    </term>\n    <term name=\"chapter\" form=\"short\">\n      <single>chap.</single>\n      <multiple>chaps.</multiple>\n    </term>\n    <term name=\"column\" form=\"short\">\n      <single>col.</single>\n      <multiple>cols.</multiple>\n    </term>\n    <term name=\"figure\" form=\"short\">\n      <single>fig.</single>\n      <multiple>figs.</multiple>\n    </term>\n    <term name=\"folio\" form=\"short\">\n      <single>fol.</single>\n      <multiple>fols.</multiple>\n    </term>\n    <term name=\"issue\" form=\"short\">\n      <single>no.</single>\n      <multiple>nos.</multiple>\n    </term>\n    <term name=\"line\" form=\"short\">\n      <single>l.</single>\n      <multiple>ll.</multiple>\n    </term>\n    <term name=\"note\" form=\"short\">\n      <single>n.</single>\n      <multiple>nn.</multiple>\n    </term>\n    <term name=\"opus\" form=\"short\">\n      <single>op.</single>\n      <multiple>opp.</multiple>\n    </term>\n    <term name=\"page\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"number-of-pages\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"paragraph\" form=\"short\">\n      <single>para.</single>\n      <multiple>paras.</multiple>\n    </term>\n    <term name=\"part\" form=\"short\">\n      <single>pt.</single>\n      <multiple>pts.</multiple>\n    </term>\n    <term name=\"section\" form=\"short\">\n      <single>sec.</single>\n      <multiple>secs.</multiple>\n    </term>\n    <term name=\"sub verbo\" form=\"short\">\n      <single>s.v.</single>\n      <multiple>s.vv.</multiple>\n    </term>\n    <term name=\"verse\" form=\"short\">\n      <single>v.</single>\n      <multiple>vv.</multiple>\n    </term>\n    <term name=\"volume\" form=\"short\">\n      <single>vol.</single>\n      <multiple>vols.</multiple>\n    </term>\n\n    <!-- SYMBOL LOCATOR FORMS -->\n    <term name=\"paragraph\" form=\"symbol\">\n      <single>¶</single>\n      <multiple>¶¶</multiple>\n    </term>\n    <term name=\"section\" form=\"symbol\">\n      <single>§</single>\n      <multiple>§§</multiple>\n    </term>\n\n    <!-- LONG ROLE FORMS -->\n    <term name=\"director\">\n      <single>director</single>\n      <multiple>directors</multiple>\n    </term>\n    <term name=\"editor\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"editorial-director\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"illustrator\">\n      <single>illustrator</single>\n      <multiple>illustrators</multiple>\n    </term>\n    <term name=\"translator\">\n      <single>translator</single>\n      <multiple>translators</multiple>\n    </term>\n    <term name=\"editortranslator\">\n      <single>editor &amp; translator</single>\n      <multiple>editors &amp; translators</multiple>\n    </term>\n\n    <!-- SHORT ROLE FORMS -->\n    <term name=\"director\" form=\"short\">\n      <single>dir.</single>\n      <multiple>dirs.</multiple>\n    </term>\n    <term name=\"editor\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"editorial-director\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"illustrator\" form=\"short\">\n      <single>ill.</single>\n      <multiple>ills.</multiple>\n    </term>\n    <term name=\"translator\" form=\"short\">\n      <single>tran.</single>\n      <multiple>trans.</multiple>\n    </term>\n    <term name=\"editortranslator\" form=\"short\">\n      <single>ed. &amp; tran.</single>\n      <multiple>eds. &amp; trans.</multiple>\n    </term>\n\n    <!-- VERB ROLE FORMS -->\n    <term name=\"container-author\" form=\"verb\">by</term>\n    <term name=\"director\" form=\"verb\">directed by</term>\n    <term name=\"editor\" form=\"verb\">edited by</term>\n    <term name=\"editorial-director\" form=\"verb\">edited by</term>\n    <term name=\"illustrator\" form=\"verb\">illustrated by</term>\n    <term name=\"interviewer\" form=\"verb\">interview by</term>\n    <term name=\"recipient\" form=\"verb\">to</term>\n    <term name=\"reviewed-author\" form=\"verb\">by</term>\n    <term name=\"translator\" form=\"verb\">translated by</term>\n    <term name=\"editortranslator\" form=\"verb\">edited &amp; translated by</term>\n\n    <!-- SHORT VERB ROLE FORMS -->\n    <term name=\"director\" form=\"verb-short\">dir. by</term>\n    <term name=\"editor\" form=\"verb-short\">ed. by</term>\n    <term name=\"editorial-director\" form=\"verb-short\">ed. by</term>\n    <term name=\"illustrator\" form=\"verb-short\">illus. by</term>\n    <term name=\"translator\" form=\"verb-short\">trans. by</term>\n    <term name=\"editortranslator\" form=\"verb-short\">ed. &amp; trans. by</term>\n\n    <!-- LONG MONTH FORMS -->\n    <term name=\"month-01\">January</term>\n    <term name=\"month-02\">February</term>\n    <term name=\"month-03\">March</term>\n    <term name=\"month-04\">April</term>\n    <term name=\"month-05\">May</term>\n    <term name=\"month-06\">June</term>\n    <term name=\"month-07\">July</term>\n    <term name=\"month-08\">August</term>\n    <term name=\"month-09\">September</term>\n    <term name=\"month-10\">October</term>\n    <term name=\"month-11\">November</term>\n    <term name=\"month-12\">December</term>\n\n    <!-- SHORT MONTH FORMS -->\n    <term name=\"month-01\" form=\"short\">Jan.</term>\n    <term name=\"month-02\" form=\"short\">Feb.</term>\n    <term name=\"month-03\" form=\"short\">Mar.</term>\n    <term name=\"month-04\" form=\"short\">Apr.</term>\n    <term name=\"month-05\" form=\"short\">May</term>\n    <term name=\"month-06\" form=\"short\">Jun.</term>\n    <term name=\"month-07\" form=\"short\">Jul.</term>\n    <term name=\"month-08\" form=\"short\">Aug.</term>\n    <term name=\"month-09\" form=\"short\">Sep.</term>\n    <term name=\"month-10\" form=\"short\">Oct.</term>\n    <term name=\"month-11\" form=\"short\">Nov.</term>\n    <term name=\"month-12\" form=\"short\">Dec.</term>\n\n    <!-- SEASONS -->\n    <term name=\"season-01\">Spring</term>\n    <term name=\"season-02\">Summer</term>\n    <term name=\"season-03\">Autumn</term>\n    <term name=\"season-04\">Winter</term>\n  </terms>\n</locale>\n"
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(68)(module)))
 
 /***/ }),
 /* 271 */
 /***/ (function(module, exports) {
 
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"expanded\">\n  <info>\n    <title>American Psychological Association 6th edition</title>\n    <title-short>APA</title-short>\n    <id>http://www.zotero.org/styles/apa</id>\n    <link href=\"http://www.zotero.org/styles/apa\" rel=\"self\"/>\n    <link href=\"http://owl.english.purdue.edu/owl/resource/560/01/\" rel=\"documentation\"/>\n    <author>\n      <name>Simon Kornblith</name>\n      <email>simon@simonster.com</email>\n    </author>\n    <contributor>\n      <name>Bruce D'Arcus</name>\n    </contributor>\n    <contributor>\n      <name>Curtis M. Humphrey</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name> Brenton M. Wiernik</name>\n      <email>zotero@wiernik.org</email>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"psychology\"/>\n    <category field=\"generic-base\"/>\n    <updated>2016-09-28T13:09:49+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editortranslator\" form=\"short\">\n        <single>ed. &amp; trans.</single>\n        <multiple>eds. &amp; trans.</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">\n        <single>trans.</single>\n        <multiple>trans.</multiple>\n      </term>\n    </terms>\n  </locale>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"any\">\n        <group delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"article-journal chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"none\">\n        <group delimiter=\", \" prefix=\" (\" suffix=\")\">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"all\" and=\"symbol\" sort-separator=\", \" initialize-with=\". \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\" (\" suffix=\")\" text-case=\"capitalize-first\"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <choose>\n          <if type=\"report\">\n            <text variable=\"publisher\"/>\n            <text macro=\"title\"/>\n          </if>\n          <else>\n            <text macro=\"title\"/>\n          </else>\n        </choose>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <choose>\n      <if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\"/>\n      </if>\n      <else>\n        <names variable=\"author\">\n          <name form=\"short\" and=\"symbol\" delimiter=\", \" initialize-with=\". \"/>\n          <substitute>\n            <names variable=\"editor\"/>\n            <names variable=\"translator\"/>\n            <choose>\n              <if type=\"report\">\n                <text variable=\"publisher\"/>\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </if>\n              <else-if type=\"legal_case\">\n                <text variable=\"title\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"book graphic  motion_picture song\" match=\"any\">\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"bill legislation\" match=\"any\">\n                <text variable=\"title\" form=\"short\"/>\n              </else-if>\n              <else-if variable=\"reviewed-author\">\n                <choose>\n                  <if variable=\"reviewed-title\" match=\"none\">\n                    <text variable=\"title\" form=\"short\" font-style=\"italic\" prefix=\"Review of \"/>\n                  </if>\n                  <else>\n                    <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n                  </else>\n                </choose>\n              </else-if>\n              <else>\n                <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n              </else>\n            </choose>\n          </substitute>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"patent-number\">\n    <!-- genre: U.S. Patent number: 123,445-->\n    <group delimiter=\" \">\n      <group delimiter=\" \">\n        <text variable=\"genre\"/>\n        <text term=\"issue\" form=\"short\" text-case=\"capitalize-first\"/>\n      </group>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <choose>\n      <if type=\"thesis report\" match=\"any\">\n        <choose>\n          <if variable=\"DOI\" match=\"any\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else-if variable=\"URL\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"URL\"/>\n            </group>\n          </else-if>\n          <else-if variable=\"archive\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"archive\" suffix=\".\"/>\n              <text variable=\"archive_location\" prefix=\" (\" suffix=\")\"/>\n            </group>\n          </else-if>\n        </choose>\n      </if>\n      <else>\n        <choose>\n          <if variable=\"DOI\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else>\n            <choose>\n              <if type=\"post post-weblog webpage\" match=\"any\">\n                <group delimiter=\" \">\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <group>\n                    <date variable=\"accessed\" form=\"text\" suffix=\", \"/>\n                  </group>\n                  <text term=\"from\"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </if>\n              <else>\n                <group>\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <text term=\"from\" suffix=\" \"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </else>\n            </choose>\n          </else>\n        </choose>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if type=\"book dataset graphic manuscript motion_picture report song speech thesis\" match=\"any\">\n        <choose>\n          <if variable=\"version\" type=\"book\" match=\"all\">\n            <!---This is a hack until we have a computer program type -->\n            <text variable=\"title\"/>\n          </if>\n          <else>\n            <text variable=\"title\" font-style=\"italic\"/>\n          </else>\n        </choose>\n      </if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\" \">\n              <text variable=\"title\"/>\n              <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n                <text variable=\"reviewed-title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\" delimiter=\", \">\n                  <label form=\"verb-short\" suffix=\" \"/>\n                  <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <!-- assume `title` is title of reviewed work -->\n            <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n              <text variable=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\" delimiter=\", \">\n                <label form=\"verb-short\" suffix=\" \"/>\n                <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\" font-style=\"italic\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-plus-extra\">\n    <text macro=\"title\"/>\n    <choose>\n      <if type=\"report thesis\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"genre\" match=\"any\">\n                <text variable=\"genre\"/>\n              </if>\n              <else>\n                <text variable=\"collection-title\"/>\n              </else>\n            </choose>\n            <text variable=\"number\" prefix=\"No. \"/>\n          </group>\n          <group delimiter=\" \">\n            <text term=\"version\" text-case=\"capitalize-first\"/>\n            <text variable=\"version\"/>\n          </group>\n          <text macro=\"edition\"/>\n        </group>\n      </if>\n      <else-if type=\"post-weblog webpage\" match=\"any\">\n        <text variable=\"genre\" prefix=\" [\" suffix=\"]\"/>\n      </else-if>\n      <else-if variable=\"version\">\n        <group delimiter=\" \" prefix=\" (\" suffix=\")\">\n          <text term=\"version\" text-case=\"capitalize-first\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n    </choose>\n    <text macro=\"format\" prefix=\" [\" suffix=\"]\"/>\n  </macro>\n  <macro name=\"format\">\n    <choose>\n      <if match=\"any\" variable=\"medium\">\n        <text variable=\"medium\" text-case=\"capitalize-first\"/>\n      </if>\n      <else-if type=\"dataset\" match=\"any\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <!-- This should be localized -->\n            <text value=\"Data set\"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <choose>\n      <if type=\"report\" match=\"any\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <text variable=\"publisher\"/>\n        </group>\n      </if>\n      <else-if type=\"thesis\" match=\"any\">\n        <group delimiter=\", \">\n          <text variable=\"publisher\"/>\n          <text variable=\"publisher-place\"/>\n        </group>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <choose>\n            <if variable=\"publisher\">\n              <text variable=\"publisher\"/>\n            </if>\n            <else>\n              <text variable=\"authority\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"post-weblog webpage\" match=\"none\">\n        <group delimiter=\", \">\n          <choose>\n            <if variable=\"event version\" type=\"speech dataset motion_picture\" match=\"none\">\n              <!-- Including version is to avoid printing the programming language for computerProgram /-->\n              <text variable=\"genre\"/>\n            </if>\n          </choose>\n          <choose>\n            <if type=\"article-journal article-magazine article-newspaper\" match=\"none\">\n              <group delimiter=\": \">\n                <choose>\n                  <if variable=\"publisher-place\">\n                    <text variable=\"publisher-place\"/>\n                  </if>\n                  <else>\n                    <text variable=\"event-place\"/>\n                  </else>\n                </choose>\n                <text variable=\"publisher\"/>\n              </group>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <choose>\n      <if variable=\"container-title\" match=\"none\">\n        <choose>\n          <if variable=\"event\">\n            <choose>\n              <if variable=\"genre\" match=\"none\">\n                <text term=\"presented at\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <text variable=\"event\"/>\n              </if>\n              <else>\n                <group delimiter=\" \">\n                  <text variable=\"genre\" text-case=\"capitalize-first\"/>\n                  <text term=\"presented at\"/>\n                  <text variable=\"event\"/>\n                </group>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"speech\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </else-if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"issued\">\n            <group prefix=\" (\" suffix=\")\">\n              <date variable=\"issued\">\n                <date-part name=\"year\"/>\n              </date>\n              <text variable=\"year-suffix\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                    <date-part prefix=\" \" name=\"day\"/>\n                  </date>\n                </else-if>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"status\">\n            <group prefix=\" (\" suffix=\")\">\n              <text variable=\"status\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else-if>\n          <else>\n            <group prefix=\" (\" suffix=\")\">\n              <text term=\"no date\" form=\"short\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued-sort\">\n    <choose>\n      <if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n          <date-part name=\"month\"/>\n          <date-part name=\"day\"/>\n        </date>\n      </if>\n      <else>\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n        </date>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issued-year\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\"/\">\n          <date variable=\"original-date\">\n            <date-part name=\"year\"/>\n          </date>\n          <group>\n            <date variable=\"issued\">\n              <date-part name=\"year\"/>\n            </date>\n            <text variable=\"year-suffix\"/>\n          </group>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if is-numeric=\"edition\">\n        <group delimiter=\" \">\n          <number variable=\"edition\" form=\"ordinal\"/>\n          <text term=\"edition\" form=\"short\"/>\n        </group>\n      </if>\n      <else>\n        <text variable=\"edition\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal article-magazine\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <group>\n            <text variable=\"volume\" font-style=\"italic\"/>\n            <text variable=\"issue\" prefix=\"(\" suffix=\")\"/>\n          </group>\n          <text variable=\"page\"/>\n        </group>\n        <choose>\n          <!--for advanced online publication-->\n          <if variable=\"issued\">\n            <choose>\n              <if variable=\"page issue\" match=\"none\">\n                <text variable=\"status\" prefix=\". \"/>\n              </if>\n            </choose>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"article-newspaper\">\n        <group delimiter=\" \" prefix=\", \">\n          <label variable=\"page\" form=\"short\"/>\n          <text variable=\"page\"/>\n        </group>\n      </else-if>\n      <else-if type=\"book graphic motion_picture report song chapter paper-conference entry-encyclopedia entry-dictionary\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <choose>\n            <if type=\"report\" match=\"none\">\n              <!-- edition for report is included in title-plus-extra /-->\n              <text macro=\"edition\"/>\n            </if>\n          </choose>\n          <choose>\n            <if variable=\"volume\" match=\"any\">\n              <group>\n                <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"volume\" form=\"numeric\"/>\n              </group>\n            </if>\n            <else>\n              <group>\n                <text term=\"volume\" form=\"short\" plural=\"true\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"number-of-volumes\" form=\"numeric\" prefix=\"1&#8211;\"/>\n              </group>\n            </else>\n          </choose>\n          <group>\n            <label variable=\"page\" form=\"short\" suffix=\" \"/>\n            <text variable=\"page\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"legal_case\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text variable=\"authority\"/>\n          <choose>\n            <if variable=\"container-title\" match=\"any\">\n              <!--Only print year for cases published in reporters-->\n              <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n            </if>\n            <else>\n              <date variable=\"issued\" form=\"text\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <date variable=\"issued\" prefix=\" (\" suffix=\")\">\n          <date-part name=\"year\"/>\n        </date>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"citation-locator\">\n    <group>\n      <choose>\n        <if locator=\"chapter\">\n          <label variable=\"locator\" form=\"long\" text-case=\"capitalize-first\"/>\n        </if>\n        <else>\n          <label variable=\"locator\" form=\"short\"/>\n        </else>\n      </choose>\n      <text variable=\"locator\" prefix=\" \"/>\n    </group>\n  </macro>\n  <macro name=\"container\">\n    <choose>\n      <if type=\"post-weblog webpage\" match=\"none\">\n        <group>\n          <choose>\n            <if type=\"chapter paper-conference entry-encyclopedia\" match=\"any\">\n              <text term=\"in\" text-case=\"capitalize-first\" suffix=\" \"/>\n            </if>\n          </choose>\n          <group delimiter=\", \">\n            <text macro=\"container-contributors\"/>\n            <text macro=\"secondary-contributors\"/>\n            <text macro=\"container-title\"/>\n          </group>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"article article-journal article-magazine article-newspaper\" match=\"any\">\n        <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"bill legal_case legislation\" match=\"none\">\n        <text variable=\"container-title\" font-style=\"italic\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"legal-cites\">\n    <choose>\n      <if type=\"legal_case\" match=\"any\">\n        <group prefix=\", \" delimiter=\" \">\n          <choose>\n            <if variable=\"container-title\">\n              <text variable=\"volume\"/>\n              <text variable=\"container-title\"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <text variable=\"page\"/>\n            </if>\n            <else>\n              <text variable=\"number\" prefix=\"No. \"/>\n            </else>\n          </choose>\n        </group>\n      </if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <group delimiter=\", \" prefix=\", \">\n          <choose>\n            <if variable=\"number\">\n              <!--There's a public law number-->\n              <text variable=\"number\" prefix=\"Pub. L. No. \"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <text variable=\"page-first\"/>\n              </group>\n            </if>\n            <else>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"original-date\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"original-date\">\n            <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n              <!---This should be localized-->\n              <text value=\"Original work published\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"original-date\" delimiter=\" \">\n                    <date-part name=\"month\"/>\n                    <date-part name=\"year\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"original-date\" form=\"text\"/>\n                </else-if>\n                <else>\n                  <date variable=\"original-date\">\n                    <date-part name=\"year\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"6\" et-al-use-first=\"1\" et-al-subsequent-min=\"3\" et-al-subsequent-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" collapse=\"year\" givenname-disambiguation-rule=\"primary-name\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\"/>\n    </sort>\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <text macro=\"author-short\"/>\n        <text macro=\"issued-year\"/>\n        <text macro=\"citation-locator\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"8\" et-al-use-first=\"6\" et-al-use-last=\"true\" entry-spacing=\"0\" line-spacing=\"2\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\" sort=\"ascending\"/>\n      <key macro=\"title\"/>\n    </sort>\n    <layout>\n      <group suffix=\".\">\n        <group delimiter=\". \">\n          <text macro=\"author\"/>\n          <text macro=\"issued\"/>\n          <text macro=\"title-plus-extra\"/>\n          <text macro=\"container\"/>\n        </group>\n        <text macro=\"legal-cites\"/>\n        <text macro=\"locators\"/>\n        <group delimiter=\", \" prefix=\". \">\n          <text macro=\"event\"/>\n          <text macro=\"publisher\"/>\n        </group>\n      </group>\n      <text macro=\"access\" prefix=\" \"/>\n      <text macro=\"original-date\" prefix=\" \"/>\n    </layout>\n  </bibliography>\n</style>\n"
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<locale xmlns=\"http://purl.org/net/xbiblio/csl\" version=\"1.0\" xml:lang=\"en-US\">\n  <info>\n    <translator>\n      <name>Andrew Dunning</name>\n    </translator>\n    <translator>\n      <name>Sebastian Karcher</name>\n    </translator>\n    <translator>\n      <name>Rintze M. Zelle</name>\n    </translator>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n    <updated>2015-10-10T23:31:02+00:00</updated>\n  </info>\n  <style-options punctuation-in-quote=\"true\"/>\n  <date form=\"text\">\n    <date-part name=\"month\" suffix=\" \"/>\n    <date-part name=\"day\" suffix=\", \"/>\n    <date-part name=\"year\"/>\n  </date>\n  <date form=\"numeric\">\n    <date-part name=\"month\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"day\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"year\"/>\n  </date>\n  <terms>\n    <term name=\"accessed\">accessed</term>\n    <term name=\"and\">and</term>\n    <term name=\"and others\">and others</term>\n    <term name=\"anonymous\">anonymous</term>\n    <term name=\"anonymous\" form=\"short\">anon.</term>\n    <term name=\"at\">at</term>\n    <term name=\"available at\">available at</term>\n    <term name=\"by\">by</term>\n    <term name=\"circa\">circa</term>\n    <term name=\"circa\" form=\"short\">c.</term>\n    <term name=\"cited\">cited</term>\n    <term name=\"edition\">\n      <single>edition</single>\n      <multiple>editions</multiple>\n    </term>\n    <term name=\"edition\" form=\"short\">ed.</term>\n    <term name=\"et-al\">et al.</term>\n    <term name=\"forthcoming\">forthcoming</term>\n    <term name=\"from\">from</term>\n    <term name=\"ibid\">ibid.</term>\n    <term name=\"in\">in</term>\n    <term name=\"in press\">in press</term>\n    <term name=\"internet\">internet</term>\n    <term name=\"interview\">interview</term>\n    <term name=\"letter\">letter</term>\n    <term name=\"no date\">no date</term>\n    <term name=\"no date\" form=\"short\">n.d.</term>\n    <term name=\"online\">online</term>\n    <term name=\"presented at\">presented at the</term>\n    <term name=\"reference\">\n      <single>reference</single>\n      <multiple>references</multiple>\n    </term>\n    <term name=\"reference\" form=\"short\">\n      <single>ref.</single>\n      <multiple>refs.</multiple>\n    </term>\n    <term name=\"retrieved\">retrieved</term>\n    <term name=\"scale\">scale</term>\n    <term name=\"version\">version</term>\n\n    <!-- ANNO DOMINI; BEFORE CHRIST -->\n    <term name=\"ad\">AD</term>\n    <term name=\"bc\">BC</term>\n\n    <!-- PUNCTUATION -->\n    <term name=\"open-quote\">“</term>\n    <term name=\"close-quote\">”</term>\n    <term name=\"open-inner-quote\">‘</term>\n    <term name=\"close-inner-quote\">’</term>\n    <term name=\"page-range-delimiter\">–</term>\n\n    <!-- ORDINALS -->\n    <term name=\"ordinal\">th</term>\n    <term name=\"ordinal-01\">st</term>\n    <term name=\"ordinal-02\">nd</term>\n    <term name=\"ordinal-03\">rd</term>\n    <term name=\"ordinal-11\">th</term>\n    <term name=\"ordinal-12\">th</term>\n    <term name=\"ordinal-13\">th</term>\n\n    <!-- LONG ORDINALS -->\n    <term name=\"long-ordinal-01\">first</term>\n    <term name=\"long-ordinal-02\">second</term>\n    <term name=\"long-ordinal-03\">third</term>\n    <term name=\"long-ordinal-04\">fourth</term>\n    <term name=\"long-ordinal-05\">fifth</term>\n    <term name=\"long-ordinal-06\">sixth</term>\n    <term name=\"long-ordinal-07\">seventh</term>\n    <term name=\"long-ordinal-08\">eighth</term>\n    <term name=\"long-ordinal-09\">ninth</term>\n    <term name=\"long-ordinal-10\">tenth</term>\n\n    <!-- LONG LOCATOR FORMS -->\n    <term name=\"book\">\n      <single>book</single>\n      <multiple>books</multiple>\n    </term>\n    <term name=\"chapter\">\n      <single>chapter</single>\n      <multiple>chapters</multiple>\n    </term>\n    <term name=\"column\">\n      <single>column</single>\n      <multiple>columns</multiple>\n    </term>\n    <term name=\"figure\">\n      <single>figure</single>\n      <multiple>figures</multiple>\n    </term>\n    <term name=\"folio\">\n      <single>folio</single>\n      <multiple>folios</multiple>\n    </term>\n    <term name=\"issue\">\n      <single>number</single>\n      <multiple>numbers</multiple>\n    </term>\n    <term name=\"line\">\n      <single>line</single>\n      <multiple>lines</multiple>\n    </term>\n    <term name=\"note\">\n      <single>note</single>\n      <multiple>notes</multiple>\n    </term>\n    <term name=\"opus\">\n      <single>opus</single>\n      <multiple>opera</multiple>\n    </term>\n    <term name=\"page\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"number-of-pages\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"paragraph\">\n      <single>paragraph</single>\n      <multiple>paragraphs</multiple>\n    </term>\n    <term name=\"part\">\n      <single>part</single>\n      <multiple>parts</multiple>\n    </term>\n    <term name=\"section\">\n      <single>section</single>\n      <multiple>sections</multiple>\n    </term>\n    <term name=\"sub verbo\">\n      <single>sub verbo</single>\n      <multiple>sub verbis</multiple>\n    </term>\n    <term name=\"verse\">\n      <single>verse</single>\n      <multiple>verses</multiple>\n    </term>\n    <term name=\"volume\">\n      <single>volume</single>\n      <multiple>volumes</multiple>\n    </term>\n\n    <!-- SHORT LOCATOR FORMS -->\n    <term name=\"book\" form=\"short\">\n      <single>bk.</single>\n      <multiple>bks.</multiple>\n    </term>\n    <term name=\"chapter\" form=\"short\">\n      <single>chap.</single>\n      <multiple>chaps.</multiple>\n    </term>\n    <term name=\"column\" form=\"short\">\n      <single>col.</single>\n      <multiple>cols.</multiple>\n    </term>\n    <term name=\"figure\" form=\"short\">\n      <single>fig.</single>\n      <multiple>figs.</multiple>\n    </term>\n    <term name=\"folio\" form=\"short\">\n      <single>fol.</single>\n      <multiple>fols.</multiple>\n    </term>\n    <term name=\"issue\" form=\"short\">\n      <single>no.</single>\n      <multiple>nos.</multiple>\n    </term>\n    <term name=\"line\" form=\"short\">\n      <single>l.</single>\n      <multiple>ll.</multiple>\n    </term>\n    <term name=\"note\" form=\"short\">\n      <single>n.</single>\n      <multiple>nn.</multiple>\n    </term>\n    <term name=\"opus\" form=\"short\">\n      <single>op.</single>\n      <multiple>opp.</multiple>\n    </term>\n    <term name=\"page\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"number-of-pages\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"paragraph\" form=\"short\">\n      <single>para.</single>\n      <multiple>paras.</multiple>\n    </term>\n    <term name=\"part\" form=\"short\">\n      <single>pt.</single>\n      <multiple>pts.</multiple>\n    </term>\n    <term name=\"section\" form=\"short\">\n      <single>sec.</single>\n      <multiple>secs.</multiple>\n    </term>\n    <term name=\"sub verbo\" form=\"short\">\n      <single>s.v.</single>\n      <multiple>s.vv.</multiple>\n    </term>\n    <term name=\"verse\" form=\"short\">\n      <single>v.</single>\n      <multiple>vv.</multiple>\n    </term>\n    <term name=\"volume\" form=\"short\">\n      <single>vol.</single>\n      <multiple>vols.</multiple>\n    </term>\n\n    <!-- SYMBOL LOCATOR FORMS -->\n    <term name=\"paragraph\" form=\"symbol\">\n      <single>¶</single>\n      <multiple>¶¶</multiple>\n    </term>\n    <term name=\"section\" form=\"symbol\">\n      <single>§</single>\n      <multiple>§§</multiple>\n    </term>\n\n    <!-- LONG ROLE FORMS -->\n    <term name=\"director\">\n      <single>director</single>\n      <multiple>directors</multiple>\n    </term>\n    <term name=\"editor\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"editorial-director\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"illustrator\">\n      <single>illustrator</single>\n      <multiple>illustrators</multiple>\n    </term>\n    <term name=\"translator\">\n      <single>translator</single>\n      <multiple>translators</multiple>\n    </term>\n    <term name=\"editortranslator\">\n      <single>editor &amp; translator</single>\n      <multiple>editors &amp; translators</multiple>\n    </term>\n\n    <!-- SHORT ROLE FORMS -->\n    <term name=\"director\" form=\"short\">\n      <single>dir.</single>\n      <multiple>dirs.</multiple>\n    </term>\n    <term name=\"editor\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"editorial-director\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"illustrator\" form=\"short\">\n      <single>ill.</single>\n      <multiple>ills.</multiple>\n    </term>\n    <term name=\"translator\" form=\"short\">\n      <single>tran.</single>\n      <multiple>trans.</multiple>\n    </term>\n    <term name=\"editortranslator\" form=\"short\">\n      <single>ed. &amp; tran.</single>\n      <multiple>eds. &amp; trans.</multiple>\n    </term>\n\n    <!-- VERB ROLE FORMS -->\n    <term name=\"container-author\" form=\"verb\">by</term>\n    <term name=\"director\" form=\"verb\">directed by</term>\n    <term name=\"editor\" form=\"verb\">edited by</term>\n    <term name=\"editorial-director\" form=\"verb\">edited by</term>\n    <term name=\"illustrator\" form=\"verb\">illustrated by</term>\n    <term name=\"interviewer\" form=\"verb\">interview by</term>\n    <term name=\"recipient\" form=\"verb\">to</term>\n    <term name=\"reviewed-author\" form=\"verb\">by</term>\n    <term name=\"translator\" form=\"verb\">translated by</term>\n    <term name=\"editortranslator\" form=\"verb\">edited &amp; translated by</term>\n\n    <!-- SHORT VERB ROLE FORMS -->\n    <term name=\"director\" form=\"verb-short\">dir. by</term>\n    <term name=\"editor\" form=\"verb-short\">ed. by</term>\n    <term name=\"editorial-director\" form=\"verb-short\">ed. by</term>\n    <term name=\"illustrator\" form=\"verb-short\">illus. by</term>\n    <term name=\"translator\" form=\"verb-short\">trans. by</term>\n    <term name=\"editortranslator\" form=\"verb-short\">ed. &amp; trans. by</term>\n\n    <!-- LONG MONTH FORMS -->\n    <term name=\"month-01\">January</term>\n    <term name=\"month-02\">February</term>\n    <term name=\"month-03\">March</term>\n    <term name=\"month-04\">April</term>\n    <term name=\"month-05\">May</term>\n    <term name=\"month-06\">June</term>\n    <term name=\"month-07\">July</term>\n    <term name=\"month-08\">August</term>\n    <term name=\"month-09\">September</term>\n    <term name=\"month-10\">October</term>\n    <term name=\"month-11\">November</term>\n    <term name=\"month-12\">December</term>\n\n    <!-- SHORT MONTH FORMS -->\n    <term name=\"month-01\" form=\"short\">Jan.</term>\n    <term name=\"month-02\" form=\"short\">Feb.</term>\n    <term name=\"month-03\" form=\"short\">Mar.</term>\n    <term name=\"month-04\" form=\"short\">Apr.</term>\n    <term name=\"month-05\" form=\"short\">May</term>\n    <term name=\"month-06\" form=\"short\">Jun.</term>\n    <term name=\"month-07\" form=\"short\">Jul.</term>\n    <term name=\"month-08\" form=\"short\">Aug.</term>\n    <term name=\"month-09\" form=\"short\">Sep.</term>\n    <term name=\"month-10\" form=\"short\">Oct.</term>\n    <term name=\"month-11\" form=\"short\">Nov.</term>\n    <term name=\"month-12\" form=\"short\">Dec.</term>\n\n    <!-- SEASONS -->\n    <term name=\"season-01\">Spring</term>\n    <term name=\"season-02\">Summer</term>\n    <term name=\"season-03\">Autumn</term>\n    <term name=\"season-04\">Winter</term>\n  </terms>\n</locale>\n"
 
 /***/ }),
 /* 272 */
 /***/ (function(module, exports) {
 
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"minimal-two\">\n  <info>\n    <title>Modern Language Association 8th edition</title>\n    <title-short>MLA</title-short>\n    <id>http://www.zotero.org/styles/modern-language-association</id>\n    <link href=\"http://www.zotero.org/styles/modern-language-association\" rel=\"self\"/>\n    <link href=\"http://style.mla.org\" rel=\"documentation\"/>\n    <author>\n      <name>Sebastian Karcher</name>\n    </author>\n    <category citation-format=\"author\"/>\n    <category field=\"generic-base\"/>\n    <summary>This style adheres to the MLA 8th edition handbook. Follows the structure of references as outlined in the MLA Manual closely</summary>\n    <updated>2014-07-06T20:05:10+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <date form=\"text\">\n      <date-part name=\"day\" suffix=\" \"/>\n      <date-part name=\"month\" suffix=\" \" form=\"short\"/>\n      <date-part name=\"year\"/>\n    </date>\n    <terms>\n      <term name=\"month-01\" form=\"short\">Jan.</term>\n      <term name=\"month-02\" form=\"short\">Feb.</term>\n      <term name=\"month-03\" form=\"short\">Mar.</term>\n      <term name=\"month-04\" form=\"short\">Apr.</term>\n      <term name=\"month-05\" form=\"short\">May</term>\n      <term name=\"month-06\" form=\"short\">June</term>\n      <term name=\"month-07\" form=\"short\">July</term>\n      <term name=\"month-08\" form=\"short\">Aug.</term>\n      <term name=\"month-09\" form=\"short\">Sept.</term>\n      <term name=\"month-10\" form=\"short\">Oct.</term>\n      <term name=\"month-11\" form=\"short\">Nov.</term>\n      <term name=\"month-12\" form=\"short\">Dec.</term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"first\" and=\"text\" delimiter-precedes-last=\"always\" delimiter-precedes-et-al=\"always\" initialize=\"false\" initialize-with=\". \"/>\n      <label form=\"long\" prefix=\", \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <group delimiter=\", \">\n      <names variable=\"author\">\n        <name form=\"short\" initialize-with=\". \" and=\"text\"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <text macro=\"title-short\"/>\n        </substitute>\n      </names>\n      <choose>\n        <if disambiguate=\"true\">\n          <text macro=\"title-short\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-short\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" form=\"short\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" form=\"short\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n  </macro>\n  <macro name=\"other-contributors\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \"/>\n          <name and=\"text\"/>\n        </names>\n      </if>\n      <else>\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \" text-case=\"capitalize-first\"/>\n          <name and=\"text\"/>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"version\">\n    <group delimiter=\", \">\n      <choose>\n        <if is-numeric=\"edition\">\n          <group delimiter=\" \">\n            <number variable=\"edition\" form=\"ordinal\"/>\n            <text term=\"edition\" form=\"short\"/>\n          </group>\n        </if>\n        <else>\n          <text variable=\"edition\" text-case=\"capitalize-first\"/>\n        </else>\n      </choose>\n      <text variable=\"version\"/>\n    </group>\n  </macro>\n  <macro name=\"number\">\n    <group delimiter=\", \">\n      <group>\n        <choose>\n          <!--lowercase if we have a preceding element-->\n          <if variable=\"edition container-title\" match=\"any\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </if>\n          <!--other contributors preceding the volume-->\n          <else-if variable=\"author editor\" match=\"all\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else-if>\n          <else>\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else>\n        </choose>\n      </group>\n      <group delimiter=\" \">\n        <text term=\"issue\" form=\"short\"/>\n        <text variable=\"issue\"/>\n      </group>\n      <choose>\n        <if type=\"report\">\n          <text variable=\"genre\"/>\n        </if>\n      </choose>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"publisher\">\n    <text variable=\"publisher\"/>\n  </macro>\n  <macro name=\"publication-date\">\n    <choose>\n      <if type=\"book chapter paper-conference motion_picture\" match=\"any\">\n        <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n      </if>\n      <else-if type=\"article-journal article-magazine\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" date-parts=\"year-month\"/>\n      </else-if>\n      <else-if type=\"speech\" match=\"none\">\n        <date variable=\"issued\" form=\"text\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"location\">\n    <group delimiter=\", \">\n      <group delimiter=\" \">\n        <label variable=\"page\" form=\"short\"/>\n        <text variable=\"page\"/>\n      </group>\n      <choose>\n        <if variable=\"source\" match=\"none\">\n          <text macro=\"URI\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"container2-title\">\n    <group delimiter=\", \">\n      <choose>\n        <if type=\"speech\">\n          <text variable=\"event\"/>\n          <date variable=\"event-date\" form=\"text\"/>\n          <text variable=\"event-place\"/>\n        </if>\n      </choose>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n      <text variable=\"archive_location\"/>\n    </group>\n  </macro>\n  <macro name=\"container2-location\">\n    <choose>\n      <if variable=\"source\">\n        <choose>\n          <if variable=\"DOI URL\" match=\"any\">\n            <group delimiter=\", \">\n              <text variable=\"source\" font-style=\"italic\"/>\n              <text macro=\"URI\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"URI\">\n    <choose>\n      <if variable=\"DOI\">\n        <text variable=\"DOI\" prefix=\"doi:\"/>\n      </if>\n      <else>\n        <text variable=\"URL\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"accessed\">\n    <!--using accessed where we don't have an issued date; follows recommendation on p. 53 -->\n    <choose>\n      <if variable=\"issued\" match=\"none\">\n        <group delimiter=\" \">\n          <text term=\"accessed\" text-case=\"capitalize-first\"/>\n          <date variable=\"accessed\" form=\"text\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"3\" et-al-use-first=\"1\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <choose>\n        <if locator=\"page\">\n          <group delimiter=\" \">\n            <text macro=\"author-short\"/>\n            <text variable=\"locator\"/>\n          </group>\n        </if>\n        <else>\n          <group delimiter=\", \">\n            <text macro=\"author-short\"/>\n            <group>\n              <label variable=\"locator\" form=\"short\"/>\n              <text variable=\"locator\"/>\n            </group>\n          </group>\n        </else>\n      </choose>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"3\" et-al-use-first=\"1\" line-spacing=\"2\" entry-spacing=\"0\" subsequent-author-substitute=\"---\">\n    <sort>\n      <key macro=\"author\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"author\"/>\n        <text macro=\"title\"/>\n        <date variable=\"original-date\" form=\"numeric\" date-parts=\"year\"/>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 1\"-->\n          <text macro=\"container-title\"/>\n          <text macro=\"other-contributors\"/>\n          <text macro=\"version\"/>\n          <text macro=\"number\"/>\n          <text macro=\"publisher\"/>\n          <text macro=\"publication-date\"/>\n          <text macro=\"location\"/>\n        </group>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 2\"-->\n          <!--currently just using this one for archival info-->\n          <text macro=\"container2-title\"/>\n          <text macro=\"container2-location\"/>\n        </group>\n        <text macro=\"accessed\"/>\n      </group>\n    </layout>\n  </bibliography>\n</style>\n"
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"expanded\">\n  <info>\n    <title>American Psychological Association 6th edition</title>\n    <title-short>APA</title-short>\n    <id>http://www.zotero.org/styles/apa</id>\n    <link href=\"http://www.zotero.org/styles/apa\" rel=\"self\"/>\n    <link href=\"http://owl.english.purdue.edu/owl/resource/560/01/\" rel=\"documentation\"/>\n    <author>\n      <name>Simon Kornblith</name>\n      <email>simon@simonster.com</email>\n    </author>\n    <contributor>\n      <name>Bruce D'Arcus</name>\n    </contributor>\n    <contributor>\n      <name>Curtis M. Humphrey</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name> Brenton M. Wiernik</name>\n      <email>zotero@wiernik.org</email>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"psychology\"/>\n    <category field=\"generic-base\"/>\n    <updated>2016-09-28T13:09:49+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editortranslator\" form=\"short\">\n        <single>ed. &amp; trans.</single>\n        <multiple>eds. &amp; trans.</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">\n        <single>trans.</single>\n        <multiple>trans.</multiple>\n      </term>\n    </terms>\n  </locale>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"any\">\n        <group delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"article-journal chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"none\">\n        <group delimiter=\", \" prefix=\" (\" suffix=\")\">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"all\" and=\"symbol\" sort-separator=\", \" initialize-with=\". \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\" (\" suffix=\")\" text-case=\"capitalize-first\"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <choose>\n          <if type=\"report\">\n            <text variable=\"publisher\"/>\n            <text macro=\"title\"/>\n          </if>\n          <else>\n            <text macro=\"title\"/>\n          </else>\n        </choose>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <choose>\n      <if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\"/>\n      </if>\n      <else>\n        <names variable=\"author\">\n          <name form=\"short\" and=\"symbol\" delimiter=\", \" initialize-with=\". \"/>\n          <substitute>\n            <names variable=\"editor\"/>\n            <names variable=\"translator\"/>\n            <choose>\n              <if type=\"report\">\n                <text variable=\"publisher\"/>\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </if>\n              <else-if type=\"legal_case\">\n                <text variable=\"title\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"book graphic  motion_picture song\" match=\"any\">\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"bill legislation\" match=\"any\">\n                <text variable=\"title\" form=\"short\"/>\n              </else-if>\n              <else-if variable=\"reviewed-author\">\n                <choose>\n                  <if variable=\"reviewed-title\" match=\"none\">\n                    <text variable=\"title\" form=\"short\" font-style=\"italic\" prefix=\"Review of \"/>\n                  </if>\n                  <else>\n                    <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n                  </else>\n                </choose>\n              </else-if>\n              <else>\n                <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n              </else>\n            </choose>\n          </substitute>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"patent-number\">\n    <!-- genre: U.S. Patent number: 123,445-->\n    <group delimiter=\" \">\n      <group delimiter=\" \">\n        <text variable=\"genre\"/>\n        <text term=\"issue\" form=\"short\" text-case=\"capitalize-first\"/>\n      </group>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <choose>\n      <if type=\"thesis report\" match=\"any\">\n        <choose>\n          <if variable=\"DOI\" match=\"any\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else-if variable=\"URL\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"URL\"/>\n            </group>\n          </else-if>\n          <else-if variable=\"archive\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"archive\" suffix=\".\"/>\n              <text variable=\"archive_location\" prefix=\" (\" suffix=\")\"/>\n            </group>\n          </else-if>\n        </choose>\n      </if>\n      <else>\n        <choose>\n          <if variable=\"DOI\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else>\n            <choose>\n              <if type=\"post post-weblog webpage\" match=\"any\">\n                <group delimiter=\" \">\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <group>\n                    <date variable=\"accessed\" form=\"text\" suffix=\", \"/>\n                  </group>\n                  <text term=\"from\"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </if>\n              <else>\n                <group>\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <text term=\"from\" suffix=\" \"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </else>\n            </choose>\n          </else>\n        </choose>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if type=\"book dataset graphic manuscript motion_picture report song speech thesis\" match=\"any\">\n        <choose>\n          <if variable=\"version\" type=\"book\" match=\"all\">\n            <!---This is a hack until we have a computer program type -->\n            <text variable=\"title\"/>\n          </if>\n          <else>\n            <text variable=\"title\" font-style=\"italic\"/>\n          </else>\n        </choose>\n      </if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\" \">\n              <text variable=\"title\"/>\n              <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n                <text variable=\"reviewed-title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\" delimiter=\", \">\n                  <label form=\"verb-short\" suffix=\" \"/>\n                  <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <!-- assume `title` is title of reviewed work -->\n            <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n              <text variable=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\" delimiter=\", \">\n                <label form=\"verb-short\" suffix=\" \"/>\n                <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\" font-style=\"italic\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-plus-extra\">\n    <text macro=\"title\"/>\n    <choose>\n      <if type=\"report thesis\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"genre\" match=\"any\">\n                <text variable=\"genre\"/>\n              </if>\n              <else>\n                <text variable=\"collection-title\"/>\n              </else>\n            </choose>\n            <text variable=\"number\" prefix=\"No. \"/>\n          </group>\n          <group delimiter=\" \">\n            <text term=\"version\" text-case=\"capitalize-first\"/>\n            <text variable=\"version\"/>\n          </group>\n          <text macro=\"edition\"/>\n        </group>\n      </if>\n      <else-if type=\"post-weblog webpage\" match=\"any\">\n        <text variable=\"genre\" prefix=\" [\" suffix=\"]\"/>\n      </else-if>\n      <else-if variable=\"version\">\n        <group delimiter=\" \" prefix=\" (\" suffix=\")\">\n          <text term=\"version\" text-case=\"capitalize-first\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n    </choose>\n    <text macro=\"format\" prefix=\" [\" suffix=\"]\"/>\n  </macro>\n  <macro name=\"format\">\n    <choose>\n      <if match=\"any\" variable=\"medium\">\n        <text variable=\"medium\" text-case=\"capitalize-first\"/>\n      </if>\n      <else-if type=\"dataset\" match=\"any\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <!-- This should be localized -->\n            <text value=\"Data set\"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <choose>\n      <if type=\"report\" match=\"any\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <text variable=\"publisher\"/>\n        </group>\n      </if>\n      <else-if type=\"thesis\" match=\"any\">\n        <group delimiter=\", \">\n          <text variable=\"publisher\"/>\n          <text variable=\"publisher-place\"/>\n        </group>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <choose>\n            <if variable=\"publisher\">\n              <text variable=\"publisher\"/>\n            </if>\n            <else>\n              <text variable=\"authority\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"post-weblog webpage\" match=\"none\">\n        <group delimiter=\", \">\n          <choose>\n            <if variable=\"event version\" type=\"speech dataset motion_picture\" match=\"none\">\n              <!-- Including version is to avoid printing the programming language for computerProgram /-->\n              <text variable=\"genre\"/>\n            </if>\n          </choose>\n          <choose>\n            <if type=\"article-journal article-magazine article-newspaper\" match=\"none\">\n              <group delimiter=\": \">\n                <choose>\n                  <if variable=\"publisher-place\">\n                    <text variable=\"publisher-place\"/>\n                  </if>\n                  <else>\n                    <text variable=\"event-place\"/>\n                  </else>\n                </choose>\n                <text variable=\"publisher\"/>\n              </group>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <choose>\n      <if variable=\"container-title\" match=\"none\">\n        <choose>\n          <if variable=\"event\">\n            <choose>\n              <if variable=\"genre\" match=\"none\">\n                <text term=\"presented at\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <text variable=\"event\"/>\n              </if>\n              <else>\n                <group delimiter=\" \">\n                  <text variable=\"genre\" text-case=\"capitalize-first\"/>\n                  <text term=\"presented at\"/>\n                  <text variable=\"event\"/>\n                </group>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"speech\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </else-if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"issued\">\n            <group prefix=\" (\" suffix=\")\">\n              <date variable=\"issued\">\n                <date-part name=\"year\"/>\n              </date>\n              <text variable=\"year-suffix\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                    <date-part prefix=\" \" name=\"day\"/>\n                  </date>\n                </else-if>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"status\">\n            <group prefix=\" (\" suffix=\")\">\n              <text variable=\"status\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else-if>\n          <else>\n            <group prefix=\" (\" suffix=\")\">\n              <text term=\"no date\" form=\"short\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued-sort\">\n    <choose>\n      <if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n          <date-part name=\"month\"/>\n          <date-part name=\"day\"/>\n        </date>\n      </if>\n      <else>\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n        </date>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issued-year\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\"/\">\n          <date variable=\"original-date\">\n            <date-part name=\"year\"/>\n          </date>\n          <group>\n            <date variable=\"issued\">\n              <date-part name=\"year\"/>\n            </date>\n            <text variable=\"year-suffix\"/>\n          </group>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if is-numeric=\"edition\">\n        <group delimiter=\" \">\n          <number variable=\"edition\" form=\"ordinal\"/>\n          <text term=\"edition\" form=\"short\"/>\n        </group>\n      </if>\n      <else>\n        <text variable=\"edition\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal article-magazine\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <group>\n            <text variable=\"volume\" font-style=\"italic\"/>\n            <text variable=\"issue\" prefix=\"(\" suffix=\")\"/>\n          </group>\n          <text variable=\"page\"/>\n        </group>\n        <choose>\n          <!--for advanced online publication-->\n          <if variable=\"issued\">\n            <choose>\n              <if variable=\"page issue\" match=\"none\">\n                <text variable=\"status\" prefix=\". \"/>\n              </if>\n            </choose>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"article-newspaper\">\n        <group delimiter=\" \" prefix=\", \">\n          <label variable=\"page\" form=\"short\"/>\n          <text variable=\"page\"/>\n        </group>\n      </else-if>\n      <else-if type=\"book graphic motion_picture report song chapter paper-conference entry-encyclopedia entry-dictionary\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <choose>\n            <if type=\"report\" match=\"none\">\n              <!-- edition for report is included in title-plus-extra /-->\n              <text macro=\"edition\"/>\n            </if>\n          </choose>\n          <choose>\n            <if variable=\"volume\" match=\"any\">\n              <group>\n                <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"volume\" form=\"numeric\"/>\n              </group>\n            </if>\n            <else>\n              <group>\n                <text term=\"volume\" form=\"short\" plural=\"true\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"number-of-volumes\" form=\"numeric\" prefix=\"1&#8211;\"/>\n              </group>\n            </else>\n          </choose>\n          <group>\n            <label variable=\"page\" form=\"short\" suffix=\" \"/>\n            <text variable=\"page\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"legal_case\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text variable=\"authority\"/>\n          <choose>\n            <if variable=\"container-title\" match=\"any\">\n              <!--Only print year for cases published in reporters-->\n              <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n            </if>\n            <else>\n              <date variable=\"issued\" form=\"text\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <date variable=\"issued\" prefix=\" (\" suffix=\")\">\n          <date-part name=\"year\"/>\n        </date>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"citation-locator\">\n    <group>\n      <choose>\n        <if locator=\"chapter\">\n          <label variable=\"locator\" form=\"long\" text-case=\"capitalize-first\"/>\n        </if>\n        <else>\n          <label variable=\"locator\" form=\"short\"/>\n        </else>\n      </choose>\n      <text variable=\"locator\" prefix=\" \"/>\n    </group>\n  </macro>\n  <macro name=\"container\">\n    <choose>\n      <if type=\"post-weblog webpage\" match=\"none\">\n        <group>\n          <choose>\n            <if type=\"chapter paper-conference entry-encyclopedia\" match=\"any\">\n              <text term=\"in\" text-case=\"capitalize-first\" suffix=\" \"/>\n            </if>\n          </choose>\n          <group delimiter=\", \">\n            <text macro=\"container-contributors\"/>\n            <text macro=\"secondary-contributors\"/>\n            <text macro=\"container-title\"/>\n          </group>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"article article-journal article-magazine article-newspaper\" match=\"any\">\n        <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"bill legal_case legislation\" match=\"none\">\n        <text variable=\"container-title\" font-style=\"italic\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"legal-cites\">\n    <choose>\n      <if type=\"legal_case\" match=\"any\">\n        <group prefix=\", \" delimiter=\" \">\n          <choose>\n            <if variable=\"container-title\">\n              <text variable=\"volume\"/>\n              <text variable=\"container-title\"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <text variable=\"page\"/>\n            </if>\n            <else>\n              <text variable=\"number\" prefix=\"No. \"/>\n            </else>\n          </choose>\n        </group>\n      </if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <group delimiter=\", \" prefix=\", \">\n          <choose>\n            <if variable=\"number\">\n              <!--There's a public law number-->\n              <text variable=\"number\" prefix=\"Pub. L. No. \"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <text variable=\"page-first\"/>\n              </group>\n            </if>\n            <else>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"original-date\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"original-date\">\n            <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n              <!---This should be localized-->\n              <text value=\"Original work published\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"original-date\" delimiter=\" \">\n                    <date-part name=\"month\"/>\n                    <date-part name=\"year\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"original-date\" form=\"text\"/>\n                </else-if>\n                <else>\n                  <date variable=\"original-date\">\n                    <date-part name=\"year\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"6\" et-al-use-first=\"1\" et-al-subsequent-min=\"3\" et-al-subsequent-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" collapse=\"year\" givenname-disambiguation-rule=\"primary-name\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\"/>\n    </sort>\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <text macro=\"author-short\"/>\n        <text macro=\"issued-year\"/>\n        <text macro=\"citation-locator\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"8\" et-al-use-first=\"6\" et-al-use-last=\"true\" entry-spacing=\"0\" line-spacing=\"2\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\" sort=\"ascending\"/>\n      <key macro=\"title\"/>\n    </sort>\n    <layout>\n      <group suffix=\".\">\n        <group delimiter=\". \">\n          <text macro=\"author\"/>\n          <text macro=\"issued\"/>\n          <text macro=\"title-plus-extra\"/>\n          <text macro=\"container\"/>\n        </group>\n        <text macro=\"legal-cites\"/>\n        <text macro=\"locators\"/>\n        <group delimiter=\", \" prefix=\". \">\n          <text macro=\"event\"/>\n          <text macro=\"publisher\"/>\n        </group>\n      </group>\n      <text macro=\"access\" prefix=\" \"/>\n      <text macro=\"original-date\" prefix=\" \"/>\n    </layout>\n  </bibliography>\n</style>\n"
 
 /***/ }),
 /* 273 */
 /***/ (function(module, exports) {
 
-module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"display-and-sort\" page-range-format=\"chicago\">\n  <info>\n    <title>Chicago Manual of Style 17th edition (author-date)</title>\n    <id>http://www.zotero.org/styles/chicago-author-date</id>\n    <link href=\"http://www.zotero.org/styles/chicago-author-date\" rel=\"self\"/>\n    <link href=\"http://www.chicagomanualofstyle.org/tools_citationguide.html\" rel=\"documentation\"/>\n    <author>\n      <name>Julian Onions</name>\n      <email>julian.onions@gmail.com</email>\n    </author>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Andrew Dunning</name>\n      <email>andrew.dunning@utoronto.ca</email>\n      <uri>https://orcid.org/0000-0003-0464-5036</uri>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"generic-base\"/>\n    <summary>The author-date variant of the Chicago style</summary>\n    <updated>2018-01-24T12:00:00+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editor\" form=\"verb-short\">ed.</term>\n      <term name=\"container-author\" form=\"verb\">by</term>\n      <term name=\"translator\" form=\"verb-short\">trans.</term>\n      <term name=\"editortranslator\" form=\"verb\">\n        <single>edited and translated by</single>\n        <multiple>edited and translated by</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"none\">\n        <group delimiter=\". \">\n          <names variable=\"editor translator\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"director\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"editor\">\n    <names variable=\"editor\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"translator\">\n    <names variable=\"translator\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"recipient\">\n    <choose>\n      <if type=\"personal_communication\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <text term=\"letter\" text-case=\"capitalize-first\"/>\n          </else>\n        </choose>\n      </if>\n    </choose>\n    <names variable=\"recipient\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"lowercase\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"substitute-title\">\n    <choose>\n      <if type=\"article-magazine article-newspaper review review-book\" match=\"any\">\n        <text macro=\"container-title\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"contributors\">\n    <group delimiter=\". \">\n      <names variable=\"author\">\n        <name and=\"text\" name-as-sort-order=\"first\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n        <label form=\"short\" prefix=\", \"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <names variable=\"director\"/>\n          <text macro=\"substitute-title\"/>\n          <text macro=\"title\"/>\n        </substitute>\n      </names>\n      <text macro=\"recipient\"/>\n    </group>\n  </macro>\n  <macro name=\"contributors-short\">\n    <names variable=\"author\">\n      <name form=\"short\" and=\"text\" delimiter=\", \" initialize-with=\". \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <names variable=\"director\"/>\n        <text macro=\"substitute-title\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"interviewer\">\n    <names variable=\"interviewer\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"capitalize-first\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"archive\">\n    <group delimiter=\". \">\n      <text variable=\"archive_location\" text-case=\"capitalize-first\"/>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <group delimiter=\". \">\n      <choose>\n        <if type=\"graphic report\" match=\"any\">\n          <text macro=\"archive\"/>\n        </if>\n        <else-if type=\"article-journal bill book chapter legal_case legislation motion_picture paper-conference\" match=\"none\">\n          <text macro=\"archive\"/>\n        </else-if>\n      </choose>\n      <choose>\n        <if type=\"webpage post-weblog\" match=\"any\">\n          <date variable=\"issued\" form=\"text\"/>\n        </if>\n      </choose>\n      <choose>\n        <if variable=\"issued\" match=\"none\">\n          <group delimiter=\" \">\n            <text term=\"accessed\" text-case=\"capitalize-first\"/>\n            <date variable=\"accessed\" form=\"text\"/>\n          </group>\n        </if>\n      </choose>\n      <choose>\n        <if type=\"legal_case\" match=\"none\">\n          <choose>\n            <if variable=\"DOI\">\n              <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n            </if>\n            <else>\n              <text variable=\"URL\"/>\n            </else>\n          </choose>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"title\" match=\"none\">\n        <choose>\n          <if type=\"personal_communication\" match=\"none\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"bill book graphic legislation motion_picture song\" match=\"any\">\n        <text variable=\"title\" text-case=\"title\" font-style=\"italic\"/>\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text term=\"version\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\". \">\n              <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n              <group delimiter=\", \">\n                <text variable=\"reviewed-title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\">\n                  <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                  <name and=\"text\" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\", \">\n              <text variable=\"title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\">\n                <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                <name and=\"text\" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"legal_case interview patent\" match=\"any\">\n        <text variable=\"title\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\". \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\" strip-periods=\"true\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" text-case=\"capitalize-first\" prefix=\". \"/>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\", \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume\">\n            <text variable=\"volume\" prefix=\" \"/>\n            <group prefix=\" (\" suffix=\")\">\n              <choose>\n                <if variable=\"issue\">\n                  <text variable=\"issue\"/>\n                </if>\n                <else>\n                  <date variable=\"issued\">\n                    <date-part name=\"month\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"issue\">\n            <group delimiter=\" \" prefix=\", \">\n              <text term=\"issue\" form=\"short\"/>\n              <text variable=\"issue\"/>\n              <date variable=\"issued\" prefix=\"(\" suffix=\")\">\n                <date-part name=\"month\"/>\n              </date>\n            </group>\n          </else-if>\n          <else>\n            <date variable=\"issued\" prefix=\", \">\n              <date-part name=\"month\"/>\n            </date>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"legal_case\">\n        <text variable=\"volume\" prefix=\", \"/>\n        <text variable=\"container-title\" prefix=\" \"/>\n        <text variable=\"page\" prefix=\" \"/>\n      </else-if>\n      <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <group prefix=\". \" delimiter=\". \">\n          <group>\n            <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <number variable=\"volume\" form=\"numeric\"/>\n          </group>\n          <group>\n            <number variable=\"number-of-volumes\" form=\"numeric\"/>\n            <text term=\"volume\" form=\"short\" prefix=\" \" plural=\"true\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\" match=\"none\">\n            <group prefix=\". \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <number variable=\"volume\" form=\"numeric\"/>\n            </group>\n          </if>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators-chapter\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\">\n            <group prefix=\", \">\n              <text variable=\"volume\" suffix=\":\"/>\n              <text variable=\"page\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"locators-article\">\n    <choose>\n      <if type=\"article-newspaper\">\n        <group prefix=\", \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"edition\"/>\n            <text term=\"edition\"/>\n          </group>\n          <group>\n            <text term=\"section\" form=\"short\" suffix=\" \"/>\n            <text variable=\"section\"/>\n          </group>\n        </group>\n      </if>\n      <else-if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume issue\" match=\"any\">\n            <text variable=\"page\" prefix=\": \"/>\n          </if>\n          <else>\n            <text variable=\"page\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"point-locators\">\n    <choose>\n      <if variable=\"locator\">\n        <choose>\n          <if locator=\"page\" match=\"none\">\n            <choose>\n              <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n                <choose>\n                  <if variable=\"volume\">\n                    <group>\n                      <text term=\"volume\" form=\"short\" suffix=\" \"/>\n                      <number variable=\"volume\" form=\"numeric\"/>\n                      <label variable=\"locator\" form=\"short\" prefix=\", \" suffix=\" \"/>\n                    </group>\n                  </if>\n                  <else>\n                    <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n                  </else>\n                </choose>\n              </if>\n              <else>\n                <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n            <number variable=\"volume\" form=\"numeric\" suffix=\":\"/>\n          </else-if>\n        </choose>\n        <text variable=\"locator\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-prefix\">\n    <text term=\"in\" text-case=\"capitalize-first\"/>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <text macro=\"container-prefix\" suffix=\" \"/>\n      </if>\n    </choose>\n    <choose>\n      <if type=\"webpage\">\n        <text variable=\"container-title\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"legal_case\" match=\"none\">\n        <group delimiter=\" \">\n          <text variable=\"container-title\" text-case=\"title\" font-style=\"italic\"/>\n          <choose>\n            <if type=\"post-weblog\">\n              <text value=\"(blog)\"/>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <group delimiter=\": \">\n      <text variable=\"publisher-place\"/>\n      <text variable=\"publisher\"/>\n    </group>\n  </macro>\n  <macro name=\"date\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"(\" suffix=\")\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\" text-case=\"capitalize-first\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"date-in-text\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"[\" suffix=\"]\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"day-month\">\n    <date variable=\"issued\">\n      <date-part name=\"month\"/>\n      <date-part name=\"day\" prefix=\" \"/>\n    </date>\n  </macro>\n  <macro name=\"collection-title\">\n    <choose>\n      <if match=\"none\" type=\"article-journal\">\n        <choose>\n          <if match=\"none\" is-numeric=\"collection-number\">\n            <group delimiter=\", \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\" \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"collection-title-journal\">\n    <choose>\n      <if type=\"article-journal\">\n        <group delimiter=\" \">\n          <text variable=\"collection-title\"/>\n          <text variable=\"collection-number\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <group>\n      <text term=\"presented at\" suffix=\" \"/>\n      <text variable=\"event\"/>\n    </group>\n  </macro>\n  <macro name=\"description\">\n    <choose>\n      <if type=\"interview\">\n        <group delimiter=\". \">\n          <text macro=\"interviewer\"/>\n          <text variable=\"medium\" text-case=\"capitalize-first\"/>\n        </group>\n      </if>\n      <else-if type=\"patent\">\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"authority\"/>\n          <text variable=\"number\"/>\n        </group>\n      </else-if>\n      <else>\n        <text variable=\"medium\" text-case=\"capitalize-first\" prefix=\". \"/>\n      </else>\n    </choose>\n    <choose>\n      <if variable=\"title\" match=\"none\"/>\n      <else-if type=\"thesis personal_communication speech\" match=\"any\"/>\n      <else>\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          <choose>\n            <if type=\"report\">\n              <text variable=\"number\"/>\n            </if>\n          </choose>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issue\">\n    <choose>\n      <if type=\"legal_case\">\n        <text variable=\"authority\" prefix=\". \"/>\n      </if>\n      <else-if type=\"speech\">\n        <group prefix=\". \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            <text macro=\"event\"/>\n          </group>\n          <text variable=\"event-place\"/>\n          <text macro=\"day-month\"/>\n        </group>\n      </else-if>\n      <else-if type=\"article-newspaper article-magazine personal_communication\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" prefix=\", \"/>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\", \" prefix=\", \">\n          <group delimiter=\" \">\n            <!--Needs Localization-->\n            <text value=\"filed\"/>\n            <date variable=\"submitted\" form=\"text\"/>\n          </group>\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"issued submitted\" match=\"all\">\n                <text term=\"and\"/>\n              </if>\n            </choose>\n            <!--Needs Localization-->\n            <text value=\"issued\"/>\n            <date variable=\"issued\" form=\"text\"/>\n          </group>\n        </group>\n      </else-if>\n      <else>\n        <group prefix=\". \" delimiter=\", \">\n          <choose>\n            <if type=\"thesis\">\n              <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            </if>\n          </choose>\n          <text macro=\"publisher\"/>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <citation et-al-min=\"4\" et-al-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" givenname-disambiguation-rule=\"primary-name\" collapse=\"year\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <choose>\n          <if variable=\"issued accessed\" match=\"any\">\n            <group delimiter=\" \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </if>\n          <!---comma before forthcoming and n.d.-->\n          <else>\n            <group delimiter=\", \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </else>\n        </choose>\n        <text macro=\"point-locators\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"11\" et-al-use-first=\"7\" subsequent-author-substitute=\"&#8212;&#8212;&#8212;\" entry-spacing=\"0\">\n    <sort>\n      <key macro=\"contributors\"/>\n      <key variable=\"issued\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"contributors\"/>\n        <text macro=\"date\"/>\n        <text macro=\"title\"/>\n      </group>\n      <text macro=\"description\"/>\n      <text macro=\"secondary-contributors\" prefix=\". \"/>\n      <text macro=\"container-title\" prefix=\". \"/>\n      <text macro=\"container-contributors\"/>\n      <text macro=\"edition\"/>\n      <text macro=\"locators-chapter\"/>\n      <text macro=\"collection-title-journal\" prefix=\", \" suffix=\", \"/>\n      <text macro=\"locators\"/>\n      <text macro=\"collection-title\" prefix=\". \"/>\n      <text macro=\"issue\"/>\n      <text macro=\"locators-article\"/>\n      <text macro=\"access\" prefix=\". \"/>\n    </layout>\n  </bibliography>\n</style>\n"
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"minimal-two\">\n  <info>\n    <title>Modern Language Association 8th edition</title>\n    <title-short>MLA</title-short>\n    <id>http://www.zotero.org/styles/modern-language-association</id>\n    <link href=\"http://www.zotero.org/styles/modern-language-association\" rel=\"self\"/>\n    <link href=\"http://style.mla.org\" rel=\"documentation\"/>\n    <author>\n      <name>Sebastian Karcher</name>\n    </author>\n    <category citation-format=\"author\"/>\n    <category field=\"generic-base\"/>\n    <summary>This style adheres to the MLA 8th edition handbook. Follows the structure of references as outlined in the MLA Manual closely</summary>\n    <updated>2014-07-06T20:05:10+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <date form=\"text\">\n      <date-part name=\"day\" suffix=\" \"/>\n      <date-part name=\"month\" suffix=\" \" form=\"short\"/>\n      <date-part name=\"year\"/>\n    </date>\n    <terms>\n      <term name=\"month-01\" form=\"short\">Jan.</term>\n      <term name=\"month-02\" form=\"short\">Feb.</term>\n      <term name=\"month-03\" form=\"short\">Mar.</term>\n      <term name=\"month-04\" form=\"short\">Apr.</term>\n      <term name=\"month-05\" form=\"short\">May</term>\n      <term name=\"month-06\" form=\"short\">June</term>\n      <term name=\"month-07\" form=\"short\">July</term>\n      <term name=\"month-08\" form=\"short\">Aug.</term>\n      <term name=\"month-09\" form=\"short\">Sept.</term>\n      <term name=\"month-10\" form=\"short\">Oct.</term>\n      <term name=\"month-11\" form=\"short\">Nov.</term>\n      <term name=\"month-12\" form=\"short\">Dec.</term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"first\" and=\"text\" delimiter-precedes-last=\"always\" delimiter-precedes-et-al=\"always\" initialize=\"false\" initialize-with=\". \"/>\n      <label form=\"long\" prefix=\", \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <group delimiter=\", \">\n      <names variable=\"author\">\n        <name form=\"short\" initialize-with=\". \" and=\"text\"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <text macro=\"title-short\"/>\n        </substitute>\n      </names>\n      <choose>\n        <if disambiguate=\"true\">\n          <text macro=\"title-short\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-short\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" form=\"short\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" form=\"short\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n  </macro>\n  <macro name=\"other-contributors\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \"/>\n          <name and=\"text\"/>\n        </names>\n      </if>\n      <else>\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \" text-case=\"capitalize-first\"/>\n          <name and=\"text\"/>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"version\">\n    <group delimiter=\", \">\n      <choose>\n        <if is-numeric=\"edition\">\n          <group delimiter=\" \">\n            <number variable=\"edition\" form=\"ordinal\"/>\n            <text term=\"edition\" form=\"short\"/>\n          </group>\n        </if>\n        <else>\n          <text variable=\"edition\" text-case=\"capitalize-first\"/>\n        </else>\n      </choose>\n      <text variable=\"version\"/>\n    </group>\n  </macro>\n  <macro name=\"number\">\n    <group delimiter=\", \">\n      <group>\n        <choose>\n          <!--lowercase if we have a preceding element-->\n          <if variable=\"edition container-title\" match=\"any\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </if>\n          <!--other contributors preceding the volume-->\n          <else-if variable=\"author editor\" match=\"all\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else-if>\n          <else>\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else>\n        </choose>\n      </group>\n      <group delimiter=\" \">\n        <text term=\"issue\" form=\"short\"/>\n        <text variable=\"issue\"/>\n      </group>\n      <choose>\n        <if type=\"report\">\n          <text variable=\"genre\"/>\n        </if>\n      </choose>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"publisher\">\n    <text variable=\"publisher\"/>\n  </macro>\n  <macro name=\"publication-date\">\n    <choose>\n      <if type=\"book chapter paper-conference motion_picture\" match=\"any\">\n        <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n      </if>\n      <else-if type=\"article-journal article-magazine\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" date-parts=\"year-month\"/>\n      </else-if>\n      <else-if type=\"speech\" match=\"none\">\n        <date variable=\"issued\" form=\"text\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"location\">\n    <group delimiter=\", \">\n      <group delimiter=\" \">\n        <label variable=\"page\" form=\"short\"/>\n        <text variable=\"page\"/>\n      </group>\n      <choose>\n        <if variable=\"source\" match=\"none\">\n          <text macro=\"URI\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"container2-title\">\n    <group delimiter=\", \">\n      <choose>\n        <if type=\"speech\">\n          <text variable=\"event\"/>\n          <date variable=\"event-date\" form=\"text\"/>\n          <text variable=\"event-place\"/>\n        </if>\n      </choose>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n      <text variable=\"archive_location\"/>\n    </group>\n  </macro>\n  <macro name=\"container2-location\">\n    <choose>\n      <if variable=\"source\">\n        <choose>\n          <if variable=\"DOI URL\" match=\"any\">\n            <group delimiter=\", \">\n              <text variable=\"source\" font-style=\"italic\"/>\n              <text macro=\"URI\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"URI\">\n    <choose>\n      <if variable=\"DOI\">\n        <text variable=\"DOI\" prefix=\"doi:\"/>\n      </if>\n      <else>\n        <text variable=\"URL\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"accessed\">\n    <!--using accessed where we don't have an issued date; follows recommendation on p. 53 -->\n    <choose>\n      <if variable=\"issued\" match=\"none\">\n        <group delimiter=\" \">\n          <text term=\"accessed\" text-case=\"capitalize-first\"/>\n          <date variable=\"accessed\" form=\"text\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"3\" et-al-use-first=\"1\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <choose>\n        <if locator=\"page\">\n          <group delimiter=\" \">\n            <text macro=\"author-short\"/>\n            <text variable=\"locator\"/>\n          </group>\n        </if>\n        <else>\n          <group delimiter=\", \">\n            <text macro=\"author-short\"/>\n            <group>\n              <label variable=\"locator\" form=\"short\"/>\n              <text variable=\"locator\"/>\n            </group>\n          </group>\n        </else>\n      </choose>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"3\" et-al-use-first=\"1\" line-spacing=\"2\" entry-spacing=\"0\" subsequent-author-substitute=\"---\">\n    <sort>\n      <key macro=\"author\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"author\"/>\n        <text macro=\"title\"/>\n        <date variable=\"original-date\" form=\"numeric\" date-parts=\"year\"/>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 1\"-->\n          <text macro=\"container-title\"/>\n          <text macro=\"other-contributors\"/>\n          <text macro=\"version\"/>\n          <text macro=\"number\"/>\n          <text macro=\"publisher\"/>\n          <text macro=\"publication-date\"/>\n          <text macro=\"location\"/>\n        </group>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 2\"-->\n          <!--currently just using this one for archival info-->\n          <text macro=\"container2-title\"/>\n          <text macro=\"container2-location\"/>\n        </group>\n        <text macro=\"accessed\"/>\n      </group>\n    </layout>\n  </bibliography>\n</style>\n"
 
 /***/ }),
 /* 274 */
+/***/ (function(module, exports) {
+
+module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"display-and-sort\" page-range-format=\"chicago\">\n  <info>\n    <title>Chicago Manual of Style 17th edition (author-date)</title>\n    <id>http://www.zotero.org/styles/chicago-author-date</id>\n    <link href=\"http://www.zotero.org/styles/chicago-author-date\" rel=\"self\"/>\n    <link href=\"http://www.chicagomanualofstyle.org/tools_citationguide.html\" rel=\"documentation\"/>\n    <author>\n      <name>Julian Onions</name>\n      <email>julian.onions@gmail.com</email>\n    </author>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Andrew Dunning</name>\n      <email>andrew.dunning@utoronto.ca</email>\n      <uri>https://orcid.org/0000-0003-0464-5036</uri>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"generic-base\"/>\n    <summary>The author-date variant of the Chicago style</summary>\n    <updated>2018-01-24T12:00:00+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editor\" form=\"verb-short\">ed.</term>\n      <term name=\"container-author\" form=\"verb\">by</term>\n      <term name=\"translator\" form=\"verb-short\">trans.</term>\n      <term name=\"editortranslator\" form=\"verb\">\n        <single>edited and translated by</single>\n        <multiple>edited and translated by</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"none\">\n        <group delimiter=\". \">\n          <names variable=\"editor translator\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"director\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"editor\">\n    <names variable=\"editor\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"translator\">\n    <names variable=\"translator\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"recipient\">\n    <choose>\n      <if type=\"personal_communication\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <text term=\"letter\" text-case=\"capitalize-first\"/>\n          </else>\n        </choose>\n      </if>\n    </choose>\n    <names variable=\"recipient\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"lowercase\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"substitute-title\">\n    <choose>\n      <if type=\"article-magazine article-newspaper review review-book\" match=\"any\">\n        <text macro=\"container-title\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"contributors\">\n    <group delimiter=\". \">\n      <names variable=\"author\">\n        <name and=\"text\" name-as-sort-order=\"first\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n        <label form=\"short\" prefix=\", \"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <names variable=\"director\"/>\n          <text macro=\"substitute-title\"/>\n          <text macro=\"title\"/>\n        </substitute>\n      </names>\n      <text macro=\"recipient\"/>\n    </group>\n  </macro>\n  <macro name=\"contributors-short\">\n    <names variable=\"author\">\n      <name form=\"short\" and=\"text\" delimiter=\", \" initialize-with=\". \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <names variable=\"director\"/>\n        <text macro=\"substitute-title\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"interviewer\">\n    <names variable=\"interviewer\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"capitalize-first\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"archive\">\n    <group delimiter=\". \">\n      <text variable=\"archive_location\" text-case=\"capitalize-first\"/>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <group delimiter=\". \">\n      <choose>\n        <if type=\"graphic report\" match=\"any\">\n          <text macro=\"archive\"/>\n        </if>\n        <else-if type=\"article-journal bill book chapter legal_case legislation motion_picture paper-conference\" match=\"none\">\n          <text macro=\"archive\"/>\n        </else-if>\n      </choose>\n      <choose>\n        <if type=\"webpage post-weblog\" match=\"any\">\n          <date variable=\"issued\" form=\"text\"/>\n        </if>\n      </choose>\n      <choose>\n        <if variable=\"issued\" match=\"none\">\n          <group delimiter=\" \">\n            <text term=\"accessed\" text-case=\"capitalize-first\"/>\n            <date variable=\"accessed\" form=\"text\"/>\n          </group>\n        </if>\n      </choose>\n      <choose>\n        <if type=\"legal_case\" match=\"none\">\n          <choose>\n            <if variable=\"DOI\">\n              <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n            </if>\n            <else>\n              <text variable=\"URL\"/>\n            </else>\n          </choose>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"title\" match=\"none\">\n        <choose>\n          <if type=\"personal_communication\" match=\"none\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"bill book graphic legislation motion_picture song\" match=\"any\">\n        <text variable=\"title\" text-case=\"title\" font-style=\"italic\"/>\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text term=\"version\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\". \">\n              <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n              <group delimiter=\", \">\n                <text variable=\"reviewed-title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\">\n                  <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                  <name and=\"text\" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\", \">\n              <text variable=\"title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\">\n                <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                <name and=\"text\" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"legal_case interview patent\" match=\"any\">\n        <text variable=\"title\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\". \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\" strip-periods=\"true\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" text-case=\"capitalize-first\" prefix=\". \"/>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\", \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume\">\n            <text variable=\"volume\" prefix=\" \"/>\n            <group prefix=\" (\" suffix=\")\">\n              <choose>\n                <if variable=\"issue\">\n                  <text variable=\"issue\"/>\n                </if>\n                <else>\n                  <date variable=\"issued\">\n                    <date-part name=\"month\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"issue\">\n            <group delimiter=\" \" prefix=\", \">\n              <text term=\"issue\" form=\"short\"/>\n              <text variable=\"issue\"/>\n              <date variable=\"issued\" prefix=\"(\" suffix=\")\">\n                <date-part name=\"month\"/>\n              </date>\n            </group>\n          </else-if>\n          <else>\n            <date variable=\"issued\" prefix=\", \">\n              <date-part name=\"month\"/>\n            </date>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"legal_case\">\n        <text variable=\"volume\" prefix=\", \"/>\n        <text variable=\"container-title\" prefix=\" \"/>\n        <text variable=\"page\" prefix=\" \"/>\n      </else-if>\n      <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <group prefix=\". \" delimiter=\". \">\n          <group>\n            <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <number variable=\"volume\" form=\"numeric\"/>\n          </group>\n          <group>\n            <number variable=\"number-of-volumes\" form=\"numeric\"/>\n            <text term=\"volume\" form=\"short\" prefix=\" \" plural=\"true\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\" match=\"none\">\n            <group prefix=\". \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <number variable=\"volume\" form=\"numeric\"/>\n            </group>\n          </if>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators-chapter\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\">\n            <group prefix=\", \">\n              <text variable=\"volume\" suffix=\":\"/>\n              <text variable=\"page\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"locators-article\">\n    <choose>\n      <if type=\"article-newspaper\">\n        <group prefix=\", \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"edition\"/>\n            <text term=\"edition\"/>\n          </group>\n          <group>\n            <text term=\"section\" form=\"short\" suffix=\" \"/>\n            <text variable=\"section\"/>\n          </group>\n        </group>\n      </if>\n      <else-if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume issue\" match=\"any\">\n            <text variable=\"page\" prefix=\": \"/>\n          </if>\n          <else>\n            <text variable=\"page\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"point-locators\">\n    <choose>\n      <if variable=\"locator\">\n        <choose>\n          <if locator=\"page\" match=\"none\">\n            <choose>\n              <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n                <choose>\n                  <if variable=\"volume\">\n                    <group>\n                      <text term=\"volume\" form=\"short\" suffix=\" \"/>\n                      <number variable=\"volume\" form=\"numeric\"/>\n                      <label variable=\"locator\" form=\"short\" prefix=\", \" suffix=\" \"/>\n                    </group>\n                  </if>\n                  <else>\n                    <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n                  </else>\n                </choose>\n              </if>\n              <else>\n                <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n            <number variable=\"volume\" form=\"numeric\" suffix=\":\"/>\n          </else-if>\n        </choose>\n        <text variable=\"locator\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-prefix\">\n    <text term=\"in\" text-case=\"capitalize-first\"/>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <text macro=\"container-prefix\" suffix=\" \"/>\n      </if>\n    </choose>\n    <choose>\n      <if type=\"webpage\">\n        <text variable=\"container-title\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"legal_case\" match=\"none\">\n        <group delimiter=\" \">\n          <text variable=\"container-title\" text-case=\"title\" font-style=\"italic\"/>\n          <choose>\n            <if type=\"post-weblog\">\n              <text value=\"(blog)\"/>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <group delimiter=\": \">\n      <text variable=\"publisher-place\"/>\n      <text variable=\"publisher\"/>\n    </group>\n  </macro>\n  <macro name=\"date\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"(\" suffix=\")\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\" text-case=\"capitalize-first\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"date-in-text\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"[\" suffix=\"]\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"day-month\">\n    <date variable=\"issued\">\n      <date-part name=\"month\"/>\n      <date-part name=\"day\" prefix=\" \"/>\n    </date>\n  </macro>\n  <macro name=\"collection-title\">\n    <choose>\n      <if match=\"none\" type=\"article-journal\">\n        <choose>\n          <if match=\"none\" is-numeric=\"collection-number\">\n            <group delimiter=\", \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\" \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"collection-title-journal\">\n    <choose>\n      <if type=\"article-journal\">\n        <group delimiter=\" \">\n          <text variable=\"collection-title\"/>\n          <text variable=\"collection-number\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <group>\n      <text term=\"presented at\" suffix=\" \"/>\n      <text variable=\"event\"/>\n    </group>\n  </macro>\n  <macro name=\"description\">\n    <choose>\n      <if type=\"interview\">\n        <group delimiter=\". \">\n          <text macro=\"interviewer\"/>\n          <text variable=\"medium\" text-case=\"capitalize-first\"/>\n        </group>\n      </if>\n      <else-if type=\"patent\">\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"authority\"/>\n          <text variable=\"number\"/>\n        </group>\n      </else-if>\n      <else>\n        <text variable=\"medium\" text-case=\"capitalize-first\" prefix=\". \"/>\n      </else>\n    </choose>\n    <choose>\n      <if variable=\"title\" match=\"none\"/>\n      <else-if type=\"thesis personal_communication speech\" match=\"any\"/>\n      <else>\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          <choose>\n            <if type=\"report\">\n              <text variable=\"number\"/>\n            </if>\n          </choose>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issue\">\n    <choose>\n      <if type=\"legal_case\">\n        <text variable=\"authority\" prefix=\". \"/>\n      </if>\n      <else-if type=\"speech\">\n        <group prefix=\". \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            <text macro=\"event\"/>\n          </group>\n          <text variable=\"event-place\"/>\n          <text macro=\"day-month\"/>\n        </group>\n      </else-if>\n      <else-if type=\"article-newspaper article-magazine personal_communication\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" prefix=\", \"/>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\", \" prefix=\", \">\n          <group delimiter=\" \">\n            <!--Needs Localization-->\n            <text value=\"filed\"/>\n            <date variable=\"submitted\" form=\"text\"/>\n          </group>\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"issued submitted\" match=\"all\">\n                <text term=\"and\"/>\n              </if>\n            </choose>\n            <!--Needs Localization-->\n            <text value=\"issued\"/>\n            <date variable=\"issued\" form=\"text\"/>\n          </group>\n        </group>\n      </else-if>\n      <else>\n        <group prefix=\". \" delimiter=\", \">\n          <choose>\n            <if type=\"thesis\">\n              <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            </if>\n          </choose>\n          <text macro=\"publisher\"/>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <citation et-al-min=\"4\" et-al-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" givenname-disambiguation-rule=\"primary-name\" collapse=\"year\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <choose>\n          <if variable=\"issued accessed\" match=\"any\">\n            <group delimiter=\" \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </if>\n          <!---comma before forthcoming and n.d.-->\n          <else>\n            <group delimiter=\", \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </else>\n        </choose>\n        <text macro=\"point-locators\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"11\" et-al-use-first=\"7\" subsequent-author-substitute=\"&#8212;&#8212;&#8212;\" entry-spacing=\"0\">\n    <sort>\n      <key macro=\"contributors\"/>\n      <key variable=\"issued\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"contributors\"/>\n        <text macro=\"date\"/>\n        <text macro=\"title\"/>\n      </group>\n      <text macro=\"description\"/>\n      <text macro=\"secondary-contributors\" prefix=\". \"/>\n      <text macro=\"container-title\" prefix=\". \"/>\n      <text macro=\"container-contributors\"/>\n      <text macro=\"edition\"/>\n      <text macro=\"locators-chapter\"/>\n      <text macro=\"collection-title-journal\" prefix=\", \" suffix=\", \"/>\n      <text macro=\"locators\"/>\n      <text macro=\"collection-title\" prefix=\". \"/>\n      <text macro=\"issue\"/>\n      <text macro=\"locators-article\"/>\n      <text macro=\"access\" prefix=\". \"/>\n    </layout>\n  </bibliography>\n</style>\n"
+
+/***/ }),
+/* 275 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_fin_search_box__ = __webpack_require__(275);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_app_collection_card__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html__ = __webpack_require__(278);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_fin_search_box__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_app_collection_card__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html__ = __webpack_require__(279);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_home_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__);
@@ -59929,12 +59947,12 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
 customElements.define('app-home', AppHome);
 
 /***/ }),
-/* 275 */
+/* 276 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__ = __webpack_require__(277);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__);
 
 
@@ -60022,36 +60040,36 @@ class FinSearchBox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_
 customElements.define('fin-search-box', FinSearchBox);
 
 /***/ }),
-/* 276 */
+/* 277 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n  .root {\n    display: flex;\n    align-items: center;\n  }\n  input {\n    width: 100%;\n    box-sizing: border-box;\n    padding: 0 5px;\n    background: white;\n    border: none;\n    height: 45px;\n    outline: none;\n    @apply --fin-search-box-input;\n  }\n  button {\n    background: white;\n    height: 45px;\n    border: none;\n    margin: 0;\n    padding: 0 10px;\n    border-radius: 0;\n    cursor: pointer;\n    @apply --fin-search-box-button;\n  }\n  select {\n    margin-left: 20px;\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    height: 45px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n    @apply --fin-search-box-select;\n  }\n  @media(max-width: 600px) {\n    select {\n      margin-left: 10px;\n    }\n  }\n</style>\n\n<div class=\"root\">\n  <div style=\"flex:1\">\n    <input \n      id=\"input\" \n      type=\"text\"\n      on-keyup=\"_onKeyUp\"\n      placeholder=\"[[placeholder]]\" />\n  </div>\n  <button on-click=\"_fireSearch\">\n    <slot name=\"button-content\"></slot>\n  </button>\n  <select id=\"select\" on-change=\"_fireBrowse\">\n    <option>Browse</option>\n  </select>\n</div>";
 
 /***/ }),
-/* 277 */
+/* 278 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: inline-block;\n  }\n\n  .root {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .root:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .root > div  {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<div class=\"root\" style=\"background-image:url('[[collection.thumbnail]]')\" data-id$=\"[[collection.id]]\">\n  <div>[[collection.name]]</div>\n</div>\n";
 
 /***/ }),
-/* 278 */
+/* 279 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <app-collection-card \n        data-id$=\"[[item.id]]\" \n        collection=\"[[item]]\" \n        on-click=\"_onCollectionClicked\">\n      </app-collection-card>\n    </template>\n  </div>\n</div>\n\n<div class=\"text-container\">\n  \n  <h1>About Digital Collections</h1>\n\n  <p>The UC Davis Digital Collections is a locally developed digital repository that was designed to store and manage the digital assets of UC Davis. These Digital Collections are intended to increase access to previously undiscoverable digital assets held by the University Library.</p>\n  \n  <p>Initially launched in 2018, the repository currently stores 14,000 digital assets.</p>\n  \n  <h2>Platform</h2>\n  \n  <p>The Digital Asset Management System is built on the Fedora Linked Data Platform. Custom services are implemented using a Fedora (APIX) extension method as a general methodology. The User Interface was built with web-components anticipating a need for UI flexibility as the digital collection grows. For a more detailed explanation of the development, see our <a href=\"https://github.com/UCDavisLibrary/fin-server/issues/9\">Fin Server Overview.</a>\n  </p>\n  \n  <h2>Contact</h2>\n  <ul>\n    <li><a href=\"mailto:eanebeker@ucdavis.edu\">Eric A Nebeker - Digital Assets Specialist</a></li>\n  </ul>\n  \n  <h2>Implementation Team</h2>\n  <ul>\n    <li>Quinn Hart - Team Lead</li>\n    <li>Justin Merz - Lead Developer</li>\n    <li>Kimmy Hescock - User Experience Designer</li>\n  </ul>\n  \n  <h2>Members of the DAMS Steering Committee</h2>\n  <ul>\n    <li>Kevin Miller</li>\n    <li>Neil Weingarten</li>\n    <li>Amy Azzarito</li>\n    <li>Peter Brantley</li>\n    <li>Carl Stahmer</li>\n    <li>Dale Snapp</li>\n    <li>Robert Heyer-Gray</li>\n    <li>Vessela Ensberg</li>\n    <li>Xiaoli Li</li>\n  </ul>\n  \n  <p>The UC Davis Library DAMS was a project of the Library's <a href=\"https://www.library.ucdavis.edu/service/online-strategy-2/\">Online Strategy team.</a>\n  </p>\n\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>\n";
 
 /***/ }),
-/* 279 */
+/* 280 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_input_paper_input__ = __webpack_require__(280);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html__ = __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_input_paper_input__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html__ = __webpack_require__(288);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_search_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_header__ = __webpack_require__(288);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb__ = __webpack_require__(291);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__results_app_search_results_panel__ = __webpack_require__(293);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__filtering_app_filters_panel__ = __webpack_require__(304);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_header__ = __webpack_require__(289);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb__ = __webpack_require__(292);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__results_app_search_results_panel__ = __webpack_require__(294);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__filtering_app_filters_panel__ = __webpack_require__(305);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
@@ -60236,17 +60254,17 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-search', AppSearch);
 
 /***/ }),
-/* 280 */
+/* 281 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_input_iron_input_js__ = __webpack_require__(281);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_behavior_js__ = __webpack_require__(283);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_input_char_counter_js__ = __webpack_require__(284);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_input_container_js__ = __webpack_require__(285);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_input_error_js__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_input_iron_input_js__ = __webpack_require__(282);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_behavior_js__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_input_char_counter_js__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_input_container_js__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_input_error_js__ = __webpack_require__(287);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_lib_elements_dom_module_js__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_polymer_element_js__ = __webpack_require__(2);
@@ -60427,13 +60445,13 @@ Object(__WEBPACK_IMPORTED_MODULE_7__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 281 */
+/* 282 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_announcer_iron_a11y_announcer_js__ = __webpack_require__(282);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_announcer_iron_a11y_announcer_js__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -60720,7 +60738,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 282 */
+/* 283 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60802,7 +60820,7 @@ IronA11yAnnouncer.requestAvailability = function() {
 
 
 /***/ }),
-/* 283 */
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61359,13 +61377,13 @@ const PaperInputBehavior = [
 
 
 /***/ }),
-/* 284 */
+/* 285 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_typography_js__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_input_addon_behavior_js__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_input_addon_behavior_js__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -61437,7 +61455,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 285 */
+/* 286 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62020,14 +62038,14 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 286 */
+/* 287 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_typography_js__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_addon_behavior_js__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_addon_behavior_js__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -62093,19 +62111,19 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 287 */
+/* 288 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .search-container {\n    background-color: var(--super-light-background-color);\n    min-height: 500px;\n    display: flex;\n  }\n  .search-content {\n    margin: 15px;\n    flex: 1;\n  }\n  app-filters-panel {\n    width: 350px;\n  }\n\n  #drawer app-filters-panel {\n    width: 300px;\n  }\n  \n  #drawer {\n    position: absolute;\n    top: 0;\n    left: -335px;\n    bottom: 0;\n    background: white;\n    width: 300px;\n    z-index: 10;\n    transition: left 300ms ease-out;\n    background-color: var(--light-background-color);\n  }\n\n  @keyframes fadeIn {\n    from {\n      opacity: 0;\n    }\n    to {\n      opacity: .7;\n    }\n  }\n\n  #drawer-background {\n    opacity: .7;\n    position: absolute;\n    top: 0;\n    left: 0;\n    bottom: 0;\n    right: 0;\n    background: black;\n    z-index: 5;\n    display: none;\n    animation: fadeIn 300ms;\n  }\n\n  #drawer[open] {\n    left: 0;\n  }\n\n  #drawer-background[open] {\n    display: block;\n  }\n\n  #desktop-filter-panel {\n    display: none;\n  }\n\n  @media( min-width: 975px ) {\n    #outerDrawer {\n      display: none;\n    }\n    #desktop-filter-panel {\n      display: block;\n    }\n  }\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<div style=\"position: relative\">\n  <div id=\"outerDrawer\">\n    <div id=\"drawer\" open$=\"[[drawerOpen]]\">\n      <app-filters-panel on-toggle-drawer=\"_toggleDrawer\"></app-filters-panel>\n    </div>\n    <div id=\"drawer-background\" open$=\"[[drawerOpen]]\" on-click=\"_toggleDrawer\"></div>\n  </div>\n\n  <div class=\"search-container\">\n    <app-filters-panel id=\"desktop-filter-panel\"></app-filters-panel>\n    <div class=\"search-content\">\n      <app-search-results-panel \n        id=\"resultsPanel\" \n        on-toggle-drawer=\"_toggleDrawer\" \n        on-page-size-change=\"_onPageSizeChange\"\n        on-page-change=\"_onPaginationChange\">\n      </app-search-results-panel>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 288 */
+/* 289 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_app_auth_header__ = __webpack_require__(289);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_app_auth_header__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html__ = __webpack_require__(291);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_search_header_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__);
@@ -62213,7 +62231,7 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 customElements.define('app-search-header', AppSearchHeader);
 
 /***/ }),
-/* 289 */
+/* 290 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62248,13 +62266,13 @@ class AppAuthHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_p
 customElements.define('app-auth-header', AppAuthHeader);
 
 /***/ }),
-/* 290 */
+/* 291 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--default-primary-color);\n    color: var(--inverse-text-color);\n    padding: 15px;\n  }\n\n  app-auth-header {\n    margin-left: 10px;\n  }\n  \n  fin-search-box {\n    display: inline-block;\n    width: 100%;\n    box-sizing: border-box;\n    max-width: 525px;\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n  }\n  \n  h2 {\n    margin: 0;\n    white-space: nowrap;\n  }\n  h2 a {\n    color: var(--default-secondary-color);\n    text-decoration: none;\n  }\n  h2 a:visited {\n    color: var(--default-secondary-color);\n    text-decoration: none;\n  }\n\n  img {\n    height: 50px;\n  }\n\n  .logo, h2 {\n    padding-right: 20px;\n    display: none;\n  }\n\n  .filler {\n    flex: .25;\n    display: none;\n  }\n\n  .logo-sm {\n    margin-right: 10px;\n  }\n\n  @media( min-width: 700px ) {\n    .logo {\n      display: block;\n    }\n    .logo-sm {\n      display: none;\n    }\n  }\n\n  @media( min-width: 815px ) {\n    h2 {\n      display: block;\n    }\n  }\n\n  @media( min-width: 1100px ) {\n    .filler {\n      display: block;\n    }\n  }\n</style>\n\n<div class=\"layout\">\n  <img class=\"logo\" src=\"/images/ucd-lib-logo-white.png\" />\n  <img class=\"logo-sm\" src=\"/images/ucd-lib-logo-white-sm.png\" />\n  <h2><a href=\"/\">Digital Collections</a></h2>\n  <div class=\"filler\"></div>\n  <div style=\"flex:1; text-align:right\">\n    <fin-search-box \n      id=\"searchInput\" \n      on-search=\"_onSearch\" \n      on-browse=\"_onBrowse\"\n      placeholder=\"Search Keyword(s)\">\n      <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n    </fin-search-box>\n  </div>\n  <app-auth-header></app-auth-header>\n</div>\n\n";
 
 /***/ }),
-/* 291 */
+/* 292 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62265,7 +62283,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__ = __webpack_require__(292);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__ = __webpack_require__(293);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__);
 
 
@@ -62368,28 +62386,28 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
 customElements.define('app-search-breadcrumb', AppSearchBreadcrumb);
 
 /***/ }),
-/* 292 */
+/* 293 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\">[[collection.name]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">[[record.name]]</div>\n</div>";
 
 /***/ }),
-/* 293 */
+/* 294 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_cork_pagination__ = __webpack_require__(294);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_grid_result__ = __webpack_require__(296);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_list_result__ = __webpack_require__(301);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_app_collection_card__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_cork_pagination__ = __webpack_require__(295);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_grid_result__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_list_result__ = __webpack_require__(302);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_app_collection_card__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__ = __webpack_require__(303);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__ = __webpack_require__(304);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__);
 
 
@@ -62654,14 +62672,14 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
 customElements.define('app-search-results-panel', AppSearchResultsPanel);
 
 /***/ }),
-/* 294 */
+/* 295 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_icon_button_paper_icon_button__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_icon_button_paper_icon_button__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__ = __webpack_require__(295);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__ = __webpack_require__(296);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__);
 
 
@@ -62842,18 +62860,18 @@ class CorkPagination extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 window.customElements.define('cork-pagination', CorkPagination);
 
 /***/ }),
-/* 295 */
+/* 296 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #root {\n    display: flex;\n    align-items: center;\n  }\n\n  .ellipsis {\n    display: none;\n  }\n\n  paper-icon-button {\n    color: var(--cork-color, --default-primary-color);\n  }\n  paper-icon-button[disabled] {\n     color: var(--cork-disabled-color, var(--disabled-color, #ccc));\n  }\n\n  a {\n    color: var(--cork-color, --default-primary-color);\n    cursor: pointer;\n    text-align: center;\n    min-width: 20px;\n    border-radius: 25px;\n    display: inline-block;\n    padding: 5px;\n    margin: 0 3px;\n    font-size: 14px;\n    line-height: 20px;\n  }\n\n  a:hover {\n    background: var(--cork-background-color-light, var(--light-background-color, #eee));\n  }\n\n  a[selected] {\n    background: var(--cork-background-color, var(--medium-background-color, #ccc));\n    color: white;\n  }\n\n  [hidden] {\n    display: none;\n  }\n\n  .text-display {\n    font-style: italic;\n  }\n</style>\n\n<div id=\"root\">\n  <paper-icon-button disabled$=\"[[firstPage]]\" icon=\"arrow-back\" on-click=\"previous\"></paper-icon-button>\n\n  <div style=\"flex:1\"></div>\n\n  <div hidden$=\"[[loading]]\">\n    <div hidden$=\"[[!textMode]]\" class=\"text-display\">[[textDisplay]]</div>\n  </div>\n\n  <div hidden$=\"[[textMode]]\">\n    <a selected$=\"[[firstPage]]\" on-click=\"_selectPage\">1</a>\n    <a id=\"startEllipsis\" class=\"ellipsis\" on-click=\"previousSection\">...</a>\n\n    <template is=\"dom-repeat\" items=\"[[pages]]\">\n      <a selected$=\"[[item.selected]]\" on-click=\"_selectPage\">[[item.index]]</a>\n    </template>\n\n    <a id=\"stopEllipsis\" class=\"ellipsis\" on-click=\"nextSection\">...</a>\n    <a id=\"lastPage\" selected$=\"[[lastPage]]\" on-click=\"_selectPage\">[[lastPageIndex]]</a>\n  </div>\n\n  <div style=\"flex:1\"></div>\n\n  <paper-icon-button disabled$=\"[[lastPage]]\" icon=\"arrow-forward\" on-click=\"next\"></paper-icon-button>\n</div>";
 
 /***/ }),
-/* 296 */
+/* 297 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__ = __webpack_require__(300);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__ = __webpack_require__(301);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__);
 
 
@@ -62869,246 +62887,246 @@ class AppSearchGridResult extends __WEBPACK_IMPORTED_MODULE_0__app_search_result
 customElements.define('app-search-grid-result', AppSearchGridResult);
 
 /***/ }),
-/* 297 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 74,
-	"./af.js": 74,
-	"./ar": 75,
-	"./ar-dz": 76,
-	"./ar-dz.js": 76,
-	"./ar-kw": 77,
-	"./ar-kw.js": 77,
-	"./ar-ly": 78,
-	"./ar-ly.js": 78,
-	"./ar-ma": 79,
-	"./ar-ma.js": 79,
-	"./ar-sa": 80,
-	"./ar-sa.js": 80,
-	"./ar-tn": 81,
-	"./ar-tn.js": 81,
-	"./ar.js": 75,
-	"./az": 82,
-	"./az.js": 82,
-	"./be": 83,
-	"./be.js": 83,
-	"./bg": 84,
-	"./bg.js": 84,
-	"./bm": 85,
-	"./bm.js": 85,
-	"./bn": 86,
-	"./bn.js": 86,
-	"./bo": 87,
-	"./bo.js": 87,
-	"./br": 88,
-	"./br.js": 88,
-	"./bs": 89,
-	"./bs.js": 89,
-	"./ca": 90,
-	"./ca.js": 90,
-	"./cs": 91,
-	"./cs.js": 91,
-	"./cv": 92,
-	"./cv.js": 92,
-	"./cy": 93,
-	"./cy.js": 93,
-	"./da": 94,
-	"./da.js": 94,
-	"./de": 95,
-	"./de-at": 96,
-	"./de-at.js": 96,
-	"./de-ch": 97,
-	"./de-ch.js": 97,
-	"./de.js": 95,
-	"./dv": 98,
-	"./dv.js": 98,
-	"./el": 99,
-	"./el.js": 99,
-	"./en-au": 100,
-	"./en-au.js": 100,
-	"./en-ca": 101,
-	"./en-ca.js": 101,
-	"./en-gb": 102,
-	"./en-gb.js": 102,
-	"./en-ie": 103,
-	"./en-ie.js": 103,
-	"./en-nz": 104,
-	"./en-nz.js": 104,
-	"./eo": 105,
-	"./eo.js": 105,
-	"./es": 106,
-	"./es-do": 107,
-	"./es-do.js": 107,
-	"./es-us": 108,
-	"./es-us.js": 108,
-	"./es.js": 106,
-	"./et": 109,
-	"./et.js": 109,
-	"./eu": 110,
-	"./eu.js": 110,
-	"./fa": 111,
-	"./fa.js": 111,
-	"./fi": 112,
-	"./fi.js": 112,
-	"./fo": 113,
-	"./fo.js": 113,
-	"./fr": 114,
-	"./fr-ca": 115,
-	"./fr-ca.js": 115,
-	"./fr-ch": 116,
-	"./fr-ch.js": 116,
-	"./fr.js": 114,
-	"./fy": 117,
-	"./fy.js": 117,
-	"./gd": 118,
-	"./gd.js": 118,
-	"./gl": 119,
-	"./gl.js": 119,
-	"./gom-latn": 120,
-	"./gom-latn.js": 120,
-	"./gu": 121,
-	"./gu.js": 121,
-	"./he": 122,
-	"./he.js": 122,
-	"./hi": 123,
-	"./hi.js": 123,
-	"./hr": 124,
-	"./hr.js": 124,
-	"./hu": 125,
-	"./hu.js": 125,
-	"./hy-am": 126,
-	"./hy-am.js": 126,
-	"./id": 127,
-	"./id.js": 127,
-	"./is": 128,
-	"./is.js": 128,
-	"./it": 129,
-	"./it.js": 129,
-	"./ja": 130,
-	"./ja.js": 130,
-	"./jv": 131,
-	"./jv.js": 131,
-	"./ka": 132,
-	"./ka.js": 132,
-	"./kk": 133,
-	"./kk.js": 133,
-	"./km": 134,
-	"./km.js": 134,
-	"./kn": 135,
-	"./kn.js": 135,
-	"./ko": 136,
-	"./ko.js": 136,
-	"./ky": 137,
-	"./ky.js": 137,
-	"./lb": 138,
-	"./lb.js": 138,
-	"./lo": 139,
-	"./lo.js": 139,
-	"./lt": 140,
-	"./lt.js": 140,
-	"./lv": 141,
-	"./lv.js": 141,
-	"./me": 142,
-	"./me.js": 142,
-	"./mi": 143,
-	"./mi.js": 143,
-	"./mk": 144,
-	"./mk.js": 144,
-	"./ml": 145,
-	"./ml.js": 145,
-	"./mr": 146,
-	"./mr.js": 146,
-	"./ms": 147,
-	"./ms-my": 148,
-	"./ms-my.js": 148,
-	"./ms.js": 147,
-	"./my": 149,
-	"./my.js": 149,
-	"./nb": 150,
-	"./nb.js": 150,
-	"./ne": 151,
-	"./ne.js": 151,
-	"./nl": 152,
-	"./nl-be": 153,
-	"./nl-be.js": 153,
-	"./nl.js": 152,
-	"./nn": 154,
-	"./nn.js": 154,
-	"./pa-in": 155,
-	"./pa-in.js": 155,
-	"./pl": 156,
-	"./pl.js": 156,
-	"./pt": 157,
-	"./pt-br": 158,
-	"./pt-br.js": 158,
-	"./pt.js": 157,
-	"./ro": 159,
-	"./ro.js": 159,
-	"./ru": 160,
-	"./ru.js": 160,
-	"./sd": 161,
-	"./sd.js": 161,
-	"./se": 162,
-	"./se.js": 162,
-	"./si": 163,
-	"./si.js": 163,
-	"./sk": 164,
-	"./sk.js": 164,
-	"./sl": 165,
-	"./sl.js": 165,
-	"./sq": 166,
-	"./sq.js": 166,
-	"./sr": 167,
-	"./sr-cyrl": 168,
-	"./sr-cyrl.js": 168,
-	"./sr.js": 167,
-	"./ss": 169,
-	"./ss.js": 169,
-	"./sv": 170,
-	"./sv.js": 170,
-	"./sw": 171,
-	"./sw.js": 171,
-	"./ta": 172,
-	"./ta.js": 172,
-	"./te": 173,
-	"./te.js": 173,
-	"./tet": 174,
-	"./tet.js": 174,
-	"./th": 175,
-	"./th.js": 175,
-	"./tl-ph": 176,
-	"./tl-ph.js": 176,
-	"./tlh": 177,
-	"./tlh.js": 177,
-	"./tr": 178,
-	"./tr.js": 178,
-	"./tzl": 179,
-	"./tzl.js": 179,
-	"./tzm": 180,
-	"./tzm-latn": 181,
-	"./tzm-latn.js": 181,
-	"./tzm.js": 180,
-	"./uk": 182,
-	"./uk.js": 182,
-	"./ur": 183,
-	"./ur.js": 183,
-	"./uz": 184,
-	"./uz-latn": 185,
-	"./uz-latn.js": 185,
-	"./uz.js": 184,
-	"./vi": 186,
-	"./vi.js": 186,
-	"./x-pseudo": 187,
-	"./x-pseudo.js": 187,
-	"./yo": 188,
-	"./yo.js": 188,
-	"./zh-cn": 189,
-	"./zh-cn.js": 189,
-	"./zh-hk": 190,
-	"./zh-hk.js": 190,
-	"./zh-tw": 191,
-	"./zh-tw.js": 191
+	"./af": 75,
+	"./af.js": 75,
+	"./ar": 76,
+	"./ar-dz": 77,
+	"./ar-dz.js": 77,
+	"./ar-kw": 78,
+	"./ar-kw.js": 78,
+	"./ar-ly": 79,
+	"./ar-ly.js": 79,
+	"./ar-ma": 80,
+	"./ar-ma.js": 80,
+	"./ar-sa": 81,
+	"./ar-sa.js": 81,
+	"./ar-tn": 82,
+	"./ar-tn.js": 82,
+	"./ar.js": 76,
+	"./az": 83,
+	"./az.js": 83,
+	"./be": 84,
+	"./be.js": 84,
+	"./bg": 85,
+	"./bg.js": 85,
+	"./bm": 86,
+	"./bm.js": 86,
+	"./bn": 87,
+	"./bn.js": 87,
+	"./bo": 88,
+	"./bo.js": 88,
+	"./br": 89,
+	"./br.js": 89,
+	"./bs": 90,
+	"./bs.js": 90,
+	"./ca": 91,
+	"./ca.js": 91,
+	"./cs": 92,
+	"./cs.js": 92,
+	"./cv": 93,
+	"./cv.js": 93,
+	"./cy": 94,
+	"./cy.js": 94,
+	"./da": 95,
+	"./da.js": 95,
+	"./de": 96,
+	"./de-at": 97,
+	"./de-at.js": 97,
+	"./de-ch": 98,
+	"./de-ch.js": 98,
+	"./de.js": 96,
+	"./dv": 99,
+	"./dv.js": 99,
+	"./el": 100,
+	"./el.js": 100,
+	"./en-au": 101,
+	"./en-au.js": 101,
+	"./en-ca": 102,
+	"./en-ca.js": 102,
+	"./en-gb": 103,
+	"./en-gb.js": 103,
+	"./en-ie": 104,
+	"./en-ie.js": 104,
+	"./en-nz": 105,
+	"./en-nz.js": 105,
+	"./eo": 106,
+	"./eo.js": 106,
+	"./es": 107,
+	"./es-do": 108,
+	"./es-do.js": 108,
+	"./es-us": 109,
+	"./es-us.js": 109,
+	"./es.js": 107,
+	"./et": 110,
+	"./et.js": 110,
+	"./eu": 111,
+	"./eu.js": 111,
+	"./fa": 112,
+	"./fa.js": 112,
+	"./fi": 113,
+	"./fi.js": 113,
+	"./fo": 114,
+	"./fo.js": 114,
+	"./fr": 115,
+	"./fr-ca": 116,
+	"./fr-ca.js": 116,
+	"./fr-ch": 117,
+	"./fr-ch.js": 117,
+	"./fr.js": 115,
+	"./fy": 118,
+	"./fy.js": 118,
+	"./gd": 119,
+	"./gd.js": 119,
+	"./gl": 120,
+	"./gl.js": 120,
+	"./gom-latn": 121,
+	"./gom-latn.js": 121,
+	"./gu": 122,
+	"./gu.js": 122,
+	"./he": 123,
+	"./he.js": 123,
+	"./hi": 124,
+	"./hi.js": 124,
+	"./hr": 125,
+	"./hr.js": 125,
+	"./hu": 126,
+	"./hu.js": 126,
+	"./hy-am": 127,
+	"./hy-am.js": 127,
+	"./id": 128,
+	"./id.js": 128,
+	"./is": 129,
+	"./is.js": 129,
+	"./it": 130,
+	"./it.js": 130,
+	"./ja": 131,
+	"./ja.js": 131,
+	"./jv": 132,
+	"./jv.js": 132,
+	"./ka": 133,
+	"./ka.js": 133,
+	"./kk": 134,
+	"./kk.js": 134,
+	"./km": 135,
+	"./km.js": 135,
+	"./kn": 136,
+	"./kn.js": 136,
+	"./ko": 137,
+	"./ko.js": 137,
+	"./ky": 138,
+	"./ky.js": 138,
+	"./lb": 139,
+	"./lb.js": 139,
+	"./lo": 140,
+	"./lo.js": 140,
+	"./lt": 141,
+	"./lt.js": 141,
+	"./lv": 142,
+	"./lv.js": 142,
+	"./me": 143,
+	"./me.js": 143,
+	"./mi": 144,
+	"./mi.js": 144,
+	"./mk": 145,
+	"./mk.js": 145,
+	"./ml": 146,
+	"./ml.js": 146,
+	"./mr": 147,
+	"./mr.js": 147,
+	"./ms": 148,
+	"./ms-my": 149,
+	"./ms-my.js": 149,
+	"./ms.js": 148,
+	"./my": 150,
+	"./my.js": 150,
+	"./nb": 151,
+	"./nb.js": 151,
+	"./ne": 152,
+	"./ne.js": 152,
+	"./nl": 153,
+	"./nl-be": 154,
+	"./nl-be.js": 154,
+	"./nl.js": 153,
+	"./nn": 155,
+	"./nn.js": 155,
+	"./pa-in": 156,
+	"./pa-in.js": 156,
+	"./pl": 157,
+	"./pl.js": 157,
+	"./pt": 158,
+	"./pt-br": 159,
+	"./pt-br.js": 159,
+	"./pt.js": 158,
+	"./ro": 160,
+	"./ro.js": 160,
+	"./ru": 161,
+	"./ru.js": 161,
+	"./sd": 162,
+	"./sd.js": 162,
+	"./se": 163,
+	"./se.js": 163,
+	"./si": 164,
+	"./si.js": 164,
+	"./sk": 165,
+	"./sk.js": 165,
+	"./sl": 166,
+	"./sl.js": 166,
+	"./sq": 167,
+	"./sq.js": 167,
+	"./sr": 168,
+	"./sr-cyrl": 169,
+	"./sr-cyrl.js": 169,
+	"./sr.js": 168,
+	"./ss": 170,
+	"./ss.js": 170,
+	"./sv": 171,
+	"./sv.js": 171,
+	"./sw": 172,
+	"./sw.js": 172,
+	"./ta": 173,
+	"./ta.js": 173,
+	"./te": 174,
+	"./te.js": 174,
+	"./tet": 175,
+	"./tet.js": 175,
+	"./th": 176,
+	"./th.js": 176,
+	"./tl-ph": 177,
+	"./tl-ph.js": 177,
+	"./tlh": 178,
+	"./tlh.js": 178,
+	"./tr": 179,
+	"./tr.js": 179,
+	"./tzl": 180,
+	"./tzl.js": 180,
+	"./tzm": 181,
+	"./tzm-latn": 182,
+	"./tzm-latn.js": 182,
+	"./tzm.js": 181,
+	"./uk": 183,
+	"./uk.js": 183,
+	"./ur": 184,
+	"./ur.js": 184,
+	"./uz": 185,
+	"./uz-latn": 186,
+	"./uz-latn.js": 186,
+	"./uz.js": 185,
+	"./vi": 187,
+	"./vi.js": 187,
+	"./x-pseudo": 188,
+	"./x-pseudo.js": 188,
+	"./yo": 189,
+	"./yo.js": 189,
+	"./zh-cn": 190,
+	"./zh-cn.js": 190,
+	"./zh-hk": 191,
+	"./zh-hk.js": 191,
+	"./zh-tw": 192,
+	"./zh-tw.js": 192
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -63124,15 +63142,15 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 297;
+webpackContext.id = 298;
 
 /***/ }),
-/* 298 */
+/* 299 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__ = __webpack_require__(299);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__ = __webpack_require__(300);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__);
 
 
@@ -63173,24 +63191,24 @@ class AppSearchResultCreator extends __WEBPACK_IMPORTED_MODULE_0__polymer_polyme
 customElements.define('app-search-result-creator', AppSearchResultCreator);
 
 /***/ }),
-/* 299 */
+/* 300 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .text {\n    display: block;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    width: calc(var(--grid-cell-width) - 30px);\n    color: var(--gray-text);\n  }\n</style>\n\n<a class=\"text\" hidden=\"[[!link]]\" href=\"[[label]]\" target=\"_blank\">[[label]]</a>\n<div class=\"text\" hidden=\"[[link]]\">[[label]]</div>";
 
 /***/ }),
-/* 300 */
+/* 301 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    width: var(--grid-cell-width);\n    background-color: white;\n    cursor: pointer;\n  }\n  :host(:hover) {\n    border: 2px solid var(--default-secondary-color);\n    margin: -2px 0 0 -2px;\n  }\n  .img {\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: transparent;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n</style>\n\n<div hidden$=\"[[!isImage]]\" style=\"position: relative; width: 250px; height:[[imgHeight]]px\">\n  <div style=\"background-image: url('[[imgThumbail]]');height:[[imgHeight]]px\" class=\"img\" ></div>\n  <div style=\"background-image: url('[[imgUrl]]');height:[[imgHeight]]px\" class=\"img\"></div>\n</div>\n\n\n<div style=\"padding: 15px\">\n  <div class=\"collection-name\">[[collectionName]]</div>\n\n  <h4>[[name]]</h4>\n\n  <template is=\"dom-repeat\" items=\"[[creator]]\">\n    <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n  </template>\n\n  <div class=\"footer\">\n    <div class=\"year\">[[year]]</div>\n    <div>\n      <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 301 */
+/* 302 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__ = __webpack_require__(302);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__ = __webpack_require__(303);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__);
 
 
@@ -63206,32 +63224,32 @@ class AppSearchListResult extends __WEBPACK_IMPORTED_MODULE_0__app_search_result
 customElements.define('app-search-list-result', AppSearchListResult);
 
 /***/ }),
-/* 302 */
+/* 303 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: white;\n    margin: 10px;\n  }\n\n  .img {\n    height: 250px;\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: white;\n    background-position: center center;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .spacer {\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  .layout {\n    display: flex;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  .flex-vertical {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n  }\n</style>\n\n<div class=\"layout\">\n    <div style=\"background-image: url('[[imgUrl]]')\" hidden$=\"[[!isImage]]\" class=\"img\" ></div>\n\n  <div style=\"padding: 15px; flex: 1\">\n    <div class=\"flex-vertical\">\n      <div class=\"collection-name\">[[collectionName]]</div>\n      \n      <h4>[[name]]</h4>\n    \n      <template is=\"dom-repeat\" items=\"[[creator]]\">\n        <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n      </template>\n      \n      <div class=\"spacer\"></div>\n\n      <div class=\"footer\">\n        <div class=\"year\">[[year]]</div>\n        <div>\n          <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 303 */
+/* 304 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    max-width: 1150px;\n  }\n\n  .header {\n    font-size: var(--font-size-sm);\n    display: flex;\n    align-items: center;\n    margin-left: -15px;\n  }\n\n  select {\n    margin-left: 10px;\n    border: 1px solid var(--light-background-color);\n    border-radius: 0;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 16px 16px;\n    background-repeat: no-repeat;\n    background-color: transparent;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n  }\n\n  h3 {\n    border-top: 1px solid var(--light-background-color);\n    margin: 15px 0 0 0;\n    padding: 15px 0 0 0;\n    color: var(--default-primary-color);\n  }\n\n  .masonry {\n    margin: 10px;\n    position: relative;\n  }\n\n  .masonry .item {\n    display: block;\n    position: absolute;\n    /* visibility: hidden; */\n    top : 25px;\n    left: 25px;\n    will-change: top, left;\n    transition: top 500ms ease-out, left 500ms ease-out;\n  }\n\n  .list {\n    margin: 10px;\n  }\n\n  .list .item {\n    padding: 10px;\n    margin-bottom: 15px;\n    background-color: #daaa00;\n    height: 250px;\n  }\n\n  .spacer {\n    height: 20px;\n    border-right: 1px solid var(--light-background-color);\n  }\n\n  .total {\n    font-style: italic; \n    padding-left: 10px;\n  }\n\n  .mobile-total {\n    font-style: italic; \n  }\n\n  .filler {\n    flex: 1;\n  }\n\n  cork-pagination {\n    display: inline-block;\n\n    --cork-color : var(--default-primary-color);\n    --cork-background-color : var(--default-secondary-color);\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n    margin-left: -15px;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  .drawer-toggle[disabled] {\n    color: var(--light-background-color);\n  }\n\n  .header {\n    display : none;\n  }\n\n  .mobile-header .row2 {\n    display: flex;\n    align-items: center;\n  }\n\n  .collections {\n    text-align: center;\n  }\n\n  @media( min-width: 975px ) {\n    .header {\n      display: flex;\n    }\n    .mobile-header {\n      display: none;\n    }\n  }\n</style>\n\n<div class=\"header\">\n  <div class=\"total\">[[total]] results found</div>\n  \n  <div class=\"filler\"></div>\n  \n  <paper-icon-button \n    icon=\"fin:grid\" \n    disabled$=\"[[!isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"masonry\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  <paper-icon-button \n    icon=\"fin:list\" \n    disabled$=\"[[isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"list\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  \n  <div>\n    <select id=\"numPerPage\" on-change=\"_onPageSizeChange\">\n      <option>50</option>\n      <option>20</option>\n      <option>10</option>\n    </select>\n  </div>\n  <div style=\"margin-left: 10px; font-style:italic\">Items per page</div>\n</div>\n\n<div class=\"mobile-header\">\n  <div>\n    <div style=\"display:inline-block\">\n      <button class=\"drawer-toggle\" on-click=\"_onToggleDrawer\">\n        <span>Info / Filters</span>\n        <iron-icon icon=\"add\"></iron-icon>\n      </button>\n    </div>\n  </div>\n\n  <div class=\"row2\">\n    <div class=\"total\">[[total]] results</div>\n\n    <div class=\"filler\"></div>\n    \n    <paper-icon-button \n      icon=\"fin:grid\" \n      disabled$=\"[[!isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"masonry\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    <paper-icon-button \n      icon=\"fin:list\" \n      disabled$=\"[[isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"list\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    \n    <div>\n      <select id=\"numPerPageM\" on-change=\"_onPageSizeChange\">\n        <option>50</option>\n        <option>20</option>\n        <option>10</option>\n      </select>\n    </div>\n    <div style=\"margin-left: 10px; font-style:italic\">per page</div>\n  </div>\n</div>\n\n<div class=\"collections\" hidden$=\"[[!showCollectionResults]]\">\n  <div hidden$=\"[[!collectionResults.length]]\">\n    <h3>Collections</h3>\n    <template is=\"dom-repeat\" items=\"[[collectionResults]]\">\n      <app-collection-card collection=\"[[item]]\" on-click=\"_onCollectionClicked\"></app-collection-card>\n    </template>\n    <h3 hidden$=\"[[!results.length]]\">Items</h3>\n  </div>\n</div>\n\n<div class=\"masonry\" id=\"layout\" hidden$=\"[[isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-grid-result data=\"[[item]]\" class=\"item\"></app-search-grid-result>\n  </template>\n</div>\n\n<div class=\"list\" hidden$=\"[[!isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-list-result data=\"[[item]]\"></app-search-list-result>\n  </template>\n</div>\n\n<div style=\"text-align:center\">\n  <cork-pagination \n    total-results=\"[[total]]\" \n    items-per-page=\"[[numPerPage]]\"\n    current-index=\"[[currentIndex]]\"\n    on-nav=\"_onPaginationNav\">\n  </cork-pagination>\n</div>";
 
 /***/ }),
-/* 304 */
+/* 305 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_pages_iron_pages__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel__ = __webpack_require__(309);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_collection_info_panel__ = __webpack_require__(325);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel__ = __webpack_require__(310);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_collection_info_panel__ = __webpack_require__(326);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__ = __webpack_require__(327);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__ = __webpack_require__(328);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__lib_config__);
@@ -63254,6 +63272,7 @@ for( var key in __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearc
     label : __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearch.facets[key].label,
     type : __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearch.facets[key].type,
     ignore : __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearch.facets[key].ignore,
+    valueMap : __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearch.facets[key].valueMap,
     isDollar : __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearch.facets[key].isDollar,
     filter : key
   });
@@ -63340,12 +63359,12 @@ class AppFiltersPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 customElements.define('app-filters-panel', AppFiltersPanel);
 
 /***/ }),
-/* 305 */
+/* 306 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_menu_behavior_js__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_menu_behavior_js__ = __webpack_require__(193);
 
 
 
@@ -63414,7 +63433,7 @@ const IronMenubarBehavior = [
 
 
 /***/ }),
-/* 306 */
+/* 307 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63579,7 +63598,7 @@ const IronMultiSelectableBehavior = [
 
 
 /***/ }),
-/* 307 */
+/* 308 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63599,7 +63618,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 308 */
+/* 309 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63747,17 +63766,17 @@ Object(__WEBPACK_IMPORTED_MODULE_5__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 309 */
+/* 310 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_toggle_panel_cork_toggle_panel__ = __webpack_require__(310);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter__ = __webpack_require__(312);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__ = __webpack_require__(316);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_toggle_panel_cork_toggle_panel__ = __webpack_require__(311);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__ = __webpack_require__(317);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_facet_filter__ = __webpack_require__(317);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_facet_filter__ = __webpack_require__(318);
   
 
 
@@ -63774,6 +63793,11 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
         type : Object,
         value : null,
         observer : '_render'
+      },
+      opened : {
+        type : Boolean,
+        value : false,
+        observer : '_toggleOpened'
       }
     };
   }
@@ -63790,13 +63814,23 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
     ele.label = this.filter.label;
     ele.filter = this.filter.filter;
     ele.ignore = this.filter.ignore;
+    ele.valueMap = this.filter.valueMap || {};
     ele.isDollar = this.filter.isDollar;
 
     ele.addEventListener('update-visibility', (e) => {
       this.style.display = e.detail.show ? 'block' : 'none';
     });
+
+    this.ele = ele;
     
     this.$.filters.appendChild(ele);
+  }
+
+  _toggleOpened() {
+    if( !this.opened ) return;
+    if( this.ele && this.ele.resize ) {
+      this.ele.resize();
+    }
   }
 
 }
@@ -63806,14 +63840,14 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 window.customElements.define('app-filter-panel', AppFilterPanel);
 
 /***/ }),
-/* 310 */
+/* 311 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_icon_iron_icon__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__ = __webpack_require__(311);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__ = __webpack_require__(312);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__);
 
 
@@ -63827,7 +63861,8 @@ class CorkTogglePanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
     return {
       opened: {
         type: Boolean,
-        value: false
+        value: false,
+        notify : true
       },
       label: {
         type : String,
@@ -63866,21 +63901,21 @@ class CorkTogglePanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('cork-toggle-panel', CorkTogglePanel);
 
 /***/ }),
-/* 311 */
+/* 312 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #label {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    @apply --cork-toggle-panel-label;\n  }\n\n  #content {\n    overflow: hidden;\n    height: 0;\n    transition: height 250ms ease-out;\n    @apply --cork-toggle-panel-content;\n  }\n\n  iron-icon {\n    color: var(--cork-drop-down-arrow-color, #912046);\n    transform: rotateX(0);\n    transition: transform 250ms ease-out;\n  }\n\n  iron-icon[closed] {\n    transform: rotate(-90deg);\n  }\n\n</style>\n\n<div id=\"label\" on-click=\"toggle\">\n  <div style=\"flex:1\">[[label]]</div>\n  <iron-icon icon=\"arrow-drop-down\" closed$=\"[[!opened]]\"></iron-icon>\n</div>\n\n<div id=\"content\">\n  <slot></slot>\n</div>";
 
 /***/ }),
-/* 312 */
+/* 313 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_app_range_slider__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_app_range_slider__ = __webpack_require__(314);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html__ = __webpack_require__(315);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html__ = __webpack_require__(316);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_range_filter_html__);
 
 
@@ -63938,6 +63973,13 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
 
   connectedCallback() {
     super.connectedCallback();
+    this.resize();
+  }
+
+  resize() {
+    console.log('resize');
+    this.$.slider._onResize();
+
     setTimeout(() => {
       this.$.slider._onResize();
     }, 100);
@@ -64044,12 +64086,12 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
 customElements.define('app-range-filter', AppRangeFilter);
 
 /***/ }),
-/* 313 */
+/* 314 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__ = __webpack_require__(314);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__ = __webpack_require__(315);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__);
 
 
@@ -64367,34 +64409,34 @@ class AppRangeSlider extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 customElements.define('app-range-slider', AppRangeSlider);
 
 /***/ }),
-/* 314 */
+/* 315 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n    position: relative;\n    height: 50px;\n    margin: 0 13px;\n\n    -webkit-touch-callout: none; /* iOS Safari */\n    -webkit-user-select: none; /* Safari */\n    -khtml-user-select: none; /* Konqueror HTML */\n    -moz-user-select: none; /* Firefox */\n    -ms-user-select: none; /* Internet Explorer/Edge */\n    user-select: none; /* Non-prefixed version, currently */\n  }\n\n  #numberLine {\n    position: absolute;\n    left : 0;\n    right : 0;\n    height: 3px;\n    background-color: var(--light-background-color, #888);\n  }\n\n  #fillLine {\n    position: absolute;\n    cursor: move;\n    background-color: var(--default-primary-color);\n    height: 3px;\n  }\n\n  .btn {\n    position: absolute;\n    height: 25px;\n    width: 25px;\n    cursor: move;\n  }\n\n  .btn > div {\n    margin: 5px;\n    height: 15px;\n    width: 15px;\n    border-radius: 15px;\n    background-color: var(--default-primary-color);\n    transition: all 150ms linear;\n  }\n\n  .btn[moving] > div {\n    margin: 0px;\n    height: 25px;\n    width: 25px;\n    border-radius: 25px;\n  }\n\n  .label {\n    width : 25px;\n    font-size: 12px; \n    position: absolute;\n    text-align: center;\n    transform: scale(0);\n    transition: transform 200ms linear;\n    color: var(--default-primary-color);\n  }\n\n  .label[moving] {\n    transform: scale(1);\n  }\n\n</style>\n\n<div id=\"numberLine\"></div>\n\n<div id=\"fillLine\" prop=\"range\" on-mousedown=\"_onMoveStart\"></div>\n\n<div id=\"lowNumberLabel\" class=\"label\" moving$=\"[[isMoving]]\">[[minValueLabel]]</div>\n<div id=\"highNumberLabel\" class=\"label\" moving$=\"[[isMoving]]\">[[maxValueLabel]]</div>\n\n<div id=\"lowNumberBtn\" class=\"btn\" prop=\"min\" on-mousedown=\"_onMoveStart\" moving$=\"[[movingMin]]\" >\n  <div></div>\n</div>\n\n<div id=\"highNumberBtn\" class=\"btn\" prop=\"max\" on-mousedown=\"_onMoveStart\" moving$=\"[[movingMax]]\">\n  <div></div>\n</div>";
 
 /***/ }),
-/* 315 */
+/* 316 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n  \n  .labels {\n    display: flex;\n    margin: 0 13px;\n    color: var(--gray-text);\n    font-size: var(--font-size-sm);\n  }\n\n  .inputs {\n    display: flex;\n    align-items: center;\n  }\n\n  input[type=\"number\"] {\n    margin: 0 13px;\n    padding: 7px;\n    border: 0;\n    width: 50px;\n    font-size: var(--font-size-sm);\n  }\n\n  .unknown {\n    margin-left: 9px;\n    display: flex;\n    align-items: center;\n  }\n\n  label {\n    font-size: var(--font-size-sm);\n    font-style: italic;\n    padding-left: 5px;\n  }\n\n  app-range-slider {\n    --light-background-color: var(--medium-background-color);\n  }\n</style>\n\n<div class=\"inputs\">\n  <input id=\"minValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n  <span> - </span>\n  <input id=\"maxValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n</div>\n\n<app-range-slider\n  id=\"slider\"\n  on-range-value-change=\"_onRangeSliderChange\"\n  abs-min-value=\"[[absMinValue]]\"\n  abs-max-value=\"[[absMaxValue]]\"\n  min-value=\"[[minValue]]\"\n  max-value=\"[[maxValue]]\">\n</app-range-slider>\n\n<div class=\"labels\">\n  <div style=\"flex:1\">[[absMinValue]]</div>\n  <div>[[absMaxValue]]</div>\n</div>\n\n<div class=\"unknown\" hidden$=\"[[showUnknown]]\">\n  <input type=\"checkbox\" id=\"unknown\" on-click=\"_onRangeNullChange\" checked />\n  <label for=\"unknown\">include unknown / unspecified</label>\n</div>";
 
 /***/ }),
-/* 316 */
+/* 317 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n</style>\n\n<cork-toggle-panel label=\"[[filter.label]]\">\n  <div id=\"filters\"></div>\n</cork-toggle-panel>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n</style>\n\n<cork-toggle-panel label=\"[[filter.label]]\" opened=\"{{opened}}\">\n  <div id=\"filters\"></div>\n</cork-toggle-panel>";
 
 /***/ }),
-/* 317 */
+/* 318 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__ = __webpack_require__(318);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__ = __webpack_require__(319);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_facet_checkbox__ = __webpack_require__(319);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_facet_checkbox__ = __webpack_require__(320);
 
 
 
@@ -64416,15 +64458,19 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
       },
       ignore : {
         type : Array,
-        value : []
+        value : () => []
+      },
+      valueMap : {
+        type : Object,
+        value : () => {},
       },
       buckets : {
         type : Array,
-        value : []
+        value : () => []
       },
       activeFilters : {
         type : Array,
-        value : []
+        value : () => []
       },
       allFilters : {
         type : Array,
@@ -64483,8 +64529,10 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
     if( !this.activeFilters ) return;
 
     this.buckets = this.buckets.map(item => {
+      item = Object.assign({}, item);
       item.active = (this.activeFilters.indexOf(item.key) > -1) ? true : false;
-      return Object.assign({}, item);
+
+      return item;
     });
 
     this.dispatchEvent(
@@ -64516,18 +64564,18 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
 window.customElements.define('app-facet-filter', AppFacetFilter);
 
 /***/ }),
-/* 318 */
+/* 319 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block\n  }\n\n  .filter {\n    padding: 4px 5px;\n    display: flex;\n    align-items: center;\n  }\n  .filter a {\n    display: inline-block;\n    cursor: pointer;\n    color: black;\n    transition: color 250ms ease-out, transform 250ms ease-out;\n    transform: scale(1);\n  }\n  .filter a span {\n    color: var(--default-primary-color);\n  }\n  .filter a:hover {\n    transform: scale(1.5);\n    color: var(--default-primary-color);\n  }\n\n  .active-filter {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    color: white;\n    font-size: 14px;\n    background: var(--primary-text-color);\n    padding: 5px;\n    border-radius: 3px;\n    margin: 3px;\n  }\n\n  .active-filter:hover {\n    color: var(--default-primary-color);\n    background: #ccc;\n  }\n\n  .count {\n    color: var(--text-disabled);\n    flex: 1;\n    text-align: right;\n  }\n\n  .overflow {\n    overflow: auto;\n    max-height: 200px;\n  }\n\n  paper-checkbox[active] .key {\n    color: var(--default-primary-color);\n    font-weight: bold;\n  }\n\n  paper-checkbox[disabled] .key {\n    color: var(--secondary-text-color);\n    font-style: italic;\n  }\n</style>\n\n<div class=\"overflow\">\n  <div>\n    <template is=\"dom-repeat\" items=\"[[buckets]]\">\n      <div class=\"filter\">\n\n        <app-facet-checkbox\n          type$=\"[[label]]\"\n          index$=\"[[index]]\"\n          value$=\"[[item.key]]\"\n          checked$=\"[[item.active]]\" \n          on-change=\"_toggleFilter\">\n        </app-facet-checkbox>\n\n        <div class=\"count\">[[item.doc_count]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block\n  }\n\n  .filter {\n    padding: 4px 5px;\n    display: flex;\n    align-items: center;\n  }\n  .filter a {\n    display: inline-block;\n    cursor: pointer;\n    color: black;\n    transition: color 250ms ease-out, transform 250ms ease-out;\n    transform: scale(1);\n  }\n  .filter a span {\n    color: var(--default-primary-color);\n  }\n  .filter a:hover {\n    transform: scale(1.5);\n    color: var(--default-primary-color);\n  }\n\n  .active-filter {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    color: white;\n    font-size: 14px;\n    background: var(--primary-text-color);\n    padding: 5px;\n    border-radius: 3px;\n    margin: 3px;\n  }\n\n  .active-filter:hover {\n    color: var(--default-primary-color);\n    background: #ccc;\n  }\n\n  .count {\n    color: var(--text-disabled);\n    flex: 1;\n    text-align: right;\n  }\n\n  .overflow {\n    overflow: auto;\n    max-height: 200px;\n  }\n\n  paper-checkbox[active] .key {\n    color: var(--default-primary-color);\n    font-weight: bold;\n  }\n\n  paper-checkbox[disabled] .key {\n    color: var(--secondary-text-color);\n    font-style: italic;\n  }\n</style>\n\n<div class=\"overflow\">\n  <div>\n    <template is=\"dom-repeat\" items=\"[[buckets]]\">\n      <div class=\"filter\">\n\n        <app-facet-checkbox\n          type$=\"[[label]]\"\n          index$=\"[[index]]\"\n          value$=\"[[item.key]]\"\n          label-map=\"[[valueMap]]\"\n          checked$=\"[[item.active]]\" \n          on-change=\"_toggleFilter\">\n        </app-facet-checkbox>\n\n        <div class=\"count\">[[item.doc_count]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n";
 
 /***/ }),
-/* 319 */
+/* 320 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_normal_checkbox__ = __webpack_require__(320);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_normal_checkbox__ = __webpack_require__(321);
 
 
 
@@ -64545,6 +64593,10 @@ class AppFacetCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
         value : '',
         observer : '_onValueChange'
       },
+      labelMap : {
+        type : Object,
+        value : () => {}
+      },
       checked : {
         type : Boolean,
         value : false,
@@ -64558,15 +64610,11 @@ class AppFacetCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
     return ' ';
   }
 
-  get labelMap() {
-    return {}
-  }
-
   ready() {
     super.ready();
 
     this.ele = document.createElement('app-normal-checkbox');
-    this.ele.label = this.labelMap[this.value] || this.value;
+    this.ele.label = this._getLabel();
     
     this._setValue();
     if( this.checked ) {
@@ -64583,8 +64631,15 @@ class AppFacetCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
   _setValue() {
     if( this.value ) {
       this.ele.value = this.value;
-      this.ele.label = this.labelMap[this.value] || this.value;
+      this.ele.label = this._getLabel();
     }
+  }
+
+  _getLabel() {
+    if( this.labelMap && this.labelMap[this.value] ) {
+      return this.labelMap[this.value];
+    }
+    return this.value;
   }
 
   _onCheckedChange() {
@@ -64602,13 +64657,13 @@ class AppFacetCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
 window.customElements.define('app-facet-checkbox', AppFacetCheckbox);
 
 /***/ }),
-/* 320 */
+/* 321 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_checkbox_paper_checkbox__ = __webpack_require__(321);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__ = __webpack_require__(324);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_checkbox_paper_checkbox__ = __webpack_require__(322);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__ = __webpack_require__(325);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__);
 
 
@@ -64673,13 +64728,13 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 window.customElements.define('app-normal-checkbox', AppNormalCheckbox);
 
 /***/ }),
-/* 321 */
+/* 322 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_checked_element_behavior_js__ = __webpack_require__(322);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_checked_element_behavior_js__ = __webpack_require__(323);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_render_status_js__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(51);
@@ -64961,12 +65016,12 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 322 */
+/* 323 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_checked_element_behavior_iron_checked_element_behavior_js__ = __webpack_require__(323);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_checked_element_behavior_iron_checked_element_behavior_js__ = __webpack_require__(324);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_inky_focus_behavior_js__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_ripple_behavior_js__ = __webpack_require__(29);
 
@@ -65015,13 +65070,13 @@ const PaperCheckedElementBehavior = [
 
 
 /***/ }),
-/* 323 */
+/* 324 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(70);
 
 
 
@@ -65125,20 +65180,20 @@ const IronCheckedElementBehavior = [
 
 
 /***/ }),
-/* 324 */
+/* 325 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    cursor: pointer;\n  }\n\n  iron-icon {\n    display: none;\n    color: var(--default-secondary-color);\n  }\n\n  div {\n    user-select: none;\n    display: flex;\n    min-height: 24px;\n  }\n\n  span {\n    display: inline-block;\n    padding-top: 3px;\n  }\n\n  div[checked] iron-icon {\n    display: inline-block;\n  }\n\n  div[checked] .value {\n    font-style: italic;\n    font-weight: bold;\n  }\n</style>\n\n<div checked$=\"[[checked]]\" on-click=\"_onClick\">\n  <iron-icon icon=\"close\"></iron-icon>\n  <span class=\"value\">[[realLabel]]</span>\n</div>";
 
 /***/ }),
-/* 325 */
+/* 326 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__ = __webpack_require__(326);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__ = __webpack_require__(327);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__);
 
 
@@ -65204,32 +65259,32 @@ class AppCollectionInfoPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_
 customElements.define('app-collection-info-panel', AppCollectionInfoPanel);
 
 /***/ }),
-/* 326 */
+/* 327 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    padding: 15px;\n  }\n  h3 {\n    color: var(--default-primary-color);\n    margin: 5px 0;\n  }\n  .section {\n    margin-bottom: 20px;\n  }\n</style>\n\n<div class=\"section\" hidden$=\"[[!description]]\">\n  <h3>Description</h3>\n  <div>[[description]]</div>\n</div>\n\n<div class=\"section\" hidden$=\"[[!subject]]\">\n  <h3>Subject</h3>\n  <div>[[subject]]</div>\n</div>\n\n<div class=\"section\" hidden$=\"[[!coverage]]\">\n  <h3>Coverage</h3>\n  <div>[[coverage]]</div>\n</div>\n\n\n<div>[[collection.description]]</div>";
 
 /***/ }),
-/* 327 */
+/* 328 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnailUrl]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.name]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
 
 /***/ }),
-/* 328 */
+/* 329 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html__ = __webpack_require__(329);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html__ = __webpack_require__(330);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_record_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bytes__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bytes__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bytes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_bytes__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_rights_json__ = __webpack_require__(330);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_rights_json__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_rights_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__lib_rights_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_models_CitationsModel__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_models_CitationsModel__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__viewer_app_image_viewer_static__ = __webpack_require__(331);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_image_download__ = __webpack_require__(349);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_record_metadata_layout__ = __webpack_require__(351);
@@ -65458,16 +65513,10 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-record', AppRecord);
 
 /***/ }),
-/* 329 */
-/***/ (function(module, exports) {
-
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  img[rights] {\n    height: 22px;\n    width: 22px;\n    vertical-align: sub;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer-static></app-image-viewer-static>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[name]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <a href$=\"[[rights.link]]\" target=\"_block\">\n          <img src$=\"[[rights.icon]]\" rights />\n          <span>[[rights.label]]</span>\n        </a>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <div class=\"cite-container\">\n        <div class=\"label\">MLA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"mla\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">APA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"apa\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">Chicago</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"chicago\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      \n    </div>\n  </app-record-metadata-layout>\n</div>";
-
-/***/ }),
 /* 330 */
 /***/ (function(module, exports) {
 
-module.exports = {"http://rightsstatements.org/vocab/InC/1.0/":{"text":"IN COPYRIGHT","icon":"InC"},"http://rightsstatements.org/vocab/InC-OW-EU/1.0/":{"text":"IN COPYRIGHT - EU ORPHAN WORK","icon":"InC"},"http://rightsstatements.org/vocab/InC-EDU/1.0/":{"text":"IN COPYRIGHT - EDUCATIONAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-NC/1.0/":{"text":"IN COPYRIGHT - NON-COMMERCIAL USE PERMITTED","icon":"InC"},"http://rightsstatements.org/vocab/InC-RUU/1.0/":{"text":"IN COPYRIGHT - RIGHTS-HOLDER(S) UNLOCATABLE OR UNIDENTIFIABLE","icon":"InC"},"http://rightsstatements.org/vocab/NoC-NC/1.0/":{"text":"NO COPYRIGHT - NON-COMMERCIAL USE ONLY","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-OKLR/1.0/":{"text":"NO COPYRIGHT - OTHER KNOWN LEGAL RESTRICTIONS","icon":"NoC"},"http://rightsstatements.org/vocab/NoC-US/1.0/":{"text":"NO COPYRIGHT - UNITED STATES","icon":"NoC"},"http://rightsstatements.org/vocab/CNE/1.0/":{"text":"COPYRIGHT NOT EVALUATED","icon":"Other"},"http://rightsstatements.org/vocab/UND/1.0/":{"text":"COPYRIGHT UNDETERMINED","icon":"Other"},"http://rightsstatements.org/vocab/NKC/1.0/":{"text":"NO KNOWN COPYRIGHT","icon":"Other"}}
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  img[rights] {\n    height: 22px;\n    width: 22px;\n    vertical-align: sub;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer-static></app-image-viewer-static>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[name]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <a href$=\"[[rights.link]]\" target=\"_block\">\n          <img src$=\"[[rights.icon]]\" rights />\n          <span>[[rights.label]]</span>\n        </a>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <div class=\"cite-container\">\n        <div class=\"label\">MLA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"mla\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">APA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"apa\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">Chicago</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"chicago\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      \n    </div>\n  </app-record-metadata-layout>\n</div>";
 
 /***/ }),
 /* 331 */
@@ -65475,7 +65524,7 @@ module.exports = {"http://rightsstatements.org/vocab/InC/1.0/":{"text":"IN COPYR
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html__ = __webpack_require__(334);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_image_viewer_nav__ = __webpack_require__(335);
@@ -66451,7 +66500,7 @@ module.exports = "<style>\n  :host {\n    display: inline-block;\n    position: 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html__ = __webpack_require__(340);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet__ = __webpack_require__(341);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leaflet__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__ = __webpack_require__(342);
@@ -80431,7 +80480,7 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADA
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html__ = __webpack_require__(350);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_download_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_bytes__);
 
 
