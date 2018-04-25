@@ -9,6 +9,10 @@
       "type" : "keyword" 
     },
 
+    "identifier" : {
+      "type" : "keyword" 
+    },
+
     "collectionId" : {
       "type" : "keyword" 
     },

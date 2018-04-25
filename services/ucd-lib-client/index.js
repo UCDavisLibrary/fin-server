@@ -35,6 +35,11 @@ app.use(bodyParser.json());
 app.use('/rest', require('./controllers'));
 
 /**
+ * setup ark/doi proxy
+ */
+require('./lib/identifier')(app);
+
+/**
  * setup static routes
  */
 require('./lib/static')(app);
