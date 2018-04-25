@@ -14171,6 +14171,10 @@ module.exports = {
         label : 'Type',
         type : 'facet',
         ignore : ['CreativeWork']
+      },
+      about : {
+        label : 'Subject',
+        type : 'facet'
       }
     },
 
@@ -63977,7 +63981,6 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
   }
 
   resize() {
-    console.log('resize');
     this.$.slider._onResize();
 
     setTimeout(() => {

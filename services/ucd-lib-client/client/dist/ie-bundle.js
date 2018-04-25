@@ -13484,6 +13484,10 @@ module.exports = {
         label: 'Type',
         type: 'facet',
         ignore: ['CreativeWork']
+      },
+      about: {
+        label: 'Subject',
+        type: 'facet'
       }
     },
 
@@ -48500,7 +48504,6 @@ var AppRangeFilter = function (_Mixin$with) {
     value: function resize() {
       var _this2 = this;
 
-      console.log('resize');
       this.$.slider._onResize();
 
       setTimeout(function () {
