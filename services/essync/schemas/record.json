@@ -34,6 +34,10 @@
       "type" : "keyword"
     },
 
+    "about" : {
+      "type" : "keyword"
+    },
+
     "collectionId" : {
       "type" : "keyword"
     },

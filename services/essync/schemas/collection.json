@@ -26,6 +26,10 @@
       }
     },
 
+    "about" : {
+      "type" : "keyword"
+    },
+
     "created" : {
       "type" : "date",
       "format" : "date_optional_time"

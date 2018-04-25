@@ -326,6 +326,9 @@ class EsIndexer {
     await this.setThumbnail(frame);
     await this.setImageResolution(frame);
     this.setYearFromDate(frame);
+    
+    // JM: temp hack for our schema.  Mapping keywords -> about (See issue #42)
+    frame.about = frame.keywords;
 
     if( this.isRecord(frame['@type']) ) {
       frame.collectionId = frame['@id'].split('/').splice(0, 3).join('/');

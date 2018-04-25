@@ -36,6 +36,10 @@ module.exports = {
         label : 'Type',
         type : 'facet',
         ignore : ['CreativeWork']
+      },
+      about : {
+        label : 'Subject',
+        type : 'facet'
       }
     },
 
