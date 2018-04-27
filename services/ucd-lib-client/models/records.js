@@ -98,9 +98,9 @@ class RecordsModel extends ElasticSearchModel {
       // user don't care about this agg
       if( !facets[filter] ) continue; 
       // only need to worry about facet filters
-      if( facets[filter].type !== 'keyword' ) continue; 
+      if( searchDocument.filters[filter].type !== 'keyword' ) continue; 
       // only need to worry about 'or' filters
-      if( facets[filter].op !== 'or' ) continue; 
+      if( searchDocument.filters[filter].op !== 'or' ) continue; 
 
       let tmpSearchDoc = clone(searchDocument);
       // we don't need results
@@ -119,7 +119,7 @@ class RecordsModel extends ElasticSearchModel {
       tmpResult = this.esResultToDamsResult(tmpResult, tmpSearchDoc);
 
       // finally replace facets response
-      result.facets[filter] = tmpResult.facets[filter];
+      result.aggregations.facets[filter] = tmpResult.aggregations.facets[filter];
     }
 
     if( debug ) {

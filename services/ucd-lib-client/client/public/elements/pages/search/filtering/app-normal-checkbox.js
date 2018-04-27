@@ -15,6 +15,10 @@ export class AppNormalCheckbox extends PolymerElement {
         type : String,
         value : ''
       },
+      labelMap : {
+        type : Object,
+        value : () => {}
+      },
       realLabel: {
         type: String,
         computed: '_realLabel(value, label)'
@@ -24,6 +28,10 @@ export class AppNormalCheckbox extends PolymerElement {
         value : false,
         notify: true,
         reflectToAttribute : true
+      },
+      disabled : {
+        type : Boolean,
+        value : false,
       }
     };
   }
@@ -40,7 +48,14 @@ export class AppNormalCheckbox extends PolymerElement {
    * @param {String} label 
    */
   _realLabel(value, label) {
-    return label || value;
+    return this._getLabel();
+  }
+
+  _getLabel() {
+    if( this.labelMap && this.labelMap[this.value] ) {
+      return this.labelMap[this.value];
+    }
+    return this.value;
   }
 
   /**
@@ -50,6 +65,7 @@ export class AppNormalCheckbox extends PolymerElement {
    * TODO: add aria checkbox role
    */
   _onClick() {
+    if( this.disabled ) return;
     this.checked = !this.checked;
     this.dispatchEvent(new CustomEvent('change', {bubbles: true, composed: true}));
   }

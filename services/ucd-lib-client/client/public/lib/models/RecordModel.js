@@ -45,8 +45,7 @@ class RecordModel extends ElasticSearchModel {
       this.appendKeywordFilter(searchDocument, 'collectionId', collectionId, 'and');
     }
 
-    let esBody = this.fromSearchDocumentToEsBody(searchDocument);
-    await this.service.defaultSearch(storeId, esBody);
+    await this.service.defaultSearch(storeId, searchDocument);
 
     return this.store.getDefaultSearch(storeId);
   }
@@ -87,33 +86,38 @@ class RecordModel extends ElasticSearchModel {
     for( var key in searchDocument.filters ) {
       if( key === 'isPartOf' ) continue;
 
-      let bucket = defaultSearch.availableFilters[key];
-      if( bucket === undefined ) {
-        corrections = true;
-        delete searchDocument.filters[key];
-      } else if( !bucket.__isRange ) {
-        searchDocument.filters[key].value = searchDocument.filters[key].value
-          .filter(value => {
-            if( bucket[value] === undefined ) {
-              corrections = true;
-              return false;
-            }
-            return true;
-          });
-        
-        if( !searchDocument.filters[key].value.length ) {
+
+      let type = config.elasticSearch.facets[key].type;
+
+      if( type === 'facet' ) {
+        let bucket = defaultSearch.payload.aggregations.facets[key];
+        if( bucket === undefined ) {
+          corrections = true;
           delete searchDocument.filters[key];
+        } else {
+          searchDocument.filters[key].value = searchDocument.filters[key].value
+            .filter(value => {
+              if( bucket[value] === undefined ) {
+                corrections = true;
+                return false;
+              }
+              return true;
+            });
+          
+          if( !searchDocument.filters[key].value.length ) {
+            delete searchDocument.filters[key];
+          }
         }
       }
     }
 
     if( corrections ) {
-      AppStateModel.setLocation('/search/'+this.fromSearchDocumentToUrl(searchDocument));
+      AppStateModel.setLocation('/search/'+this.searchDocumentToUrl(searchDocument));
       return await this.search(searchDocument);
     }
 
 
-    let request = super.search(searchDocument);
+    let request = this.service.search(searchDocument);
 
 
     // there is search text but no collection filter applied

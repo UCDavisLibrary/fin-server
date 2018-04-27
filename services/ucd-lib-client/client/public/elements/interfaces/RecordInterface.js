@@ -30,6 +30,10 @@ module.exports = subclass =>
       return this.RecordModel.setKeywordFilter(searchDocument, attr, value, op);
     }
 
+    _appendKeywordFilter(searchDocument, attr, value, op) {
+      return this.RecordModel.appendKeywordFilter(searchDocument, attr, value);
+    }
+
     _removeKeywordFilter(searchDocument, attr, value) {
       return this.RecordModel.removeKeywordFilter(searchDocument, attr, value);
     }

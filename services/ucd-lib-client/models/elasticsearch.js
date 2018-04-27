@@ -46,10 +46,10 @@ class ElasticSearchModel {
         
 
         // it's a facet filter, just add
-        if( esResult.aggregations[facet].bucket ) {
-          result.aggregations.facets[facet] = {};
-          esResult.aggregations[facet].bucket.forEach(item => {
-            result.aggregations.facets[facet][item.key] = item.doc_count;
+        if( esResult.aggregations[facet].buckets ) {
+          response.aggregations.facets[facet] = {};
+          esResult.aggregations[facet].buckets.forEach(item => {
+            response.aggregations.facets[facet][item.key] = item.doc_count;
           });
         } else {
           // check for range filter
@@ -60,14 +60,14 @@ class ElasticSearchModel {
           //  - we have the -min and -max keys in the es aggs result
           //  - the es aggs result range has a value (ie ignore null)
           //  - we haven't already added the range (cause you will hit this twice)
-          if( !result.aggregations.ranges[facet] &&
+          if( !response.aggregations.ranges[facet] &&
               searchDocument.facets[facet] &&
               searchDocument.facets[facet].type === 'range' && 
               esResult.aggregations[facet+'-min'] &&
               esResult.aggregations[facet+'-max'] &&
               esResult.aggregations[facet+'-max'].value ) {
 
-            result.aggregations.ranges[facet] = {
+                response.aggregations.ranges[facet] = {
               min : esResult.aggregations[facet+'-min'].value,
               max : esResult.aggregations[facet+'-max'].value,
             };

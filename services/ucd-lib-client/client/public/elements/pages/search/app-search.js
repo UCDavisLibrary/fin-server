@@ -108,7 +108,7 @@ export class AppSearch extends Mixin(PolymerElement)
     let total = payload.total;
     this.results = payload.results;
 
-    this.$.resultsPanel.render(this.results, total, e.query.limit, currentIndex);
+    this.$.resultsPanel.render(this.results, total, e.searchDocument.limit, currentIndex);
   }
 
   /**

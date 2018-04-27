@@ -6,7 +6,7 @@ class RecordService extends BaseService {
   constructor() {
     super();
     this.store = RecordStore;
-    this.baseUrl = '/api/record'
+    this.baseUrl = '/api/records'
   }
 
   async get(id) {
@@ -29,13 +29,13 @@ class RecordService extends BaseService {
    */
   async search(searchDocument = {}) {
     return await this.request({
-      url : this.apiPath,
+      url : `${this.baseUrl}/search`,
       fetchOptions : {
         method : 'POST',
         headers : {
           'Content-Type' : 'application/json'
         },
-        body : JSON.stringify(query)
+        body : JSON.stringify(searchDocument)
       },
       onLoading : promise => this.store.setSearchLoading(searchDocument,  promise),
       onLoad : result => this.store.setSearchLoaded(searchDocument, result.body),
@@ -51,15 +51,15 @@ class RecordService extends BaseService {
    * @param {Object} searchDocument elastic search query parameters
    * @returns {Promise}
    */
-  async defaultSearch(id, query = {}) {
+  async defaultSearch(id, searchDocument = {}) {
     return await this.request({
-      url : this.apiPath,
+      url : `${this.baseUrl}/search?debug=true`,
       fetchOptions : {
         method : 'POST',
         headers : {
           'Content-Type' : 'application/json'
         },
-        body : JSON.stringify(query)
+        body : JSON.stringify(searchDocument)
       },
       onLoading : promise => this.store.setDefaultSearchLoading(id, searchDocument, promise),
       onLoad : result => this.store.setDefaultSearchLoaded(id, searchDocument, result.body),

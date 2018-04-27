@@ -73,7 +73,9 @@ class AppHome extends Mixin(PolymerElement)
    * the enter key is hit.  set the text filter
    */
   _onSearch(e) {
-    this._esSetTextFilter(e.detail);
+    let searchDoc = this._getEmptySearchDocument();
+    this._setTextFilter(searchDoc, e.detail);
+    this._searchRecords(searchDoc);
   }
 
   /**

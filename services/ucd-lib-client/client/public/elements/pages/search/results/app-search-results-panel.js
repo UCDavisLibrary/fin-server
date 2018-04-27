@@ -4,14 +4,14 @@ import "@ucd-lib/cork-pagination"
 import "./app-search-grid-result"
 import "./app-search-list-result"
 import "../../../utils/app-collection-card"
-import RecordSearch from "../../../interfaces/RecordSearch"
+import RecordInterface from "../../../interfaces/RecordInterface"
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import CollectionInterface from "../../../interfaces/CollectionInterface"
 
 import template from './app-search-results-panel.html'
 
 class AppSearchResultsPanel extends Mixin(PolymerElement)
-      .with(EventInterface, RecordSearch, AppStateInterface, CollectionInterface) {
+      .with(EventInterface, RecordInterface, AppStateInterface, CollectionInterface) {
 
   static get properties() {
     return {
@@ -235,12 +235,12 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
 
   /**
    * @method _onSearchCollectionUpdate
-   * @description from ElasticSearchInterface, called when a collection search state
+   * @description from CollectionInterface, called when a collection search state
    * is updated.
    * 
    * @param {Object} e 
    */
-  _onEsSearchCollectionUpdate(e) {
+  _onCollectionSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this.collectionResults = e.payload;
   }
@@ -253,7 +253,10 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    */
   _onCollectionClicked(e) {
     let id = e.currentTarget.collection.id
-    this._esSetKeywordAndText('', 'isPartOf', id);
+
+    let searchDoc = this._getEmptySearchDocument();
+    this._setKeywordFilter(searchDoc, 'isPartOf', id);
+    this._searchRecords(searchDoc);
   }
 
 }

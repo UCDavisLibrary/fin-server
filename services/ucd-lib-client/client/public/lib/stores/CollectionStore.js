@@ -76,6 +76,8 @@ class CollectionStore extends BaseStore {
   }
 
   setCollectionOverviewLoaded(payload) {
+    payload = payload.results;
+
     payload.forEach(item => {
       item.id = item['@id'];
       this.data.byId[item.id] = item;

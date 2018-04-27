@@ -68,66 +68,75 @@ class AppFacetFilter extends Mixin(PolymerElement)
   _onRecordSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
-    var query = e.query.query;
+
     var activeFilters = [];
+    if( e.searchDocument.filters[this.filter] ) {
+      activeFilters = e.searchDocument.filters[this.filter].value;
+    }
+    this.activeFilters = activeFilters;
 
-    // if( e.searchDocument.filters[this.filter] ) {
-    //   activeFilters = e.searchDocument.filters[this.filter].value;
-    // }
+    this.availableFilters = e.payload.aggregations.facets[this.filter] || {};
 
-    // this.availableFilters = e.availableFilters[this.filter] || {};
-
-    // this.activeFilters = activeFilters;
+    
     this._updateActiveFilters();
   }
 
   async _updateActiveFilters() {
     if( !this.activeFilters ) return;
 
-    debugger;
 
     // grab default aggregations for collection
-    // let cid = this.selectedCollection;
-    // let result = await this._defaultRecordSearch(this.selectedCollection);
-    // if( cid !== this.selectedCollection ) return; // make sure we haven't updated
-    // this.default = result;
+    let cid = this.selectedCollection;
+    let result = await this._defaultRecordSearch(this.selectedCollection);
+    if( cid !== this.selectedCollection ) return; // make sure we haven't updated
+    this.default = result;
 
-    // let facets = this.default.payload.aggregations.facets[this.filter];
+    let defaultFacets = this.default.payload.aggregations.facets[this.filter] || {};
 
-    // if( this.ignore && this.ignore.length ) {
-    //   this.ignore.forEach(key => {
-    //     if( this.buckets[key] ) delete this.buckets[key];
-    //   });
-    // }
+    if( this.ignore && this.ignore.length ) {
+      this.ignore.forEach(key => {
+        if( defaultFacets[key] ) delete defaultFacets[key];
+      });
+    }
 
-    // let buckets = 
-    // let buckets = this.buckets.map(item => {
-    //   item = Object.assign({}, item);
+    let buckets = [];
+    for( var key in defaultFacets ) {
+      let item = {
+        key,
+        sortKey : key.toLowerCase().replace(/\W/g,''),
+        doc_count: this.availableFilters[key] || 0
+      }
 
-    //   item.doc_count = this.availableFilters[item.key] || 0;
+      if( this.activeFilters.indexOf(key) > -1 ) {
+        item.active = true;
+        this._notifySelected(true, key);
+      } else {
+        item.active = false;
+        this._notifySelected(false, key);
+      }
 
-    //   if( this.activeFilters.indexOf(item.key) > -1 ) {
-    //     item.active = true;
-    //     this._notifySelected(true, item.key);
-    //   } else {
-    //     item.active = false;
-    //     this._notifySelected(false, item.key);
-    //   }
+      item.empty = item.doc_count ? false : true;
 
-    //   item.empty = item.doc_count ? true : false;
+      buckets.push(item);
+    }
 
-    //   return item;
-    // });
+    buckets.sort((a,b) => {
+      if( a.doc_count < b.doc_count ) return 1;
+      if( a.doc_count > b.doc_count ) return -1;
+      if( a.sortKey > b.sortKey ) return 1;
+      if( a.sortKey < b.sortKey ) return -1;
+      return 0
+    })
 
-    // this.buckets = buckets;
+    this.buckets = buckets;
 
-    // this.dispatchEvent(
-    //   new CustomEvent('update-visibility', {
-    //     detail: {
-    //       show: (this.buckets.length !== 0)
-    //     }
-    //   })
-    // );
+    this.dispatchEvent(
+      new CustomEvent('update-visibility', {
+        detail: {
+          show: (this.buckets.length !== 0)
+        }
+      })
+    );
   }
 
   /**
@@ -138,7 +147,10 @@ class AppFacetFilter extends Mixin(PolymerElement)
    * @param {String} key filter key 
    */
   onParentFilterClicked(key) {
-    this._esRemoveKeywordFilter(this.filter, key);
+    let searchDoc = this._getCurrentSearchDocument();
+    this._removeKeywordFilter(searchDoc, this.filter, key);
+    this._searchRecords(searchDoc);
+
     this._notifySelected(false, key);
   };
 
@@ -166,7 +178,12 @@ class AppFacetFilter extends Mixin(PolymerElement)
 
   appendFilter(e) {
     var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
-    this._esAppendKeywordFilter(this.filter, item.key);
+    if( item.empty ) return;
+
+    let searchDoc = this._getCurrentSearchDocument();
+    this._appendKeywordFilter(searchDoc, this.filter, item.key);
+    this._searchRecords(searchDoc);
+
     this._notifySelected(true, item.key);
   }
 
@@ -174,7 +191,11 @@ class AppFacetFilter extends Mixin(PolymerElement)
 
   removeFilter(e) {
     var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
-    this._esRemoveKeywordFilter(this.filter, item.key);
+
+    let searchDoc = this._getCurrentSearchDocument();
+    this._removeKeywordFilter(searchDoc, this.filter, item.key);
+    this._searchRecords(searchDoc);
+
     this._notifySelected(false, item.key);
   }
 

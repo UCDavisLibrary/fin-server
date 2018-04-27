@@ -169,13 +169,13 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
 
     // grab default aggregations for collection
     let cid = this.selectedCollection;
-    let result = await this._defaultSearch(this.selectedCollection);
+    let result = await this._defaultRecordSearch(this.selectedCollection);
     if( cid !== this.selectedCollection ) return; // make sure we haven't updated
     this.default = result;
 
-    if( this.default.payload.aggregations.range[this.filter] ) {
-      this.absMinValue = this.default.payload.aggregations.range[this.filter].min;
-      this.absMaxValue = this.default.payload.aggregations.range[this.filter].max;
+    if( this.default.payload.aggregations.ranges[this.filter] ) {
+      this.absMinValue = this.default.payload.aggregations.ranges[this.filter].min;
+      this.absMaxValue = this.default.payload.aggregations.ranges[this.filter].max;
     } else {
       return this._show(false);
     }

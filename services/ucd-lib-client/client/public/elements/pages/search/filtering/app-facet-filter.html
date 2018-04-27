@@ -44,11 +44,17 @@
     color: var(--text-disabled);
     flex: 1;
     text-align: right;
+    min-width : 40px;
+    padding: 0 10px;
   }
 
   .overflow {
     overflow: auto;
     max-height: 200px;
+  }
+
+  app-normal-checkbox {
+    overflow: hidden;
   }
 
   paper-checkbox[active] .key {
@@ -67,14 +73,15 @@
     <template is="dom-repeat" items="[[buckets]]">
       <div class="filter">
 
-        <app-facet-checkbox
+        <app-normal-checkbox
           type$="[[label]]"
           index$="[[index]]"
           value$="[[item.key]]"
           label-map="[[valueMap]]"
           checked$="[[item.active]]" 
-          on-change="_toggleFilter">
-        </app-facet-checkbox>
+          on-change="_toggleFilter"
+          disabled$="[[item.empty]]">
+        </app-normal-checkbox>
 
         <div class="count">[[item.doc_count]]</div>
       </div>

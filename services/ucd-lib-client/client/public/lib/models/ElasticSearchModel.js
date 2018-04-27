@@ -1,10 +1,18 @@
 const {BaseModel} = require('@ucd-lib/cork-app-utils');
+const config = require('../config');
 
 class ElasticSearchModel extends BaseModel {
 
   constructor() {
     super();
     this.defaultTextFields = ['title', 'description'];
+
+    this.facets = {};
+    for( var key in config.elasticSearch.facets ) {
+      this.facets[key] = {
+        type : config.elasticSearch.facets[key].type
+      }
+    }
   }
 
   /**
@@ -20,7 +28,7 @@ class ElasticSearchModel extends BaseModel {
       sort : null,
       limit : 10,
       offset : 0,
-      facets : {}
+      facets : this.facets
     };
   }
 
@@ -40,7 +48,7 @@ class ElasticSearchModel extends BaseModel {
 
     let i = 0;
     while( urlParts.length > 0 ) {
-      let part = decode(urlParts.splice(0, 1)[0]);
+      let part = decodeURIComponent(urlParts.splice(0, 1)[0]);
       
       switch(i) {
         case 0:
@@ -129,9 +137,9 @@ class ElasticSearchModel extends BaseModel {
     }
 
     return [
-      encode(searchDocument.text),
-      encode(JSON.stringify(filters)),
-      encode(searchDocument.sort ? JSON.stringify(searchDocument.sort) : ''),
+      encodeURIComponent(searchDocument.text),
+      encodeURIComponent(JSON.stringify(filters)),
+      encodeURIComponent(searchDocument.sort ? JSON.stringify(searchDocument.sort) : ''),
       searchDocument.limit || '',
       searchDocument.offset || ''
     ].join('/')
