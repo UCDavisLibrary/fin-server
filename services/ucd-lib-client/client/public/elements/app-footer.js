@@ -1,13 +1,12 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import AppStateInterface from "./interfaces/AppStateInterface"
 import CollectionInterface from "./interfaces/CollectionInterface"
-import ElasticSearchInterface from "./interfaces/ElasticSearchInterface"
 import "./auth/app-auth-footer"
 
 import template from "./app-footer.html"
 
 class AppFooter extends Mixin(PolymerElement)
-      .with(EventInterface, AppStateInterface, CollectionInterface, ElasticSearchInterface) {
+      .with(EventInterface, AppStateInterface, CollectionInterface) {
   
   static get template() {
     return template;

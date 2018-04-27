@@ -19,10 +19,6 @@ module.exports = {
         label : 'Creator',
         type : 'facet'
       },
-      'subjects_raw' : {
-        label : 'Subject',
-        type : 'facet'
-      },
       yearPublished : {
         label : 'Published',
         type : 'range'

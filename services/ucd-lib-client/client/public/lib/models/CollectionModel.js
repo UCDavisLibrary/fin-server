@@ -22,8 +22,20 @@ class CollectionModel extends BaseModel {
       this.register('CollectionModel');
     }
 
-    overview() {
-      return this.service.overview();
+    /**
+     * @method overview
+     * @description get all collections
+     * 
+     * @returns {Promise} resolves to array of collections
+     */
+    async overview() {
+      if( this.store.data.overview.state === 'loading' ) {
+        await this.store.data.overview.request;
+      } else {
+        await this.service.overview();
+      }
+
+      return this.store.data.overview;
     }
 
     /**
@@ -46,6 +58,10 @@ class CollectionModel extends BaseModel {
      */
     getSelectedCollection() {
       return this.store.data.selected;
+    }
+
+    search(searchDocument) {
+      
     }
 
     /**

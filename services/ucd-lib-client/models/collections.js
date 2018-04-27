@@ -1,33 +1,65 @@
-var es = require('../lib/esClient');
-var config = require('../config');
+const es = require('../lib/esClient');
+const config = require('../config');
+const ElasticSearchModel = require('./elasticsearch');
 
-class CollectionsModel {
+class CollectionsModel extends ElasticSearchModel {
 
-  async get(id) {
+  /**
+   * @description search the elasticsearch collections using the ucd dams
+   * search document.
+   * 
+   * @param {Object} SearchDocument
+   */
+  async search(searchDocument) {
+    let esResult = await this.esSearch(this.searchDocumentToEsBody(searchDocument));
+    return this.esResultToDamsResult(this.esSearch, searchDocument);
+  }
+
+  /**
+   * @method esSearch
+   * @description search the elasticsearch collections using
+   * es search document
+   * 
+   * @param {Object} body elasticsearch search body
+   * 
+   * @returns {Promise} resolves to elasticsearch result
+   */
+  esSearch(body = {}) {
     return es.search({
-      index : config.elasticsearch.collections.alias,
-      body : {
-        query : {
-          terms : {
-            _id : [id]
-          }
-        }
-      }
+      index : config.elasticsearch.collection.alias,
+      body : body
     });
   }
 
-  async overview() {
+  /**
+   * @method get
+   * @description get a collection by id
+   * 
+   * @param {String} id collection id 
+   * 
+   * @returns {Promise} resolves to elasticsearch result
+   */
+  get(id) {
+    return es.search({
+      index : config.elasticsearch.collections.alias,
+      type: '_all',
+      id: id
+    });
+  }
+
+  /**
+   * @method all
+   * @description get all collections
+   * 
+   * @returns {Promise} resolves to array of collection objects
+   */
+  async all() {
     let results = await es.search({
       index : config.elasticsearch.collection.alias,
       body : {}
     });
 
-    if( !results.hits ) return [];
-    if( !results.hits.hits ) return [];
-
-    return results.hits.hits
-            .filter(item => !item._id.match(/\/fcrepo\/rest\/$/))
-            .map(item => item._source);
+    return this.esResultToDamsResult(results);
   }
 }
 

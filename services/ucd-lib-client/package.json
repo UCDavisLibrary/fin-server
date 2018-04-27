@@ -20,6 +20,7 @@
     "@ucd-lib/fin-node-utils": "^0.1.12",
     "@ucd-lib/spa-router-middleware": "0.0.1",
     "body-parser": "^1.18.2",
+    "clone": "^2.1.1",
     "cookie-parser": "^1.4.3",
     "elasticsearch": "^14.1.0",
     "express": "^4.16.2",

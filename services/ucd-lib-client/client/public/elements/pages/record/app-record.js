@@ -11,12 +11,12 @@ import "./app-image-download"
 import "./app-record-metadata-layout"
 
 import AppStateInterface from "../../interfaces/AppStateInterface"
-import ElasticSearchInterface from "../../interfaces/ElasticSearchInterface"
+import RecordInterface from "../../interfaces/RecordInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
 
 export default class AppRecord extends Mixin(PolymerElement)
-      .with(EventInterface, AppStateInterface, ElasticSearchInterface, CollectionInterface, MediaInterface) {
+      .with(EventInterface, AppStateInterface, RecordInterface, CollectionInterface, MediaInterface) {
 
   static get template() {
     return template;
@@ -80,8 +80,8 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     this.currentRecordId = '/'+path.join('/');
 
-    let result = await this._esGetRecord(this.currentRecordId);
-    this._setSelectedRecord(result.payload._source);
+    let result = await this._getRecord(this.currentRecordId);
+    this._setSelectedRecord(result.payload);
   }
 
   /**

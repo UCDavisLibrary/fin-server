@@ -30,7 +30,7 @@ import "./utils/app-header-colorbar"
 import AppStateInterface from "./interfaces/AppStateInterface"
 import AuthInterface from "./interfaces/AuthInterface"
 import CollectionInterface from "./interfaces/CollectionInterface"
-import ElasticSearchInterface from "./interfaces/ElasticSearchInterface"
+import RecordInterface from "./interfaces/RecordInterface"
 
 import template from "./fin-app.html";
 
@@ -38,7 +38,7 @@ import template from "./fin-app.html";
 window.html = (str) => str[0];
 
 export class FinApp extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface, AuthInterface, CollectionInterface, ElasticSearchInterface) {
+  .with(EventInterface, AppStateInterface, AuthInterface, CollectionInterface, RecordInterface) {
 
   // Define a string template instead of a `<template>` element.
   static get template() {
@@ -85,13 +85,13 @@ export class FinApp extends Mixin(PolymerElement)
   }
 
   /**
-   * @method _onEsSearchDocumentUpdate
-   * @description ElasticSearchInterface, fired when search document updates.
+   * @method _onRecordSearchUpdate
+   * @description RecordInterface, fired when search document updates.
    * used to set the window url
    * 
    */
-  _onEsSearchDocumentUpdate(e) {
-    this._setWindowLocation('/search/'+this._fromSearchDocumentToUrl(e));
+  _onRecordSearchUpdate(e) {
+    this._setWindowLocation('/search/'+this._searchDocumentToUrl(e.searchDocument));
   }
 }
 

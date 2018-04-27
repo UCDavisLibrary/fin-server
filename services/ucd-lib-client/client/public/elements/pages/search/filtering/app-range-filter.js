@@ -1,10 +1,11 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import "../../../utils/app-range-slider"
-import ElasticSearchInterface from '../../../interfaces/ElasticSearchInterface'
+import RecordInterface from '../../../interfaces/RecordInterface'
+import CollectionInterface from '../../../interfaces/CollectionInterface'
 import template from "./app-range-filter.html"
 
 export default class AppRangeFilter extends Mixin(PolymerElement)
-  .with(EventInterface, ElasticSearchInterface) {
+  .with(EventInterface, RecordInterface, CollectionInterface) {
 
   static get template() {
     return template;
@@ -36,7 +37,7 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
       },
       maxValue : {
         type : Number,
-        value : -1
+        value : Number.MAX_VALUE
       },
 
       showUnknown : {
@@ -76,7 +77,10 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
         this.maxValue === this.absMaxValue &&
         this.$.unknown.checked === true ) {
       
-      this._esRemoveRangeFilter(this.filter);
+      let searchDoc = this._getCurrentSearchDocument();
+      this._removeRangeFilter(searchDoc, this.filter);
+      this._searchRecords(searchDoc);
+
       return true;
     }
     return false;
@@ -105,7 +109,9 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     // remove filter and return
     if( this._isDefaultState() ) return;
 
-    this._esAppendRangeFilter(this.filter, value);
+    let searchDoc = this._getCurrentSearchDocument();
+    this._appendRangeFilter(searchDoc, this.filter, value);
+    this._searchRecords(searchDoc);
   }
 
   _onInputChange() {
@@ -128,28 +134,67 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     this._onRangeNullChange();
   }
 
-  _onDefaultEsSearchUpdate(e) {
-    if( e.state !== 'loaded' ) return;
-
-    this.absMinValue = e.payload.aggregations[this.filter+'-min'].value;
-    this.absMaxValue = e.payload.aggregations[this.filter+'-max'].value;
-
-    if( this.minValue === -1 ) {
-      this.minValue = this.absMinValue;
-      this.maxValue = this.absMaxValue;
-
-      this.$.minValueInput.value = this.minValue;
-      this.$.maxValueInput.value = this.maxValue;
-    }
+  /**
+   * @method _onSelectedCollectionUpdate
+   * @description from CollectionInterface, called whenever selected collection updates
+   * 
+   * @param {Object} e
+   */
+  _onSelectedCollectionUpdate(e) {
+    this.selectedCollection = e ? e.id : '';
+    this._renderFilters();
   }
 
-  _onEsSearchUpdate(e) {
+  /**
+   * @method _onRecordSearchUpdate
+   * @description from RecordInterface
+   * 
+   * @param {Object} e 
+   */
+  _onRecordSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
-    let filters = e.searchDocument.filters || {};
+    this.currentFilters = e.searchDocument.filters || {};
+    this._renderFilters();
+  }
 
-    if( filters[this.filter] ) {
-      let value = filters[this.filter].value;
+  /**
+   * @method _renderFilters
+   * @description called after a collection is selected or a filter set updates.
+   * make sure range filter is set correctly.
+   * 
+   */
+  async _renderFilters() {
+    if( !this.currentFilters ) return;
+
+    // grab default aggregations for collection
+    let cid = this.selectedCollection;
+    let result = await this._defaultSearch(this.selectedCollection);
+    if( cid !== this.selectedCollection ) return; // make sure we haven't updated
+    this.default = result;
+
+    if( this.default.payload.aggregations.range[this.filter] ) {
+      this.absMinValue = this.default.payload.aggregations.range[this.filter].min;
+      this.absMaxValue = this.default.payload.aggregations.range[this.filter].max;
+    } else {
+      return this._show(false);
+    }
+
+    this._show(true);
+
+    // make sure any current values are set correctly
+    if( this.minValue < this.absMinValue ) {
+      this.minValue = this.absMinValue;
+      this.$.minValueInput.value = this.minValue;
+    }
+    if( this.maxValue > this.absMaxValue ) {
+      this.maxValue = this.absMaxValue;
+      this.$.maxValueInput.value = this.maxValue;
+    }
+
+    // now set the current filters from search
+    if( this.currentFilters[this.filter] ) {
+      let value = this.currentFilters[this.filter].value;
 
       this.minValue = value.gte;
       this.maxValue = value.lte;
@@ -157,6 +202,50 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
       this.$.maxValueInput.value = this.maxValue;
       this.$.unknown.checked = value.includeNull ? true : false;
     }
+
+    this._notifySelected();
+  }
+
+  /**
+   * @method _notifySelected
+   * @description notify parent of selected/unselected filter
+   */
+  _notifySelected() {
+    let selected = false;
+    let key = '';
+
+    if( this.minValue !== this.absMinValue || 
+        this.maxValue !== this.absMaxValue ||
+        !this.$.unknown.checked ) {
+      selected = true;
+    }
+
+    if( selected ) {
+      key = this.minValue+' to '+this.maxValue;
+    }
+
+    this.dispatchEvent(
+      new CustomEvent(`set-selected`, {
+        detail: {
+          selected,
+          label: key
+        }
+      })
+    );
+  }
+
+  /**
+   * @method _show
+   * @description notify parent to hide/show filter
+   * 
+   * @param {Boolean} show should the parent hide or show filter
+   */
+  _show(show) {
+    this.dispatchEvent(
+      new CustomEvent('update-visibility', {
+        detail: {show}
+      })
+    );
   }
 
 }

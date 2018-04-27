@@ -1,84 +1,313 @@
-var {ElasticSearchModel} = require('@ucd-lib/cork-app-elastic-search');
-const ElasticSearchStore = require('../stores/ElasticSearchStore');
-const ElasticSearchService = require('../services/ElasticSearchService');
-var config = require('../config');
+const {BaseModel} = require('@ucd-lib/cork-app-utils');
 
-class ElasticSearchModelImpl extends ElasticSearchModel {
+class ElasticSearchModel extends BaseModel {
 
   constructor() {
     super();
-
-    this.service = ElasticSearchService;
-    this.store = ElasticSearchStore;
-    this.store.config = config.elasticSearch;
+    this.defaultTextFields = ['title', 'description'];
   }
 
   /**
-   * @method get
-   * @description load a record by id from elastic search
+   * @method emptySearchDocument
+   * @description return a base searchDocument
    * 
-   * @param {String} id record id
-   * 
-   * @returns {Promise} resolves to record
+   * @returns {Object}
    */
-  async get(id) {
-    return this.service.get(id);
+  emptySearchDocument() {
+    return {
+      text : '',
+      filters : {},
+      sort : null,
+      limit : 10,
+      offset : 0,
+      facets : {}
+    };
   }
 
   /**
-   * @method search
-   * @description preform a es collection search given an app search document
+   * @method urlToSearchDocument
+   * @description given array of url parts, create app search document
+   * This document can be passed to fromSerializedToEsBody to create es
+   * search document
    * 
-   * @param {Object} searchDocument
+   * @param {Array} urlParts array of strings from url
    * 
-   * @returns {Promise}
+   * @returns {Object} app query object
    */
-  search(searchDocument = {}) {
-    let promise = super.search(searchDocument);
+  urlToSearchDocument(urlParts) {
+    if( !Array.isArray(urlParts) ) throw new Error('UrlParts should be an array');
+    let searchDoc = this.emptySearchDocument();
 
-    // there is search text but no collection filter applied
-    if( !searchDocument.filters.isPartOf && searchDocument.text ) {
-      this.searchCollection({text: searchDocument.text});
-      this.emit('show-collection-search-results', true);
-    } else {
-      this.emit('show-collection-search-results', false);
+    let i = 0;
+    while( urlParts.length > 0 ) {
+      let part = decode(urlParts.splice(0, 1)[0]);
+      
+      switch(i) {
+        case 0:
+          searchDoc.text = part;
+          break;
+        case 1:
+          searchDoc.filters = part ? this._parseUrlFilters(part) : {};
+          break;
+        case 2:
+          searchDoc.sort = part ? JSON.parse(part) : null;
+          break;
+        case 3:
+          searchDoc.limit = part ? parseInt(part) : 10;
+          break;
+        case 4:
+          searchDoc.offset = part ? parseInt(part) : 0;
+          break;
+      }
+
+      i++;
+    }
+    
+    return searchDoc;
+  }
+
+  /**
+   * @method _parseUrlFilters
+   * @private
+   * @description given the serialized url filters, create the filters object
+   * 
+   * @param {String} txt url filters
+   * 
+   * @returns {Object} app filters object
+   */
+  _parseUrlFilters(txt = '') {
+    let filters = {};
+    let arr = JSON.parse(txt);
+    arr.forEach(filter => {
+      filters[filter[0]] = this._setUrlFilterOp({
+        type : this._parseUrlFilterType(filter[1]),
+        value : this._parseUrlFilterValue(filter)
+      }, filter[1])
+    });
+    return filters;
+  }
+
+  _setUrlFilterOp(filter, op) {
+    if( op !== 'range' ) {
+      filter.op = op; 
+    }
+    return filter;
+  }
+
+  _parseUrlFilterType(type) {
+    if( type === 'or' || type === 'and' ) return 'keyword';
+    return type;
+  }
+
+  _parseUrlFilterValue(filters) {
+    if( filters[1] === 'range' ) {
+      return filters[2];
+    }  
+    return filters.splice(2, filters.length);
+  }
+
+  /**
+   * @method searchDocumentToUrl
+   * @description given a app search document, create the url representation
+   * 
+   * @param {Object} searchDocument app search document
+   * 
+   * @return {String} url path string
+   */
+  searchDocumentToUrl(searchDocument) {
+    let filters = [];
+    if( searchDocument.filters ) {
+      for( var attr in searchDocument.filters ) {
+        let filter = searchDocument.filters[attr];
+        let arr = [attr, filter.op || filter.type];
+
+        if( Array.isArray(filter.value) ) arr = arr.concat(filter.value);
+        else arr.push(filter.value);
+
+        filters.push(arr);
+      }
     }
 
-    return promise;
+    return [
+      encode(searchDocument.text),
+      encode(JSON.stringify(filters)),
+      encode(searchDocument.sort ? JSON.stringify(searchDocument.sort) : ''),
+      searchDocument.limit || '',
+      searchDocument.offset || ''
+    ].join('/')
   }
 
   /**
-   * @method searchCollection
-   * @description preform a es collection search given an app search document
+   * @method setSort
+   * @description set the search sort order. Will reset offset
+   * and preform query.
    * 
-   * @param {Object} searchDocument
+   * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#search-request-sort
    * 
-   * @returns {Promise}
+   * @param {Object} searchDocument search document to update
+   * @param {String|Object} attr either attribute to sort on or sort object.  if not provide
+   * sort is removed from search.
+   * @param {String} order of attr is string, then provide order (asc or desc)
+   * 
+   * @return {Object} searchDocument
    */
-  async searchCollection(searchDocument = {}) {
-    searchDocument.limit = 100;
+  setSort(searchDocument, attr, order) {
+    if( !attr ) searchDocument.sort = null;
+    else if( typeof attr === 'object' ) searchDocument.sort = key;
+    else if( order ) searchDocument.sort = {[attr]: order};
+
     searchDocument.offset = 0;
 
-    let esBody = this.fromSearchDocumentToEsBody(searchDocument);
-    delete esBody.aggs;
-
-    return this.service.searchCollection(esBody);
+    return searchDocument;
   }
 
-  async setKeywordAndText(text, attr, value, op = 'or') {
-    let query = this.getAppSearchDocument();
-    
-    query.filters[attr] = {
+  /**
+   * @method setPaging
+   * @description set the paging offset and limit.  Limit is optional.
+   * Will reset offset and preform query.
+   * 
+   * @param {Object} searchDocument search document to update
+   * @param {Number} offset 
+   * @param {Number} limit 
+   * 
+   * @return {Promise} service query promise
+   */
+  setPaging(searchDocument, offset, limit) {
+    if( offset !== undefined ) searchDocument.offset = offset;
+    if( limit !== undefined ) searchDocument.limit = limit;
+
+    return searchDocument;
+  }
+
+  /**
+   * @method setTextFilter
+   * @description set the text search string.  Will reset offset
+   * and preform query.
+   * 
+   * @param {Object} searchDocument search document to update
+   * @param {String} text text string to search on
+   * 
+   * @return {Promise} service query promise
+   */
+  setTextFilter(searchDocument, text) {
+    searchDocument.text = text;
+    return searchDocument;
+  }
+
+  /**
+   * @method clearFilters
+   * @description clear all text and attribute filters.  resets offset and
+   * preforms query.
+   * 
+   * @param {Object} searchDocument search document to update
+   * 
+   * @return {Promise} service query promise
+   */
+  clearFilters(searchDocument) {
+    searchDocument.text = '';
+    searchDocument.filters = {};
+    return searchDocument;
+  }
+
+  /**
+   * @method appendKeywordFilter
+   * @description append keyword attribute filter to query.  Will reset offset
+   * and preform query.
+   * 
+   * @param {Object} searchDocument search document to update
+   * @param {String} attr attribute to filter
+   * @param {String} value value of attribute to filter on
+   * 
+   * @return {Promise} service query promise
+   */
+  appendKeywordFilter(searchDocument, attr, value, op = 'or') {
+    if( !searchDocument.filters[attr] ) {
+      searchDocument.filters[attr] = {
+        type : 'keyword',
+        op : op,
+        value : [value]
+      }
+    } else {
+      searchDocument.filters[attr].value.push(value);
+    }
+
+    return searchDocument;
+  }
+
+  setKeywordFilter(searchDocument, attr, value, op = 'or') {
+    searchDocument.filters[attr] = {
       type : 'keyword',
       op : op,
       value : [value]
     }
-    query.offset = 0;
-    query.text = '';
+    return searchDocument;
+  }
 
-    return this.search(query);
+  /**
+   * @method removeKeywordFilter
+   * @description remove keyword attribute filter from query. Will reset offset
+   * and preform query.
+   *  
+   * @param {Object} searchDocument search document to update
+   * @param {String} attr attribute to remove
+   * @param {String} value value of attribute to remove
+   * 
+   * @return {Promise} service query promise
+   */
+  async removeKeywordFilter(searchDocument, attr, value) {
+    if( !searchDocument.filters[attr] ) return searchDocument;
+
+    if( value === undefined ) {
+      delete searchDocument.filters[attr];
+    } else {
+      let filter = searchDocument.filters[attr];
+      let index = filter.value.indexOf(value);
+      if( index === -1 ) return searchDocument;
+  
+      filter.value.splice(index, 1);
+      if( filter.value.length === 0 ) {
+        delete searchDocument.filters[attr];
+      }
+    }
+
+    return searchDocument;
+  }
+
+   /**
+   * @method appendRangeFilter
+   * @description add range attribute filter from query. Will reset offset
+   * and preform query.
+   * 
+   * @param {Object} searchDocument search document to update
+   * @param {String} attr attribute to add
+   * @param {Object} value range value. ex {gte: 1931, lte: 1960}
+   * 
+   * @return {Promise} service query promise
+   */
+  appendRangeFilter(searchDocument, attr, value) {    
+    searchDocument.filters[attr] = {
+      type : 'range',
+      value
+    }
+    return searchDocument;
+  }
+
+  /**
+   * @method removeRangeFilter
+   * @description remove range attribute filter from query. Will reset offset
+   * and preform query
+   * 
+   * @param {Object} searchDocument search document to update
+   * @param {String} attr attribute to remove
+   * 
+   * @return {Promise} service query promise
+   */
+  removeRangeFilter(searchDocument, attr) {
+    if( !searchDocument.filters[attr] ) return searchDocument;
+    delete searchDocument.filters[attr];
+    return searchDocument;
   }
 
 }
 
-module.exports = new ElasticSearchModelImpl();
+module.exports = ElasticSearchModel;

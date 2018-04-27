@@ -7,12 +7,12 @@ class CollectionService extends BaseService {
     super();
     this.store = CollectionStore;
 
-    this.baseUrl = '/rest/collections';
+    this.baseUrl = '/api/collections';
   }
 
   async overview() {
     await this.request({
-      url : `${this.baseUrl}/overview`,
+      url : `${this.baseUrl}/all`,
       checkCached : () => this.store.data.overview,
       onLoading : request => this.store.setCollectionOverviewLoading(request),
       onLoad : result => this.store.setCollectionOverviewLoaded(result.body),
@@ -20,6 +20,30 @@ class CollectionService extends BaseService {
     });
 
     return this.store.data.overview;
+  }
+
+  /**
+   * @method searchCollection
+   * @description Search the catalogs
+   * 
+   * @param {Object} searchDocument
+   * 
+   * @returns {Promise}
+   */
+  async search(searchDocument = {}) {
+    return await this.request({
+      url : this.apiPath+'/search',
+      fetchOptions : {
+        method : 'POST',
+        headers : {
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(searchDocument)
+      },
+      onLoading : promise => this.store.setSearchLoading(searchDocument, promise),
+      onLoad : result => this.store.setSearchLoaded(searchDocument, result.body),
+      onError : e => this.store.setSearchError(searchDocument, e)
+    });
   }
 
 }

@@ -8,11 +8,11 @@ import "./results/app-search-results-panel"
 import "./filtering/app-filters-panel"
 
 import AppStateInterface from '../../interfaces/AppStateInterface'
-import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'
+import RecordInterface from '../../interfaces/RecordInterface'
 import CollectionInterface from '../../interfaces/CollectionInterface'
 
 export class AppSearch extends Mixin(PolymerElement)
-            .with(EventInterface, ElasticSearchInterface, CollectionInterface, AppStateInterface) {
+            .with(EventInterface, RecordInterface, CollectionInterface, AppStateInterface) {
 
   static get template() {
     return template;
@@ -67,20 +67,6 @@ export class AppSearch extends Mixin(PolymerElement)
   }
 
   /**
-   * @method _onVisibleUpdate
-   * @description fired when iron-pages sets this page to visible.  We need to see if this is 
-   * the first time we are loading.  if so, see if we need to search.  search is required
-   * if this is the first load and there is a query document in url path 
-   */
-  // _onVisibleUpdate() {
-  //   if( !this.visible ) return;
-
-  //   if( this.firstLoad ) {
-  //     this._searchFromAppState();
-  //   }
-  // }
-
-  /**
    * @method _searchFromAppState
    * @description use current app state to preform a search, should be called on first load
    * or if state update event is from popup state (forward, back button hit)
@@ -91,12 +77,12 @@ export class AppSearch extends Mixin(PolymerElement)
     let searchUrlParts = this.appState.location.path;
     let query;
     if( searchUrlParts.length > 1 ) {
-      query = this._fromUrlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
+      query = this._urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
     } else {
-      query = this._getAppSearchDocument();
+      query = this._getCurrentSearchDocument();
     }
 
-    this._esSearch(query);
+    this._searchRecords(query);
   }
 
   /**
@@ -104,39 +90,25 @@ export class AppSearch extends Mixin(PolymerElement)
    * @description CollectionInterface, fired when the collection overview updates
    * TODO: we should not preform a search untill this is fired 
    */
-  _onCollectionOverviewUpdate(e) {
-    if( e.state === 'loaded' ) this._esDefaultSearch();
-  }
-
-  // /**
-  //  * @method _onDefaultEsSearchUpdate
-  //  * @description ElasticSearchInterface, fired when then default search updates
-  //  * 
-  //  * @param {Object} e 
-  //  */
-  // _onDefaultEsSearchUpdate(e) {
-  //   this._onEsSearchUpdate(e);
+  // _onCollectionOverviewUpdate(e) {
+  //   if( e.state === 'loaded' ) this._esDefaultSearch();
   // }
 
   /**
    * @method _onEsSearchUpdate
-   * @description ElasticSearchInterface, fired when search updates
+   * @description RecordInterface, fired when search updates
    * 
    * @param {Object} e 
    */
-  _onEsSearchUpdate(e) {
+  _onRecordSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
-    let currentIndex = e.query.from;
+    let currentIndex = e.searchDocument.offset;
     let payload = e.payload;
-    let total = 0;
-    if( !payload.hits ) return this.results = [];
-    else total = payload.hits.total;
+    let total = payload.total;
+    this.results = payload.results;
 
-    if( !payload.hits.hits ) return this.results = [];
-    this.results = payload.hits.hits.map(item => item._source);
-
-    this.$.resultsPanel.render(this.results, total, e.query.size, currentIndex);
+    this.$.resultsPanel.render(this.results, total, e.query.limit, currentIndex);
   }
 
   /**
@@ -146,8 +118,9 @@ export class AppSearch extends Mixin(PolymerElement)
    * @param {Object} e 
    */
   _onPageSizeChange(e) {
-    let offset = this._getAppSearchDocument().offset;
-    this._esSetPaging(offset, e.detail);
+    let searchDoc = this._getCurrentSearchDocument();
+    this._setPaging(searchDoc, searchDoc.offset, e.detail);
+    this._searchRecords(searchDoc);
   }
 
   /**
@@ -157,7 +130,9 @@ export class AppSearch extends Mixin(PolymerElement)
    * @param {Object} e 
    */
   _onPaginationChange(e) {
-    this._esSetPaging(e.detail.startIndex);
+    let searchDoc = this._getCurrentSearchDocument();
+    this._setPaging(searchDoc, e.detail.startIndex);
+    this._searchRecords(searchDoc);
   }
 
   /**

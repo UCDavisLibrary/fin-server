@@ -4,7 +4,7 @@ import "@polymer/iron-pages/iron-pages"
 import "./app-filter-panel"
 import "../app-collection-info-panel"
 
-import ElasticSearchInterface from "../../../interfaces/ElasticSearchInterface"
+import RecordInterface from "../../../interfaces/RecordInterface"
 import CollectionInterface from "../../../interfaces/CollectionInterface"
 
 import template from "./app-filters-panel.html"
@@ -25,7 +25,7 @@ for( var key in config.elasticSearch.facets ) {
 
 
 class AppFiltersPanel extends Mixin(PolymerElement)
-      .with(EventInterface, ElasticSearchInterface, CollectionInterface) {
+      .with(EventInterface, RecordInterface, CollectionInterface) {
   
   static get template() {
     return template;
@@ -97,7 +97,10 @@ class AppFiltersPanel extends Mixin(PolymerElement)
    * collection filter when clicked
    */
   _removeCollectionFilter() {
-    this._esRemoveKeywordFilter('isPartOf');
+    let searchDoc = this._getCurrentSearchDocument();
+    this._removeKeywordFilter(searchDoc, 'isPartOf');
+    this._setPaging(searchDoc, 0);
+    this._searchRecords(searchDoc);
   }
 }
 

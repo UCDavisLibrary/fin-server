@@ -2,11 +2,11 @@ import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 
 import "../../auth/app-auth-header";
 import template from "./app-search-header.html"
-import ElasticSearchInterface from '../../interfaces/ElasticSearchInterface'
+import RecordInterface from '../../interfaces/RecordInterface'
 import CollectionInferface from '../../interfaces/CollectionInterface'
 
 class AppSearchHeader extends Mixin(PolymerElement)
-      .with(EventInterface, ElasticSearchInterface, CollectionInferface) {
+      .with(EventInterface, RecordInterface, CollectionInferface) {
 
   static get properties() {
     return {
@@ -54,10 +54,14 @@ class AppSearchHeader extends Mixin(PolymerElement)
   _onBrowse(e) {
     let id = e.detail;
     if( !id || id === 'Browse' ) {
-      return this._esRemoveKeywordFilter('isPartOf');
+      return this._searchRecords(this._getEmptySearchDocument());
     }
+    
     this.$.searchInput.browseValue = 'Browse';
-    this._esSetKeywordFilter('isPartOf', id);
+
+    let searchDoc = this._getEmptySearchDocument();
+    this._setKeywordFilter(searchDoc, 'isPartOf', id);
+    this._searchRecords(searchDoc);    
   }
 
   /**
@@ -68,18 +72,20 @@ class AppSearchHeader extends Mixin(PolymerElement)
    * @param {Object} e
    */
   _onSearch(e) {
-    this._esSetTextFilter(e.detail);
+    let searchDoc = this._getCurrentSearchDocument();
+    this._setTextFilter(searchDoc);
+    this._searchRecords(searchDoc);
   }
 
   /**
    * @method _onEsSearchUpdate
-   * @description from ElasticSearchInterface, called when search state updates
+   * @description from RecordInterface, called when search state updates
    * 
    * @param {*} e 
    */
-  _onEsSearchUpdate(e) {
+  _onRecordSearchUpdate(e) {
     try {
-      this.$.searchInput.value = e.query.query.bool.must[0].multi_match.query;
+      this.$.searchInput.value = e.searchDocument.text || '';
     } catch(e) {
       this.$.searchInput.value = '';
     }

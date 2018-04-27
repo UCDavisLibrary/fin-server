@@ -1,12 +1,11 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
 import CollectionInterface from "../../interfaces/CollectionInterface"
-import ElasticSearchInterface from "../../interfaces/ElasticSearchInterface"
+import RecordInterface from "../../interfaces/RecordInterface"
 import AppStateInterface from "../../interfaces/AppStateInterface"
 import template from "./app-search-breadcrumb.html"
 
-
 class AppSearchBreadcrumb extends Mixin(PolymerElement)
-        .with(EventInterface, AppStateInterface, CollectionInterface, ElasticSearchInterface) {
+        .with(EventInterface, AppStateInterface, CollectionInterface, RecordInterface) {
 
   static get properties() {
     return {
@@ -59,7 +58,7 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
     path.splice(0, 1);
     this.currentRecordId = '/'+path.join('/');
 
-    this.record = await this._esGetRecord(this.currentRecordId);
+    this.record = await this._getRecord(this.currentRecordId);
     this.record = this.record.payload._source;
 
     if( this.record.isPartOf ) {
@@ -82,8 +81,9 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * @description bound to collection anchor tag click event.  start a collection query
    */
   _onCollectionClicked() {
-    this._esClearFilters();
-    this._esSetKeywordFilter('isPartOf', this.collection.id);
+    let searchDoc = this._getEmptySearchDocument();
+    this._setKeywordFilter(searchDoc, 'isPartOf', this.collection.id);
+    this._searchRecords(searchDoc);
   }
 
   /**

@@ -1,7 +1,6 @@
 var router = require('express').Router();
 
-router.use('/search', require('./search'));
-router.use('/record', require('./record'));
+router.use('/records', require('./records'));
 router.use('/collections', require('./collections'));
 
 module.exports = router;

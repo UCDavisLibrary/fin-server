@@ -3,12 +3,12 @@ import "@ucd-lib/fin-search-box"
 import "../../utils/app-collection-card"
 
 import template from "./app-home.html"
-import ElasticSearchInterface from "../../interfaces/ElasticSearchInterface"
+import RecordInterface from "../../interfaces/RecordInterface"
 import AppStateInterface from "../../interfaces/AppStateInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 
 class AppHome extends Mixin(PolymerElement) 
-      .with(EventInterface, ElasticSearchInterface, AppStateInterface, CollectionInterface) {
+      .with(EventInterface, RecordInterface, AppStateInterface, CollectionInterface) {
   
   static get template() {
     return template;
@@ -61,7 +61,7 @@ class AppHome extends Mixin(PolymerElement)
   _onBrowse(e) {
     let id = e.detail;
     if( !id || id === 'Browse' ) {
-      return this._esRemoveKeywordFilter('isPartOf');
+      return this._searchRecords(this._getEmptySearchDocument());
     }
     this.$.searchBox.browseValue = 'Browse';
     this._onCollectionSelected(id);
@@ -90,7 +90,8 @@ class AppHome extends Mixin(PolymerElement)
    * @description filter based on a collection using short ids.
    */
   _onCollectionSelected(id) {
-    this._esSetKeywordFilter('isPartOf', id);
+    let searchDoc = this._setKeywordFilter(this._getEmptySearchDocument(), 'isPartOf', id);
+    this._searchRecords(searchDoc);
   }
   
 }

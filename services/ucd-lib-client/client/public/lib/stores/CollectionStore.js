@@ -8,24 +8,66 @@ class CollectionStore extends BaseStore {
     this.data = {
       selected : null,
       byId : {},
-      // should include the overview state
       overview : {
+        state : this.STATE.INIT
+      },
+      search : {
         state : this.STATE.INIT
       }
     }
 
     this.events = {
       SELECTED_COLLECTION_UPDATE : 'selected-collection-update',
-      COLLECTION_OVERVIEW_UPDATE : 'collection-overview-update'
+      COLLECTION_OVERVIEW_UPDATE : 'collection-overview-update',
+      COLLECTION_SEARCH_UPDATE : 'collection-search-update'
     }
   }
 
+  /**
+   * Selected
+   */
   setSelectedCollection(selected) {
     if( this.data.selected === selected ) return;
     this.data.selected = selected;
     this.emit(this.events.SELECTED_COLLECTION_UPDATE, this.data.selected);
   }
 
+  getSelectedCollection() {
+    return this.data.selected;
+  }
+
+  /**
+   * Search
+   */
+  setSearchLoading(searchDocument, request) {
+    this._setSearchState({
+      state : this.STATE.LOADING,
+      request, searchDocument
+    })
+  }
+
+  setSearchLoaded(searchDocument, payload) {
+    this._setSearchState({
+      state : this.STATE.LOADED,
+      request, payload
+    })
+  }
+
+  setSearchError(searchDocument, error) {
+    this._setSearchState({
+      state : this.STATE.ERROR,
+      request, error
+    })
+  }
+
+  _setSearchState(state) {
+    this.data.search = state;
+    this.emit(this.events.COLLECTION_SEARCH_UPDATE, this.data.search);
+  }
+
+  /**
+   * Overview
+   */
   setCollectionOverviewLoading(promise) {
     this._setCollectionOverviewState({
       state: this.STATE.LOADING, 

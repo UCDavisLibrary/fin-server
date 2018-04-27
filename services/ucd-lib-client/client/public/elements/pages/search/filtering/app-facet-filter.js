@@ -1,11 +1,12 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
-import ElasticSearchInterface from '../../../interfaces/ElasticSearchInterface'
+import RecordInterface from '../../../interfaces/RecordInterface'
+import CollectionInterface from '../../../interfaces/CollectionInterface'
 import template from './app-facet-filter.html'
 
 import "./app-facet-checkbox"
 
 class AppFacetFilter extends Mixin(PolymerElement)
-  .with(EventInterface, ElasticSearchInterface) {
+  .with(EventInterface, CollectionInterface, RecordInterface) {
 
   static get properties() {
     return {
@@ -31,7 +32,7 @@ class AppFacetFilter extends Mixin(PolymerElement)
       },
       activeFilters : {
         type : Array,
-        value : () => []
+        value : null
       },
       allFilters : {
         type : Array,
@@ -49,57 +50,110 @@ class AppFacetFilter extends Mixin(PolymerElement)
     return template;
   }
 
-  _onDefaultEsSearchUpdate(e) {
-    if( e.state !== 'loaded' ) return;
-    this.buckets = e.payload.aggregations[this.filter].buckets;
-
-    if( this.ignore && this.ignore.length ) {
-      this.ignore.forEach(key => {
-        let index = this.buckets.findIndex(bucket => bucket.key === key);
-        if( index > -1 ) this.buckets.splice(index, 1);
-      });
-    }
-
+  /**
+   * @method _onSelectedCollectionUpdate
+   * @description from CollectionInterface
+   */
+  async _onSelectedCollectionUpdate(e) {
+    this.selectedCollection = e ? e.id : '';
     this._updateActiveFilters();
   }
 
-  _onEsSearchUpdate(e) {
+  /**
+   * @method _onRecordSearchUpdate
+   * @description from RecordInterface
+   * 
+   * @param {*} e 
+   */
+  _onRecordSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
     var query = e.query.query;
     var activeFilters = [];
 
-    if( query && 
-        query.bool && 
-        query.bool.filter ) {
-      
-      var arr = query.bool.filter;
+    // if( e.searchDocument.filters[this.filter] ) {
+    //   activeFilters = e.searchDocument.filters[this.filter].value;
+    // }
 
-      for( var i = 0; i < arr.length; i++ ) {
-        if( arr[i].terms[this.filter] ) {
-          activeFilters = arr[i].terms[this.filter];
-        }
-      }
-    }
+    // this.availableFilters = e.availableFilters[this.filter] || {};
 
-    this.activeFilters = activeFilters;
+    // this.activeFilters = activeFilters;
     this._updateActiveFilters();
   }
 
-  _updateActiveFilters() {
+  async _updateActiveFilters() {
     if( !this.activeFilters ) return;
 
-    this.buckets = this.buckets.map(item => {
-      item = Object.assign({}, item);
-      item.active = (this.activeFilters.indexOf(item.key) > -1) ? true : false;
+    debugger;
 
-      return item;
-    });
+    // grab default aggregations for collection
+    // let cid = this.selectedCollection;
+    // let result = await this._defaultRecordSearch(this.selectedCollection);
+    // if( cid !== this.selectedCollection ) return; // make sure we haven't updated
+    // this.default = result;
 
+    // let facets = this.default.payload.aggregations.facets[this.filter];
+
+    // if( this.ignore && this.ignore.length ) {
+    //   this.ignore.forEach(key => {
+    //     if( this.buckets[key] ) delete this.buckets[key];
+    //   });
+    // }
+
+    // let buckets = 
+    // let buckets = this.buckets.map(item => {
+    //   item = Object.assign({}, item);
+
+    //   item.doc_count = this.availableFilters[item.key] || 0;
+
+    //   if( this.activeFilters.indexOf(item.key) > -1 ) {
+    //     item.active = true;
+    //     this._notifySelected(true, item.key);
+    //   } else {
+    //     item.active = false;
+    //     this._notifySelected(false, item.key);
+    //   }
+
+    //   item.empty = item.doc_count ? true : false;
+
+    //   return item;
+    // });
+
+    // this.buckets = buckets;
+
+    // this.dispatchEvent(
+    //   new CustomEvent('update-visibility', {
+    //     detail: {
+    //       show: (this.buckets.length !== 0)
+    //     }
+    //   })
+    // );
+  }
+
+  /**
+   * @method onParentFilterClicked
+   * @description called from parent toggle panel when selected filter
+   * is clicked
+   * 
+   * @param {String} key filter key 
+   */
+  onParentFilterClicked(key) {
+    this._esRemoveKeywordFilter(this.filter, key);
+    this._notifySelected(false, key);
+  };
+
+  /**
+   * @method _notifySelected
+   * @description notify parent of selected/unselected filter
+   * 
+   * @param {Boolean} selected is the filter selected
+   * @param {String} key filter key/label
+   */
+  _notifySelected(selected, key) {
     this.dispatchEvent(
-      new CustomEvent('update-visibility', {
+      new CustomEvent(`${selected ? 'add' : 'remove'}-selected`, {
         detail: {
-          show: (this.buckets.length !== 0)
+          label: key
         }
       })
     );
@@ -113,11 +167,15 @@ class AppFacetFilter extends Mixin(PolymerElement)
   appendFilter(e) {
     var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
     this._esAppendKeywordFilter(this.filter, item.key);
+    this._notifySelected(true, item.key);
   }
+
+
 
   removeFilter(e) {
     var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
     this._esRemoveKeywordFilter(this.filter, item.key);
+    this._notifySelected(false, item.key);
   }
 
 }

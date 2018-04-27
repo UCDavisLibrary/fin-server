@@ -4,14 +4,14 @@ import "@ucd-lib/cork-pagination"
 import "./app-search-grid-result"
 import "./app-search-list-result"
 import "../../../utils/app-collection-card"
-import ElasticSearchInterface from "../../../interfaces/ElasticSearchInterface"
+import RecordSearch from "../../../interfaces/RecordSearch"
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import CollectionInterface from "../../../interfaces/CollectionInterface"
 
 import template from './app-search-results-panel.html'
 
 class AppSearchResultsPanel extends Mixin(PolymerElement)
-      .with(EventInterface, ElasticSearchInterface, AppStateInterface, CollectionInterface) {
+      .with(EventInterface, RecordSearch, AppStateInterface, CollectionInterface) {
 
   static get properties() {
     return {
@@ -234,7 +234,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
   }
 
   /**
-   * @method _onEsSearchCollectionUpdate
+   * @method _onSearchCollectionUpdate
    * @description from ElasticSearchInterface, called when a collection search state
    * is updated.
    * 
