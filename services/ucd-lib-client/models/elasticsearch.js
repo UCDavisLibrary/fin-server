@@ -96,8 +96,8 @@ class ElasticSearchModel {
 
     let esBody = {
       aggs : this._getEsAggs(query.facets),
-      from : query.offset || this.DEFAULT_OFFSET,
-      size : query.limit || this.DEFAULT_LIMIT
+      from : query.offset,
+      size : query.limit
     }
 
     if( query.sort ) {
