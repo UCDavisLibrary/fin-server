@@ -1911,7 +1911,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(298)("./" + name);
+            __webpack_require__(294)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -4590,7 +4590,7 @@ return hooks;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_legacy_legacy_element_mixin_js__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_legacy_legacy_element_mixin_js__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_legacy_templatizer_behavior_js__ = __webpack_require__(208);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_elements_dom_bind_js__ = __webpack_require__(209);
@@ -4993,11 +4993,32 @@ module.exports = {
   BaseService : __webpack_require__(237),
   Mixin : __webpack_require__(239),
   EventInterface : __webpack_require__(240),
-  fetch : __webpack_require__(62)
+  fetch : __webpack_require__(61)
 }
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports) {
+
+module.exports = subclass => 
+class CollectionInterface extends subclass {
+  constructor() {
+    super();
+    this._injectModel('CollectionModel');
+  }
+
+  async _getCollectionOverview() {
+    return this.CollectionModel.overview();
+  }
+
+  async _getCollection(id) {
+    return this.CollectionModel.get(id);
+  }
+
+}
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {AppStateInterface} = __webpack_require__(47);
@@ -5022,46 +5043,7 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {ElasticSearchInterface} = __webpack_require__(31);
-
-module.exports = subclass => 
-  class ElasticSearchInterfaceImpl extends Mixin(subclass).with(ElasticSearchInterface) {
-
-    async _esGetRecord(id) {
-      return this.ElasticSearchModel.get(id);
-    }
-
-    async _esSetKeywordAndText(text, attr, value) {
-      return this.ElasticSearchModel.setKeywordAndText(text, attr, value);
-    }
-  }
-
-/***/ }),
 /* 9 */
-/***/ (function(module, exports) {
-
-module.exports = subclass => 
-class CollectionInterface extends subclass {
-  constructor() {
-    super();
-    this._injectModel('CollectionModel');
-  }
-
-  async _getCollectionOverview() {
-    return this.CollectionModel.overview();
-  }
-
-  async _getCollection(id) {
-    return this.CollectionModel.get(id);
-  }
-
-}
-
-/***/ }),
-/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5214,6 +5196,76 @@ const microTask = {
 /* harmony export (immutable) */ __webpack_exports__["microTask"] = microTask;
 
 
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = subclass => 
+  class MediaInterface extends subclass {
+
+    constructor() {
+      super();
+      this._injectModel('RecordModel');
+    }
+
+    _defaultRecordSearch(collectionId) {
+      return this.RecordModel.defaultSearch(collectionId);
+    }
+
+    _getRecord(id) {
+      return this.RecordModel.get(id);
+    }
+
+    _searchDocumentToUrl(searchDocument) {
+      return this.RecordModel.searchDocumentToUrl(searchDocument);
+    }
+
+    _urlToSearchDocument(url) {
+      return this.RecordModel.urlToSearchDocument(url);
+    }
+
+    _getEmptySearchDocument() {
+      return this.RecordModel.emptySearchDocument();
+    }
+
+    _setKeywordFilter(searchDocument, attr, value, op) {
+      return this.RecordModel.setKeywordFilter(searchDocument, attr, value, op);
+    }
+
+    _appendKeywordFilter(searchDocument, attr, value, op) {
+      return this.RecordModel.appendKeywordFilter(searchDocument, attr, value);
+    }
+
+    _removeKeywordFilter(searchDocument, attr, value) {
+      return this.RecordModel.removeKeywordFilter(searchDocument, attr, value);
+    }
+
+    _searchRecords(searchDocument) {
+      return this.RecordModel.search(searchDocument);
+    }
+
+    _getCurrentSearchDocument() {
+      return this.RecordModel.getCurrentSearchDocument();
+    }
+
+    _setTextFilter(searchDocument, text) {
+      return this.RecordModel.setTextFilter(searchDocument, text);
+    }
+
+    _setPaging(searchDocument, offset, limit) {
+      return this.RecordModel.setPaging(searchDocument, offset, limit);
+    }
+
+    _appendRangeFilter(searchDocument, attr, value) {
+      return this.RecordModel.appendRangeFilter(searchDocument, attr, value);
+    }
+
+    _removeRangeFilter(searchDocument, attr) {
+      return this.RecordModel.removeRangeFilter(searchDocument, attr);
+    }
+
+  }
 
 /***/ }),
 /* 11 */
@@ -5671,7 +5723,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixin_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(9);
 
 
 
@@ -8231,12 +8283,54 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {
-  ElasticSearchInterface : __webpack_require__(262),
-  ElasticSearchModel : __webpack_require__(263),
-  ElasticSearchService : __webpack_require__(264),
-  ElasticSearchStore : __webpack_require__(265)
+let rights = __webpack_require__(65);
+
+let rightsMap = {};
+for( var key in rights ) {
+  rightsMap[key] =  rights[key].text;
 }
+
+module.exports = {
+  fcrepoBasePath : '/fcrepo/rest',
+
+  // facets to show on left side
+  elasticSearch : {
+    facets : {
+      'fileFormats' : {
+        label : 'File Format',
+        type : 'facet'
+      },
+      'creators' : {
+        label : 'Creator',
+        type : 'facet'
+      },
+      yearPublished : {
+        label : 'Published',
+        type : 'range'
+      },
+      license : {
+        label : 'Rights',
+        type : 'facet',
+        valueMap : rightsMap
+      },
+      type : {
+        label : 'Type',
+        type : 'facet',
+        ignore : ['CreativeWork']
+      },
+      about : {
+        label : 'Subject',
+        type : 'facet'
+      }
+    },
+
+    textFields : ['name', 'description', 'keywords'],
+    
+    // max number of facets filter options
+    maxFacetCount : 50
+  }
+}
+
 
 /***/ }),
 /* 32 */
@@ -8252,7 +8346,7 @@ module.exports = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_mixin_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_case_map_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_style_gather_js__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_style_gather_js__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_resolve_url_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__elements_dom_module_js__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__property_effects_js__ = __webpack_require__(34);
@@ -14032,27 +14126,37 @@ module.exports = new MasterController();
 
 module.exports = {
   AppStateInterface : __webpack_require__(64),
-  AppStateModel : __webpack_require__(249),
-  AppStateStore : __webpack_require__(250),
-  'app-route' : __webpack_require__(251)
+  AppStateModel : __webpack_require__(248),
+  AppStateStore : __webpack_require__(249),
+  'app-route' : __webpack_require__(250)
 }
 
 /***/ }),
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var {ElasticSearchStore} = __webpack_require__(31);
+const {BaseStore} = __webpack_require__(6);
 
-class ElasticSearchStoreImpl extends ElasticSearchStore {
+class RecordStore extends BaseStore {
 
   constructor() {
     super();
 
-    this.data.byId = {};
-    this.data.searchCollection = {};
+    this.data = {
+      byId : {},
+      // by collection id
+      defaultSearch : {},
+      search : {
+        state : this.STATE.INIT
+      }
+    }
 
-    this.events.RECORD_UPDATE = 'es-record-update';
-    this.events.SEARCH_COLLECTION_UPDATE = 'es-search-collection-update';
+    this.events = {
+      RECORD_UPDATE : 'record-update',
+      RECORD_SEARCH_UPDATE : 'record-search-update',
+      DEFAULT_RECORD_SEARCH_UPDATE : 'default-record-search-update'
+    }
+
   }
 
   setRecordLoading(id, promise) {
@@ -14064,7 +14168,6 @@ class ElasticSearchStoreImpl extends ElasticSearchStore {
   }
 
   setRecordLoaded(id, payload) {
-    payload._source.id = payload._source['@id'];
     this._setRecordState({
       state: this.STATE.LOADED,   
       payload, id
@@ -14084,110 +14187,80 @@ class ElasticSearchStoreImpl extends ElasticSearchStore {
   }
 
   /**
-   * Search Collection
+   * Search
    */
-  setSearchCollectionLoading(query, promise) {
-    this._setSearchCollectionState({
-      state: this.STATE.LOADING, 
-      query: query,
-      request : promise
-    });
-  }
-
-  setSearchCollectionLoaded(query, payload) {
-    payload = payload
-      .hits.hits.map(item => {
-        item._source.thumbnail = '/fcrepo/rest'+item._source.workExample+'/svc:iiif/full/,320/0/default.jpg'
-        return item._source;
-      });
-
-    this._setSearchCollectionState({
+  setSearchLoaded(searchDocument, payload) {
+    this._setSearchState({
       state: this.STATE.LOADED,   
-      query: query,
-      payload: payload
+      searchDocument, payload
     });
   }
 
-  setSearchCollectionError(query, e) {
-    this._setSearchCollectionState({
+  setSearchLoading(searchDocument, request) {
+    this._setSearchState({
+      state: this.STATE.LOADING,   
+      searchDocument, request
+    });
+  }
+
+  setSearchError(searchDocument, error) {
+    this._setSearchState({
       state: this.STATE.ERROR,   
-      query: query,
-      error: e
+      searchDocument, error
     });
   }
 
-  _setSearchCollectionState(state) {
-    this.data.searchCollection = Object.assign({}, state);
-    this.emit(this.events.SEARCH_COLLECTION_UPDATE, this.data.searchCollection);
+  _setSearchState(state) {
+    this.data.search = state;
+    this.emit(this.events.RECORD_SEARCH_UPDATE, state);
   }
 
   getSearch() {
     return this.data.search;
   }
 
+  /**
+   * Default Search
+   */
+  setDefaultSearchLoading(id, searchDocument, promise) {
+    this._setDefaultSearchState({
+      id, searchDocument,
+      state: this.STATE.LOADING, 
+      request : promise
+    });
+  }
+
+  setDefaultSearchLoaded(id, searchDocument, payload) {
+    this._setDefaultSearchState({
+      id, searchDocument,
+      state: this.STATE.LOADED,   
+      payload
+    });
+  }
+
+  setDefaultSearchError(id, searchDocument, e) {
+    this._setDefaultSearchState({
+      id, searchDocument,
+      state: this.STATE.ERROR,   
+      error: e
+    });
+  }
+
+  getDefaultSearch(id) {
+    return this.data.defaultSearch[id];
+  }
+
+  _setDefaultSearchState(state) {
+    this.data.defaultSearch[state.id] = state;
+    this.emit(this.events.DEFAULT_SEARCH_UPDATE, this.data.defaultSearch[state.id]);
+  }
+
 }
 
-module.exports = new ElasticSearchStoreImpl();
+module.exports = new RecordStore();
 
 /***/ }),
 /* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-let rights = __webpack_require__(65);
-
-let rightsMap = {};
-for( var key in rights ) {
-  rightsMap[key] =  rights[key].text;
-}
-
-module.exports = {
-  fcrepoBasePath : '/fcrepo/rest',
-
-  // facets to show on left side
-  elasticSearch : {
-    facets : {
-      'fileFormats' : {
-        label : 'File Format',
-        type : 'facet'
-      },
-      'creators' : {
-        label : 'Creator',
-        type : 'facet'
-      },
-      'subjects_raw' : {
-        label : 'Subject',
-        type : 'facet'
-      },
-      yearPublished : {
-        label : 'Published',
-        type : 'range'
-      },
-      license : {
-        label : 'Rights',
-        type : 'facet',
-        valueMap : rightsMap
-      },
-      type : {
-        label : 'Type',
-        type : 'facet',
-        ignore : ['CreativeWork']
-      },
-      about : {
-        label : 'Subject',
-        type : 'facet'
-      }
-    },
-
-    textFields : ['name', 'description', 'keywords'],
-    
-    // max number of facets filter options
-    maxFacetCount : 50
-  }
-}
-
-
-/***/ }),
-/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = subclass => 
@@ -14220,7 +14293,7 @@ module.exports = subclass =>
   }
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14269,19 +14342,19 @@ const PaperInkyFocusBehavior = [
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_icon_iron_icon_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(302);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_icon_button_paper_icon_button_js__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_styles_color_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(308);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(309);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(304);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(305);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__iron_menu_behavior_iron_menu_behavior_js__ = __webpack_require__(193);
@@ -14858,7 +14931,7 @@ Object(__WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14956,22 +15029,22 @@ function _cssFromModuleImports(module) {
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_apply_shim_js__ = __webpack_require__(200);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_element_mixin_js__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_gesture_event_listeners_js__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_gesture_event_listeners_js__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_import_href_js__ = __webpack_require__(204);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_render_status_js__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__ = __webpack_require__(205);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__utils_unresolved_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_gestures_js__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_gestures_js__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils_debounce_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_async_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_async_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__utils_path_js__ = __webpack_require__(21);
 
 
@@ -15907,7 +15980,7 @@ const LegacyElementMixin = Object(__WEBPACK_IMPORTED_MODULE_3__utils_mixin_js__[
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16225,7 +16298,7 @@ function gatherStyleText(element) {
 }
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16249,7 +16322,7 @@ const templateMap = {};
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16302,13 +16375,13 @@ function documentWait(callback) {
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export CustomStyleProvider */
 /* unused harmony export CustomStyleInterfaceInterface */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__document_wait_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__document_wait_js__ = __webpack_require__(56);
 /**
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -16470,14 +16543,14 @@ let CustomStyleInterfaceInterface;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_gestures_js__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_gestures_js__ = __webpack_require__(59);
 
 
 
@@ -16518,7 +16591,7 @@ const GestureEventListeners = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16539,7 +16612,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["resetMouseCanceller"] = resetMouseCanceller;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__async_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__async_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__debounce_js__ = __webpack_require__(14);
 
 
@@ -17353,7 +17426,7 @@ const remove = removeListener;
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17624,7 +17697,7 @@ function equals(currentValue, previousValue) {
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // the whatwg-fetch polyfill installs the fetch() function
@@ -17636,7 +17709,7 @@ module.exports = self.fetch.bind(self);
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseStore} = __webpack_require__(6);
@@ -17686,6 +17759,40 @@ class AuthStore extends BaseStore {
 }
 
 module.exports = new AuthStore();
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var {AppStateModel} = __webpack_require__(47);
+var AppStateStore = __webpack_require__(259);
+
+class AppStateModelImpl extends AppStateModel {
+
+  constructor() {
+    super();
+    this.store = AppStateStore;
+  }
+
+  setSelectedRecord(record) {
+    this.store.setSelectedRecord(record);
+  }
+
+  getSelectedRecord() {
+    return this.store.getSelectedRecord();
+  }
+
+  setSelectedRecordMedia(record) {
+    this.store.setSelectedRecordMedia(record);
+  }
+
+  getSelectedRecordMedia() {
+    return this.store.getSelectedRecordMedia();
+  }
+
+}
+
+module.exports = new AppStateModelImpl();
 
 /***/ }),
 /* 64 */
@@ -17739,24 +17846,66 @@ class CollectionStore extends BaseStore {
     this.data = {
       selected : null,
       byId : {},
-      // should include the overview state
       overview : {
+        state : this.STATE.INIT
+      },
+      search : {
         state : this.STATE.INIT
       }
     }
 
     this.events = {
       SELECTED_COLLECTION_UPDATE : 'selected-collection-update',
-      COLLECTION_OVERVIEW_UPDATE : 'collection-overview-update'
+      COLLECTION_OVERVIEW_UPDATE : 'collection-overview-update',
+      COLLECTION_SEARCH_UPDATE : 'collection-search-update'
     }
   }
 
+  /**
+   * Selected
+   */
   setSelectedCollection(selected) {
     if( this.data.selected === selected ) return;
     this.data.selected = selected;
     this.emit(this.events.SELECTED_COLLECTION_UPDATE, this.data.selected);
   }
 
+  getSelectedCollection() {
+    return this.data.selected;
+  }
+
+  /**
+   * Search
+   */
+  setSearchLoading(searchDocument, request) {
+    this._setSearchState({
+      state : this.STATE.LOADING,
+      request, searchDocument
+    })
+  }
+
+  setSearchLoaded(searchDocument, payload) {
+    this._setSearchState({
+      state : this.STATE.LOADED,
+      request, payload
+    })
+  }
+
+  setSearchError(searchDocument, error) {
+    this._setSearchState({
+      state : this.STATE.ERROR,
+      request, error
+    })
+  }
+
+  _setSearchState(state) {
+    this.data.search = state;
+    this.emit(this.events.COLLECTION_SEARCH_UPDATE, this.data.search);
+  }
+
+  /**
+   * Overview
+   */
   setCollectionOverviewLoading(promise) {
     this._setCollectionOverviewState({
       state: this.STATE.LOADING, 
@@ -17765,6 +17914,8 @@ class CollectionStore extends BaseStore {
   }
 
   setCollectionOverviewLoaded(payload) {
+    payload = payload.results;
+
     payload.forEach(item => {
       item.id = item['@id'];
       this.data.byId[item.id] = item;
@@ -17804,15 +17955,15 @@ module.exports = new CollectionStore();
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_citeproc__ = __webpack_require__(270);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_citeproc__ = __webpack_require__(266);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_citeproc___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_citeproc__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml__ = __webpack_require__(267);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__styles_locales_en_US_xml__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_apa_csl__ = __webpack_require__(272);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_apa_csl__ = __webpack_require__(268);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_apa_csl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__styles_apa_csl__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl__ = __webpack_require__(269);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__styles_modern_language_association_csl__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl__ = __webpack_require__(270);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__styles_chicago_author_date_csl__);
 
 
@@ -17955,7 +18106,7 @@ module.exports = function(module) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__ = __webpack_require__(278);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__ = __webpack_require__(274);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_collection_card_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_collection_card_html__);
 
 
@@ -18204,7 +18355,7 @@ const PaperInputAddonBehavior = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_icon_iron_icon_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_default_theme_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
@@ -18336,10 +18487,10 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_result_creator__ = __webpack_require__(299);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_result_creator__ = __webpack_require__(295);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__);
@@ -18392,6 +18543,11 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
       year : {
         type : String,
         value : ''
+      },
+      tabindex : {
+        type : Number,
+        value : 0,
+        reflectToAttribute : true
       }
     }
   }
@@ -18405,7 +18561,11 @@ class AppSearchResult extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 
   ready() {
     super.ready();
-    this.addEventListener('click', this._onClick);
+    this.addEventListener('click', e => this._onClick());
+    this.addEventListener('keyup', e => {
+      if( e.which !== 13 ) return;
+      this._onClick();
+    });
   }
 
   /**
@@ -29892,7 +30052,7 @@ return zhTw;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selector_iron_multi_selectable_js__ = __webpack_require__(307);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selector_iron_multi_selectable_js__ = __webpack_require__(303);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_selector_iron_selectable_js__ = __webpack_require__(43);
@@ -30480,8 +30640,8 @@ function parse(val) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_color_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_spinner_behavior_js__ = __webpack_require__(332);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__ = __webpack_require__(333);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_spinner_behavior_js__ = __webpack_require__(328);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__ = __webpack_require__(329);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
@@ -30540,20 +30700,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__styles_shared_styles__ = __webpack_require__(243);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib__ = __webpack_require__(245);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__lib__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_home_app_home__ = __webpack_require__(275);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_search_app_search__ = __webpack_require__(280);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_record_app_record__ = __webpack_require__(329);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__app_footer__ = __webpack_require__(354);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__utils_app_header_colorbar__ = __webpack_require__(358);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_home_app_home__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_search_app_search__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_record_app_record__ = __webpack_require__(325);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__app_footer__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__utils_app_header_colorbar__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_AuthInterface__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_AuthInterface__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__interfaces_AuthInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__fin_app_html__ = __webpack_require__(359);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__interfaces_RecordInterface__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__interfaces_RecordInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__fin_app_html__ = __webpack_require__(355);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__fin_app_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__fin_app_html__);
 
 
@@ -30595,7 +30755,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 window.html = (str) => str[0];
 
 class FinApp extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_21__interfaces_AuthInterface___default.a, __WEBPACK_IMPORTED_MODULE_22__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_23__interfaces_ElasticSearchInterface___default.a) {
+  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_20__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_21__interfaces_AuthInterface___default.a, __WEBPACK_IMPORTED_MODULE_22__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_23__interfaces_RecordInterface___default.a) {
 
   // Define a string template instead of a `<template>` element.
   static get template() {
@@ -30642,13 +30802,13 @@ class FinApp extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_
   }
 
   /**
-   * @method _onEsSearchDocumentUpdate
-   * @description ElasticSearchInterface, fired when search document updates.
+   * @method _onRecordSearchUpdate
+   * @description RecordInterface, fired when search document updates.
    * used to set the window url
    * 
    */
-  _onEsSearchDocumentUpdate(e) {
-    this._setWindowLocation('/search/'+this._fromSearchDocumentToUrl(e));
+  _onRecordSearchUpdate(e) {
+    this._setWindowLocation('/search/'+this._searchDocumentToUrl(e.searchDocument));
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["FinApp"] = FinApp;
@@ -30665,7 +30825,7 @@ customElements.define('fin-app', FinApp);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_case_map_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_async_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_async_js__ = __webpack_require__(9);
 
 
 
@@ -32184,12 +32344,12 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_apply_shim_js__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_template_map_js__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_util_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_template_map_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_util_js__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_apply_shim_utils_js__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_document_wait_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_document_wait_js__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_common_utils_js__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_custom_style_interface_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_custom_style_interface_js__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_style_settings_js__ = __webpack_require__(35);
 /**
 @license
@@ -32391,7 +32551,7 @@ window.ShadyCSS.ApplyShim = applyShim;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_util_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_util_js__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_regex_js__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utils_js__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__css_parse_js__ = __webpack_require__(36);
@@ -32937,7 +33097,7 @@ function isUnscopedStyle(style) {
 /* unused harmony export startValidating */
 /* harmony export (immutable) */ __webpack_exports__["b"] = startValidatingTemplate;
 /* unused harmony export elementsAreInvalid */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_map_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_map_js__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__css_parse_js__ = __webpack_require__(36);
 /**
 @license
@@ -33193,8 +33353,8 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FlattenedNodesObserver; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__array_splice_js__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__array_splice_js__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__async_js__ = __webpack_require__(9);
 
 
 
@@ -33439,7 +33599,7 @@ class FlattenedNodesObserver {
 
 "use strict";
 /* unused harmony export mixinBehaviors */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__legacy_element_mixin_js__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__legacy_element_mixin_js__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__elements_dom_module_js__ = __webpack_require__(33);
 
 
@@ -33859,7 +34019,7 @@ let Templatizer = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_property_effects_js__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_mutable_data_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_gesture_event_listeners_js__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_gesture_event_listeners_js__ = __webpack_require__(58);
 
 
 
@@ -33989,7 +34149,7 @@ customElements.define('dom-bind', DomBind);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_mutable_data_js__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_async_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_async_js__ = __webpack_require__(9);
 
 
 
@@ -34687,7 +34847,7 @@ customElements.define(DomRepeat.is, DomRepeat);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_templatize_js__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_debounce_js__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_async_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_async_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(21);
 
 
@@ -34957,7 +35117,7 @@ customElements.define(DomIf.is, DomIf);
 /* unused harmony export ArraySelector */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_element_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_array_splice_js__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_array_splice_js__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_element_mixin_js__ = __webpack_require__(32);
 
 
@@ -35376,7 +35536,7 @@ customElements.define(ArraySelector.is, ArraySelector);
 "use strict";
 /* unused harmony export CustomStyle */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webcomponents_shadycss_entrypoints_custom_style_interface_js__ = __webpack_require__(214);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_style_gather_js__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_style_gather_js__ = __webpack_require__(52);
 
 
 
@@ -35471,7 +35631,7 @@ window.customElements.define('custom-style', CustomStyle);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_custom_style_interface_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_custom_style_interface_js__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_common_utils_js__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_style_settings_js__ = __webpack_require__(35);
 /**
@@ -36306,7 +36466,7 @@ const scroll = function scroll(options) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_async_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_async_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_debounce_js__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_utils_flush_js__ = __webpack_require__(22);
 
@@ -38897,7 +39057,7 @@ module.exports = BaseStore;
 /***/ (function(module, exports, __webpack_require__) {
 
 // help: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-const fetch = __webpack_require__(62);
+const fetch = __webpack_require__(61);
 
 /**
  * @class BaseService
@@ -39628,7 +39788,7 @@ module.exports = Mixin;
 /***/ (function(module, exports, __webpack_require__) {
 
 const {Debouncer} = __webpack_require__(14);
-const Async = __webpack_require__(10);
+const Async = __webpack_require__(9);
 const MasterController = __webpack_require__(46);
 
 /**
@@ -39981,7 +40141,7 @@ document.head.appendChild(styleWrapper);
 /* 242 */
 /***/ (function(module, exports) {
 
-module.exports = "<custom-style>\n  <style>\n    html {\n      --default-primary-color : #002655;\n      --light-primary-color   : #335379;\n      \n      --default-secondary-color : #daaa00;\n      --light-secondary-color   : #9be7ff;\n      --dark-secondary-color    : #2286c3;\n\n      --medium-background-color : #B2BDCF;\n      --light-background-color : #D6DCE6;\n      --super-light-background-color: #f3f3f3;\n    \n      --text-primary-color      : black;\n      --primary-text-color      : var(--text-primary-color);\n      --secondary-text-color    : var(--default-secondary-color);\n      --inverse-text-color      : white;\n      --gray-text               : #8B8B8B;\n      --text-disabled           : var(--gray-text);\n\n      --max-width               : 1200px;\n      --max-text-width          : 650px;\n      --font-size               : 16px;\n      --font-size-sm            : 14px;\n      --font-weight             : 400;\n      --font-weight-heavy       : 700;\n\n      --layout-sm               : 768px;\n      --grid-cell-width         : 250px;\n\n     /**\n      * Custom mixins\n      */\n      --fin-search-box-select: {\n        font-size: var(--font-size);\n        font-weight: var(--font-weight);\n        color: var(--default-primary-color);\n        background-color: var(--default-secondary-color);\n        width: 100px;\n      }\n      --fin-search-box-select-inverse: {\n        @apply(--fin-search-box-select);\n        color: var(--default-secondary-color);\n        background-color: var(--default-primary-color);\n      }\n      --fin-search-box-input: {\n        font-size: var(--font-size);\n      }\n      --cork-drop-down-arrow-color: var(--default-primary-color);\n      --cork-toggle-panel-label : {\n        padding: 10px 0;\n        color: var(--default-primary-color);\n        font-weight: var(--font-weight-heavy);\n      }\n    }\n    body, html {\n      /* @apply --paper-font-common-base; */\n      font-family: \"proxima-nova\",\"Montserrat\",\"Lucida Grande\",\"Lucida Sans\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\n      font-size        : var(--font-size);\n      font-weight      : var(--font-weight);\n      line-height      : calc(var(--font-size) * 1.625);\n      margin           : 0;\n      padding          : 0;\n      height           : 100%;\n      background-color : var(--default-background-color);\n      color            : var(--text-primary-color);\n    }\n  </style>\n</custom-style>";
+module.exports = "<custom-style>\n  <style>\n    html {\n      --default-primary-color : #002655;\n      --light-primary-color   : #335379;\n      \n      --default-secondary-color : #daaa00;\n      --light-secondary-color   : #9be7ff;\n      --dark-secondary-color    : #2286c3;\n\n      --medium-background-color : #B2BDCF;\n      --light-background-color : #D6DCE6;\n      --super-light-background-color: #f3f3f3;\n    \n      --text-primary-color      : black;\n      --primary-text-color      : var(--text-primary-color);\n      --secondary-text-color    : var(--default-secondary-color);\n      --inverse-text-color      : white;\n      --gray-text               : #8B8B8B;\n      --text-disabled           : var(--gray-text);\n\n      --max-width               : 1200px;\n      --max-text-width          : 650px;\n      --font-size               : 16px;\n      --font-size-sm            : 14px;\n      --font-weight             : 400;\n      --font-weight-heavy       : 700;\n\n      --layout-sm               : 768px;\n      --grid-cell-width         : 250px;\n\n     /**\n      * Custom mixins\n      */\n      --fin-search-box-select: {\n        font-size: var(--font-size);\n        font-weight: var(--font-weight);\n        color: var(--default-primary-color);\n        background-color: var(--default-secondary-color);\n        width: 100px;\n      }\n      --fin-search-box-select-inverse: {\n        @apply(--fin-search-box-select);\n        color: var(--default-secondary-color);\n        background-color: var(--default-primary-color);\n      }\n      --fin-search-box-input: {\n        font-size: var(--font-size);\n      }\n      --cork-drop-down-arrow-color: var(--default-primary-color);\n      --cork-toggle-panel-label : {\n        padding: 10px 0;\n        color: var(--default-primary-color);\n        font-weight: var(--font-weight-heavy);\n      }\n    }\n    body, html {\n      /* @apply --paper-font-common-base; */\n      font-family: \"proxima-nova\",\"Montserrat\",\"Lucida Grande\",\"Lucida Sans\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\n      font-size        : var(--font-size);\n      font-weight      : var(--font-weight);\n      line-height      : calc(var(--font-size) * 1.625);\n      margin           : 0;\n      padding          : 0;\n      background-color : var(--default-background-color);\n      color            : var(--text-primary-color);\n    }\n  </style>\n</custom-style>";
 
 /***/ }),
 /* 243 */
@@ -40000,7 +40160,7 @@ document.head.appendChild(styleWrapper);
 /* 244 */
 /***/ (function(module, exports) {
 
-module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n      paper-material {\n        background: white;\n        display: block;\n        padding: 10px;\n        margin: 10px;\n      }\n\n      paper-tabs {\n        --paper-tabs-selection-bar: {\n          border-bottom: 3px solid var(--default-primary-color);\n        }\n      }\n      paper-tab {\n        --paper-tab-content-unselected : {    \n          text-transform: uppercase;\n          color: var(--text-disabled);\n        }\n        --paper-tab-content : {\n          text-transform: uppercase;\n          color: var(--default-primary-color);\n        }\n      }\n\n      [hidden] {\n        display: none !important;\n      }\n\n      input, select, button {\n        font-size        : var(--font-size);\n        font-weight      : var(--font-weight);\n        color            : var(--text-primary-color);\n      }\n\n      main {\n        display: flex;\n        justify-content: center;\n      }\n\n      main > * {\n        max-width: 1000px;\n        width: 100%;\n      }\n\n      ul.menu {\n        list-style: none;\n        margin: 0;\n        padding: 0;\n      }\n\n      ul.menu.horizontal {\n        display: flex;\n      }\n\n      a {\n        text-decoration: none;\n        color: var(--default-primary-color);\n      }\n\n      a.italic {\n        color: var(--default-secondary-color);\n        font-style: italic;\n      }\n\n      a.gold {\n        color: var(--default-secondary-color);\n      }\n\n      .text-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n      }\n      \n      .text-container > * {\n        max-width: var(--max-text-width);\n        width: 100%;\n      }\n\n      .container {\n        display: flex;\n        justify-content: center;\n        flex-direction: column;\n        align-items: center;\n      }\n\n      .container > * {\n        max-width: var(--max-width);\n        width: 100%;\n        justify-content: center;\n      }\n\n      fin-search-box > iron-icon {\n        color: var(--default-secondary-color);\n      }\n    </style>\n  </template>\n</dom-module>";
+module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n      paper-material {\n        background: white;\n        display: block;\n        padding: 10px;\n        margin: 10px;\n      }\n\n      paper-tabs {\n        --paper-tabs-selection-bar: {\n          border-bottom: 3px solid var(--default-primary-color);\n        }\n      }\n      paper-tab {\n        --paper-tab-content-unselected : {    \n          text-transform: uppercase;\n          color: var(--text-disabled);\n        }\n        --paper-tab-content : {\n          text-transform: uppercase;\n          color: var(--default-primary-color);\n        }\n      }\n\n      [hidden] {\n        display: none !important;\n      }\n\n      input, select, button {\n        font-size        : var(--font-size);\n        font-weight      : var(--font-weight);\n        color            : var(--text-primary-color);\n      }\n      \n      *:focus {\n        outline-color: var(--default-secondary-color);\n        outline-style: dotted;\n        outline-width: 2px;\n      }\n\n      main {\n        display: flex;\n        justify-content: center;\n      }\n\n      main > * {\n        max-width: 1000px;\n        width: 100%;\n      }\n\n      ul.menu {\n        list-style: none;\n        margin: 0;\n        padding: 0;\n      }\n\n      ul.menu.horizontal {\n        display: flex;\n      }\n\n      a {\n        text-decoration: none;\n        color: var(--default-primary-color);\n      }\n\n      a.italic {\n        color: var(--default-secondary-color);\n        font-style: italic;\n      }\n\n      a.gold {\n        color: var(--default-secondary-color);\n      }\n\n      .text-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n      }\n      \n      .text-container > * {\n        max-width: var(--max-text-width);\n        width: 100%;\n      }\n\n      .container {\n        display: flex;\n        justify-content: center;\n        flex-direction: column;\n        align-items: center;\n      }\n\n      .container > * {\n        max-width: var(--max-width);\n        width: 100%;\n        justify-content: center;\n      }\n\n      fin-search-box > iron-icon {\n        color: var(--default-secondary-color);\n      }\n    </style>\n  </template>\n</dom-module>";
 
 /***/ }),
 /* 245 */
@@ -40008,10 +40168,10 @@ module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n
 
 module.exports = {
   AuthModel : __webpack_require__(246),
-  AppStateModel : __webpack_require__(248),
-  ElasticSearchModel : __webpack_require__(261),
-  CollectionModel : __webpack_require__(267),
-  MediaModel : __webpack_require__(269),
+  AppStateModel : __webpack_require__(63),
+  RecordModel : __webpack_require__(260),
+  CollectionModel : __webpack_require__(263),
+  MediaModel : __webpack_require__(265),
   CitationModel : __webpack_require__(67)
 }
 
@@ -40020,7 +40180,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseModel} = __webpack_require__(6);
-var AuthStore = __webpack_require__(63);
+var AuthStore = __webpack_require__(62);
 var AuthService = __webpack_require__(247);
 
 
@@ -40055,7 +40215,7 @@ module.exports = new AuthModel();
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
-const AuthStore = __webpack_require__(63);
+const AuthStore = __webpack_require__(62);
 
 class AuthSerivce extends BaseService {
 
@@ -40089,40 +40249,6 @@ module.exports = new AuthSerivce();
 
 /***/ }),
 /* 248 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var {AppStateModel} = __webpack_require__(47);
-var AppStateStore = __webpack_require__(260);
-
-class AppStateModelImpl extends AppStateModel {
-
-  constructor() {
-    super();
-    this.store = AppStateStore;
-  }
-
-  setSelectedRecord(record) {
-    this.store.setSelectedRecord(record);
-  }
-
-  getSelectedRecord() {
-    return this.store.getSelectedRecord();
-  }
-
-  setSelectedRecordMedia(record) {
-    this.store.setSelectedRecordMedia(record);
-  }
-
-  getSelectedRecordMedia() {
-    return this.store.getSelectedRecordMedia();
-  }
-
-}
-
-module.exports = new AppStateModelImpl();
-
-/***/ }),
-/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var {BaseModel} = __webpack_require__(6);
@@ -40162,6 +40288,7 @@ class AppStateModel extends BaseModel {
     if( !this.locationElement ) {
       return console.warn('Call to setWindowLocation but no locationElement set');
     }
+
     this.locationElement.setWindowLocation(location);
   }
 
@@ -40186,7 +40313,7 @@ class AppStateModel extends BaseModel {
 module.exports = AppStateModel;
 
 /***/ }),
-/* 250 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseStore} = __webpack_require__(6);
@@ -40219,16 +40346,16 @@ class AppStateStore extends BaseStore {
 module.exports = AppStateStore;
 
 /***/ }),
-/* 251 */
+/* 250 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_route_app_location__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_app_route_app_location__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_utils__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string__ = __webpack_require__(256);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string__ = __webpack_require__(255);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_query_string___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_query_string__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__lib_AppStateInterface__);
@@ -40317,14 +40444,14 @@ class AppRoute extends Object(__WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_app_util
 customElements.define('app-route', AppRoute);
 
 /***/ }),
-/* 252 */
+/* 251 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_location_iron_location_js__ = __webpack_require__(253);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_location_iron_query_params_js__ = __webpack_require__(254);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_route_converter_behavior_js__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_location_iron_location_js__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_location_iron_query_params_js__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_route_converter_behavior_js__ = __webpack_require__(254);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -40461,7 +40588,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 253 */
+/* 252 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40823,7 +40950,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 254 */
+/* 253 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40918,7 +41045,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 255 */
+/* 254 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41016,14 +41143,14 @@ const AppRouteConverterBehavior = {
 
 
 /***/ }),
-/* 256 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(257);
-var objectAssign = __webpack_require__(258);
-var decodeComponent = __webpack_require__(259);
+var strictUriEncode = __webpack_require__(256);
+var objectAssign = __webpack_require__(257);
+var decodeComponent = __webpack_require__(258);
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -41233,7 +41360,7 @@ exports.stringify = function (obj, opts) {
 
 
 /***/ }),
-/* 257 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41246,7 +41373,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 258 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41343,7 +41470,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 259 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41444,7 +41571,7 @@ module.exports = function (encodedURI) {
 
 
 /***/ }),
-/* 260 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {AppStateStore} = __webpack_require__(47);
@@ -41484,23 +41611,61 @@ class ImplAppStateStore extends AppStateStore {
 module.exports = new ImplAppStateStore();
 
 /***/ }),
-/* 261 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var {ElasticSearchModel} = __webpack_require__(31);
-const ElasticSearchStore = __webpack_require__(48);
-const ElasticSearchService = __webpack_require__(266);
-var config = __webpack_require__(49);
+const ElasticSearchModel = __webpack_require__(261);
+const RecordStore = __webpack_require__(48);
+const RecordService = __webpack_require__(262);
+const AppStateModel = __webpack_require__(63);
+var config = __webpack_require__(31);
 
-class ElasticSearchModelImpl extends ElasticSearchModel {
+class RecordModel extends ElasticSearchModel {
 
   constructor() {
     super();
 
-    this.service = ElasticSearchService;
-    this.store = ElasticSearchStore;
+    this.service = RecordService;
+    this.store = RecordStore;
     this.store.config = config.elasticSearch;
+
+    this.register('RecordModel');
   }
+
+  /**
+   * @method defaultSearch
+   * @description preform a default search.  Good for finding default
+   * agg counts.
+   * 
+   * @param {String} collectionId
+   * 
+   * @returns {Promise}
+   */
+  async defaultSearch(collectionId) {
+    let storeId = collectionId;
+    if( !storeId ) storeId = 'default';
+
+    if( this.store.getDefaultSearch(storeId) ) {
+      let search = this.store.getDefaultSearch(storeId);
+
+      if( search.state === this.store.STATE.LOADING ) {
+        await search.request;
+      }
+      
+      return this.store.getDefaultSearch(storeId);
+    }
+
+    let searchDocument = this.emptySearchDocument();
+
+    if( collectionId ) {
+      this.appendKeywordFilter(searchDocument, 'collectionId', collectionId, 'and');
+    }
+
+    await this.service.defaultSearch(storeId, searchDocument);
+
+    return this.store.getDefaultSearch(storeId);
+  }
+
 
   /**
    * @method get
@@ -41511,7 +41676,8 @@ class ElasticSearchModelImpl extends ElasticSearchModel {
    * @returns {Promise} resolves to record
    */
   async get(id) {
-    return this.service.get(id);
+    await this.service.get(id);
+    return this.store.data.byId[id];
   }
 
   /**
@@ -41522,8 +41688,53 @@ class ElasticSearchModelImpl extends ElasticSearchModel {
    * 
    * @returns {Promise}
    */
-  search(searchDocument = {}) {
-    let promise = super.search(searchDocument);
+  async search(searchDocument = {}) {
+    if( !searchDocument.filters ) searchDocument.filters = {};
+
+    // first, we need to verify all filters are available to us
+    let collectionId = '';
+    if( searchDocument.filters.isPartOf ) {
+      collectionId = searchDocument.filters.isPartOf.value[0];
+    }
+
+    let defaultSearch = await this.defaultSearch(collectionId);
+    let corrections = false;
+    for( var key in searchDocument.filters ) {
+      if( key === 'isPartOf' ) continue;
+
+
+      let type = config.elasticSearch.facets[key].type;
+
+      if( type === 'facet' ) {
+        let bucket = defaultSearch.payload.aggregations.facets[key];
+        if( bucket === undefined ) {
+          corrections = true;
+          delete searchDocument.filters[key];
+        } else {
+          searchDocument.filters[key].value = searchDocument.filters[key].value
+            .filter(value => {
+              if( bucket[value] === undefined ) {
+                corrections = true;
+                return false;
+              }
+              return true;
+            });
+          
+          if( !searchDocument.filters[key].value.length ) {
+            delete searchDocument.filters[key];
+          }
+        }
+      }
+    }
+
+    if( corrections ) {
+      AppStateModel.setLocation('/search/'+this.searchDocumentToUrl(searchDocument));
+      return await this.search(searchDocument);
+    }
+
+
+    let request = this.service.search(searchDocument);
+
 
     // there is search text but no collection filter applied
     if( !searchDocument.filters.isPartOf && searchDocument.text ) {
@@ -41533,131 +41744,66 @@ class ElasticSearchModelImpl extends ElasticSearchModel {
       this.emit('show-collection-search-results', false);
     }
 
-    return promise;
+    await request;
+
+    return this.store.getSearch();
   }
 
   /**
-   * @method searchCollection
-   * @description preform a es collection search given an app search document
-   * 
-   * @param {Object} searchDocument
-   * 
-   * @returns {Promise}
+   * @method getCurrentSearchDocument
+   * @description return the current search document
    */
-  async searchCollection(searchDocument = {}) {
-    searchDocument.limit = 100;
-    searchDocument.offset = 0;
-
-    let esBody = this.fromSearchDocumentToEsBody(searchDocument);
-    delete esBody.aggs;
-
-    return this.service.searchCollection(esBody);
-  }
-
-  async setKeywordAndText(text, attr, value, op = 'or') {
-    let query = this.getAppSearchDocument();
-    
-    query.filters[attr] = {
-      type : 'keyword',
-      op : op,
-      value : [value]
+  getCurrentSearchDocument() {
+    if( this.store.data.search.searchDocument ) {
+      return this.store.data.search.searchDocument;
     }
-    query.offset = 0;
-    query.text = '';
-
-    return this.search(query);
+    return this.emptySearchDocument();
   }
 
 }
 
-module.exports = new ElasticSearchModelImpl();
+module.exports = new RecordModel();
 
 /***/ }),
-/* 262 */
-/***/ (function(module, exports) {
-
-module.exports = subclass => 
-  class ElasticSearchInterface extends subclass {
-    constructor() {
-      super();
-      this._injectModel('ElasticSearchModel');
-    }
-    
-    _getAppSearchDocument() {
-      return this.ElasticSearchModel.getAppSearchDocument();
-    }
-
-    _fromSearchDocumentToUrl(query) {
-      return this.ElasticSearchModel.fromSearchDocumentToUrl(query);
-    }
-
-    _fromUrlToSearchDocument(urlParts) {
-      return this.ElasticSearchModel.fromUrlToSearchDocument(urlParts);
-    }
-
-    async _esSearch(query) {
-      return this.ElasticSearchModel.search(query);
-    }
-
-    async _esSetTextFilter(txt) {
-      return this.ElasticSearchModel.setTextFilter(txt);
-    }
-
-    async _esDefaultSearch() {
-      return this.ElasticSearchModel.defaultSearch();
-    }
-
-    async _esClearFilters() {
-      return this.ElasticSearchModel.clearFilters();
-    }
-
-    async _esSetKeywordFilter(attr, value, op) {
-      return this.ElasticSearchModel.setKeywordFilter(attr, value, op);
-    }
-
-    async _esAppendKeywordFilter(attr, value, op) {
-      return this.ElasticSearchModel.appendKeywordFilter(attr, value, op);
-    }
-
-    async _esRemoveKeywordFilter(attr, value) {
-      return this.ElasticSearchModel.removeKeywordFilter(attr, value);
-    }
-
-    async _esAppendRangeFilter(attr, value) {
-      return this.ElasticSearchModel.appendRangeFilter(attr, value);
-    }
-
-    async _esRemoveRangeFilter(attr) {
-      return this.ElasticSearchModel.removeRangeFilter(attr);
-    }
-
-    async _esSetPaging(offset, limit) {
-      return this.ElasticSearchModel.setPaging(offset, limit);
-    }
-
-    async _esSetSort(attr, order) {
-      return this.ElasticSearchModel.setSort(attr, order);
-    }
-  }
-
-/***/ }),
-/* 263 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
+const config = __webpack_require__(31);
 
 class ElasticSearchModel extends BaseModel {
 
   constructor() {
     super();
-
     this.defaultTextFields = ['title', 'description'];
-    
-    this.register('ElasticSearchModel');
+
+    this.facets = {};
+    for( var key in config.elasticSearch.facets ) {
+      this.facets[key] = {
+        type : config.elasticSearch.facets[key].type
+      }
+    }
   }
 
   /**
-   * @method fromUrlToSearchDocument
+   * @method emptySearchDocument
+   * @description return a base searchDocument
+   * 
+   * @returns {Object}
+   */
+  emptySearchDocument() {
+    return {
+      text : '',
+      filters : {},
+      sort : null,
+      limit : 10,
+      offset : 0,
+      facets : this.facets
+    };
+  }
+
+  /**
+   * @method urlToSearchDocument
    * @description given array of url parts, create app search document
    * This document can be passed to fromSerializedToEsBody to create es
    * search document
@@ -41666,92 +41812,36 @@ class ElasticSearchModel extends BaseModel {
    * 
    * @returns {Object} app query object
    */
-  fromUrlToSearchDocument(urlParts) {
+  urlToSearchDocument(urlParts) {
     if( !Array.isArray(urlParts) ) throw new Error('UrlParts should be an array');
-
-    let query = {
-      text : '',
-      filters : {},
-      sort : null,
-      limit : 0,
-      offset : 0
-    };
-
-    // NodeJS compatability
-    let decode;
-    if( typeof decodeURIComponent !== 'undefined' ) {
-      decode = decodeURIComponent
-    } else {
-      decode = text => text;
-    }
+    let searchDoc = this.emptySearchDocument();
 
     let i = 0;
     while( urlParts.length > 0 ) {
-      let part = decode(urlParts.splice(0, 1)[0]);
+      let part = decodeURIComponent(urlParts.splice(0, 1)[0]);
       
       switch(i) {
         case 0:
-          query.text = part;
+          searchDoc.text = part;
           break;
         case 1:
-          query.filters = part ? this._parseUrlFilters(part) : {};
+          searchDoc.filters = part ? this._parseUrlFilters(part) : {};
           break;
         case 2:
-          query.sort = part ? JSON.parse(part) : null;
+          searchDoc.sort = part ? JSON.parse(part) : null;
           break;
         case 3:
-          query.limit = part ? parseInt(part) : 10;
+          searchDoc.limit = part ? parseInt(part) : 10;
           break;
         case 4:
-          query.offset = part ? parseInt(part) : 0;
+          searchDoc.offset = part ? parseInt(part) : 0;
           break;
       }
 
       i++;
     }
-    
-    return query;
-  }
 
-  /**
-   * @method fromSearchDocumentToUrl
-   * @description given a app search document, create the url representation
-   * 
-   * @param {Object} query app search document
-   * 
-   * @return {String} url path string
-   */
-  fromSearchDocumentToUrl(query) {
-    query = query || this.getAppSearchDocument();
-
-    let filters = [];
-    if( query.filters ) {
-      for( var attr in query.filters ) {
-        let filter = query.filters[attr];
-        let arr = [attr, filter.op || filter.type];
-
-        if( Array.isArray(filter.value) ) arr = arr.concat(filter.value);
-        else arr.push(filter.value);
-
-        filters.push(arr);
-      }
-    }
-    
-    // NodeJS compatability
-    let encode;
-    if( typeof encodeURIComponent !== 'undefined' ) {
-      encode = encodeURIComponent
-    } else {
-      encode = text => text;
-    }
-
-    return [
-      encode(query.text),
-      encode(JSON.stringify(filters)),
-      encode(query.sort ? JSON.stringify(query.sort) : ''),
-      query.limit || '',
-      query.offset || ''
-    ].join('/')
+    return searchDoc;
   }
 
   /**
@@ -41795,222 +41885,34 @@ class ElasticSearchModel extends BaseModel {
   }
 
   /**
-   * @method fromSearchDocumentToEsBody
-   * @description transform search query from app serialized request
-   * to elastic search body
+   * @method searchDocumentToUrl
+   * @description given a app search document, create the url representation
+   * 
+   * @param {Object} searchDocument app search document
+   * 
+   * @return {String} url path string
    */
-  fromSearchDocumentToEsBody(data) {
+  searchDocumentToUrl(searchDocument) {
+    let filters = [];
+    if( searchDocument.filters ) {
+      for( var attr in searchDocument.filters ) {
+        let filter = searchDocument.filters[attr];
+        let arr = [attr, filter.op || filter.type];
 
-    let esBody = {
-      aggs : this._getEsAggs(),
-      from : data.offset,
-      size : data.limit
-    }
+        if( Array.isArray(filter.value) ) arr = arr.concat(filter.value);
+        else arr.push(filter.value);
 
-    if( data.sort ) {
-      esBody.sort = data.sort;
-    }
-
-    // do we need to append a bool query?
-    if( data.text || data.filters ) {
-      esBody.query = {
-        bool : {}
-      }
-
-      // append a text 'multi_match' search
-      if( data.text ) {
-        esBody.query.bool.must = [{
-          multi_match : {
-            query : data.text,
-            fields : this.store.config.textFields || this.defaultTextFields
-          }
-        }];
-      }
-
-      // do we need to append filters?
-      if( data.filters ) {
-        let range = {};
-        let rangeWithNull = [];
-        let keywords = [];
-
-        // loop all provided filters, splitting into keyword
-        // and range filters
-        for( var attr in data.filters ) {
-          let attrProps = data.filters[attr];
-          
-          if( attrProps.type === 'keyword' ) {
-
-            if( attrProps.op === 'or' ) {
-              keywords.push({
-                terms : {
-                  [attr] : attrProps.value
-                }
-              });
-            } else if( attrProp.op === 'and' ) {
-              attrProps.value.forEach(val => {
-                keywords.push({
-                  term : {
-                    [attr] : val
-                  }
-                });
-              });
-            }
-            
-          } else if( attrProps.type === 'range' ) {
-            if( attrProps.value.includeNull ) {
-              let r = Object.assign({}, attrProps.value);
-              let nullValue = r.includeNull;
-              delete r.includeNull;
-
-              rangeWithNull.push({
-                bool : {
-                  should : [
-                    {
-                      range: {
-                        [attr] : r
-                      }
-                    },
-                    {
-                      bool: {
-                        must_not: {
-                          exists: {
-                            field: attr
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              });
-
-            } else {
-              if( attrProps.value.includeNull !== undefined ) {
-                delete attrProps.value.includeNull;
-              }
-              range[attr] = attrProps.value;
-            }
-          }
-        }
-
-        // if we found keyword filters, append the 'filter' attribute
-        if( keywords.length > 0 ) {
-          esBody.query.bool.filter = keywords;
-        }
-
-        // if we found range filters, append.  This uses query.bool.must
-        // just like text search, so check to see if query.bool.must was already
-        // created
-        if( Object.keys(range).length > 0 ) {
-          if( !esBody.query.bool.must ) {
-            esBody.query.bool.must = [];
-          }
-
-          esBody.query.bool.must.push({range});
-        }
-
-        if( rangeWithNull.length > 0 ) {
-          if( !esBody.query.bool.must ) {
-            esBody.query.bool.must = [];
-          }
-
-          esBody.query.bool.must = esBody.query.bool.must.concat(rangeWithNull);
-        }
-
+        filters.push(arr);
       }
     }
 
-    return esBody;
-  }
-
-  getAppSearchDocument() {
-    return this.store.data.searchDocument;
-  }
-
-  /**
-   * @method search
-   * @description preform a es search given an app search document
-   * 
-   * @param {Object} searchDocument
-   * 
-   * @returns {Promise}
-   */
-  async search(searchDocument = {}) {
-    this.store.setAppSearchDocument(searchDocument);
-    let esBody = this.fromSearchDocumentToEsBody(searchDocument);
-    return this.service.search(esBody, searchDocument);
-  }
-
-  /**
-   * @method defaultSearch
-   * @description preform a default search.  Good for finding default
-   * agg counts.
-   * 
-   * @returns {Promise}
-   */
-  async defaultSearch() {
-    var esBody = {
-      aggs : this._getEsAggs(),
-      from : 0,
-      size : this.getAppSearchDocument().limit
-    };
-    return this.service.defaultSearch(esBody);
-  }
-
-  /**
-   * @method _getEsAggs
-   * @private
-   * 
-   * @description get the 'agg' attribute for the es query document
-   * body.  This agg tells es which attributes to return information about
-   */
-  _getEsAggs() {
-    if( !this.store.config ) return {};
-    let config = this.store.config;
-    let aggs = {};
-
-    for( var key in config.facets ) {
-      if( config.facets[key].type === 'facet' ) {
-        aggs[key] = {
-          terms : { 
-            field : key,
-            size : 1000
-          }
-        }
-      } else if( config.facets[key].type === 'range' ) {
-        aggs[key+'-min'] = {
-          min : { 
-            field : key
-          }
-        }
-        aggs[key+'-max'] = {
-          max : { 
-            field : key
-          }
-        }
-      }
-    }
-
-    return aggs;
-  }
-
-  /**
-   * @method getCurrentSearch
-   * @description get the current search state object
-   * 
-   * @returns {Object}
-   */
-  getCurrentSearch() {
-    return this.store.getSearch();
-  }
-
-  /**
-   * @method getDefaultSearch
-   * @description get the default search state object
-   * 
-   * @returns {Object}
-   */
-  getDefaultSearch() {
-    return this.store.getDefaultSearch();
+    return [
+      encodeURIComponent(searchDocument.text),
+      encodeURIComponent(JSON.stringify(filters)),
+      encodeURIComponent(searchDocument.sort ? JSON.stringify(searchDocument.sort) : ''),
+      searchDocument.limit || '',
+      searchDocument.offset || ''
+    ].join('/')
   }
 
   /**
@@ -42020,22 +41922,21 @@ class ElasticSearchModel extends BaseModel {
    * 
    * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#search-request-sort
    * 
+   * @param {Object} searchDocument search document to update
    * @param {String|Object} attr either attribute to sort on or sort object.  if not provide
    * sort is removed from search.
    * @param {String} order of attr is string, then provide order (asc or desc)
    * 
-   * @return {Promise} service query promise
+   * @return {Object} searchDocument
    */
-  setSort(attr, order) {
-    let query = this.getAppSearchDocument();
-    
-    if( !attr ) query.sort = null;
-    else if( typeof attr === 'object' ) query.sort = key;
-    else if( order ) query.sort = {[attr]: order};
+  setSort(searchDocument, attr, order) {
+    if( !attr ) searchDocument.sort = null;
+    else if( typeof attr === 'object' ) searchDocument.sort = key;
+    else if( order ) searchDocument.sort = {[attr]: order};
 
-    query.offset = 0;
+    searchDocument.offset = 0;
 
-    return this.search(query);
+    return searchDocument;
   }
 
   /**
@@ -42043,18 +41944,17 @@ class ElasticSearchModel extends BaseModel {
    * @description set the paging offset and limit.  Limit is optional.
    * Will reset offset and preform query.
    * 
+   * @param {Object} searchDocument search document to update
    * @param {Number} offset 
    * @param {Number} limit 
    * 
    * @return {Promise} service query promise
    */
-  setPaging(offset = 0, limit = 10) {
-    let query = this.getAppSearchDocument();
+  setPaging(searchDocument, offset, limit) {
+    if( offset !== undefined ) searchDocument.offset = offset;
+    if( limit !== undefined ) searchDocument.limit = limit;
 
-    query.offset = offset;
-    if( limit ) query.limit = limit;
-
-    return this.search(query);
+    return searchDocument;
   }
 
   /**
@@ -42062,17 +41962,14 @@ class ElasticSearchModel extends BaseModel {
    * @description set the text search string.  Will reset offset
    * and preform query.
    * 
+   * @param {Object} searchDocument search document to update
    * @param {String} text text string to search on
    * 
    * @return {Promise} service query promise
    */
-  setTextFilter(text) {
-    let query = this.getAppSearchDocument();
-    
-    query.text = text;
-    query.offset = 0;
-
-    return this.search(query);
+  setTextFilter(searchDocument, text) {
+    searchDocument.text = text;
+    return searchDocument;
   }
 
   /**
@@ -42080,16 +41977,14 @@ class ElasticSearchModel extends BaseModel {
    * @description clear all text and attribute filters.  resets offset and
    * preforms query.
    * 
+   * @param {Object} searchDocument search document to update
+   * 
    * @return {Promise} service query promise
    */
-  async clearFilters() {
-    let query = this.getAppSearchDocument();
-
-    query.text = '';
-    query.filters = {};
-    query.offset = 0;
-
-    return this.search(query);
+  clearFilters(searchDocument) {
+    searchDocument.text = '';
+    searchDocument.filters = {};
+    return searchDocument;
   }
 
   /**
@@ -42097,93 +41992,82 @@ class ElasticSearchModel extends BaseModel {
    * @description append keyword attribute filter to query.  Will reset offset
    * and preform query.
    * 
+   * @param {Object} searchDocument search document to update
    * @param {String} attr attribute to filter
    * @param {String} value value of attribute to filter on
    * 
    * @return {Promise} service query promise
    */
-  async appendKeywordFilter(attr, value, op = 'or') {
-    let query = this.getAppSearchDocument();
-    
-    if( !query.filters[attr] ) {
-      query.filters[attr] = {
+  appendKeywordFilter(searchDocument, attr, value, op = 'or') {
+    if( !searchDocument.filters[attr] ) {
+      searchDocument.filters[attr] = {
         type : 'keyword',
         op : op,
         value : [value]
       }
     } else {
-      query.filters[attr].value.push(value);
+      searchDocument.filters[attr].value.push(value);
     }
-    query.offset = 0;
 
-    return this.search(query);
+    return searchDocument;
   }
 
-  async setKeywordFilter(attr, value, op = 'or') {
-    let query = this.getAppSearchDocument();
-    
-    query.filters[attr] = {
+  setKeywordFilter(searchDocument, attr, value, op = 'or') {
+    searchDocument.filters[attr] = {
       type : 'keyword',
       op : op,
       value : [value]
     }
-    query.offset = 0;
-
-    return this.search(query);
+    return searchDocument;
   }
 
   /**
    * @method removeKeywordFilter
    * @description remove keyword attribute filter from query. Will reset offset
    * and preform query.
-   * 
+   *  
+   * @param {Object} searchDocument search document to update
    * @param {String} attr attribute to remove
    * @param {String} value value of attribute to remove
    * 
    * @return {Promise} service query promise
    */
-  async removeKeywordFilter(attr, value) {
-    let query = this.getAppSearchDocument();
-    if( !query.filters[attr] ) return;
+  async removeKeywordFilter(searchDocument, attr, value) {
+    if( !searchDocument.filters[attr] ) return searchDocument;
 
     if( value === undefined ) {
-      delete query.filters[attr];
+      delete searchDocument.filters[attr];
     } else {
-      let filter = query.filters[attr];
+      let filter = searchDocument.filters[attr];
       let index = filter.value.indexOf(value);
-      if( index === -1 ) return;
+      if( index === -1 ) return searchDocument;
   
       filter.value.splice(index, 1);
       if( filter.value.length === 0 ) {
-        delete query.filters[attr];
+        delete searchDocument.filters[attr];
       }
     }
 
-    query.offset = 0;
-    
-    return this.search(query);
+    return searchDocument;
   }
 
-  /**
+   /**
    * @method appendRangeFilter
    * @description add range attribute filter from query. Will reset offset
    * and preform query.
    * 
+   * @param {Object} searchDocument search document to update
    * @param {String} attr attribute to add
    * @param {Object} value range value. ex {gte: 1931, lte: 1960}
    * 
    * @return {Promise} service query promise
    */
-  appendRangeFilter(attr, value) {
-    let query = this.getAppSearchDocument();
-    
-    query.filters[attr] = {
+  appendRangeFilter(searchDocument, attr, value) {    
+    searchDocument.filters[attr] = {
       type : 'range',
       value
     }
-    query.offset = 0;
-
-    return this.search(query);
+    return searchDocument;
   }
 
   /**
@@ -42191,323 +42075,106 @@ class ElasticSearchModel extends BaseModel {
    * @description remove range attribute filter from query. Will reset offset
    * and preform query
    * 
+   * @param {Object} searchDocument search document to update
    * @param {String} attr attribute to remove
    * 
    * @return {Promise} service query promise
    */
-  removeRangeFilter(attr) {
-    let query = this.getAppSearchDocument();
-    if( !query.filters[attr] ) return;
-
-    delete query.filters[attr];
-    query.offset = 0;
-
-    return this.search(query);
+  removeRangeFilter(searchDocument, attr) {
+    if( !searchDocument.filters[attr] ) return searchDocument;
+    delete searchDocument.filters[attr];
+    return searchDocument;
   }
+
 }
 
 module.exports = ElasticSearchModel;
 
 /***/ }),
-/* 264 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
+const RecordStore = __webpack_require__(48);
 
-class ElasticSearchService extends BaseService {
-
-  constructor() {
-    super();
-    this.apiPath = '/rest/search';
-  }
-
-  /**
-   * @method
-   * @description Search the catalogs
-   * 
-   * @param {Object} query - elastic search query parameters
-   * @param {Object} searchDocument - cork search document representation
-   * 
-   * @returns {Promise}
-   */
-  async search(query = {}, searchDocument = {}) {
-    return await this.request({
-      url : this.apiPath,
-      fetchOptions : {
-        method : 'POST',
-        headers : {
-          'Content-Type' : 'application/json'
-        },
-        body : JSON.stringify(query)
-      },
-      onLoading : promise => this.store.setSearchLoading(query, searchDocument,  promise),
-      onLoad : result => this.store.setSearchLoaded(query, searchDocument, result.body),
-      onError : e => this.store.setSearchError(query, searchDocument, e)
-    });
-  }
-
-  /**
-   * @method
-   * @description Search the catalogs
-   * 
-   * @param {Object} query - elastic search query parameters
-   * @returns {Promise}
-   */
-  async defaultSearch(query = {}) {
-    return await this.request({
-      url : this.apiPath,
-      fetchOptions : {
-        method : 'POST',
-        headers : {
-          'Content-Type' : 'application/json'
-        },
-        body : JSON.stringify(query)
-      },
-      onLoading : promise => this.store.setDefaultSearchLoading(query, promise),
-      onLoad : result => this.store.setDefaultSearchLoaded(query, result.body),
-      onError : e => this.store.setDefaultSearchError(query, e)
-    });
-  }
-
-}
-
-module.exports = ElasticSearchService;
-
-/***/ }),
-/* 265 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {BaseStore} = __webpack_require__(6);
-
-class ElasticSearchStore extends BaseStore {
+class RecordService extends BaseService {
 
   constructor() {
     super();
-
-    this.data = {
-      config : {},
-
-      searchDocument : {
-        text : '',
-        filters : {},
-        sort : null,
-        limit : 10,
-        offset : 0
-      },
-
-      defaultSearch : {
-        state : this.STATE.INIT,
-        payload : null
-      },
-      
-      search : {
-        state : this.STATE.INIT,
-        payload : null,
-        request : {}
-      },
-
-      suggest : {
-        state : this.STATE.INIT,
-        payload : null
-      }
-    }
-
-    this.events = {
-      SEARCH_DOCUMENT_UPDATE : 'es-search-document-update',
-      DEFAULT_SEARCH_UPDATE : 'default-es-search-update',
-      SEARCH_UPDATE : 'es-search-update',
-      SUGGEST_UPDATE : 'es-suggest-update'
-    }
-  }
-
-  /**
-   * Serialized State
-   */
-  setAppSearchDocument(state) {
-    this.data.searchDocument = state;
-    this.emit(this.events.SEARCH_DOCUMENT_UPDATE, this.data.searchDocument);
-  }
-
-  /**
-   * Default Search
-   */
-  setDefaultSearch(state) {
-    this.data.defaultSearch = Object.assign({}, this.data.defaultSearch, state);
-    this.emit(this.events.DEFAULT_SEARCH_UPDATE, this.data.defaultSearch);
-  }
-
-  setDefaultSearchLoading(query, promise) {
-    this._setDefaultSearchState({
-      state: this.STATE.LOADING, 
-      query: query,
-      request : promise
-    });
-  }
-
-  setDefaultSearchLoaded(query, payload) {
-    if( !this.data.search.query ) {
-      this.data.search.query = query;
-    }
-
-    this._setDefaultSearchState({
-      state: this.STATE.LOADED,   
-      query: query,
-      payload: payload
-    });
-  }
-
-  setDefaultSearchError(query, e) {
-    this._setDefaultSearchState({
-      state: this.STATE.ERROR,   
-      query: query,
-      error: e
-    });
-  }
-
-  getDefaultSearch() {
-    return this.data.defaultSearch;
-  }
-
-  _setDefaultSearchState(state) {
-    this.data.defaultSearch = Object.assign({}, state);
-    this.emit(this.events.DEFAULT_SEARCH_UPDATE, this.data.defaultSearch);
-  }
-
-
-  /**
-   * Search
-   */
-  setSearchLoading(query, searchDocument, promise) {
-    this._setSearchState({
-      state: this.STATE.LOADING, 
-      query, searchDocument,
-      request : promise
-    });
-  }
-
-  setSearchLoaded(query, searchDocument, payload) {
-    this._setSearchState({
-      state: this.STATE.LOADED,   
-      query, searchDocument,
-      payload: payload
-    });
-  }
-
-  setSearchError(query, searchDocument, error) {
-    this._setSearchState({
-      state: this.STATE.ERROR,   
-      query, searchDocument, error
-    });
-  }
-
-  _setSearchState(state) {
-    this.data.search = Object.assign({}, state);
-    this.emit(this.events.SEARCH_UPDATE, this.data.search);
-  }
-
-  getSearch() {
-    return this.data.search;
-  }
-
-
-  /**
-   * Suggest
-   */
-  setSuggestLoading(data) {
-    this._setSuggestState({state: this.STATE.LOADING, request: data});
-  }
-
-  setSuggestLoaded(payload) {
-    this._setSuggestState({
-      state: this.STATE.LOADED,   
-      request: this.data.suggest.request,
-      payload: payload
-    });
-  }
-
-  setSuggestError(e) {
-    this._setSuggestState({
-      state: this.STATE.ERROR,   
-      request: this.data.suggest.request,
-      error: e
-    });
-  }
-
-  _setSuggestState(state) {
-    this.data.suggest = Object.assign({}, state);
-    this.emit(this.events.SEARCH_UPDATE, this.data.suggest);
-  }
-
-  getSuggest() {
-    return this.data.suggest;
-  }
-}
-
-module.exports = ElasticSearchStore;
-
-/***/ }),
-/* 266 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {ElasticSearchService} = __webpack_require__(31);
-const ElasticSearchStore = __webpack_require__(48);
-
-class ElasticSearchServiceImpl extends ElasticSearchService {
-  constructor() {
-    super();
-    this.store = ElasticSearchStore;
-
-    this.baseUrl = '/rest/record'
+    this.store = RecordStore;
+    this.baseUrl = '/api/records'
   }
 
   async get(id) {
-    await this.request({
+    return await this.request({
       url : `${this.baseUrl}${id}`,
       checkCached : () => this.store.data.byId[id],
       onLoading : request => this.store.setRecordLoading(id, request),
       onLoad : result => this.store.setRecordLoaded(id, result.body),
       onError : e => this.store.setRecordError(id, e)
     });
-
-    return this.store.data.byId[id];
   }
 
   /**
-   * @method searchCollection
-   * @description Search the catalogs
+   * @method search
+   * @description Search the records
    * 
-   * @param {Object} query - elastic search query parameters
+   * @param {Object} searchDocument 
    * 
    * @returns {Promise}
    */
-  async searchCollection(query = {}) {
+  async search(searchDocument = {}) {
     return await this.request({
-      url : this.apiPath+'/collection',
+      url : `${this.baseUrl}/search`,
       fetchOptions : {
         method : 'POST',
         headers : {
           'Content-Type' : 'application/json'
         },
-        body : JSON.stringify(query)
+        body : JSON.stringify(searchDocument)
       },
-      onLoading : promise => this.store.setSearchCollectionLoading(query, promise),
-      onLoad : result => this.store.setSearchCollectionLoaded(query, result.body),
-      onError : e => this.store.setSearchCollectionError(query, e)
+      onLoading : promise => this.store.setSearchLoading(searchDocument,  promise),
+      onLoad : result => this.store.setSearchLoaded(searchDocument, result.body),
+      onError : e => this.store.setSearchError(searchDocument, e)
+    });
+  }
+
+
+  /**
+   * @method defaultSearch
+   * @description Search the catalogs
+   * 
+   * @param {Object} searchDocument elastic search query parameters
+   * @returns {Promise}
+   */
+  async defaultSearch(id, searchDocument = {}) {
+    return await this.request({
+      url : `${this.baseUrl}/search?debug=true`,
+      fetchOptions : {
+        method : 'POST',
+        headers : {
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(searchDocument)
+      },
+      onLoading : promise => this.store.setDefaultSearchLoading(id, searchDocument, promise),
+      onLoad : result => this.store.setDefaultSearchLoaded(id, searchDocument, result.body),
+      onError : e => this.store.setDefaultSearchError(id, searchDocument, e)
     });
   }
 }
 
-module.exports = new ElasticSearchServiceImpl();
+module.exports = new RecordService();
 
 /***/ }),
-/* 267 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
 const CollectionStore = __webpack_require__(66);
-const CollectionService = __webpack_require__(268);
+const CollectionService = __webpack_require__(264);
 // it's ok to import other stores & services, just not models
-const ElasticSearchStore = __webpack_require__(48);
+const RecordStore = __webpack_require__(48);
 
 class CollectionModel extends BaseModel {
   
@@ -42520,15 +42187,27 @@ class CollectionModel extends BaseModel {
       // to es filters and seeing if a collection is being filtered on. This is
       // where we wire up the event listener for es events.
       this.MasterController.on(
-        ElasticSearchStore.events.SEARCH_DOCUMENT_UPDATE, 
+        RecordStore.events.RECORD_SEARCH_UPDATE, 
         this._onSearchDocumentUpdate.bind(this)
       );
 
       this.register('CollectionModel');
     }
 
-    overview() {
-      return this.service.overview();
+    /**
+     * @method overview
+     * @description get all collections
+     * 
+     * @returns {Promise} resolves to array of collections
+     */
+    async overview() {
+      if( this.store.data.overview.state === 'loading' ) {
+        await this.store.data.overview.request;
+      } else {
+        await this.service.overview();
+      }
+
+      return this.store.data.overview;
     }
 
     /**
@@ -42553,6 +42232,10 @@ class CollectionModel extends BaseModel {
       return this.store.data.selected;
     }
 
+    search(searchDocument) {
+      
+    }
+
     /**
      * @method _onSearchDocumentUpdate
      * @description listen to search document updates, if we have isPartOf filter,
@@ -42561,8 +42244,8 @@ class CollectionModel extends BaseModel {
     async _onSearchDocumentUpdate(e) {
       let selected = null;
 
-      if( e.filters.isPartOf ) {
-        selected = await this.get(e.filters.isPartOf.value[0]);
+      if( e.searchDocument.filters.isPartOf ) {
+        selected = await this.get(e.searchDocument.filters.isPartOf.value[0]);
       }
       this.store.setSelectedCollection(selected);
     }
@@ -42571,7 +42254,7 @@ class CollectionModel extends BaseModel {
 module.exports = new CollectionModel();
 
 /***/ }),
-/* 268 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseService} = __webpack_require__(6);
@@ -42583,12 +42266,12 @@ class CollectionService extends BaseService {
     super();
     this.store = CollectionStore;
 
-    this.baseUrl = '/rest/collections';
+    this.baseUrl = '/api/collections';
   }
 
   async overview() {
     await this.request({
-      url : `${this.baseUrl}/overview`,
+      url : `${this.baseUrl}/all`,
       checkCached : () => this.store.data.overview,
       onLoading : request => this.store.setCollectionOverviewLoading(request),
       onLoad : result => this.store.setCollectionOverviewLoaded(result.body),
@@ -42598,16 +42281,40 @@ class CollectionService extends BaseService {
     return this.store.data.overview;
   }
 
+  /**
+   * @method searchCollection
+   * @description Search the catalogs
+   * 
+   * @param {Object} searchDocument
+   * 
+   * @returns {Promise}
+   */
+  async search(searchDocument = {}) {
+    return await this.request({
+      url : this.apiPath+'/search',
+      fetchOptions : {
+        method : 'POST',
+        headers : {
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(searchDocument)
+      },
+      onLoading : promise => this.store.setSearchLoading(searchDocument, promise),
+      onLoad : result => this.store.setSearchLoaded(searchDocument, result.body),
+      onError : e => this.store.setSearchError(searchDocument, e)
+    });
+  }
+
 }
 
 module.exports = new CollectionService();
 
 /***/ }),
-/* 269 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
-const config = __webpack_require__(49);
+const config = __webpack_require__(31);
 
 class MediaModel extends BaseModel {
   
@@ -42697,7 +42404,7 @@ class MediaModel extends BaseModel {
 module.exports = new MediaModel();
 
 /***/ }),
-/* 270 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {/*
@@ -59812,44 +59519,44 @@ module.exports = CSL;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(68)(module)))
 
 /***/ }),
-/* 271 */
+/* 267 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<locale xmlns=\"http://purl.org/net/xbiblio/csl\" version=\"1.0\" xml:lang=\"en-US\">\n  <info>\n    <translator>\n      <name>Andrew Dunning</name>\n    </translator>\n    <translator>\n      <name>Sebastian Karcher</name>\n    </translator>\n    <translator>\n      <name>Rintze M. Zelle</name>\n    </translator>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n    <updated>2015-10-10T23:31:02+00:00</updated>\n  </info>\n  <style-options punctuation-in-quote=\"true\"/>\n  <date form=\"text\">\n    <date-part name=\"month\" suffix=\" \"/>\n    <date-part name=\"day\" suffix=\", \"/>\n    <date-part name=\"year\"/>\n  </date>\n  <date form=\"numeric\">\n    <date-part name=\"month\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"day\" form=\"numeric-leading-zeros\" suffix=\"/\"/>\n    <date-part name=\"year\"/>\n  </date>\n  <terms>\n    <term name=\"accessed\">accessed</term>\n    <term name=\"and\">and</term>\n    <term name=\"and others\">and others</term>\n    <term name=\"anonymous\">anonymous</term>\n    <term name=\"anonymous\" form=\"short\">anon.</term>\n    <term name=\"at\">at</term>\n    <term name=\"available at\">available at</term>\n    <term name=\"by\">by</term>\n    <term name=\"circa\">circa</term>\n    <term name=\"circa\" form=\"short\">c.</term>\n    <term name=\"cited\">cited</term>\n    <term name=\"edition\">\n      <single>edition</single>\n      <multiple>editions</multiple>\n    </term>\n    <term name=\"edition\" form=\"short\">ed.</term>\n    <term name=\"et-al\">et al.</term>\n    <term name=\"forthcoming\">forthcoming</term>\n    <term name=\"from\">from</term>\n    <term name=\"ibid\">ibid.</term>\n    <term name=\"in\">in</term>\n    <term name=\"in press\">in press</term>\n    <term name=\"internet\">internet</term>\n    <term name=\"interview\">interview</term>\n    <term name=\"letter\">letter</term>\n    <term name=\"no date\">no date</term>\n    <term name=\"no date\" form=\"short\">n.d.</term>\n    <term name=\"online\">online</term>\n    <term name=\"presented at\">presented at the</term>\n    <term name=\"reference\">\n      <single>reference</single>\n      <multiple>references</multiple>\n    </term>\n    <term name=\"reference\" form=\"short\">\n      <single>ref.</single>\n      <multiple>refs.</multiple>\n    </term>\n    <term name=\"retrieved\">retrieved</term>\n    <term name=\"scale\">scale</term>\n    <term name=\"version\">version</term>\n\n    <!-- ANNO DOMINI; BEFORE CHRIST -->\n    <term name=\"ad\">AD</term>\n    <term name=\"bc\">BC</term>\n\n    <!-- PUNCTUATION -->\n    <term name=\"open-quote\">“</term>\n    <term name=\"close-quote\">”</term>\n    <term name=\"open-inner-quote\">‘</term>\n    <term name=\"close-inner-quote\">’</term>\n    <term name=\"page-range-delimiter\">–</term>\n\n    <!-- ORDINALS -->\n    <term name=\"ordinal\">th</term>\n    <term name=\"ordinal-01\">st</term>\n    <term name=\"ordinal-02\">nd</term>\n    <term name=\"ordinal-03\">rd</term>\n    <term name=\"ordinal-11\">th</term>\n    <term name=\"ordinal-12\">th</term>\n    <term name=\"ordinal-13\">th</term>\n\n    <!-- LONG ORDINALS -->\n    <term name=\"long-ordinal-01\">first</term>\n    <term name=\"long-ordinal-02\">second</term>\n    <term name=\"long-ordinal-03\">third</term>\n    <term name=\"long-ordinal-04\">fourth</term>\n    <term name=\"long-ordinal-05\">fifth</term>\n    <term name=\"long-ordinal-06\">sixth</term>\n    <term name=\"long-ordinal-07\">seventh</term>\n    <term name=\"long-ordinal-08\">eighth</term>\n    <term name=\"long-ordinal-09\">ninth</term>\n    <term name=\"long-ordinal-10\">tenth</term>\n\n    <!-- LONG LOCATOR FORMS -->\n    <term name=\"book\">\n      <single>book</single>\n      <multiple>books</multiple>\n    </term>\n    <term name=\"chapter\">\n      <single>chapter</single>\n      <multiple>chapters</multiple>\n    </term>\n    <term name=\"column\">\n      <single>column</single>\n      <multiple>columns</multiple>\n    </term>\n    <term name=\"figure\">\n      <single>figure</single>\n      <multiple>figures</multiple>\n    </term>\n    <term name=\"folio\">\n      <single>folio</single>\n      <multiple>folios</multiple>\n    </term>\n    <term name=\"issue\">\n      <single>number</single>\n      <multiple>numbers</multiple>\n    </term>\n    <term name=\"line\">\n      <single>line</single>\n      <multiple>lines</multiple>\n    </term>\n    <term name=\"note\">\n      <single>note</single>\n      <multiple>notes</multiple>\n    </term>\n    <term name=\"opus\">\n      <single>opus</single>\n      <multiple>opera</multiple>\n    </term>\n    <term name=\"page\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"number-of-pages\">\n      <single>page</single>\n      <multiple>pages</multiple>\n    </term>\n    <term name=\"paragraph\">\n      <single>paragraph</single>\n      <multiple>paragraphs</multiple>\n    </term>\n    <term name=\"part\">\n      <single>part</single>\n      <multiple>parts</multiple>\n    </term>\n    <term name=\"section\">\n      <single>section</single>\n      <multiple>sections</multiple>\n    </term>\n    <term name=\"sub verbo\">\n      <single>sub verbo</single>\n      <multiple>sub verbis</multiple>\n    </term>\n    <term name=\"verse\">\n      <single>verse</single>\n      <multiple>verses</multiple>\n    </term>\n    <term name=\"volume\">\n      <single>volume</single>\n      <multiple>volumes</multiple>\n    </term>\n\n    <!-- SHORT LOCATOR FORMS -->\n    <term name=\"book\" form=\"short\">\n      <single>bk.</single>\n      <multiple>bks.</multiple>\n    </term>\n    <term name=\"chapter\" form=\"short\">\n      <single>chap.</single>\n      <multiple>chaps.</multiple>\n    </term>\n    <term name=\"column\" form=\"short\">\n      <single>col.</single>\n      <multiple>cols.</multiple>\n    </term>\n    <term name=\"figure\" form=\"short\">\n      <single>fig.</single>\n      <multiple>figs.</multiple>\n    </term>\n    <term name=\"folio\" form=\"short\">\n      <single>fol.</single>\n      <multiple>fols.</multiple>\n    </term>\n    <term name=\"issue\" form=\"short\">\n      <single>no.</single>\n      <multiple>nos.</multiple>\n    </term>\n    <term name=\"line\" form=\"short\">\n      <single>l.</single>\n      <multiple>ll.</multiple>\n    </term>\n    <term name=\"note\" form=\"short\">\n      <single>n.</single>\n      <multiple>nn.</multiple>\n    </term>\n    <term name=\"opus\" form=\"short\">\n      <single>op.</single>\n      <multiple>opp.</multiple>\n    </term>\n    <term name=\"page\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"number-of-pages\" form=\"short\">\n      <single>p.</single>\n      <multiple>pp.</multiple>\n    </term>\n    <term name=\"paragraph\" form=\"short\">\n      <single>para.</single>\n      <multiple>paras.</multiple>\n    </term>\n    <term name=\"part\" form=\"short\">\n      <single>pt.</single>\n      <multiple>pts.</multiple>\n    </term>\n    <term name=\"section\" form=\"short\">\n      <single>sec.</single>\n      <multiple>secs.</multiple>\n    </term>\n    <term name=\"sub verbo\" form=\"short\">\n      <single>s.v.</single>\n      <multiple>s.vv.</multiple>\n    </term>\n    <term name=\"verse\" form=\"short\">\n      <single>v.</single>\n      <multiple>vv.</multiple>\n    </term>\n    <term name=\"volume\" form=\"short\">\n      <single>vol.</single>\n      <multiple>vols.</multiple>\n    </term>\n\n    <!-- SYMBOL LOCATOR FORMS -->\n    <term name=\"paragraph\" form=\"symbol\">\n      <single>¶</single>\n      <multiple>¶¶</multiple>\n    </term>\n    <term name=\"section\" form=\"symbol\">\n      <single>§</single>\n      <multiple>§§</multiple>\n    </term>\n\n    <!-- LONG ROLE FORMS -->\n    <term name=\"director\">\n      <single>director</single>\n      <multiple>directors</multiple>\n    </term>\n    <term name=\"editor\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"editorial-director\">\n      <single>editor</single>\n      <multiple>editors</multiple>\n    </term>\n    <term name=\"illustrator\">\n      <single>illustrator</single>\n      <multiple>illustrators</multiple>\n    </term>\n    <term name=\"translator\">\n      <single>translator</single>\n      <multiple>translators</multiple>\n    </term>\n    <term name=\"editortranslator\">\n      <single>editor &amp; translator</single>\n      <multiple>editors &amp; translators</multiple>\n    </term>\n\n    <!-- SHORT ROLE FORMS -->\n    <term name=\"director\" form=\"short\">\n      <single>dir.</single>\n      <multiple>dirs.</multiple>\n    </term>\n    <term name=\"editor\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"editorial-director\" form=\"short\">\n      <single>ed.</single>\n      <multiple>eds.</multiple>\n    </term>\n    <term name=\"illustrator\" form=\"short\">\n      <single>ill.</single>\n      <multiple>ills.</multiple>\n    </term>\n    <term name=\"translator\" form=\"short\">\n      <single>tran.</single>\n      <multiple>trans.</multiple>\n    </term>\n    <term name=\"editortranslator\" form=\"short\">\n      <single>ed. &amp; tran.</single>\n      <multiple>eds. &amp; trans.</multiple>\n    </term>\n\n    <!-- VERB ROLE FORMS -->\n    <term name=\"container-author\" form=\"verb\">by</term>\n    <term name=\"director\" form=\"verb\">directed by</term>\n    <term name=\"editor\" form=\"verb\">edited by</term>\n    <term name=\"editorial-director\" form=\"verb\">edited by</term>\n    <term name=\"illustrator\" form=\"verb\">illustrated by</term>\n    <term name=\"interviewer\" form=\"verb\">interview by</term>\n    <term name=\"recipient\" form=\"verb\">to</term>\n    <term name=\"reviewed-author\" form=\"verb\">by</term>\n    <term name=\"translator\" form=\"verb\">translated by</term>\n    <term name=\"editortranslator\" form=\"verb\">edited &amp; translated by</term>\n\n    <!-- SHORT VERB ROLE FORMS -->\n    <term name=\"director\" form=\"verb-short\">dir. by</term>\n    <term name=\"editor\" form=\"verb-short\">ed. by</term>\n    <term name=\"editorial-director\" form=\"verb-short\">ed. by</term>\n    <term name=\"illustrator\" form=\"verb-short\">illus. by</term>\n    <term name=\"translator\" form=\"verb-short\">trans. by</term>\n    <term name=\"editortranslator\" form=\"verb-short\">ed. &amp; trans. by</term>\n\n    <!-- LONG MONTH FORMS -->\n    <term name=\"month-01\">January</term>\n    <term name=\"month-02\">February</term>\n    <term name=\"month-03\">March</term>\n    <term name=\"month-04\">April</term>\n    <term name=\"month-05\">May</term>\n    <term name=\"month-06\">June</term>\n    <term name=\"month-07\">July</term>\n    <term name=\"month-08\">August</term>\n    <term name=\"month-09\">September</term>\n    <term name=\"month-10\">October</term>\n    <term name=\"month-11\">November</term>\n    <term name=\"month-12\">December</term>\n\n    <!-- SHORT MONTH FORMS -->\n    <term name=\"month-01\" form=\"short\">Jan.</term>\n    <term name=\"month-02\" form=\"short\">Feb.</term>\n    <term name=\"month-03\" form=\"short\">Mar.</term>\n    <term name=\"month-04\" form=\"short\">Apr.</term>\n    <term name=\"month-05\" form=\"short\">May</term>\n    <term name=\"month-06\" form=\"short\">Jun.</term>\n    <term name=\"month-07\" form=\"short\">Jul.</term>\n    <term name=\"month-08\" form=\"short\">Aug.</term>\n    <term name=\"month-09\" form=\"short\">Sep.</term>\n    <term name=\"month-10\" form=\"short\">Oct.</term>\n    <term name=\"month-11\" form=\"short\">Nov.</term>\n    <term name=\"month-12\" form=\"short\">Dec.</term>\n\n    <!-- SEASONS -->\n    <term name=\"season-01\">Spring</term>\n    <term name=\"season-02\">Summer</term>\n    <term name=\"season-03\">Autumn</term>\n    <term name=\"season-04\">Winter</term>\n  </terms>\n</locale>\n"
 
 /***/ }),
-/* 272 */
+/* 268 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"expanded\">\n  <info>\n    <title>American Psychological Association 6th edition</title>\n    <title-short>APA</title-short>\n    <id>http://www.zotero.org/styles/apa</id>\n    <link href=\"http://www.zotero.org/styles/apa\" rel=\"self\"/>\n    <link href=\"http://owl.english.purdue.edu/owl/resource/560/01/\" rel=\"documentation\"/>\n    <author>\n      <name>Simon Kornblith</name>\n      <email>simon@simonster.com</email>\n    </author>\n    <contributor>\n      <name>Bruce D'Arcus</name>\n    </contributor>\n    <contributor>\n      <name>Curtis M. Humphrey</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name> Brenton M. Wiernik</name>\n      <email>zotero@wiernik.org</email>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"psychology\"/>\n    <category field=\"generic-base\"/>\n    <updated>2016-09-28T13:09:49+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editortranslator\" form=\"short\">\n        <single>ed. &amp; trans.</single>\n        <multiple>eds. &amp; trans.</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">\n        <single>trans.</single>\n        <multiple>trans.</multiple>\n      </term>\n    </terms>\n  </locale>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"any\">\n        <group delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\" (\" text-case=\"title\" suffix=\")\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"article-journal chapter paper-conference entry-dictionary entry-encyclopedia\" match=\"none\">\n        <group delimiter=\", \" prefix=\" (\" suffix=\")\">\n          <names variable=\"container-author\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n            <label form=\"short\" prefix=\", \" text-case=\"title\"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"all\" and=\"symbol\" sort-separator=\", \" initialize-with=\". \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\" (\" suffix=\")\" text-case=\"capitalize-first\"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <choose>\n          <if type=\"report\">\n            <text variable=\"publisher\"/>\n            <text macro=\"title\"/>\n          </if>\n          <else>\n            <text macro=\"title\"/>\n          </else>\n        </choose>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <choose>\n      <if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\"/>\n      </if>\n      <else>\n        <names variable=\"author\">\n          <name form=\"short\" and=\"symbol\" delimiter=\", \" initialize-with=\". \"/>\n          <substitute>\n            <names variable=\"editor\"/>\n            <names variable=\"translator\"/>\n            <choose>\n              <if type=\"report\">\n                <text variable=\"publisher\"/>\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </if>\n              <else-if type=\"legal_case\">\n                <text variable=\"title\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"book graphic  motion_picture song\" match=\"any\">\n                <text variable=\"title\" form=\"short\" font-style=\"italic\"/>\n              </else-if>\n              <else-if type=\"bill legislation\" match=\"any\">\n                <text variable=\"title\" form=\"short\"/>\n              </else-if>\n              <else-if variable=\"reviewed-author\">\n                <choose>\n                  <if variable=\"reviewed-title\" match=\"none\">\n                    <text variable=\"title\" form=\"short\" font-style=\"italic\" prefix=\"Review of \"/>\n                  </if>\n                  <else>\n                    <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n                  </else>\n                </choose>\n              </else-if>\n              <else>\n                <text variable=\"title\" form=\"short\" quotes=\"true\"/>\n              </else>\n            </choose>\n          </substitute>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"patent-number\">\n    <!-- genre: U.S. Patent number: 123,445-->\n    <group delimiter=\" \">\n      <group delimiter=\" \">\n        <text variable=\"genre\"/>\n        <text term=\"issue\" form=\"short\" text-case=\"capitalize-first\"/>\n      </group>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <choose>\n      <if type=\"thesis report\" match=\"any\">\n        <choose>\n          <if variable=\"DOI\" match=\"any\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else-if variable=\"URL\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"URL\"/>\n            </group>\n          </else-if>\n          <else-if variable=\"archive\" match=\"any\">\n            <group>\n              <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <text term=\"from\" suffix=\" \"/>\n              <text variable=\"archive\" suffix=\".\"/>\n              <text variable=\"archive_location\" prefix=\" (\" suffix=\")\"/>\n            </group>\n          </else-if>\n        </choose>\n      </if>\n      <else>\n        <choose>\n          <if variable=\"DOI\">\n            <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n          </if>\n          <else>\n            <choose>\n              <if type=\"post post-weblog webpage\" match=\"any\">\n                <group delimiter=\" \">\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <group>\n                    <date variable=\"accessed\" form=\"text\" suffix=\", \"/>\n                  </group>\n                  <text term=\"from\"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </if>\n              <else>\n                <group>\n                  <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n                  <text term=\"from\" suffix=\" \"/>\n                  <text variable=\"URL\"/>\n                </group>\n              </else>\n            </choose>\n          </else>\n        </choose>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if type=\"book dataset graphic manuscript motion_picture report song speech thesis\" match=\"any\">\n        <choose>\n          <if variable=\"version\" type=\"book\" match=\"all\">\n            <!---This is a hack until we have a computer program type -->\n            <text variable=\"title\"/>\n          </if>\n          <else>\n            <text variable=\"title\" font-style=\"italic\"/>\n          </else>\n        </choose>\n      </if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\" \">\n              <text variable=\"title\"/>\n              <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n                <text variable=\"reviewed-title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\" delimiter=\", \">\n                  <label form=\"verb-short\" suffix=\" \"/>\n                  <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <!-- assume `title` is title of reviewed work -->\n            <group delimiter=\", \" prefix=\"[\" suffix=\"]\">\n              <text variable=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\" delimiter=\", \">\n                <label form=\"verb-short\" suffix=\" \"/>\n                <name and=\"symbol\" initialize-with=\". \" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"patent\" variable=\"number\" match=\"all\">\n        <text macro=\"patent-number\" font-style=\"italic\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-plus-extra\">\n    <text macro=\"title\"/>\n    <choose>\n      <if type=\"report thesis\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"genre\" match=\"any\">\n                <text variable=\"genre\"/>\n              </if>\n              <else>\n                <text variable=\"collection-title\"/>\n              </else>\n            </choose>\n            <text variable=\"number\" prefix=\"No. \"/>\n          </group>\n          <group delimiter=\" \">\n            <text term=\"version\" text-case=\"capitalize-first\"/>\n            <text variable=\"version\"/>\n          </group>\n          <text macro=\"edition\"/>\n        </group>\n      </if>\n      <else-if type=\"post-weblog webpage\" match=\"any\">\n        <text variable=\"genre\" prefix=\" [\" suffix=\"]\"/>\n      </else-if>\n      <else-if variable=\"version\">\n        <group delimiter=\" \" prefix=\" (\" suffix=\")\">\n          <text term=\"version\" text-case=\"capitalize-first\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n    </choose>\n    <text macro=\"format\" prefix=\" [\" suffix=\"]\"/>\n  </macro>\n  <macro name=\"format\">\n    <choose>\n      <if match=\"any\" variable=\"medium\">\n        <text variable=\"medium\" text-case=\"capitalize-first\"/>\n      </if>\n      <else-if type=\"dataset\" match=\"any\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <!-- This should be localized -->\n            <text value=\"Data set\"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <choose>\n      <if type=\"report\" match=\"any\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <text variable=\"publisher\"/>\n        </group>\n      </if>\n      <else-if type=\"thesis\" match=\"any\">\n        <group delimiter=\", \">\n          <text variable=\"publisher\"/>\n          <text variable=\"publisher-place\"/>\n        </group>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\": \">\n          <text variable=\"publisher-place\"/>\n          <choose>\n            <if variable=\"publisher\">\n              <text variable=\"publisher\"/>\n            </if>\n            <else>\n              <text variable=\"authority\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"post-weblog webpage\" match=\"none\">\n        <group delimiter=\", \">\n          <choose>\n            <if variable=\"event version\" type=\"speech dataset motion_picture\" match=\"none\">\n              <!-- Including version is to avoid printing the programming language for computerProgram /-->\n              <text variable=\"genre\"/>\n            </if>\n          </choose>\n          <choose>\n            <if type=\"article-journal article-magazine article-newspaper\" match=\"none\">\n              <group delimiter=\": \">\n                <choose>\n                  <if variable=\"publisher-place\">\n                    <text variable=\"publisher-place\"/>\n                  </if>\n                  <else>\n                    <text variable=\"event-place\"/>\n                  </else>\n                </choose>\n                <text variable=\"publisher\"/>\n              </group>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <choose>\n      <if variable=\"container-title\" match=\"none\">\n        <choose>\n          <if variable=\"event\">\n            <choose>\n              <if variable=\"genre\" match=\"none\">\n                <text term=\"presented at\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <text variable=\"event\"/>\n              </if>\n              <else>\n                <group delimiter=\" \">\n                  <text variable=\"genre\" text-case=\"capitalize-first\"/>\n                  <text term=\"presented at\"/>\n                  <text variable=\"event\"/>\n                </group>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"speech\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </else-if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"issued\">\n            <group prefix=\" (\" suffix=\")\">\n              <date variable=\"issued\">\n                <date-part name=\"year\"/>\n              </date>\n              <text variable=\"year-suffix\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"issued\">\n                    <date-part prefix=\", \" name=\"month\"/>\n                    <date-part prefix=\" \" name=\"day\"/>\n                  </date>\n                </else-if>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"status\">\n            <group prefix=\" (\" suffix=\")\">\n              <text variable=\"status\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else-if>\n          <else>\n            <group prefix=\" (\" suffix=\")\">\n              <text term=\"no date\" form=\"short\"/>\n              <text variable=\"year-suffix\" prefix=\"-\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"issued-sort\">\n    <choose>\n      <if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n          <date-part name=\"month\"/>\n          <date-part name=\"day\"/>\n        </date>\n      </if>\n      <else>\n        <date variable=\"issued\">\n          <date-part name=\"year\"/>\n        </date>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issued-year\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\"/\">\n          <date variable=\"original-date\">\n            <date-part name=\"year\"/>\n          </date>\n          <group>\n            <date variable=\"issued\">\n              <date-part name=\"year\"/>\n            </date>\n            <text variable=\"year-suffix\"/>\n          </group>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n        <text variable=\"year-suffix\" prefix=\"-\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if is-numeric=\"edition\">\n        <group delimiter=\" \">\n          <number variable=\"edition\" form=\"ordinal\"/>\n          <text term=\"edition\" form=\"short\"/>\n        </group>\n      </if>\n      <else>\n        <text variable=\"edition\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal article-magazine\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <group>\n            <text variable=\"volume\" font-style=\"italic\"/>\n            <text variable=\"issue\" prefix=\"(\" suffix=\")\"/>\n          </group>\n          <text variable=\"page\"/>\n        </group>\n        <choose>\n          <!--for advanced online publication-->\n          <if variable=\"issued\">\n            <choose>\n              <if variable=\"page issue\" match=\"none\">\n                <text variable=\"status\" prefix=\". \"/>\n              </if>\n            </choose>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"article-newspaper\">\n        <group delimiter=\" \" prefix=\", \">\n          <label variable=\"page\" form=\"short\"/>\n          <text variable=\"page\"/>\n        </group>\n      </else-if>\n      <else-if type=\"book graphic motion_picture report song chapter paper-conference entry-encyclopedia entry-dictionary\" match=\"any\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\", \">\n          <choose>\n            <if type=\"report\" match=\"none\">\n              <!-- edition for report is included in title-plus-extra /-->\n              <text macro=\"edition\"/>\n            </if>\n          </choose>\n          <choose>\n            <if variable=\"volume\" match=\"any\">\n              <group>\n                <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"volume\" form=\"numeric\"/>\n              </group>\n            </if>\n            <else>\n              <group>\n                <text term=\"volume\" form=\"short\" plural=\"true\" text-case=\"capitalize-first\" suffix=\" \"/>\n                <number variable=\"number-of-volumes\" form=\"numeric\" prefix=\"1&#8211;\"/>\n              </group>\n            </else>\n          </choose>\n          <group>\n            <label variable=\"page\" form=\"short\" suffix=\" \"/>\n            <text variable=\"page\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"legal_case\">\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text variable=\"authority\"/>\n          <choose>\n            <if variable=\"container-title\" match=\"any\">\n              <!--Only print year for cases published in reporters-->\n              <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n            </if>\n            <else>\n              <date variable=\"issued\" form=\"text\"/>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <date variable=\"issued\" prefix=\" (\" suffix=\")\">\n          <date-part name=\"year\"/>\n        </date>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"citation-locator\">\n    <group>\n      <choose>\n        <if locator=\"chapter\">\n          <label variable=\"locator\" form=\"long\" text-case=\"capitalize-first\"/>\n        </if>\n        <else>\n          <label variable=\"locator\" form=\"short\"/>\n        </else>\n      </choose>\n      <text variable=\"locator\" prefix=\" \"/>\n    </group>\n  </macro>\n  <macro name=\"container\">\n    <choose>\n      <if type=\"post-weblog webpage\" match=\"none\">\n        <group>\n          <choose>\n            <if type=\"chapter paper-conference entry-encyclopedia\" match=\"any\">\n              <text term=\"in\" text-case=\"capitalize-first\" suffix=\" \"/>\n            </if>\n          </choose>\n          <group delimiter=\", \">\n            <text macro=\"container-contributors\"/>\n            <text macro=\"secondary-contributors\"/>\n            <text macro=\"container-title\"/>\n          </group>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"article article-journal article-magazine article-newspaper\" match=\"any\">\n        <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"bill legal_case legislation\" match=\"none\">\n        <text variable=\"container-title\" font-style=\"italic\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"legal-cites\">\n    <choose>\n      <if type=\"legal_case\" match=\"any\">\n        <group prefix=\", \" delimiter=\" \">\n          <choose>\n            <if variable=\"container-title\">\n              <text variable=\"volume\"/>\n              <text variable=\"container-title\"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <text variable=\"page\"/>\n            </if>\n            <else>\n              <text variable=\"number\" prefix=\"No. \"/>\n            </else>\n          </choose>\n        </group>\n      </if>\n      <else-if type=\"bill legislation\" match=\"any\">\n        <group delimiter=\", \" prefix=\", \">\n          <choose>\n            <if variable=\"number\">\n              <!--There's a public law number-->\n              <text variable=\"number\" prefix=\"Pub. L. No. \"/>\n              <group delimiter=\" \">\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <text variable=\"page-first\"/>\n              </group>\n            </if>\n            <else>\n              <group delimiter=\" \">\n                <text variable=\"volume\"/>\n                <text variable=\"container-title\"/>\n                <!--change to label variable=\"section\" as that becomes available -->\n                <text term=\"section\" form=\"symbol\"/>\n                <text variable=\"section\"/>\n              </group>\n            </else>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"original-date\">\n    <choose>\n      <if type=\"bill legal_case legislation\" match=\"none\">\n        <choose>\n          <if variable=\"original-date\">\n            <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n              <!---This should be localized-->\n              <text value=\"Original work published\"/>\n              <choose>\n                <if type=\"speech\" match=\"any\">\n                  <date variable=\"original-date\" delimiter=\" \">\n                    <date-part name=\"month\"/>\n                    <date-part name=\"year\"/>\n                  </date>\n                </if>\n                <else-if type=\"article-journal bill book chapter graphic legal_case legislation motion_picture paper-conference report song dataset\" match=\"none\">\n                  <date variable=\"original-date\" form=\"text\"/>\n                </else-if>\n                <else>\n                  <date variable=\"original-date\">\n                    <date-part name=\"year\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"6\" et-al-use-first=\"1\" et-al-subsequent-min=\"3\" et-al-subsequent-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" collapse=\"year\" givenname-disambiguation-rule=\"primary-name\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\"/>\n    </sort>\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <text macro=\"author-short\"/>\n        <text macro=\"issued-year\"/>\n        <text macro=\"citation-locator\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"8\" et-al-use-first=\"6\" et-al-use-last=\"true\" entry-spacing=\"0\" line-spacing=\"2\">\n    <sort>\n      <key macro=\"author\"/>\n      <key macro=\"issued-sort\" sort=\"ascending\"/>\n      <key macro=\"title\"/>\n    </sort>\n    <layout>\n      <group suffix=\".\">\n        <group delimiter=\". \">\n          <text macro=\"author\"/>\n          <text macro=\"issued\"/>\n          <text macro=\"title-plus-extra\"/>\n          <text macro=\"container\"/>\n        </group>\n        <text macro=\"legal-cites\"/>\n        <text macro=\"locators\"/>\n        <group delimiter=\", \" prefix=\". \">\n          <text macro=\"event\"/>\n          <text macro=\"publisher\"/>\n        </group>\n      </group>\n      <text macro=\"access\" prefix=\" \"/>\n      <text macro=\"original-date\" prefix=\" \"/>\n    </layout>\n  </bibliography>\n</style>\n"
 
 /***/ }),
-/* 273 */
+/* 269 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"never\" page-range-format=\"minimal-two\">\n  <info>\n    <title>Modern Language Association 8th edition</title>\n    <title-short>MLA</title-short>\n    <id>http://www.zotero.org/styles/modern-language-association</id>\n    <link href=\"http://www.zotero.org/styles/modern-language-association\" rel=\"self\"/>\n    <link href=\"http://style.mla.org\" rel=\"documentation\"/>\n    <author>\n      <name>Sebastian Karcher</name>\n    </author>\n    <category citation-format=\"author\"/>\n    <category field=\"generic-base\"/>\n    <summary>This style adheres to the MLA 8th edition handbook. Follows the structure of references as outlined in the MLA Manual closely</summary>\n    <updated>2014-07-06T20:05:10+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <date form=\"text\">\n      <date-part name=\"day\" suffix=\" \"/>\n      <date-part name=\"month\" suffix=\" \" form=\"short\"/>\n      <date-part name=\"year\"/>\n    </date>\n    <terms>\n      <term name=\"month-01\" form=\"short\">Jan.</term>\n      <term name=\"month-02\" form=\"short\">Feb.</term>\n      <term name=\"month-03\" form=\"short\">Mar.</term>\n      <term name=\"month-04\" form=\"short\">Apr.</term>\n      <term name=\"month-05\" form=\"short\">May</term>\n      <term name=\"month-06\" form=\"short\">June</term>\n      <term name=\"month-07\" form=\"short\">July</term>\n      <term name=\"month-08\" form=\"short\">Aug.</term>\n      <term name=\"month-09\" form=\"short\">Sept.</term>\n      <term name=\"month-10\" form=\"short\">Oct.</term>\n      <term name=\"month-11\" form=\"short\">Nov.</term>\n      <term name=\"month-12\" form=\"short\">Dec.</term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"author\">\n    <names variable=\"author\">\n      <name name-as-sort-order=\"first\" and=\"text\" delimiter-precedes-last=\"always\" delimiter-precedes-et-al=\"always\" initialize=\"false\" initialize-with=\". \"/>\n      <label form=\"long\" prefix=\", \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"author-short\">\n    <group delimiter=\", \">\n      <names variable=\"author\">\n        <name form=\"short\" initialize-with=\". \" and=\"text\"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <text macro=\"title-short\"/>\n        </substitute>\n      </names>\n      <choose>\n        <if disambiguate=\"true\">\n          <text macro=\"title-short\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"title-short\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <text variable=\"title\" form=\"short\" quotes=\"true\" text-case=\"title\"/>\n      </if>\n      <else>\n        <text variable=\"title\" form=\"short\" font-style=\"italic\" text-case=\"title\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"container-title\">\n    <text variable=\"container-title\" font-style=\"italic\" text-case=\"title\"/>\n  </macro>\n  <macro name=\"other-contributors\">\n    <choose>\n      <if variable=\"container-title\" match=\"any\">\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \"/>\n          <name and=\"text\"/>\n        </names>\n      </if>\n      <else>\n        <names variable=\"interviewer editor translator\" delimiter=\", \">\n          <label form=\"verb\" suffix=\" \" text-case=\"capitalize-first\"/>\n          <name and=\"text\"/>\n        </names>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"version\">\n    <group delimiter=\", \">\n      <choose>\n        <if is-numeric=\"edition\">\n          <group delimiter=\" \">\n            <number variable=\"edition\" form=\"ordinal\"/>\n            <text term=\"edition\" form=\"short\"/>\n          </group>\n        </if>\n        <else>\n          <text variable=\"edition\" text-case=\"capitalize-first\"/>\n        </else>\n      </choose>\n      <text variable=\"version\"/>\n    </group>\n  </macro>\n  <macro name=\"number\">\n    <group delimiter=\", \">\n      <group>\n        <choose>\n          <!--lowercase if we have a preceding element-->\n          <if variable=\"edition container-title\" match=\"any\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </if>\n          <!--other contributors preceding the volume-->\n          <else-if variable=\"author editor\" match=\"all\">\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else-if>\n          <else>\n            <group delimiter=\" \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\"/>\n              <text variable=\"volume\"/>\n            </group>\n          </else>\n        </choose>\n      </group>\n      <group delimiter=\" \">\n        <text term=\"issue\" form=\"short\"/>\n        <text variable=\"issue\"/>\n      </group>\n      <choose>\n        <if type=\"report\">\n          <text variable=\"genre\"/>\n        </if>\n      </choose>\n      <text variable=\"number\"/>\n    </group>\n  </macro>\n  <macro name=\"publisher\">\n    <text variable=\"publisher\"/>\n  </macro>\n  <macro name=\"publication-date\">\n    <choose>\n      <if type=\"book chapter paper-conference motion_picture\" match=\"any\">\n        <date variable=\"issued\" form=\"numeric\" date-parts=\"year\"/>\n      </if>\n      <else-if type=\"article-journal article-magazine\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" date-parts=\"year-month\"/>\n      </else-if>\n      <else-if type=\"speech\" match=\"none\">\n        <date variable=\"issued\" form=\"text\"/>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"location\">\n    <group delimiter=\", \">\n      <group delimiter=\" \">\n        <label variable=\"page\" form=\"short\"/>\n        <text variable=\"page\"/>\n      </group>\n      <choose>\n        <if variable=\"source\" match=\"none\">\n          <text macro=\"URI\"/>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"container2-title\">\n    <group delimiter=\", \">\n      <choose>\n        <if type=\"speech\">\n          <text variable=\"event\"/>\n          <date variable=\"event-date\" form=\"text\"/>\n          <text variable=\"event-place\"/>\n        </if>\n      </choose>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n      <text variable=\"archive_location\"/>\n    </group>\n  </macro>\n  <macro name=\"container2-location\">\n    <choose>\n      <if variable=\"source\">\n        <choose>\n          <if variable=\"DOI URL\" match=\"any\">\n            <group delimiter=\", \">\n              <text variable=\"source\" font-style=\"italic\"/>\n              <text macro=\"URI\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"URI\">\n    <choose>\n      <if variable=\"DOI\">\n        <text variable=\"DOI\" prefix=\"doi:\"/>\n      </if>\n      <else>\n        <text variable=\"URL\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"accessed\">\n    <!--using accessed where we don't have an issued date; follows recommendation on p. 53 -->\n    <choose>\n      <if variable=\"issued\" match=\"none\">\n        <group delimiter=\" \">\n          <text term=\"accessed\" text-case=\"capitalize-first\"/>\n          <date variable=\"accessed\" form=\"text\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <citation et-al-min=\"3\" et-al-use-first=\"1\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <choose>\n        <if locator=\"page\">\n          <group delimiter=\" \">\n            <text macro=\"author-short\"/>\n            <text variable=\"locator\"/>\n          </group>\n        </if>\n        <else>\n          <group delimiter=\", \">\n            <text macro=\"author-short\"/>\n            <group>\n              <label variable=\"locator\" form=\"short\"/>\n              <text variable=\"locator\"/>\n            </group>\n          </group>\n        </else>\n      </choose>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"3\" et-al-use-first=\"1\" line-spacing=\"2\" entry-spacing=\"0\" subsequent-author-substitute=\"---\">\n    <sort>\n      <key macro=\"author\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"author\"/>\n        <text macro=\"title\"/>\n        <date variable=\"original-date\" form=\"numeric\" date-parts=\"year\"/>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 1\"-->\n          <text macro=\"container-title\"/>\n          <text macro=\"other-contributors\"/>\n          <text macro=\"version\"/>\n          <text macro=\"number\"/>\n          <text macro=\"publisher\"/>\n          <text macro=\"publication-date\"/>\n          <text macro=\"location\"/>\n        </group>\n        <group delimiter=\", \">\n          <!---This group corresponds to MLA's \"Container 2\"-->\n          <!--currently just using this one for archival info-->\n          <text macro=\"container2-title\"/>\n          <text macro=\"container2-location\"/>\n        </group>\n        <text macro=\"accessed\"/>\n      </group>\n    </layout>\n  </bibliography>\n</style>\n"
 
 /***/ }),
-/* 274 */
+/* 270 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"display-and-sort\" page-range-format=\"chicago\">\n  <info>\n    <title>Chicago Manual of Style 17th edition (author-date)</title>\n    <id>http://www.zotero.org/styles/chicago-author-date</id>\n    <link href=\"http://www.zotero.org/styles/chicago-author-date\" rel=\"self\"/>\n    <link href=\"http://www.chicagomanualofstyle.org/tools_citationguide.html\" rel=\"documentation\"/>\n    <author>\n      <name>Julian Onions</name>\n      <email>julian.onions@gmail.com</email>\n    </author>\n    <contributor>\n      <name>Sebastian Karcher</name>\n    </contributor>\n    <contributor>\n      <name>Richard Karnesky</name>\n      <email>karnesky+zotero@gmail.com</email>\n      <uri>http://arc.nucapt.northwestern.edu/Richard_Karnesky</uri>\n    </contributor>\n    <contributor>\n      <name>Andrew Dunning</name>\n      <email>andrew.dunning@utoronto.ca</email>\n      <uri>https://orcid.org/0000-0003-0464-5036</uri>\n    </contributor>\n    <category citation-format=\"author-date\"/>\n    <category field=\"generic-base\"/>\n    <summary>The author-date variant of the Chicago style</summary>\n    <updated>2018-01-24T12:00:00+00:00</updated>\n    <rights license=\"http://creativecommons.org/licenses/by-sa/3.0/\">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>\n  </info>\n  <locale xml:lang=\"en\">\n    <terms>\n      <term name=\"editor\" form=\"verb-short\">ed.</term>\n      <term name=\"container-author\" form=\"verb\">by</term>\n      <term name=\"translator\" form=\"verb-short\">trans.</term>\n      <term name=\"editortranslator\" form=\"verb\">\n        <single>edited and translated by</single>\n        <multiple>edited and translated by</multiple>\n      </term>\n      <term name=\"translator\" form=\"short\">trans.</term>\n    </terms>\n  </locale>\n  <macro name=\"secondary-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"none\">\n        <group delimiter=\". \">\n          <names variable=\"editor translator\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"director\" delimiter=\". \">\n            <label form=\"verb\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-contributors\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <group prefix=\", \" delimiter=\", \">\n          <names variable=\"container-author\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n          <names variable=\"editor translator\" delimiter=\", \">\n            <label form=\"verb\" suffix=\" \"/>\n            <name and=\"text\" delimiter=\", \"/>\n          </names>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"editor\">\n    <names variable=\"editor\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"translator\">\n    <names variable=\"translator\">\n      <name name-as-sort-order=\"first\" and=\"text\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n      <label form=\"short\" prefix=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"recipient\">\n    <choose>\n      <if type=\"personal_communication\">\n        <choose>\n          <if variable=\"genre\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n          <else>\n            <text term=\"letter\" text-case=\"capitalize-first\"/>\n          </else>\n        </choose>\n      </if>\n    </choose>\n    <names variable=\"recipient\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"lowercase\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"substitute-title\">\n    <choose>\n      <if type=\"article-magazine article-newspaper review review-book\" match=\"any\">\n        <text macro=\"container-title\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"contributors\">\n    <group delimiter=\". \">\n      <names variable=\"author\">\n        <name and=\"text\" name-as-sort-order=\"first\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n        <label form=\"short\" prefix=\", \"/>\n        <substitute>\n          <names variable=\"editor\"/>\n          <names variable=\"translator\"/>\n          <names variable=\"director\"/>\n          <text macro=\"substitute-title\"/>\n          <text macro=\"title\"/>\n        </substitute>\n      </names>\n      <text macro=\"recipient\"/>\n    </group>\n  </macro>\n  <macro name=\"contributors-short\">\n    <names variable=\"author\">\n      <name form=\"short\" and=\"text\" delimiter=\", \" initialize-with=\". \"/>\n      <substitute>\n        <names variable=\"editor\"/>\n        <names variable=\"translator\"/>\n        <names variable=\"director\"/>\n        <text macro=\"substitute-title\"/>\n        <text macro=\"title\"/>\n      </substitute>\n    </names>\n  </macro>\n  <macro name=\"interviewer\">\n    <names variable=\"interviewer\" delimiter=\", \">\n      <label form=\"verb\" prefix=\" \" text-case=\"capitalize-first\" suffix=\" \"/>\n      <name and=\"text\" delimiter=\", \"/>\n    </names>\n  </macro>\n  <macro name=\"archive\">\n    <group delimiter=\". \">\n      <text variable=\"archive_location\" text-case=\"capitalize-first\"/>\n      <text variable=\"archive\"/>\n      <text variable=\"archive-place\"/>\n    </group>\n  </macro>\n  <macro name=\"access\">\n    <group delimiter=\". \">\n      <choose>\n        <if type=\"graphic report\" match=\"any\">\n          <text macro=\"archive\"/>\n        </if>\n        <else-if type=\"article-journal bill book chapter legal_case legislation motion_picture paper-conference\" match=\"none\">\n          <text macro=\"archive\"/>\n        </else-if>\n      </choose>\n      <choose>\n        <if type=\"webpage post-weblog\" match=\"any\">\n          <date variable=\"issued\" form=\"text\"/>\n        </if>\n      </choose>\n      <choose>\n        <if variable=\"issued\" match=\"none\">\n          <group delimiter=\" \">\n            <text term=\"accessed\" text-case=\"capitalize-first\"/>\n            <date variable=\"accessed\" form=\"text\"/>\n          </group>\n        </if>\n      </choose>\n      <choose>\n        <if type=\"legal_case\" match=\"none\">\n          <choose>\n            <if variable=\"DOI\">\n              <text variable=\"DOI\" prefix=\"https://doi.org/\"/>\n            </if>\n            <else>\n              <text variable=\"URL\"/>\n            </else>\n          </choose>\n        </if>\n      </choose>\n    </group>\n  </macro>\n  <macro name=\"title\">\n    <choose>\n      <if variable=\"title\" match=\"none\">\n        <choose>\n          <if type=\"personal_communication\" match=\"none\">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          </if>\n        </choose>\n      </if>\n      <else-if type=\"bill book graphic legislation motion_picture song\" match=\"any\">\n        <text variable=\"title\" text-case=\"title\" font-style=\"italic\"/>\n        <group prefix=\" (\" suffix=\")\" delimiter=\" \">\n          <text term=\"version\"/>\n          <text variable=\"version\"/>\n        </group>\n      </else-if>\n      <else-if variable=\"reviewed-author\">\n        <choose>\n          <if variable=\"reviewed-title\">\n            <group delimiter=\". \">\n              <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n              <group delimiter=\", \">\n                <text variable=\"reviewed-title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n                <names variable=\"reviewed-author\">\n                  <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                  <name and=\"text\" delimiter=\", \"/>\n                </names>\n              </group>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\", \">\n              <text variable=\"title\" text-case=\"title\" font-style=\"italic\" prefix=\"Review of \"/>\n              <names variable=\"reviewed-author\">\n                <label form=\"verb-short\" text-case=\"lowercase\" suffix=\" \"/>\n                <name and=\"text\" delimiter=\", \"/>\n              </names>\n            </group>\n          </else>\n        </choose>\n      </else-if>\n      <else-if type=\"legal_case interview patent\" match=\"any\">\n        <text variable=\"title\"/>\n      </else-if>\n      <else>\n        <text variable=\"title\" text-case=\"title\" quotes=\"true\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"edition\">\n    <choose>\n      <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\". \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\" strip-periods=\"true\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" text-case=\"capitalize-first\" prefix=\". \"/>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if is-numeric=\"edition\">\n            <group delimiter=\" \" prefix=\", \">\n              <number variable=\"edition\" form=\"ordinal\"/>\n              <text term=\"edition\" form=\"short\"/>\n            </group>\n          </if>\n          <else>\n            <text variable=\"edition\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators\">\n    <choose>\n      <if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume\">\n            <text variable=\"volume\" prefix=\" \"/>\n            <group prefix=\" (\" suffix=\")\">\n              <choose>\n                <if variable=\"issue\">\n                  <text variable=\"issue\"/>\n                </if>\n                <else>\n                  <date variable=\"issued\">\n                    <date-part name=\"month\"/>\n                  </date>\n                </else>\n              </choose>\n            </group>\n          </if>\n          <else-if variable=\"issue\">\n            <group delimiter=\" \" prefix=\", \">\n              <text term=\"issue\" form=\"short\"/>\n              <text variable=\"issue\"/>\n              <date variable=\"issued\" prefix=\"(\" suffix=\")\">\n                <date-part name=\"month\"/>\n              </date>\n            </group>\n          </else-if>\n          <else>\n            <date variable=\"issued\" prefix=\", \">\n              <date-part name=\"month\"/>\n            </date>\n          </else>\n        </choose>\n      </if>\n      <else-if type=\"legal_case\">\n        <text variable=\"volume\" prefix=\", \"/>\n        <text variable=\"container-title\" prefix=\" \"/>\n        <text variable=\"page\" prefix=\" \"/>\n      </else-if>\n      <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n        <group prefix=\". \" delimiter=\". \">\n          <group>\n            <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n            <number variable=\"volume\" form=\"numeric\"/>\n          </group>\n          <group>\n            <number variable=\"number-of-volumes\" form=\"numeric\"/>\n            <text term=\"volume\" form=\"short\" prefix=\" \" plural=\"true\"/>\n          </group>\n        </group>\n      </else-if>\n      <else-if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\" match=\"none\">\n            <group prefix=\". \">\n              <text term=\"volume\" form=\"short\" text-case=\"capitalize-first\" suffix=\" \"/>\n              <number variable=\"volume\" form=\"numeric\"/>\n            </group>\n          </if>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"locators-chapter\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <choose>\n          <if variable=\"page\">\n            <group prefix=\", \">\n              <text variable=\"volume\" suffix=\":\"/>\n              <text variable=\"page\"/>\n            </group>\n          </if>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"locators-article\">\n    <choose>\n      <if type=\"article-newspaper\">\n        <group prefix=\", \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"edition\"/>\n            <text term=\"edition\"/>\n          </group>\n          <group>\n            <text term=\"section\" form=\"short\" suffix=\" \"/>\n            <text variable=\"section\"/>\n          </group>\n        </group>\n      </if>\n      <else-if type=\"article-journal\">\n        <choose>\n          <if variable=\"volume issue\" match=\"any\">\n            <text variable=\"page\" prefix=\": \"/>\n          </if>\n          <else>\n            <text variable=\"page\" prefix=\", \"/>\n          </else>\n        </choose>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"point-locators\">\n    <choose>\n      <if variable=\"locator\">\n        <choose>\n          <if locator=\"page\" match=\"none\">\n            <choose>\n              <if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n                <choose>\n                  <if variable=\"volume\">\n                    <group>\n                      <text term=\"volume\" form=\"short\" suffix=\" \"/>\n                      <number variable=\"volume\" form=\"numeric\"/>\n                      <label variable=\"locator\" form=\"short\" prefix=\", \" suffix=\" \"/>\n                    </group>\n                  </if>\n                  <else>\n                    <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n                  </else>\n                </choose>\n              </if>\n              <else>\n                <label variable=\"locator\" form=\"short\" suffix=\" \"/>\n              </else>\n            </choose>\n          </if>\n          <else-if type=\"bill book graphic legal_case legislation motion_picture report song\" match=\"any\">\n            <number variable=\"volume\" form=\"numeric\" suffix=\":\"/>\n          </else-if>\n        </choose>\n        <text variable=\"locator\"/>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"container-prefix\">\n    <text term=\"in\" text-case=\"capitalize-first\"/>\n  </macro>\n  <macro name=\"container-title\">\n    <choose>\n      <if type=\"chapter paper-conference\" match=\"any\">\n        <text macro=\"container-prefix\" suffix=\" \"/>\n      </if>\n    </choose>\n    <choose>\n      <if type=\"webpage\">\n        <text variable=\"container-title\" text-case=\"title\"/>\n      </if>\n      <else-if type=\"legal_case\" match=\"none\">\n        <group delimiter=\" \">\n          <text variable=\"container-title\" text-case=\"title\" font-style=\"italic\"/>\n          <choose>\n            <if type=\"post-weblog\">\n              <text value=\"(blog)\"/>\n            </if>\n          </choose>\n        </group>\n      </else-if>\n    </choose>\n  </macro>\n  <macro name=\"publisher\">\n    <group delimiter=\": \">\n      <text variable=\"publisher-place\"/>\n      <text variable=\"publisher\"/>\n    </group>\n  </macro>\n  <macro name=\"date\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"(\" suffix=\")\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\" text-case=\"capitalize-first\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"date-in-text\">\n    <choose>\n      <if variable=\"issued\">\n        <group delimiter=\" \">\n          <date variable=\"original-date\" form=\"text\" date-parts=\"year\" prefix=\"[\" suffix=\"]\"/>\n          <date variable=\"issued\">\n            <date-part name=\"year\"/>\n          </date>\n        </group>\n      </if>\n      <else-if variable=\"status\">\n        <text variable=\"status\"/>\n      </else-if>\n      <else>\n        <text term=\"no date\" form=\"short\"/>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"day-month\">\n    <date variable=\"issued\">\n      <date-part name=\"month\"/>\n      <date-part name=\"day\" prefix=\" \"/>\n    </date>\n  </macro>\n  <macro name=\"collection-title\">\n    <choose>\n      <if match=\"none\" type=\"article-journal\">\n        <choose>\n          <if match=\"none\" is-numeric=\"collection-number\">\n            <group delimiter=\", \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </if>\n          <else>\n            <group delimiter=\" \">\n              <text variable=\"collection-title\" text-case=\"title\"/>\n              <text variable=\"collection-number\"/>\n            </group>\n          </else>\n        </choose>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"collection-title-journal\">\n    <choose>\n      <if type=\"article-journal\">\n        <group delimiter=\" \">\n          <text variable=\"collection-title\"/>\n          <text variable=\"collection-number\"/>\n        </group>\n      </if>\n    </choose>\n  </macro>\n  <macro name=\"event\">\n    <group>\n      <text term=\"presented at\" suffix=\" \"/>\n      <text variable=\"event\"/>\n    </group>\n  </macro>\n  <macro name=\"description\">\n    <choose>\n      <if type=\"interview\">\n        <group delimiter=\". \">\n          <text macro=\"interviewer\"/>\n          <text variable=\"medium\" text-case=\"capitalize-first\"/>\n        </group>\n      </if>\n      <else-if type=\"patent\">\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"authority\"/>\n          <text variable=\"number\"/>\n        </group>\n      </else-if>\n      <else>\n        <text variable=\"medium\" text-case=\"capitalize-first\" prefix=\". \"/>\n      </else>\n    </choose>\n    <choose>\n      <if variable=\"title\" match=\"none\"/>\n      <else-if type=\"thesis personal_communication speech\" match=\"any\"/>\n      <else>\n        <group delimiter=\" \" prefix=\". \">\n          <text variable=\"genre\" text-case=\"capitalize-first\"/>\n          <choose>\n            <if type=\"report\">\n              <text variable=\"number\"/>\n            </if>\n          </choose>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <macro name=\"issue\">\n    <choose>\n      <if type=\"legal_case\">\n        <text variable=\"authority\" prefix=\". \"/>\n      </if>\n      <else-if type=\"speech\">\n        <group prefix=\". \" delimiter=\", \">\n          <group delimiter=\" \">\n            <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            <text macro=\"event\"/>\n          </group>\n          <text variable=\"event-place\"/>\n          <text macro=\"day-month\"/>\n        </group>\n      </else-if>\n      <else-if type=\"article-newspaper article-magazine personal_communication\" match=\"any\">\n        <date variable=\"issued\" form=\"text\" prefix=\", \"/>\n      </else-if>\n      <else-if type=\"patent\">\n        <group delimiter=\", \" prefix=\", \">\n          <group delimiter=\" \">\n            <!--Needs Localization-->\n            <text value=\"filed\"/>\n            <date variable=\"submitted\" form=\"text\"/>\n          </group>\n          <group delimiter=\" \">\n            <choose>\n              <if variable=\"issued submitted\" match=\"all\">\n                <text term=\"and\"/>\n              </if>\n            </choose>\n            <!--Needs Localization-->\n            <text value=\"issued\"/>\n            <date variable=\"issued\" form=\"text\"/>\n          </group>\n        </group>\n      </else-if>\n      <else>\n        <group prefix=\". \" delimiter=\", \">\n          <choose>\n            <if type=\"thesis\">\n              <text variable=\"genre\" text-case=\"capitalize-first\"/>\n            </if>\n          </choose>\n          <text macro=\"publisher\"/>\n        </group>\n      </else>\n    </choose>\n  </macro>\n  <citation et-al-min=\"4\" et-al-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" givenname-disambiguation-rule=\"primary-name\" collapse=\"year\">\n    <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n      <group delimiter=\", \">\n        <choose>\n          <if variable=\"issued accessed\" match=\"any\">\n            <group delimiter=\" \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </if>\n          <!---comma before forthcoming and n.d.-->\n          <else>\n            <group delimiter=\", \">\n              <text macro=\"contributors-short\"/>\n              <text macro=\"date-in-text\"/>\n            </group>\n          </else>\n        </choose>\n        <text macro=\"point-locators\"/>\n      </group>\n    </layout>\n  </citation>\n  <bibliography hanging-indent=\"true\" et-al-min=\"11\" et-al-use-first=\"7\" subsequent-author-substitute=\"&#8212;&#8212;&#8212;\" entry-spacing=\"0\">\n    <sort>\n      <key macro=\"contributors\"/>\n      <key variable=\"issued\"/>\n      <key variable=\"title\"/>\n    </sort>\n    <layout suffix=\".\">\n      <group delimiter=\". \">\n        <text macro=\"contributors\"/>\n        <text macro=\"date\"/>\n        <text macro=\"title\"/>\n      </group>\n      <text macro=\"description\"/>\n      <text macro=\"secondary-contributors\" prefix=\". \"/>\n      <text macro=\"container-title\" prefix=\". \"/>\n      <text macro=\"container-contributors\"/>\n      <text macro=\"edition\"/>\n      <text macro=\"locators-chapter\"/>\n      <text macro=\"collection-title-journal\" prefix=\", \" suffix=\", \"/>\n      <text macro=\"locators\"/>\n      <text macro=\"collection-title\" prefix=\". \"/>\n      <text macro=\"issue\"/>\n      <text macro=\"locators-article\"/>\n      <text macro=\"access\" prefix=\". \"/>\n    </layout>\n  </bibliography>\n</style>\n"
 
 /***/ }),
-/* 275 */
+/* 271 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_fin_search_box__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_fin_search_box__ = __webpack_require__(272);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_app_collection_card__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html__ = __webpack_require__(275);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_home_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_home_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_RecordInterface__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_RecordInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__);
 
 
@@ -59861,7 +59568,7 @@ module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"htt
 
 
 class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */]) 
-      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_4__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default.a) {
+      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_4__interfaces_RecordInterface___default.a, __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default.a) {
   
   static get template() {
     return __WEBPACK_IMPORTED_MODULE_3__app_home_html___default.a;
@@ -59914,7 +59621,7 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
   _onBrowse(e) {
     let id = e.detail;
     if( !id || id === 'Browse' ) {
-      return this._esRemoveKeywordFilter('isPartOf');
+      return this._searchRecords(this._getEmptySearchDocument());
     }
     this.$.searchBox.browseValue = 'Browse';
     this._onCollectionSelected(id);
@@ -59926,7 +59633,9 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
    * the enter key is hit.  set the text filter
    */
   _onSearch(e) {
-    this._esSetTextFilter(e.detail);
+    let searchDoc = this._getEmptySearchDocument();
+    this._setTextFilter(searchDoc, e.detail);
+    this._searchRecords(searchDoc);
   }
 
   /**
@@ -59943,7 +59652,8 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
    * @description filter based on a collection using short ids.
    */
   _onCollectionSelected(id) {
-    this._esSetKeywordFilter('isPartOf', id);
+    let searchDoc = this._setKeywordFilter(this._getEmptySearchDocument(), 'isPartOf', id);
+    this._searchRecords(searchDoc);
   }
   
 }
@@ -59951,12 +59661,12 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
 customElements.define('app-home', AppHome);
 
 /***/ }),
-/* 276 */
+/* 272 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__ = __webpack_require__(273);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fin_search_box_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__fin_search_box_html__);
 
 
@@ -60044,41 +59754,41 @@ class FinSearchBox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_
 customElements.define('fin-search-box', FinSearchBox);
 
 /***/ }),
-/* 277 */
+/* 273 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n  .root {\n    display: flex;\n    align-items: center;\n  }\n  input {\n    width: 100%;\n    box-sizing: border-box;\n    padding: 0 5px;\n    background: white;\n    border: none;\n    height: 45px;\n    outline: none;\n    @apply --fin-search-box-input;\n  }\n  button {\n    background: white;\n    height: 45px;\n    border: none;\n    margin: 0;\n    padding: 0 10px;\n    border-radius: 0;\n    cursor: pointer;\n    @apply --fin-search-box-button;\n  }\n  select {\n    margin-left: 20px;\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    height: 45px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n    @apply --fin-search-box-select;\n  }\n  @media(max-width: 600px) {\n    select {\n      margin-left: 10px;\n    }\n  }\n</style>\n\n<div class=\"root\">\n  <div style=\"flex:1\">\n    <input \n      id=\"input\" \n      type=\"text\"\n      on-keyup=\"_onKeyUp\"\n      placeholder=\"[[placeholder]]\" />\n  </div>\n  <button on-click=\"_fireSearch\">\n    <slot name=\"button-content\"></slot>\n  </button>\n  <select id=\"select\" on-change=\"_fireBrowse\">\n    <option>Browse</option>\n  </select>\n</div>";
 
 /***/ }),
-/* 278 */
+/* 274 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: inline-block;\n  }\n\n  .root {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .root:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .root > div  {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<div class=\"root\" style=\"background-image:url('[[collection.thumbnail]]')\" data-id$=\"[[collection.id]]\">\n  <div>[[collection.name]]</div>\n</div>\n";
 
 /***/ }),
-/* 279 */
+/* 275 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <app-collection-card \n        data-id$=\"[[item.id]]\" \n        collection=\"[[item]]\" \n        on-click=\"_onCollectionClicked\">\n      </app-collection-card>\n    </template>\n  </div>\n</div>\n\n<div class=\"text-container\">\n  \n  <h1>About Digital Collections</h1>\n\n  <p>The UC Davis Digital Collections is a locally developed digital repository that was designed to store and manage the digital assets of UC Davis. These Digital Collections are intended to increase access to previously undiscoverable digital assets held by the University Library.</p>\n  \n  <p>Initially launched in 2018, the repository currently stores 14,000 digital assets.</p>\n  \n  <h2>Platform</h2>\n  \n  <p>The Digital Asset Management System is built on the Fedora Linked Data Platform. Custom services are implemented using a Fedora (APIX) extension method as a general methodology. The User Interface was built with web-components anticipating a need for UI flexibility as the digital collection grows. For a more detailed explanation of the development, see our <a href=\"https://github.com/UCDavisLibrary/fin-server/issues/9\">Fin Server Overview.</a>\n  </p>\n  \n  <h2>Contact</h2>\n  <ul>\n    <li><a href=\"mailto:eanebeker@ucdavis.edu\">Eric A Nebeker - Digital Assets Specialist</a></li>\n  </ul>\n  \n  <h2>Implementation Team</h2>\n  <ul>\n    <li>Quinn Hart - Team Lead</li>\n    <li>Justin Merz - Lead Developer</li>\n    <li>Kimmy Hescock - User Experience Designer</li>\n  </ul>\n  \n  <h2>Members of the DAMS Steering Committee</h2>\n  <ul>\n    <li>Kevin Miller</li>\n    <li>Neil Weingarten</li>\n    <li>Amy Azzarito</li>\n    <li>Peter Brantley</li>\n    <li>Carl Stahmer</li>\n    <li>Dale Snapp</li>\n    <li>Robert Heyer-Gray</li>\n    <li>Vessela Ensberg</li>\n    <li>Xiaoli Li</li>\n  </ul>\n  \n  <p>The UC Davis Library DAMS was a project of the Library's <a href=\"https://www.library.ucdavis.edu/service/online-strategy-2/\">Online Strategy team.</a>\n  </p>\n\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>\n";
 
 /***/ }),
-/* 280 */
+/* 276 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_input_paper_input__ = __webpack_require__(281);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_input_paper_input__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html__ = __webpack_require__(284);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_search_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_header__ = __webpack_require__(289);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb__ = __webpack_require__(292);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__results_app_search_results_panel__ = __webpack_require__(294);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__filtering_app_filters_panel__ = __webpack_require__(305);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_header__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__results_app_search_results_panel__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__filtering_app_filters_panel__ = __webpack_require__(301);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_RecordInterface__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__interfaces_RecordInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface__);
 
 
@@ -60094,7 +59804,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 
 
 class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-            .with(EventInterface, __WEBPACK_IMPORTED_MODULE_8__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface___default.a) {
+            .with(EventInterface, __WEBPACK_IMPORTED_MODULE_8__interfaces_RecordInterface___default.a, __WEBPACK_IMPORTED_MODULE_9__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_7__interfaces_AppStateInterface___default.a) {
 
   static get template() {
     return __WEBPACK_IMPORTED_MODULE_2__app_search_html___default.a;
@@ -60149,20 +59859,6 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
   }
 
   /**
-   * @method _onVisibleUpdate
-   * @description fired when iron-pages sets this page to visible.  We need to see if this is 
-   * the first time we are loading.  if so, see if we need to search.  search is required
-   * if this is the first load and there is a query document in url path 
-   */
-  // _onVisibleUpdate() {
-  //   if( !this.visible ) return;
-
-  //   if( this.firstLoad ) {
-  //     this._searchFromAppState();
-  //   }
-  // }
-
-  /**
    * @method _searchFromAppState
    * @description use current app state to preform a search, should be called on first load
    * or if state update event is from popup state (forward, back button hit)
@@ -60173,12 +59869,12 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
     let searchUrlParts = this.appState.location.path;
     let query;
     if( searchUrlParts.length > 1 ) {
-      query = this._fromUrlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
+      query = this._urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
     } else {
-      query = this._getAppSearchDocument();
+      query = this._getCurrentSearchDocument();
     }
 
-    this._esSearch(query);
+    this._searchRecords(query);
   }
 
   /**
@@ -60186,39 +59882,25 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
    * @description CollectionInterface, fired when the collection overview updates
    * TODO: we should not preform a search untill this is fired 
    */
-  _onCollectionOverviewUpdate(e) {
-    if( e.state === 'loaded' ) this._esDefaultSearch();
-  }
-
-  // /**
-  //  * @method _onDefaultEsSearchUpdate
-  //  * @description ElasticSearchInterface, fired when then default search updates
-  //  * 
-  //  * @param {Object} e 
-  //  */
-  // _onDefaultEsSearchUpdate(e) {
-  //   this._onEsSearchUpdate(e);
+  // _onCollectionOverviewUpdate(e) {
+  //   if( e.state === 'loaded' ) this._esDefaultSearch();
   // }
 
   /**
    * @method _onEsSearchUpdate
-   * @description ElasticSearchInterface, fired when search updates
+   * @description RecordInterface, fired when search updates
    * 
    * @param {Object} e 
    */
-  _onEsSearchUpdate(e) {
+  _onRecordSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
-    let currentIndex = e.query.from;
+    let currentIndex = e.searchDocument.offset;
     let payload = e.payload;
-    let total = 0;
-    if( !payload.hits ) return this.results = [];
-    else total = payload.hits.total;
+    let total = payload.total;
+    this.results = payload.results;
 
-    if( !payload.hits.hits ) return this.results = [];
-    this.results = payload.hits.hits.map(item => item._source);
-
-    this.$.resultsPanel.render(this.results, total, e.query.size, currentIndex);
+    this.$.resultsPanel.render(this.results, total, e.searchDocument.limit, currentIndex);
   }
 
   /**
@@ -60228,8 +59910,9 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
    * @param {Object} e 
    */
   _onPageSizeChange(e) {
-    let offset = this._getAppSearchDocument().offset;
-    this._esSetPaging(offset, e.detail);
+    let searchDoc = this._getCurrentSearchDocument();
+    this._setPaging(searchDoc, searchDoc.offset, e.detail);
+    this._searchRecords(searchDoc);
   }
 
   /**
@@ -60239,7 +59922,9 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
    * @param {Object} e 
    */
   _onPaginationChange(e) {
-    this._esSetPaging(e.detail.startIndex);
+    let searchDoc = this._getCurrentSearchDocument();
+    this._setPaging(searchDoc, e.detail.startIndex);
+    this._searchRecords(searchDoc);
   }
 
   /**
@@ -60258,17 +59943,17 @@ class AppSearch extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-search', AppSearch);
 
 /***/ }),
-/* 281 */
+/* 277 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_form_element_behavior_iron_form_element_behavior_js__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_input_iron_input_js__ = __webpack_require__(282);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_behavior_js__ = __webpack_require__(284);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_input_char_counter_js__ = __webpack_require__(285);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_input_container_js__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_input_error_js__ = __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_input_iron_input_js__ = __webpack_require__(278);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_behavior_js__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_input_char_counter_js__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_input_container_js__ = __webpack_require__(282);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_input_error_js__ = __webpack_require__(283);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__polymer_lib_elements_dom_module_js__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_polymer_element_js__ = __webpack_require__(2);
@@ -60449,12 +60134,12 @@ Object(__WEBPACK_IMPORTED_MODULE_7__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 282 */
+/* 278 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_announcer_iron_a11y_announcer_js__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_announcer_iron_a11y_announcer_js__ = __webpack_require__(279);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_validatable_behavior_iron_validatable_behavior_js__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
@@ -60742,7 +60427,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 283 */
+/* 279 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60824,7 +60509,7 @@ IronA11yAnnouncer.requestAvailability = function() {
 
 
 /***/ }),
-/* 284 */
+/* 280 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61381,7 +61066,7 @@ const PaperInputBehavior = [
 
 
 /***/ }),
-/* 285 */
+/* 281 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61459,7 +61144,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 286 */
+/* 282 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62042,7 +61727,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 287 */
+/* 283 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62115,23 +61800,23 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 288 */
+/* 284 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .search-container {\n    background-color: var(--super-light-background-color);\n    min-height: 500px;\n    display: flex;\n  }\n  .search-content {\n    margin: 15px;\n    flex: 1;\n  }\n  app-filters-panel {\n    width: 350px;\n  }\n\n  #drawer app-filters-panel {\n    width: 300px;\n  }\n  \n  #drawer {\n    position: absolute;\n    top: 0;\n    left: -335px;\n    bottom: 0;\n    background: white;\n    width: 300px;\n    z-index: 10;\n    transition: left 300ms ease-out;\n    background-color: var(--light-background-color);\n  }\n\n  @keyframes fadeIn {\n    from {\n      opacity: 0;\n    }\n    to {\n      opacity: .7;\n    }\n  }\n\n  #drawer-background {\n    opacity: .7;\n    position: absolute;\n    top: 0;\n    left: 0;\n    bottom: 0;\n    right: 0;\n    background: black;\n    z-index: 5;\n    display: none;\n    animation: fadeIn 300ms;\n  }\n\n  #drawer[open] {\n    left: 0;\n  }\n\n  #drawer-background[open] {\n    display: block;\n  }\n\n  #desktop-filter-panel {\n    display: none;\n  }\n\n  @media( min-width: 975px ) {\n    #outerDrawer {\n      display: none;\n    }\n    #desktop-filter-panel {\n      display: block;\n    }\n  }\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<div style=\"position: relative\">\n  <div id=\"outerDrawer\">\n    <div id=\"drawer\" open$=\"[[drawerOpen]]\">\n      <app-filters-panel on-toggle-drawer=\"_toggleDrawer\"></app-filters-panel>\n    </div>\n    <div id=\"drawer-background\" open$=\"[[drawerOpen]]\" on-click=\"_toggleDrawer\"></div>\n  </div>\n\n  <div class=\"search-container\">\n    <app-filters-panel id=\"desktop-filter-panel\"></app-filters-panel>\n    <div class=\"search-content\">\n      <app-search-results-panel \n        id=\"resultsPanel\" \n        on-toggle-drawer=\"_toggleDrawer\" \n        on-page-size-change=\"_onPageSizeChange\"\n        on-page-change=\"_onPaginationChange\">\n      </app-search-results-panel>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 289 */
+/* 285 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_app_auth_header__ = __webpack_require__(290);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html__ = __webpack_require__(291);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_app_auth_header__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html__ = __webpack_require__(287);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_header_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_search_header_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_RecordInterface__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_RecordInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface__);
 
 
@@ -62141,7 +61826,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 
 
 class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface___default.a) {
+      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_3__interfaces_RecordInterface___default.a, __WEBPACK_IMPORTED_MODULE_4__interfaces_CollectionInterface___default.a) {
 
   static get properties() {
     return {
@@ -62189,10 +61874,14 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
   _onBrowse(e) {
     let id = e.detail;
     if( !id || id === 'Browse' ) {
-      return this._esRemoveKeywordFilter('isPartOf');
+      return this._searchRecords(this._getEmptySearchDocument());
     }
+    
     this.$.searchInput.browseValue = 'Browse';
-    this._esSetKeywordFilter('isPartOf', id);
+
+    let searchDoc = this._getEmptySearchDocument();
+    this._setKeywordFilter(searchDoc, 'isPartOf', id);
+    this._searchRecords(searchDoc);    
   }
 
   /**
@@ -62203,18 +61892,20 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
    * @param {Object} e
    */
   _onSearch(e) {
-    this._esSetTextFilter(e.detail);
+    let searchDoc = this._getCurrentSearchDocument();
+    this._setTextFilter(searchDoc);
+    this._searchRecords(searchDoc);
   }
 
   /**
    * @method _onEsSearchUpdate
-   * @description from ElasticSearchInterface, called when search state updates
+   * @description from RecordInterface, called when search state updates
    * 
    * @param {*} e 
    */
-  _onEsSearchUpdate(e) {
+  _onRecordSearchUpdate(e) {
     try {
-      this.$.searchInput.value = e.query.query.bool.must[0].multi_match.query;
+      this.$.searchInput.value = e.searchDocument.text || '';
     } catch(e) {
       this.$.searchInput.value = '';
     }
@@ -62235,12 +61926,12 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
 customElements.define('app-search-header', AppSearchHeader);
 
 /***/ }),
-/* 290 */
+/* 286 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__);
 
 
@@ -62270,24 +61961,24 @@ class AppAuthHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_p
 customElements.define('app-auth-header', AppAuthHeader);
 
 /***/ }),
-/* 291 */
+/* 287 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--default-primary-color);\n    color: var(--inverse-text-color);\n    padding: 15px;\n  }\n\n  app-auth-header {\n    margin-left: 10px;\n  }\n  \n  fin-search-box {\n    display: inline-block;\n    width: 100%;\n    box-sizing: border-box;\n    max-width: 525px;\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n  }\n  \n  h2 {\n    margin: 0;\n    white-space: nowrap;\n  }\n  h2 a {\n    color: var(--default-secondary-color);\n    text-decoration: none;\n  }\n  h2 a:visited {\n    color: var(--default-secondary-color);\n    text-decoration: none;\n  }\n\n  img {\n    height: 50px;\n  }\n\n  .logo, h2 {\n    padding-right: 20px;\n    display: none;\n  }\n\n  .filler {\n    flex: .25;\n    display: none;\n  }\n\n  .logo-sm {\n    margin-right: 10px;\n  }\n\n  @media( min-width: 700px ) {\n    .logo {\n      display: block;\n    }\n    .logo-sm {\n      display: none;\n    }\n  }\n\n  @media( min-width: 815px ) {\n    h2 {\n      display: block;\n    }\n  }\n\n  @media( min-width: 1100px ) {\n    .filler {\n      display: block;\n    }\n  }\n</style>\n\n<div class=\"layout\">\n  <img class=\"logo\" src=\"/images/ucd-lib-logo-white.png\" />\n  <img class=\"logo-sm\" src=\"/images/ucd-lib-logo-white-sm.png\" />\n  <h2><a href=\"/\">Digital Collections</a></h2>\n  <div class=\"filler\"></div>\n  <div style=\"flex:1; text-align:right\">\n    <fin-search-box \n      id=\"searchInput\" \n      on-search=\"_onSearch\" \n      on-browse=\"_onBrowse\"\n      placeholder=\"Search Keyword(s)\">\n      <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n    </fin-search-box>\n  </div>\n  <app-auth-header></app-auth-header>\n</div>\n\n";
 
 /***/ }),
-/* 292 */
+/* 288 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_RecordInterface__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_RecordInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__ = __webpack_require__(289);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__app_search_breadcrumb_html__);
 
 
@@ -62295,9 +61986,8 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 
 
 
-
 class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-        .with(EventInterface, __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default.a) {
+        .with(EventInterface, __WEBPACK_IMPORTED_MODULE_3__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_2__interfaces_RecordInterface___default.a) {
 
   static get properties() {
     return {
@@ -62350,8 +62040,8 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
     path.splice(0, 1);
     this.currentRecordId = '/'+path.join('/');
 
-    this.record = await this._esGetRecord(this.currentRecordId);
-    this.record = this.record.payload._source;
+    this.record = await this._getRecord(this.currentRecordId);
+    this.record = this.record.payload;
 
     if( this.record.isPartOf ) {
       this.collection = await this._getCollection(this.record.isPartOf);
@@ -62364,7 +62054,8 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
    * @method _onSearchClicked
    * @description bound to search anchor tag click event.  nav to search
    */
-  _onSearchClicked() {
+  _onSearchClicked(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
     this._setWindowLocation(this.lastSearch || '/search');
   }
 
@@ -62372,9 +62063,11 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
    * @method _onCollectionClicked
    * @description bound to collection anchor tag click event.  start a collection query
    */
-  _onCollectionClicked() {
-    this._esClearFilters();
-    this._esSetKeywordFilter('isPartOf', this.collection.id);
+  _onCollectionClicked(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
+    let searchDoc = this._getEmptySearchDocument();
+    this._setKeywordFilter(searchDoc, 'isPartOf', this.collection.id);
+    this._searchRecords(searchDoc);
   }
 
   /**
@@ -62390,28 +62083,28 @@ class AppSearchBreadcrumb extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_pol
 customElements.define('app-search-breadcrumb', AppSearchBreadcrumb);
 
 /***/ }),
-/* 293 */
+/* 289 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\">[[collection.name]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">[[record.name]]</div>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\" on-keyup=\"_onSearchClicked\" tabindex=\"0\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\" tabindex=\"0\">[[collection.name]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">[[record.name]]</div>\n</div>";
 
 /***/ }),
-/* 294 */
+/* 290 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_cork_pagination__ = __webpack_require__(295);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_grid_result__ = __webpack_require__(297);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_list_result__ = __webpack_require__(302);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ucd_lib_cork_pagination__ = __webpack_require__(291);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_search_grid_result__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_search_list_result__ = __webpack_require__(298);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_app_collection_card__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_RecordInterface__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_RecordInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__ = __webpack_require__(304);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__ = __webpack_require__(300);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__);
 
 
@@ -62426,7 +62119,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 
 
 class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface___default.a) {
+      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_5__interfaces_RecordInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface___default.a) {
 
   static get properties() {
     return {
@@ -62649,13 +62342,13 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
   }
 
   /**
-   * @method _onEsSearchCollectionUpdate
-   * @description from ElasticSearchInterface, called when a collection search state
+   * @method _onSearchCollectionUpdate
+   * @description from CollectionInterface, called when a collection search state
    * is updated.
    * 
    * @param {Object} e 
    */
-  _onEsSearchCollectionUpdate(e) {
+  _onCollectionSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this.collectionResults = e.payload;
   }
@@ -62668,7 +62361,10 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
    */
   _onCollectionClicked(e) {
     let id = e.currentTarget.collection.id
-    this._esSetKeywordAndText('', 'isPartOf', id);
+
+    let searchDoc = this._getEmptySearchDocument();
+    this._setKeywordFilter(searchDoc, 'isPartOf', id);
+    this._searchRecords(searchDoc);
   }
 
 }
@@ -62676,14 +62372,14 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
 customElements.define('app-search-results-panel', AppSearchResultsPanel);
 
 /***/ }),
-/* 295 */
+/* 291 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_icon_button_paper_icon_button__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__ = __webpack_require__(292);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_pagination_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__cork_pagination_html__);
 
 
@@ -62864,18 +62560,18 @@ class CorkPagination extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 window.customElements.define('cork-pagination', CorkPagination);
 
 /***/ }),
-/* 296 */
+/* 292 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #root {\n    display: flex;\n    align-items: center;\n  }\n\n  .ellipsis {\n    display: none;\n  }\n\n  paper-icon-button {\n    color: var(--cork-color, --default-primary-color);\n  }\n  paper-icon-button[disabled] {\n     color: var(--cork-disabled-color, var(--disabled-color, #ccc));\n  }\n\n  a {\n    color: var(--cork-color, --default-primary-color);\n    cursor: pointer;\n    text-align: center;\n    min-width: 20px;\n    border-radius: 25px;\n    display: inline-block;\n    padding: 5px;\n    margin: 0 3px;\n    font-size: 14px;\n    line-height: 20px;\n  }\n\n  a:hover {\n    background: var(--cork-background-color-light, var(--light-background-color, #eee));\n  }\n\n  a[selected] {\n    background: var(--cork-background-color, var(--medium-background-color, #ccc));\n    color: white;\n  }\n\n  [hidden] {\n    display: none;\n  }\n\n  .text-display {\n    font-style: italic;\n  }\n</style>\n\n<div id=\"root\">\n  <paper-icon-button disabled$=\"[[firstPage]]\" icon=\"arrow-back\" on-click=\"previous\"></paper-icon-button>\n\n  <div style=\"flex:1\"></div>\n\n  <div hidden$=\"[[loading]]\">\n    <div hidden$=\"[[!textMode]]\" class=\"text-display\">[[textDisplay]]</div>\n  </div>\n\n  <div hidden$=\"[[textMode]]\">\n    <a selected$=\"[[firstPage]]\" on-click=\"_selectPage\">1</a>\n    <a id=\"startEllipsis\" class=\"ellipsis\" on-click=\"previousSection\">...</a>\n\n    <template is=\"dom-repeat\" items=\"[[pages]]\">\n      <a selected$=\"[[item.selected]]\" on-click=\"_selectPage\">[[item.index]]</a>\n    </template>\n\n    <a id=\"stopEllipsis\" class=\"ellipsis\" on-click=\"nextSection\">...</a>\n    <a id=\"lastPage\" selected$=\"[[lastPage]]\" on-click=\"_selectPage\">[[lastPageIndex]]</a>\n  </div>\n\n  <div style=\"flex:1\"></div>\n\n  <paper-icon-button disabled$=\"[[lastPage]]\" icon=\"arrow-forward\" on-click=\"next\"></paper-icon-button>\n</div>";
 
 /***/ }),
-/* 297 */
+/* 293 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__ = __webpack_require__(301);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__ = __webpack_require__(297);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_grid_result_html__);
 
 
@@ -62891,7 +62587,7 @@ class AppSearchGridResult extends __WEBPACK_IMPORTED_MODULE_0__app_search_result
 customElements.define('app-search-grid-result', AppSearchGridResult);
 
 /***/ }),
-/* 298 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -63146,15 +62842,15 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 298;
+webpackContext.id = 294;
 
 /***/ }),
-/* 299 */
+/* 295 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__ = __webpack_require__(300);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__ = __webpack_require__(296);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_result_creator_html__);
 
 
@@ -63195,24 +62891,24 @@ class AppSearchResultCreator extends __WEBPACK_IMPORTED_MODULE_0__polymer_polyme
 customElements.define('app-search-result-creator', AppSearchResultCreator);
 
 /***/ }),
-/* 300 */
+/* 296 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .text {\n    display: block;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    width: calc(var(--grid-cell-width) - 30px);\n    color: var(--gray-text);\n  }\n</style>\n\n<a class=\"text\" hidden=\"[[!link]]\" href=\"[[label]]\" target=\"_blank\">[[label]]</a>\n<div class=\"text\" hidden=\"[[link]]\">[[label]]</div>";
 
 /***/ }),
-/* 301 */
+/* 297 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    width: var(--grid-cell-width);\n    background-color: white;\n    cursor: pointer;\n  }\n  :host(:hover) {\n    border: 2px solid var(--default-secondary-color);\n    margin: -2px 0 0 -2px;\n  }\n  .img {\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: transparent;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n</style>\n\n<div hidden$=\"[[!isImage]]\" style=\"position: relative; width: 250px; height:[[imgHeight]]px\">\n  <div style=\"background-image: url('[[imgThumbail]]');height:[[imgHeight]]px\" class=\"img\" ></div>\n  <div style=\"background-image: url('[[imgUrl]]');height:[[imgHeight]]px\" class=\"img\"></div>\n</div>\n\n\n<div style=\"padding: 15px\">\n  <div class=\"collection-name\">[[collectionName]]</div>\n\n  <h4>[[name]]</h4>\n\n  <template is=\"dom-repeat\" items=\"[[creator]]\">\n    <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n  </template>\n\n  <div class=\"footer\">\n    <div class=\"year\">[[year]]</div>\n    <div>\n      <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n    </div>\n  </div>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    width: var(--grid-cell-width);\n    background-color: white;\n    cursor: pointer;\n  }\n  :host(:hover), :host(:focus) {\n    border: 2px solid var(--default-secondary-color);\n    margin: -2px 0 0 -2px;\n    outline: none !important;\n  }\n  .img {\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: transparent;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n</style>\n\n<div hidden$=\"[[!isImage]]\" style=\"position: relative; width: 250px; height:[[imgHeight]]px\">\n  <div style=\"background-image: url('[[imgThumbail]]');height:[[imgHeight]]px\" class=\"img\" ></div>\n  <div style=\"background-image: url('[[imgUrl]]');height:[[imgHeight]]px\" class=\"img\"></div>\n</div>\n\n\n<div style=\"padding: 15px\">\n  <div class=\"collection-name\">[[collectionName]]</div>\n\n  <h4>[[name]]</h4>\n\n  <template is=\"dom-repeat\" items=\"[[creator]]\">\n    <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n  </template>\n\n  <div class=\"footer\">\n    <div class=\"year\">[[year]]</div>\n    <div>\n      <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 302 */
+/* 298 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_search_result__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__ = __webpack_require__(303);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__ = __webpack_require__(299);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_search_list_result_html__);
 
 
@@ -63228,34 +62924,34 @@ class AppSearchListResult extends __WEBPACK_IMPORTED_MODULE_0__app_search_result
 customElements.define('app-search-list-result', AppSearchListResult);
 
 /***/ }),
-/* 303 */
+/* 299 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: white;\n    margin: 10px;\n  }\n\n  .img {\n    height: 250px;\n    width: var(--grid-cell-width);\n    background-size: cover;\n    background-color: white;\n    background-position: center center;\n  }\n\n  .collection-name {\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    color: var(--gray-text);\n  }\n\n  .year {\n    color: var(--gray-text);\n    flex: 1;\n  }\n\n  .spacer {\n    flex: 1;\n  }\n\n  .footer {\n    display : flex; \n    align-items : center; \n    margin-top : 10px;\n  }\n\n  .layout {\n    display: flex;\n  }\n\n  h4 {\n    margin: 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  .flex-vertical {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n  }\n</style>\n\n<div class=\"layout\">\n    <div style=\"background-image: url('[[imgUrl]]')\" hidden$=\"[[!isImage]]\" class=\"img\" ></div>\n\n  <div style=\"padding: 15px; flex: 1\">\n    <div class=\"flex-vertical\">\n      <div class=\"collection-name\">[[collectionName]]</div>\n      \n      <h4>[[name]]</h4>\n    \n      <template is=\"dom-repeat\" items=\"[[creator]]\">\n        <app-search-result-creator label=\"[[item]]\"></app-search-result-creator>\n      </template>\n      \n      <div class=\"spacer\"></div>\n\n      <div class=\"footer\">\n        <div class=\"year\">[[year]]</div>\n        <div>\n          <iron-icon icon=\"fin:image\" hidden$=\"[[!isImage]]\"></iron-icon>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
-/* 304 */
+/* 300 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    max-width: 1150px;\n  }\n\n  .header {\n    font-size: var(--font-size-sm);\n    display: flex;\n    align-items: center;\n    margin-left: -15px;\n  }\n\n  select {\n    margin-left: 10px;\n    border: 1px solid var(--light-background-color);\n    border-radius: 0;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 16px 16px;\n    background-repeat: no-repeat;\n    background-color: transparent;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n  }\n\n  h3 {\n    border-top: 1px solid var(--light-background-color);\n    margin: 15px 0 0 0;\n    padding: 15px 0 0 0;\n    color: var(--default-primary-color);\n  }\n\n  .masonry {\n    margin: 10px;\n    position: relative;\n  }\n\n  .masonry .item {\n    display: block;\n    position: absolute;\n    /* visibility: hidden; */\n    top : 25px;\n    left: 25px;\n    will-change: top, left;\n    transition: top 500ms ease-out, left 500ms ease-out;\n  }\n\n  .list {\n    margin: 10px;\n  }\n\n  .list .item {\n    padding: 10px;\n    margin-bottom: 15px;\n    background-color: #daaa00;\n    height: 250px;\n  }\n\n  .spacer {\n    height: 20px;\n    border-right: 1px solid var(--light-background-color);\n  }\n\n  .total {\n    font-style: italic; \n    padding-left: 10px;\n  }\n\n  .mobile-total {\n    font-style: italic; \n  }\n\n  .filler {\n    flex: 1;\n  }\n\n  cork-pagination {\n    display: inline-block;\n\n    --cork-color : var(--default-primary-color);\n    --cork-background-color : var(--default-secondary-color);\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n    margin-left: -15px;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  .drawer-toggle[disabled] {\n    color: var(--light-background-color);\n  }\n\n  .header {\n    display : none;\n  }\n\n  .mobile-header .row2 {\n    display: flex;\n    align-items: center;\n  }\n\n  .collections {\n    text-align: center;\n  }\n\n  @media( min-width: 975px ) {\n    .header {\n      display: flex;\n    }\n    .mobile-header {\n      display: none;\n    }\n  }\n</style>\n\n<div class=\"header\">\n  <div class=\"total\">[[total]] results found</div>\n  \n  <div class=\"filler\"></div>\n  \n  <paper-icon-button \n    icon=\"fin:grid\" \n    disabled$=\"[[!isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"masonry\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  <paper-icon-button \n    icon=\"fin:list\" \n    disabled$=\"[[isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"list\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  \n  <div>\n    <select id=\"numPerPage\" on-change=\"_onPageSizeChange\">\n      <option>50</option>\n      <option>20</option>\n      <option>10</option>\n    </select>\n  </div>\n  <div style=\"margin-left: 10px; font-style:italic\">Items per page</div>\n</div>\n\n<div class=\"mobile-header\">\n  <div>\n    <div style=\"display:inline-block\">\n      <button class=\"drawer-toggle\" on-click=\"_onToggleDrawer\">\n        <span>Info / Filters</span>\n        <iron-icon icon=\"add\"></iron-icon>\n      </button>\n    </div>\n  </div>\n\n  <div class=\"row2\">\n    <div class=\"total\">[[total]] results</div>\n\n    <div class=\"filler\"></div>\n    \n    <paper-icon-button \n      icon=\"fin:grid\" \n      disabled$=\"[[!isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"masonry\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    <paper-icon-button \n      icon=\"fin:list\" \n      disabled$=\"[[isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"list\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    \n    <div>\n      <select id=\"numPerPageM\" on-change=\"_onPageSizeChange\">\n        <option>50</option>\n        <option>20</option>\n        <option>10</option>\n      </select>\n    </div>\n    <div style=\"margin-left: 10px; font-style:italic\">per page</div>\n  </div>\n</div>\n\n<div class=\"collections\" hidden$=\"[[!showCollectionResults]]\">\n  <div hidden$=\"[[!collectionResults.length]]\">\n    <h3>Collections</h3>\n    <template is=\"dom-repeat\" items=\"[[collectionResults]]\">\n      <app-collection-card collection=\"[[item]]\" on-click=\"_onCollectionClicked\"></app-collection-card>\n    </template>\n    <h3 hidden$=\"[[!results.length]]\">Items</h3>\n  </div>\n</div>\n\n<div class=\"masonry\" id=\"layout\" hidden$=\"[[isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-grid-result data=\"[[item]]\" class=\"item\"></app-search-grid-result>\n  </template>\n</div>\n\n<div class=\"list\" hidden$=\"[[!isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-list-result data=\"[[item]]\"></app-search-list-result>\n  </template>\n</div>\n\n<div style=\"text-align:center\">\n  <cork-pagination \n    total-results=\"[[total]]\" \n    items-per-page=\"[[numPerPage]]\"\n    current-index=\"[[currentIndex]]\"\n    on-nav=\"_onPaginationNav\">\n  </cork-pagination>\n</div>";
 
 /***/ }),
-/* 305 */
+/* 301 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_pages_iron_pages__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel__ = __webpack_require__(310);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_collection_info_panel__ = __webpack_require__(326);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_filter_panel__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_collection_info_panel__ = __webpack_require__(322);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_RecordInterface__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_RecordInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__ = __webpack_require__(328);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__ = __webpack_require__(324);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__lib_config__);
 
 
@@ -63284,7 +62980,7 @@ for( var key in __WEBPACK_IMPORTED_MODULE_8__lib_config___default.a.elasticSearc
 
 
 class AppFiltersPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_5__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default.a) {
+      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_5__interfaces_RecordInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default.a) {
   
   static get template() {
     return __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html___default.a;
@@ -63356,14 +63052,17 @@ class AppFiltersPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
    * collection filter when clicked
    */
   _removeCollectionFilter() {
-    this._esRemoveKeywordFilter('isPartOf');
+    let searchDoc = this._getCurrentSearchDocument();
+    this._removeKeywordFilter(searchDoc, 'isPartOf');
+    this._setPaging(searchDoc, 0);
+    this._searchRecords(searchDoc);
   }
 }
 
 customElements.define('app-filters-panel', AppFiltersPanel);
 
 /***/ }),
-/* 306 */
+/* 302 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63437,7 +63136,7 @@ const IronMenubarBehavior = [
 
 
 /***/ }),
-/* 307 */
+/* 303 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63602,7 +63301,7 @@ const IronMultiSelectableBehavior = [
 
 
 /***/ }),
-/* 308 */
+/* 304 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63622,7 +63321,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 309 */
+/* 305 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63770,17 +63469,17 @@ Object(__WEBPACK_IMPORTED_MODULE_5__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 310 */
+/* 306 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_toggle_panel_cork_toggle_panel__ = __webpack_require__(311);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter__ = __webpack_require__(313);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__ = __webpack_require__(317);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_tabs_paper_tabs__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ucd_lib_cork_toggle_panel_cork_toggle_panel__ = __webpack_require__(307);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter__ = __webpack_require__(309);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__ = __webpack_require__(313);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__app_filter_panel_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_facet_filter__ = __webpack_require__(318);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_facet_filter__ = __webpack_require__(314);
   
 
 
@@ -63802,6 +63501,10 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
         type : Boolean,
         value : false,
         observer : '_toggleOpened'
+      },
+      selected : {
+        type : Array,
+        value : () => []
       }
     };
   }
@@ -63824,17 +63527,85 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
     ele.addEventListener('update-visibility', (e) => {
       this.style.display = e.detail.show ? 'block' : 'none';
     });
+    ele.addEventListener('add-selected', (e) => {
+      let index = this.selected.findIndex(item => item.label === e.detail.label);
+      if( index > -1 ) return;
+      this.push('selected', e.detail);
+    });
+    ele.addEventListener('remove-selected', (e) => {
+      let index = this.selected.findIndex(item => item.label === e.detail.label);
+      if( index === -1 ) return;
+      this.splice('selected', index, 1);
+    });
+    ele.addEventListener('set-selected', (e) => {
+      if( e.detail.selected ) {
+        this.selected = [e.detail];
+      } else {
+        this.selected = [];
+      }
+    });
 
     this.ele = ele;
     
     this.$.filters.appendChild(ele);
   }
 
+  /**
+   * @method toggle
+   * @description toggle opened state
+   */
+  toggle() {
+    this.opened = !this.opened;
+  }
+
+  /**
+   * @method _toggleOpened
+   * @description bound to opened observer.  if opened is true,
+   * tell the child to resize
+   */
   _toggleOpened() {
     if( !this.opened ) return;
     if( this.ele && this.ele.resize ) {
       this.ele.resize();
     }
+  }
+
+  /**
+   * @method _onToggleClicked
+   * @description bound to main label click/keyboard events. Toggle
+   * the panel.
+   * 
+   * @param {Object} e Click/Keyword event
+   */
+  _onToggleClicked(e) {
+    if( e.type === 'keyup' ) { // from keyboard event
+      if( e.which !== 13 && e.which !== 32 ) return;
+    }
+
+    this.toggle();
+  }
+
+  /**
+   * @method _onFilterClicked
+   * @description called when selected filter is clicked,
+   * notify child of click
+   */
+  _onFilterClicked(e) {
+    if( e.type === 'keyup' ) { // from keyboard event
+      if( e.which !== 13 && e.which !== 32 ) return;
+    }
+
+    this._notifyFilterClicked(e.currentTarget.getAttribute('label'));
+  }
+
+  /**
+   * @method _onFilterClicked
+   * @description notify child of filter click
+   */
+  _notifyFilterClicked(label) {
+    if( !this.ele ) return;
+    if( !this.ele.onParentFilterClicked ) return;
+    this.ele.onParentFilterClicked(label);
   }
 
 }
@@ -63844,14 +63615,14 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 window.customElements.define('app-filter-panel', AppFilterPanel);
 
 /***/ }),
-/* 311 */
+/* 307 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_icon_iron_icon__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_iron_icons_iron_icons__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__ = __webpack_require__(312);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__ = __webpack_require__(308);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__cork_toggle_panel_html__);
 
 
@@ -63905,32 +63676,35 @@ class CorkTogglePanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('cork-toggle-panel', CorkTogglePanel);
 
 /***/ }),
-/* 312 */
+/* 308 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #label {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    @apply --cork-toggle-panel-label;\n  }\n\n  #content {\n    overflow: hidden;\n    height: 0;\n    transition: height 250ms ease-out;\n    @apply --cork-toggle-panel-content;\n  }\n\n  iron-icon {\n    color: var(--cork-drop-down-arrow-color, #912046);\n    transform: rotateX(0);\n    transition: transform 250ms ease-out;\n  }\n\n  iron-icon[closed] {\n    transform: rotate(-90deg);\n  }\n\n</style>\n\n<div id=\"label\" on-click=\"toggle\">\n  <div style=\"flex:1\">[[label]]</div>\n  <iron-icon icon=\"arrow-drop-down\" closed$=\"[[!opened]]\"></iron-icon>\n</div>\n\n<div id=\"content\">\n  <slot></slot>\n</div>";
 
 /***/ }),
-/* 313 */
+/* 309 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_app_range_slider__ = __webpack_require__(314);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html__ = __webpack_require__(316);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_range_filter_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_app_range_slider__ = __webpack_require__(310);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_RecordInterface__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_RecordInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_range_filter_html__ = __webpack_require__(312);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_range_filter_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__app_range_filter_html__);
+
 
 
 
 
 
 class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_2__interfaces_ElasticSearchInterface___default.a) {
+  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_2__interfaces_RecordInterface___default.a, __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface___default.a) {
 
   static get template() {
-    return __WEBPACK_IMPORTED_MODULE_3__app_range_filter_html___default.a;
+    return __WEBPACK_IMPORTED_MODULE_4__app_range_filter_html___default.a;
   }
 
   static get properties() {
@@ -63959,7 +63733,7 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
       },
       maxValue : {
         type : Number,
-        value : -1
+        value : Number.MAX_VALUE
       },
 
       showUnknown : {
@@ -63999,7 +63773,10 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
         this.maxValue === this.absMaxValue &&
         this.$.unknown.checked === true ) {
       
-      this._esRemoveRangeFilter(this.filter);
+      let searchDoc = this._getCurrentSearchDocument();
+      this._removeRangeFilter(searchDoc, this.filter);
+      this._searchRecords(searchDoc);
+
       return true;
     }
     return false;
@@ -64028,7 +63805,9 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
     // remove filter and return
     if( this._isDefaultState() ) return;
 
-    this._esAppendRangeFilter(this.filter, value);
+    let searchDoc = this._getCurrentSearchDocument();
+    this._appendRangeFilter(searchDoc, this.filter, value);
+    this._searchRecords(searchDoc);
   }
 
   _onInputChange() {
@@ -64051,28 +63830,67 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
     this._onRangeNullChange();
   }
 
-  _onDefaultEsSearchUpdate(e) {
-    if( e.state !== 'loaded' ) return;
-
-    this.absMinValue = e.payload.aggregations[this.filter+'-min'].value;
-    this.absMaxValue = e.payload.aggregations[this.filter+'-max'].value;
-
-    if( this.minValue === -1 ) {
-      this.minValue = this.absMinValue;
-      this.maxValue = this.absMaxValue;
-
-      this.$.minValueInput.value = this.minValue;
-      this.$.maxValueInput.value = this.maxValue;
-    }
+  /**
+   * @method _onSelectedCollectionUpdate
+   * @description from CollectionInterface, called whenever selected collection updates
+   * 
+   * @param {Object} e
+   */
+  _onSelectedCollectionUpdate(e) {
+    this.selectedCollection = e ? e.id : '';
+    this._renderFilters();
   }
 
-  _onEsSearchUpdate(e) {
+  /**
+   * @method _onRecordSearchUpdate
+   * @description from RecordInterface
+   * 
+   * @param {Object} e 
+   */
+  _onRecordSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
-    let filters = e.searchDocument.filters || {};
+    this.currentFilters = e.searchDocument.filters || {};
+    this._renderFilters();
+  }
 
-    if( filters[this.filter] ) {
-      let value = filters[this.filter].value;
+  /**
+   * @method _renderFilters
+   * @description called after a collection is selected or a filter set updates.
+   * make sure range filter is set correctly.
+   * 
+   */
+  async _renderFilters() {
+    if( !this.currentFilters ) return;
+
+    // grab default aggregations for collection
+    let cid = this.selectedCollection;
+    let result = await this._defaultRecordSearch(this.selectedCollection);
+    if( cid !== this.selectedCollection ) return; // make sure we haven't updated
+    this.default = result;
+
+    if( this.default.payload.aggregations.ranges[this.filter] ) {
+      this.absMinValue = this.default.payload.aggregations.ranges[this.filter].min;
+      this.absMaxValue = this.default.payload.aggregations.ranges[this.filter].max;
+    } else {
+      return this._show(false);
+    }
+
+    this._show(true);
+
+    // make sure any current values are set correctly
+    if( this.minValue < this.absMinValue ) {
+      this.minValue = this.absMinValue;
+      this.$.minValueInput.value = this.minValue;
+    }
+    if( this.maxValue > this.absMaxValue ) {
+      this.maxValue = this.absMaxValue;
+      this.$.maxValueInput.value = this.maxValue;
+    }
+
+    // now set the current filters from search
+    if( this.currentFilters[this.filter] ) {
+      let value = this.currentFilters[this.filter].value;
 
       this.minValue = value.gte;
       this.maxValue = value.lte;
@@ -64080,6 +63898,50 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
       this.$.maxValueInput.value = this.maxValue;
       this.$.unknown.checked = value.includeNull ? true : false;
     }
+
+    this._notifySelected();
+  }
+
+  /**
+   * @method _notifySelected
+   * @description notify parent of selected/unselected filter
+   */
+  _notifySelected() {
+    let selected = false;
+    let key = '';
+
+    if( this.minValue !== this.absMinValue || 
+        this.maxValue !== this.absMaxValue ||
+        !this.$.unknown.checked ) {
+      selected = true;
+    }
+
+    if( selected ) {
+      key = this.minValue+' to '+this.maxValue;
+    }
+
+    this.dispatchEvent(
+      new CustomEvent(`set-selected`, {
+        detail: {
+          selected,
+          label: key
+        }
+      })
+    );
+  }
+
+  /**
+   * @method _show
+   * @description notify parent to hide/show filter
+   * 
+   * @param {Boolean} show should the parent hide or show filter
+   */
+  _show(show) {
+    this.dispatchEvent(
+      new CustomEvent('update-visibility', {
+        detail: {show}
+      })
+    );
   }
 
 }
@@ -64089,12 +63951,12 @@ class AppRangeFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
 customElements.define('app-range-filter', AppRangeFilter);
 
 /***/ }),
-/* 314 */
+/* 310 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__ = __webpack_require__(315);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__ = __webpack_require__(311);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_range_slider_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_range_slider_html__);
 
 
@@ -64412,34 +64274,37 @@ class AppRangeSlider extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
 customElements.define('app-range-slider', AppRangeSlider);
 
 /***/ }),
-/* 315 */
+/* 311 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n    position: relative;\n    height: 50px;\n    margin: 0 13px;\n\n    -webkit-touch-callout: none; /* iOS Safari */\n    -webkit-user-select: none; /* Safari */\n    -khtml-user-select: none; /* Konqueror HTML */\n    -moz-user-select: none; /* Firefox */\n    -ms-user-select: none; /* Internet Explorer/Edge */\n    user-select: none; /* Non-prefixed version, currently */\n  }\n\n  #numberLine {\n    position: absolute;\n    left : 0;\n    right : 0;\n    height: 3px;\n    background-color: var(--light-background-color, #888);\n  }\n\n  #fillLine {\n    position: absolute;\n    cursor: move;\n    background-color: var(--default-primary-color);\n    height: 3px;\n  }\n\n  .btn {\n    position: absolute;\n    height: 25px;\n    width: 25px;\n    cursor: move;\n  }\n\n  .btn > div {\n    margin: 5px;\n    height: 15px;\n    width: 15px;\n    border-radius: 15px;\n    background-color: var(--default-primary-color);\n    transition: all 150ms linear;\n  }\n\n  .btn[moving] > div {\n    margin: 0px;\n    height: 25px;\n    width: 25px;\n    border-radius: 25px;\n  }\n\n  .label {\n    width : 25px;\n    font-size: 12px; \n    position: absolute;\n    text-align: center;\n    transform: scale(0);\n    transition: transform 200ms linear;\n    color: var(--default-primary-color);\n  }\n\n  .label[moving] {\n    transform: scale(1);\n  }\n\n</style>\n\n<div id=\"numberLine\"></div>\n\n<div id=\"fillLine\" prop=\"range\" on-mousedown=\"_onMoveStart\"></div>\n\n<div id=\"lowNumberLabel\" class=\"label\" moving$=\"[[isMoving]]\">[[minValueLabel]]</div>\n<div id=\"highNumberLabel\" class=\"label\" moving$=\"[[isMoving]]\">[[maxValueLabel]]</div>\n\n<div id=\"lowNumberBtn\" class=\"btn\" prop=\"min\" on-mousedown=\"_onMoveStart\" moving$=\"[[movingMin]]\" >\n  <div></div>\n</div>\n\n<div id=\"highNumberBtn\" class=\"btn\" prop=\"max\" on-mousedown=\"_onMoveStart\" moving$=\"[[movingMax]]\">\n  <div></div>\n</div>";
 
 /***/ }),
-/* 316 */
+/* 312 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n  }\n  \n  .labels {\n    display: flex;\n    margin: 0 13px;\n    color: var(--gray-text);\n    font-size: var(--font-size-sm);\n  }\n\n  .inputs {\n    display: flex;\n    align-items: center;\n  }\n\n  input[type=\"number\"] {\n    margin: 0 13px;\n    padding: 7px;\n    border: 0;\n    width: 50px;\n    font-size: var(--font-size-sm);\n  }\n\n  .unknown {\n    margin-left: 9px;\n    display: flex;\n    align-items: center;\n  }\n\n  label {\n    font-size: var(--font-size-sm);\n    font-style: italic;\n    padding-left: 5px;\n  }\n\n  app-range-slider {\n    --light-background-color: var(--medium-background-color);\n  }\n</style>\n\n<div class=\"inputs\">\n  <input id=\"minValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n  <span> - </span>\n  <input id=\"maxValueInput\" type=\"number\" on-change=\"_onInputChange\" >\n</div>\n\n<app-range-slider\n  id=\"slider\"\n  on-range-value-change=\"_onRangeSliderChange\"\n  abs-min-value=\"[[absMinValue]]\"\n  abs-max-value=\"[[absMaxValue]]\"\n  min-value=\"[[minValue]]\"\n  max-value=\"[[maxValue]]\">\n</app-range-slider>\n\n<div class=\"labels\">\n  <div style=\"flex:1\">[[absMinValue]]</div>\n  <div>[[absMaxValue]]</div>\n</div>\n\n<div class=\"unknown\" hidden$=\"[[showUnknown]]\">\n  <input type=\"checkbox\" id=\"unknown\" on-click=\"_onRangeNullChange\" checked />\n  <label for=\"unknown\">include unknown / unspecified</label>\n</div>";
 
 /***/ }),
-/* 317 */
+/* 313 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n</style>\n\n<cork-toggle-panel label=\"[[filter.label]]\" opened=\"{{opened}}\">\n  <div id=\"filters\"></div>\n</cork-toggle-panel>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n\n  .label {\n    cursor: pointer;\n    display: flex;\n    color: var(--default-primary-color);\n    padding: 10px 10px 10px 6px;\n    font-weight: bold;\n    border-left: 4px solid transparent;\n  }\n\n  .label:focus, .label:hover {\n    outline: none;\n    border-left: 4px solid var(--default-secondary-color);\n  }\n\n  .filter {\n    display: flex;\n    cursor: pointer;\n  }\n\n  iron-icon[closed] {\n    transform: rotate(-90deg);\n  }\n\n  iron-icon[icon=\"close\"] {\n    color: var(--default-secondary-color);\n  }\n\n  #filters {\n    overflow-y: auto;\n    max-height: 200px;\n  }\n</style>\n\n<div class=\"label\" on-click=\"_onToggleClicked\" on-keyup=\"_onToggleClicked\" role=\"button\" tabindex=\"0\">\n  <div style=\"flex:1\">[[filter.label]]</div>\n  <iron-icon icon=\"arrow-drop-down\" closed$=\"[[!opened]]\"></iron-icon>\n</div>\n\n<div id=\"activeFilters\" hidden$=\"[[opened]]\">\n  <template is=\"dom-repeat\" items=\"[[selected]]\">\n    <div class=\"filter\" \n      on-click=\"_onFilterClicked\" \n      label$=\"[[item.label]]\"\n      tabindex=\"0\" \n      role=\"button\">\n      <iron-icon icon=\"close\"></iron-icon>\n      <div>[[item.label]]</div>\n    </div>\n  </template>\n</div>\n\n<div id=\"filters\" hidden$=\"[[!opened]]\"></div>";
 
 /***/ }),
-/* 318 */
+/* 314 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__ = __webpack_require__(319);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_facet_checkbox__ = __webpack_require__(320);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_RecordInterface__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_RecordInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_facet_filter_html__ = __webpack_require__(315);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_facet_filter_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__app_facet_filter_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_facet_checkbox__ = __webpack_require__(316);
+
 
 
 
@@ -64447,7 +64312,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 
 
 class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_1__interfaces_ElasticSearchInterface___default.a) {
+  .with(EventInterface, __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_1__interfaces_RecordInterface___default.a) {
 
   static get properties() {
     return {
@@ -64473,7 +64338,7 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
       },
       activeFilters : {
         type : Array,
-        value : () => []
+        value : null
       },
       allFilters : {
         type : Array,
@@ -64488,60 +64353,125 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
   }
 
   static get template() {
-    return __WEBPACK_IMPORTED_MODULE_2__app_facet_filter_html___default.a;
+    return __WEBPACK_IMPORTED_MODULE_3__app_facet_filter_html___default.a;
   }
 
-  _onDefaultEsSearchUpdate(e) {
+  /**
+   * @method _onSelectedCollectionUpdate
+   * @description from CollectionInterface
+   */
+  async _onSelectedCollectionUpdate(e) {
+    this.selectedCollection = e ? e.id : '';
+    this._updateActiveFilters();
+  }
+
+  /**
+   * @method _onRecordSearchUpdate
+   * @description from RecordInterface
+   * 
+   * @param {*} e 
+   */
+  _onRecordSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this.buckets = e.payload.aggregations[this.filter].buckets;
+
+
+    var activeFilters = [];
+    if( e.searchDocument.filters[this.filter] ) {
+      activeFilters = e.searchDocument.filters[this.filter].value;
+    }
+    this.activeFilters = activeFilters;
+
+    this.availableFilters = e.payload.aggregations.facets[this.filter] || {};
+
+    
+    this._updateActiveFilters();
+  }
+
+  async _updateActiveFilters() {
+    if( !this.activeFilters ) return;
+
+
+    // grab default aggregations for collection
+    let cid = this.selectedCollection;
+    let result = await this._defaultRecordSearch(this.selectedCollection);
+    if( cid !== this.selectedCollection ) return; // make sure we haven't updated
+    this.default = result;
+
+    let defaultFacets = this.default.payload.aggregations.facets[this.filter] || {};
 
     if( this.ignore && this.ignore.length ) {
       this.ignore.forEach(key => {
-        let index = this.buckets.findIndex(bucket => bucket.key === key);
-        if( index > -1 ) this.buckets.splice(index, 1);
+        if( defaultFacets[key] ) delete defaultFacets[key];
       });
     }
 
-    this._updateActiveFilters();
-  }
-
-  _onEsSearchUpdate(e) {
-    if( e.state !== 'loaded' ) return;
-
-    var query = e.query.query;
-    var activeFilters = [];
-
-    if( query && 
-        query.bool && 
-        query.bool.filter ) {
-      
-      var arr = query.bool.filter;
-
-      for( var i = 0; i < arr.length; i++ ) {
-        if( arr[i].terms[this.filter] ) {
-          activeFilters = arr[i].terms[this.filter];
-        }
+    let buckets = [];
+    for( var key in defaultFacets ) {
+      let item = {
+        key,
+        sortKey : key.toLowerCase().replace(/\W/g,''),
+        doc_count: this.availableFilters[key] || 0
       }
+
+      if( this.activeFilters.indexOf(key) > -1 ) {
+        item.active = true;
+        this._notifySelected(true, key);
+      } else {
+        item.active = false;
+        this._notifySelected(false, key);
+      }
+
+      item.empty = item.doc_count ? false : true;
+
+      buckets.push(item);
     }
 
-    this.activeFilters = activeFilters;
-    this._updateActiveFilters();
-  }
+    buckets.sort((a,b) => {
+      if( a.doc_count < b.doc_count ) return 1;
+      if( a.doc_count > b.doc_count ) return -1;
+      if( a.sortKey > b.sortKey ) return 1;
+      if( a.sortKey < b.sortKey ) return -1;
+      return 0
+    })
 
-  _updateActiveFilters() {
-    if( !this.activeFilters ) return;
-
-    this.buckets = this.buckets.map(item => {
-      item = Object.assign({}, item);
-      item.active = (this.activeFilters.indexOf(item.key) > -1) ? true : false;
-
-      return item;
-    });
+    this.buckets = buckets;
 
     this.dispatchEvent(
       new CustomEvent('update-visibility', {
         detail: {
           show: (this.buckets.length !== 0)
+        }
+      })
+    );
+  }
+
+  /**
+   * @method onParentFilterClicked
+   * @description called from parent toggle panel when selected filter
+   * is clicked
+   * 
+   * @param {String} key filter key 
+   */
+  onParentFilterClicked(key) {
+    let searchDoc = this._getCurrentSearchDocument();
+    this._removeKeywordFilter(searchDoc, this.filter, key);
+    this._searchRecords(searchDoc);
+
+    this._notifySelected(false, key);
+  };
+
+  /**
+   * @method _notifySelected
+   * @description notify parent of selected/unselected filter
+   * 
+   * @param {Boolean} selected is the filter selected
+   * @param {String} key filter key/label
+   */
+  _notifySelected(selected, key) {
+    this.dispatchEvent(
+      new CustomEvent(`${selected ? 'add' : 'remove'}-selected`, {
+        detail: {
+          label: key
         }
       })
     );
@@ -64554,12 +64484,25 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
 
   appendFilter(e) {
     var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
-    this._esAppendKeywordFilter(this.filter, item.key);
+    if( item.empty ) return;
+
+    let searchDoc = this._getCurrentSearchDocument();
+    this._appendKeywordFilter(searchDoc, this.filter, item.key);
+    this._searchRecords(searchDoc);
+
+    this._notifySelected(true, item.key);
   }
+
+
 
   removeFilter(e) {
     var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
-    this._esRemoveKeywordFilter(this.filter, item.key);
+
+    let searchDoc = this._getCurrentSearchDocument();
+    this._removeKeywordFilter(searchDoc, this.filter, item.key);
+    this._searchRecords(searchDoc);
+
+    this._notifySelected(false, item.key);
   }
 
 }
@@ -64567,18 +64510,18 @@ class AppFacetFilter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
 window.customElements.define('app-facet-filter', AppFacetFilter);
 
 /***/ }),
-/* 319 */
+/* 315 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block\n  }\n\n  .filter {\n    padding: 4px 5px;\n    display: flex;\n    align-items: center;\n  }\n  .filter a {\n    display: inline-block;\n    cursor: pointer;\n    color: black;\n    transition: color 250ms ease-out, transform 250ms ease-out;\n    transform: scale(1);\n  }\n  .filter a span {\n    color: var(--default-primary-color);\n  }\n  .filter a:hover {\n    transform: scale(1.5);\n    color: var(--default-primary-color);\n  }\n\n  .active-filter {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    color: white;\n    font-size: 14px;\n    background: var(--primary-text-color);\n    padding: 5px;\n    border-radius: 3px;\n    margin: 3px;\n  }\n\n  .active-filter:hover {\n    color: var(--default-primary-color);\n    background: #ccc;\n  }\n\n  .count {\n    color: var(--text-disabled);\n    flex: 1;\n    text-align: right;\n  }\n\n  .overflow {\n    overflow: auto;\n    max-height: 200px;\n  }\n\n  paper-checkbox[active] .key {\n    color: var(--default-primary-color);\n    font-weight: bold;\n  }\n\n  paper-checkbox[disabled] .key {\n    color: var(--secondary-text-color);\n    font-style: italic;\n  }\n</style>\n\n<div class=\"overflow\">\n  <div>\n    <template is=\"dom-repeat\" items=\"[[buckets]]\">\n      <div class=\"filter\">\n\n        <app-facet-checkbox\n          type$=\"[[label]]\"\n          index$=\"[[index]]\"\n          value$=\"[[item.key]]\"\n          label-map=\"[[valueMap]]\"\n          checked$=\"[[item.active]]\" \n          on-change=\"_toggleFilter\">\n        </app-facet-checkbox>\n\n        <div class=\"count\">[[item.doc_count]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block\n  }\n\n  .filter {\n    padding: 4px 5px;\n    display: flex;\n    align-items: center;\n  }\n  .filter a {\n    display: inline-block;\n    cursor: pointer;\n    color: black;\n    transition: color 250ms ease-out, transform 250ms ease-out;\n    transform: scale(1);\n  }\n  .filter a span {\n    color: var(--default-primary-color);\n  }\n  .filter a:hover {\n    transform: scale(1.5);\n    color: var(--default-primary-color);\n  }\n\n  .active-filter {\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    color: white;\n    font-size: 14px;\n    background: var(--primary-text-color);\n    padding: 5px;\n    border-radius: 3px;\n    margin: 3px;\n  }\n\n  .active-filter:hover {\n    color: var(--default-primary-color);\n    background: #ccc;\n  }\n\n  .count {\n    color: var(--text-disabled);\n    flex: 1;\n    text-align: right;\n    min-width : 40px;\n    padding: 0 10px;\n  }\n\n  .overflow {\n    overflow: auto;\n    max-height: 200px;\n  }\n\n  app-normal-checkbox {\n    overflow: hidden;\n    padding-right: 5px;\n  }\n\n  paper-checkbox[active] .key {\n    color: var(--default-primary-color);\n    font-weight: bold;\n  }\n\n  paper-checkbox[disabled] .key {\n    color: var(--secondary-text-color);\n    font-style: italic;\n  }\n</style>\n\n<div class=\"overflow\">\n  <div>\n    <template is=\"dom-repeat\" items=\"[[buckets]]\">\n      <div class=\"filter\">\n\n        <app-normal-checkbox\n          type$=\"[[label]]\"\n          index$=\"[[index]]\"\n          value$=\"[[item.key]]\"\n          label-map=\"[[valueMap]]\"\n          checked$=\"[[item.active]]\" \n          on-change=\"_toggleFilter\"\n          disabled$=\"[[item.empty]]\">\n        </app-normal-checkbox>\n\n        <div class=\"count\">[[item.doc_count]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n";
 
 /***/ }),
-/* 320 */
+/* 316 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_normal_checkbox__ = __webpack_require__(321);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_normal_checkbox__ = __webpack_require__(317);
 
 
 
@@ -64660,13 +64603,13 @@ class AppFacetCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
 window.customElements.define('app-facet-checkbox', AppFacetCheckbox);
 
 /***/ }),
-/* 321 */
+/* 317 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_checkbox_paper_checkbox__ = __webpack_require__(322);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__ = __webpack_require__(325);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_checkbox_paper_checkbox__ = __webpack_require__(318);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__ = __webpack_require__(321);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html__);
 
 
@@ -64685,6 +64628,10 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
         type : String,
         value : ''
       },
+      labelMap : {
+        type : Object,
+        value : () => {}
+      },
       realLabel: {
         type: String,
         computed: '_realLabel(value, label)'
@@ -64694,12 +64641,46 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
         value : false,
         notify: true,
         reflectToAttribute : true
+      },
+      disabled : {
+        type : Boolean,
+        value : false,
+      },
+
+      ariaChecked : {
+        type : String,
+        reflectToAttribute : true,
+        computed: '_computeAriaChecked(checked)'
+      },
+      ariaDisabled : {
+        type : String,
+        reflectToAttribute : true,
+        computed: '_computeAriaDisabled(disabled)'
+      },
+      role : {
+        type : String,
+        value : 'checkbox',
+        reflectToAttribute : true,
+      },
+      tabindex : {
+        type : Number,
+        value : 0,
+        reflectToAttribute: true
       }
     };
   }
 
   static get template() {
     return __WEBPACK_IMPORTED_MODULE_2__app_normal_checkbox_html___default.a;
+  }
+
+  constructor() {
+    super();
+    this.addEventListener('click', e => this._onClick(e));
+    this.addEventListener('keyup', e => {
+      if( e.which !== 13 ) return;
+      this._onClick(e)
+    });
   }
 
   /**
@@ -64710,7 +64691,30 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
    * @param {String} label 
    */
   _realLabel(value, label) {
-    return label || value;
+    return this._getLabel();
+  }
+
+  /**
+   * @method _computeAriaChecked
+   * @description Bound to 'checked' property.  set aria-checked value
+   */
+  _computeAriaChecked() {
+    return this.checked ? 'true' : 'false';
+  }
+
+  /**
+   * @method _computeAriaDisabled
+   * @description Bound to 'disabled' property.  set aria-disabled value
+   */
+  _computeAriaDisabled() {
+    return this.disabled ? 'true' : 'false';
+  }
+
+  _getLabel() {
+    if( this.labelMap && this.labelMap[this.value] ) {
+      return this.labelMap[this.value];
+    }
+    return this.value;
   }
 
   /**
@@ -64720,6 +64724,7 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
    * TODO: add aria checkbox role
    */
   _onClick() {
+    if( this.disabled ) return;
     this.checked = !this.checked;
     this.dispatchEvent(new CustomEvent('change', {bubbles: true, composed: true}));
   }
@@ -64731,16 +64736,16 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 window.customElements.define('app-normal-checkbox', AppNormalCheckbox);
 
 /***/ }),
-/* 322 */
+/* 318 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_checked_element_behavior_js__ = __webpack_require__(323);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_checked_element_behavior_js__ = __webpack_require__(319);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_render_status_js__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(50);
 
 
 
@@ -65019,13 +65024,13 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 323 */
+/* 319 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_checked_element_behavior_iron_checked_element_behavior_js__ = __webpack_require__(324);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_inky_focus_behavior_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_checked_element_behavior_iron_checked_element_behavior_js__ = __webpack_require__(320);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_inky_focus_behavior_js__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_ripple_behavior_js__ = __webpack_require__(29);
 
 
@@ -65073,7 +65078,7 @@ const PaperCheckedElementBehavior = [
 
 
 /***/ }),
-/* 324 */
+/* 320 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65183,20 +65188,20 @@ const IronCheckedElementBehavior = [
 
 
 /***/ }),
-/* 325 */
+/* 321 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    cursor: pointer;\n  }\n\n  iron-icon {\n    display: none;\n    color: var(--default-secondary-color);\n  }\n\n  div {\n    user-select: none;\n    display: flex;\n    min-height: 24px;\n  }\n\n  span {\n    display: inline-block;\n    padding-top: 3px;\n  }\n\n  div[checked] iron-icon {\n    display: inline-block;\n  }\n\n  div[checked] .value {\n    font-style: italic;\n    font-weight: bold;\n  }\n</style>\n\n<div checked$=\"[[checked]]\" on-click=\"_onClick\">\n  <iron-icon icon=\"close\"></iron-icon>\n  <span class=\"value\">[[realLabel]]</span>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    cursor: pointer;\n  }\n\n  :host([disabled]) {\n    cursor: default;\n  }\n\n  iron-icon {\n    display: none;\n    color: var(--default-secondary-color);\n  }\n\n  div {\n    user-select: none;\n    display: flex;\n    min-height: 24px;\n    display: flex;\n    align-items: center;\n  }\n\n  span {\n    display: inline-block;\n    padding-top: 3px;\n  }\n\n  div[checked] iron-icon {\n    display: inline-block;\n  }\n\n  div[checked] .value {\n    font-style: italic;\n    font-weight: bold;\n  }\n\n  div[disabled] iron-icon {\n    display: none;\n  }\n\n  div[disabled] .value {\n    font-style: italic;\n    color: var(--gray-text);\n  }\n</style>\n\n<div checked$=\"[[checked]]\" disabled$=\"[[disabled]]\" on-click=\"_onClick\">\n  <iron-icon icon=\"close\"></iron-icon>\n  <span class=\"value\">[[realLabel]]</span>\n</div>";
 
 /***/ }),
-/* 326 */
+/* 322 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__ = __webpack_require__(327);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__ = __webpack_require__(323);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_collection_info_panel_html__);
 
 
@@ -65262,24 +65267,24 @@ class AppCollectionInfoPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_
 customElements.define('app-collection-info-panel', AppCollectionInfoPanel);
 
 /***/ }),
-/* 327 */
+/* 323 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    padding: 15px;\n  }\n  h3 {\n    color: var(--default-primary-color);\n    margin: 5px 0;\n  }\n  .section {\n    margin-bottom: 20px;\n  }\n</style>\n\n<div class=\"section\" hidden$=\"[[!description]]\">\n  <h3>Description</h3>\n  <div>[[description]]</div>\n</div>\n\n<div class=\"section\" hidden$=\"[[!subject]]\">\n  <h3>Subject</h3>\n  <div>[[subject]]</div>\n</div>\n\n<div class=\"section\" hidden$=\"[[!coverage]]\">\n  <h3>Coverage</h3>\n  <div>[[coverage]]</div>\n</div>\n\n\n<div>[[collection.description]]</div>";
 
 /***/ }),
-/* 328 */
+/* 324 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnailUrl]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.name]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
 
 /***/ }),
-/* 329 */
+/* 325 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html__ = __webpack_require__(330);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html__ = __webpack_require__(326);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_record_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
@@ -65288,14 +65293,14 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-c
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_rights_json__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_rights_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__lib_rights_json__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_models_CitationsModel__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__viewer_app_image_viewer_static__ = __webpack_require__(331);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_image_download__ = __webpack_require__(349);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_record_metadata_layout__ = __webpack_require__(351);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__viewer_app_image_viewer_static__ = __webpack_require__(327);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_image_download__ = __webpack_require__(345);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_record_metadata_layout__ = __webpack_require__(347);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_RecordInterface__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__interfaces_RecordInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface__);
@@ -65317,7 +65322,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-c
 
 
 class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_9__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_10__interfaces_ElasticSearchInterface___default.a, __WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface___default.a) {
+      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_9__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_10__interfaces_RecordInterface___default.a, __WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface___default.a) {
 
   static get template() {
     return __WEBPACK_IMPORTED_MODULE_1__app_record_html___default.a;
@@ -65381,8 +65386,8 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 
     this.currentRecordId = '/'+path.join('/');
 
-    let result = await this._esGetRecord(this.currentRecordId);
-    this._setSelectedRecord(result.payload._source);
+    let result = await this._getRecord(this.currentRecordId);
+    this._setSelectedRecord(result.payload);
   }
 
   /**
@@ -65516,23 +65521,23 @@ class AppRecord extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-record', AppRecord);
 
 /***/ }),
-/* 330 */
+/* 326 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: var(--super-light-background-color);\n  }\n\n  .container.top {\n    padding: 20px 0;\n    background-color: var(--light-background-color);\n  }\n\n  input {\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    width: 85px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  h3 {\n    margin: 0 0 10px 0;\n    color: var(--default-primary-color);\n  }\n\n  .label {\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n  }\n\n  .section {\n    margin-bottom: 15px;\n  }\n  .section.bordered {\n    margin-bottom: 10px;\n    padding-bottom: 10px;\n    border-bottom: 1px dashed var(--medium-background-color);\n  }\n\n  .overview {\n    display: flex; \n    width: 100%;\n  }\n\n  .overview > div {\n    flex : 1;\n    padding : 0 10px;\n  }\n\n  .type-date-collection {\n    display: flex;\n    align-items: center;\n  }\n\n  .resource-type {\n    text-transform: capitalize;\n  }\n  .resource-type iron-icon {\n    color: var(--default-primary-color);\n  }\n\n  paper-toast {\n    --paper-toast-background-color: var(--default-secondary-color);\n    --paper-toast-color: var(--default-primary-color);\n  }\n\n  #link {\n    width: 100%;\n    box-sizing: border-box;\n  }\n\n  .metadata-row {\n    display: flex;\n    margin: 30px 20px;\n  }\n  .metadata-row .attr {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .metadata-row .value {\n    flex: 0.75;\n  }\n\n  .cite-container {\n    padding: 15px 0;\n    margin: 0 15px;\n    border-bottom: 1px dashed var(--medium-background-color);\n    display: flex;\n  }\n  .cite-container .label {\n    flex: 0.25;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy); \n  }\n  .cite-container .text {\n    flex: 0.75;\n  }\n\n  img[rights] {\n    height: 22px;\n    width: 22px;\n    vertical-align: sub;\n  }\n\n  @media( max-width: 768px ) {\n    .overview {\n      display: block;\n    }\n    .cite-container {\n      display: block;\n    }\n  }\n\n</style>\n\n<app-search-header></app-search-header>\n<app-search-breadcrumb></app-search-breadcrumb>\n\n<app-image-viewer-static></app-image-viewer-static>\n\n<div class=\"container top\">\n  <div class=\"overview\">\n    <div>\n      <h3>[[name]]</h3>\n\n      <div class=\"section type-date-collection\">\n        <div style=\"flex:.75\">\n          <div class=\"label\">Resource Type</div>\n          <div class=\"resource-type\">\n            <iron-icon icon=\"fin:[[resourceType]]\"></iron-icon>\n            [[resourceType]]\n          </div>\n        </div>\n        <div style=\"flex:.5\">\n          <div class=\"label\">Date</div>\n          <div>[[date]]</div>\n        </div>\n        <div style=\"flex:1\">\n          <div class=\"label\">Collection</div>\n          <div>[[collectionName]]</div>\n        </div>\n      </div>\n\n      <div hidden$=\"[[!description]]\" class=\"section\">\n        <div class=\"label\">Description</div>\n        <div>[[description]]</div>\n      </div>\n    </div>\n    <div>\n      <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n        <span class=\"label\" style=\"padding-right: 10px; display:inline-block\">Permalink</span>\n        <div style=\"flex:1\">\n          <input id=\"link\" type=\"text\" />\n        </div>\n        <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n          <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n          <span>Copy</span>\n        </button>\n      </div>\n\n      <div class=\"section bordered\">\n        <div class=\"label\">Download Options</div>\n        <app-image-download id=\"download\"></app-image-download>\n      </div>\n\n      <div hidden$=\"[[!rights]]\">\n        <a href$=\"[[rights.link]]\" target=\"_block\">\n          <img src$=\"[[rights.icon]]\" rights />\n          <span>[[rights.label]]</span>\n        </a>\n      </div>\n\n    </div>\n  </div><!-- end overview -->\n</div>\n\n<div class=\"container\">\n  <app-record-metadata-layout>\n    <div slot=\"left\">\n      <template is=\"dom-repeat\" items=\"[[metadata]]\">\n        <div class=\"metadata-row\">\n          <div class=\"attr\">[[item.attr]]</div>\n          <div class=\"value\">[[item.attr]]</div>\n        </div>\n      </template>\n    </div>\n    \n    <div slot=\"right\">\n      <div class=\"cite-container\">\n        <div class=\"label\">MLA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"mla\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">APA</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"apa\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      <div class=\"cite-container\">\n        <div class=\"label\">Chicago</div>\n        <div class=\"text\">\n          <div style=\"padding-bottom: 10px\" id=\"chicago\"></div>\n          <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n            <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n            <span>Copy</span>\n          </button>\n        </div>\n      </div>\n\n      \n    </div>\n  </app-record-metadata-layout>\n</div>";
 
 /***/ }),
-/* 331 */
+/* 327 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html__ = __webpack_require__(334);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html__ = __webpack_require__(330);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_image_viewer_static_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_image_viewer_nav__ = __webpack_require__(335);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_image_viewer_lightbox__ = __webpack_require__(339);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_image_viewer_nav__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_image_viewer_lightbox__ = __webpack_require__(335);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__);
@@ -65638,7 +65643,7 @@ class AppImageViewerStatic extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_po
 customElements.define('app-image-viewer-static', AppImageViewerStatic);
 
 /***/ }),
-/* 332 */
+/* 328 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65716,7 +65721,7 @@ const PaperSpinnerBehavior = {
 
 
 /***/ }),
-/* 333 */
+/* 329 */
 /***/ (function(module, exports) {
 
 const $_documentContainer = document.createElement('div');
@@ -66056,24 +66061,24 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 334 */
+/* 330 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n    background: black;\n    padding: 20px 10px;\n    position: relative;\n    box-sizing: border-box;\n  }\n\n  paper-spinner-lite {\n    --paper-spinner-color: var(--default-secondary-color);\n  }\n\n  #loading {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  img {\n    width: 100%;\n  }\n\n  app-image-viewer-nav {\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    right: 0;\n  }\n\n  .layout {\n    text-align: center;\n  }\n\n  [hidden] {\n    display: none !important;\n  }\n</style>\n\n<div id=\"loading\" hidden$=\"[[!loading]]\">\n  <paper-spinner-lite active$=\"[[loading]]\"></paper-spinner-lite>\n</div>\n\n<div class=\"layout\" hidden$=\"[[loading]]\" style=\"line-height: 0\">\n  <img id=\"img\" />\n</div>\n\n\n<app-image-viewer-lightbox id=\"lightbox\"></app-image-viewer-lightbox>\n<app-image-viewer-nav on-zoom-in=\"_onZoomIn\"></app-image-viewer-nav>";
 
 /***/ }),
-/* 335 */
+/* 331 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_nav_html__ = __webpack_require__(336);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_nav_html__ = __webpack_require__(332);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_nav_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_viewer_nav_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_app_share_btn__ = __webpack_require__(337);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_app_share_btn__ = __webpack_require__(333);
 
 
 
@@ -66369,20 +66374,20 @@ class AppImageViewerNav extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polym
 customElements.define('app-image-viewer-nav', AppImageViewerNav);
 
 /***/ }),
-/* 336 */
+/* 332 */
 /***/ (function(module, exports) {
 
-module.exports = "<style>\n  :host {\n    display: block;\n    background-color: rgb(0, 38, 85, 0.9);\n    padding: 8px;\n  }\n\n  :host(.single) {\n    background-color: transparent;\n  }\n\n  :host(.single) paper-icon-button {\n    background-color: var(--default-primary-color);\n  }\n  :host(.single) app-share-btn {\n    background-color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n  }\n\n  #thumbnails {\n    overflow: hidden;\n    /* (50px width + 10px margin + 4px border) * 8 thumbnails */\n    max-width: 512px;\n  }\n\n  #thumbnails > div {\n    white-space: nowrap;\n    margin-left: 0;\n    will-change: margin-left;\n    transition: margin-left 250ms ease-out;\n  }\n\n  .thumbnail {\n    display: inline-block;\n    width: 50px;\n    height: 50px;\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    margin: 0 5px;\n    border: 2px solid transparent;\n    cursor: pointer;\n  }\n\n  .thumbnail[selected] {\n    border: 2px solid var(--default-secondary-color);\n  }\n\n  paper-icon-button {\n    color: var(--default-secondary-color);\n    min-width: 40px;\n  }\n\n  paper-icon-button[disabled] {\n    color: var(--gray-text);\n    min-width: 40px;\n  }\n</style>\n\n<div class=\"layout\">\n  <div id=\"navLeft\" hidden$=\"[[singleImage]]\">\n    <paper-icon-button icon=\"chevron-left\" disabled$=\"[[!showNavLeft]]\" on-click=\"_pageLeft\"></paper-icon-button>\n  </div>\n  <div id=\"thumbnails\" hidden$=\"[[singleImage]]\">\n    <div id=\"thumbnailContainer\">\n      <template is=\"dom-repeat\" items=\"[[thumbnails]]\">\n        <button \n          class=\"thumbnail\" \n          selected$=\"[[item.selected]]\" \n          style=\"background-image:url([[item.src]])\"\n          media-id$=\"[[item.id]]\"\n          alt$=\"Item #[[item.position]]\"\n          on-click=\"_onThumbnailClicked\">\n        </button>\n      </template>\n\n    </div>\n  </div>\n  <div id=\"navRight\" hidden$=\"[[singleImage]]\">\n    <paper-icon-button icon=\"chevron-right\" disabled$=\"[[!showNavRight]]\" on-click=\"_pageRight\"></paper-icon-button>\n  </div>\n\n  <div style=\"flex:1\"></div>\n  \n  <div hidden$=\"[[breakControls]]\" style=\"white-space: nowrap\">\n    <paper-icon-button icon=\"zoom-out\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomOutClicked\"></paper-icon-button>\n    <paper-icon-button icon=\"zoom-in\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n    <app-share-btn></app-share-btn>\n    <paper-icon-button icon=\"zoom-in\" hidden$=\"[[isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n    <paper-icon-button icon=\"close\" hidden$=\"[[!isLightbox]]\" on-click=\"_onCloseClicked\"></paper-icon-button>\n  </div>\n</div>\n\n<div hidden$=\"[[!breakControls]]\" style=\"text-align: right\">\n  <paper-icon-button icon=\"zoom-out\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomOutClicked\"></paper-icon-button>\n  <paper-icon-button icon=\"zoom-in\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n  <app-share-btn></app-share-btn>\n  <paper-icon-button icon=\"zoom-in\" hidden$=\"[[isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n  <paper-icon-button icon=\"close\" hidden$=\"[[!isLightbox]]\" on-click=\"_onCloseClicked\"></paper-icon-button>\n</div>";
+module.exports = "<style>\n  :host {\n    display: block;\n    background-color: rgba(0, 38, 85, 0.9);\n    padding: 8px;\n  }\n\n  :host(.single) {\n    background-color: transparent;\n  }\n\n  :host(.single) paper-icon-button {\n    background-color: var(--default-primary-color);\n  }\n  :host(.single) app-share-btn {\n    background-color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n  }\n\n  #thumbnails {\n    overflow: hidden;\n    /* (50px width + 10px margin + 4px border) * 8 thumbnails */\n    max-width: 512px;\n  }\n\n  #thumbnails > div {\n    white-space: nowrap;\n    margin-left: 0;\n    will-change: margin-left;\n    transition: margin-left 250ms ease-out;\n  }\n\n  .thumbnail {\n    display: inline-block;\n    width: 50px;\n    height: 50px;\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    margin: 0 5px;\n    border: 2px solid transparent;\n    cursor: pointer;\n  }\n\n  .thumbnail[selected] {\n    border: 2px solid var(--default-secondary-color);\n  }\n\n  paper-icon-button {\n    color: var(--default-secondary-color);\n    min-width: 40px;\n  }\n\n  paper-icon-button[disabled] {\n    color: var(--gray-text);\n    min-width: 40px;\n  }\n</style>\n\n<div class=\"layout\">\n  <div id=\"navLeft\" hidden$=\"[[singleImage]]\">\n    <paper-icon-button icon=\"chevron-left\" disabled$=\"[[!showNavLeft]]\" on-click=\"_pageLeft\"></paper-icon-button>\n  </div>\n  <div id=\"thumbnails\" hidden$=\"[[singleImage]]\">\n    <div id=\"thumbnailContainer\">\n      <template is=\"dom-repeat\" items=\"[[thumbnails]]\">\n        <button \n          class=\"thumbnail\" \n          selected$=\"[[item.selected]]\" \n          style=\"background-image:url([[item.src]])\"\n          media-id$=\"[[item.id]]\"\n          alt$=\"Item #[[item.position]]\"\n          on-click=\"_onThumbnailClicked\">\n        </button>\n      </template>\n\n    </div>\n  </div>\n  <div id=\"navRight\" hidden$=\"[[singleImage]]\">\n    <paper-icon-button icon=\"chevron-right\" disabled$=\"[[!showNavRight]]\" on-click=\"_pageRight\"></paper-icon-button>\n  </div>\n\n  <div style=\"flex:1\"></div>\n  \n  <div hidden$=\"[[breakControls]]\" style=\"white-space: nowrap\">\n    <paper-icon-button icon=\"zoom-out\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomOutClicked\"></paper-icon-button>\n    <paper-icon-button icon=\"zoom-in\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n    <app-share-btn></app-share-btn>\n    <paper-icon-button icon=\"zoom-in\" hidden$=\"[[isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n    <paper-icon-button icon=\"close\" hidden$=\"[[!isLightbox]]\" on-click=\"_onCloseClicked\"></paper-icon-button>\n  </div>\n</div>\n\n<div hidden$=\"[[!breakControls]]\" style=\"text-align: right\">\n  <paper-icon-button icon=\"zoom-out\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomOutClicked\"></paper-icon-button>\n  <paper-icon-button icon=\"zoom-in\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n  <app-share-btn></app-share-btn>\n  <paper-icon-button icon=\"zoom-in\" hidden$=\"[[isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n  <paper-icon-button icon=\"close\" hidden$=\"[[!isLightbox]]\" on-click=\"_onCloseClicked\"></paper-icon-button>\n</div>";
 
 /***/ }),
-/* 337 */
+/* 333 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_share_btn_html__ = __webpack_require__(338);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_share_btn_html__ = __webpack_require__(334);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_share_btn_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_share_btn_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__);
 
 
@@ -66490,25 +66495,25 @@ class AppShareBtn extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 customElements.define('app-share-btn', AppShareBtn);
 
 /***/ }),
-/* 338 */
+/* 334 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: inline-block;\n    position: relative;\n  }\n\n  #popup {\n    display: none;\n    background: white;\n    padding: 10px;\n    position: absolute;\n    bottom: 70px;\n    right: -20px;\n  }\n\n  .layout {\n    display: flex;\n    margin-bottom: 5px;\n  }\n\n  input {\n    font-size: var(--font-size);\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  #link {\n    width: 100%;\n    border-top: 1px solid var(--medium-background-color);\n    border-left: 1px solid var(--medium-background-color);\n    border-bottom: 1px solid var(--medium-background-color);\n    box-sizing: border-box;\n  }\n\n  .social {\n    margin: 8px;\n    display: inline-block;\n    cursor: pointer;\n    height: 40px;\n    width: 40px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  #main {\n    color: var(--default-secondary-color);\n  }\n\n  .arrow-down {\n    position: absolute;\n    width: 0; \n    height: 0; \n    border-left: 20px solid transparent;\n    border-right: 20px solid transparent;\n    border-top: 20px solid white;\n    bottom: -20px;\n    right: 20px;\n  }\n</style>\n\n\n<div id=\"popup\">\n  <div class=\"layout\">\n    <img id=\"facebook\" src=\"/images/social-icons/icon-facebook.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n    <img id=\"twitter\" src=\"/images/social-icons/icon-twitter.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n    <img id=\"google\" src=\"/images/social-icons/icon-googleplus.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n    <img id=\"pinterest\" src=\"/images/social-icons/icon-pinterest.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n  </div>\n  <div>\n    <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n      <div style=\"flex:1\">\n        <input id=\"link\" type=\"text\" />\n      </div>\n      <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n        <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n      </button>\n    </div>\n  </div>\n  <div class=\"arrow-down\"></div>\n</div>\n\n<paper-icon-button id=\"main\" icon=\"social:share\" on-click=\"_onBtnClicked\"></paper-icon-button>\n\n";
 
 /***/ }),
-/* 339 */
+/* 335 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html__ = __webpack_require__(340);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html__ = __webpack_require__(336);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_viewer_lightbox_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_spinner_paper_spinner_lite__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet__ = __webpack_require__(341);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet__ = __webpack_require__(337);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leaflet__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__ = __webpack_require__(342);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__ = __webpack_require__(338);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__);
@@ -66588,8 +66593,8 @@ class AppImageViewer extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
     this.style.display = 'block';
     this.render();
     document.body.style.overflow = 'hidden';
-    document.body.style.height = '100vh';
-    document.body.style.width= '100vw';
+    // document.body.style.height = '100vh';
+    // document.body.style.width= '100vw';
     this.visible = true;
   }
 
@@ -66599,8 +66604,8 @@ class AppImageViewer extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
   async hide() {
     this.style.display = 'none';
     document.body.style.overflow = 'auto';
-    document.body.style.height = '';
-    document.body.style.width= '';
+    // document.body.style.height = '';
+    // document.body.style.width= '';
     this.visible = false;
   }
 
@@ -66704,13 +66709,13 @@ class AppImageViewer extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
 customElements.define('app-image-viewer-lightbox', AppImageViewer);
 
 /***/ }),
-/* 340 */
+/* 336 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n\n  :host {\n    display: none;\n    position: absolute;\n    z-index: 1000;\n    height: 100vh;\n    width: 100vw;\n    top : 0;\n    left : 0;\n    background-color: black;    \n    animation: show 350ms ease-out;\n  }\n\n  @keyframes show {\n    from {\n      /* top: -100vh; */\n      opacity: 0.5;\n      transform: scale(1.3);\n    }\n    to {\n      /* top: 0; */\n      opacity: 1;\n      transform: scale(1);\n    }\n  }\n\n  #viewer { \n    top : 0;\n    right : 0;\n    bottom : 0;\n    left : 0;\n    position: absolute;\n    background-color: black;\n  }\n\n  paper-spinner-lite {\n    --paper-spinner-color: var(--default-secondary-color);\n  }\n  \n  .spinner-layout {\n    position: absolute;\n    top : 0;\n    right : 0;\n    left : 0;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  app-image-viewer-nav {\n    z-index: 2000;\n    position: absolute;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n</style>\n\n<div id=\"viewer\">\n  <div class=\"spinner-layout\" hidden$=\"[[!loading]]\">\n    <paper-spinner-lite active$=\"[[loading]]\"></paper-spinner-lite>\n  </div>\n</div>\n\n<app-image-viewer-nav \n  is-lightbox\n  on-zoom-in=\"_onZoomInClicked\"\n  on-zoom-out=\"_onZoomOutClicked\"\n  on-close=\"_onCloseClicked\">\n</app-image-viewer-nav>";
 
 /***/ }),
-/* 341 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -80325,11 +80330,11 @@ exports.map = createMap;
 
 
 /***/ }),
-/* 342 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-        var result = __webpack_require__(343);
+        var result = __webpack_require__(339);
 
         if (typeof result === "string") {
             module.exports = result;
@@ -80339,22 +80344,22 @@ exports.map = createMap;
     
 
 /***/ }),
-/* 343 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var escape = __webpack_require__(344);
-exports = module.exports = __webpack_require__(345)(false);
+var escape = __webpack_require__(340);
+exports = module.exports = __webpack_require__(341)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/* required styles */\r\n\r\n.leaflet-pane,\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-tile-container,\r\n.leaflet-pane > svg,\r\n.leaflet-pane > canvas,\r\n.leaflet-zoom-box,\r\n.leaflet-image-layer,\r\n.leaflet-layer {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\ttop: 0;\r\n\t}\r\n.leaflet-container {\r\n\toverflow: hidden;\r\n\t}\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\t  -webkit-user-drag: none;\r\n\t}\r\n/* Safari renders non-retina tile on retina better with this, but Chrome is worse */\r\n.leaflet-safari .leaflet-tile {\r\n\timage-rendering: -webkit-optimize-contrast;\r\n\t}\r\n/* hack that prevents hw layers \"stretching\" when loading new tiles */\r\n.leaflet-safari .leaflet-tile-container {\r\n\twidth: 1600px;\r\n\theight: 1600px;\r\n\t-webkit-transform-origin: 0 0;\r\n\t}\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\tdisplay: block;\r\n\t}\r\n/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */\r\n/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */\r\n.leaflet-container .leaflet-overlay-pane svg,\r\n.leaflet-container .leaflet-marker-pane img,\r\n.leaflet-container .leaflet-shadow-pane img,\r\n.leaflet-container .leaflet-tile-pane img,\r\n.leaflet-container img.leaflet-image-layer {\r\n\tmax-width: none !important;\r\n\t}\r\n\r\n.leaflet-container.leaflet-touch-zoom {\r\n\t-ms-touch-action: pan-x pan-y;\r\n\ttouch-action: pan-x pan-y;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag {\r\n\t-ms-touch-action: pinch-zoom;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {\r\n\t-ms-touch-action: none;\r\n\ttouch-action: none;\r\n}\r\n.leaflet-container {\r\n\t-webkit-tap-highlight-color: transparent;\r\n}\r\n.leaflet-container a {\r\n\t-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);\r\n}\r\n.leaflet-tile {\r\n\tfilter: inherit;\r\n\tvisibility: hidden;\r\n\t}\r\n.leaflet-tile-loaded {\r\n\tvisibility: inherit;\r\n\t}\r\n.leaflet-zoom-box {\r\n\twidth: 0;\r\n\theight: 0;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\tz-index: 800;\r\n\t}\r\n/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */\r\n.leaflet-overlay-pane svg {\r\n\t-moz-user-select: none;\r\n\t}\r\n\r\n.leaflet-pane         { z-index: 400; }\r\n\r\n.leaflet-tile-pane    { z-index: 200; }\r\n.leaflet-overlay-pane { z-index: 400; }\r\n.leaflet-shadow-pane  { z-index: 500; }\r\n.leaflet-marker-pane  { z-index: 600; }\r\n.leaflet-tooltip-pane   { z-index: 650; }\r\n.leaflet-popup-pane   { z-index: 700; }\r\n\r\n.leaflet-map-pane canvas { z-index: 100; }\r\n.leaflet-map-pane svg    { z-index: 200; }\r\n\r\n.leaflet-vml-shape {\r\n\twidth: 1px;\r\n\theight: 1px;\r\n\t}\r\n.lvml {\r\n\tbehavior: url(#default#VML);\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\t}\r\n\r\n\r\n/* control positioning */\r\n\r\n.leaflet-control {\r\n\tposition: relative;\r\n\tz-index: 800;\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-top,\r\n.leaflet-bottom {\r\n\tposition: absolute;\r\n\tz-index: 1000;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-top {\r\n\ttop: 0;\r\n\t}\r\n.leaflet-right {\r\n\tright: 0;\r\n\t}\r\n.leaflet-bottom {\r\n\tbottom: 0;\r\n\t}\r\n.leaflet-left {\r\n\tleft: 0;\r\n\t}\r\n.leaflet-control {\r\n\tfloat: left;\r\n\tclear: both;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tfloat: right;\r\n\t}\r\n.leaflet-top .leaflet-control {\r\n\tmargin-top: 10px;\r\n\t}\r\n.leaflet-bottom .leaflet-control {\r\n\tmargin-bottom: 10px;\r\n\t}\r\n.leaflet-left .leaflet-control {\r\n\tmargin-left: 10px;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tmargin-right: 10px;\r\n\t}\r\n\r\n\r\n/* zoom and fade animations */\r\n\r\n.leaflet-fade-anim .leaflet-tile {\r\n\twill-change: opacity;\r\n\t}\r\n.leaflet-fade-anim .leaflet-popup {\r\n\topacity: 0;\r\n\t-webkit-transition: opacity 0.2s linear;\r\n\t   -moz-transition: opacity 0.2s linear;\r\n\t     -o-transition: opacity 0.2s linear;\r\n\t        transition: opacity 0.2s linear;\r\n\t}\r\n.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {\r\n\topacity: 1;\r\n\t}\r\n.leaflet-zoom-animated {\r\n\t-webkit-transform-origin: 0 0;\r\n\t    -ms-transform-origin: 0 0;\r\n\t        transform-origin: 0 0;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\twill-change: transform;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\t-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t     -o-transition:      -o-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t}\r\n.leaflet-zoom-anim .leaflet-tile,\r\n.leaflet-pan-anim .leaflet-tile {\r\n\t-webkit-transition: none;\r\n\t   -moz-transition: none;\r\n\t     -o-transition: none;\r\n\t        transition: none;\r\n\t}\r\n\r\n.leaflet-zoom-anim .leaflet-zoom-hide {\r\n\tvisibility: hidden;\r\n\t}\r\n\r\n\r\n/* cursors */\r\n\r\n.leaflet-interactive {\r\n\tcursor: pointer;\r\n\t}\r\n.leaflet-grab {\r\n\tcursor: -webkit-grab;\r\n\tcursor:    -moz-grab;\r\n\t}\r\n.leaflet-crosshair,\r\n.leaflet-crosshair .leaflet-interactive {\r\n\tcursor: crosshair;\r\n\t}\r\n.leaflet-popup-pane,\r\n.leaflet-control {\r\n\tcursor: auto;\r\n\t}\r\n.leaflet-dragging .leaflet-grab,\r\n.leaflet-dragging .leaflet-grab .leaflet-interactive,\r\n.leaflet-dragging .leaflet-marker-draggable {\r\n\tcursor: move;\r\n\tcursor: -webkit-grabbing;\r\n\tcursor:    -moz-grabbing;\r\n\t}\r\n\r\n/* marker & overlays interactivity */\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-image-layer,\r\n.leaflet-pane > svg path,\r\n.leaflet-tile-container {\r\n\tpointer-events: none;\r\n\t}\r\n\r\n.leaflet-marker-icon.leaflet-interactive,\r\n.leaflet-image-layer.leaflet-interactive,\r\n.leaflet-pane > svg path.leaflet-interactive {\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n\r\n/* visual tweaks */\r\n\r\n.leaflet-container {\r\n\tbackground: #ddd;\r\n\toutline: 0;\r\n\t}\r\n.leaflet-container a {\r\n\tcolor: #0078A8;\r\n\t}\r\n.leaflet-container a.leaflet-active {\r\n\toutline: 2px solid orange;\r\n\t}\r\n.leaflet-zoom-box {\r\n\tborder: 2px dotted #38f;\r\n\tbackground: rgba(255,255,255,0.5);\r\n\t}\r\n\r\n\r\n/* general typography */\r\n.leaflet-container {\r\n\tfont: 12px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif;\r\n\t}\r\n\r\n\r\n/* general toolbar styles */\r\n\r\n.leaflet-bar {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.65);\r\n\tborder-radius: 4px;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #fff;\r\n\tborder-bottom: 1px solid #ccc;\r\n\twidth: 26px;\r\n\theight: 26px;\r\n\tline-height: 26px;\r\n\tdisplay: block;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tcolor: black;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-control-layers-toggle {\r\n\tbackground-position: 50% 50%;\r\n\tbackground-repeat: no-repeat;\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #f4f4f4;\r\n\t}\r\n.leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 4px;\r\n\tborder-top-right-radius: 4px;\r\n\t}\r\n.leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 4px;\r\n\tborder-bottom-right-radius: 4px;\r\n\tborder-bottom: none;\r\n\t}\r\n.leaflet-bar a.leaflet-disabled {\r\n\tcursor: default;\r\n\tbackground-color: #f4f4f4;\r\n\tcolor: #bbb;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-bar a {\r\n\twidth: 30px;\r\n\theight: 30px;\r\n\tline-height: 30px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 2px;\r\n\tborder-top-right-radius: 2px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 2px;\r\n\tborder-bottom-right-radius: 2px;\r\n\t}\r\n\r\n/* zoom control */\r\n\r\n.leaflet-control-zoom-in,\r\n.leaflet-control-zoom-out {\r\n\tfont: bold 18px 'Lucida Console', Monaco, monospace;\r\n\ttext-indent: 1px;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {\r\n\tfont-size: 22px;\r\n\t}\r\n\r\n\r\n/* layers control */\r\n\r\n.leaflet-control-layers {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.4);\r\n\tbackground: #fff;\r\n\tborder-radius: 5px;\r\n\t}\r\n.leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(346)) + ");\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\t}\r\n.leaflet-retina .leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(347)) + ");\r\n\tbackground-size: 26px 26px;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers-toggle {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\t}\r\n.leaflet-control-layers .leaflet-control-layers-list,\r\n.leaflet-control-layers-expanded .leaflet-control-layers-toggle {\r\n\tdisplay: none;\r\n\t}\r\n.leaflet-control-layers-expanded .leaflet-control-layers-list {\r\n\tdisplay: block;\r\n\tposition: relative;\r\n\t}\r\n.leaflet-control-layers-expanded {\r\n\tpadding: 6px 10px 6px 6px;\r\n\tcolor: #333;\r\n\tbackground: #fff;\r\n\t}\r\n.leaflet-control-layers-scrollbar {\r\n\toverflow-y: scroll;\r\n\toverflow-x: hidden;\r\n\tpadding-right: 5px;\r\n\t}\r\n.leaflet-control-layers-selector {\r\n\tmargin-top: 2px;\r\n\tposition: relative;\r\n\ttop: 1px;\r\n\t}\r\n.leaflet-control-layers label {\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-control-layers-separator {\r\n\theight: 0;\r\n\tborder-top: 1px solid #ddd;\r\n\tmargin: 5px -10px 5px -6px;\r\n\t}\r\n\r\n/* Default icon URLs */\r\n.leaflet-default-icon-path {\r\n\tbackground-image: url(" + escape(__webpack_require__(348)) + ");\r\n\t}\r\n\r\n\r\n/* attribution and scale controls */\r\n\r\n.leaflet-container .leaflet-control-attribution {\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.7);\r\n\tmargin: 0;\r\n\t}\r\n.leaflet-control-attribution,\r\n.leaflet-control-scale-line {\r\n\tpadding: 0 5px;\r\n\tcolor: #333;\r\n\t}\r\n.leaflet-control-attribution a {\r\n\ttext-decoration: none;\r\n\t}\r\n.leaflet-control-attribution a:hover {\r\n\ttext-decoration: underline;\r\n\t}\r\n.leaflet-container .leaflet-control-attribution,\r\n.leaflet-container .leaflet-control-scale {\r\n\tfont-size: 11px;\r\n\t}\r\n.leaflet-left .leaflet-control-scale {\r\n\tmargin-left: 5px;\r\n\t}\r\n.leaflet-bottom .leaflet-control-scale {\r\n\tmargin-bottom: 5px;\r\n\t}\r\n.leaflet-control-scale-line {\r\n\tborder: 2px solid #777;\r\n\tborder-top: none;\r\n\tline-height: 1.1;\r\n\tpadding: 2px 5px 1px;\r\n\tfont-size: 11px;\r\n\twhite-space: nowrap;\r\n\toverflow: hidden;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.5);\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child) {\r\n\tborder-top: 2px solid #777;\r\n\tborder-bottom: none;\r\n\tmargin-top: -2px;\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child):not(:last-child) {\r\n\tborder-bottom: 2px solid #777;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-attribution,\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tbox-shadow: none;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tborder: 2px solid rgba(0,0,0,0.2);\r\n\tbackground-clip: padding-box;\r\n\t}\r\n\r\n\r\n/* popup */\r\n\r\n.leaflet-popup {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tmargin-bottom: 20px;\r\n\t}\r\n.leaflet-popup-content-wrapper {\r\n\tpadding: 1px;\r\n\ttext-align: left;\r\n\tborder-radius: 12px;\r\n\t}\r\n.leaflet-popup-content {\r\n\tmargin: 13px 19px;\r\n\tline-height: 1.4;\r\n\t}\r\n.leaflet-popup-content p {\r\n\tmargin: 18px 0;\r\n\t}\r\n.leaflet-popup-tip-container {\r\n\twidth: 40px;\r\n\theight: 20px;\r\n\tposition: absolute;\r\n\tleft: 50%;\r\n\tmargin-left: -20px;\r\n\toverflow: hidden;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-popup-tip {\r\n\twidth: 17px;\r\n\theight: 17px;\r\n\tpadding: 1px;\r\n\r\n\tmargin: -10px auto 0;\r\n\r\n\t-webkit-transform: rotate(45deg);\r\n\t   -moz-transform: rotate(45deg);\r\n\t    -ms-transform: rotate(45deg);\r\n\t     -o-transform: rotate(45deg);\r\n\t        transform: rotate(45deg);\r\n\t}\r\n.leaflet-popup-content-wrapper,\r\n.leaflet-popup-tip {\r\n\tbackground: white;\r\n\tcolor: #333;\r\n\tbox-shadow: 0 3px 14px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\tpadding: 4px 4px 0 0;\r\n\tborder: none;\r\n\ttext-align: center;\r\n\twidth: 18px;\r\n\theight: 14px;\r\n\tfont: 16px/14px Tahoma, Verdana, sans-serif;\r\n\tcolor: #c3c3c3;\r\n\ttext-decoration: none;\r\n\tfont-weight: bold;\r\n\tbackground: transparent;\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button:hover {\r\n\tcolor: #999;\r\n\t}\r\n.leaflet-popup-scrolled {\r\n\toverflow: auto;\r\n\tborder-bottom: 1px solid #ddd;\r\n\tborder-top: 1px solid #ddd;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-popup-content-wrapper {\r\n\tzoom: 1;\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\twidth: 24px;\r\n\tmargin: 0 auto;\r\n\r\n\t-ms-filter: \"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)\";\r\n\tfilter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip-container {\r\n\tmargin-top: -1px;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-control-zoom,\r\n.leaflet-oldie .leaflet-control-layers,\r\n.leaflet-oldie .leaflet-popup-content-wrapper,\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\tborder: 1px solid #999;\r\n\t}\r\n\r\n\r\n/* div icon */\r\n\r\n.leaflet-div-icon {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #666;\r\n\t}\r\n\r\n\r\n/* Tooltip */\r\n/* Base styles for the element that has a tooltip */\r\n.leaflet-tooltip {\r\n\tposition: absolute;\r\n\tpadding: 6px;\r\n\tbackground-color: #fff;\r\n\tborder: 1px solid #fff;\r\n\tborder-radius: 3px;\r\n\tcolor: #222;\r\n\twhite-space: nowrap;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\tuser-select: none;\r\n\tpointer-events: none;\r\n\tbox-shadow: 0 1px 3px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-tooltip.leaflet-clickable {\r\n\tcursor: pointer;\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-tooltip-top:before,\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\tborder: 6px solid transparent;\r\n\tbackground: transparent;\r\n\tcontent: \"\";\r\n\t}\r\n\r\n/* Directions */\r\n\r\n.leaflet-tooltip-bottom {\r\n\tmargin-top: 6px;\r\n}\r\n.leaflet-tooltip-top {\r\n\tmargin-top: -6px;\r\n}\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-top:before {\r\n\tleft: 50%;\r\n\tmargin-left: -6px;\r\n\t}\r\n.leaflet-tooltip-top:before {\r\n\tbottom: 0;\r\n\tmargin-bottom: -12px;\r\n\tborder-top-color: #fff;\r\n\t}\r\n.leaflet-tooltip-bottom:before {\r\n\ttop: 0;\r\n\tmargin-top: -12px;\r\n\tmargin-left: -6px;\r\n\tborder-bottom-color: #fff;\r\n\t}\r\n.leaflet-tooltip-left {\r\n\tmargin-left: -6px;\r\n}\r\n.leaflet-tooltip-right {\r\n\tmargin-left: 6px;\r\n}\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\ttop: 50%;\r\n\tmargin-top: -6px;\r\n\t}\r\n.leaflet-tooltip-left:before {\r\n\tright: 0;\r\n\tmargin-right: -12px;\r\n\tborder-left-color: #fff;\r\n\t}\r\n.leaflet-tooltip-right:before {\r\n\tleft: 0;\r\n\tmargin-left: -12px;\r\n\tborder-right-color: #fff;\r\n\t}\r\n", ""]);
+exports.push([module.i, "/* required styles */\r\n\r\n.leaflet-pane,\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-tile-container,\r\n.leaflet-pane > svg,\r\n.leaflet-pane > canvas,\r\n.leaflet-zoom-box,\r\n.leaflet-image-layer,\r\n.leaflet-layer {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\ttop: 0;\r\n\t}\r\n.leaflet-container {\r\n\toverflow: hidden;\r\n\t}\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\t  -webkit-user-drag: none;\r\n\t}\r\n/* Safari renders non-retina tile on retina better with this, but Chrome is worse */\r\n.leaflet-safari .leaflet-tile {\r\n\timage-rendering: -webkit-optimize-contrast;\r\n\t}\r\n/* hack that prevents hw layers \"stretching\" when loading new tiles */\r\n.leaflet-safari .leaflet-tile-container {\r\n\twidth: 1600px;\r\n\theight: 1600px;\r\n\t-webkit-transform-origin: 0 0;\r\n\t}\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\tdisplay: block;\r\n\t}\r\n/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */\r\n/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */\r\n.leaflet-container .leaflet-overlay-pane svg,\r\n.leaflet-container .leaflet-marker-pane img,\r\n.leaflet-container .leaflet-shadow-pane img,\r\n.leaflet-container .leaflet-tile-pane img,\r\n.leaflet-container img.leaflet-image-layer {\r\n\tmax-width: none !important;\r\n\t}\r\n\r\n.leaflet-container.leaflet-touch-zoom {\r\n\t-ms-touch-action: pan-x pan-y;\r\n\ttouch-action: pan-x pan-y;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag {\r\n\t-ms-touch-action: pinch-zoom;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {\r\n\t-ms-touch-action: none;\r\n\ttouch-action: none;\r\n}\r\n.leaflet-container {\r\n\t-webkit-tap-highlight-color: transparent;\r\n}\r\n.leaflet-container a {\r\n\t-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);\r\n}\r\n.leaflet-tile {\r\n\tfilter: inherit;\r\n\tvisibility: hidden;\r\n\t}\r\n.leaflet-tile-loaded {\r\n\tvisibility: inherit;\r\n\t}\r\n.leaflet-zoom-box {\r\n\twidth: 0;\r\n\theight: 0;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\tz-index: 800;\r\n\t}\r\n/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */\r\n.leaflet-overlay-pane svg {\r\n\t-moz-user-select: none;\r\n\t}\r\n\r\n.leaflet-pane         { z-index: 400; }\r\n\r\n.leaflet-tile-pane    { z-index: 200; }\r\n.leaflet-overlay-pane { z-index: 400; }\r\n.leaflet-shadow-pane  { z-index: 500; }\r\n.leaflet-marker-pane  { z-index: 600; }\r\n.leaflet-tooltip-pane   { z-index: 650; }\r\n.leaflet-popup-pane   { z-index: 700; }\r\n\r\n.leaflet-map-pane canvas { z-index: 100; }\r\n.leaflet-map-pane svg    { z-index: 200; }\r\n\r\n.leaflet-vml-shape {\r\n\twidth: 1px;\r\n\theight: 1px;\r\n\t}\r\n.lvml {\r\n\tbehavior: url(#default#VML);\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\t}\r\n\r\n\r\n/* control positioning */\r\n\r\n.leaflet-control {\r\n\tposition: relative;\r\n\tz-index: 800;\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-top,\r\n.leaflet-bottom {\r\n\tposition: absolute;\r\n\tz-index: 1000;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-top {\r\n\ttop: 0;\r\n\t}\r\n.leaflet-right {\r\n\tright: 0;\r\n\t}\r\n.leaflet-bottom {\r\n\tbottom: 0;\r\n\t}\r\n.leaflet-left {\r\n\tleft: 0;\r\n\t}\r\n.leaflet-control {\r\n\tfloat: left;\r\n\tclear: both;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tfloat: right;\r\n\t}\r\n.leaflet-top .leaflet-control {\r\n\tmargin-top: 10px;\r\n\t}\r\n.leaflet-bottom .leaflet-control {\r\n\tmargin-bottom: 10px;\r\n\t}\r\n.leaflet-left .leaflet-control {\r\n\tmargin-left: 10px;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tmargin-right: 10px;\r\n\t}\r\n\r\n\r\n/* zoom and fade animations */\r\n\r\n.leaflet-fade-anim .leaflet-tile {\r\n\twill-change: opacity;\r\n\t}\r\n.leaflet-fade-anim .leaflet-popup {\r\n\topacity: 0;\r\n\t-webkit-transition: opacity 0.2s linear;\r\n\t   -moz-transition: opacity 0.2s linear;\r\n\t     -o-transition: opacity 0.2s linear;\r\n\t        transition: opacity 0.2s linear;\r\n\t}\r\n.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {\r\n\topacity: 1;\r\n\t}\r\n.leaflet-zoom-animated {\r\n\t-webkit-transform-origin: 0 0;\r\n\t    -ms-transform-origin: 0 0;\r\n\t        transform-origin: 0 0;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\twill-change: transform;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\t-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t     -o-transition:      -o-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t}\r\n.leaflet-zoom-anim .leaflet-tile,\r\n.leaflet-pan-anim .leaflet-tile {\r\n\t-webkit-transition: none;\r\n\t   -moz-transition: none;\r\n\t     -o-transition: none;\r\n\t        transition: none;\r\n\t}\r\n\r\n.leaflet-zoom-anim .leaflet-zoom-hide {\r\n\tvisibility: hidden;\r\n\t}\r\n\r\n\r\n/* cursors */\r\n\r\n.leaflet-interactive {\r\n\tcursor: pointer;\r\n\t}\r\n.leaflet-grab {\r\n\tcursor: -webkit-grab;\r\n\tcursor:    -moz-grab;\r\n\t}\r\n.leaflet-crosshair,\r\n.leaflet-crosshair .leaflet-interactive {\r\n\tcursor: crosshair;\r\n\t}\r\n.leaflet-popup-pane,\r\n.leaflet-control {\r\n\tcursor: auto;\r\n\t}\r\n.leaflet-dragging .leaflet-grab,\r\n.leaflet-dragging .leaflet-grab .leaflet-interactive,\r\n.leaflet-dragging .leaflet-marker-draggable {\r\n\tcursor: move;\r\n\tcursor: -webkit-grabbing;\r\n\tcursor:    -moz-grabbing;\r\n\t}\r\n\r\n/* marker & overlays interactivity */\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-image-layer,\r\n.leaflet-pane > svg path,\r\n.leaflet-tile-container {\r\n\tpointer-events: none;\r\n\t}\r\n\r\n.leaflet-marker-icon.leaflet-interactive,\r\n.leaflet-image-layer.leaflet-interactive,\r\n.leaflet-pane > svg path.leaflet-interactive {\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n\r\n/* visual tweaks */\r\n\r\n.leaflet-container {\r\n\tbackground: #ddd;\r\n\toutline: 0;\r\n\t}\r\n.leaflet-container a {\r\n\tcolor: #0078A8;\r\n\t}\r\n.leaflet-container a.leaflet-active {\r\n\toutline: 2px solid orange;\r\n\t}\r\n.leaflet-zoom-box {\r\n\tborder: 2px dotted #38f;\r\n\tbackground: rgba(255,255,255,0.5);\r\n\t}\r\n\r\n\r\n/* general typography */\r\n.leaflet-container {\r\n\tfont: 12px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif;\r\n\t}\r\n\r\n\r\n/* general toolbar styles */\r\n\r\n.leaflet-bar {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.65);\r\n\tborder-radius: 4px;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #fff;\r\n\tborder-bottom: 1px solid #ccc;\r\n\twidth: 26px;\r\n\theight: 26px;\r\n\tline-height: 26px;\r\n\tdisplay: block;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tcolor: black;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-control-layers-toggle {\r\n\tbackground-position: 50% 50%;\r\n\tbackground-repeat: no-repeat;\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #f4f4f4;\r\n\t}\r\n.leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 4px;\r\n\tborder-top-right-radius: 4px;\r\n\t}\r\n.leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 4px;\r\n\tborder-bottom-right-radius: 4px;\r\n\tborder-bottom: none;\r\n\t}\r\n.leaflet-bar a.leaflet-disabled {\r\n\tcursor: default;\r\n\tbackground-color: #f4f4f4;\r\n\tcolor: #bbb;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-bar a {\r\n\twidth: 30px;\r\n\theight: 30px;\r\n\tline-height: 30px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 2px;\r\n\tborder-top-right-radius: 2px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 2px;\r\n\tborder-bottom-right-radius: 2px;\r\n\t}\r\n\r\n/* zoom control */\r\n\r\n.leaflet-control-zoom-in,\r\n.leaflet-control-zoom-out {\r\n\tfont: bold 18px 'Lucida Console', Monaco, monospace;\r\n\ttext-indent: 1px;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {\r\n\tfont-size: 22px;\r\n\t}\r\n\r\n\r\n/* layers control */\r\n\r\n.leaflet-control-layers {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.4);\r\n\tbackground: #fff;\r\n\tborder-radius: 5px;\r\n\t}\r\n.leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(342)) + ");\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\t}\r\n.leaflet-retina .leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(343)) + ");\r\n\tbackground-size: 26px 26px;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers-toggle {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\t}\r\n.leaflet-control-layers .leaflet-control-layers-list,\r\n.leaflet-control-layers-expanded .leaflet-control-layers-toggle {\r\n\tdisplay: none;\r\n\t}\r\n.leaflet-control-layers-expanded .leaflet-control-layers-list {\r\n\tdisplay: block;\r\n\tposition: relative;\r\n\t}\r\n.leaflet-control-layers-expanded {\r\n\tpadding: 6px 10px 6px 6px;\r\n\tcolor: #333;\r\n\tbackground: #fff;\r\n\t}\r\n.leaflet-control-layers-scrollbar {\r\n\toverflow-y: scroll;\r\n\toverflow-x: hidden;\r\n\tpadding-right: 5px;\r\n\t}\r\n.leaflet-control-layers-selector {\r\n\tmargin-top: 2px;\r\n\tposition: relative;\r\n\ttop: 1px;\r\n\t}\r\n.leaflet-control-layers label {\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-control-layers-separator {\r\n\theight: 0;\r\n\tborder-top: 1px solid #ddd;\r\n\tmargin: 5px -10px 5px -6px;\r\n\t}\r\n\r\n/* Default icon URLs */\r\n.leaflet-default-icon-path {\r\n\tbackground-image: url(" + escape(__webpack_require__(344)) + ");\r\n\t}\r\n\r\n\r\n/* attribution and scale controls */\r\n\r\n.leaflet-container .leaflet-control-attribution {\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.7);\r\n\tmargin: 0;\r\n\t}\r\n.leaflet-control-attribution,\r\n.leaflet-control-scale-line {\r\n\tpadding: 0 5px;\r\n\tcolor: #333;\r\n\t}\r\n.leaflet-control-attribution a {\r\n\ttext-decoration: none;\r\n\t}\r\n.leaflet-control-attribution a:hover {\r\n\ttext-decoration: underline;\r\n\t}\r\n.leaflet-container .leaflet-control-attribution,\r\n.leaflet-container .leaflet-control-scale {\r\n\tfont-size: 11px;\r\n\t}\r\n.leaflet-left .leaflet-control-scale {\r\n\tmargin-left: 5px;\r\n\t}\r\n.leaflet-bottom .leaflet-control-scale {\r\n\tmargin-bottom: 5px;\r\n\t}\r\n.leaflet-control-scale-line {\r\n\tborder: 2px solid #777;\r\n\tborder-top: none;\r\n\tline-height: 1.1;\r\n\tpadding: 2px 5px 1px;\r\n\tfont-size: 11px;\r\n\twhite-space: nowrap;\r\n\toverflow: hidden;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.5);\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child) {\r\n\tborder-top: 2px solid #777;\r\n\tborder-bottom: none;\r\n\tmargin-top: -2px;\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child):not(:last-child) {\r\n\tborder-bottom: 2px solid #777;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-attribution,\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tbox-shadow: none;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tborder: 2px solid rgba(0,0,0,0.2);\r\n\tbackground-clip: padding-box;\r\n\t}\r\n\r\n\r\n/* popup */\r\n\r\n.leaflet-popup {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tmargin-bottom: 20px;\r\n\t}\r\n.leaflet-popup-content-wrapper {\r\n\tpadding: 1px;\r\n\ttext-align: left;\r\n\tborder-radius: 12px;\r\n\t}\r\n.leaflet-popup-content {\r\n\tmargin: 13px 19px;\r\n\tline-height: 1.4;\r\n\t}\r\n.leaflet-popup-content p {\r\n\tmargin: 18px 0;\r\n\t}\r\n.leaflet-popup-tip-container {\r\n\twidth: 40px;\r\n\theight: 20px;\r\n\tposition: absolute;\r\n\tleft: 50%;\r\n\tmargin-left: -20px;\r\n\toverflow: hidden;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-popup-tip {\r\n\twidth: 17px;\r\n\theight: 17px;\r\n\tpadding: 1px;\r\n\r\n\tmargin: -10px auto 0;\r\n\r\n\t-webkit-transform: rotate(45deg);\r\n\t   -moz-transform: rotate(45deg);\r\n\t    -ms-transform: rotate(45deg);\r\n\t     -o-transform: rotate(45deg);\r\n\t        transform: rotate(45deg);\r\n\t}\r\n.leaflet-popup-content-wrapper,\r\n.leaflet-popup-tip {\r\n\tbackground: white;\r\n\tcolor: #333;\r\n\tbox-shadow: 0 3px 14px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\tpadding: 4px 4px 0 0;\r\n\tborder: none;\r\n\ttext-align: center;\r\n\twidth: 18px;\r\n\theight: 14px;\r\n\tfont: 16px/14px Tahoma, Verdana, sans-serif;\r\n\tcolor: #c3c3c3;\r\n\ttext-decoration: none;\r\n\tfont-weight: bold;\r\n\tbackground: transparent;\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button:hover {\r\n\tcolor: #999;\r\n\t}\r\n.leaflet-popup-scrolled {\r\n\toverflow: auto;\r\n\tborder-bottom: 1px solid #ddd;\r\n\tborder-top: 1px solid #ddd;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-popup-content-wrapper {\r\n\tzoom: 1;\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\twidth: 24px;\r\n\tmargin: 0 auto;\r\n\r\n\t-ms-filter: \"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)\";\r\n\tfilter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip-container {\r\n\tmargin-top: -1px;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-control-zoom,\r\n.leaflet-oldie .leaflet-control-layers,\r\n.leaflet-oldie .leaflet-popup-content-wrapper,\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\tborder: 1px solid #999;\r\n\t}\r\n\r\n\r\n/* div icon */\r\n\r\n.leaflet-div-icon {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #666;\r\n\t}\r\n\r\n\r\n/* Tooltip */\r\n/* Base styles for the element that has a tooltip */\r\n.leaflet-tooltip {\r\n\tposition: absolute;\r\n\tpadding: 6px;\r\n\tbackground-color: #fff;\r\n\tborder: 1px solid #fff;\r\n\tborder-radius: 3px;\r\n\tcolor: #222;\r\n\twhite-space: nowrap;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\tuser-select: none;\r\n\tpointer-events: none;\r\n\tbox-shadow: 0 1px 3px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-tooltip.leaflet-clickable {\r\n\tcursor: pointer;\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-tooltip-top:before,\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\tborder: 6px solid transparent;\r\n\tbackground: transparent;\r\n\tcontent: \"\";\r\n\t}\r\n\r\n/* Directions */\r\n\r\n.leaflet-tooltip-bottom {\r\n\tmargin-top: 6px;\r\n}\r\n.leaflet-tooltip-top {\r\n\tmargin-top: -6px;\r\n}\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-top:before {\r\n\tleft: 50%;\r\n\tmargin-left: -6px;\r\n\t}\r\n.leaflet-tooltip-top:before {\r\n\tbottom: 0;\r\n\tmargin-bottom: -12px;\r\n\tborder-top-color: #fff;\r\n\t}\r\n.leaflet-tooltip-bottom:before {\r\n\ttop: 0;\r\n\tmargin-top: -12px;\r\n\tmargin-left: -6px;\r\n\tborder-bottom-color: #fff;\r\n\t}\r\n.leaflet-tooltip-left {\r\n\tmargin-left: -6px;\r\n}\r\n.leaflet-tooltip-right {\r\n\tmargin-left: 6px;\r\n}\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\ttop: 50%;\r\n\tmargin-top: -6px;\r\n\t}\r\n.leaflet-tooltip-left:before {\r\n\tright: 0;\r\n\tmargin-right: -12px;\r\n\tborder-left-color: #fff;\r\n\t}\r\n.leaflet-tooltip-right:before {\r\n\tleft: 0;\r\n\tmargin-left: -12px;\r\n\tborder-right-color: #fff;\r\n\t}\r\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 344 */
+/* 340 */
 /***/ (function(module, exports) {
 
 module.exports = function escape(url) {
@@ -80376,7 +80381,7 @@ module.exports = function escape(url) {
 
 
 /***/ }),
-/* 345 */
+/* 341 */
 /***/ (function(module, exports) {
 
 /*
@@ -80458,30 +80463,30 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 346 */
+/* 342 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAQAAAADQ4RFAAACf0lEQVR4AY1UM3gkARTePdvdoTxXKc+qTl3aU5U6b2Kbkz3Gtq3Zw6ziLGNPzrYx7946Tr6/ee/XeCQ4D3ykPtL5tHno4n0d/h3+xfuWHGLX81cn7r0iTNzjr7LrlxCqPtkbTQEHeqOrTy4Yyt3VCi/IOB0v7rVC7q45Q3Gr5K6jt+3Gl5nCoDD4MtO+j96Wu8atmhGqcNGHObuf8OM/x3AMx38+4Z2sPqzCxRFK2aF2e5Jol56XTLyggAMTL56XOMoS1W4pOyjUcGGQdZxU6qRh7B9Zp+PfpOFlqt0zyDZckPi1ttmIp03jX8gyJ8a/PG2yutpS/Vol7peZIbZcKBAEEheEIAgFbDkz5H6Zrkm2hVWGiXKiF4Ycw0RWKdtC16Q7qe3X4iOMxruonzegJzWaXFrU9utOSsLUmrc0YjeWYjCW4PDMADElpJSSQ0vQvA1Tm6/JlKnqFs1EGyZiFCqnRZTEJJJiKRYzVYzJck2Rm6P4iH+cmSY0YzimYa8l0EtTODFWhcMIMVqdsI2uiTvKmTisIDHJ3od5GILVhBCarCfVRmo4uTjkhrhzkiBV7SsaqS+TzrzM1qpGGUFt28pIySQHR6h7F6KSwGWm97ay+Z+ZqMcEjEWebE7wxCSQwpkhJqoZA5ivCdZDjJepuJ9IQjGGUmuXJdBFUygxVqVsxFsLMbDe8ZbDYVCGKxs+W080max1hFCarCfV+C1KATwcnvE9gRRuMP2prdbWGowm1KB1y+zwMMENkM755cJ2yPDtqhTI6ED1M/82yIDtC/4j4BijjeObflpO9I9MwXTCsSX8jWAFeHr05WoLTJ5G8IQVS/7vwR6ohirYM7f6HzYpogfS3R2OAAAAAElFTkSuQmCC"
 
 /***/ }),
-/* 347 */
+/* 343 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAQAAABvcdNgAAAEsklEQVR4AWL4TydIhpZK1kpWOlg0w3ZXP6D2soBtG42jeI6ZmQTHzAxiTbSJsYLjO9HhP+WOmcuhciVnmHVQcJnp7DFvScowZorad/+V/fVzMdMT2g9Cv9guXGv/7pYOrXh2U+RRR3dSd9JRx6bIFc/ekqHI29JC6pJ5ZEh1yWkhkbcFeSjxgx3L2m1cb1C7bceyxA+CNjT/Ifff+/kDk2u/w/33/IeCMOSaWZ4glosqT3DNnNZQ7Cs58/3Ce5HL78iZH/vKVIaYlqzfdLu8Vi7dnvUbEza5Idt36tquZFldl6N5Z/POLof0XLK61mZCmJSWjVF9tEjUluu74IUXvgttuVIHE7YxSkaYhJZam7yiM9Pv82JYfl9nptxZaxMJE4YSPty+vF0+Y2up9d3wwijfjZbabqm/3bZ9ecKHsiGmRflnn1MW4pjHf9oLufyn2z3y1D6n8g8TZhxyzipLNPnAUpsOiuWimg52psrTZYnOWYNDTMuWBWa0tJb4rgq1UvmutpaYEbZlwU3CLJm/ayYjHW5/h7xWLn9Hh1vepDkyf7dE7MtT5LR4e7yYpHrkhOUpEfssBLq2pPhAqoSWKUkk7EDqkmK6RrCEzqDjhNDWNE+XSMvkJRDWlZTmCW0l0PHQGRZY5t1L83kT0Y3l2SItk5JAWHl2dCOBm+fPu3fo5/3v61RMCO9Jx2EEYYhb0rmNQMX/vm7gqOEJLcXTGw3CAuRNeyaPWwjR8PRqKQ1PDA/dpv+on9Shox52WFnx0KY8onHayrJzm87i5h9xGw/tfkev0jGsQizqezUKjk12hBMKJ4kbCqGPVNXudyyrShovGw5CgxsRICxF6aRmSjlBnHRzg7Gx8fKqEubI2rahQYdR1YgDIRQO7JvQyD52hoIQx0mxa0ODtW2Iozn1le2iIRdzwWewedyZzewidueOGqlsn1MvcnQpuVwLGG3/IR1hIKxCjelIDZ8ldqWz25jWAsnldEnK0Zxro19TGVb2ffIZEsIO89EIEDvKMPrzmBOQcKQ+rroye6NgRRxqR4U8EAkz0CL6uSGOm6KQCdWjvjRiSP1BPalCRS5iQYiEIvxuBMJEWgzSoHADcVMuN7IuqqTeyUPq22qFimFtxDyBBJEwNyt6TM88blFHao/6tWWhuuOM4SAK4EI4QmFHA+SEyWlp4EQoJ13cYGzMu7yszEIBOm2rVmHUNqwAIQabISNMRstmdhNWcFLsSm+0tjJH1MdRxO5Nx0WDMhCtgD6OKgZeljJqJKc9po8juskR9XN0Y1lZ3mWjLR9JCO1jRDMd0fpYC2VnvjBSEFg7wBENc0R9HFlb0xvF1+TBEpF68d+DHR6IOWVv2BECtxo46hOFUBd/APU57WIoEwJhIi2CdpyZX0m93BZicktMj1AS9dClteUFAUNUIEygRZCtik5zSxI9MubTBH1GOiHsiLJ3OCoSZkILa9PxiN0EbvhsAo8tdAf9Seepd36lGWHmtNANTv5Jd0z4QYyeo/UEJqxKRpg5LZx6btLPsOaEmdMyxYdlc8LMaJnikDlhclqmPiQnTEpLUIZEwkRagjYkEibQErwhkTAKCLQEbUgkzJQWc/0PstHHcfEdQ+UAAAAASUVORK5CYII="
 
 /***/ }),
-/* 348 */
+/* 344 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RfEmN8VNAsQhPqF55xHkMzz3jSmChWU6f7/XZKNH+9+hBLOHYozuKQPxyMPUKkrX/K0uWnfFaJGS1QPRtZsOPtr3NsW0uyh6NNCOkU3Yz+bXbT3I8G3xE5EXLXtCXbbqwCO9zPQYPRTZ5vIDXD7U+w7rFDEoUUf7ibHIR4y6bLVPXrz8JVZEql13trxwue/uDivd3fkWRbS6/IA2bID4uk0UpF1N8qLlbBlXs4Ee7HLTfV1j54APvODnSfOWBqtKVvjgLKzF5YdEk5ewRkGlK0i33Eofffc7HT56jD7/6U+qH3Cx7SBLNntH5YIPvODnyfIXZYRVDPqgHtLs5ABHD3YzLuespb7t79FY34DjMwrVrcTuwlT55YMPvOBnRrJ4VXTdNnYug5ucHLBjEpt30701A3Ts+HEa73u6dT3FNWwflY86eMHPk+Yu+i6pzUpRrW7SNDg5JHR4KapmM5Wv2E8Tfcb1HoqqHMHU+uWDD7zg54mz5/2BSnizi9T1Dg4QQXLToGNCkb6tb1NU+QAlGr1++eADrzhn/u8Q2YZhQVlZ5+CAOtqfbhmaUCS1ezNFVm2imDbPmPng5wmz+gwh+oHDce0eUtQ6OGDIyR0uUhUsoO3vfDmmgOezH0mZN59x7MBi++WDL1g/eEiU3avlidO671bkLfwbw5XV2P8Pzo0ydy4t2/0eu33xYSOMOD8hTf4CrBtGMSoXfPLchX+J0ruSePw3LZeK0juPJbYzrhkH0io7B3k164hiGvawhOKMLkrQLyVpZg8rHFW7E2uHOL888IBPlNZ1FPzstSJM694fWr6RwpvcJK60+0HCILTBzZLFNdtAzJaohze60T8qBzyh5ZuOg5e7uwQppofEmf2++DYvmySqGBuKaicF1blQjhuHdvCIMvp8whTTfZzI7RldpwtSzL+F1+wkdZ2TBOW2gIF88PBTzD/gpeREAMEbxnJcaJHNHrpzji0gQCS6hdkEeYt9DF/2qPcEC8RM28Hwmr3sdNyht00byAut2k3gufWNtgtOEOFGUwcXWNDbdNbpgBGxEvKkOQsxivJx33iow0Vw5S6SVTrpVq11ysA2Rp7gTfPfktc6zhtXBBC+adRLshf6sG2RfHPZ5EAc4sVZ83yCN00Fk/4kggu40ZTvIEm5g24qtU4KjBrx/BTTH8ifVASAG7gKrnWxJDcU7x8X6Ecczhm3o6YicvsLXWfh3Ch1W0k8x0nXF+0fFxgt4phz8QvypiwCCFKMqXCnqXExjq10beH+UUA7+nG6mdG/Pu0f3LgFcGrl2s0kNNjpmoJ9o4B29CMO8dMT4Q5ox8uitF6fqsrJOr8qnwNbRzv6hSnG5wP+64C7h9lp30hKNtKdWjtdkbuPA19nJ7Tz3zR/ibgARbhb4AlhavcBebmTHcFl2fvYEnW0ox9xMxKBS8btJ+KiEbq9zA4RthQXDhPa0T9TEe69gWupwc6uBUphquXgf+/FrIjweHQS4/pduMe5ERUMHUd9xv8ZR98CxkS4F2n3EUrUZ10EYNw7BWm9x1GiPssi3GgiGRDKWRYZfXlON+dfNbM+GgIwYdwAAAAASUVORK5CYII="
 
 /***/ }),
-/* 349 */
+/* 345 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html__ = __webpack_require__(346);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_download_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_download_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bytes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_bytes__);
@@ -80686,22 +80691,22 @@ class AppImageDownload extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_poly
 customElements.define('app-image-download', AppImageDownload);
 
 /***/ }),
-/* 350 */
+/* 346 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  button {\n    border: none;\n    border-radius: 0;\n    cursor: pointer;\n    color : var(--default-primary-color);\n    background-color: var(--medium-background-color);\n    width: 35px;\n    height: 35px;\n    font-weight: var(--font-weight-heavy);\n    margin: 4px;\n  }\n  button[selected] {\n    background : var(--default-primary-color);\n    color : var(--default-secondary-color);\n  }\n  .info {\n    margin: 10px 0;\n    font-size: var(--font-size-sm);\n  }\n  a {\n    display: inline-block;\n    padding: 8px;\n    color : var(--default-primary-color);\n    background-color : var(--default-secondary-color);\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n  }\n  select {\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    margin-right: 15px;\n    height: 40px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2IiB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojZGFhYTAwO308L3N0eWxlPjwvZGVmcz48Zz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMCAwIDEwIDAgNSA2IDAgMCIvPjwvZz48L3N2Zz4=');\n    @apply --fin-search-box-select-inverse;\n  }\n  select option {\n    text-transform: uppercase;\n  }\n</style>\n\n<div>\n  <template is=\"dom-repeat\" items=\"[[sizes]]\">\n    <button index$=\"[[index]]\" selected$=\"[[item.selected]]\" on-click=\"_onSizeSelected\">[[item.label]]</button>\n  </template>\n</div>\n\n<div class=\"info\">\n  [[resolutionTitle]] | [[resolution]] <span hidden$=\"[[!defaultImage]]\">| [[size]]</span>\n</div>\n\n<div style=\"display:flex; align-items: center\">\n  <select id=\"format\" on-change=\"_onFormatSelected\">\n    <template is=\"dom-repeat\" items=\"[[formats]]\">\n      <option value=\"[[item]]\">[[item]]</option>\n    </template>\n  </select>\n\n  <a href=\"[[href]]\" download target=\"_blank\">\n    <iron-icon icon=\"file-download\"></iron-icon>\n    Download\n  </a>\n</div>";
 
 /***/ }),
-/* 351 */
+/* 347 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__ = __webpack_require__(352);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__ = __webpack_require__(348);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_record_metadata_layout_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_tabs_paper_tabs__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_paper_tabs_paper_tabs__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_iron_pages_iron_pages__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_iron_media_query_iron_media_query__ = __webpack_require__(353);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_iron_media_query_iron_media_query__ = __webpack_require__(349);
 
 
 
@@ -80760,13 +80765,13 @@ class AppRecordMetadataLayout extends __WEBPACK_IMPORTED_MODULE_0__polymer_polym
 customElements.define('app-record-metadata-layout', AppRecordMetadataLayout);
 
 /***/ }),
-/* 352 */
+/* 348 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n\n  .layout {\n    display: flex;\n  }\n  .layout > * {\n    flex : 1;\n  }\n\n  h2 {\n    border-bottom: 1px solid var(--medium-background-color);\n    color: var(--default-primary-color);\n    padding-bottom: 10px;\n  }\n</style>\n\n<iron-media-query query=\"(max-width: 900px)\" query-matches=\"{{mobile}}\"></iron-media-query>\n\n\n<paper-tabs selected=\"{{selectedTab}}\" hidden$=\"[[!mobile]]\">\n  <paper-tab>Item Data</paper-tab>\n  <paper-tab>Cite Item</paper-tab>\n</paper-tabs>\n\n<div class=\"layout\">\n  <div hidden$=\"[[!showLeft]]\">\n    <h2>Item Data</h2>\n    <slot name=\"left\"></slot>\n  </div>\n  <div hidden$=\"[[!showRight]]\">\n      <h2>Cite this Item</h2>\n    <slot name=\"right\"></slot>\n  </div>\n</div>";
 
 /***/ }),
-/* 353 */
+/* 349 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -80869,21 +80874,18 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 354 */
+/* 350 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__auth_app_auth_footer__ = __webpack_require__(355);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html__ = __webpack_require__(357);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_footer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__app_footer_html__);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__auth_app_auth_footer__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_footer_html__ = __webpack_require__(353);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_footer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__app_footer_html__);
 
 
 
@@ -80892,10 +80894,10 @@ Object(__WEBPACK_IMPORTED_MODULE_1__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 class AppFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_3__interfaces_ElasticSearchInterface___default.a) {
+      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_1__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_2__interfaces_CollectionInterface___default.a) {
   
   static get template() {
-    return __WEBPACK_IMPORTED_MODULE_5__app_footer_html___default.a;
+    return __WEBPACK_IMPORTED_MODULE_4__app_footer_html___default.a;
   }
 
   static get properties() {
@@ -80937,14 +80939,14 @@ class AppFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polym
 customElements.define('app-footer', AppFooter);
 
 /***/ }),
-/* 355 */
+/* 351 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_AuthInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__ = __webpack_require__(356);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__ = __webpack_require__(352);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__app_auth_footer_html__);
 
 
@@ -80992,19 +80994,19 @@ class AppAuthFooter extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_p
 customElements.define('app-auth-footer', AppAuthFooter);
 
 /***/ }),
-/* 356 */
+/* 352 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    color: var(--inverse-text-color);\n  }\n  a {\n    color: var(--inverse-text-color);\n    cursor: pointer;\n  }\n  .icon-container {\n    display: flex;\n    align-items: center;\n  }\n</style>\n\n<div hidden$=\"[[!loggedIn]]\">\n  <div>Logged in as:</div>\n  <div class=\"icon-container\">\n    <iron-icon icon=\"fin:account\"></iron-icon>&nbsp;&nbsp;\n    <div>[[user.username]]</div>\n  </div>\n  <div>\n    <a on-click=\"_logout\" class=\"gold\">Log Out</a>\n  </div>\n</div>\n<div hidden$=\"[[loggedIn]]\">\n  <a on-click=\"_login\">Login</a>\n</div>";
 
 /***/ }),
-/* 357 */
+/* 353 */
 /***/ (function(module, exports) {
 
 module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background: var(--secondary-background-color);\n    color: var(--inverse-text-color);\n    max-width: var(--max-width);\n    padding: 20px 0;\n  }\n\n  a, a:visited {\n    cursor: pointer;\n    color: var(--inverse-text-color);\n    text-decoration: none;\n  }\n\n  .lib-logo  {\n    height: 45px;\n  }\n\n  .row {\n    display: flex;\n    justify-content: center;\n  }\n\n  .row > div {\n    padding: 15px;\n  }\n\n  .menu.horizontal li {\n    padding: 0 10px;\n    border-right: 1px solid white;\n  }\n  .menu.horizontal li:last-child {\n    border-right: none;\n  }\n  .menu a {\n    cursor: pointer;\n  }\n\n  @media( max-width: 768px ) {\n    ul.menu.horizontal {\n      display: block;\n      text-align: left;\n    }\n  }\n\n  .logo {\n    display: inline-block;\n    width: 100%;\n    position: relative;\n    margin: 70px 0 30px;\n  }\n  .logo hr {\n    position: absolute;\n    top: 50%;\n    width: 100%;\n    margin-top: 0;\n    margin-bottom: 0;\n    border-top: 1px solid rgba(255,255,255,.25);\n    border-bottom: none;\n    border-right: none;\n    border-left: none;\n  }\n  .logo .logo-img {\n    display: inline-block;\n    position: relative;\n  }\n  .logo img {\n    height: 100px;\n    padding: 0 25px;\n    background: var(--default-primary-color);\n  }\n\n  @media(max-width: 768px) {\n    .row {\n      display: block;\n    }\n  }\n</style>\n\n<footer role=\"contentinfo\">\n\n  <div class=\"row\">\n    <div> <!-- col start -->\n      <div>\n          <a href=\"https://library.ucdavis.edu\" target=\"_blank\">\n              <img class=\"lib-logo\" src=\"/images/ucd-lib-logo-white.png\">\n          </a>\n      </div>\n      <div>UC Davis Library</div>\n      <p>\n        100 NW Quad<br />\n        University of California, Davis<br />\n        Davis, CA 95616<br />\n        (530) 752-8792<br /><br />\n        <a href=\"mailto:library@ucdavis.edu\">library@ucdavis.edu</a>\n      </p>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Digital Collections</h2>\n      <ul class=\"menu\">\n        <template is=\"dom-repeat\" items=\"[[collections]]\">\n          <li><a on-click=\"_onBrowseCollection\" data-id$=\"[[item.id]]\">[[item.name]]</a></li>\n        </template>\n      </ul>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Library Info</h2>\n      <ul class=\"menu\">\n        <li><a href=\"https://library.ucdavis.edu/news/\" target=\"_blank\">News</a></li>\n        <li><a href=\"https://library.ucdavis.edu/about/\" target=\"_blank\">About</a></li>\n        <li><a href=\"https://library.ucdavis.edu/library/\" target=\"_blank\">Visit</a></li>\n        <li><a href=\"https://library.ucdavis.edu/service/careers/\" target=\"_blank\">Careers</a></li>\n      </ul>\n      <div class=\"donate\"><a href=\"http://give.ucdavis.edu/ULIB\" target=\"_blank\">Give to the UC Davis Library</a></div>\n    </div><!-- col end -->\n\n    <div role=\"navigation\"><!-- col start -->\n      <h2>Account</h2>\n      <ul class=\"menu\">\n        <li>\n          <app-auth-footer></app-auth-footer>\n        </li>\n      </ul>\n    </div><!-- col end -->\n  </div><!-- row end -->\n\n  <div style=\"text-align:center\">\n    <div class=\"logo\"><!-- logo -->\n        <hr>\n        <div class=\"logo-img\">\n            <img src=\"/images/ucd-logo.svg\" alt=\"UC Davis Logo\">\n        </div>\n    </div>\n\n    <div>\n      <p>University of California, Davis, One Shields Avenue, Davis, CA 95616 | 530-752-1011</p>\n      <ul class=\"menu horizontal\">\n        <li><a href=\"/help/\">Help</a></li>\n        <li><a href=\"/general-support/\">Questions or comments?</a></li>\n        <li><a href=\"https://www.ucdavis.edu/help/privacy-accessibility/\" target=\"_blank\">Privacy &amp; Accessibility</a></li>\n        <li><a href=\"https://occr.ucdavis.edu/poc/\" target=\"_blank\">Principles of Community</a></li>\n        <li><a href=\"https://www.ucdavis.edu/\" target=\"_blank\">UC Davis</a></li>\n        <li><a href=\"https://www.universityofcalifornia.edu/\" target=\"_blank\">University of California</a></li>\n      </ul>\n      <p>Copyright &copy; 2017 The Regents of the University of California, Davis campus. All rights reserved.</p>\n    </div>\n  </div>\n\n</footer>";
 
 /***/ }),
-/* 358 */
+/* 354 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -81072,7 +81074,7 @@ class AppHeaderColorbar extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
 customElements.define('app-header-colorbar', AppHeaderColorbar);
 
 /***/ }),
-/* 359 */
+/* 355 */
 /***/ (function(module, exports) {
 
 module.exports = "<style>\n  :host {\n    display: block;\n    background: var(--default-primary-color);\n  }\n  app-header {\n    \n  }\n  .content {\n    display: flex;\n    justify-content: center;\n  }\n  .content > div {\n    max-width: 1000px;\n    min-width: 300px;\n  }\n  paper-material {\n    background: white;\n    display: block;\n    padding: 10px;\n    margin: 10px;\n  }\n  paper-button {\n    background: white;\n  }\n  a[button] {\n    text-decoration: none;\n    color: var(--primary-text-color);\n  }\n</style>\n\n<app-route app-routes=\"[[appRoutes]]\"></app-route>\n\n<iron-pages selected=\"[[page]]\" attr-for-selected=\"id\" selected-attribute=\"visible\">\n  <app-home id=\"home\"></app-home>\n  <app-search id=\"search\"></app-search>\n  <app-record id=\"record\"></app-record>\n</iron-pages>\n\n<div style=\"display:flex; justify-content:center\">\n  <app-footer></app-footer>\n</div>";

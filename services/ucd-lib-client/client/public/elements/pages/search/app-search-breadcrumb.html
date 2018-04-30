@@ -31,10 +31,10 @@
 </style>
 
 <div class="layout" hidden$="[[!selected]]" id="layout">
-  <div><a on-click="_onSearchClicked">Search</a></div>
+  <div><a on-click="_onSearchClicked" on-keyup="_onSearchClicked" tabindex="0">Search</a></div>
   
   <div hidden$="[[!collection]]">&gt;</div>
-  <div hidden$="[[!collection]]"><a on-click="_onCollectionClicked">[[collection.name]]</a></div>
+  <div hidden$="[[!collection]]"><a on-click="_onCollectionClicked" tabindex="0">[[collection.name]]</a></div>
 
   <div hidden$="[[!record]]">&gt;</div>
   <div hidden$="[[!record]]">[[record.name]]</div>

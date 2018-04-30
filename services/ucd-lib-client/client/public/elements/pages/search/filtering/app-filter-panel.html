@@ -7,8 +7,14 @@
     cursor: pointer;
     display: flex;
     color: var(--default-primary-color);
-    padding: 10px;
+    padding: 10px 10px 10px 6px;
     font-weight: bold;
+    border-left: 4px solid transparent;
+  }
+
+  .label:focus, .label:hover {
+    outline: none;
+    border-left: 4px solid var(--default-secondary-color);
   }
 
   .filter {

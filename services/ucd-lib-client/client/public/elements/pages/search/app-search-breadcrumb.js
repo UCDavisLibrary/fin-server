@@ -59,7 +59,7 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
     this.currentRecordId = '/'+path.join('/');
 
     this.record = await this._getRecord(this.currentRecordId);
-    this.record = this.record.payload._source;
+    this.record = this.record.payload;
 
     if( this.record.isPartOf ) {
       this.collection = await this._getCollection(this.record.isPartOf);
@@ -72,7 +72,8 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * @method _onSearchClicked
    * @description bound to search anchor tag click event.  nav to search
    */
-  _onSearchClicked() {
+  _onSearchClicked(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
     this._setWindowLocation(this.lastSearch || '/search');
   }
 
@@ -80,7 +81,8 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * @method _onCollectionClicked
    * @description bound to collection anchor tag click event.  start a collection query
    */
-  _onCollectionClicked() {
+  _onCollectionClicked(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
     let searchDoc = this._getEmptySearchDocument();
     this._setKeywordFilter(searchDoc, 'isPartOf', this.collection.id);
     this._searchRecords(searchDoc);

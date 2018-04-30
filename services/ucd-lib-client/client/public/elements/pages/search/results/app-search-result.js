@@ -47,6 +47,11 @@ export default class AppSearchResult extends Mixin(PolymerElement)
       year : {
         type : String,
         value : ''
+      },
+      tabindex : {
+        type : Number,
+        value : 0,
+        reflectToAttribute : true
       }
     }
   }
@@ -60,7 +65,11 @@ export default class AppSearchResult extends Mixin(PolymerElement)
 
   ready() {
     super.ready();
-    this.addEventListener('click', this._onClick);
+    this.addEventListener('click', e => this._onClick());
+    this.addEventListener('keyup', e => {
+      if( e.which !== 13 ) return;
+      this._onClick();
+    });
   }
 
   /**

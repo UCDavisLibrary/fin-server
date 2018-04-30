@@ -5,9 +5,10 @@
     background-color: white;
     cursor: pointer;
   }
-  :host(:hover) {
+  :host(:hover), :host(:focus) {
     border: 2px solid var(--default-secondary-color);
     margin: -2px 0 0 -2px;
+    outline: none !important;
   }
   .img {
     width: var(--grid-cell-width);

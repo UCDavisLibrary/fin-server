@@ -32,12 +32,42 @@ export class AppNormalCheckbox extends PolymerElement {
       disabled : {
         type : Boolean,
         value : false,
+      },
+
+      ariaChecked : {
+        type : String,
+        reflectToAttribute : true,
+        computed: '_computeAriaChecked(checked)'
+      },
+      ariaDisabled : {
+        type : String,
+        reflectToAttribute : true,
+        computed: '_computeAriaDisabled(disabled)'
+      },
+      role : {
+        type : String,
+        value : 'checkbox',
+        reflectToAttribute : true,
+      },
+      tabindex : {
+        type : Number,
+        value : 0,
+        reflectToAttribute: true
       }
     };
   }
 
   static get template() {
     return template;
+  }
+
+  constructor() {
+    super();
+    this.addEventListener('click', e => this._onClick(e));
+    this.addEventListener('keyup', e => {
+      if( e.which !== 13 ) return;
+      this._onClick(e)
+    });
   }
 
   /**
@@ -49,6 +79,22 @@ export class AppNormalCheckbox extends PolymerElement {
    */
   _realLabel(value, label) {
     return this._getLabel();
+  }
+
+  /**
+   * @method _computeAriaChecked
+   * @description Bound to 'checked' property.  set aria-checked value
+   */
+  _computeAriaChecked() {
+    return this.checked ? 'true' : 'false';
+  }
+
+  /**
+   * @method _computeAriaDisabled
+   * @description Bound to 'disabled' property.  set aria-disabled value
+   */
+  _computeAriaDisabled() {
+    return this.disabled ? 'true' : 'false';
   }
 
   _getLabel() {

@@ -15,7 +15,7 @@ class CollectionModel extends BaseModel {
       // to es filters and seeing if a collection is being filtered on. This is
       // where we wire up the event listener for es events.
       this.MasterController.on(
-        RecordStore.events.SEARCH_DOCUMENT_UPDATE, 
+        RecordStore.events.RECORD_SEARCH_UPDATE, 
         this._onSearchDocumentUpdate.bind(this)
       );
 

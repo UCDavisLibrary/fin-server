@@ -70,7 +70,7 @@ class ElasticSearchModel extends BaseModel {
 
       i++;
     }
-    
+
     return searchDoc;
   }
 
