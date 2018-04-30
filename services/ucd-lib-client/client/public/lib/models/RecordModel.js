@@ -116,19 +116,7 @@ class RecordModel extends ElasticSearchModel {
       return await this.search(searchDocument);
     }
 
-
-    let request = this.service.search(searchDocument);
-
-
-    // there is search text but no collection filter applied
-    if( !searchDocument.filters.isPartOf && searchDocument.text ) {
-      this.searchCollection({text: searchDocument.text});
-      this.emit('show-collection-search-results', true);
-    } else {
-      this.emit('show-collection-search-results', false);
-    }
-
-    await request;
+    await this.service.search(searchDocument);
 
     return this.store.getSearch();
   }

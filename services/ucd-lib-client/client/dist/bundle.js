@@ -4685,9 +4685,9 @@ let Polymer;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return matchesSelector; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_flattened_nodes_observer_js__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(23);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__["b"]; });
 /* unused harmony reexport addDebouncer */
 
@@ -5968,11 +5968,89 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 /***/ }),
 /* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+let rights = __webpack_require__(65);
+
+let rightsMap = {};
+for( var key in rights ) {
+  rightsMap[key] =  rights[key].text;
+}
+
+module.exports = {
+  fcrepoBasePath : '/fcrepo/rest',
+
+  // facets to show on left side
+  elasticSearch : {
+    facets : {
+      'fileFormats' : {
+        label : 'File Format',
+        type : 'facet'
+      },
+      'creators' : {
+        label : 'Creator',
+        type : 'facet'
+      },
+      yearPublished : {
+        label : 'Published',
+        type : 'range'
+      },
+      license : {
+        label : 'Rights',
+        type : 'facet',
+        valueMap : rightsMap
+      },
+      type : {
+        label : 'Type',
+        type : 'facet',
+        ignore : ['CreativeWork']
+      },
+      about : {
+        label : 'Subject',
+        type : 'facet'
+      }
+    },
+
+    textFields : ['name', 'description', 'keywords'],
+    
+    // max number of facets filter options
+    maxFacetCount : 50
+  }
+}
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = subclass => 
+  class MediaInterface extends subclass {
+    constructor() {
+      super();
+      this._injectModel('MediaModel');
+    }
+
+    _getImgPath(record) {
+      return this.MediaModel.getImgPath(record);
+    }
+
+    _getImgUrl(path, width, height) {
+      return this.MediaModel.getImgUrl(path, width, height);
+    }
+
+    _getImageMediaList(rootRecord) {
+      return this.MediaModel.getImageMediaList(rootRecord);
+    }
+
+  }
+
+/***/ }),
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color_js__ = __webpack_require__(26);
 
 
 const $_documentContainer = document.createElement('div');
@@ -6039,7 +6117,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6156,32 +6234,7 @@ const IronControlState = {
 
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-module.exports = subclass => 
-  class MediaInterface extends subclass {
-    constructor() {
-      super();
-      this._injectModel('MediaModel');
-    }
-
-    _getImgPath(record) {
-      return this.MediaModel.getImgPath(record);
-    }
-
-    _getImgUrl(path, width, height) {
-      return this.MediaModel.getImgUrl(path, width, height);
-    }
-
-    _getImageMediaList(rootRecord) {
-      return this.MediaModel.getImageMediaList(rootRecord);
-    }
-
-  }
-
-/***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6190,7 +6243,7 @@ module.exports = subclass =>
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return sanitizeDOMValue; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__resolve_url_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__resolve_url_js__ = __webpack_require__(21);
 
 
 
@@ -6261,7 +6314,7 @@ const setSanitizeDOMValue = function(newSanitizeDOMValue) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6354,7 +6407,7 @@ function pathFromUrl(url) {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6471,7 +6524,7 @@ const isDeep = isPath;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6516,7 +6569,7 @@ const flush = function() {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6636,7 +6689,7 @@ MutableData._mutablePropertyChange = mutablePropertyChange;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6714,7 +6767,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7050,7 +7103,7 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7224,13 +7277,13 @@ document.head.appendChild($_documentContainer);
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_control_state_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_control_state_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
 
@@ -7457,7 +7510,7 @@ const IronButtonState = [
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7914,13 +7967,13 @@ const IronA11yKeysBehavior = {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_ripple_paper_ripple_js__ = __webpack_require__(228);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_button_state_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_button_state_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
 
@@ -8034,7 +8087,7 @@ const PaperRippleBehavior = {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8280,59 +8333,6 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 
 /***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-let rights = __webpack_require__(65);
-
-let rightsMap = {};
-for( var key in rights ) {
-  rightsMap[key] =  rights[key].text;
-}
-
-module.exports = {
-  fcrepoBasePath : '/fcrepo/rest',
-
-  // facets to show on left side
-  elasticSearch : {
-    facets : {
-      'fileFormats' : {
-        label : 'File Format',
-        type : 'facet'
-      },
-      'creators' : {
-        label : 'Creator',
-        type : 'facet'
-      },
-      yearPublished : {
-        label : 'Published',
-        type : 'range'
-      },
-      license : {
-        label : 'Rights',
-        type : 'facet',
-        valueMap : rightsMap
-      },
-      type : {
-        label : 'Type',
-        type : 'facet',
-        ignore : ['CreativeWork']
-      },
-      about : {
-        label : 'Subject',
-        type : 'facet'
-      }
-    },
-
-    textFields : ['name', 'description', 'keywords'],
-    
-    // max number of facets filter options
-    maxFacetCount : 50
-  }
-}
-
-
-/***/ }),
 /* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8343,11 +8343,11 @@ module.exports = {
 /* unused harmony export dumpRegistrations */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_settings_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_mixin_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_case_map_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_style_gather_js__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_resolve_url_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_resolve_url_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__elements_dom_module_js__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__property_effects_js__ = __webpack_require__(34);
 
@@ -9090,7 +9090,7 @@ const updateStyles = function(props) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DomModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_resolve_url_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_resolve_url_js__ = __webpack_require__(21);
 
 
 
@@ -9221,11 +9221,11 @@ customElements.define('dom-module', DomModule);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_path_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_path_js__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_case_map_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__property_accessors_js__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__template_stamp_js__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_settings_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_settings_js__ = __webpack_require__(20);
 
 
 
@@ -12397,7 +12397,7 @@ function afterNextRender(context, callback, args) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_property_effects_js__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_mutable_data_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_mutable_data_js__ = __webpack_require__(24);
 
 
 
@@ -12910,7 +12910,7 @@ const Templatize = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_lib_utils_settings_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_lib_utils_settings_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
 
@@ -13572,7 +13572,7 @@ const IronSelectableBehavior = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_icon_iron_icon_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(31);
 
 
 const $_documentContainer = document.createElement('div');
@@ -14298,9 +14298,9 @@ module.exports = subclass =>
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_ripple_behavior_js__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_behaviors_iron_control_state_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_ripple_behavior_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_behaviors_iron_control_state_js__ = __webpack_require__(19);
 
 
 
@@ -14352,7 +14352,7 @@ const PaperInkyFocusBehavior = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_menu_behavior_iron_menubar_behavior_js__ = __webpack_require__(302);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_resizable_behavior_iron_resizable_behavior_js__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__paper_icon_button_paper_icon_button_js__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_styles_color_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__paper_styles_color_js__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__paper_tabs_icons_js__ = __webpack_require__(304);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__paper_tab_js__ = __webpack_require__(305);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
@@ -14940,7 +14940,7 @@ Object(__WEBPACK_IMPORTED_MODULE_9__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* harmony export (immutable) */ __webpack_exports__["c"] = cssFromTemplate;
 /* harmony export (immutable) */ __webpack_exports__["a"] = cssFromModuleImports;
 /* unused harmony export _cssFromModuleImports */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__resolve_url_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__resolve_url_js__ = __webpack_require__(21);
 
 
 const MODULE_STYLE_LINK_SELECTOR = 'link[rel=import][type~=css]';
@@ -15045,7 +15045,7 @@ function _cssFromModuleImports(module) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_gestures_js__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils_debounce_js__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_async_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__utils_path_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__utils_path_js__ = __webpack_require__(22);
 
 
 
@@ -17887,14 +17887,14 @@ class CollectionStore extends BaseStore {
   setSearchLoaded(searchDocument, payload) {
     this._setSearchState({
       state : this.STATE.LOADED,
-      request, payload
+      searchDocument, payload
     })
   }
 
   setSearchError(searchDocument, error) {
     this._setSearchState({
       state : this.STATE.ERROR,
-      request, error
+      searchDocument, error
     })
   }
 
@@ -18122,6 +18122,11 @@ class AppCollectionCard extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
       collection : {
         type : Object,
         value : () => {}
+      },
+      tabindex : {
+        type : Number,
+        value : 0,
+        reflectToAttribute : true
       }
     }
   }
@@ -18356,7 +18361,7 @@ const PaperInputAddonBehavior = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_icon_iron_icon_js__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_inky_focus_behavior_js__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_default_theme_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_default_theme_js__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
 
@@ -18492,7 +18497,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_CollectionInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_MediaInterface__);
 
 
@@ -30053,7 +30058,7 @@ return zhTw;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_selector_iron_multi_selectable_js__ = __webpack_require__(303);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__iron_selector_iron_selectable_js__ = __webpack_require__(43);
 
@@ -30639,7 +30644,7 @@ function parse(val) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_color_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_color_js__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_spinner_behavior_js__ = __webpack_require__(328);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__ = __webpack_require__(329);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__paper_spinner_styles_js__);
@@ -34018,7 +34023,7 @@ let Templatizer = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_boot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_boot_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_property_effects_js__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_mutable_data_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_mutable_data_js__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_gesture_event_listeners_js__ = __webpack_require__(58);
 
 
@@ -34146,9 +34151,9 @@ customElements.define('dom-bind', DomBind);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_element_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_templatize_js__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_debounce_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_mutable_data_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_mutable_data_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_async_js__ = __webpack_require__(9);
 
 
@@ -34846,9 +34851,9 @@ customElements.define(DomRepeat.is, DomRepeat);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_element_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_templatize_js__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_debounce_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_flush_js__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_async_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_path_js__ = __webpack_require__(22);
 
 
 
@@ -35705,7 +35710,7 @@ window.ShadyCSS.CustomStyleInterface = customStyleInterface;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_mutable_data_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_mutable_data_js__ = __webpack_require__(24);
 
 
 let mutablePropertyChange;
@@ -36468,7 +36473,7 @@ const scroll = function scroll(options) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_utils_async_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_debounce_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_utils_flush_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_utils_flush_js__ = __webpack_require__(23);
 
 
 
@@ -37250,7 +37255,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_shadow_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_shadow_js__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_material_shared_styles_js__ = __webpack_require__(223);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
@@ -37312,7 +37317,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__paper_styles_shadow_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__paper_styles_shadow_js__ = __webpack_require__(25);
 
 const $_documentContainer = document.createElement('div');
 $_documentContainer.setAttribute('style', 'display: none;');
@@ -37357,10 +37362,10 @@ document.head.appendChild($_documentContainer);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__default_theme_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shadow_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__typography_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__default_theme_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shadow_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__typography_js__ = __webpack_require__(27);
 
 
 
@@ -37532,9 +37537,9 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_ripple_behavior_js__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_behaviors_iron_control_state_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_ripple_behavior_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_behaviors_iron_control_state_js__ = __webpack_require__(19);
 
 
 
@@ -37631,7 +37636,7 @@ const PaperButtonBehavior = [
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
@@ -38328,7 +38333,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shadow_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shadow_js__ = __webpack_require__(25);
 
 
 const $_documentContainer = document.createElement('div');
@@ -38499,7 +38504,7 @@ IronSelection.prototype = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_icon_iron_icon_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(31);
 
 
 const $_documentContainer = document.createElement('div');
@@ -38549,7 +38554,7 @@ document.head.appendChild($_documentContainer);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_iron_icon_iron_icon__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_iconset_svg_iron_iconset_svg__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polymer_iron_iconset_svg_iron_iconset_svg__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html__ = __webpack_require__(233);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fin_icons_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__fin_icons_html__);
 
@@ -38565,7 +38570,7 @@ document.head.appendChild(ele);
 /* 233 */
 /***/ (function(module, exports) {
 
-module.exports = "<iron-iconset-svg name=\"fin\" size=\"24\">\n  <svg>\n    <defs>\n  \n      <g id=\"account\">\n        <clipPath id=\"account-clip-path\">\n          <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        </clipPath>  \n        <style type=\"text/css\">.cls-1{fill:#008eaa;}.cls-2{clip-path:url(#account-clip-path);}.cls-3{fill:#f3f3f3;}</style>\n        \n        <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        <g class=\"cls-2\">\n          <circle class=\"cls-3\" cx=\"12\" cy=\"9.88\" r=\"3.5\"/>\n          <ellipse class=\"cls-3\" cx=\"12\" cy=\"22.66\" rx=\"7\" ry=\"8.05\"/>\n        </g>         \n      </g>\n\n      <g id=\"blank-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n      </g>\n\n      <g id=\"blank\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n      </g>\n\n      <g id=\"check\">\n        <polygon points=\"8.57 19.54 2.12 13.08 3.88 11.31 8.57 16 20.12 4.46 21.88 6.23 8.57 19.54\"/>\n      </g>\n\n      <g id=\"copy\">\n        <path d=\"M21.22,5.54H18.46V2.78A1.28,1.28,0,0,0,17.18,1.5H2.78A1.28,1.28,0,0,0,1.5,2.78v14.4a1.28,1.28,0,0,0,1.28,1.28H5.54v2.76A1.28,1.28,0,0,0,6.82,22.5h14.4a1.28,1.28,0,0,0,1.28-1.28V6.82A1.28,1.28,0,0,0,21.22,5.54ZM5.54,6.82V17.65H2.78a.47.47,0,0,1-.47-.47V2.78a.47.47,0,0,1,.47-.47h14.4a.47.47,0,0,1,.47.47V5.54H6.82A1.28,1.28,0,0,0,5.54,6.82ZM19,15.15H15.15V19h-2.1V15.15H9.2v-2.1h3.85V9.2h2.1v3.85H19Z\"/>\n      </g>\n\n      <g id=\"grid\">\n        <rect x=\"17.08\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"17.08\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n      </g>\n\n      <g id=\"image-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <circle cx=\"6.33\" cy=\"5.84\" r=\"1.97\"/>\n        <polygon points=\"3.13 12.93 3.13 15.55 15.61 15.55 15.61 10.83 11.98 7.2 7.4 11.78 5.93 10.32 3.13 12.93\"/>\n      </g>\n\n      <g id=\"image\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <circle cx=\"7.99\" cy=\"7.35\" r=\"2.6\"/>\n        <polygon points=\"3.79 16.69 3.79 20.14 20.21 20.14 20.21 13.92 15.44 9.14 9.4 15.18 7.47 13.25 3.79 16.69\"/>\n      </g>\n\n      <g id=\"list\">\n        <rect x=\"1.5\" y=\"5.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"5.51\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"10.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"10.5\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"15.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"15.5\" width=\"15.89\" height=\"3\"/>\n      </g>\n\n      <g id=\"search\">\n        <path d=\"M22.16,20.08l-5.25-5.24a8.38,8.38,0,1,0-1.53,1.77l5.13,5.12a1.15,1.15,0,0,0,.82.35,1.18,1.18,0,0,0,.83-2ZM9.88,16.35a6,6,0,1,1,6-6.05A6.06,6.06,0,0,1,9.88,16.35Z\"/>\n      </g>\n\n      <g id=\"multiple-sound\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.45.45,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.2,1.2,0,0,1,21.19,22.35Z\"/>\n        <path d=\"M6.88,5.39v5.76a1.76,1.76,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.78h0v-5L13,6.48V10a1.73,1.73,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.79v0h0V4Z\"/>\n      </g>\n\n      <g id=\"sound\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <path d=\"M8.72,6.75v7.59a2.3,2.3,0,0,0-1.33-.41,2.35,2.35,0,1,0,2.35,2.34v0h0V9.63l7-1.43v4.57a2.29,2.29,0,0,0-1.33-.42,2.35,2.35,0,1,0,2.34,2.34h0V4.92Z\"/>\n      </g>\n\n      <g id=\"text-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <rect x=\"5.2\" y=\"7.74\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"10.28\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"12.83\" width=\"4.18\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"5.2\" width=\"8.37\" height=\"0.74\"/>\n      </g>\n\n      <g id=\"text\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <rect x=\"6.5\" y=\"9.84\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"13.18\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"16.53\" width=\"5.5\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"6.5\" width=\"11\" height=\"0.97\"/>\n      </g>\n\n      <g id=\"triangle-dropdown\">\n        <polygon points=\"1.5 5.7 22.5 5.7 12 18.3 1.5 5.7\"/>\n      </g>\n\n      <g id=\"video-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <polygon points=\"12.75 9.36 6.6 13.37 6.6 5.24 12.75 9.36\"/>\n      </g>\n\n      <g id=\"video\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <polygon points=\"16.45 11.99 8.35 17.27 8.35 6.57 16.45 11.99\"/>\n      </g>\n    </defs>\n  </svg>\n</iron-iconset-svg>";
+module.exports = "<iron-iconset-svg name=\"fin\" size=\"24\">\n  <svg>\n    <defs>\n  \n      <g id=\"account\">\n        <clipPath id=\"account-clip-path\">\n          <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        </clipPath>  \n        <style type=\"text/css\">.cls-1{fill:#008eaa;}.cls-2{clip-path:url(#account-clip-path);}.cls-3{fill:#f3f3f3;}</style>\n        \n        <circle class=\"cls-1\" cx=\"12\" cy=\"12\" r=\"10.5\"/>\n        <g class=\"cls-2\">\n          <circle class=\"cls-3\" cx=\"12\" cy=\"9.88\" r=\"3.5\"/>\n          <ellipse class=\"cls-3\" cx=\"12\" cy=\"22.66\" rx=\"7\" ry=\"8.05\"/>\n        </g>         \n      </g>\n\n      <g id=\"blank-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n      </g>\n\n      <g id=\"blank\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n      </g>\n\n      <g id=\"check\">\n        <polygon points=\"8.57 19.54 2.12 13.08 3.88 11.31 8.57 16 20.12 4.46 21.88 6.23 8.57 19.54\"/>\n      </g>\n\n      <g id=\"copy\">\n        <path d=\"M21.22,5.54H18.46V2.78A1.28,1.28,0,0,0,17.18,1.5H2.78A1.28,1.28,0,0,0,1.5,2.78v14.4a1.28,1.28,0,0,0,1.28,1.28H5.54v2.76A1.28,1.28,0,0,0,6.82,22.5h14.4a1.28,1.28,0,0,0,1.28-1.28V6.82A1.28,1.28,0,0,0,21.22,5.54ZM5.54,6.82V17.65H2.78a.47.47,0,0,1-.47-.47V2.78a.47.47,0,0,1,.47-.47h14.4a.47.47,0,0,1,.47.47V5.54H6.82A1.28,1.28,0,0,0,5.54,6.82ZM19,15.15H15.15V19h-2.1V15.15H9.2v-2.1h3.85V9.2h2.1v3.85H19Z\"/>\n      </g>\n\n      <g id=\"grid\">\n        <rect x=\"17.08\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"5.5\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"17.08\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"9.29\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n        <rect x=\"1.5\" y=\"13.08\" width=\"5.42\" height=\"5.42\"/>\n      </g>\n\n      <g id=\"image-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <circle cx=\"6.33\" cy=\"5.84\" r=\"1.97\"/>\n        <polygon points=\"3.13 12.93 3.13 15.55 15.61 15.55 15.61 10.83 11.98 7.2 7.4 11.78 5.93 10.32 3.13 12.93\"/>\n      </g>\n\n      <g id=\"image\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <circle cx=\"7.99\" cy=\"7.35\" r=\"2.6\"/>\n        <polygon points=\"3.79 16.69 3.79 20.14 20.21 20.14 20.21 13.92 15.44 9.14 9.4 15.18 7.47 13.25 3.79 16.69\"/>\n      </g>\n\n      <g id=\"list\">\n        <rect x=\"1.5\" y=\"5.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"5.51\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"10.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"10.5\" width=\"15.89\" height=\"3\"/>\n        <rect x=\"1.5\" y=\"15.5\" width=\"3\" height=\"3\"/>\n        <rect x=\"6.61\" y=\"15.5\" width=\"15.89\" height=\"3\"/>\n      </g>\n\n      <g id=\"search\">\n        <path d=\"M22.16,20.08l-5.25-5.24a8.38,8.38,0,1,0-1.53,1.77l5.13,5.12a1.15,1.15,0,0,0,.82.35,1.18,1.18,0,0,0,.83-2ZM9.88,16.35a6,6,0,1,1,6-6.05A6.06,6.06,0,0,1,9.88,16.35Z\"/>\n      </g>\n\n      <g id=\"multiple-sound\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.45.45,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.2,1.2,0,0,1,21.19,22.35Z\"/>\n        <path d=\"M6.88,5.39v5.76a1.76,1.76,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.78h0v-5L13,6.48V10a1.73,1.73,0,0,0-1-.32,1.79,1.79,0,1,0,1.78,1.79v0h0V4Z\"/>\n      </g>\n\n      <g id=\"sound\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <path d=\"M8.72,6.75v7.59a2.3,2.3,0,0,0-1.33-.41,2.35,2.35,0,1,0,2.35,2.34v0h0V9.63l7-1.43v4.57a2.29,2.29,0,0,0-1.33-.42,2.35,2.35,0,1,0,2.34,2.34h0V4.92Z\"/>\n      </g>\n\n      <g id=\"text-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <rect x=\"5.2\" y=\"7.74\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"10.28\" width=\"8.37\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"12.83\" width=\"4.18\" height=\"0.74\"/>\n        <rect x=\"5.2\" y=\"5.2\" width=\"8.37\" height=\"0.74\"/>\n      </g>\n\n      <g id=\"text\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <rect x=\"6.5\" y=\"9.84\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"13.18\" width=\"11\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"16.53\" width=\"5.5\" height=\"0.97\"/>\n        <rect x=\"6.5\" y=\"6.5\" width=\"11\" height=\"0.97\"/>\n      </g>\n\n      <g id=\"triangle-dropdown\">\n        <polygon points=\"1.5 5.7 22.5 5.7 12 18.3 1.5 5.7\"/>\n      </g>\n\n      <g id=\"close\">\n        <polygon points=\"22.5 5.17 18.82 1.5 12 8.32 5.17 1.5 1.5 5.17 8.32 12 1.5 18.82 5.17 22.5 12 15.67 18.82 22.5 22.5 18.82 15.68 12 22.5 5.17\"/>\n      </g>\n\n      <g id=\"video-multiple\">\n        <path d=\"M16.17,17.37H2.6a1.2,1.2,0,0,1-1.2-1.2V2.6A1.2,1.2,0,0,1,2.6,1.4H16.17a1.2,1.2,0,0,1,1.2,1.2V16.17A1.2,1.2,0,0,1,16.17,17.37ZM2.6,2.15a.45.45,0,0,0-.45.45V16.17a.45.45,0,0,0,.45.44H16.17a.44.44,0,0,0,.44-.44V2.6a.45.45,0,0,0-.44-.45Z\"/>\n        <path d=\"M18.68,19.86H5.11a1.2,1.2,0,0,1-1.2-1.2h.76a.44.44,0,0,0,.44.44H18.68a.44.44,0,0,0,.45-.44V5.09a.44.44,0,0,0-.45-.44V3.89a1.2,1.2,0,0,1,1.2,1.2V18.66A1.2,1.2,0,0,1,18.68,19.86Z\"/>\n        <path d=\"M21.19,22.35H7.62a1.2,1.2,0,0,1-1.2-1.2h.76a.45.45,0,0,0,.44.45H21.19a.45.45,0,0,0,.45-.45V7.58a.45.45,0,0,0-.45-.44V6.38a1.21,1.21,0,0,1,1.21,1.2V21.15A1.21,1.21,0,0,1,21.19,22.35Z\"/>\n        <polygon points=\"12.75 9.36 6.6 13.37 6.6 5.24 12.75 9.36\"/>\n      </g>\n\n      <g id=\"video\">\n        <path d=\"M20.92,22.5H3.08A1.58,1.58,0,0,1,1.5,20.92V3.08A1.58,1.58,0,0,1,3.08,1.5H20.92A1.58,1.58,0,0,1,22.5,3.08V20.92A1.58,1.58,0,0,1,20.92,22.5ZM3.08,2.5a.58.58,0,0,0-.58.58V20.92a.58.58,0,0,0,.58.58H20.92a.58.58,0,0,0,.58-.58V3.08a.58.58,0,0,0-.58-.58Z\"/>\n        <polygon points=\"16.45 11.99 8.35 17.27 8.35 6.57 16.45 11.99\"/>\n      </g>\n    </defs>\n  </svg>\n</iron-iconset-svg>";
 
 /***/ }),
 /* 234 */
@@ -40141,7 +40146,7 @@ document.head.appendChild(styleWrapper);
 /* 242 */
 /***/ (function(module, exports) {
 
-module.exports = "<custom-style>\n  <style>\n    html {\n      --default-primary-color : #002655;\n      --light-primary-color   : #335379;\n      \n      --default-secondary-color : #daaa00;\n      --light-secondary-color   : #9be7ff;\n      --dark-secondary-color    : #2286c3;\n\n      --medium-background-color : #B2BDCF;\n      --light-background-color : #D6DCE6;\n      --super-light-background-color: #f3f3f3;\n    \n      --text-primary-color      : black;\n      --primary-text-color      : var(--text-primary-color);\n      --secondary-text-color    : var(--default-secondary-color);\n      --inverse-text-color      : white;\n      --gray-text               : #8B8B8B;\n      --text-disabled           : var(--gray-text);\n\n      --max-width               : 1200px;\n      --max-text-width          : 650px;\n      --font-size               : 16px;\n      --font-size-sm            : 14px;\n      --font-weight             : 400;\n      --font-weight-heavy       : 700;\n\n      --layout-sm               : 768px;\n      --grid-cell-width         : 250px;\n\n     /**\n      * Custom mixins\n      */\n      --fin-search-box-select: {\n        font-size: var(--font-size);\n        font-weight: var(--font-weight);\n        color: var(--default-primary-color);\n        background-color: var(--default-secondary-color);\n        width: 100px;\n      }\n      --fin-search-box-select-inverse: {\n        @apply(--fin-search-box-select);\n        color: var(--default-secondary-color);\n        background-color: var(--default-primary-color);\n      }\n      --fin-search-box-input: {\n        font-size: var(--font-size);\n      }\n      --cork-drop-down-arrow-color: var(--default-primary-color);\n      --cork-toggle-panel-label : {\n        padding: 10px 0;\n        color: var(--default-primary-color);\n        font-weight: var(--font-weight-heavy);\n      }\n    }\n    body, html {\n      /* @apply --paper-font-common-base; */\n      font-family: \"proxima-nova\",\"Montserrat\",\"Lucida Grande\",\"Lucida Sans\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\n      font-size        : var(--font-size);\n      font-weight      : var(--font-weight);\n      line-height      : calc(var(--font-size) * 1.625);\n      margin           : 0;\n      padding          : 0;\n      background-color : var(--default-background-color);\n      color            : var(--text-primary-color);\n    }\n  </style>\n</custom-style>";
+module.exports = "<custom-style>\n  <style>\n    html {\n      --default-primary-color : #002655;\n      --light-primary-color   : #335379;\n      \n      --default-secondary-color : #daaa00;\n      --light-secondary-color   : #9be7ff;\n      --dark-secondary-color    : #2286c3;\n\n      --medium-background-color : #B2BDCF;\n      --light-background-color : #D6DCE6;\n      --super-light-background-color: #f3f3f3;\n    \n      --text-primary-color      : black;\n      --primary-text-color      : var(--text-primary-color);\n      --secondary-text-color    : var(--default-secondary-color);\n      --inverse-text-color      : white;\n      --gray-text               : #8B8B8B;\n      --text-disabled           : var(--gray-text);\n\n      --max-width               : 1200px;\n      --max-text-width          : 650px;\n      --font-size               : 16px;\n      --font-size-sm            : 14px;\n      --font-weight             : 400;\n      --font-weight-heavy       : 700;\n\n      --layout-sm               : 768px;\n      --grid-cell-width         : 250px;\n\n      --default-outline         : 2px dotted var(--default-secondary-color);\n      \n      --paper-icon-button-ink-color : transparent;\n\n     /**\n      * Custom mixins\n      */\n      --fin-search-box-select: {\n        font-size: var(--font-size);\n        font-weight: var(--font-weight);\n        color: var(--default-primary-color);\n        background-color: var(--default-secondary-color);\n        width: 100px;\n      }\n      --fin-search-box-select-inverse: {\n        @apply(--fin-search-box-select);\n        color: var(--default-secondary-color);\n        background-color: var(--default-primary-color);\n      }\n      --fin-search-box-input: {\n        font-size: var(--font-size);\n      }\n      --cork-drop-down-arrow-color: var(--default-primary-color);\n      --cork-toggle-panel-label : {\n        padding: 10px 0;\n        color: var(--default-primary-color);\n        font-weight: var(--font-weight-heavy);\n      }\n    }\n    body, html {\n      /* @apply --paper-font-common-base; */\n      font-family: \"proxima-nova\",\"Montserrat\",\"Lucida Grande\",\"Lucida Sans\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;\n      font-size        : var(--font-size);\n      font-weight      : var(--font-weight);\n      line-height      : calc(var(--font-size) * 1.625);\n      margin           : 0;\n      padding          : 0;\n      background-color : var(--default-background-color);\n      color            : var(--text-primary-color);\n    }\n  </style>\n</custom-style>";
 
 /***/ }),
 /* 243 */
@@ -40160,7 +40165,7 @@ document.head.appendChild(styleWrapper);
 /* 244 */
 /***/ (function(module, exports) {
 
-module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n      paper-material {\n        background: white;\n        display: block;\n        padding: 10px;\n        margin: 10px;\n      }\n\n      paper-tabs {\n        --paper-tabs-selection-bar: {\n          border-bottom: 3px solid var(--default-primary-color);\n        }\n      }\n      paper-tab {\n        --paper-tab-content-unselected : {    \n          text-transform: uppercase;\n          color: var(--text-disabled);\n        }\n        --paper-tab-content : {\n          text-transform: uppercase;\n          color: var(--default-primary-color);\n        }\n      }\n\n      [hidden] {\n        display: none !important;\n      }\n\n      input, select, button {\n        font-size        : var(--font-size);\n        font-weight      : var(--font-weight);\n        color            : var(--text-primary-color);\n      }\n      \n      *:focus {\n        outline-color: var(--default-secondary-color);\n        outline-style: dotted;\n        outline-width: 2px;\n      }\n\n      main {\n        display: flex;\n        justify-content: center;\n      }\n\n      main > * {\n        max-width: 1000px;\n        width: 100%;\n      }\n\n      ul.menu {\n        list-style: none;\n        margin: 0;\n        padding: 0;\n      }\n\n      ul.menu.horizontal {\n        display: flex;\n      }\n\n      a {\n        text-decoration: none;\n        color: var(--default-primary-color);\n      }\n\n      a.italic {\n        color: var(--default-secondary-color);\n        font-style: italic;\n      }\n\n      a.gold {\n        color: var(--default-secondary-color);\n      }\n\n      .text-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n      }\n      \n      .text-container > * {\n        max-width: var(--max-text-width);\n        width: 100%;\n      }\n\n      .container {\n        display: flex;\n        justify-content: center;\n        flex-direction: column;\n        align-items: center;\n      }\n\n      .container > * {\n        max-width: var(--max-width);\n        width: 100%;\n        justify-content: center;\n      }\n\n      fin-search-box > iron-icon {\n        color: var(--default-secondary-color);\n      }\n    </style>\n  </template>\n</dom-module>";
+module.exports = "<dom-module id=\"shared-styles\">\n  <template>\n    <style>\n      paper-material {\n        background: white;\n        display: block;\n        padding: 10px;\n        margin: 10px;\n      }\n\n      paper-tabs {\n        --paper-tabs-selection-bar: {\n          border-bottom: 3px solid var(--default-primary-color);\n        }\n      }\n      paper-tab {\n        --paper-tab-content-unselected : {    \n          text-transform: uppercase;\n          color: var(--text-disabled);\n        }\n        --paper-tab-content : {\n          text-transform: uppercase;\n          color: var(--default-primary-color);\n        }\n      }\n\n      [hidden] {\n        display: none !important;\n      }\n\n      input, select, button {\n        font-size        : var(--font-size);\n        font-weight      : var(--font-weight);\n        color            : var(--text-primary-color);\n      }\n      \n      a:focus, button:focus, select:focus, div:focus {\n        outline: var(--default-outline);\n      }\n\n      paper-icon-button {\n        border: 2px solid transparent;\n      }\n\n      paper-icon-button:focus {\n        border: var(--default-outline);\n        border-radius: 20px;\n      }\n\n      main {\n        display: flex;\n        justify-content: center;\n      }\n\n      main > * {\n        max-width: 1000px;\n        width: 100%;\n      }\n\n      ul.menu {\n        list-style: none;\n        margin: 0;\n        padding: 0;\n      }\n\n      ul.menu.horizontal {\n        display: flex;\n      }\n\n      a {\n        text-decoration: none;\n        color: var(--default-primary-color);\n      }\n\n      a.italic {\n        color: var(--default-secondary-color);\n        font-style: italic;\n      }\n\n      a.gold {\n        color: var(--default-secondary-color);\n      }\n\n      .text-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n      }\n      \n      .text-container > * {\n        max-width: var(--max-text-width);\n        width: 100%;\n      }\n\n      .container {\n        display: flex;\n        justify-content: center;\n        flex-direction: column;\n        align-items: center;\n      }\n\n      .container > * {\n        max-width: var(--max-width);\n        width: 100%;\n        justify-content: center;\n      }\n\n      fin-search-box > iron-icon {\n        color: var(--default-secondary-color);\n      }\n    </style>\n  </template>\n</dom-module>";
 
 /***/ }),
 /* 245 */
@@ -40288,7 +40293,6 @@ class AppStateModel extends BaseModel {
     if( !this.locationElement ) {
       return console.warn('Call to setWindowLocation but no locationElement set');
     }
-
     this.locationElement.setWindowLocation(location);
   }
 
@@ -41618,7 +41622,7 @@ const ElasticSearchModel = __webpack_require__(261);
 const RecordStore = __webpack_require__(48);
 const RecordService = __webpack_require__(262);
 const AppStateModel = __webpack_require__(63);
-var config = __webpack_require__(31);
+var config = __webpack_require__(16);
 
 class RecordModel extends ElasticSearchModel {
 
@@ -41732,19 +41736,7 @@ class RecordModel extends ElasticSearchModel {
       return await this.search(searchDocument);
     }
 
-
-    let request = this.service.search(searchDocument);
-
-
-    // there is search text but no collection filter applied
-    if( !searchDocument.filters.isPartOf && searchDocument.text ) {
-      this.searchCollection({text: searchDocument.text});
-      this.emit('show-collection-search-results', true);
-    } else {
-      this.emit('show-collection-search-results', false);
-    }
-
-    await request;
+    await this.service.search(searchDocument);
 
     return this.store.getSearch();
   }
@@ -41769,7 +41761,7 @@ module.exports = new RecordModel();
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
-const config = __webpack_require__(31);
+const config = __webpack_require__(16);
 
 class ElasticSearchModel extends BaseModel {
 
@@ -42096,6 +42088,7 @@ module.exports = ElasticSearchModel;
 
 const {BaseService} = __webpack_require__(6);
 const RecordStore = __webpack_require__(48);
+const config = __webpack_require__(16);
 
 class RecordService extends BaseService {
 
@@ -42124,8 +42117,9 @@ class RecordService extends BaseService {
    * @returns {Promise}
    */
   async search(searchDocument = {}) {
+    searchDocument.textFields = config.elasticSearch.textFields;
     return await this.request({
-      url : `${this.baseUrl}/search`,
+      url : `${this.baseUrl}/search?debug=true`,
       fetchOptions : {
         method : 'POST',
         headers : {
@@ -42233,7 +42227,7 @@ class CollectionModel extends BaseModel {
     }
 
     search(searchDocument) {
-      
+      return this.service.search(searchDocument);
     }
 
     /**
@@ -42247,6 +42241,16 @@ class CollectionModel extends BaseModel {
       if( e.searchDocument.filters.isPartOf ) {
         selected = await this.get(e.searchDocument.filters.isPartOf.value[0]);
       }
+
+      if( !e.searchDocument.filters.isPartOf && e.searchDocument.text ) {
+        if( e.state === 'loading' ) {
+          this.search({text: e.searchDocument.text});
+        }
+        this.emit('show-collection-search-results', true);
+      } else {
+        this.emit('show-collection-search-results', false);
+      }
+
       this.store.setSelectedCollection(selected);
     }
 }
@@ -42259,6 +42263,7 @@ module.exports = new CollectionModel();
 
 const {BaseService} = __webpack_require__(6);
 const CollectionStore = __webpack_require__(66);
+const config = __webpack_require__(16);
 
 class CollectionService extends BaseService {
 
@@ -42270,15 +42275,13 @@ class CollectionService extends BaseService {
   }
 
   async overview() {
-    await this.request({
+    return this.request({
       url : `${this.baseUrl}/all`,
       checkCached : () => this.store.data.overview,
       onLoading : request => this.store.setCollectionOverviewLoading(request),
       onLoad : result => this.store.setCollectionOverviewLoaded(result.body),
       onError : e => this.store.setCollectionOverviewError(e)
     });
-
-    return this.store.data.overview;
   }
 
   /**
@@ -42290,8 +42293,9 @@ class CollectionService extends BaseService {
    * @returns {Promise}
    */
   async search(searchDocument = {}) {
-    return await this.request({
-      url : this.apiPath+'/search',
+    searchDocument.textFields = ["name", "description"];
+    return this.request({
+      url : this.baseUrl+'/search?debug=true',
       fetchOptions : {
         method : 'POST',
         headers : {
@@ -42314,7 +42318,7 @@ module.exports = new CollectionService();
 /***/ (function(module, exports, __webpack_require__) {
 
 const {BaseModel} = __webpack_require__(6);
-const config = __webpack_require__(31);
+const config = __webpack_require__(16);
 
 class MediaModel extends BaseModel {
   
@@ -59643,6 +59647,7 @@ class AppHome extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer
    * @description called when collection img on home page is clicked 
    */
   _onCollectionClicked(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
     let id = e.currentTarget.getAttribute('data-id');
     this._onCollectionSelected(id);
   }
@@ -59757,19 +59762,19 @@ customElements.define('fin-search-box', FinSearchBox);
 /* 273 */
 /***/ (function(module, exports) {
 
-module.exports = "<style>\n  :host {\n    display: block;\n  }\n  .root {\n    display: flex;\n    align-items: center;\n  }\n  input {\n    width: 100%;\n    box-sizing: border-box;\n    padding: 0 5px;\n    background: white;\n    border: none;\n    height: 45px;\n    outline: none;\n    @apply --fin-search-box-input;\n  }\n  button {\n    background: white;\n    height: 45px;\n    border: none;\n    margin: 0;\n    padding: 0 10px;\n    border-radius: 0;\n    cursor: pointer;\n    @apply --fin-search-box-button;\n  }\n  select {\n    margin-left: 20px;\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    height: 45px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n    @apply --fin-search-box-select;\n  }\n  @media(max-width: 600px) {\n    select {\n      margin-left: 10px;\n    }\n  }\n</style>\n\n<div class=\"root\">\n  <div style=\"flex:1\">\n    <input \n      id=\"input\" \n      type=\"text\"\n      on-keyup=\"_onKeyUp\"\n      placeholder=\"[[placeholder]]\" />\n  </div>\n  <button on-click=\"_fireSearch\">\n    <slot name=\"button-content\"></slot>\n  </button>\n  <select id=\"select\" on-change=\"_fireBrowse\">\n    <option>Browse</option>\n  </select>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n  .root {\n    display: flex;\n    align-items: center;\n  }\n  input {\n    width: 100%;\n    box-sizing: border-box;\n    padding: 0 5px;\n    background: white;\n    border: none;\n    height: 45px;\n    outline: none;\n    @apply --fin-search-box-input;\n  }\n  button {\n    background: white;\n    height: 45px;\n    border: none;\n    margin: 0;\n    padding: 0 10px;\n    border-radius: 0;\n    cursor: pointer;\n    @apply --fin-search-box-button;\n  }\n  select {\n    outline-offset: 1px;\n    margin-left: 20px;\n    border: none;\n    background-color: white;\n    border-radius: 0;\n    height: 45px;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 10px 6px;\n    background-repeat: no-repeat;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n    @apply --fin-search-box-select;\n  }\n  @media(max-width: 600px) {\n    select {\n      margin-left: 10px;\n    }\n  }\n</style>\n\n<div class=\"root\">\n  <div style=\"flex:1\">\n    <input \n      id=\"input\" \n      type=\"text\"\n      on-keyup=\"_onKeyUp\"\n      placeholder=\"[[placeholder]]\" />\n  </div>\n  <button on-click=\"_fireSearch\">\n    <slot name=\"button-content\"></slot>\n  </button>\n  <select id=\"select\" on-change=\"_fireBrowse\">\n    <option>Browse</option>\n  </select>\n</div>";
 
 /***/ }),
 /* 274 */
 /***/ (function(module, exports) {
 
-module.exports = "<style>\n  :host {\n    display: inline-block;\n  }\n\n  .root {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .root:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .root > div  {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<div class=\"root\" style=\"background-image:url('[[collection.thumbnail]]')\" data-id$=\"[[collection.id]]\">\n  <div>[[collection.name]]</div>\n</div>\n";
+module.exports = "<style>\n  :host {\n    display: inline-block;\n    margin: 15px;\n    outline : 0;\n  }\n\n  :host(:hover), :host(:focus)  {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-secondary-color);\n  }\n\n  .root {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    position: relative;\n  }\n\n  .root > div  {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<div class=\"root\" style=\"background-image:url('[[collection.thumbnail]]')\" data-id$=\"[[collection.id]]\">\n  <div>[[collection.name]]</div>\n</div>\n";
 
 /***/ }),
 /* 275 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <app-collection-card \n        data-id$=\"[[item.id]]\" \n        collection=\"[[item]]\" \n        on-click=\"_onCollectionClicked\">\n      </app-collection-card>\n    </template>\n  </div>\n</div>\n\n<div class=\"text-container\">\n  \n  <h1>About Digital Collections</h1>\n\n  <p>The UC Davis Digital Collections is a locally developed digital repository that was designed to store and manage the digital assets of UC Davis. These Digital Collections are intended to increase access to previously undiscoverable digital assets held by the University Library.</p>\n  \n  <p>Initially launched in 2018, the repository currently stores 14,000 digital assets.</p>\n  \n  <h2>Platform</h2>\n  \n  <p>The Digital Asset Management System is built on the Fedora Linked Data Platform. Custom services are implemented using a Fedora (APIX) extension method as a general methodology. The User Interface was built with web-components anticipating a need for UI flexibility as the digital collection grows. For a more detailed explanation of the development, see our <a href=\"https://github.com/UCDavisLibrary/fin-server/issues/9\">Fin Server Overview.</a>\n  </p>\n  \n  <h2>Contact</h2>\n  <ul>\n    <li><a href=\"mailto:eanebeker@ucdavis.edu\">Eric A Nebeker - Digital Assets Specialist</a></li>\n  </ul>\n  \n  <h2>Implementation Team</h2>\n  <ul>\n    <li>Quinn Hart - Team Lead</li>\n    <li>Justin Merz - Lead Developer</li>\n    <li>Kimmy Hescock - User Experience Designer</li>\n  </ul>\n  \n  <h2>Members of the DAMS Steering Committee</h2>\n  <ul>\n    <li>Kevin Miller</li>\n    <li>Neil Weingarten</li>\n    <li>Amy Azzarito</li>\n    <li>Peter Brantley</li>\n    <li>Carl Stahmer</li>\n    <li>Dale Snapp</li>\n    <li>Robert Heyer-Gray</li>\n    <li>Vessela Ensberg</li>\n    <li>Xiaoli Li</li>\n  </ul>\n  \n  <p>The UC Davis Library DAMS was a project of the Library's <a href=\"https://www.library.ucdavis.edu/service/online-strategy-2/\">Online Strategy team.</a>\n  </p>\n\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>\n";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    position: relative;\n    background: white;\n  }\n\n  #hero {\n    min-height: 750px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background-image: url('/images/default-home-background.jpg');\n    background-size: cover;\n    background-position: center;\n  }\n\n  h2 {\n    margin: 0px;\n  }\n\n  input {\n    border: none;\n    padding: 15px;\n    display: block;\n    width: 90%;\n  }\n\n  .gradient {\n    opacity: .7;\n    position: absolute;\n    top : 0;\n    left : 0;\n    right : 0;\n    bottom: 0;\n    background-image: url('/images/home-gradient.png');\n    background-size: cover;\n    background-position: center;\n  }\n\n  img {\n    height: 50px;\n    top: 25px;\n    left: 25px;\n    position: absolute;\n    z-index: 5;\n  }\n\n  .container {\n    background: white;\n    padding: 25px 10px;\n  }\n\n  .search-box {\n    padding: 0 10px;\n    color: var(--inverse-text-color);\n    z-index: 5;\n  }\n\n  .search-box .main {\n    background-color: rgba(0, 38, 85, .7);\n    padding: 15px;\n  }\n\n  .search-box .footer {\n    background-color: rgba(51, 83, 121, .7);\n    padding: 15px;\n  }\n\n  .collection-outer {\n    display: flex;\n    justify-content: center;\n  }\n\n  .collections {\n    max-width: var(--max-width);\n    display: flex;\n    flex-flow: row wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 75px 20px;\n    border-bottom: 1px solid var(--light-background-color);\n  }\n\n  .collections > div {\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    height: 320px;\n    width: 320px;\n    margin: 15px;\n    position: relative;\n  }\n\n  .collections > div:hover {\n    cursor: pointer;\n    margin: 13px;\n    border: 2px solid var(--default-primary-color);\n  }\n\n  .collections > div > div {\n    position: absolute;\n    padding: 15px;\n    color: var(--default-secondary-color);\n    background-color: rgba(0, 38, 85, .7);\n    left : 0;\n    bottom : 25px;\n    font-weight: var(--font-weight-heavy);\n  }\n</style>\n\n<img src=\"/images/ucd-lib-logo-white.png\" />\n<div id=\"hero\">\n  <div class=\"gradient\"></div>\n  <div class=\"search-box\">\n    <div class=\"main\">\n      <h2>UC Davis Library Digital Collections</h2>\n      <div style=\"margin-bottom: 15px\">\n        Explore digitized items from the \n        <a class=\"gold\" href=\"https://library.ucdavis.edu\" target=\"_blank\">UC Davis Library</a> \n        collections.\n      </div>\n      <fin-search-box \n        id=\"searchBox\" \n        on-search=\"_onSearch\" \n        on-browse=\"_onBrowse\"\n        placeholder=\"Search Keyword(s)\">\n        <iron-icon icon=\"fin:search\" slot=\"button-content\"></iron-icon>\n      </fin-search-box>\n    </div>\n    <div class=\"footer\">\n      Featured Image: <a class=\"italic\">foo bar</a>, <a class=\"italic\">baz</a>\n    </div>\n  </div>\n\n</div>\n<app-header-colorbar height=\"15\"></app-header-colorbar>\n\n<div class=\"collection-outer\">\n  <div class=\"collections\">\n    <template is=\"dom-repeat\" items=\"[[highlightedCollections]]\">\n      <app-collection-card \n        data-id$=\"[[item.id]]\" \n        collection=\"[[item]]\" \n        on-keyup=\"_onCollectionClicked\"\n        on-click=\"_onCollectionClicked\">\n      </app-collection-card>\n    </template>\n  </div>\n</div>\n\n<div class=\"text-container\">\n  \n  <h1>About Digital Collections</h1>\n\n  <p>The UC Davis Digital Collections is a locally developed digital repository that was designed to store and manage the digital assets of UC Davis. These Digital Collections are intended to increase access to previously undiscoverable digital assets held by the University Library.</p>\n  \n  <p>Initially launched in 2018, the repository currently stores 14,000 digital assets.</p>\n  \n  <h2>Platform</h2>\n  \n  <p>The Digital Asset Management System is built on the Fedora Linked Data Platform. Custom services are implemented using a Fedora (APIX) extension method as a general methodology. The User Interface was built with web-components anticipating a need for UI flexibility as the digital collection grows. For a more detailed explanation of the development, see our <a href=\"https://github.com/UCDavisLibrary/fin-server/issues/9\">Fin Server Overview.</a>\n  </p>\n  \n  <h2>Contact</h2>\n  <ul>\n    <li><a href=\"mailto:eanebeker@ucdavis.edu\">Eric A Nebeker - Digital Assets Specialist</a></li>\n  </ul>\n  \n  <h2>Implementation Team</h2>\n  <ul>\n    <li>Quinn Hart - Team Lead</li>\n    <li>Justin Merz - Lead Developer</li>\n    <li>Kimmy Hescock - User Experience Designer</li>\n  </ul>\n  \n  <h2>Members of the DAMS Steering Committee</h2>\n  <ul>\n    <li>Kevin Miller</li>\n    <li>Neil Weingarten</li>\n    <li>Amy Azzarito</li>\n    <li>Peter Brantley</li>\n    <li>Carl Stahmer</li>\n    <li>Dale Snapp</li>\n    <li>Robert Heyer-Gray</li>\n    <li>Vessela Ensberg</li>\n    <li>Xiaoli Li</li>\n  </ul>\n  \n  <p>The UC Davis Library DAMS was a project of the Library's <a href=\"https://www.library.ucdavis.edu/service/online-strategy-2/\">Online Strategy team.</a>\n  </p>\n\n</div>\n<app-header-colorbar height=\"15\" flipped></app-header-colorbar>\n";
 
 /***/ }),
 /* 276 */
@@ -60514,8 +60519,8 @@ IronA11yAnnouncer.requestAvailability = function() {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_control_state_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_a11y_keys_behavior_iron_a11y_keys_behavior_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_control_state_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_polymer_element_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -61071,7 +61076,7 @@ const PaperInputBehavior = [
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_typography_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_typography_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_input_addon_behavior_js__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
@@ -61150,8 +61155,8 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_default_theme_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_typography_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_default_theme_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_styles_typography_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_utils_case_map_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
@@ -61732,8 +61737,8 @@ Object(__WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_typography_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_styles_typography_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_input_addon_behavior_js__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 
@@ -61893,7 +61898,7 @@ class AppSearchHeader extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer
    */
   _onSearch(e) {
     let searchDoc = this._getCurrentSearchDocument();
-    this._setTextFilter(searchDoc);
+    this._setTextFilter(searchDoc, e.detail);
     this._searchRecords(searchDoc);
   }
 
@@ -62086,7 +62091,7 @@ customElements.define('app-search-breadcrumb', AppSearchBreadcrumb);
 /* 289 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\" on-keyup=\"_onSearchClicked\" tabindex=\"0\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\" tabindex=\"0\">[[collection.name]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">[[record.name]]</div>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    height: 36px;\n    background-image: url('/images/header-colorbar.png');\n    background-size: cover;\n    background-position: left center;\n    color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n    height: 36px;\n    padding: 0 15px;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .layout > div {\n    margin: 0 5px;\n  }\n\n  iron-icon {\n    cursor: pointer;\n  }\n\n  a {\n    cursor: pointer;\n  }\n  a:focus {\n    outline-color: var(--default-primary-color);\n  }\n</style>\n\n<div class=\"layout\" hidden$=\"[[!selected]]\" id=\"layout\">\n  <div><a on-click=\"_onSearchClicked\" on-keyup=\"_onSearchClicked\" tabindex=\"0\">Search</a></div>\n  \n  <div hidden$=\"[[!collection]]\">&gt;</div>\n  <div hidden$=\"[[!collection]]\"><a on-click=\"_onCollectionClicked\" tabindex=\"0\">[[collection.name]]</a></div>\n\n  <div hidden$=\"[[!record]]\">&gt;</div>\n  <div hidden$=\"[[!record]]\">[[record.name]]</div>\n</div>";
 
 /***/ }),
 /* 290 */
@@ -62104,8 +62109,11 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__ = __webpack_require__(300);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_MediaInterface__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__interfaces_MediaInterface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_search_results_panel_html__ = __webpack_require__(300);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_search_results_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__app_search_results_panel_html__);
+
 
 
 
@@ -62119,7 +62127,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 
 
 class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polymer_element__["a" /* Element */])
-      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_5__interfaces_RecordInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface___default.a) {
+      .with(EventInterface, __WEBPACK_IMPORTED_MODULE_5__interfaces_RecordInterface___default.a, __WEBPACK_IMPORTED_MODULE_6__interfaces_AppStateInterface___default.a, __WEBPACK_IMPORTED_MODULE_7__interfaces_CollectionInterface___default.a, __WEBPACK_IMPORTED_MODULE_8__interfaces_MediaInterface___default.a) {
 
   static get properties() {
     return {
@@ -62179,7 +62187,7 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
   }
 
   static get template() {
-    return __WEBPACK_IMPORTED_MODULE_8__app_search_results_panel_html___default.a;
+    return __WEBPACK_IMPORTED_MODULE_9__app_search_results_panel_html___default.a;
   }
 
   constructor() {
@@ -62350,16 +62358,20 @@ class AppSearchResultsPanel extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_p
    */
   _onCollectionSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this.collectionResults = e.payload;
+    this.collectionResults = e.payload.results.map(c => {
+      c.thumbnail = this._getImgUrl(c.workExample, 320, '');
+      return c;
+    });
   }
 
   /**
    * @method _onCollectionClicked
    * @description bound to app-collection-card click event
    * 
-   * @param {Object} e click event
+   * @param {Object} e click|keyup event
    */
   _onCollectionClicked(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
     let id = e.currentTarget.collection.id
 
     let searchDoc = this._getEmptySearchDocument();
@@ -62516,6 +62528,7 @@ class CorkPagination extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
   }
 
   _selectPage(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
     var page = parseInt(e.currentTarget.innerHTML);
 
     this._fireNav({
@@ -62563,7 +62576,7 @@ window.customElements.define('cork-pagination', CorkPagination);
 /* 292 */
 /***/ (function(module, exports) {
 
-module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #root {\n    display: flex;\n    align-items: center;\n  }\n\n  .ellipsis {\n    display: none;\n  }\n\n  paper-icon-button {\n    color: var(--cork-color, --default-primary-color);\n  }\n  paper-icon-button[disabled] {\n     color: var(--cork-disabled-color, var(--disabled-color, #ccc));\n  }\n\n  a {\n    color: var(--cork-color, --default-primary-color);\n    cursor: pointer;\n    text-align: center;\n    min-width: 20px;\n    border-radius: 25px;\n    display: inline-block;\n    padding: 5px;\n    margin: 0 3px;\n    font-size: 14px;\n    line-height: 20px;\n  }\n\n  a:hover {\n    background: var(--cork-background-color-light, var(--light-background-color, #eee));\n  }\n\n  a[selected] {\n    background: var(--cork-background-color, var(--medium-background-color, #ccc));\n    color: white;\n  }\n\n  [hidden] {\n    display: none;\n  }\n\n  .text-display {\n    font-style: italic;\n  }\n</style>\n\n<div id=\"root\">\n  <paper-icon-button disabled$=\"[[firstPage]]\" icon=\"arrow-back\" on-click=\"previous\"></paper-icon-button>\n\n  <div style=\"flex:1\"></div>\n\n  <div hidden$=\"[[loading]]\">\n    <div hidden$=\"[[!textMode]]\" class=\"text-display\">[[textDisplay]]</div>\n  </div>\n\n  <div hidden$=\"[[textMode]]\">\n    <a selected$=\"[[firstPage]]\" on-click=\"_selectPage\">1</a>\n    <a id=\"startEllipsis\" class=\"ellipsis\" on-click=\"previousSection\">...</a>\n\n    <template is=\"dom-repeat\" items=\"[[pages]]\">\n      <a selected$=\"[[item.selected]]\" on-click=\"_selectPage\">[[item.index]]</a>\n    </template>\n\n    <a id=\"stopEllipsis\" class=\"ellipsis\" on-click=\"nextSection\">...</a>\n    <a id=\"lastPage\" selected$=\"[[lastPage]]\" on-click=\"_selectPage\">[[lastPageIndex]]</a>\n  </div>\n\n  <div style=\"flex:1\"></div>\n\n  <paper-icon-button disabled$=\"[[lastPage]]\" icon=\"arrow-forward\" on-click=\"next\"></paper-icon-button>\n</div>";
+module.exports = "<style>\n  :host {\n    display: block;\n  }\n\n  #root {\n    display: flex;\n    align-items: center;\n  }\n\n  .ellipsis {\n    display: none;\n  }\n\n  paper-icon-button {\n    color: var(--cork-color, --default-primary-color);\n    border: 2px solid transparent;\n    border-radius: 20px;\n  }\n  paper-icon-button[disabled] {\n     color: var(--cork-disabled-color, var(--disabled-color, #ccc));\n  }\n\n  a {\n    color: var(--cork-color, --default-primary-color);\n    cursor: pointer;\n    text-align: center;\n    min-width: 20px;\n    border-radius: 25px;\n    display: inline-block;\n    padding: 5px;\n    margin: 0 3px;\n    font-size: 14px;\n    line-height: 20px;\n    border: 2px solid transparent;\n  }\n\n  a:hover {\n    background: var(--cork-background-color-light, var(--light-background-color, #eee));\n  }\n\n  a[selected] {\n    background: var(--cork-background-color, var(--medium-background-color, #ccc));\n    color: white;\n  }\n\n  a:focus, paper-icon-button:focus {\n    outline: none;\n    border : 2px dotted var(--default-secondary-color);\n  }\n\n  [hidden] {\n    display: none;\n  }\n\n  .text-display {\n    font-style: italic;\n  }\n</style>\n\n<div id=\"root\">\n  <paper-icon-button tabindex=\"0\" disabled$=\"[[firstPage]]\" icon=\"arrow-back\" on-click=\"previous\"></paper-icon-button>\n\n  <div style=\"flex:1\"></div>\n\n  <div hidden$=\"[[loading]]\">\n    <div hidden$=\"[[!textMode]]\" class=\"text-display\">[[textDisplay]]</div>\n  </div>\n\n  <div hidden$=\"[[textMode]]\">\n    <a selected$=\"[[firstPage]]\" tabindex=\"0\" on-click=\"_selectPage\" on-keyup=\"_selectPage\">1</a>\n    <a id=\"startEllipsis\" class=\"ellipsis\" tabindex=\"0\" on-click=\"previousSection\" on-keyup=\"_selectPage\">...</a>\n\n    <template is=\"dom-repeat\" items=\"[[pages]]\">\n      <a selected$=\"[[item.selected]]\" tabindex=\"0\" on-click=\"_selectPage\" on-keyup=\"_selectPage\">[[item.index]]</a>\n    </template>\n\n    <a id=\"stopEllipsis\" class=\"ellipsis\" tabindex=\"0\" on-click=\"nextSection\" on-keyup=\"_selectPage\">...</a>\n    <a id=\"lastPage\" selected$=\"[[lastPage]]\" tabindex=\"0\" on-click=\"_selectPage\" on-keyup=\"_selectPage\">[[lastPageIndex]]</a>\n  </div>\n\n  <div style=\"flex:1\"></div>\n\n  <paper-icon-button disabled$=\"[[lastPage]]\" tabindex=\"0\" icon=\"arrow-forward\" on-click=\"next\"></paper-icon-button>\n</div>";
 
 /***/ }),
 /* 293 */
@@ -62933,7 +62946,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* 300 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    max-width: 1150px;\n  }\n\n  .header {\n    font-size: var(--font-size-sm);\n    display: flex;\n    align-items: center;\n    margin-left: -15px;\n  }\n\n  select {\n    margin-left: 10px;\n    border: 1px solid var(--light-background-color);\n    border-radius: 0;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 16px 16px;\n    background-repeat: no-repeat;\n    background-color: transparent;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n  }\n\n  h3 {\n    border-top: 1px solid var(--light-background-color);\n    margin: 15px 0 0 0;\n    padding: 15px 0 0 0;\n    color: var(--default-primary-color);\n  }\n\n  .masonry {\n    margin: 10px;\n    position: relative;\n  }\n\n  .masonry .item {\n    display: block;\n    position: absolute;\n    /* visibility: hidden; */\n    top : 25px;\n    left: 25px;\n    will-change: top, left;\n    transition: top 500ms ease-out, left 500ms ease-out;\n  }\n\n  .list {\n    margin: 10px;\n  }\n\n  .list .item {\n    padding: 10px;\n    margin-bottom: 15px;\n    background-color: #daaa00;\n    height: 250px;\n  }\n\n  .spacer {\n    height: 20px;\n    border-right: 1px solid var(--light-background-color);\n  }\n\n  .total {\n    font-style: italic; \n    padding-left: 10px;\n  }\n\n  .mobile-total {\n    font-style: italic; \n  }\n\n  .filler {\n    flex: 1;\n  }\n\n  cork-pagination {\n    display: inline-block;\n\n    --cork-color : var(--default-primary-color);\n    --cork-background-color : var(--default-secondary-color);\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n    margin-left: -15px;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  .drawer-toggle[disabled] {\n    color: var(--light-background-color);\n  }\n\n  .header {\n    display : none;\n  }\n\n  .mobile-header .row2 {\n    display: flex;\n    align-items: center;\n  }\n\n  .collections {\n    text-align: center;\n  }\n\n  @media( min-width: 975px ) {\n    .header {\n      display: flex;\n    }\n    .mobile-header {\n      display: none;\n    }\n  }\n</style>\n\n<div class=\"header\">\n  <div class=\"total\">[[total]] results found</div>\n  \n  <div class=\"filler\"></div>\n  \n  <paper-icon-button \n    icon=\"fin:grid\" \n    disabled$=\"[[!isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"masonry\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  <paper-icon-button \n    icon=\"fin:list\" \n    disabled$=\"[[isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"list\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  \n  <div>\n    <select id=\"numPerPage\" on-change=\"_onPageSizeChange\">\n      <option>50</option>\n      <option>20</option>\n      <option>10</option>\n    </select>\n  </div>\n  <div style=\"margin-left: 10px; font-style:italic\">Items per page</div>\n</div>\n\n<div class=\"mobile-header\">\n  <div>\n    <div style=\"display:inline-block\">\n      <button class=\"drawer-toggle\" on-click=\"_onToggleDrawer\">\n        <span>Info / Filters</span>\n        <iron-icon icon=\"add\"></iron-icon>\n      </button>\n    </div>\n  </div>\n\n  <div class=\"row2\">\n    <div class=\"total\">[[total]] results</div>\n\n    <div class=\"filler\"></div>\n    \n    <paper-icon-button \n      icon=\"fin:grid\" \n      disabled$=\"[[!isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"masonry\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    <paper-icon-button \n      icon=\"fin:list\" \n      disabled$=\"[[isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"list\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    \n    <div>\n      <select id=\"numPerPageM\" on-change=\"_onPageSizeChange\">\n        <option>50</option>\n        <option>20</option>\n        <option>10</option>\n      </select>\n    </div>\n    <div style=\"margin-left: 10px; font-style:italic\">per page</div>\n  </div>\n</div>\n\n<div class=\"collections\" hidden$=\"[[!showCollectionResults]]\">\n  <div hidden$=\"[[!collectionResults.length]]\">\n    <h3>Collections</h3>\n    <template is=\"dom-repeat\" items=\"[[collectionResults]]\">\n      <app-collection-card collection=\"[[item]]\" on-click=\"_onCollectionClicked\"></app-collection-card>\n    </template>\n    <h3 hidden$=\"[[!results.length]]\">Items</h3>\n  </div>\n</div>\n\n<div class=\"masonry\" id=\"layout\" hidden$=\"[[isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-grid-result data=\"[[item]]\" class=\"item\"></app-search-grid-result>\n  </template>\n</div>\n\n<div class=\"list\" hidden$=\"[[!isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-list-result data=\"[[item]]\"></app-search-list-result>\n  </template>\n</div>\n\n<div style=\"text-align:center\">\n  <cork-pagination \n    total-results=\"[[total]]\" \n    items-per-page=\"[[numPerPage]]\"\n    current-index=\"[[currentIndex]]\"\n    on-nav=\"_onPaginationNav\">\n  </cork-pagination>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    max-width: 1150px;\n  }\n\n  .header {\n    font-size: var(--font-size-sm);\n    display: flex;\n    align-items: center;\n    margin-left: -15px;\n  }\n\n  select {\n    margin-left: 10px;\n    border: 1px solid var(--light-background-color);\n    border-radius: 0;\n    -webkit-appearance: none;\n    -webkit-border-radius: 0px;\n    padding: 5px 30px 5px 10px;\n    background-position: right 10px center;\n    background-size: 16px 16px;\n    background-repeat: no-repeat;\n    background-color: transparent;\n    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');\n  }\n\n  h3 {\n    border-top: 1px solid var(--light-background-color);\n    margin: 15px 0 0 0;\n    padding: 15px 0 0 0;\n    color: var(--default-primary-color);\n  }\n\n  .masonry {\n    margin: 10px;\n    position: relative;\n  }\n\n  .masonry .item {\n    display: block;\n    position: absolute;\n    /* visibility: hidden; */\n    top : 25px;\n    left: 25px;\n    will-change: top, left;\n    transition: top 500ms ease-out, left 500ms ease-out;\n  }\n\n  .list {\n    margin: 10px;\n  }\n\n  .list .item {\n    padding: 10px;\n    margin-bottom: 15px;\n    background-color: #daaa00;\n    height: 250px;\n  }\n\n  .spacer {\n    height: 20px;\n    border-right: 1px solid var(--light-background-color);\n  }\n\n  .total {\n    font-style: italic; \n    padding-left: 10px;\n  }\n\n  .mobile-total {\n    font-style: italic; \n  }\n\n  .filler {\n    flex: 1;\n  }\n\n  cork-pagination {\n    display: inline-block;\n\n    --cork-color : var(--default-primary-color);\n    --cork-background-color : var(--default-secondary-color);\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n    margin-left: -15px;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  .drawer-toggle[disabled] {\n    color: var(--light-background-color);\n  }\n\n  .header {\n    display : none;\n  }\n\n  .mobile-header .row2 {\n    display: flex;\n    align-items: center;\n  }\n\n  .collections {\n    text-align: center;\n  }\n\n  @media( min-width: 975px ) {\n    .header {\n      display: flex;\n    }\n    .mobile-header {\n      display: none;\n    }\n  }\n</style>\n\n<div class=\"header\">\n  <div class=\"total\">[[total]] results found</div>\n  \n  <div class=\"filler\"></div>\n  \n  <paper-icon-button \n    noink\n    icon=\"fin:grid\" \n    disabled$=\"[[!isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"masonry\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  <paper-icon-button \n    noink\n    icon=\"fin:list\" \n    disabled$=\"[[isListLayout]]\"\n    on-click=\"_onLayoutToggle\" \n    type=\"list\">\n  </paper-icon-button>\n  <div class=\"spacer\"></div>\n  \n  <div>\n    <select id=\"numPerPage\" on-change=\"_onPageSizeChange\">\n      <option>50</option>\n      <option>20</option>\n      <option>10</option>\n    </select>\n  </div>\n  <div style=\"margin-left: 10px; font-style:italic\">Items per page</div>\n</div>\n\n<div class=\"mobile-header\">\n  <div>\n    <div style=\"display:inline-block\">\n      <button class=\"drawer-toggle\" on-click=\"_onToggleDrawer\">\n        <span>Info / Filters</span>\n        <iron-icon icon=\"add\"></iron-icon>\n      </button>\n    </div>\n  </div>\n\n  <div class=\"row2\">\n    <div class=\"total\">[[total]] results</div>\n\n    <div class=\"filler\"></div>\n    \n    <paper-icon-button \n      noink\n      icon=\"fin:grid\" \n      disabled$=\"[[!isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"masonry\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    <paper-icon-button\n      noink\n      icon=\"fin:list\" \n      disabled$=\"[[isListLayout]]\"\n      on-click=\"_onLayoutToggle\" \n      type=\"list\">\n    </paper-icon-button>\n    <div class=\"spacer\"></div>\n    \n    <div>\n      <select id=\"numPerPageM\" on-change=\"_onPageSizeChange\">\n        <option>50</option>\n        <option>20</option>\n        <option>10</option>\n      </select>\n    </div>\n    <div style=\"margin-left: 10px; font-style:italic\">per page</div>\n  </div>\n</div>\n\n<div class=\"collections\" hidden$=\"[[!showCollectionResults]]\">\n  <div hidden$=\"[[!collectionResults.length]]\">\n    <h3>Collections</h3>\n    <template is=\"dom-repeat\" items=\"[[collectionResults]]\">\n      <app-collection-card \n        collection=\"[[item]]\" \n        on-keyup=\"_onCollectionClicked\"\n        on-click=\"_onCollectionClicked\">\n      </app-collection-card>\n    </template>\n    <h3 hidden$=\"[[!results.length]]\">Items</h3>\n  </div>\n</div>\n\n<div class=\"masonry\" id=\"layout\" hidden$=\"[[isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-grid-result data=\"[[item]]\" class=\"item\"></app-search-grid-result>\n  </template>\n</div>\n\n<div class=\"list\" hidden$=\"[[!isListLayout]]\">\n  <template is=\"dom-repeat\" items=\"[[results]]\">\n    <app-search-list-result data=\"[[item]]\"></app-search-list-result>\n  </template>\n</div>\n\n<div style=\"text-align:center\">\n  <cork-pagination \n    total-results=\"[[total]]\" \n    items-per-page=\"[[numPerPage]]\"\n    current-index=\"[[currentIndex]]\"\n    on-nav=\"_onPaginationNav\">\n  </cork-pagination>\n</div>";
 
 /***/ }),
 /* 301 */
@@ -62951,7 +62964,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_CollectionInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__ = __webpack_require__(324);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__app_filters_panel_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_config___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__lib_config__);
 
 
@@ -63305,7 +63318,7 @@ const IronMultiSelectableBehavior = [
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__iron_iconset_svg_iron_iconset_svg_js__ = __webpack_require__(31);
 
 const $_documentContainer = document.createElement('div');
 $_documentContainer.setAttribute('style', 'display: none;');
@@ -63326,10 +63339,10 @@ document.head.appendChild($_documentContainer);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_control_state_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_behaviors_iron_button_state_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iron_behaviors_iron_control_state_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__iron_flex_layout_iron_flex_layout_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_behaviors_paper_ripple_behavior_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paper_behaviors_paper_ripple_behavior_js__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__polymer_lib_legacy_polymer_dom_js__ = __webpack_require__(5);
 
@@ -63592,7 +63605,7 @@ class AppFilterPanel extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_polyme
    */
   _onFilterClicked(e) {
     if( e.type === 'keyup' ) { // from keyboard event
-      if( e.which !== 13 && e.which !== 32 ) return;
+      if( e.which !== 13 ) return;
     }
 
     this._notifyFilterClicked(e.currentTarget.getAttribute('label'));
@@ -64289,7 +64302,7 @@ module.exports = "<style>\n  :host {\n    display: block;\n  }\n  \n  .labels {\
 /* 313 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n\n  .label {\n    cursor: pointer;\n    display: flex;\n    color: var(--default-primary-color);\n    padding: 10px 10px 10px 6px;\n    font-weight: bold;\n    border-left: 4px solid transparent;\n  }\n\n  .label:focus, .label:hover {\n    outline: none;\n    border-left: 4px solid var(--default-secondary-color);\n  }\n\n  .filter {\n    display: flex;\n    cursor: pointer;\n  }\n\n  iron-icon[closed] {\n    transform: rotate(-90deg);\n  }\n\n  iron-icon[icon=\"close\"] {\n    color: var(--default-secondary-color);\n  }\n\n  #filters {\n    overflow-y: auto;\n    max-height: 200px;\n  }\n</style>\n\n<div class=\"label\" on-click=\"_onToggleClicked\" on-keyup=\"_onToggleClicked\" role=\"button\" tabindex=\"0\">\n  <div style=\"flex:1\">[[filter.label]]</div>\n  <iron-icon icon=\"arrow-drop-down\" closed$=\"[[!opened]]\"></iron-icon>\n</div>\n\n<div id=\"activeFilters\" hidden$=\"[[opened]]\">\n  <template is=\"dom-repeat\" items=\"[[selected]]\">\n    <div class=\"filter\" \n      on-click=\"_onFilterClicked\" \n      label$=\"[[item.label]]\"\n      tabindex=\"0\" \n      role=\"button\">\n      <iron-icon icon=\"close\"></iron-icon>\n      <div>[[item.label]]</div>\n    </div>\n  </template>\n</div>\n\n<div id=\"filters\" hidden$=\"[[!opened]]\"></div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n  }\n\n  .label {\n    cursor: pointer;\n    display: flex;\n    color: var(--default-primary-color);\n    padding: 10px 10px 10px 6px;\n    font-weight: bold;\n    border-left: 4px solid transparent;\n  }\n\n  .label:focus, .label:hover {\n    outline: none;\n    border-left: 4px solid var(--default-secondary-color);\n  }\n\n  #activeFilters > div {\n    padding: 4px 5px;\n  }\n\n  .filter {\n    display: flex;\n    cursor: pointer;\n    align-items: center;\n  }\n\n  iron-icon[closed] {\n    transform: rotate(-90deg);\n  }\n\n  iron-icon[icon=\"fin:close\"] {\n    color: var(--default-secondary-color);\n    margin-right: 10px;\n  }\n\n  #filters {\n    overflow-y: auto;\n    max-height: 200px;\n  }\n</style>\n\n<div class=\"label\" on-click=\"_onToggleClicked\" on-keyup=\"_onToggleClicked\" role=\"button\" tabindex=\"0\">\n  <div style=\"flex:1\">[[filter.label]]</div>\n  <iron-icon icon=\"arrow-drop-down\" closed$=\"[[!opened]]\"></iron-icon>\n</div>\n\n<div id=\"activeFilters\" hidden$=\"[[opened]]\">\n  <div hidden$=\"[[!selected.length]]\">\n    <template is=\"dom-repeat\" items=\"[[selected]]\">\n      <div class=\"filter\" \n        on-click=\"_onFilterClicked\"\n        on-keyup=\"_onFilterClicked\" \n        label$=\"[[item.label]]\"\n        tabindex=\"0\" \n        role=\"button\">\n        <iron-icon icon=\"fin:close\"></iron-icon>\n        <div>[[item.label]]</div>\n      </div>\n    </template>\n  </div>\n</div>\n\n<div id=\"filters\" hidden$=\"[[!opened]]\"></div>";
 
 /***/ }),
 /* 314 */
@@ -64660,12 +64673,12 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
       role : {
         type : String,
         value : 'checkbox',
-        reflectToAttribute : true,
+        reflectToAttribute : true
       },
       tabindex : {
         type : Number,
-        value : 0,
-        reflectToAttribute: true
+        computed: '_computeTabIndex(disabled)',
+        reflectToAttribute : true
       }
     };
   }
@@ -64710,6 +64723,14 @@ class AppNormalCheckbox extends __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
     return this.disabled ? 'true' : 'false';
   }
 
+  /**
+   * @method _computeTabIndex
+   * @description Bound to 'disabled' property.  set tabindex value
+   */
+  _computeTabIndex() {
+    return this.disabled ? -1 : 0;
+  }
+
   _getLabel() {
     if( this.labelMap && this.labelMap[this.value] ) {
       return this.labelMap[this.value];
@@ -64741,7 +64762,7 @@ window.customElements.define('app-normal-checkbox', AppNormalCheckbox);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paper_styles_default_theme_js__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_behaviors_paper_checked_element_behavior_js__ = __webpack_require__(319);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__polymer_lib_utils_render_status_js__ = __webpack_require__(39);
@@ -65031,7 +65052,7 @@ Object(__WEBPACK_IMPORTED_MODULE_3__polymer_lib_legacy_polymer_fn_js__["a" /* Po
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polymer_polymer_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iron_checked_element_behavior_iron_checked_element_behavior_js__ = __webpack_require__(320);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paper_inky_focus_behavior_js__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_ripple_behavior_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paper_ripple_behavior_js__ = __webpack_require__(30);
 
 
 
@@ -65191,7 +65212,7 @@ const IronCheckedElementBehavior = [
 /* 321 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    cursor: pointer;\n  }\n\n  :host([disabled]) {\n    cursor: default;\n  }\n\n  iron-icon {\n    display: none;\n    color: var(--default-secondary-color);\n  }\n\n  div {\n    user-select: none;\n    display: flex;\n    min-height: 24px;\n    display: flex;\n    align-items: center;\n  }\n\n  span {\n    display: inline-block;\n    padding-top: 3px;\n  }\n\n  div[checked] iron-icon {\n    display: inline-block;\n  }\n\n  div[checked] .value {\n    font-style: italic;\n    font-weight: bold;\n  }\n\n  div[disabled] iron-icon {\n    display: none;\n  }\n\n  div[disabled] .value {\n    font-style: italic;\n    color: var(--gray-text);\n  }\n</style>\n\n<div checked$=\"[[checked]]\" disabled$=\"[[disabled]]\" on-click=\"_onClick\">\n  <iron-icon icon=\"close\"></iron-icon>\n  <span class=\"value\">[[realLabel]]</span>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    cursor: pointer;\n  }\n\n  :host(:focus) {\n    outline: var(--default-outline);\n  }\n\n  :host([disabled]) {\n    cursor: default;\n    outline: none !important;\n  }\n\n  iron-icon {\n    display: none;\n    color: var(--default-secondary-color);\n    min-width: 24px;\n    margin-right: 10px;\n  }\n\n  div {\n    user-select: none;\n    display: flex;\n    min-height: 24px;\n    display: flex;\n    align-items: center;\n  }\n\n  span {\n    display: inline-block;\n    padding-top: 3px;\n  }\n\n  div[checked] iron-icon {\n    display: inline-block;\n  }\n\n  div[checked] .value {\n    font-style: italic;\n    font-weight: bold;\n  }\n\n  div[disabled] iron-icon {\n    display: none;\n  }\n\n  div[disabled] .value {\n    font-style: italic;\n    color: var(--gray-text);\n  }\n</style>\n\n<div checked$=\"[[checked]]\" disabled$=\"[[disabled]]\">\n  <iron-icon icon=\"fin:close\"></iron-icon>\n  <span class=\"value\">[[realLabel]]</span>\n</div>";
 
 /***/ }),
 /* 322 */
@@ -65276,7 +65297,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* 324 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnailUrl]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.name]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-color: var(--light-background-color);\n    position: relative;\n  }\n\n  #filters {\n    margin-left: 10px;\n  }\n\n  h2 {\n    display: none;\n    margin: 15px 10px;\n    color: var(--default-primary-color);\n  }\n\n  app-filter-panel {\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .thumbnail {\n    background-size: cover;\n    background-position: center center;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n\n  .thumbnail-root {\n    position: relative;\n    height: 200px;\n  }\n\n  .label {\n    padding: 10px 0;\n    color: var(--default-primary-color);\n    font-weight: var(--font-weight-heavy);\n  }\n\n  .collection-filter {\n    padding: 4px 5px;\n    border-bottom: 1px solid var(--medium-background-color);\n  }\n\n  .outer-drawer-toggle {\n    position: relative;\n  }\n  .outer-drawer-toggle[spacer] {\n    height: 50px;\n  }\n\n  .drawer-toggle {\n    font-size: var(--font-size-sm);\n    position: absolute;\n    z-index: 15;\n    top : 15px;\n    right: -24px;\n    cursor: pointer;\n    text-transform: uppercase;\n    display: flex;\n    align-items: center;\n    font-weight: var(--font-weight-heavy);\n    color: var(--default-primary-color);\n    background-color: var(--light-background-color);\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n  }\n  .drawer-toggle > span {\n    padding : 0 10px;\n  }\n  .drawer-toggle iron-icon {\n    background-color: var(--default-secondary-color);\n  }\n\n  @media(min-width: 975px) {\n    h2 {\n      display: block;\n    }\n    .outer-drawer-toggle {\n      display: none;\n    }\n  }\n</style>\n\n<h2>Filters</h2>\n\n<div class=\"outer-drawer-toggle\" spacer$=\"[[!collectionMode]]\" on-click=\"_fireToggleDrawer\">\n  <button class=\"drawer-toggle\">\n    <span><span hidden$=\"[[!collectionMode]]\">Info / </span>Filters</span>\n    <iron-icon icon=\"fin:close\"></iron-icon>\n  </button>\n</div>\n<div class=\"thumbnail-root\"  hidden$=\"[[!collectionMode]]\">\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnailUrl]]')\"></div>\n  <div class=\"thumbnail\" style=\"background-image: url('[[selectedCollection.thumbnail]]')\"></div> \n</div>\n\n<paper-tabs \n  noink \n  selected=\"{{selectedTab}}\" \n  attr-for-selected=\"id\" \n  hidden$=\"[[!collectionMode]]\">\n  \n  <paper-tab id=\"info\">Information</paper-tab>\n  <paper-tab id=\"filters\">Filters</paper-tab>\n</paper-tabs>\n\n<iron-pages \n  selected=\"[[selectedTab]]\"   \n  attr-for-selected=\"id\" \n  selected-attribute=\"active\">\n  <div id=\"filters\">\n\n    <div hidden$=\"[[!collectionMode]]\" class=\"label\">Collection</div>\n    <div hidden$=\"[[!collectionMode]]\" class=\"collection-filter\">\n      <app-facet-checkbox \n        type=\"collection\" \n        value=\"[[selectedCollection.name]]\" \n        checked=\"[[collectionMode]]\"\n        on-click=\"_removeCollectionFilter\">\n      </app-facet-checkbox>\n    </div>\n\n    <template is=\"dom-repeat\" items=\"[[facetFilters]]\">\n      <app-filter-panel filter=\"[[item]]\"></app-filter-panel>\n    </template>\n  </div>\n  <app-collection-info-panel id=\"info\"></app-collection-info-panel>\n</iron-pages>\n\n";
 
 /***/ }),
 /* 325 */
@@ -65302,7 +65323,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    background-c
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_RecordInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__interfaces_RecordInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__interfaces_CollectionInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__interfaces_MediaInterface__);
 
 
@@ -65539,7 +65560,7 @@ module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: blo
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_image_viewer_lightbox__ = __webpack_require__(335);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__);
 
 
@@ -66076,7 +66097,7 @@ module.exports = "<style>\n  :host {\n    display: block;\n    background: black
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_image_viewer_nav_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__app_image_viewer_nav_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_MediaInterface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_app_share_btn__ = __webpack_require__(333);
 
@@ -66276,6 +66297,11 @@ class AppImageViewerNav extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polym
   _updateThumbnailContainerPos() {
     // that +1 is a hack, what am I missing !?
     this.$.thumbnailContainer.style.marginLeft = (-1 * this.leftMostThumbnail * (this.totalThumbnailWidth + 1)) + 'px';
+
+    let lastThumb = this.leftMostThumbnail + this.thumbnailsPerFrame;
+    this.thumbnails.forEach((thumbnail, index) => {
+      this.set(`thumbnails.${index}.disabled`, (index < this.leftMostThumbnail || index >= lastThumb));
+    });
   }
 
   /**
@@ -66293,6 +66319,7 @@ class AppImageViewerNav extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polym
         id : record.id,
         position : record.position,
         selected : false,
+        disabled : true,
         src : ''
       }
 
@@ -66367,6 +66394,21 @@ class AppImageViewerNav extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polym
     this.dispatchEvent(new CustomEvent('close'));
   }
 
+  /**
+   * @method setFocus
+   * @description set focus to first clickable element
+   */
+  setFocus() {
+    if( this.singleImage ) {
+      if( !this.breakControls ) this.$.zoomOut1.focus();
+      else this.$.zoomOut2.focus();
+    } else {
+      let firstBtn = this.shadowRoot.querySelector('button');
+      if( firstBtn ) firstBtn.focus();
+    }
+    window.scrollTo(0,0);
+  }
+
 }
 /* unused harmony export default */
 
@@ -66377,7 +66419,7 @@ customElements.define('app-image-viewer-nav', AppImageViewerNav);
 /* 332 */
 /***/ (function(module, exports) {
 
-module.exports = "<style>\n  :host {\n    display: block;\n    background-color: rgba(0, 38, 85, 0.9);\n    padding: 8px;\n  }\n\n  :host(.single) {\n    background-color: transparent;\n  }\n\n  :host(.single) paper-icon-button {\n    background-color: var(--default-primary-color);\n  }\n  :host(.single) app-share-btn {\n    background-color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n  }\n\n  #thumbnails {\n    overflow: hidden;\n    /* (50px width + 10px margin + 4px border) * 8 thumbnails */\n    max-width: 512px;\n  }\n\n  #thumbnails > div {\n    white-space: nowrap;\n    margin-left: 0;\n    will-change: margin-left;\n    transition: margin-left 250ms ease-out;\n  }\n\n  .thumbnail {\n    display: inline-block;\n    width: 50px;\n    height: 50px;\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    margin: 0 5px;\n    border: 2px solid transparent;\n    cursor: pointer;\n  }\n\n  .thumbnail[selected] {\n    border: 2px solid var(--default-secondary-color);\n  }\n\n  paper-icon-button {\n    color: var(--default-secondary-color);\n    min-width: 40px;\n  }\n\n  paper-icon-button[disabled] {\n    color: var(--gray-text);\n    min-width: 40px;\n  }\n</style>\n\n<div class=\"layout\">\n  <div id=\"navLeft\" hidden$=\"[[singleImage]]\">\n    <paper-icon-button icon=\"chevron-left\" disabled$=\"[[!showNavLeft]]\" on-click=\"_pageLeft\"></paper-icon-button>\n  </div>\n  <div id=\"thumbnails\" hidden$=\"[[singleImage]]\">\n    <div id=\"thumbnailContainer\">\n      <template is=\"dom-repeat\" items=\"[[thumbnails]]\">\n        <button \n          class=\"thumbnail\" \n          selected$=\"[[item.selected]]\" \n          style=\"background-image:url([[item.src]])\"\n          media-id$=\"[[item.id]]\"\n          alt$=\"Item #[[item.position]]\"\n          on-click=\"_onThumbnailClicked\">\n        </button>\n      </template>\n\n    </div>\n  </div>\n  <div id=\"navRight\" hidden$=\"[[singleImage]]\">\n    <paper-icon-button icon=\"chevron-right\" disabled$=\"[[!showNavRight]]\" on-click=\"_pageRight\"></paper-icon-button>\n  </div>\n\n  <div style=\"flex:1\"></div>\n  \n  <div hidden$=\"[[breakControls]]\" style=\"white-space: nowrap\">\n    <paper-icon-button icon=\"zoom-out\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomOutClicked\"></paper-icon-button>\n    <paper-icon-button icon=\"zoom-in\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n    <app-share-btn></app-share-btn>\n    <paper-icon-button icon=\"zoom-in\" hidden$=\"[[isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n    <paper-icon-button icon=\"close\" hidden$=\"[[!isLightbox]]\" on-click=\"_onCloseClicked\"></paper-icon-button>\n  </div>\n</div>\n\n<div hidden$=\"[[!breakControls]]\" style=\"text-align: right\">\n  <paper-icon-button icon=\"zoom-out\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomOutClicked\"></paper-icon-button>\n  <paper-icon-button icon=\"zoom-in\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n  <app-share-btn></app-share-btn>\n  <paper-icon-button icon=\"zoom-in\" hidden$=\"[[isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n  <paper-icon-button icon=\"close\" hidden$=\"[[!isLightbox]]\" on-click=\"_onCloseClicked\"></paper-icon-button>\n</div>";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: block;\n    background-color: rgba(0, 38, 85, 0.9);\n    padding: 8px;\n  }\n\n  :host(.single) {\n    background-color: transparent;\n  }\n\n  :host(.single) paper-icon-button {\n    background-color: var(--default-primary-color);\n  }\n  :host(.single) app-share-btn {\n    background-color: var(--default-primary-color);\n  }\n\n  .layout {\n    display: flex;\n    align-items: center;\n  }\n\n  #thumbnails {\n    overflow: hidden;\n    /* (50px width + 10px margin + 4px border) * 8 thumbnails */\n    max-width: 512px;\n  }\n\n  #thumbnails > div {\n    white-space: nowrap;\n    margin-left: 0;\n    will-change: margin-left;\n    transition: margin-left 250ms ease-out;\n  }\n\n  .thumbnail {\n    display: inline-block;\n    width: 50px;\n    height: 50px;\n    background-size: cover;\n    background-repeat: no-repeat;\n    background-position: center center;\n    margin: 0 5px;\n    border: 2px solid transparent;\n    cursor: pointer;\n  }\n\n  .thumbnail[selected] {\n    border: 2px solid var(--default-secondary-color);\n  }\n\n  paper-icon-button {\n    color: var(--default-secondary-color);\n    min-width: 40px;\n  }\n\n  paper-icon-button:focus {\n    border-radius: 0 !important;\n  }\n\n  paper-icon-button[disabled] {\n    color: var(--gray-text);\n    min-width: 40px;\n  }\n</style>\n\n<div class=\"layout\">\n  <div id=\"navLeft\" hidden$=\"[[singleImage]]\">\n    <paper-icon-button noink tabindex=\"0\" icon=\"chevron-left\" disabled$=\"[[!showNavLeft]]\" on-click=\"_pageLeft\"></paper-icon-button>\n  </div>\n  <div id=\"thumbnails\" hidden$=\"[[singleImage]]\">\n    <div id=\"thumbnailContainer\">\n      <template is=\"dom-repeat\" items=\"[[thumbnails]]\">\n        <button \n          class=\"thumbnail\" \n          disabled$=\"[[item.disabled]]\"\n          selected$=\"[[item.selected]]\" \n          style=\"background-image:url([[item.src]])\"\n          media-id$=\"[[item.id]]\"\n          alt$=\"Page #[[item.position]]\"\n          on-click=\"_onThumbnailClicked\">\n        </button>\n      </template>\n\n    </div>\n  </div>\n  <div id=\"navRight\" hidden$=\"[[singleImage]]\">\n    <paper-icon-button noink tabindex=\"0\"  icon=\"chevron-right\" disabled$=\"[[!showNavRight]]\" on-click=\"_pageRight\"></paper-icon-button>\n  </div>\n\n  <div style=\"flex:1\"></div>\n  \n  <div hidden$=\"[[breakControls]]\" style=\"white-space: nowrap\">\n    <paper-icon-button id=\"zoomOut1\" noink tabindex=\"0\"  icon=\"zoom-out\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomOutClicked\"></paper-icon-button>\n    <paper-icon-button noink icon=\"zoom-in\" tabindex=\"0\"  hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n    <app-share-btn></app-share-btn>\n    <paper-icon-button noink icon=\"zoom-in\" tabindex=\"0\"  hidden$=\"[[isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n    <paper-icon-button noink icon=\"fin:close\" tabindex=\"0\"  hidden$=\"[[!isLightbox]]\" on-click=\"_onCloseClicked\"></paper-icon-button>\n  </div>\n</div>\n\n<div hidden$=\"[[!breakControls]]\" style=\"text-align: right\">\n  <paper-icon-button id=\"zoomOut2\" noink tabindex=\"0\"  icon=\"zoom-out\" hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomOutClicked\"></paper-icon-button>\n  <paper-icon-button noink icon=\"zoom-in\" tabindex=\"0\"  hidden$=\"[[!isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n  <app-share-btn></app-share-btn>\n  <paper-icon-button noink icon=\"zoom-in\" tabindex=\"0\"  hidden$=\"[[isLightbox]]\" on-click=\"_onZoomInClicked\"></paper-icon-button>\n  <paper-icon-button noink icon=\"fin:close\" tabindex=\"0\"  hidden$=\"[[!isLightbox]]\" on-click=\"_onCloseClicked\"></paper-icon-button>\n</div>";
 
 /***/ }),
 /* 333 */
@@ -66425,6 +66467,13 @@ class AppShareBtn extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
     window.addEventListener('click', () => {
       if( this.visible ) this.hide();
     });
+    this.addEventListener('keyup', (e) => {
+      if( this.visible && e.which === 27 ) {
+        this.hide();
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
 
     this.$.popup.addEventListener('click', (e) => {
       e.preventDefault();
@@ -66454,6 +66503,7 @@ class AppShareBtn extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
   _onBtnClicked(e) {
     this.visible = !this.visible;
     this.$.popup.style.display = this.visible ? 'block' : 'none';
+    setTimeout(() => this.$.facebook.focus(), 100);
     e.preventDefault();
     e.stopPropagation();
   }
@@ -66465,6 +66515,8 @@ class AppShareBtn extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_pol
    * @param {Object} e HTML click event 
    */
   _onSocialIconClick(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
+    debugger;
     let id = e.currentTarget.id;
     let url = BASE_SHARE_LINKS[id]+encodeURIComponent(window.location.href);
     window.open(url, '_blank', 'height=400,width=500');
@@ -66498,7 +66550,7 @@ customElements.define('app-share-btn', AppShareBtn);
 /* 334 */
 /***/ (function(module, exports) {
 
-module.exports = "<style>\n  :host {\n    display: inline-block;\n    position: relative;\n  }\n\n  #popup {\n    display: none;\n    background: white;\n    padding: 10px;\n    position: absolute;\n    bottom: 70px;\n    right: -20px;\n  }\n\n  .layout {\n    display: flex;\n    margin-bottom: 5px;\n  }\n\n  input {\n    font-size: var(--font-size);\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n  }\n\n  #link {\n    width: 100%;\n    border-top: 1px solid var(--medium-background-color);\n    border-left: 1px solid var(--medium-background-color);\n    border-bottom: 1px solid var(--medium-background-color);\n    box-sizing: border-box;\n  }\n\n  .social {\n    margin: 8px;\n    display: inline-block;\n    cursor: pointer;\n    height: 40px;\n    width: 40px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  #main {\n    color: var(--default-secondary-color);\n  }\n\n  .arrow-down {\n    position: absolute;\n    width: 0; \n    height: 0; \n    border-left: 20px solid transparent;\n    border-right: 20px solid transparent;\n    border-top: 20px solid white;\n    bottom: -20px;\n    right: 20px;\n  }\n</style>\n\n\n<div id=\"popup\">\n  <div class=\"layout\">\n    <img id=\"facebook\" src=\"/images/social-icons/icon-facebook.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n    <img id=\"twitter\" src=\"/images/social-icons/icon-twitter.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n    <img id=\"google\" src=\"/images/social-icons/icon-googleplus.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n    <img id=\"pinterest\" src=\"/images/social-icons/icon-pinterest.svg\" class=\"social\" on-click=\"_onSocialIconClick\" />\n  </div>\n  <div>\n    <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n      <div style=\"flex:1\">\n        <input id=\"link\" type=\"text\" />\n      </div>\n      <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n        <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n      </button>\n    </div>\n  </div>\n  <div class=\"arrow-down\"></div>\n</div>\n\n<paper-icon-button id=\"main\" icon=\"social:share\" on-click=\"_onBtnClicked\"></paper-icon-button>\n\n";
+module.exports = "<style include=\"shared-styles\">\n  :host {\n    display: inline-block;\n    position: relative;\n  }\n\n  #popup {\n    display: none;\n    background: white;\n    padding: 10px;\n    position: absolute;\n    bottom: 70px;\n    right: -20px;\n  }\n\n  .layout {\n    display: flex;\n    margin-bottom: 5px;\n  }\n\n  input {\n    font-size: var(--font-size);\n    padding: 0 0 0 5px;\n    display: block;\n    border: none;\n    height: 38px;\n    outline: none;\n  }\n\n  #link {\n    width: 100%;\n    border-top: 1px solid var(--medium-background-color);\n    border-left: 1px solid var(--medium-background-color);\n    border-bottom: 1px solid var(--medium-background-color);\n    box-sizing: border-box;\n  }\n\n  .social {\n    margin: 8px;\n    display: inline-block;\n    cursor: pointer;\n    height: 40px;\n    width: 40px;\n    border: 2px solid transparent;\n    outline: none;\n  }\n  .social:focus {\n    border: var(--default-outline);\n    border-radius: 20px;\n  }\n\n  .copyButton {\n    white-space: nowrap;\n    height: 38px;\n    text-transform: uppercase;\n    font-size: var(--font-size-sm);\n    font-weight: var(--font-weight-heavy);\n    background-color: var(--default-secondary-color);\n    color: var(--default-primary-color);\n    border-radius: 0;\n    border: none;\n    cursor: pointer;\n  }\n  .copyButton[active] {\n    text-align: center;\n    background-color: var(--default-primary-color);\n    color: var(--default-secondary-color);\n  }\n  .copyButton[active] span {\n    display: none;\n  }\n\n  #main {\n    color: var(--default-secondary-color);\n  }\n\n  .arrow-down {\n    position: absolute;\n    width: 0; \n    height: 0; \n    border-left: 20px solid transparent;\n    border-right: 20px solid transparent;\n    border-top: 20px solid white;\n    bottom: -20px;\n    right: 20px;\n  }\n\n  paper-icon-button:focus {\n    border-radius: 0 !important;\n  }\n</style>\n\n\n<div id=\"popup\">\n  <div class=\"layout\">\n    <img id=\"facebook\" \n      role=\"button\" \n      tabindex=\"0\" \n      src=\"/images/social-icons/icon-facebook.svg\" \n      class=\"social\" \n      on-click=\"_onSocialIconClick\"\n      on-keyup=\"_onSocialIconClick\" />\n    <img id=\"twitter\" \n      role=\"button\" \n      tabindex=\"0\" \n      src=\"/images/social-icons/icon-twitter.svg\" \n      class=\"social\" \n      on-click=\"_onSocialIconClick\"\n      on-keyup=\"_onSocialIconClick\" />\n    <img id=\"google\" \n      role=\"button\" \n      tabindex=\"0\" \n      src=\"/images/social-icons/icon-googleplus.svg\" \n      class=\"social\" \n      on-click=\"_onSocialIconClick\"\n      on-keyup=\"_onSocialIconClick\" />\n    <img id=\"pinterest\" \n      role=\"button\" \n      tabindex=\"0\" \n      src=\"/images/social-icons/icon-pinterest.svg\" \n      class=\"social\" \n      on-click=\"_onSocialIconClick\"\n      on-keyup=\"_onSocialIconClick\" />\n  </div>\n  <div>\n    <div style=\"display: flex; align-items: center\" class=\"section bordered\">\n      <div style=\"flex:1\">\n        <input id=\"link\" type=\"text\" />\n      </div>\n      <button on-click=\"_copyLink\" id=\"copyButton\" class=\"copyButton\">\n        <iron-icon icon=\"content-copy\" id=\"copyIcon\"></iron-icon>\n      </button>\n    </div>\n  </div>\n  <div class=\"arrow-down\"></div>\n</div>\n\n<paper-icon-button \n  id=\"main\" \n  noink \n  icon=\"social:share\" \n\n  on-click=\"_onBtnClicked\">\n</paper-icon-button>\n\n";
 
 /***/ }),
 /* 335 */
@@ -66515,7 +66567,7 @@ module.exports = "<style>\n  :host {\n    display: inline-block;\n    position: 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_leaflet_dist_leaflet_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_AppStateInterface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_MediaInterface__);
 
 
@@ -66567,6 +66619,10 @@ class AppImageViewer extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
   constructor() {
     super();
     this.active = true;
+
+    window.addEventListener('keyup', (e) => {
+      if( this.visible && e.which === 27 ) this.hide();
+    });
   }
 
   ready() {
@@ -66593,9 +66649,9 @@ class AppImageViewer extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
     this.style.display = 'block';
     this.render();
     document.body.style.overflow = 'hidden';
-    // document.body.style.height = '100vh';
-    // document.body.style.width= '100vw';
     this.visible = true;
+
+    setTimeout(() => this.$.nav.setFocus());
   }
 
   /**
@@ -66604,8 +66660,6 @@ class AppImageViewer extends Mixin(__WEBPACK_IMPORTED_MODULE_0__polymer_polymer_
   async hide() {
     this.style.display = 'none';
     document.body.style.overflow = 'auto';
-    // document.body.style.height = '';
-    // document.body.style.width= '';
     this.visible = false;
   }
 
@@ -66712,7 +66766,7 @@ customElements.define('app-image-viewer-lightbox', AppImageViewer);
 /* 336 */
 /***/ (function(module, exports) {
 
-module.exports = "<style include=\"shared-styles\">\n\n  :host {\n    display: none;\n    position: absolute;\n    z-index: 1000;\n    height: 100vh;\n    width: 100vw;\n    top : 0;\n    left : 0;\n    background-color: black;    \n    animation: show 350ms ease-out;\n  }\n\n  @keyframes show {\n    from {\n      /* top: -100vh; */\n      opacity: 0.5;\n      transform: scale(1.3);\n    }\n    to {\n      /* top: 0; */\n      opacity: 1;\n      transform: scale(1);\n    }\n  }\n\n  #viewer { \n    top : 0;\n    right : 0;\n    bottom : 0;\n    left : 0;\n    position: absolute;\n    background-color: black;\n  }\n\n  paper-spinner-lite {\n    --paper-spinner-color: var(--default-secondary-color);\n  }\n  \n  .spinner-layout {\n    position: absolute;\n    top : 0;\n    right : 0;\n    left : 0;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  app-image-viewer-nav {\n    z-index: 2000;\n    position: absolute;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n</style>\n\n<div id=\"viewer\">\n  <div class=\"spinner-layout\" hidden$=\"[[!loading]]\">\n    <paper-spinner-lite active$=\"[[loading]]\"></paper-spinner-lite>\n  </div>\n</div>\n\n<app-image-viewer-nav \n  is-lightbox\n  on-zoom-in=\"_onZoomInClicked\"\n  on-zoom-out=\"_onZoomOutClicked\"\n  on-close=\"_onCloseClicked\">\n</app-image-viewer-nav>";
+module.exports = "<style include=\"shared-styles\">\n\n  :host {\n    display: none;\n    position: absolute;\n    z-index: 1000;\n    right : 0;\n    bottom : 0;\n    top : 0;\n    left : 0;\n    background-color: black;    \n    animation: show 350ms ease-out;\n  }\n\n  @keyframes show {\n    from {\n      /* top: -100vh; */\n      opacity: 0.5;\n      transform: scale(1.3);\n    }\n    to {\n      /* top: 0; */\n      opacity: 1;\n      transform: scale(1);\n    }\n  }\n\n  #viewer { \n    top : 0;\n    right : 0;\n    bottom : 0;\n    left : 0;\n    position: absolute;\n    background-color: black;\n  }\n\n  paper-spinner-lite {\n    --paper-spinner-color: var(--default-secondary-color);\n  }\n  \n  .spinner-layout {\n    position: absolute;\n    top : 0;\n    right : 0;\n    left : 0;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  app-image-viewer-nav {\n    z-index: 2000;\n    position: absolute;\n    left: 0;\n    right: 0;\n    bottom: 0;\n  }\n</style>\n\n<div id=\"viewer\">\n  <div class=\"spinner-layout\" hidden$=\"[[!loading]]\">\n    <paper-spinner-lite active$=\"[[loading]]\"></paper-spinner-lite>\n  </div>\n</div>\n\n<app-image-viewer-nav \n  id=\"nav\"\n  is-lightbox\n  on-zoom-in=\"_onZoomInClicked\"\n  on-zoom-out=\"_onZoomOutClicked\"\n  on-close=\"_onCloseClicked\">\n</app-image-viewer-nav>";
 
 /***/ }),
 /* 337 */

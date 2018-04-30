@@ -4,13 +4,20 @@
     cursor: pointer;
   }
 
+  :host(:focus) {
+    outline: var(--default-outline);
+  }
+
   :host([disabled]) {
     cursor: default;
+    outline: none !important;
   }
 
   iron-icon {
     display: none;
     color: var(--default-secondary-color);
+    min-width: 24px;
+    margin-right: 10px;
   }
 
   div {
@@ -45,7 +52,7 @@
   }
 </style>
 
-<div checked$="[[checked]]" disabled$="[[disabled]]" on-click="_onClick">
-  <iron-icon icon="close"></iron-icon>
+<div checked$="[[checked]]" disabled$="[[disabled]]">
+  <iron-icon icon="fin:close"></iron-icon>
   <span class="value">[[realLabel]]</span>
 </div>

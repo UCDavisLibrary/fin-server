@@ -34,6 +34,13 @@ export default class AppShareBtn extends Mixin(PolymerElement)
     window.addEventListener('click', () => {
       if( this.visible ) this.hide();
     });
+    this.addEventListener('keyup', (e) => {
+      if( this.visible && e.which === 27 ) {
+        this.hide();
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
 
     this.$.popup.addEventListener('click', (e) => {
       e.preventDefault();
@@ -63,6 +70,7 @@ export default class AppShareBtn extends Mixin(PolymerElement)
   _onBtnClicked(e) {
     this.visible = !this.visible;
     this.$.popup.style.display = this.visible ? 'block' : 'none';
+    setTimeout(() => this.$.facebook.focus(), 100);
     e.preventDefault();
     e.stopPropagation();
   }
@@ -74,6 +82,8 @@ export default class AppShareBtn extends Mixin(PolymerElement)
    * @param {Object} e HTML click event 
    */
   _onSocialIconClick(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
+    debugger;
     let id = e.currentTarget.id;
     let url = BASE_SHARE_LINKS[id]+encodeURIComponent(window.location.href);
     window.open(url, '_blank', 'height=400,width=500');

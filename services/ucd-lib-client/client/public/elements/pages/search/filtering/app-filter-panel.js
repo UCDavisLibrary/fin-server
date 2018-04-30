@@ -110,7 +110,7 @@ export class AppFilterPanel extends PolymerElement {
    */
   _onFilterClicked(e) {
     if( e.type === 'keyup' ) { // from keyboard event
-      if( e.which !== 13 && e.which !== 32 ) return;
+      if( e.which !== 13 ) return;
     }
 
     this._notifyFilterClicked(e.currentTarget.getAttribute('label'));

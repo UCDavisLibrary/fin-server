@@ -49,14 +49,14 @@ class CollectionStore extends BaseStore {
   setSearchLoaded(searchDocument, payload) {
     this._setSearchState({
       state : this.STATE.LOADED,
-      request, payload
+      searchDocument, payload
     })
   }
 
   setSearchError(searchDocument, error) {
     this._setSearchState({
       state : this.STATE.ERROR,
-      request, error
+      searchDocument, error
     })
   }
 

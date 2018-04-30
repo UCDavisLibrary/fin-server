@@ -1,6 +1,14 @@
 <style>
   :host {
     display: inline-block;
+    margin: 15px;
+    outline : 0;
+  }
+
+  :host(:hover), :host(:focus)  {
+    cursor: pointer;
+    margin: 13px;
+    border: 2px solid var(--default-secondary-color);
   }
 
   .root {
@@ -9,14 +17,7 @@
     background-position: center center;
     height: 320px;
     width: 320px;
-    margin: 15px;
     position: relative;
-  }
-
-  .root:hover {
-    cursor: pointer;
-    margin: 13px;
-    border: 2px solid var(--default-primary-color);
   }
 
   .root > div  {

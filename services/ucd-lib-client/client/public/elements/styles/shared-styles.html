@@ -34,10 +34,17 @@
         color            : var(--text-primary-color);
       }
       
-      *:focus {
-        outline-color: var(--default-secondary-color);
-        outline-style: dotted;
-        outline-width: 2px;
+      a:focus, button:focus, select:focus, div:focus {
+        outline: var(--default-outline);
+      }
+
+      paper-icon-button {
+        border: 2px solid transparent;
+      }
+
+      paper-icon-button:focus {
+        border: var(--default-outline);
+        border-radius: 20px;
       }
 
       main {

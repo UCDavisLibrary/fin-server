@@ -61,7 +61,7 @@ class CollectionModel extends BaseModel {
     }
 
     search(searchDocument) {
-      
+      return this.service.search(searchDocument);
     }
 
     /**
@@ -75,6 +75,16 @@ class CollectionModel extends BaseModel {
       if( e.searchDocument.filters.isPartOf ) {
         selected = await this.get(e.searchDocument.filters.isPartOf.value[0]);
       }
+
+      if( !e.searchDocument.filters.isPartOf && e.searchDocument.text ) {
+        if( e.state === 'loading' ) {
+          this.search({text: e.searchDocument.text});
+        }
+        this.emit('show-collection-search-results', true);
+      } else {
+        this.emit('show-collection-search-results', false);
+      }
+
       this.store.setSelectedCollection(selected);
     }
 }

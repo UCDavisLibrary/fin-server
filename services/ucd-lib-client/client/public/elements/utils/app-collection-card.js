@@ -12,6 +12,11 @@ export default class AppCollectionCard extends PolymerElement {
       collection : {
         type : Object,
         value : () => {}
+      },
+      tabindex : {
+        type : Number,
+        value : 0,
+        reflectToAttribute : true
       }
     }
   }

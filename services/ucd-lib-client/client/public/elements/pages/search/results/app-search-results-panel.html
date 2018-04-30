@@ -137,6 +137,7 @@
   <div class="filler"></div>
   
   <paper-icon-button 
+    noink
     icon="fin:grid" 
     disabled$="[[!isListLayout]]"
     on-click="_onLayoutToggle" 
@@ -144,6 +145,7 @@
   </paper-icon-button>
   <div class="spacer"></div>
   <paper-icon-button 
+    noink
     icon="fin:list" 
     disabled$="[[isListLayout]]"
     on-click="_onLayoutToggle" 
@@ -177,13 +179,15 @@
     <div class="filler"></div>
     
     <paper-icon-button 
+      noink
       icon="fin:grid" 
       disabled$="[[!isListLayout]]"
       on-click="_onLayoutToggle" 
       type="masonry">
     </paper-icon-button>
     <div class="spacer"></div>
-    <paper-icon-button 
+    <paper-icon-button
+      noink
       icon="fin:list" 
       disabled$="[[isListLayout]]"
       on-click="_onLayoutToggle" 
@@ -206,7 +210,11 @@
   <div hidden$="[[!collectionResults.length]]">
     <h3>Collections</h3>
     <template is="dom-repeat" items="[[collectionResults]]">
-      <app-collection-card collection="[[item]]" on-click="_onCollectionClicked"></app-collection-card>
+      <app-collection-card 
+        collection="[[item]]" 
+        on-keyup="_onCollectionClicked"
+        on-click="_onCollectionClicked">
+      </app-collection-card>
     </template>
     <h3 hidden$="[[!results.length]]">Items</h3>
   </div>

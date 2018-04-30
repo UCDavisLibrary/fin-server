@@ -310,9 +310,9 @@
     fs-extra "^4.0.2"
     isomorphic-fetch "^2.2.1"
 
-"@ucd-lib/cork-pagination@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-pagination/-/cork-pagination-2.0.0.tgz#3d76cbd5f9c41256327719a1f3eff4f3f745a037"
+"@ucd-lib/cork-pagination@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-pagination/-/cork-pagination-2.0.1.tgz#805a7b365ddaed8deb461bce2ae632c297bbc770"
   dependencies:
     "@polymer/iron-icons" "^3.0.0-pre.1"
     "@polymer/paper-icon-button" "^3.0.0-pre.1"
@@ -326,17 +326,17 @@
     "@polymer/iron-icons" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 
-"@ucd-lib/fin-icons@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-icons/-/fin-icons-0.0.1.tgz#a149f27c9b3191b1fc8a9b2426fd0c9f5b5fb2ab"
+"@ucd-lib/fin-icons@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-icons/-/fin-icons-0.0.2.tgz#0a104bfa696b1ecb03d7204fd231b825d294a985"
   dependencies:
     "@polymer/iron-icon" "^3.0.0-pre.1"
     "@polymer/iron-iconset-svg" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 
-"@ucd-lib/fin-search-box@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-search-box/-/fin-search-box-0.0.6.tgz#cfc0146b16952a28a9bd04e990cfd1fcd15d58f6"
+"@ucd-lib/fin-search-box@0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-search-box/-/fin-search-box-0.0.7.tgz#44ea48145e9d21580e15100d03dfb87114299dd5"
   dependencies:
     "@polymer/polymer" "^3.0.0-pre.1"
 

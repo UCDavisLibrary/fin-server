@@ -1,4 +1,4 @@
-<style>
+<style include="shared-styles">
   :host {
     display: inline-block;
     position: relative;
@@ -24,6 +24,7 @@
     display: block;
     border: none;
     height: 38px;
+    outline: none;
   }
 
   #link {
@@ -40,6 +41,12 @@
     cursor: pointer;
     height: 40px;
     width: 40px;
+    border: 2px solid transparent;
+    outline: none;
+  }
+  .social:focus {
+    border: var(--default-outline);
+    border-radius: 20px;
   }
 
   .copyButton {
@@ -77,15 +84,43 @@
     bottom: -20px;
     right: 20px;
   }
+
+  paper-icon-button:focus {
+    border-radius: 0 !important;
+  }
 </style>
 
 
 <div id="popup">
   <div class="layout">
-    <img id="facebook" src="/images/social-icons/icon-facebook.svg" class="social" on-click="_onSocialIconClick" />
-    <img id="twitter" src="/images/social-icons/icon-twitter.svg" class="social" on-click="_onSocialIconClick" />
-    <img id="google" src="/images/social-icons/icon-googleplus.svg" class="social" on-click="_onSocialIconClick" />
-    <img id="pinterest" src="/images/social-icons/icon-pinterest.svg" class="social" on-click="_onSocialIconClick" />
+    <img id="facebook" 
+      role="button" 
+      tabindex="0" 
+      src="/images/social-icons/icon-facebook.svg" 
+      class="social" 
+      on-click="_onSocialIconClick"
+      on-keyup="_onSocialIconClick" />
+    <img id="twitter" 
+      role="button" 
+      tabindex="0" 
+      src="/images/social-icons/icon-twitter.svg" 
+      class="social" 
+      on-click="_onSocialIconClick"
+      on-keyup="_onSocialIconClick" />
+    <img id="google" 
+      role="button" 
+      tabindex="0" 
+      src="/images/social-icons/icon-googleplus.svg" 
+      class="social" 
+      on-click="_onSocialIconClick"
+      on-keyup="_onSocialIconClick" />
+    <img id="pinterest" 
+      role="button" 
+      tabindex="0" 
+      src="/images/social-icons/icon-pinterest.svg" 
+      class="social" 
+      on-click="_onSocialIconClick"
+      on-keyup="_onSocialIconClick" />
   </div>
   <div>
     <div style="display: flex; align-items: center" class="section bordered">
@@ -100,5 +135,11 @@
   <div class="arrow-down"></div>
 </div>
 
-<paper-icon-button id="main" icon="social:share" on-click="_onBtnClicked"></paper-icon-button>
+<paper-icon-button 
+  id="main" 
+  noink 
+  icon="social:share" 
+
+  on-click="_onBtnClicked">
+</paper-icon-button>
 

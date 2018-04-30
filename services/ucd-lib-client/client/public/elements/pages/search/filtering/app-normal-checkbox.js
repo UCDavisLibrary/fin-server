@@ -47,12 +47,12 @@ export class AppNormalCheckbox extends PolymerElement {
       role : {
         type : String,
         value : 'checkbox',
-        reflectToAttribute : true,
+        reflectToAttribute : true
       },
       tabindex : {
         type : Number,
-        value : 0,
-        reflectToAttribute: true
+        computed: '_computeTabIndex(disabled)',
+        reflectToAttribute : true
       }
     };
   }
@@ -95,6 +95,14 @@ export class AppNormalCheckbox extends PolymerElement {
    */
   _computeAriaDisabled() {
     return this.disabled ? 'true' : 'false';
+  }
+
+  /**
+   * @method _computeTabIndex
+   * @description Bound to 'disabled' property.  set tabindex value
+   */
+  _computeTabIndex() {
+    return this.disabled ? -1 : 0;
   }
 
   _getLabel() {

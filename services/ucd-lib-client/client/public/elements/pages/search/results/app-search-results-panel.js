@@ -7,11 +7,12 @@ import "../../../utils/app-collection-card"
 import RecordInterface from "../../../interfaces/RecordInterface"
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import CollectionInterface from "../../../interfaces/CollectionInterface"
+import MediaInterface from "../../../interfaces/MediaInterface"
 
 import template from './app-search-results-panel.html'
 
 class AppSearchResultsPanel extends Mixin(PolymerElement)
-      .with(EventInterface, RecordInterface, AppStateInterface, CollectionInterface) {
+      .with(EventInterface, RecordInterface, AppStateInterface, CollectionInterface, MediaInterface) {
 
   static get properties() {
     return {
@@ -242,16 +243,20 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    */
   _onCollectionSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this.collectionResults = e.payload;
+    this.collectionResults = e.payload.results.map(c => {
+      c.thumbnail = this._getImgUrl(c.workExample, 320, '');
+      return c;
+    });
   }
 
   /**
    * @method _onCollectionClicked
    * @description bound to app-collection-card click event
    * 
-   * @param {Object} e click event
+   * @param {Object} e click|keyup event
    */
   _onCollectionClicked(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
     let id = e.currentTarget.collection.id
 
     let searchDoc = this._getEmptySearchDocument();

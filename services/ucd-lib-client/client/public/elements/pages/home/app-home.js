@@ -83,6 +83,7 @@ class AppHome extends Mixin(PolymerElement)
    * @description called when collection img on home page is clicked 
    */
   _onCollectionClicked(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
     let id = e.currentTarget.getAttribute('data-id');
     this._onCollectionSelected(id);
   }

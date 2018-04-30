@@ -1,5 +1,6 @@
 const {BaseService} = require('@ucd-lib/cork-app-utils');
 const RecordStore = require('../stores/RecordStore');
+const config = require('../config');
 
 class RecordService extends BaseService {
 
@@ -28,8 +29,9 @@ class RecordService extends BaseService {
    * @returns {Promise}
    */
   async search(searchDocument = {}) {
+    searchDocument.textFields = config.elasticSearch.textFields;
     return await this.request({
-      url : `${this.baseUrl}/search`,
+      url : `${this.baseUrl}/search?debug=true`,
       fetchOptions : {
         method : 'POST',
         headers : {

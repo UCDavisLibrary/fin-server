@@ -195,6 +195,11 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
   _updateThumbnailContainerPos() {
     // that +1 is a hack, what am I missing !?
     this.$.thumbnailContainer.style.marginLeft = (-1 * this.leftMostThumbnail * (this.totalThumbnailWidth + 1)) + 'px';
+
+    let lastThumb = this.leftMostThumbnail + this.thumbnailsPerFrame;
+    this.thumbnails.forEach((thumbnail, index) => {
+      this.set(`thumbnails.${index}.disabled`, (index < this.leftMostThumbnail || index >= lastThumb));
+    });
   }
 
   /**
@@ -212,6 +217,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
         id : record.id,
         position : record.position,
         selected : false,
+        disabled : true,
         src : ''
       }
 
@@ -284,6 +290,21 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    */
   _onCloseClicked(e) {
     this.dispatchEvent(new CustomEvent('close'));
+  }
+
+  /**
+   * @method setFocus
+   * @description set focus to first clickable element
+   */
+  setFocus() {
+    if( this.singleImage ) {
+      if( !this.breakControls ) this.$.zoomOut1.focus();
+      else this.$.zoomOut2.focus();
+    } else {
+      let firstBtn = this.shadowRoot.querySelector('button');
+      if( firstBtn ) firstBtn.focus();
+    }
+    window.scrollTo(0,0);
   }
 
 }

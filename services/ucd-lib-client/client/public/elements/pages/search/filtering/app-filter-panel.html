@@ -17,17 +17,23 @@
     border-left: 4px solid var(--default-secondary-color);
   }
 
+  #activeFilters > div {
+    padding: 4px 5px;
+  }
+
   .filter {
     display: flex;
     cursor: pointer;
+    align-items: center;
   }
 
   iron-icon[closed] {
     transform: rotate(-90deg);
   }
 
-  iron-icon[icon="close"] {
+  iron-icon[icon="fin:close"] {
     color: var(--default-secondary-color);
+    margin-right: 10px;
   }
 
   #filters {
@@ -42,16 +48,19 @@
 </div>
 
 <div id="activeFilters" hidden$="[[opened]]">
-  <template is="dom-repeat" items="[[selected]]">
-    <div class="filter" 
-      on-click="_onFilterClicked" 
-      label$="[[item.label]]"
-      tabindex="0" 
-      role="button">
-      <iron-icon icon="close"></iron-icon>
-      <div>[[item.label]]</div>
-    </div>
-  </template>
+  <div hidden$="[[!selected.length]]">
+    <template is="dom-repeat" items="[[selected]]">
+      <div class="filter" 
+        on-click="_onFilterClicked"
+        on-keyup="_onFilterClicked" 
+        label$="[[item.label]]"
+        tabindex="0" 
+        role="button">
+        <iron-icon icon="fin:close"></iron-icon>
+        <div>[[item.label]]</div>
+      </div>
+    </template>
+  </div>
 </div>
 
 <div id="filters" hidden$="[[!opened]]"></div>

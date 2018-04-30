@@ -93,12 +93,13 @@ class ElasticSearchModel {
    * @param {Object} query.sort 
    */
   searchDocumentToEsBody(query) {
-
     let esBody = {
-      aggs : this._getEsAggs(query.facets),
-      from : query.offset,
-      size : query.limit
+      from : query.offset !== undefined ? query.offset : 0,
+      size : query.limit !== undefined ? query.limit : 10
     }
+
+    let aggs = this._getEsAggs(query.facets);
+    if( Object.keys(aggs).length ) esBody.aggs = aggs;
 
     if( query.sort ) {
       esBody.sort = query.sort;

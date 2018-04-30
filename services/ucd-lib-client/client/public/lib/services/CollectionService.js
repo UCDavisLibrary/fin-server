@@ -1,5 +1,6 @@
 const {BaseService} = require('@ucd-lib/cork-app-utils');
 const CollectionStore = require('../stores/CollectionStore');
+const config = require('../config');
 
 class CollectionService extends BaseService {
 
@@ -11,15 +12,13 @@ class CollectionService extends BaseService {
   }
 
   async overview() {
-    await this.request({
+    return this.request({
       url : `${this.baseUrl}/all`,
       checkCached : () => this.store.data.overview,
       onLoading : request => this.store.setCollectionOverviewLoading(request),
       onLoad : result => this.store.setCollectionOverviewLoaded(result.body),
       onError : e => this.store.setCollectionOverviewError(e)
     });
-
-    return this.store.data.overview;
   }
 
   /**
@@ -31,8 +30,9 @@ class CollectionService extends BaseService {
    * @returns {Promise}
    */
   async search(searchDocument = {}) {
-    return await this.request({
-      url : this.apiPath+'/search',
+    searchDocument.textFields = ["name", "description"];
+    return this.request({
+      url : this.baseUrl+'/search?debug=true',
       fetchOptions : {
         method : 'POST',
         headers : {

@@ -9,10 +9,21 @@ class CollectionsModel extends ElasticSearchModel {
    * search document.
    * 
    * @param {Object} SearchDocument
+   * @param {Boolean} debug will return searchDocument and esBody in result
+   * 
+   * @returns {Promise} resolves to search result
    */
-  async search(searchDocument) {
-    let esResult = await this.esSearch(this.searchDocumentToEsBody(searchDocument));
-    return this.esResultToDamsResult(this.esSearch, searchDocument);
+  async search(searchDocument, debug) {
+    let esBody = this.searchDocumentToEsBody(searchDocument);
+    let esResult = await this.esSearch(esBody);
+    let result = this.esResultToDamsResult(esResult);
+    
+    if( debug ) {
+      result.searchDocument = searchDocument;
+      result.esBody = esBody;
+    }
+
+    return result
   }
 
   /**
@@ -54,11 +65,7 @@ class CollectionsModel extends ElasticSearchModel {
    * @returns {Promise} resolves to array of collection objects
    */
   async all() {
-    let results = await es.search({
-      index : config.elasticsearch.collection.alias,
-      body : {}
-    });
-
+    let results = await this.esSearch();
     return this.esResultToDamsResult(results);
   }
 }
