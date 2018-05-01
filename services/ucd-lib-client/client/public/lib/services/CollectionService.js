@@ -30,7 +30,7 @@ class CollectionService extends BaseService {
    * @returns {Promise}
    */
   async search(searchDocument = {}) {
-    searchDocument.textFields = ["name", "description"];
+    searchDocument.textFields = config.elasticSearch.textFields.collection;
     return this.request({
       url : this.baseUrl+'/search?debug=true',
       fetchOptions : {

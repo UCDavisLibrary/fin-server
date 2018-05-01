@@ -7,7 +7,7 @@ config.essync = {
   // map of attributes to reduce and names to reduce to
   reduceAttributes : {
     creator : 'creators',
-    subject : 'subjects',
+    about : 'abouts',
     fileFormat : 'fileFormats'
   },
 

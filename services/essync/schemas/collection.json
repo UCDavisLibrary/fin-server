@@ -17,17 +17,13 @@
       "type" : "keyword" 
     },
 
-    "subject" : {
+    "about" : {
       "type" : "text",
       "fields": {
         "raw": { 
           "type":  "keyword"
         }
       }
-    },
-
-    "about" : {
-      "type" : "keyword"
     },
 
     "created" : {
@@ -62,15 +58,10 @@
     },
 
     "coverage" : {
-      "type": "text",
-      "fields": {
-        "raw": { 
-          "type":  "keyword"
-        }
-      }
+      "type":  "keyword"
     },
 
-    "creator" : {
+    "creators" : {
       "type": "text",
       "fields": {
         "raw": { 

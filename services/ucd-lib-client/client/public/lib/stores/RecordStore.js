@@ -53,6 +53,7 @@ class RecordStore extends BaseStore {
    * Search
    */
   setSearchLoaded(searchDocument, payload) {
+    payload.results.forEach(r => console.log(r.name, r._score))
     this._setSearchState({
       state: this.STATE.LOADED,   
       searchDocument, payload

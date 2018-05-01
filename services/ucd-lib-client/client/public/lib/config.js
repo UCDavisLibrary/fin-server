@@ -33,13 +33,17 @@ module.exports = {
         type : 'facet',
         ignore : ['CreativeWork']
       },
-      about : {
+      'abouts.raw' : {
         label : 'Subject',
         type : 'facet'
       }
     },
 
-    textFields : ['name', 'description', 'keywords'],
+
+    textFields : {
+      record : ['name', 'description', 'abouts'],
+      collection : ['name', 'description', 'about']
+    },
     
     // max number of facets filter options
     maxFacetCount : 50

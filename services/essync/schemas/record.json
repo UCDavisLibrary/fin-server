@@ -21,7 +21,7 @@
       "type" : "keyword" 
     },
 
-    "subjects" : {
+    "abouts" : {
       "type" : "text",
       "fields": {
         "raw": { 
@@ -31,10 +31,6 @@
     },
 
     "license" : {
-      "type" : "keyword"
-    },
-
-    "about" : {
       "type" : "keyword"
     },
 

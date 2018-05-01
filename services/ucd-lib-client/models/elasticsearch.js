@@ -103,6 +103,11 @@ class ElasticSearchModel {
 
     if( query.sort ) {
       esBody.sort = query.sort;
+    } else {
+      esBody.sort = [
+        '_score',
+        { 'name.raw' : 'asc' }
+      ]
     }
 
     if( !query.text && !query.filters ) return esBody;

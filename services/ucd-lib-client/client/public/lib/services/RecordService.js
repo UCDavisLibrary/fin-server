@@ -29,7 +29,7 @@ class RecordService extends BaseService {
    * @returns {Promise}
    */
   async search(searchDocument = {}) {
-    searchDocument.textFields = config.elasticSearch.textFields;
+    searchDocument.textFields = config.elasticSearch.textFields.record;
     return await this.request({
       url : `${this.baseUrl}/search?debug=true`,
       fetchOptions : {
