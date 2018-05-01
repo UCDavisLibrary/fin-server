@@ -8,10 +8,12 @@
     margin-left: 10px;
   }
 
-  h2 {
-    display: none;
-    margin: 15px 10px;
+  .title {
     color: var(--default-primary-color);
+    font-weight: bold;
+    padding: 15px 0;
+    margin-left: 10px;
+    border-bottom: 1px solid var(--medium-background-color);
   }
 
   app-filter-panel {
@@ -85,7 +87,7 @@
   }
 </style>
 
-<h2>Filters</h2>
+<div class="title" hidden$="[[collectionMode]]" >FILTERS</div>
 
 <div class="outer-drawer-toggle" spacer$="[[!collectionMode]]" on-click="_fireToggleDrawer">
   <button class="drawer-toggle">
@@ -98,15 +100,11 @@
   <div class="thumbnail" style="background-image: url('[[selectedCollection.thumbnail]]')"></div> 
 </div>
 
-<paper-tabs 
-  noink 
+<app-tabs 
+  tabs="[[tabs]]" 
   selected="{{selectedTab}}" 
-  attr-for-selected="id" 
   hidden$="[[!collectionMode]]">
-  
-  <paper-tab id="info">Information</paper-tab>
-  <paper-tab id="filters">Filters</paper-tab>
-</paper-tabs>
+</app-tabs>
 
 <iron-pages 
   selected="[[selectedTab]]"   

@@ -5,7 +5,7 @@
   
   .labels {
     display: flex;
-    margin: 0 13px;
+    margin: 0 23px 0 13px;
     color: var(--gray-text);
     font-size: var(--font-size-sm);
   }
@@ -46,14 +46,16 @@
   <input id="maxValueInput" type="number" on-change="_onInputChange" >
 </div>
 
-<app-range-slider
-  id="slider"
-  on-range-value-change="_onRangeSliderChange"
-  abs-min-value="[[absMinValue]]"
-  abs-max-value="[[absMaxValue]]"
-  min-value="[[minValue]]"
-  max-value="[[maxValue]]">
-</app-range-slider>
+<div style="margin-right: 10px">
+  <app-range-slider
+    id="slider"
+    on-range-value-change="_onRangeSliderChange"
+    abs-min-value="[[absMinValue]]"
+    abs-max-value="[[absMaxValue]]"
+    min-value="[[minValue]]"
+    max-value="[[maxValue]]">
+  </app-range-slider>
+</div>
 
 <div class="labels">
   <div style="flex:1">[[absMinValue]]</div>

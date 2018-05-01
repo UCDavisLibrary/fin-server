@@ -67,9 +67,11 @@ class CitationsModel {
 
     let cslJson = {
       id : record['@id'],
+      URL : window.location.href,
       title : record.name,
+      type : 'webpage',
       publisher : record.publisher,
-      source : 'library.ucdavis.edu',
+      source : window.location.host,
       accessed : {
         'date-parts': [[ d.getFullYear(), d.getMonth()+1, d.getDate()]]
       }

@@ -7,14 +7,24 @@
     cursor: pointer;
     display: flex;
     color: var(--default-primary-color);
-    padding: 10px 10px 10px 6px;
+    padding: 10px 0;
     font-weight: bold;
-    border-left: 4px solid transparent;
+    position: relative;
+    outline: none !important;
   }
 
-  .label:focus, .label:hover {
-    outline: none;
-    border-left: 4px solid var(--default-secondary-color);
+  .highlight {
+    position: absolute;
+    left: -10px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color:  var(--default-secondary-color);
+    display: none;
+  }
+
+  .label:focus > .highlight {
+    display: block;
   }
 
   #activeFilters > div {
@@ -33,7 +43,7 @@
 
   iron-icon[icon="fin:close"] {
     color: var(--default-secondary-color);
-    margin-right: 10px;
+    margin-right: 2px;
   }
 
   #filters {
@@ -45,6 +55,7 @@
 <div class="label" on-click="_onToggleClicked" on-keyup="_onToggleClicked" role="button" tabindex="0">
   <div style="flex:1">[[filter.label]]</div>
   <iron-icon icon="arrow-drop-down" closed$="[[!opened]]"></iron-icon>
+  <div class="highlight"></div>
 </div>
 
 <div id="activeFilters" hidden$="[[opened]]">

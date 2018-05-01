@@ -1,8 +1,8 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
-import "@polymer/paper-tabs/paper-tabs"
 import "@polymer/iron-pages/iron-pages"
 import "./app-filter-panel"
 import "../app-collection-info-panel"
+import "../../../utils/app-tabs"
 
 import RecordInterface from "../../../interfaces/RecordInterface"
 import CollectionInterface from "../../../interfaces/CollectionInterface"
@@ -52,6 +52,14 @@ class AppFiltersPanel extends Mixin(PolymerElement)
       collectionMode : {
         type : Boolean,
         value : false
+      },
+
+      tabs : {
+        type : Array,
+        value : () => [
+          {label : 'Information', value: 'info'},
+          {label : 'Filters', value: 'filters'}
+        ]
       }
     }
   }

@@ -1,0 +1,46 @@
+<style>
+  :host {
+    display : block;
+  }
+  .layout {
+    display: flex;
+  }
+  .tab {
+    flex: 1;
+    cursor: pointer;
+    text-transform: uppercase;
+    padding: 12px 0 9px 0;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: normal;
+    color: var(--gray-text);
+    border-bottom: 2px solid var(--gray-text);
+  }
+  .tab:focus {
+    border-bottom-color: var(--default-secondary-color);
+    outline: none;
+  }
+  .tab[selected] {
+    cursor: default;
+    font-weight: bold;
+    color: var(--default-primary-color);
+    border-bottom: 4px solid var(--default-primary-color);
+    padding: 12px 0 7px 0;
+  }
+</style>
+
+<div class="layout">
+  <template is="dom-repeat" items="[[tabs]]">
+    <div class="tab" 
+      role="tab" 
+      tabindex="0" 
+      aria-selected$="[[item.ariaSelected]]"
+      selected$="[[item.selected]]"
+      on-click="_onTabClicked" 
+      on-keyup="_onTabClicked"
+      value$="[[item.value]]">
+      [[item.label]]
+    </div>
+  </template>
+</div>
