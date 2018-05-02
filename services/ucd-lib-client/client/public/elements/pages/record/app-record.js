@@ -132,7 +132,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.chicago.text = citations.renderEsRecord(this.record, 'chicago');
 
 
-
+    // render associated media
     if( record.associatedMedia ) {
       let imageList = this._getImageMediaList(record);
       if( imageList.length ) this._setSelectedRecordMedia(imageList[0]);
@@ -141,7 +141,80 @@ export default class AppRecord extends Mixin(PolymerElement)
       this._setSelectedRecordMedia(record);
     }
 
+    // left side metadata items
+
+    // find arks or doi
+    this._renderIdentifier(record);
+    this._renderCreators(record);
+
+    // set collection link
+    let searchDoc = this._getEmptySearchDocument();
+    this._appendKeywordFilter(searchDoc, 'isPartOf', record.collectionId);
+    let link = this._getHost()+'search/'+this._searchDocumentToUrl(searchDoc);
+    this.$.collectionValue.innerHTML = `<a href="${link}">${this.collectionName}</a>`;
+
+    // set fedora collection link
+    link = this._getHost()+'fcrepo/rest'+record.id;
+    this.$.fedoraValue.innerHTML =  `<a href="${link}">${record.id}</a>`;
+
     this._updateMetadataRows();
+  }
+
+  /**
+   * @method _renderCreators
+   * @description render creator field
+   * 
+   * @param {Object} record
+   */
+  _renderCreators(record) {
+    if( !record.creators ) {
+      return this.$.creator.display = 'none';
+    }
+    let creators = Array.isArray(record.creators) ? record.creators : [record.creators];
+
+    this.$.creatorValue.innerHTML = creators
+      .map(creator => {
+        let searchDoc = this._getEmptySearchDocument();
+        this._appendKeywordFilter(searchDoc, 'creators', creator);
+        this._appendKeywordFilter(searchDoc, 'isPartOf', record.collectionId);
+        let link = this._getHost()+'search/'+this._searchDocumentToUrl(searchDoc);
+        return `<a href="${link}">${creator}</a>`;
+      })
+      .join(', ');
+
+    this.$.creator.display = 'none';
+  }
+
+  /**
+   * @method _renderIdentifier
+   * @description render ark/doi field
+   * 
+   * @param {Object} record 
+   */
+  _renderIdentifier(record) {
+    if( !record.identifier ) {
+      return this.$.identifier.style.display = 'none';
+    }
+
+    let ids = Array.isArray(record.identifier) ? record.identifier : [record.identifier];
+    ids = ids.filter(id => id.match(/^(ark|doi)/) ? true : false);
+
+    if( ids.length ) {
+      this.$.identifier.style.display = 'block';
+      this.$.identifierValue.innerHTML = ids.map(id => `<div><a href="${this._getHost()}/${id}">${id}</a></div>`).join('')
+    } else {
+      this.$.identifier.style.display = 'none';
+    }      
+  }
+
+  /**
+   * @method _getHost
+   * @description helper for getting protocol/host of window
+   * 
+   * @returns {String}
+   */
+  _getHost() {
+    return window.location.protocol+'//'+window.location.host+'/';
   }
 
   /**

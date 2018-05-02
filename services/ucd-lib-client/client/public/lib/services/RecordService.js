@@ -1,5 +1,6 @@
 const {BaseService} = require('@ucd-lib/cork-app-utils');
 const RecordStore = require('../stores/RecordStore');
+const deepEqual = require('deep-equal');
 const config = require('../config');
 
 class RecordService extends BaseService {
@@ -30,6 +31,13 @@ class RecordService extends BaseService {
    */
   async search(searchDocument = {}) {
     searchDocument.textFields = config.elasticSearch.textFields.record;
+
+    // make sure we aren't sending the same query twice
+    let currentSearchDocument = this.store.data.search.searchDocument || {};
+    if( deepEqual(currentSearchDocument, searchDocument) ) {
+      return this.store.getSearch();
+    }
+
     return await this.request({
       url : `${this.baseUrl}/search?debug=true`,
       fetchOptions : {

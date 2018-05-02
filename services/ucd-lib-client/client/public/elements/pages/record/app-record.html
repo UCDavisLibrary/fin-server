@@ -198,12 +198,27 @@
 <div class="container">
   <app-record-metadata-layout>
     <div slot="left">
-      <template is="dom-repeat" items="[[metadata]]">
-        <div class="metadata-row">
-          <div class="attr">[[item.attr]]</div>
-          <div class="value">[[item.attr]]</div>
-        </div>
-      </template>
+      <div class="metadata-row" id="identifier">
+        <div class="attr">ARK / DOI</div>
+        <div class="value" id="identifierValue"></div>
+      </div>
+
+      <div class="metadata-row" id="creator">
+        <div class="attr">Creator</div>
+        <div class="value" id="creatorValue"></div>
+      </div>
+
+      <div class="metadata-row">
+        <div class="attr">Collection</div>
+        <div class="value" id="collectionValue"></div>
+      </div>
+
+      <div class="metadata-row">
+        <div class="attr">Fedora Link</div>
+        <div class="value" id="fedoraValue"></div>
+      </div>
+
+
     </div>
     
     <div slot="right">

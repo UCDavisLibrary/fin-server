@@ -294,9 +294,9 @@
     "@ucd-lib/cork-app-utils" "^2.0.4"
     clone "^2.1.1"
 
-"@ucd-lib/cork-app-state@0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-state/-/cork-app-state-0.0.14.tgz#e01ceb54d12d1b3021f2921f40bf77a4168a5fbf"
+"@ucd-lib/cork-app-state@0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-state/-/cork-app-state-0.0.15.tgz#908472e2424653592aec06f0f42cfad6e6ca1834"
   dependencies:
     "@polymer/app-route" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
@@ -369,6 +369,10 @@ clone@^2.1.1:
 decode-uri-component@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
+
+deep-equal@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
 
 encoding@^0.1.11:
   version "0.1.12"

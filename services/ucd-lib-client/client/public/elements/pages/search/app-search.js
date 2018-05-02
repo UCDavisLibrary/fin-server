@@ -36,6 +36,10 @@ export class AppSearch extends Mixin(PolymerElement)
       firstLoad : {
         type : Boolean,
         value : true
+      },
+      appState : {
+        type : Object,
+        value : () => ({})
       }
     }
   }
@@ -43,16 +47,16 @@ export class AppSearch extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
-    this._initState();
+    // this._initState();
   }
 
-  async _initState() {
-    let startState = await this._getAppState();
-    if( startState.location.path[0] === 'search' ) {
-      this.appState = startState;
-      this._searchFromAppState();
-    }
-  }
+  // async _initState() {
+  //   let startState = await this._getAppState();
+  //   if( startState.location.path[0] === 'search' ) {
+  //     this.appState = startState;
+  //     this._searchFromAppState();
+  //   }
+  // }
 
   /**
    * @description AppStateInterface, fired when state updates
@@ -60,10 +64,8 @@ export class AppSearch extends Mixin(PolymerElement)
    */
   _onAppStateUpdate(e) {
     this.appState = e;
-
-    if( e.location.path[0] === 'search' && e.location.popstate ) {
-      this._searchFromAppState();
-    }
+    if( e.location.path[0] !== 'search' ) return;
+    this._searchFromAppState();
   }
 
   /**

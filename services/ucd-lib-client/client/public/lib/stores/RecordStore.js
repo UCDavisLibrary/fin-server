@@ -1,4 +1,5 @@
 const {BaseStore} = require('@ucd-lib/cork-app-utils');
+const clone = require('clone');
 
 class RecordStore extends BaseStore {
 
@@ -79,7 +80,7 @@ class RecordStore extends BaseStore {
   }
 
   getSearch() {
-    return this.data.search;
+    return clone(this.data.search);
   }
 
   /**
