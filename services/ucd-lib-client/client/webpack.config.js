@@ -9,7 +9,10 @@ module.exports = {
   },
   target : 'web',
   resolve : {
-    modules: [path.resolve(__dirname, 'public', 'node_modules')]
+    modules: [
+      path.resolve(__dirname, 'public', 'node_modules'), 
+      path.resolve(__dirname, '..', 'node_modules')
+    ]
   },
   module : {
     rules: [

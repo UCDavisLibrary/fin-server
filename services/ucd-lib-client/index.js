@@ -40,6 +40,11 @@ app.use('/api', require('./controllers'));
 require('./lib/identifier')(app);
 
 /**
+ * setup sitemap
+ */
+require('./models/sitemap').middleware(app);
+
+/**
  * setup static routes
  */
 require('./lib/static')(app);

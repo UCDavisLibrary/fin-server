@@ -4,5 +4,6 @@ module.exports = {
   RecordModel : require('./models/RecordModel'),
   CollectionModel : require('./models/CollectionModel'),
   MediaModel : require('./models/MediaModel'),
-  CitationModel : require('./models/CitationsModel')
+  CitationModel : require('./models/CitationsModel'),
+  SeoModel : require('./models/SeoModel')
 }
