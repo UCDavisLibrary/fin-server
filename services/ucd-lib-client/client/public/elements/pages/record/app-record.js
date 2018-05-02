@@ -9,6 +9,7 @@ import citations from "../../../lib/models/CitationsModel"
 import "./viewer/app-image-viewer-static"
 import "./app-image-download"
 import "./app-record-metadata-layout"
+import "./app-copy-cite"
 
 import AppStateInterface from "../../interfaces/AppStateInterface"
 import RecordInterface from "../../interfaces/RecordInterface"
@@ -126,9 +127,9 @@ export default class AppRecord extends Mixin(PolymerElement)
     }
 
     // render citations
-    this.$.mla.innerHTML = citations.renderEsRecord(this.record, 'mla');
-    this.$.apa.innerHTML = citations.renderEsRecord(this.record, 'apa');
-    this.$.chicago.innerHTML = citations.renderEsRecord(this.record, 'chicago');
+    this.$.mla.text = citations.renderEsRecord(this.record, 'mla');
+    this.$.apa.text = citations.renderEsRecord(this.record, 'apa');
+    this.$.chicago.text = citations.renderEsRecord(this.record, 'chicago');
 
 
 

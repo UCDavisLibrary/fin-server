@@ -13,7 +13,20 @@ module.exports = {
     facets : {
       'fileFormats' : {
         label : 'File Format',
-        type : 'facet'
+        type : 'facet',
+        valueMap : (value) => {
+          if( value.match(/^image\/(.*)/i) ) {
+            return 'Image ('+value.match(/^image\/(.*)/)[1]+')';
+          }
+          if( value === 'application/pdf' ) {
+            return 'PDF';
+          }
+          if( value.match(/(\w*)\/(.*)/) ) {
+            let match = value.match(/(\w*)\/(.*)/);
+            return match[1]+' ('+match[2]+')';
+          }
+          return value;
+        }
       },
       'creators' : {
         label : 'Creator',

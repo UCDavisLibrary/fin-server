@@ -24,7 +24,7 @@ class AppFacetFilter extends Mixin(PolymerElement)
       },
       valueMap : {
         type : Object,
-        value : () => {},
+        value : null,
       },
       buckets : {
         type : Array,

@@ -17,7 +17,12 @@ export class AppNormalCheckbox extends PolymerElement {
       },
       labelMap : {
         type : Object,
-        value : () => {}
+        value : null,
+        observer : '_onLabelMapUpdate'
+      },
+      labelMapType : {
+        type : String,
+        value : null
       },
       realLabel: {
         type: String,
@@ -105,11 +110,32 @@ export class AppNormalCheckbox extends PolymerElement {
     return this.disabled ? -1 : 0;
   }
 
+  /**
+   * @method _getLabel
+   * @description return label for a value
+   */
   _getLabel() {
-    if( this.labelMap && this.labelMap[this.value] ) {
+    if( this.labelMapType === null ) this._onLabelMapUpdate();
+    if( !this.labelMapType ) return this.value;
+    
+    if( this.labelMapType === 'object' && this.labelMap[this.value] ) {
       return this.labelMap[this.value];
+    } else if( this.labelMapType === 'function' ) {
+      return this.labelMap(this.value);
     }
+
     return this.value;
+  }
+
+  /**
+   * @method _onLabelMapUpdate
+   * @description bound to 'labelMap' property observer.  set the 
+   * labelMapType property
+   */
+  _onLabelMapUpdate() {
+    this.labelMapType = '';
+    if( !this.labelMap ) return;
+    this.labelMapType = typeof this.labelMap;
   }
 
   /**

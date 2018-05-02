@@ -1,0 +1,44 @@
+<style>
+  :host {
+    display: block;
+  }
+  [hidden] {
+    display:none !important;
+  }
+  textarea {
+    width: 100%;
+    font-size: var(--font-size);
+  }
+
+  .copyButton {
+    white-space: nowrap;
+    height: 38px;
+    width: 85px;
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-heavy);
+    background-color: var(--default-secondary-color);
+    color: var(--default-primary-color);
+    border-radius: 0;
+    border: none;
+    cursor: pointer;
+  }
+
+  .copyButton[active] {
+    text-align: center;
+    background-color: var(--default-primary-color);
+    color: var(--default-secondary-color);
+  }
+  
+  .copyButton[active] span {
+    display: none;
+  }
+</style>
+
+<div hidden$="[[copying]]" style="padding-bottom: 10px" id="citeText"></div>
+<textarea hidden$="[[!copying]]" id="copyArea"></textarea>
+
+<button active$="[[copying]]" on-click="_onCopyClicked" class="copyButton">
+  <iron-icon icon="content-copy" id="icon"></iron-icon>
+  <span>Copy</span>
+</button>
