@@ -6,3 +6,4 @@ server/client/public/bundle.js
 server/stats.json
 server/client/stats.json
 server/backups
+services/ucd-lib-client/client/public/ie-bundle.js

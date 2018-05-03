@@ -34,13 +34,20 @@
     margin-right: 15px;
     height: 40px;
     -webkit-appearance: none;
-    -webkit-border-radius: 0px;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
     padding: 5px 30px 5px 10px;
     background-position: right 10px center;
     background-size: 10px 6px;
     background-repeat: no-repeat;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2IiB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojZGFhYTAwO308L3N0eWxlPjwvZGVmcz48Zz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMCAwIDEwIDAgNSA2IDAgMCIvPjwvZz48L3N2Zz4=');
     @apply --fin-search-box-select-inverse;
+  }
+  /* for IE */
+  select::-ms-expand {
+    display: none;
   }
   select option {
     text-transform: uppercase;

@@ -12,6 +12,11 @@ class ImplAppStateStore extends AppStateStore {
     this.events.SELECTED_RECORD_MEDIA_UPDATE = 'selected-record-media-update';
   }
 
+  set(state) {
+    console.log(state);
+    super.set(state);
+  }
+
   setSelectedRecord(record) {
     this.data.selectedRecord = record;
     this.emit(this.events.SELECTED_RECORD_UPDATE, record);

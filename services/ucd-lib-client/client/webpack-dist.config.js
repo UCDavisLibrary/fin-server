@@ -1,96 +1,29 @@
 const path = require('path');
-// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
-var modern = {
-    entry: './public/elements/fin-app.js',
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
-    },
-    target : 'web',
-    resolve : {
-      modules: [path.resolve(__dirname, 'public', 'node_modules')]
-    },
-    module : {
-        rules: [
-          {
-            test: /\.(html)$/,
-            use: {
-              loader: 'html-loader',
-              options: {
-                  attrs: false
-              }
-            }
-          },
-          {
-            test: /\.(xml|csl)$/,
-            use: [ 'raw-loader']
-          },
-          {
-            test: /\.css$/,
-            use: [ 'to-string-loader', 'css-loader' ]
-          },
-          {
-            test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-            loader: 'url-loader',
-            options: {
-              limit: 10000
-            }
-          }
-        ]
-    }
-};
+let configs = require('@ucd-lib/cork-app-build').dist({
+  // root directory, all paths below will be relative to root
+  root : __dirname,
+  entry : 'public/elements/fin-app.js',
+  // folder where bundle.js and ie-bundle.js will be written
+  dist : 'dist',
+  clientModules : 'public/node_modules'
+});
 
-var ie =  {
-    entry: './public/elements/fin-app.js',
-    output: {
-        filename: 'ie-bundle.js',
-        path: path.resolve(__dirname, 'dist')
-    },
-    target : 'web',
-    resolve : {
-      modules: [path.resolve(__dirname, 'public', 'node_modules')]
-    },
-    module : {
-      rules: [
-        {
-          test: /\.(html)$/,
-          use: {
-            loader: 'html-loader',
-            options: {
-                attrs: false
-            }
-          }
-        },
-        {
-          test: /\.(xml|csl)$/,
-          use: [ 'raw-loader']
-        },
-        {
-          test: /\.css$/,
-          use: [ 'to-string-loader', 'css-loader' ]
-        },
-        {
-          test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-          loader: 'url-loader',
-          options: {
-            limit: 10000
-          }
-        },
-        {
-          test: /\.js$/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['babel-preset-env']
-            }
-          }
-        }
-      ]
-    }
-    // ,plugins: [
-    //   new UglifyJSPlugin()
-    // ]
-};
+// add .xml and .csl loading support
+configs.forEach(config => {
+  config.module.rules.push({
+    test: /\.(xml|csl)$/,
+    use: [ 'raw-loader']
+  });
+});
 
-module.exports = [modern, ie];
+// we need the main node_modules dir, still not 100% sure why :/
+configs.forEach(config => {
+  config.resolve.modules.push(path.resolve(__dirname, '..', 'node_modules'));
+});
+
+// for IE config, we need to inject the polyfills
+// TODO: add this to build module
+configs[1].entry = ['babel-polyfill', configs[1].entry];
+
+module.exports = configs;

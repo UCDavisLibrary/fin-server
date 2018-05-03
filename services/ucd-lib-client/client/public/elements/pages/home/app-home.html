@@ -6,6 +6,7 @@
   }
 
   #hero {
+    height: 750px; /** IE 11 hack **/
     min-height: 750px;
     display: flex;
     justify-content: center;
@@ -108,6 +109,10 @@
     bottom : 25px;
     font-weight: var(--font-weight-heavy);
   }
+
+  iron-icon.search-icon {
+    color: var(--default-secondary-color);
+  }
 </style>
 
 <img src="/images/ucd-lib-logo-white.png" />
@@ -126,7 +131,7 @@
         on-search="_onSearch" 
         on-browse="_onBrowse"
         placeholder="Search Keyword(s)">
-        <iron-icon icon="fin:search" slot="button-content"></iron-icon>
+        <iron-icon icon="fin:search" class="search-icon" slot="button-content"></iron-icon>
       </fin-search-box>
     </div>
     <div class="footer">

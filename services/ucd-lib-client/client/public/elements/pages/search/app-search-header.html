@@ -53,6 +53,10 @@
     margin-right: 10px;
   }
 
+  iron-icon.search-icon {
+    color: var(--default-secondary-color);
+  }
+
   @media( min-width: 700px ) {
     .logo {
       display: block;
@@ -86,7 +90,7 @@
       on-search="_onSearch" 
       on-browse="_onBrowse"
       placeholder="Search Keyword(s)">
-      <iron-icon icon="fin:search" slot="button-content"></iron-icon>
+      <iron-icon icon="fin:search" class="search-icon" slot="button-content"></iron-icon>
     </fin-search-box>
   </div>
   <app-auth-header></app-auth-header>

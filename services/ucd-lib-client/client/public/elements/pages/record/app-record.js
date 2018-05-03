@@ -33,10 +33,6 @@ export default class AppRecord extends Mixin(PolymerElement)
         type : String,
         value : ''
       },
-      resourceType : {
-        type : String,
-        value : ''
-      },
       collectionName : {
         type : String,
         value : ''
@@ -106,7 +102,7 @@ export default class AppRecord extends Mixin(PolymerElement)
                   moment(this.record.datePublished).format(this.momentFormat) :
                   '';
 
-    this.resourceType = this.record.type ? this.record.type.join(', ') : 'Unknown';
+    this.$.resourceType.innerHTML = this.record.type ? '<div>'+this.record.type.join('</div><div>')+'</div>' : 'Unknown';
 
     if( this.record.license && rightsDefinitions[this.record.license] ) {
       let def = rightsDefinitions[this.record.license];
@@ -154,7 +150,8 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.collectionValue.innerHTML = `<a href="${link}">${this.collectionName}</a>`;
 
     // set fedora collection link
-    link = this._getHost()+'fcrepo/rest'+record.id;
+    let metadataPart = record['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
+    link = this._getHost()+'fcrepo/rest'+record.id+metadataPart;
     this.$.fedoraValue.innerHTML =  `<a href="${link}">${record.id}</a>`;
 
     this._updateMetadataRows();
@@ -182,7 +179,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       })
       .join(', ');
 
-    this.$.creator.display = 'none';
+    this.$.creator.style.display = 'flex';
   }
 
   /**
@@ -200,8 +197,8 @@ export default class AppRecord extends Mixin(PolymerElement)
     ids = ids.filter(id => id.match(/^(ark|doi)/) ? true : false);
 
     if( ids.length ) {
-      this.$.identifier.style.display = 'block';
-      this.$.identifierValue.innerHTML = ids.map(id => `<div><a href="${this._getHost()}/${id}">${id}</a></div>`).join('')
+      this.$.identifier.style.display = 'flex';
+      this.$.identifierValue.innerHTML = ids.map(id => `<div><a href="${this._getHost()}${id}">${id}</a></div>`).join('')
     } else {
       this.$.identifier.style.display = 'none';
     }      

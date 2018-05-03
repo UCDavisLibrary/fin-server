@@ -69,7 +69,7 @@
 
   .type-date-collection {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
   }
 
   .resource-type {
@@ -148,8 +148,8 @@
         <div style="flex:.75">
           <div class="label">Resource Type</div>
           <div class="resource-type">
-            <iron-icon icon="fin:[[resourceType]]"></iron-icon>
-            [[resourceType]]
+            <!-- <iron-icon icon="fin:[[resourceType]]"></iron-icon> -->
+            <div id="resourceType"></div>
           </div>
         </div>
         <div style="flex:.5">
@@ -195,7 +195,7 @@
   </div><!-- end overview -->
 </div>
 
-<div class="container">
+<div class="container" style="padding-bottom: 50px">
   <app-record-metadata-layout>
     <div slot="left">
       <div class="metadata-row" id="identifier">

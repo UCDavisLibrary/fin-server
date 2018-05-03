@@ -1,9 +1,5 @@
 import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
-import "@polymer/app-layout/app-header/app-header"
-import "@polymer/app-layout/app-toolbar/app-toolbar"
-import "@polymer/app-layout/app-drawer/app-drawer"
 import "@polymer/paper-material/paper-material"
-import "@polymer/paper-styles/paper-styles"
 import "@polymer/paper-button/paper-button"
 import "@polymer/iron-pages/iron-pages"
 import "@polymer/iron-icons/iron-icons"
@@ -53,7 +49,7 @@ export class FinApp extends Mixin(PolymerElement)
       },
       appRoutes : {
         type : Array,
-        value : () => APP_CONFIG.appRoutes
+        value : () => []
       }
     }
   }
