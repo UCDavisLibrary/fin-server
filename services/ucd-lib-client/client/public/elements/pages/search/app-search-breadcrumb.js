@@ -1,4 +1,4 @@
-import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+import {PolymerElement} from "@polymer/polymer/polymer-element"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import RecordInterface from "../../interfaces/RecordInterface"
 import AppStateInterface from "../../interfaces/AppStateInterface"

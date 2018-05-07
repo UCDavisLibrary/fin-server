@@ -1,4 +1,4 @@
-import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-image-viewer-lightbox.html"
 
 import "@polymer/paper-spinner/paper-spinner-lite"

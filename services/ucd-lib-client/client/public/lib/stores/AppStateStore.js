@@ -13,7 +13,6 @@ class ImplAppStateStore extends AppStateStore {
   }
 
   set(state) {
-    console.log(state);
     super.set(state);
   }
 

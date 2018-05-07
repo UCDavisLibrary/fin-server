@@ -1,4 +1,4 @@
-import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-tabs.html"
 
 export default class AppTabs extends PolymerElement {

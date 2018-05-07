@@ -1,4 +1,4 @@
-import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+import {PolymerElement} from "@polymer/polymer/polymer-element"
 import AppStateInterface from "./interfaces/AppStateInterface"
 import CollectionInterface from "./interfaces/CollectionInterface"
 import "./auth/app-auth-footer"

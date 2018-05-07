@@ -1,4 +1,4 @@
-import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-search-result-creator.html"
 
 export default class AppSearchResultCreator extends PolymerElement {

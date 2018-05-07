@@ -1,4 +1,4 @@
-import {Element as PolymerElement} from "@polymer/polymer/polymer-element";
+import {PolymerElement} from "@polymer/polymer/polymer-element";
 
 /**
  * This is the rainbow color bar at the top of a page.  Just a style element.

@@ -1,4 +1,4 @@
-import {Element as PolymerElement} from "@polymer/polymer/polymer-element"
+import {PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-material/paper-material"
 import "@polymer/paper-button/paper-button"
 import "@polymer/iron-pages/iron-pages"
