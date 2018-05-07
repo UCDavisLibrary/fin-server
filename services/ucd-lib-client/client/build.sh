@@ -4,7 +4,7 @@ rm -rf dist
 mkdir dist
 
 mkdir dist/webcomponentsjs
-cp -r public/webcomponentsjs/*.js dist/webcomponentsjs/
+cp -r public/webcomponentsjs/ dist/webcomponentsjs/
 mkdir dist/images
 cp -r public/images dist/
 
