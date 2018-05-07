@@ -21,7 +21,7 @@ export default class AppRecordMetadataLayout extends PolymerElement {
       },
       selectedTab : {
         type : Number,
-        value : 0,
+        value : 'data',
         observer : '_updateVisiblePanels'
       },
       showRight : {
@@ -31,6 +31,13 @@ export default class AppRecordMetadataLayout extends PolymerElement {
       showLeft : {
         type : Boolean,
         value : true
+      },
+      tabs : {
+        type : Array,
+        value : () => [
+          {label : 'Item Data', value: 'data'},
+          {label : 'Cite Item', value: 'cite'}
+        ]
       }
     }
   }
@@ -46,7 +53,7 @@ export default class AppRecordMetadataLayout extends PolymerElement {
 
     if( !this.mobile ) return;
     
-    if( this.selectedTab === 0 ) this.showRight = false;
+    if( this.selectedTab === 'data' ) this.showRight = false;
     else this.showLeft = false;
   }
 

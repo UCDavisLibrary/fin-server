@@ -14,15 +14,17 @@
     border-bottom: 1px solid var(--medium-background-color);
     color: var(--default-primary-color);
     padding-bottom: 10px;
+    padding-left: 5px;
   }
 </style>
 
 <iron-media-query query="(max-width: 900px)" query-matches="{{mobile}}"></iron-media-query>
 
-<!-- <paper-tabs selected="{{selectedTab}}" hidden$="[[!mobile]]">
-  <paper-tab>Item Data</paper-tab>
-  <paper-tab>Cite Item</paper-tab>
-</paper-tabs> -->
+<app-tabs 
+  tabs="[[tabs]]" 
+  selected="{{selectedTab}}" 
+  hidden$="[[!mobile]]">
+</app-tabs>
 
 <div class="layout">
   <div hidden$="[[!showLeft]]">

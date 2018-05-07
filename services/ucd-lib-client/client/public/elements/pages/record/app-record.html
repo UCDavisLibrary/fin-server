@@ -130,6 +130,12 @@
     .cite-container {
       display: block;
     }
+    .type-date-collection {
+      display: block;
+    }
+    .type-date-collection > div {
+      margin: 15px 5px;
+    }
   }
 
 </style>
@@ -152,7 +158,7 @@
             <div id="resourceType"></div>
           </div>
         </div>
-        <div style="flex:.5">
+        <div style="flex:.5" hidden$="[[!date]]">
           <div class="label">Date</div>
           <div>[[date]]</div>
         </div>

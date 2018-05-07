@@ -10,14 +10,23 @@
     margin: -2px 0 0 -2px;
     outline: none !important;
   }
-  .img {
-    width: var(--grid-cell-width);
-    background-size: cover;
+
+  @keyframes show {
+    from {opacity: 0}
+    to {opacity: 1}
+  }
+
+  img {
+    animation: show 300ms linear;
+    box-sizing: border-box;
+    display:none;
+    /* width: var(--grid-cell-width); */
+    /* background-size: cover;
     background-color: transparent;
-    background-position: center center;
-    position: absolute;
+    background-position: center center; */
+    /* position: absolute;
     top: 0;
-    left: 0;
+    left: 0; */
   }
 
   .collection-name {
@@ -45,16 +54,30 @@
   iron-icon {
     color: var(--default-primary-color);
   }
+
+  .image {
+    position: relative; 
+    background-size: cover;
+    background-color: transparent;
+    background-position: center center;
+    width: 250px; 
+  }
+
 </style>
 
-<div hidden$="[[!isImage]]" style$="position: relative; width: 250px; height:[[imgHeight]]px">
-  <div style$="background-image: url('[[imgThumbail]]');height:[[imgHeight]]px" class="img" ></div>
-  <div style$="background-image: url('[[imgUrl]]');height:[[imgHeight]]px" class="img"></div>
+<div 
+  hidden$="[[!isImage]]" 
+  class="image" 
+  id="imgRoot"
+  style$="background-image: url('[[imgThumbail]]'); height:[[imgHeight]]px">
+  <img id="img" src$="[[imgUrl]]" style$="height:[[imgHeight]]px; width: 100%" onload="this.style.display='block';" />
+  <!-- <div style$="background-image: url('[[imgThumbail]]');height:[[imgHeight]]px" class="img" ></div>
+  <div style$="background-image: url('[[imgUrl]]');height:[[imgHeight]]px" class="img"></div> -->
 </div>
 
 
 <div style="padding: 15px">
-  <div class="collection-name">[[collectionName]]</div>
+  <div class="collection-name">[[collectionName]] hi</div>
 
   <h4>[[name]]</h4>
 
