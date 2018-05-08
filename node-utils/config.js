@@ -64,6 +64,10 @@ module.exports = {
     host : process.env.REDIS_HOST || 'redis',
     port : process.env.REDIS_PORT || 6379,
     refreshTokenExpire : (86400 * 30)
+  },
+
+  google : {
+    serviceAccountFile : process.env.GOOGLE_SERVICE_ACCOUNT_FILE || '/etc/fin/webapp-service-account.json'
   }
 
 }

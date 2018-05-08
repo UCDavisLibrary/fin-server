@@ -12,9 +12,13 @@ services:
   server:
     build: ../../server
     volumes:
-      - ../../server:/app
+      - ../../server/cli:/app/cli
+      - ../../server/controllers:/app/controllers
+      - ../../server/lib:/app/lib
+      - ../../server/models:/app/models
       - ../../server/default-frames:/etc/fin/frames
       - ../../services/default-services.js:/etc/fin/default-services.js
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
       - ../../server/backups:/fcrepo-backups
     ports:
       - 3000:3001
@@ -43,6 +47,7 @@ services:
     volumes:
       - fedora-data:/var/lib/jetty/fedora-data
       - ../../server/backups:/var/lib/jetty/fcrepo-backups
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     ports:
       - 8080:8080
       - 61613:61613
@@ -106,9 +111,10 @@ services:
   # Trusted Proxy for Services
   ###
   trustedproxy:
-    image: node:8.5
+    build: ../../services/trusted-proxy
     volumes:
-      - ../../services/trusted-proxy:/service
+      - ../../services/trusted-proxy/index.js:/service/index.js
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     depends_on:
       - fcrepo
     environment:
@@ -138,9 +144,13 @@ services:
   # Services
   ###
   essync:
-    image: node:8.5
+    build: ../../services/essync
     volumes:
-      - ../../services/essync:/service
+      - ../../services/essync/lib:/service/lib
+      - ../../services/essync/schema:/service/schema
+      - ../../services/essync/index.js:/service/index.js
+      - ../../services/essync/reindex.js:/service/reindex.js
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -151,9 +161,10 @@ services:
     # command: bash -c 'tail -f /dev/null'
 
   auto-generator-demo:
-    image: node:8.5
+    build: ../../services/auto-generator-demo
     volumes:
-      - ../../services/auto-generator-demo:/service
+      - ../../services/auto-generator-demo/index.js:/service/index.js
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -163,9 +174,11 @@ services:
     command: node service
 
   cas:
-    image: node:8
+    build: ../../services/cas
     volumes:
-      - ../../services/cas:/service
+      - ../../services/cas/controller.js:/service/controller.js
+      - ../../services/cas/index.js:/service/index.js
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -175,9 +188,15 @@ services:
     command: node service
 
   ucd-lib-client:
-    image: node:8
+    build: ../../services/ucd-lib-client
     volumes:
-      - ../../services/ucd-lib-client:/service
+      - ../../services/ucd-lib-client/index.js:/service/index.js
+      - ../../services/ucd-lib-client/config.js:/service/config.js
+      - ../../services/ucd-lib-client/client:/service/client
+      - ../../services/ucd-lib-client/controllers:/service/controllers
+      - ../../services/ucd-lib-client/lib:/service/lib
+      - ../../services/ucd-lib-client/models:/service/models
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -188,9 +207,15 @@ services:
     command: bash -c 'tail -f /dev/null'
 
   basic-auth:
-    image: node:8
+    build: ../../services/basic-auth
     volumes:
-      - ../../services/basic-auth:/service
+      - ../../services/basic-auth/index.js:/service/index.js
+      - ../../services/basic-auth/cli.js:/service/cli.js
+      - ../../services/basic-auth/controller.js:/service/controller.js
+      - ../../services/basic-auth/model.js:/service/model.js
+      - ../../services/basic-auth/lib:/service/lib
+      - ../../services/basic-auth/public:/service/public
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}

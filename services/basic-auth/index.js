@@ -1,4 +1,5 @@
 global.LOGGER_NAME = 'basic-auth-service';
+
 const express = require('express');
 const path = require('path');
 const {logger, jwt, config} = require('@ucd-lib/fin-node-utils');

@@ -1,12 +1,14 @@
 FROM node:8
 
-RUN apt-get update
-RUN apt-get install -y git jq
-RUN npm install -g @ucd-lib/fin-cli@0.0.8
-RUN apt-get clean
+ADD index.js /service/
+ADD package.json /service/
+ADD package-lock.json /service/
+ADD config.js /service/
+ADD client /service/client
+ADD controllers /service/controllers
+ADD lib /service/lib
+ADD models /service/models
 
-COPY ./ /app
+RUN cd /service && npm install --production
 
-RUN cd /app && npm install --production
-
-CMD node app
+CMD node service

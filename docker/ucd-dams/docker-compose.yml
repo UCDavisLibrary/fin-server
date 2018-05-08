@@ -14,6 +14,7 @@ services:
     volumes:
       - ../../services/frames:/etc/fin/frames
       - ../../services/default-services.js:/etc/fin/default-services.js
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -38,6 +39,8 @@ services:
   ###
   ucd-lib-client:
     build: ../../services/ucd-lib-client
+    volumes:
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -79,6 +82,8 @@ services:
   ###
   trustedproxy:
     build: ../../services/trusted-proxy
+    volumes:
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     depends_on:
       - fcrepo
     environment:
@@ -100,6 +105,8 @@ services:
   # elastic search indexer
   essync:
     build: ../../services/essync
+    volumes:
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -112,6 +119,8 @@ services:
   # auto generator service demo
   auto-generator-demo:
     build: ../../services/auto-generator-demo
+    volumes:
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -125,6 +134,8 @@ services:
   ###
   cas:
     build: ../../services/cas
+    volumes:
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -137,6 +148,8 @@ services:
   ###
   basic-auth:
     build: ../../services/basic-auth
+    volumes:
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}

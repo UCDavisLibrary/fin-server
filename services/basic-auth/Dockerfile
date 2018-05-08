@@ -10,5 +10,5 @@ ADD public /service/public
 ADD package.json /service/
 ADD package-lock.json /service/
 
-RUN cd /service && npm install 
+RUN cd /service && npm install --production
 CMD node service

@@ -1,3 +1,5 @@
+global.LOGGER_NAME = 'auto-generator-demo';
+
 const {config, logger} = require('@ucd-lib/fin-node-utils');
 const AutoGenerator = require('@ucd-lib/fin-node-utils/AutoGenerator');
 const api = require('@ucd-lib/fin-node-api');

@@ -1,6 +1,6 @@
 {
   "name": "@ucd-lib/fin-node-utils",
-  "version": "0.1.12",
+  "version": "0.2.4",
   "description": "Node utils for the FIN (UC Davis Library DAMS) Server",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,7 @@
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",
   "dependencies": {
+    "@google-cloud/logging-bunyan": "^0.8.0",
     "body": "^5.1.0",
     "bunyan": "^1.8.12",
     "jsonld": "^0.4.12",

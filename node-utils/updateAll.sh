@@ -4,7 +4,7 @@ cd $ROOT
 
 VERSION=$1
 FOLDERS=("server" "services/basic-auth" "services/cas" "services/essync" \
- "services/serialization" "services/trusted-proxy" "services/ucd-lib-client" \
+ "services/trusted-proxy" "services/ucd-lib-client" \
  "services/auto-generator-demo")
 
 for folder in "${FOLDERS[@]}"; do

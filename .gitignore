@@ -2,6 +2,7 @@ node_modules
 .env
 .vscode
 .DS_Store
+webapp-service-account.json
 server/client/public/bundle.js
 server/stats.json
 server/client/stats.json

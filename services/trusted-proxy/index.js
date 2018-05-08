@@ -1,10 +1,13 @@
+global.LOGGER_NAME = 'trusted-proxy';
+
 var proxy = require('http-proxy');
 var http = require('http');
-const {jwt, config} = require('@ucd-lib/fin-node-utils');
+const {jwt, config, logger} = require('@ucd-lib/fin-node-utils');
 
 
 var token = null;
 function setToken() {
+  logger.info('trusted proxy reseting token');
   token = jwt.create('trusted-proxy', true);
 }
 
@@ -18,5 +21,5 @@ var server = http.createServer(function(req, res) {
 });
 
 server.listen(3000, () => {
-  console.log('Trusted Fcrepo Proxy listening on port 3000');
+  logger.info('Trusted Fcrepo Proxy listening on port 3000');
 });

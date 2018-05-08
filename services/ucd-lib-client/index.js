@@ -1,4 +1,5 @@
 global.LOGGER_NAME = 'ucd-lib-client';
+
 const express = require('express');
 const {logger} = require('@ucd-lib/fin-node-utils');
 const bodyParser = require('body-parser');
