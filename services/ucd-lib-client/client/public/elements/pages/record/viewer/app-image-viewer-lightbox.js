@@ -12,8 +12,9 @@ export default class AppImageViewer extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
 
   static get template() {
-    return `<style>${leafletCss}</style>
-            ${template}`;
+    let tag = document.createElement('template');
+    tag.innerHTML = `<style>${leafletCss}</style>${template}`;
+    return tag;
   }
 
   properties() {

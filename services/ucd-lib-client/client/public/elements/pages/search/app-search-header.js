@@ -18,7 +18,9 @@ class AppSearchHeader extends Mixin(PolymerElement)
   }
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   constructor() {

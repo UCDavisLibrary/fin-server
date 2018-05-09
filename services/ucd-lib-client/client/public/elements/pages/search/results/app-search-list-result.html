@@ -3,6 +3,11 @@
     display: block;
     background-color: white;
     margin: 10px;
+    border: 2px solid transparent;
+  }
+  :host(:hover), :host(:focus) {
+    border: 2px solid var(--default-secondary-color);
+    outline: none !important;
   }
 
   .img {
@@ -53,10 +58,20 @@
     height: 100%;
   }
 
+  .data {
+    padding: 15px; 
+    flex: 1;
+    overflow: hidden;
+  }
+
   @media(max-width: 600px) {
     .img {
       height: auto;
       width: 150px;
+    }
+
+    .data {
+      padding: 8px;
     }
 
     :host {
@@ -68,9 +83,9 @@
 </style>
 
 <div class="layout">
-    <div style$="background-image: url('[[imgUrl]]')" hidden$="[[!isImage]]" class="img" ></div>
+  <div style$="background-image: url('[[imgUrl]]')" hidden$="[[!isImage]]" class="img" ></div>
 
-  <div style="padding: 15px; flex: 1">
+  <div class="data">
     <div class="flex-vertical">
       <div class="collection-name">[[collectionName]]</div>
       

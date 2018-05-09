@@ -63,7 +63,9 @@ export class AppNormalCheckbox extends PolymerElement {
   }
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   constructor() {

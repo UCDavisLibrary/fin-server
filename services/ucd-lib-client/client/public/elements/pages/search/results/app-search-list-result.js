@@ -3,7 +3,9 @@ import template from "./app-search-list-result.html"
 
 export class AppSearchListResult extends AppSearchResult {
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 }
 

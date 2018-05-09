@@ -5,7 +5,9 @@ import striptags from "striptags"
 export default class AppCopyCite extends PolymerElement {
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {
@@ -38,6 +40,7 @@ export default class AppCopyCite extends PolymerElement {
   _onCopyClicked() {
     // first set correct height
     this.$.copyArea.style.height = (this.$.citeText.offsetHeight-10)+'px';
+    this.$.copyArea.style.width = (this.$.citeText.offsetWidth-10)+'px';
   
     this.copying = true;
     this.$.copyArea.select();

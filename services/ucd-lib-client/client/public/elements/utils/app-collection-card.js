@@ -4,7 +4,9 @@ import template from "./app-collection-card.html"
 export default class AppCollectionCard extends PolymerElement {
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

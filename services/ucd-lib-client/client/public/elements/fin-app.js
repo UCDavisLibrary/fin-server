@@ -30,15 +30,14 @@ import RecordInterface from "./interfaces/RecordInterface"
 
 import template from "./fin-app.html";
 
-// allow for lit-html style stuff
-window.html = (str) => str[0];
-
 export class FinApp extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, AuthInterface, CollectionInterface, RecordInterface) {
 
   // Define a string template instead of a `<template>` element.
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

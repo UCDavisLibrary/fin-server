@@ -12,7 +12,9 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
   
     static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

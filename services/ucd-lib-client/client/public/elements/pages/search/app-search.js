@@ -15,7 +15,9 @@ export class AppSearch extends Mixin(PolymerElement)
             .with(EventInterface, RecordInterface, CollectionInterface, AppStateInterface) {
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

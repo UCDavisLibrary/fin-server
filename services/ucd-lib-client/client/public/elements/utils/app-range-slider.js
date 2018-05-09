@@ -4,7 +4,9 @@ import template from "./app-range-slider.html"
 export default class AppRangeSlider extends PolymerElement {
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

@@ -8,7 +8,9 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
   .with(EventInterface, RecordInterface, CollectionInterface) {
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

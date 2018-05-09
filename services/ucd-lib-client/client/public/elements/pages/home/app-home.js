@@ -11,7 +11,9 @@ class AppHome extends Mixin(PolymerElement)
       .with(EventInterface, RecordInterface, AppStateInterface, CollectionInterface) {
   
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

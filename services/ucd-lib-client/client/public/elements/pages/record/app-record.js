@@ -20,7 +20,9 @@ export default class AppRecord extends Mixin(PolymerElement)
       .with(EventInterface, AppStateInterface, RecordInterface, CollectionInterface, MediaInterface) {
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

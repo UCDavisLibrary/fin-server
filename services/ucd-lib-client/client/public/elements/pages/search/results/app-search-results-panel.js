@@ -11,6 +11,11 @@ import MediaInterface from "../../../interfaces/MediaInterface"
 
 import template from './app-search-results-panel.html'
 
+const SEARCH_RESULTS_LAYOUT = 'search-results-layout';
+let initIsListLayout = localStorage.getItem(SEARCH_RESULTS_LAYOUT);
+if( initIsListLayout === 'list' ) initIsListLayout = true
+else initIsListLayout = false;
+
 class AppSearchResultsPanel extends Mixin(PolymerElement)
       .with(EventInterface, RecordInterface, AppStateInterface, CollectionInterface, MediaInterface) {
 
@@ -44,7 +49,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
        */
       isListLayout : {
         type : Boolean,
-        value : false
+        value : initIsListLayout
       },
       /**
        * UI display of total results
@@ -72,7 +77,9 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
   }
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   constructor() {
@@ -124,8 +131,13 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    */
   _onLayoutToggle(e) {
     let type = e.currentTarget.getAttribute('type');
-    if( type === 'masonry' ) this.isListLayout = false;
-    else this.isListLayout = true;
+    if( type === 'masonry' ) {
+      this.isListLayout = false;
+      localStorage.setItem(SEARCH_RESULTS_LAYOUT, 'masonry');
+    } else {
+      this.isListLayout = true;
+      localStorage.setItem(SEARCH_RESULTS_LAYOUT, 'list');
+    }
 
     if( !this.isListLayout ) {
       requestAnimationFrame(() => this._resize());

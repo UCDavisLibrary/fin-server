@@ -9,7 +9,9 @@ import "@polymer/iron-media-query/iron-media-query"
 export default class AppRecordMetadataLayout extends PolymerElement {
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

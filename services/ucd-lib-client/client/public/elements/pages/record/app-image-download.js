@@ -31,7 +31,9 @@ const FORMATS = ['png', 'jpg', 'webp'];
 export default class AppImageDownload extends PolymerElement {
 
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

@@ -3,7 +3,9 @@ import template from "./app-search-grid-result.html"
 
 export class AppSearchGridResult extends AppSearchResult {
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 }
 

@@ -1,11 +1,11 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
+import {PolymerElement, html} from "@polymer/polymer/polymer-element"
 import AuthInterface from "../interfaces/AuthInterface"
 
 class AppAuthHeader extends Mixin(PolymerElement)
       .with(EventInterface, AuthInterface) {
 
   static get template() {
-    return '<iron-icon icon="fin:account" style="width: 40px; height:40px"></iron-icon>';
+    return html`<iron-icon icon="fin:account" style="width: 40px; height:40px"></iron-icon>`;
   }
 
   constructor() {

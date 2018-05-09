@@ -7,7 +7,9 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
       .with(EventInterface, CollectionInterface) {
   
   static get template() {
-    return template;
+    let tag = document.createElement('template');
+    tag.innerHTML = template;
+    return tag;
   }
 
   static get properties() {

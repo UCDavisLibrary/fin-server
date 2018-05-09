@@ -28,9 +28,9 @@ class AppFacetCheckbox extends PolymerElement {
     };
   }
 
-  static get template() {
-    return ' ';
-  }
+  // static get template() {
+  //   return ` `;
+  // }
 
   ready() {
     super.ready();
@@ -47,7 +47,7 @@ class AppFacetCheckbox extends PolymerElement {
       this.checked = e.detail.value;
     });
 
-    this.shadowRoot.appendChild(this.ele);
+    this.appendChild(this.ele);
   }
 
   _setValue() {
