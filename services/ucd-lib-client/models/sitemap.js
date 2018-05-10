@@ -12,6 +12,12 @@ class SitemapModel {
    */
   middleware(app) {
     app.get(/^\/sitemap.*/, (req, res) => this._onRequest(req, res));
+    app.get('/robots.txt', (req, res) => {
+      res.set('Content-Type', 'text/plain');
+      res.send(`User-agent: * 
+Allow: *
+Sitemap: ${config.server.url}/sitemap.xml`);
+    });
   }
 
   /**
