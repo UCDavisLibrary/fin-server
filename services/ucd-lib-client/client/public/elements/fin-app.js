@@ -1,4 +1,4 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
+import {PolymerElement, html} from "@polymer/polymer"
 import "@polymer/paper-material/paper-material"
 import "@polymer/paper-button/paper-button"
 import "@polymer/iron-pages/iron-pages"
@@ -35,9 +35,7 @@ export class FinApp extends Mixin(PolymerElement)
 
   // Define a string template instead of a `<template>` element.
   static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
+    return html([template]);
   }
 
   static get properties() {
@@ -72,7 +70,9 @@ export class FinApp extends Mixin(PolymerElement)
    * @description AppStateInterface
    */
   _onAppStateUpdate(e) {
-    let page = e.location.path[0] || 'home';
+    let page = e.location.path ? e.location.path[0] : 'home';
+    if( !page ) page = 'home'
+
     if( page === this.page ) return;
     
     window.scrollTo(0, 0);

@@ -174,7 +174,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
     let leftOffset = Math.floor((ew - numCols * w) / 2);
 
     let colHeights = [];
-    for( var i = 0; i < numCols; i++ ) colHeights.push(0);
+    for( let i = 0; i < numCols; i++ ) colHeights.push(0);
 
     let eles = this.$.layout.querySelectorAll('app-search-grid-result');
     for( let i = 0; i < eles.length; i++ ) {

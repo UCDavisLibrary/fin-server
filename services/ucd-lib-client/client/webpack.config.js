@@ -1,45 +1,28 @@
 const path = require('path');
 const clone = require('clone');
 
-const BUILD_IE = false;
+const BUILD_IE = true;
 
-let config = require('@ucd-lib/cork-app-build').watch({
+let configs = require('@ucd-lib/cork-app-build').watch({
   // root directory, all paths below will be relative to root
   root : __dirname,
-  // entry : 'public/elements/app-test.js',
   entry : 'public/elements/fin-app.js',
+  // entry : 'public/elements/fin-app.js',
   // folder where bundle.js will be written
-  preview : 'public',
+  preview : 'public/js',
+  ie : 'ie-bundle.js',
   clientModules : 'public/node_modules'
-});
+}, BUILD_IE);
+
+if( !Array.isArray(configs) ) configs = [config];
 
 // add .xml and .csl loading support
-config.module.rules.push({
-  test: /\.(xml|csl)$/,
-  use: [ 'raw-loader']
+configs.forEach(config => {
+  config.module.rules.push({
+    test: /\.(xml|csl)$/,
+    use: [ 'raw-loader']
+  });
 });
 
-// we need the main node_modules dir, still not 100% sure why :/
-config.resolve.modules.push(path.resolve(__dirname, '..', 'node_modules'));
 
-if( BUILD_IE ) {
-  let ie = clone(config);
-
-  ie.entry = ['babel-polyfill', ie.entry];
-  ie.output.filename = 'ie-bundle.js';
-  ie.module.rules.push({
-    test: /\.js$/,
-    use: {
-      loader: 'babel-loader',
-      options: {
-        presets: ['babel-preset-env']
-      }
-    }
-  });
-  config = [config, ie];
-
-  console.log(ie);
-}
-
-
-module.exports = config;
+module.exports = configs;

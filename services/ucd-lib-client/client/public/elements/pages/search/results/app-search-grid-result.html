@@ -5,19 +5,20 @@
     background-color: white;
     cursor: pointer;
   }
+
   :host(:hover), :host(:focus) {
     border: 2px solid var(--default-secondary-color);
     margin: -2px 0 0 -2px;
     outline: none !important;
   }
 
-  @keyframes show {
+  @keyframes show-img {
     from {opacity: 0}
     to {opacity: 1}
   }
 
   img {
-    animation: show 300ms linear;
+    animation: show-img 300ms linear;
     box-sizing: border-box;
     display:none;
     /* width: var(--grid-cell-width); */

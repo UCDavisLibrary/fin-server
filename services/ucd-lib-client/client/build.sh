@@ -8,6 +8,9 @@ cp -r public/webcomponentsjs/ dist/webcomponentsjs/
 mkdir dist/images
 cp -r public/images dist/
 
+mkdir dist/js
+cp public/js/loader.js dist/js/
+
 cp public/index.html dist/
 cp public/jwt.html dist/
 

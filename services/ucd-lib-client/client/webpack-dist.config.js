@@ -5,7 +5,8 @@ let configs = require('@ucd-lib/cork-app-build').dist({
   root : __dirname,
   entry : 'public/elements/fin-app.js',
   // folder where bundle.js and ie-bundle.js will be written
-  dist : 'dist',
+  dist : 'dist/js',
+  ie : 'ie-bundle.js',
   clientModules : 'public/node_modules'
 });
 
@@ -24,6 +25,6 @@ configs.forEach(config => {
 
 // for IE config, we need to inject the polyfills
 // TODO: add this to build module
-configs[1].entry = ['babel-polyfill', configs[1].entry];
+// configs[1].entry = ['babel-polyfill', configs[1].entry];
 
 module.exports = configs;

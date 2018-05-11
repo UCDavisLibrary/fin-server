@@ -7,27 +7,7 @@
     <script src="https://use.typekit.net/rbu0rqt.js"></script>
 		<script>try{Typekit.load({ async: false });}catch(e){}</script>
 
-    <!-- Everyone -->
-    <script src="/webcomponentsjs/webcomponents-loader.js"></script>
-    
-    
-    <script>
-      function importScript(src) {
-        var script = document.createElement('script');
-        script.src = src;
-        document.head.appendChild(script);
-      }
-    </script>
-
-    <!-- modern browser -->
-    <script type="module">
-      importScript('/bundle.js');
-    </script>
-
-    <!-- IE Code -->
-    <script nomodule>
-      importScript('/ie-bundle.js');
-    </script>
+    <script src="/loader/loader.js"></script>
     
     <!-- from spa-router-middleware -->
     {{config}}
@@ -35,7 +15,6 @@
 
   <body>
     <fin-app></fin-app>
-    <!-- <app-test></app-test> -->
     <script id="seo-jsonld" type="application/ld+json">{{jsonld}}</script>
   </body>
 </html>
