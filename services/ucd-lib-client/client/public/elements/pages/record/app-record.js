@@ -104,7 +104,8 @@ export default class AppRecord extends Mixin(PolymerElement)
                   moment(this.record.datePublished).format(this.momentFormat) :
                   '';
 
-    this.$.resourceType.innerHTML = this.record.type ? '<div>'+this.record.type.join('</div><div>')+'</div>' : 'Unknown';
+    // TODO: add back in when we figure out consolidated resource type 
+    // this.$.resourceType.innerHTML = this.record.type ? '<div>'+this.record.type.join('</div><div>')+'</div>' : 'Unknown';
 
     if( this.record.license && rightsDefinitions[this.record.license] ) {
       let def = rightsDefinitions[this.record.license];
