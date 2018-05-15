@@ -19,9 +19,9 @@ configs.forEach(config => {
 });
 
 // we need the main node_modules dir, still not 100% sure why :/
-configs.forEach(config => {
-  config.resolve.modules.push(path.resolve(__dirname, '..', 'node_modules'));
-});
+// configs.forEach(config => {
+//   config.resolve.modules.push(path.resolve(__dirname, '..', 'node_modules'));
+// });
 
 // for IE config, we need to inject the polyfills
 // TODO: add this to build module
