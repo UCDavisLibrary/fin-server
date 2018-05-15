@@ -1,7 +1,7 @@
 const path = require('path');
 const clone = require('clone');
 
-const BUILD_IE = true;
+const BUILD_IE = false;
 
 let configs = require('@ucd-lib/cork-app-build').watch({
   // root directory, all paths below will be relative to root
@@ -14,7 +14,7 @@ let configs = require('@ucd-lib/cork-app-build').watch({
   clientModules : 'public/node_modules'
 }, BUILD_IE);
 
-if( !Array.isArray(configs) ) configs = [config];
+if( !Array.isArray(configs) ) configs = [configs];
 
 // add .xml and .csl loading support
 configs.forEach(config => {

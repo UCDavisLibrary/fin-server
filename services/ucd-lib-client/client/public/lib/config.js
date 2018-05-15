@@ -8,6 +8,8 @@ for( var key in rights ) {
 module.exports = {
   fcrepoBasePath : '/fcrepo/rest',
 
+  gaCode : 'UA-65988958-10',
+
   // facets to show on left side
   elasticSearch : {
     facets : {
@@ -44,14 +46,14 @@ module.exports = {
       type : {
         label : 'Type',
         type : 'facet',
-        ignore : ['CreativeWork']
+        ignore : ['CreativeWork', 'MediaObject'],
+        valueMap : value => value.replace(/(.)([A-Z])/g, '$1 $2')
       },
       'abouts.raw' : {
         label : 'Subject',
         type : 'facet'
       }
     },
-
 
     textFields : {
       record : ['name', 'description', 'abouts'],

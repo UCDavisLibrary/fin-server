@@ -67,7 +67,7 @@ class MediaModel extends BaseModel {
           return 1;
         });
 
-        return rootRecord._associatedMedia[i]._hasPart;
+        return rootRecord._imageList;
       }
     }
 
