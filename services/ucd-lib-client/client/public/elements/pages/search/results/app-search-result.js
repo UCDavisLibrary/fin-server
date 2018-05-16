@@ -1,5 +1,5 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
-import moment from "moment"
+import utils from "../../../../lib/utils"
 import "./app-search-result-creator"
 
 import CollectionInterface from "../../../interfaces/CollectionInterface"
@@ -60,7 +60,6 @@ export default class AppSearchResult extends Mixin(PolymerElement)
     super();
 
     this.baseUrl = window.location.protocol+'//'+window.location.host+'/fcrepo/rest';
-    this.momentFormat = 'YYYY';
   }
 
   ready() {
@@ -120,7 +119,7 @@ export default class AppSearchResult extends Mixin(PolymerElement)
       this.description = this.description.substr(0, 200)+'...';
     }
 
-    this.year = data.created ? moment(data.created).format(this.momentFormat) : '';
+    this.year = utils.getYearFromDate(data.created);
 
     if( Array.isArray(data.creator) ) {
       this.creator = data.creator;

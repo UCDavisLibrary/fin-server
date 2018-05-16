@@ -33,9 +33,14 @@
   .copyButton[active] span {
     display: none;
   }
+
+  #citeText {
+    padding-bottom: 10px;
+    overflow: auto;
+  }
 </style>
 
-<div hidden$="[[copying]]" style="padding-bottom: 10px" id="citeText"></div>
+<div hidden$="[[copying]]" id="citeText"></div>
 <textarea hidden$="[[!copying]]" id="copyArea"></textarea>
 
 <button active$="[[copying]]" on-click="_onCopyClicked" class="copyButton">

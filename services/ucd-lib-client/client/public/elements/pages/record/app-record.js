@@ -1,10 +1,10 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 
 import template from "./app-record.html"
-import moment from "moment"
 import bytes from "bytes"
 import rightsDefinitions from "../../../lib/rights.json"
 import citations from "../../../lib/models/CitationsModel"
+import utils from "../../../lib/utils"
 
 import "./viewer/app-image-viewer-static"
 import "./app-image-download"
@@ -61,7 +61,6 @@ export default class AppRecord extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
-    this.momentFormat = 'YYYY';
   }
 
   /**
@@ -100,9 +99,8 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.description = this.record.description || '';
     this.$.link.value = window.location.href;
 
-    this.date = this.record.datePublished ? 
-                  moment(this.record.datePublished).format(this.momentFormat) :
-                  '';
+    
+    this.date = utils.getYearFromDate(this.record.datePublished);
 
     // TODO: add back in when we figure out consolidated resource type 
     // this.$.resourceType.innerHTML = this.record.type ? '<div>'+this.record.type.join('</div><div>')+'</div>' : 'Unknown';

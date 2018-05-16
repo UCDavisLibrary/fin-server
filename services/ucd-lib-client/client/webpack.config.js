@@ -20,7 +20,7 @@ if( !Array.isArray(configs) ) configs = [configs];
 configs.forEach(config => {
   config.module.rules.push({
     test: /\.(xml|csl)$/,
-    use: [ 'raw-loader']
+    use: ['raw-loader']
   });
 });
 
