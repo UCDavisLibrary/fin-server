@@ -89,6 +89,7 @@ export default class AppRangeSlider extends PolymerElement {
     this._windowMouseListener = this._onMoveStop.bind(this);
 
     this.addEventListener('mousemove', (e) => this._onMove(e));
+    this.addEventListener('touchmove', (e) => this._onMove(e));
   }
 
   /**
@@ -105,6 +106,8 @@ export default class AppRangeSlider extends PolymerElement {
     window.addEventListener('resize', this._windowResizeListener);
     window.addEventListener('mouseup', this._windowMouseListener);
     window.addEventListener('mouseout', this._windowMouseListener);
+    window.addEventListener('touchend', this._windowMouseListener);
+    window.addEventListener('touchcancel', this._windowMouseListener);
   }
 
   /**
@@ -116,6 +119,8 @@ export default class AppRangeSlider extends PolymerElement {
     window.removeEventListener('resize', this._windowResizeListener);
     window.removeEventListener('mouseup', this._windowMouseListener);
     window.removeEventListener('mouseout', this._windowMouseListener);
+    window.removeEventListener('touchend', this._windowMouseListener);
+    window.removeEventListener('touchcancel', this._windowMouseListener);
   }
 
   /**
@@ -244,8 +249,17 @@ export default class AppRangeSlider extends PolymerElement {
    */
   _onMove(e) {
     if( !this.moving ) return;
+    e.preventDefault();
 
-    let left = e.pageX - this.left;
+
+    // handle both mouse and touch event
+    let left;
+    if( e.type === 'touchmove' ) {
+      if( !e.changedTouches.length ) return;
+      left = e.changedTouches[0].pageX - this.left;
+    } else {
+      left = e.pageX - this.left;
+    }
     
     if( this.moving === 'min' ) {
       this.minValue = this._pxToValue(left);
