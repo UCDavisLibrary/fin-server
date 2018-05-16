@@ -4,7 +4,7 @@ At its core Fin is a headless Fedora Commons instance with basic authentication 
 
 A core part of Fin is that it is language agnostic.  Fin does not want to impose a language requirement setting a barrier for any organization that wants to use Fin but does have the resources to support a certain language (in Fin's case NodeJS).  Microservices allow you to write services in languages that best suit your organization, with simple HTTP/TCP being the underlying communication protocol between services.  Microservices also help break apart monolithic applications allowing for easy horizontal scaling on most modern cloud platforms.
 
-See below for details on each service type and follow links for further information about creating and using each service.  A good overview diagram for Fin service interaction can be found in the [demo-fin folder](../docker/fin-demo/README.md).
+See below for details on each service type and follow links for further information about creating and using each service.  A good overview diagram for Fin service interaction can be found in the [demo-fin folder](../docker/ucd-dams/README.md).
 
 ## ClientService
 
