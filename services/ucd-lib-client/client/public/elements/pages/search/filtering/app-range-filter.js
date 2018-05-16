@@ -250,6 +250,28 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     );
   }
 
+  /**
+   * @method reset
+   * @description reset range filter
+   */
+  reset() {
+    this.minValue = this.absMinValue;
+    this.maxValue = this.absMaxValue;
+    this.$.unknown.checked = true;
+    
+    this._onRangeNullChange();
+  }
+
+
+  /**
+   * @method onParentFilterClicked
+   * @description called from parent toggle panel when selected filter
+   * is clicked.  Reset slider
+   */
+  onParentFilterClicked() {
+    this.reset();
+  }
+
 }
 
 customElements.define('app-range-filter', AppRangeFilter);
