@@ -117,7 +117,7 @@ class RecordModel extends ElasticSearchModel {
       return await this.search(searchDocument);
     }
  
-    if( history.state.location !== path ) {
+    if( history.state && history.state.location !== path ) {
       AppStateModel.setLocation(path);
     }
 

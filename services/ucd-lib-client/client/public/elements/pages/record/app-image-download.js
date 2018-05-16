@@ -1,6 +1,7 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-image-download.html"
 
+import config from "../../../lib/config"
 import bytes from "bytes"
 
 const SIZES = [
@@ -183,14 +184,14 @@ export default class AppImageDownload extends PolymerElement {
       if( this.selectedFormat === this.originalFormat && 
         this.selectedSize === SIZES.length -1 ) {
         this.defaultImage = true;
-        return this.href = this.options.url;
+        return this.href = config.fcrepoBasePath + this.options.url;
       }
 
       this.defaultImage = false;
 
       let size = this.sizes[this.selectedSize].size.join(',');
 
-      this.href = '/fcrepo/rest' + this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
+      this.href = config.fcrepoBasePath + this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
     });
   }
 
