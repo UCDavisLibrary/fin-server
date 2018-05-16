@@ -75,9 +75,7 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
    * we don't actually need a filter on.
    */
   _isDefaultState() {
-    if( this.minValue === this.absMinValue &&
-        this.maxValue === this.absMaxValue &&
-        this.$.unknown.checked === true ) {
+    if( !this._isFilterApplied() ) {
       
       let searchDoc = this._getCurrentSearchDocument();
       this._removeRangeFilter(searchDoc, this.filter);
@@ -88,6 +86,10 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     return false;
   }
 
+  /**
+   * @method _onRangeSliderChange
+   * @description bound to custom 'range-value-change' event from app-range-slider
+   */
   _onRangeSliderChange(e) {
     this.minValue = e.detail.min;
     this.maxValue = e.detail.max;
@@ -98,6 +100,11 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     this._onRangeNullChange();
   }
 
+  /**
+   * @method _onRangeNullChange
+   * @description bound to input checkbox.  Currently called by internal
+   * functions as well to search after value change :/
+   */
   _onRangeNullChange() {
     let value = {
       gte: this.minValue,
@@ -116,6 +123,10 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     this._searchRecords(searchDoc);
   }
 
+  /**
+   * @method _onInputChange
+   * @description bound to min/max number inputs.
+   */
   _onInputChange() {
     let min = this.$.minValueInput.value;
     let max = this.$.maxValueInput.value;
@@ -175,9 +186,10 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     if( cid !== this.selectedCollection ) return; // make sure we haven't updated
     this.default = result;
 
-    if( this.default.payload.aggregations.ranges[this.filter] ) {
-      this.absMinValue = this.default.payload.aggregations.ranges[this.filter].min;
-      this.absMaxValue = this.default.payload.aggregations.ranges[this.filter].max;
+    let rangeFilter = this.default.payload.aggregations.ranges[this.filter];
+    if( rangeFilter ) {
+      this.absMinValue = rangeFilter.min;
+      this.absMaxValue = rangeFilter.max;
     } else {
       return this._show(false);
     }
@@ -185,11 +197,11 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     this._show(true);
 
     // make sure any current values are set correctly
-    if( this.minValue < this.absMinValue ) {
+    if( this.minValue < this.absMinValue || !this.currentFilters[this.filter] ) {
       this.minValue = this.absMinValue;
       this.$.minValueInput.value = this.minValue;
     }
-    if( this.maxValue > this.absMaxValue ) {
+    if( this.maxValue > this.absMaxValue || !this.currentFilters[this.filter] ) {
       this.maxValue = this.absMaxValue;
       this.$.maxValueInput.value = this.maxValue;
     }
@@ -206,6 +218,21 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     }
 
     this._notifySelected();
+  }
+
+  /**
+   * @method _isFilterApplied
+   * @description is there currenlty a filter set
+   * 
+   * @return {Boolean}
+   */
+  _isFilterApplied() {
+    if( this.minValue === this.absMinValue &&
+      this.maxValue === this.absMaxValue &&
+      this.$.unknown.checked === true ) {
+      return false;
+    }
+    return true;
   }
 
   /**
