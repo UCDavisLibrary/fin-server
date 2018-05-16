@@ -166,7 +166,7 @@ export default class AppRecord extends Mixin(PolymerElement)
    */
   _renderCreators(record) {
     if( !record.creators ) {
-      return this.$.creator.display = 'none';
+      return this.$.creator.style.display = 'none';
     }
     let creators = Array.isArray(record.creators) ? record.creators : [record.creators];
 
