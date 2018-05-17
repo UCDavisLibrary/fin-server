@@ -300,9 +300,9 @@
     "@ucd-lib/cork-app-utils" "^2.0.4"
     clone "^2.1.1"
 
-"@ucd-lib/cork-app-load@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-load/-/cork-app-load-0.0.3.tgz#13e01c1e5e7cc9449b50654a360110c567dd3708"
+"@ucd-lib/cork-app-load@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-load/-/cork-app-load-0.0.4.tgz#30f410eb31ad96ac19e110be4e46fa7d8708b1c6"
   dependencies:
     "@babel/polyfill" "^7.0.0-beta.46"
     "@webcomponents/webcomponentsjs" "^2.0.0"

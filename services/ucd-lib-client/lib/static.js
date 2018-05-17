@@ -6,6 +6,16 @@ const config = require('../config');
 const authUtils = require('./auth');
 const records = require('../models/records');
 
+
+const bundle = `
+  <script>
+    var CORK_LOADER_VERSIONS = {
+      loader : '${config.client.versions.loader}',
+      bundle : '${config.client.versions.bundle}'
+    }
+  </script>
+  <script src="/loader/loader.js?_=${config.client.versions.loader}"></script>`;
+
 module.exports = (app) => {
   let assetsDir = path.join(__dirname, '..', 'client', config.server.assets);
 
@@ -40,7 +50,7 @@ module.exports = (app) => {
       let jsonld = '';
 
       if( !req.originalUrl.match(/^\/record/) ) {
-        return {jsonld};
+        return {jsonld, bundle};
       }
 
       let id = req.originalUrl.replace(/^\/record/, '');
@@ -52,12 +62,16 @@ module.exports = (app) => {
         .map(type => type.replace(/^schema:/, ''));
 
       jsonld = JSON.stringify(record, '  ', '  ');
-      return {jsonld}
+
+      return {jsonld, bundle}
     }
   });
 
   /**
    * Setup static asset dir
    */
-  app.use(express.static(assetsDir));
+  app.use(express.static(assetsDir, {
+    immutable: true,
+    maxAge: '1y'
+  }));
 }
