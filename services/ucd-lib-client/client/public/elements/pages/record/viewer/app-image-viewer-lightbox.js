@@ -59,6 +59,9 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     super.ready();
     this.parentNode.removeChild(this);
     document.body.appendChild(this);
+
+    this.shadowRoot.removeChild(this.$.safeCover);
+    document.body.appendChild(this.$.safeCover);
   }
 
   /**
@@ -80,8 +83,10 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     this.render();
     document.body.style.overflow = 'hidden';
     this.visible = true;
+    window.scrollTo(0,0);
+    this.$.safeCover.style.display = 'block';
 
-    setTimeout(() => this.$.nav.setFocus());
+    setTimeout(() => this.$.nav.setFocus(), 0);
   }
 
   /**
@@ -89,6 +94,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   async hide() {
     this.style.display = 'none';
+    this.$.safeCover.style.display = 'none';
     document.body.style.overflow = 'auto';
     this.visible = false;
   }
