@@ -57,7 +57,9 @@ export default class AppShareBtn extends Mixin(PolymerElement)
   }
 
   _onAppStateUpdate() {
-    this.$.link.value = window.location.href;
+    setTimeout(() => {
+      this.$.link.value = window.location.href;
+    }, 100);
   }
 
   /**
