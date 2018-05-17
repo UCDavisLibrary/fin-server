@@ -26,7 +26,7 @@
     "@ucd-lib/cork-app-utils": "2.0.5",
     "@ucd-lib/cork-pagination": "2.1.1",
     "@ucd-lib/cork-toggle-panel": "2.1.1",
-    "@ucd-lib/fin-icons": "0.0.4",
+    "@ucd-lib/fin-icons": "0.0.5",
     "@ucd-lib/fin-search-box": "0.1.1",
     "@webcomponents/shadycss": "1.2.0",
     "@webcomponents/webcomponentsjs": "2.0.0",
