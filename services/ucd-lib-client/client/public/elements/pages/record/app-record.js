@@ -268,7 +268,8 @@ export default class AppRecord extends Mixin(PolymerElement)
    * show UI interaction.
    */
   _copyLink() {
-    this.$.link.select();
+    this.$.link.focus();
+    this.$.link.setSelectionRange(0, 9999);
     document.execCommand("Copy");
 
     this.$.copyIcon.icon = 'check';

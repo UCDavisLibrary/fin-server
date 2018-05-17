@@ -43,7 +43,9 @@ export default class AppCopyCite extends PolymerElement {
     this.$.copyArea.style.width = (this.$.citeText.offsetWidth-10)+'px';
   
     this.copying = true;
-    this.$.copyArea.select();
+    // this.$.copyArea.select();
+    this.$.copyArea.focus();
+    this.$.copyArea.setSelectionRange(0, 9999);
     document.execCommand("Copy");
     this.$.icon.icon = 'check';
 
