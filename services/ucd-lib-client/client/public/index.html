@@ -1,8 +1,25 @@
 <!doctype html>
 <html>
+  <!--[if lte IE 10]>
+  <script type="text/javascript">
+    if ( document.URL.indexOf( 'ie' ) === -1 ) {
+      window.location = '/ie.html';
+    }
+  </script>
+  <![endif]-->
   <head>
-    <title>UC Davis Library - DAMS</title>
+    <meta charset="utf-8" />
+    <title>UC Davis Library Digital Collections</title>
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
+
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
+
+    <!-- IE 10 detection -->
+		<script type="text/javascript">
+			if( window.navigator.appVersion.match(/MSIE 10/) ) {
+				window.location = '/ie.html';
+			}
+		</script>
 
     <script src="https://use.typekit.net/rbu0rqt.js"></script>
 		<script>try{Typekit.load({ async: false });}catch(e){}</script>
@@ -21,6 +38,11 @@
   </head>
 
   <body>
+    <noscript>
+      The UC Davis Library Digital Collections requires JavaScript to
+      be enabled to view.  You have either disabled JavaScript or your
+      browser does not support it.
+    </noscript>
     <fin-app></fin-app>
     <script id="seo-jsonld" type="application/ld+json">{{jsonld}}</script>
   </body>
