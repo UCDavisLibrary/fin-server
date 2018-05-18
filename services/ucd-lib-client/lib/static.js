@@ -50,7 +50,12 @@ module.exports = (app) => {
       let jsonld = '';
 
       if( !req.originalUrl.match(/^\/record/) ) {
-        return {jsonld, bundle};
+        return {
+          jsonld, bundle,
+          title : config.server.title,
+          description : '',
+          keywords : ''
+        };
       }
 
       let id = req.originalUrl.replace(/^\/record/, '');
@@ -63,7 +68,12 @@ module.exports = (app) => {
 
       jsonld = JSON.stringify(record, '  ', '  ');
 
-      return {jsonld, bundle}
+      return {
+        jsonld, bundle,
+        title : record.name + ' - '+ config.server.title,
+        description : record.description || '',
+        keywords : (record.abouts || []).join(', ')
+      }
     }
   });
 

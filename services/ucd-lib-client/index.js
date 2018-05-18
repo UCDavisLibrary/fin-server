@@ -4,6 +4,7 @@ const express = require('express');
 const {logger} = require('@ucd-lib/fin-node-utils');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const config = require('./config');
 
 // global catch alls for errors
@@ -12,7 +13,10 @@ process.on('unhandledRejection', (e) => logger.error(e));
 
 // create express instance
 const app = express();
+
+// parse cookies and add compression
 app.use(cookieParser()); 
+app.use(compression());
 
 
 // setup simple http logging

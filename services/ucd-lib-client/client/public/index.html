@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <!--[if lte IE 10]>
   <script type="text/javascript">
     if ( document.URL.indexOf( 'ie' ) === -1 ) {
@@ -9,10 +9,24 @@
   <![endif]-->
   <head>
     <meta charset="utf-8" />
-    <title>UC Davis Library Digital Collections</title>
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
-
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">
+    <meta name="description" content="{{description}}"/>
+    <meta name="keywords" content="{{keywords}}"/>
+    
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="icon" sizes="192x192" href="/images/logos/logo-white-192.png">
+    <link rel="icon" sizes="128x128" href="/images/logos/logo-white-128.png">
+    <link rel="apple-touch-icon" href="/images/logos/logo-white-64.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="/images/logos/logo-white-96.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="/images/logos/logo-white-128.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/images/logos/logo-white-192.png">
+    <link rel="apple-touch-startup-image" href="/images/logos/logo-white-192.png">
+
+    <!-- See https://goo.gl/qRE0vM -->
+    <meta name="theme-color" content="#FFFFFF">
+
+    <link rel="manifest" href="/manifest.json">
 
     <!-- IE 10 detection -->
 		<script type="text/javascript">
@@ -20,9 +34,6 @@
 				window.location = '/ie.html';
 			}
 		</script>
-
-    <script src="https://use.typekit.net/rbu0rqt.js"></script>
-		<script>try{Typekit.load({ async: false });}catch(e){}</script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-65988958-10"></script>
     <script>
@@ -45,5 +56,8 @@
     </noscript>
     <fin-app></fin-app>
     <script id="seo-jsonld" type="application/ld+json">{{jsonld}}</script>
+    
+    <script src="https://use.typekit.net/rbu0rqt.js"></script>
+		<script>try{Typekit.load({ async: false });}catch(e){}</script>
   </body>
 </html>

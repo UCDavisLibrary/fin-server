@@ -12,6 +12,10 @@ class AppStateModelImpl extends AppStateModel {
     this._sendGA();
   }
 
+  /**
+   * @method _sendGA
+   * @description send a google analytics event if pathname has changed
+   */
   _sendGA() {
     if( !gtag ) console.warn('No global gtag variable set for analytics events');
     if( this.lastGaLocation === window.location.pathname ) return;

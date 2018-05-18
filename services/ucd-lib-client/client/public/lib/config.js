@@ -8,6 +8,11 @@ for( var key in rights ) {
 module.exports = {
   fcrepoBasePath : '/fcrepo/rest',
 
+  metadata : {
+    title : 'UC Davis Library Digital Collections',
+    description : 'The UC Davis Digital Collections is a locally developed digital repository that was designed to store and manage the digital assets of UC Davis. These Digital Collections are intended to increase access to previously undiscoverable digital assets held by the University Library.'
+  },
+
   gaCode : 'UA-65988958-10',
 
   // facets to show on left side

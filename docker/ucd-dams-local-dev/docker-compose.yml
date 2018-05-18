@@ -201,6 +201,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
+      #- FIN_ENV=prod
     depends_on:
       - server
     command: node service
