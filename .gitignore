@@ -6,5 +6,5 @@ webapp-service-account.json
 server/stats.json
 server/client/stats.json
 server/backups
-services/ucd-lib-client/client/public/js/bundle*.js
-services/ucd-lib-client/client/public/js/ie-bundle*.js
+services/ucd-lib-client/client/public/js/*bundle*.js
+services/ucd-lib-client/client/public/js/*ie-bundle*.js

@@ -17,7 +17,8 @@ const bundle = `
   <script src="/loader/loader.js?_=${config.client.versions.loader}"></script>`;
 
 module.exports = (app) => {
-  let assetsDir = path.join(__dirname, '..', 'client', config.server.assets);
+  // let assetsDir = path.join(__dirname, '..', 'client', config.server.assets);
+  let assetsDir = path.join(__dirname, '..', 'client', 'dist');
 
   /**
    * Setup SPA app routes

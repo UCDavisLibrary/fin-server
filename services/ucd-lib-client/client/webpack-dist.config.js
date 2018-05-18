@@ -16,15 +16,18 @@ configs.forEach(config => {
     test: /\.(xml|csl)$/,
     use: [ 'raw-loader']
   });
+
+  config.output.publicPath = '/js/'
+  config.output.chunkFilename = '[name].'+config.output.filename;
 });
 
-// we need the main node_modules dir, still not 100% sure why :/
-// configs.forEach(config => {
-//   config.resolve.modules.push(path.resolve(__dirname, '..', 'node_modules'));
-// });
+// add dynamic loader plugin for ie
+configs[1].module.rules.forEach(plugin => {
+  if( !plugin.use ) return;
+  if( plugin.use.loader !== 'babel-loader' ) return;
+  plugin.use.options.plugins = ["syntax-dynamic-import"];
+});
 
-// for IE config, we need to inject the polyfills
-// TODO: add this to build module
-// configs[1].entry = ['babel-polyfill', configs[1].entry];
+
 
 module.exports = configs;

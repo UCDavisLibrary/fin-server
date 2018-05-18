@@ -22,6 +22,9 @@ configs.forEach(config => {
     test: /\.(xml|csl)$/,
     use: ['raw-loader']
   });
+
+  config.output.publicPath = '/js/'
+  config.output.chunkFilename = '[name].'+config.output.filename;
 });
 
 

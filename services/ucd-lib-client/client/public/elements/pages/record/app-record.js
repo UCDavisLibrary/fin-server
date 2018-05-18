@@ -123,11 +123,6 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.record.collectionName = collection.name;
     }
 
-    // render citations
-    this.$.mla.text = citations.renderEsRecord(this.record, 'mla');
-    this.$.apa.text = citations.renderEsRecord(this.record, 'apa');
-    this.$.chicago.text = citations.renderEsRecord(this.record, 'chicago');
-
 
     // render associated media
     if( record.associatedMedia ) {
@@ -137,8 +132,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     } else {
       this._setSelectedRecordMedia(record);
     }
-
-    // left side metadata items
 
     // find arks or doi
     this._renderIdentifier(record);
@@ -156,6 +149,11 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.fedoraValue.innerHTML =  `<a href="${link}">${record.id}</a>`;
 
     this._updateMetadataRows();
+
+    // render citations.. this might need to load library, do it last
+    this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
+    this.$.apa.text = await citations.renderEsRecord(this.record, 'apa');
+    this.$.chicago.text = await citations.renderEsRecord(this.record, 'chicago');
   }
 
   /**
