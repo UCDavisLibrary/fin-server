@@ -95,6 +95,7 @@ class ServiceModel {
 
     // listen for service definition updates
     activeMqProxy.on('fcrepo-event', e => this._onFcrepoEvent(e));
+    activeMqProxy.connect();
   }
 
   /**

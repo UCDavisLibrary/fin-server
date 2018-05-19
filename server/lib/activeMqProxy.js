@@ -8,12 +8,13 @@ var connectOptions = {
   host : config.fcrepo.hostname,
   port : config.fcrepo.stomp.port,
   connectHeaders: {
-    host : config.fcrepo.hostname
+    host : config.fcrepo.hostname,
+    'heart-beat': '5000,5000'
   }
 };
 
 var subscribeHeaders = {
-  destination: config.fcrepo.stomp.topic,
+  destination: config.fcrepo.stomp.queue || '/queue/fedora',
   ack: 'client-individual'
 };
 
@@ -29,19 +30,49 @@ class MessageConsumer extends EventEmitter {
 
   constructor() {
     super();
-    this.connect();
+    this.wait = 0;
+    this.counter = 0;
+  }
+
+  onDisconnect(event) {
+    logger.warn('STOMP client disconnected: '+event);
+    
+    if( this.client ) { // make sure we are closed
+      this.client.disconnect();
+      this.client = null;
+    }
+
+    this.wait = 0;
+  
+    if( !this.connecting && !this.client ) {
+      this.connect();
+    }
   }
 
 
   connect() {
+    if( !this.connecting ) {
+      this.connecting = true;
+    }
+
     setTimeout(() => {
+      logger.info('STOMP attempting connection');
+
       stompit.connect(connectOptions, (error, client) => {
         if( error ) {
           this.wait += 1000;
+          logger.warn('STOMP connection attempt failed, retry in: '+this.wait+'ms');
           return this.connect();
         }
 
-        this.wait = 1000;
+        // capture all end/close/finish events, assume badness, reconnect
+        client.on('error', () => this.onDisconnect('error'));
+        client.on('end', () => this.onDisconnect('end'));
+        client.on('finish', () => this.onDisconnect('finish'));
+        client.on('close', () => this.onDisconnect('close'));
+
+        this.connecting = false;
+        this.wait = 0;
         this.client = client;
         this.init();
       });
@@ -54,12 +85,14 @@ class MessageConsumer extends EventEmitter {
    */
   init() {
     if( !this.client ) return;
-    logger.info('STOMP client connected');
+    logger.info('STOMP client connected to server');
 
+    var uid = this.counter;
+    this.counter++;
 
     this.client.subscribe(subscribeHeaders, async (error, message) => {
       if( error ) {
-        return console.error(error);
+        return logger.error('STOMP message error', error);
       }
 
       var headers = message.headers;
@@ -81,7 +114,7 @@ class MessageConsumer extends EventEmitter {
       });
 
       // TODO: do we need to ack?
-      // this.client.ack(message);
+      this.client.ack(message);
     });
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@ucd-lib/fin-node-utils",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Node utils for the FIN (UC Davis Library DAMS) Server",
   "main": "index.js",
   "scripts": {

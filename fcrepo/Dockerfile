@@ -29,6 +29,7 @@ RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
 COPY ./webac-spring-files/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
 RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
 COPY ./web.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/
+COPY ./activemq.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/config/
 # end workaround
 
 # Add files for jetty / cas / jwt authentication

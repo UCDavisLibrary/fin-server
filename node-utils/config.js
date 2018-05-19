@@ -35,7 +35,7 @@ module.exports = {
     root : '/fcrepo/rest',
     stomp : {
       port : 61613,
-      topic : '/topic/fedora'
+      queue : '/queue/fedora'
     }
   },
 
