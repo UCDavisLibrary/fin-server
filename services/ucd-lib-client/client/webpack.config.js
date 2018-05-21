@@ -1,7 +1,7 @@
 const path = require('path');
 const clone = require('clone');
 
-const BUILD_IE = false;
+const BUILD_IE = true;
 
 let configs = require('@ucd-lib/cork-app-build').watch({
   // root directory, all paths below will be relative to root
@@ -25,6 +25,13 @@ configs.forEach(config => {
 
   config.output.publicPath = '/js/'
   config.output.chunkFilename = '[name].'+config.output.filename;
+});
+
+// add dynamic loader plugin for ie
+configs[1].module.rules.forEach(plugin => {
+  if( !plugin.use ) return;
+  if( plugin.use.loader !== 'babel-loader' ) return;
+  plugin.use.options.plugins = ["syntax-dynamic-import"];
 });
 
 
