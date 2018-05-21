@@ -58,6 +58,9 @@ export class FinApp extends Mixin(PolymerElement)
   }
 
   ready() {
+    let loadingEle = document.querySelector('#loading');
+    if( loadingEle ) document.body.removeChild(loadingEle);
+
     super.ready();
 
     // set initial user state
