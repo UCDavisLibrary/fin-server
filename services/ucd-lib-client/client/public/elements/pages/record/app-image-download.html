@@ -66,11 +66,7 @@
 </div>
 
 <div style="display:flex; align-items: center">
-  <select id="format" on-change="_onFormatSelected">
-    <template is="dom-repeat" items="[[formats]]">
-      <option value="[[item]]">[[item]]</option>
-    </template>
-  </select>
+  <select id="format" on-change="_onFormatSelected"></select>
 
   <a href="[[href]]" download target="_blank">
     <iron-icon icon="file-download"></iron-icon>

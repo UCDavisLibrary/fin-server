@@ -116,7 +116,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
       this.results = results;
       this.total = total;
       this.numPerPage = numPerPage;
-      this.$.numPerPage.value = numPerPage;
+      this.$.numPerPage.value = numPerPage+'';
       this.currentIndex = currentIndex;
 
       requestAnimationFrame(() => this._resize());

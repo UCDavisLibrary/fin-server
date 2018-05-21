@@ -126,6 +126,14 @@ export default class AppImageDownload extends PolymerElement {
     }
     this.formats = formats;
 
+    this.$.format.innerHTML = '';
+    this.formats.forEach(format => {
+      let option = document.createElement('option');
+      option.textContent = format;
+      option.value = format;
+      this.$.format.appendChild(option);
+    });
+
     this._renderDownloadHref();
   }
 
