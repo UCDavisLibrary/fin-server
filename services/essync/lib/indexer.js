@@ -150,6 +150,8 @@ class EsIndexer {
    * @returns {Promise}
    */
   async update(jsonld, recordIndex, collectionIndex) {
+    if( !jsonld ) return;
+
     // only index binary and collections
     if( this.isRecord(jsonld['@type']) ) {
       logger.info(`ES Indexer updating record container: ${jsonld['@id']}`);
@@ -190,7 +192,7 @@ class EsIndexer {
    * 
    * @returns {Promise}
    */
-  async remove(path, types) {
+  async remove(path='', types=[]) {
     if( this.isRecord(types) ) {
       let exists = await this.esClient.exists({
         index : config.elasticsearch.record.alias,
@@ -279,7 +281,7 @@ class EsIndexer {
    * 
    * @returns {Promise}
    */
-  async getJsonFrame(path, types) {
+  async getJsonFrame(path='', types=[]) {
     if( path.match(/fcr:metadata$/) ) {
       path = path.replace(/\/fcr:metadata$/, '');
     }
@@ -527,8 +529,9 @@ class EsIndexer {
    * 
    * @returns {Object} 
    */
-  getRecordOrCollectionFrame(frame) {
+  getRecordOrCollectionFrame(frame={}) {
     if( frame['@graph'] ) frame = frame['@graph'];
+    
     if( Array.isArray(frame) ) {
       return frame.find(item => {
         if( this.isCollection(item['@type']) ||
