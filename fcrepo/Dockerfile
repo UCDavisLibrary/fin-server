@@ -2,7 +2,7 @@ FROM jetty:9.4.6
 
 ENV FCREPO_HOME=/var/lib/jetty/fedora-data \
     FCREPO_NAME=fcrepo \
-    FCREPO_VERSION=4.7.4 \
+    FCREPO_VERSION=4.7.5 \
     FCREPO_WAR=/var/lib/jetty/webapps/fcrepo.war \
 		FCREPO_ETC=/etc/fcrepo
 
@@ -25,6 +25,7 @@ RUN cd /var/lib/jetty/webapps && \
     rm ${FCREPO_NAME}.war
 
 COPY ./webac-jars/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
+COPY ./fcrepo-http-api-4.7.5.jar /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
 RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
 COPY ./webac-spring-files/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
 RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/

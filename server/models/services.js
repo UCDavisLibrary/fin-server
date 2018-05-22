@@ -90,8 +90,11 @@ class ServiceModel {
     // reload all service secrets from redis
     await this.reloadSecrets();
 
+    // this is triggered by updating default services above
     // reload all service definitions from fedora
-    await this.reload();
+    if( !config.defaultServices.length ) {
+      await this.reload();
+    }
 
     // listen for service definition updates
     activeMqProxy.on('fcrepo-event', e => this._onFcrepoEvent(e));
