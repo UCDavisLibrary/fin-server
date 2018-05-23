@@ -136,14 +136,30 @@ class RecordsModel extends ElasticSearchModel {
    * es search document
    * 
    * @param {Object} body elasticsearch search body
+   * @param {Object} options elasticsearch main object for additional options
    * 
    * @returns {Promise} resolves to elasticsearch result
    */
-  esSearch(body = {}) {
-    return es.search({
-      index : config.elasticsearch.record.alias,
-      body : body
-    });
+  esSearch(body = {}, options={}) {
+    options.index = config.elasticsearch.record.alias;
+    options.body = body;
+
+    return es.search(options);
+  }
+
+  /**
+   * @method esScroll
+   * @description croll a search request (retrieve the next set of results) after specifying the scroll parameter in a search() call.
+   * https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll
+   * 
+   * @param {Object} options
+   * @param {String} options.scrollId current scroll id
+   * @param {String} options.scroll time to keep open
+   * 
+   * @returns {Promise} resolves to elasticsearch result
+   */
+  esScroll(options={}) {
+    return es.scroll(options);
   }
 
   /**

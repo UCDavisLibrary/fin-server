@@ -100,20 +100,28 @@ Sitemap: ${config.server.url}/sitemap.xml`);
         ]
       }
     };
-    let limit = 250;
 
-    // find total records
+    let chunkSize = 250;
+    let time = '30s';
+
+    // find records and start scroll
     let result = await records.esSearch({
       _source : ['name'],
-      from : 0,
-      size : 0,
-      query : query
-    });
+      query : query,
+      size: 250
+    }, {scroll: time});
 
-    // given limit size above, send records in limit sized chunks
-    for( var i = 0; i < result.hits.total; i += limit ) {
-      let urls = await this._getCollectionPart(i, limit, query);
-      resp.write(urls.join('\n')+'\n');
+    let sent = result.hits.hits.length;
+    result.hits.hits.forEach(result => this._writeResult(resp, result));
+    
+    while( result.hits.total > sent ) {
+      result = await records.esScroll({
+        scrollId: result._scroll_id,
+        scroll: time
+      });
+
+      result.hits.hits.forEach(result => this._writeResult(resp, result));
+      sent += result.hits.hits.length;
     }
 
     // finish our sitemap xml and end response
@@ -122,30 +130,18 @@ Sitemap: ${config.server.url}/sitemap.xml`);
   }
 
   /**
-   * @method _getCollectionPart
-   * @description given a limit and offset (from/size) and a collection
-   * query, respond with a string array of sitemap xml <url> tags. Helper
-   * for getCollection().
+   * @method _writeResult
+   * @description write a single result for sitemap
    * 
-   * @param {Integer} from 
-   * @param {Integer} size 
-   * @param {Object} query 
-   * 
-   * @return {Promise} resolve to string array
+   * @param {Object} resp express response
+   * @param {Object} result elasticsearch record result
    */
-  async _getCollectionPart(from, size, query) {
-    let urls = await records.esSearch({
-      _source : ['name'],
-      query, from, size
-    });
-    if( !urls.hits ) return '';
-
-    let hits = urls.hits.hits || [];
-    return hits.map(result => `<url>
+  _writeResult(resp, result) {
+    resp.write(`<url>
         <loc>${config.server.url}/record${result._id}</loc>
         <changefreq>weekly</changefreq>
         <priority>.5</priority>
-    </url>`);
+    </url>\n`);
   }
 
 }
