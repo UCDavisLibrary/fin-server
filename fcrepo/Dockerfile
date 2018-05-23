@@ -25,17 +25,17 @@ RUN cd /var/lib/jetty/webapps && \
     rm ${FCREPO_NAME}.war
 
 COPY ./webac-jars/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
-COPY ./http-api/fcrepo-http-api-4.7.5.jar /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
+COPY ./http-api/fcrepo-http-api-${FCREPO_VERSION}.jar /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
 RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
 COPY ./webac-spring-files/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
 RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
-COPY ./web.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/
-COPY ./activemq.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/config/
+COPY ./fin-config/web.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/
+COPY ./fin-config/activemq.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/config/
 # end workaround
 
 # Add files for jetty / cas / jwt authentication
 COPY ./jetty-auth-jars/* /var/lib/jetty/lib/ext/
-COPY ./fcrepo.xml /var/lib/jetty/webapps/fcrepo.xml
+COPY ./fin-config/fcrepo.xml /var/lib/jetty/webapps/fcrepo.xml
 
 # Create an external configuration setup
 RUN mkdir -p ${FCREPO_ETC}
