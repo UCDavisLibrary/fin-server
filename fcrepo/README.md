@@ -12,7 +12,19 @@ Custom spring and jetty config files for fin.
 
 ## /http-api
 
-Custom fcrepo-http-api jar file to support setting RDF uris host and protocol via HTTP headers.
+Custom fcrepo-http-api jar file to support setting RDF uris host and protocol via HTTP headers.  The source is located in a fork of the fcrepo4 repository here: https://github.com/UCDavisLibrary/fcrepo4/tree/fcrepo-4.7.5-headers.  Note you want to checkout the `fcrepo-4.7.5-headers` branch.
+
+To build:
+
+```
+git clone https://github.com/UCDavisLibrary/fcrepo4
+cd fcrepo4
+git checkout fcrepo-4.7.5-headers
+cd fcrepo-http-api
+MAVEN_OPTS="-Xmx1024m -XX:MaxMetaspaceSize=1024m" mvn install
+```
+
+The new jars will be located in `/fcrepo-http-api/target`
 
 ## jetty-auth-jars
 
