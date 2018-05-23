@@ -182,6 +182,9 @@ class ProxyModel {
       return res.status(200).send();
     }
 
+    // set origin header to our base server url
+    req.headers['Origin'] = config.server.url;
+
     // if this is not a service request, preform basic fcrepo proxy request
     if( !serviceModel.isServiceRequest(req) ) {
       return this._fcrepoProxyRequest(req, res);

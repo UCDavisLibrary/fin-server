@@ -29,6 +29,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
+      # - FIN_URL=https://foobar.com
       - FIN_ENV=dev
       - FIN_ALLOW_ORIGINS=localhost:8081
 

@@ -35,13 +35,22 @@ Sitemap: ${config.server.url}/sitemap.xml`);
 
     res.set('Content-Type', 'application/xml');
     
-    // no collection name provided, set the root sitemapindex for all collections
-    if( !collection ) {
-      return res.send(await this.getRoot());
-    }
+    try {
+      // no collection name provided, set the root sitemapindex for all collections
+      if( !collection ) {
+        return res.send(await this.getRoot());
+      }
 
-    // send express response, we are going to stream out the xml result
-    this.getCollection(collection.replace(/^-/,''), res);
+      // send express response, we are going to stream out the xml result
+      this.getCollection(collection.replace(/^-/,''), res);
+    } catch(e) {
+      res.set('Content-Type', 'application/json');
+      res.json({
+        error : true,
+        message : e.message,
+        stack : e.stack
+      });
+    }
   }
 
   /**
@@ -129,6 +138,7 @@ Sitemap: ${config.server.url}/sitemap.xml`);
       _source : ['name'],
       query, from, size
     });
+    if( !urls.hits ) return '';
 
     let hits = urls.hits.hits || [];
     return hits.map(result => `<url>
