@@ -182,8 +182,11 @@ class ProxyModel {
       return res.status(200).send();
     }
 
-    // set origin header to our base server url
-    req.headers['Origin'] = config.server.url;
+    // set forwarded header to our base server url
+    if( config.server.url ) {
+      let serverUrl = new URL(config.server.url);
+      req.headers['Forwarded'] = `host=${serverUrl.host}; proto=${serverUrl.protocol.replace(/:$/,'')}`;
+    }
 
     // if this is not a service request, preform basic fcrepo proxy request
     if( !serviceModel.isServiceRequest(req) ) {
