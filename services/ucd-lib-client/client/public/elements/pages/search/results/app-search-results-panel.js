@@ -137,6 +137,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
       this.total = total;
       this.numPerPage = numPerPage;
       this.$.numPerPage.value = numPerPage+'';
+      this.$.numPerPageM.value = numPerPage+'';
       this.currentIndex = currentIndex;
 
       requestAnimationFrame(() => this._resize());
@@ -271,9 +272,9 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    * @description bound to select box change event, dispatch event to parent
    * alerting new page size
    */
-  _onPageSizeChange() {
+  _onPageSizeChange(e) {
     this.dispatchEvent(new CustomEvent('page-size-change', {
-      detail : parseInt(this.$.numPerPage.value)
+      detail : parseInt(e.currentTarget.value)
     }));
   }
 
