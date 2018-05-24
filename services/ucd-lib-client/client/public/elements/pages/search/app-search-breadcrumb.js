@@ -51,6 +51,7 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
   async _onAppStateUpdate(e) {
     if( e.location.path[0] === 'search' ) {
       this.lastSearch = e.location.pathname;
+      this.record = null;
       return;
     }
 
