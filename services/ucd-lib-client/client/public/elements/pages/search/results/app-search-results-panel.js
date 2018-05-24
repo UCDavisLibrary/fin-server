@@ -72,6 +72,21 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
       showCollectionResults : {
         type : Boolean,
         value : false
+      },
+
+      showError : {
+        type : Boolean,
+        value : false
+      },
+      
+      showLoading : {
+        type : Boolean,
+        value : false
+      },
+
+      errorMsg : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -111,6 +126,11 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    */
   render(results, total, numPerPage, currentIndex) {
     this.results = [];
+    this.showHeaderFooter = true;
+    this.showError = false;
+  
+    clearTimeout(this.showLoadingTimer);
+    this.showLoading = false;
 
     requestAnimationFrame(() => {
       this.results = results;
@@ -121,6 +141,32 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
 
       requestAnimationFrame(() => this._resize());
     });
+  }
+
+  onLoading() {
+    this.results = [];
+    // this.showHeaderFooter = false;
+    this.showCollectionResults = false;
+    this.showError = false;
+    this.showLoadingTimer = setTimeout(() => {
+      this.showLoading = true;
+    }, 100);
+  }
+
+  onError(state) {
+    this.results = [];
+    // this.showHeaderFooter = false;
+    this.showCollectionResults = false;
+    this.showError = true;
+   
+    clearTimeout(this.showLoadingTimer);
+    this.showLoading = false;
+
+    if( state.showErrorMessage ) {
+      this.errorMsg = state.error.message;
+    } else {
+      this.errorMsg = 'Ooops. Something went wrong with search!';
+    }
   }
 
   /**

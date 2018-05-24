@@ -1,7 +1,7 @@
 const path = require('path');
 const clone = require('clone');
 
-const BUILD_IE = true;
+const BUILD_IE = false;
 
 let configs = require('@ucd-lib/cork-app-build').watch({
   // root directory, all paths below will be relative to root
@@ -17,7 +17,7 @@ let configs = require('@ucd-lib/cork-app-build').watch({
 if( !Array.isArray(configs) ) configs = [configs];
 
 // add .xml and .csl loading support
-configs.forEach(config => {
+configs.forEach((config, index) => {
   config.module.rules.push({
     test: /\.(xml|csl)$/,
     use: ['raw-loader']
@@ -25,14 +25,15 @@ configs.forEach(config => {
 
   config.output.publicPath = '/js/'
   config.output.chunkFilename = '[name].'+config.output.filename;
-});
 
-// add dynamic loader plugin for ie
-configs[1].module.rules.forEach(plugin => {
-  if( !plugin.use ) return;
-  if( plugin.use.loader !== 'babel-loader' ) return;
-  plugin.use.options.plugins = ["syntax-dynamic-import"];
+  if( index === 1 ) {
+    // add dynamic loader plugin for ie
+    config.module.rules.forEach(plugin => {
+      if( !plugin.use ) return;
+      if( plugin.use.loader !== 'babel-loader' ) return;
+      plugin.use.options.plugins = ["syntax-dynamic-import"];
+    });
+  }
 });
-
 
 module.exports = configs;

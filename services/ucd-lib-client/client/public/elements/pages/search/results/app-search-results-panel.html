@@ -2,6 +2,7 @@
   :host {
     display: block;
     max-width: 1150px;
+    position: relative;
   }
 
   .header {
@@ -40,7 +41,7 @@
   }
 
   .masonry {
-    margin: 10px;
+    padding: 10px;
     position: relative;
   }
 
@@ -81,6 +82,25 @@
 
   .filler {
     flex: 1;
+  }
+
+  paper-spinner-lite {
+    --paper-spinner-color: var(--default-secondary-color);
+  }
+
+  .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+  }
+
+  .error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    color: red;
   }
 
   cork-pagination {
@@ -217,7 +237,7 @@
   </div>
 </div>
 
-<div class="collections" hidden$="[[!showCollectionResults]]">
+<div class="collections">
   <div hidden$="[[!collectionResults.length]]">
     <h3>Collections</h3>
     <template is="dom-repeat" items="[[collectionResults]]">
@@ -231,16 +251,27 @@
   </div>
 </div>
 
-<div class="masonry" id="layout" hidden$="[[isListLayout]]">
-  <template is="dom-repeat" items="[[results]]">
-    <app-search-grid-result data="[[item]]" class="item"></app-search-grid-result>
-  </template>
+<div hidden$="[[showError]]">
+  <div hidden$="[[showLoading]]">
+    <div class="masonry" id="layout" hidden$="[[isListLayout]]">
+      <template is="dom-repeat" items="[[results]]">
+        <app-search-grid-result data="[[item]]" class="item"></app-search-grid-result>
+      </template>
+    </div>
+
+    <div class="list" hidden$="[[!isListLayout]]">
+      <template is="dom-repeat" items="[[results]]">
+        <app-search-list-result data="[[item]]"></app-search-list-result>
+      </template>
+    </div>
+  </div>
 </div>
 
-<div class="list" hidden$="[[!isListLayout]]">
-  <template is="dom-repeat" items="[[results]]">
-    <app-search-list-result data="[[item]]"></app-search-list-result>
-  </template>
+<div class="error" hidden$="[[!showError]]">
+  <div>[[errorMsg]]</div>
+</div>
+<div class="loading" hidden$="[[!showLoading]]">
+  <paper-spinner-lite active$="[[showLoading]]"></paper-spinner-lite>
 </div>
 
 <div style="text-align:center">

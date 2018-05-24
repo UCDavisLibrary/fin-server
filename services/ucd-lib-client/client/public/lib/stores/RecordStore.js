@@ -67,10 +67,11 @@ class RecordStore extends BaseStore {
     });
   }
 
-  setSearchError(searchDocument, error) {
+  setSearchError(searchDocument, error, showErrorMessage=false) {
     this._setSearchState({
       state: this.STATE.ERROR,   
-      searchDocument, error
+      searchDocument, error,
+      showErrorMessage
     });
   }
 

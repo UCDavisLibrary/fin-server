@@ -13,6 +13,8 @@ class RecordModel extends ElasticSearchModel {
     this.store = RecordStore;
     this.store.config = config.elasticSearch;
 
+    this.MAX_WINDOW = 10000;
+
     this.register('RecordModel');
   }
 
@@ -116,12 +118,21 @@ class RecordModel extends ElasticSearchModel {
       AppStateModel.setLocation(path);
       return await this.search(searchDocument);
     }
- 
-    if( history.state && history.state.location !== path ) {
+    
+    if( !history.state ) {
+      AppStateModel.setLocation(path);
+    } if( history.state && history.state.location !== path ) {
       AppStateModel.setLocation(path);
     }
 
-    await this.service.search(searchDocument);
+    if( searchDocument.limit + searchDocument.offset > this.MAX_WINDOW ) {
+      this.store.setSearchError(searchDocument, new Error('Sorry, digital.ucdavis.edu does not serve more than 10,000 results for a query'), true);
+      return this.store.getSearch();
+    }
+
+    try {
+      await this.service.search(searchDocument);
+    } catch(e) {}
 
     return this.store.getSearch();
   }

@@ -105,6 +105,12 @@ export class AppSearch extends Mixin(PolymerElement)
    * @param {Object} e 
    */
   _onRecordSearchUpdate(e) {
+    if( e.state === 'error' ) {
+      return this.$.resultsPanel.onError(e);
+    } else if( e.state === 'loading' ) {
+      return this.$.resultsPanel.onLoading();
+    }
+
     if( e.state !== 'loaded' ) return;
 
     let currentIndex = e.searchDocument.offset;
