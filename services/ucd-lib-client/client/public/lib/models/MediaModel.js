@@ -40,8 +40,11 @@ class MediaModel extends BaseModel {
   getImgUrl(path, width='', height='') {
     if( width === null ) width = '';
     if( height === null ) height = '';
+    
+    let size = width+','+height;
+    if( !width && !height ) size = 'full';
 
-    return `${config.fcrepoBasePath}${path}/svc:iiif/full/${width},${height}/0/default.jpg`;
+    return `${config.fcrepoBasePath}${path}/svc:iiif/full/${size}/0/default.jpg`;
   }
 
   /**
