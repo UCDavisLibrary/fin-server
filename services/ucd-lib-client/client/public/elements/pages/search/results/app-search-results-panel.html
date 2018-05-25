@@ -9,6 +9,7 @@
     font-size: var(--font-size-sm);
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
   }
 
   select {
@@ -140,6 +141,7 @@
 
   .mobile-header {
     padding-top: 15px;
+    margin-bottom: 10px;
   }
 
   .mobile-header .row2 {
@@ -191,7 +193,7 @@
       <option value="10" selected>10</option>
     </select>
   </div>
-  <div style="margin-left: 10px; font-style:italic">Items per page</div>
+  <div style="margin: 0 10px; font-style:italic">Items per page</div>
 </div>
 
 <div class="mobile-header">
@@ -233,7 +235,7 @@
         <option>10</option>
       </select>
     </div>
-    <div style="margin-left: 10px; font-style:italic">per page</div>
+    <div style="margin: 0 10px; font-style:italic">per page</div>
   </div>
 </div>
 
@@ -276,9 +278,13 @@
 
 <div style="text-align:center">
   <cork-pagination 
-    total-results="[[total]]" 
+    total-results="[[paginationTotal]]" 
     items-per-page="[[numPerPage]]"
     current-index="[[currentIndex]]"
     on-nav="_onPaginationNav">
   </cork-pagination>
+</div>
+
+<div hidden$="[[!totalOverMaxWindow]]" style="text-align: center">Digital Collections limits results to 
+  10,000.  Use keywords and/or filters to refine search.
 </div>

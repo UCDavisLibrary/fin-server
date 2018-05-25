@@ -55,8 +55,8 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
        * UI display of total results
        */
       total : {
-        type : Number,
-        value : 0
+        type : String,
+        value : '0'
       },
 
       numPerPage : {
@@ -87,7 +87,20 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
       errorMsg : {
         type : Boolean,
         value : false
+      },
+
+      // total number for pagination widget
+      // we make out at 10000
+      paginationTotal : {
+        type : Number,
+        value : false
+      },
+
+      totalOverMaxWindow : {
+        type : Boolean,
+        value : false
       }
+
     }
   }
 
@@ -128,13 +141,24 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
     this.results = [];
     this.showHeaderFooter = true;
     this.showError = false;
-  
+
     clearTimeout(this.showLoadingTimer);
     this.showLoading = false;
 
     requestAnimationFrame(() => {
+      this.total = this.numberWithCommas(total);
+
+      // make sure we don't have a page the returns results > 10000k
+      let t = Math.floor((10000-numPerPage) / numPerPage) * numPerPage;
+      if( total > t ) {
+        total = t;
+        this.totalOverMaxWindow = true;
+      } else {
+        this.totalOverMaxWindow = false;
+      }
+
       this.results = results;
-      this.total = total;
+      this.paginationTotal = total;
       this.numPerPage = numPerPage;
       this.$.numPerPage.value = numPerPage+'';
       this.$.numPerPageM.value = numPerPage+'';
@@ -142,6 +166,10 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
 
       requestAnimationFrame(() => this._resize());
     });
+  }
+
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   onLoading() {
