@@ -12,22 +12,31 @@ git:=branch tags
 service_dirs:=$(foreach d,basic-auth cas essync loris ucd-lib-client,../../services/$d)
 $(foreach d,${service_dirs},$(eval ${d}/image:=fin-$(notdir $d)-service))
 
+# Snowflake for the client service
+../../services/ucd-lib-client/image:=fin-ucd-lib-client
+
 other_dirs:= ../../fcrepo ../../server \
- ../../services/auto-generator-demo ../../services/trusted-proxy \
- ../../fuseki/jena-fuseki
+ ../../services/auto-generator-demo ../../services/trusted-proxy
 
 $(foreach d,${other_dirs},$(eval ${d}/image:=fin-$(notdir $d)))
 
+extra_dirs:=
+#extra_dirs:=../../fuseki/jena-fuseki
+$(foreach d,${extra_dirs},$(eval ${d}/image:=fin-$(notdir $d)))
+
+
 #dirs:=$(shell find ../.. -name Dockerfile | grep -v old-demos | sed -e 's|/Dockerfile$$||g')
-dirs:=${service_dirs} ${other_dirs}
+dirs:=${service_dirs} ${other_dirs} ${extra_dirs}
 
 INFO::
 	@echo "Build and Push Images"; \
-  echo "  push all images: 'make push'";\
-	echo "  make one image: 'make dirs=../../server build'";\
-	echo "  only tag with current git branch: 'make tag=branch build'";\
-	echo "  only tag with current git commit: 'make tag=hash build'";\
-	echo "  only tag with current package.json verion: 'make tag=package build'"
+  echo "  build all images: 'make build'";\
+  echo "  build and push all images: 'make build push'";\
+  echo "  just push all images: 'make push'";\
+	echo "  make one image: 'make dirs=../../server build'";
+#	echo "  only tag with current git branch: 'make tag=branch build'";\
+#	echo "  only tag with current git commit: 'make tag=hash build'";\
+#	echo "  only tag with current package.json verion: 'make tag=package build'"
 #	@echo -e "$(foreach d,${dirs},${d} -> ${${d}/image}\n)"
 
 
@@ -36,12 +45,13 @@ images::$2
 INFO::
 	@echo $1 $2
 
+#	docker tag ${org}/$2:${branch} ${org}/$2:${hash};
+
 .PHONY::$2
 build::$2
 $2:$1/Dockerfile
 	@cd $1;\
 	docker build -t ${org}/$2:${branch} .; \
-#	docker tag ${org}/$2:${branch} ${org}/$2:${hash}; \
 	if [[ -n "${tags}" ]]; then \
 	  for t in ${tags}; do \
 		  docker tag ${org}/$2:${branch} ${org}/$2:$$$$t; \
@@ -54,8 +64,8 @@ $2:$1/Dockerfile
 	  docker tag ${org}/$2:${branch} ${org}/$2:`cat version`; \
 	fi
 
-push::build
-	@echo docker push $2
+push::
+	docker push ${org}/$2
 
 endef
 
