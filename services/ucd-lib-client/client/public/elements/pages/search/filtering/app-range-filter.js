@@ -119,6 +119,7 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     if( this._isDefaultState() ) return;
 
     let searchDoc = this._getCurrentSearchDocument();
+    this._setPaging(searchDoc, 0);
     this._appendRangeFilter(searchDoc, this.filter, value);
     this._searchRecords(searchDoc);
   }

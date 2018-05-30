@@ -150,6 +150,7 @@ class AppFacetFilter extends Mixin(PolymerElement)
    */
   onParentFilterClicked(key) {
     let searchDoc = this._getCurrentSearchDocument();
+    this._setPaging(searchDoc, 0);
     this._removeKeywordFilter(searchDoc, this.filter, key);
     this._searchRecords(searchDoc);
 
@@ -183,6 +184,7 @@ class AppFacetFilter extends Mixin(PolymerElement)
     if( item.empty ) return;
 
     let searchDoc = this._getCurrentSearchDocument();
+    this._setPaging(searchDoc, 0);
     this._appendKeywordFilter(searchDoc, this.filter, item.key);
     this._searchRecords(searchDoc);
 
@@ -195,6 +197,7 @@ class AppFacetFilter extends Mixin(PolymerElement)
     var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
 
     let searchDoc = this._getCurrentSearchDocument();
+    this._setPaging(searchDoc, 0);
     this._removeKeywordFilter(searchDoc, this.filter, item.key);
     this._searchRecords(searchDoc);
 

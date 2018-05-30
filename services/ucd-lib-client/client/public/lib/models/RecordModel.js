@@ -140,6 +140,8 @@ class RecordModel extends ElasticSearchModel {
   /**
    * @method getCurrentSearchDocument
    * @description return the current search document
+   * 
+   * @returns {Object}
    */
   getCurrentSearchDocument() {
     if( this.store.data.search.searchDocument ) {

@@ -76,6 +76,7 @@ class AppSearchHeader extends Mixin(PolymerElement)
    */
   _onSearch(e) {
     let searchDoc = this._getCurrentSearchDocument();
+    this._setPaging(searchDoc, 0);
     this._setTextFilter(searchDoc, e.detail);
     this._searchRecords(searchDoc);
   }
