@@ -14,6 +14,8 @@ var proxy = httpProxy.createProxyServer({
     ignorePath : true
 });
 
+const FIN_URL = new URL(config.server.url);
+
 // Proxy|Frame|External service delimiter
 const SERVICE_CHAR = '/svc:'
 // AuthenticationService path
@@ -184,8 +186,7 @@ class ProxyModel {
 
     // set forwarded header to our base server url
     if( config.server.url ) {
-      let serverUrl = new URL(config.server.url);
-      req.headers['Forwarded'] = `host=${serverUrl.host}; proto=${serverUrl.protocol.replace(/:$/,'')}`;
+      req.headers['Forwarded'] = this._getForwardedHeader();
     }
 
     // if this is not a service request, preform basic fcrepo proxy request
@@ -196,6 +197,10 @@ class ProxyModel {
     // otherwise we have a service request
     // parse the incoming request path
     this._serviceProxyRequest(serviceModel.parseServiceRequest(req), req, res);
+  }
+
+  _getForwardedHeader() {
+    return `host=${FIN_URL.host}; proto=${FIN_URL.protocol.replace(/:$/,'')}`
   }
 
   /**
@@ -367,7 +372,8 @@ class ProxyModel {
       proxy.web(expReq, res, {
         target : url,
         headers : {
-          [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(service.id)
+          [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(service.id),
+          'Forwarded' : this._getForwardedHeader()
         }
       });
 

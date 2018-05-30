@@ -114,8 +114,16 @@ class EsReindexer {
     // make a head request for access and container type info
     let response = await api.head({path : url});
     
+    if( response.last.statusCode === 403 ) {
+      logger.error('Ignoring non-public container: '+path);
+      return;
+    }
+
     // make a head request for access and container type info
-    if( !response.checkStatus(200) ) return;
+    if( !response.checkStatus(200) ) {
+      logger.fatal('Non 200 status code for '+path, response.last.statusCode);
+      return;
+    }
 
     // if this is binary container, append /fcr:metadata to path
     if( !api.isRdfContainer(response) ) {
@@ -131,6 +139,12 @@ class EsReindexer {
         accept : api.RDF_FORMATS.JSON_LD
       }
     });
+
+    if( !response.checkStatus(200) ) {
+      logger.fatal('Non 200 status code for '+path, response.last.statusCode);
+      return;
+    }
+
     response = response.last;
     let jsonld = JSON.parse(response.body)[0];
 

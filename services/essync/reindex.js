@@ -16,7 +16,7 @@ if( collection ) {
 
   reindexer
     .crawl(
-      indexer.getBaseUrl()+'/collection/'+collection,  
+      indexer.getFcRepoBaseUrl()+'/collection/'+collection,  
       config.elasticsearch.record.alias,
       config.elasticsearch.collection.alias
     )

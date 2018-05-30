@@ -22,7 +22,8 @@ const SHORT_MEDIA_OBJECT = 'schema:MediaObject';
 const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 const SHORT_BINARY = 'fedora:Binary';
 
-const HOST = new URL(config.server.url).host;
+const FIN_URL = new URL(config.server.url);
+const HOST = FIN_URL.host;
 
 class EsIndexer {
   
@@ -34,8 +35,7 @@ class EsIndexer {
     });
 
     this.attributeReducer = new AttributeReducer(this.esClient);
-
-    this.finUrlRegex = new RegExp(`^(${this.getBaseUrl()}|${this.getFrameBaseUrl()})`);
+    this.finUrlRegex = new RegExp(`^${config.server.url}${config.fcrepo.root}`);
 
     this.init();
   }
@@ -297,15 +297,21 @@ class EsIndexer {
       type : 'GET',
       uri : path+`/svc:${svc}`
     });
+    
     if( response.statusCode === 403 ) {
       logger.error('Ignoring non-public container: '+path);
+      return null;
+    }
+
+    if( response.statusCode !== 200 ) {
+      logger.fatal('Non 200 status code for frame request '+path, response.statusCode, response.body);
       return null;
     }
 
     try {
       return JSON.parse(response.body);
     } catch(e) {
-      logger.error('Failed to get frame for: '+path, response.statusCode+' '+response.body,  e);
+      logger.fatal('Failed to get frame for: '+path, response.statusCode+' '+response.body,  e);
       return null;
     }
   }
@@ -354,7 +360,7 @@ class EsIndexer {
     let imgPath = this.getImagePath(json);
     if( !imgPath ) return json;
 
-    let imgUrl = 'http://server:3001'+config.fcrepo.root+imgPath+'/svc:iiif/full/8,/0/default.png';
+    let imgUrl = config.fin.host+config.fcrepo.root+imgPath+'/svc:iiif/full/8,/0/default.png';
 
     let result = await this.request({
       type : 'GET',
@@ -380,7 +386,7 @@ class EsIndexer {
     let imgPath = this.getImagePath(json);
     if( !imgPath ) return json;
 
-    let imgUrl = 'http://server:3001'+config.fcrepo.root+imgPath+'/svc:iiif/info.json';
+    let imgUrl = config.fin.host+config.fcrepo.root+imgPath+'/svc:iiif/info.json';
     
     var result = await this.request({
       type : 'GET',
@@ -502,13 +508,8 @@ class EsIndexer {
    * jwt token and set uri to full path of fcrepo based on config.fcrepo params.
    */
   request(options) {
-    // if( !this.token ) this.generateToken();
-
-    if( !options.headers ) options.headers = {};
-    // options.headers.Authorization = `Bearer ${this.token}`;
-
     if( !options.uri.match(/^http/i) ) {
-      options.uri = this.getBaseUrl() + options.uri;
+      options.uri = this.getFcRepoBaseUrl() + options.uri;
     }
 
     return new Promise((resolve, reject) => {
@@ -544,32 +545,13 @@ class EsIndexer {
   }
 
   /** 
-   * @method getBaseUrl
-   * @description get the base url for fin
+   * @method getFcRepoBaseUrl
+   * @description get the base url for fcrepo
    *  
    * @returns {String}
    */
-  getBaseUrl() {
-    if( config.server.url.match(/localhost/) ) {
-      return 'http://server:3001' + config.fcrepo.root;
-    }
-    return config.server.url + config.fcrepo.root;
-  }
-
-  /**
-   * @method getFrameBaseUrl
-   * @description this should be used to make localIds from frame 
-   * responses.  If you are running on localhost in dev mode, the frame
-   * uri's will be http://fcrepo:8080, otherwise they should be the 
-   * fin host
-   * 
-   * @return {String}
-   */
-  getFrameBaseUrl() {
-    if( config.server.url.match(/localhost/) ) {
-      return 'http://fcrepo:8080' + config.fcrepo.root;
-    }
-    return config.server.url + config.fcrepo.root;
+  getFcRepoBaseUrl() {
+    return config.fin.host + config.fcrepo.root;
   }
 
   /**

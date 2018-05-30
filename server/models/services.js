@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 
 jsonld.frame = util.promisify(jsonld.frame);
 
+const FIN_URL = new URL(config.server.url);
 const SERVICE_CHAR = '/svc:'
 const AUTHENTICATION_SERVICE_CHAR = '^/auth'
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
@@ -274,20 +275,28 @@ class ServiceModel {
 
     let options = {
       path : path,
-      headers : {Accept : api.RDF_FORMATS.JSON_LD}
-    }
-
-    // if we are not in development and running on localhost
-    if( !config.server.url.match(/(localhost|127.0.0.1)/) ) {
-      // we want the id's to have to correct host representation
-      options.host = config.server.url;
+      headers : {
+        Accept : api.RDF_FORMATS.JSON_LD,
+        Forwarded : this.getForwardedHeader()
+      }
     }
 
     let response = await api.get(options);
-    if( !response.checkStatus(200) ) throw new Error(response.statusCode+' '+response.body);
+    if( !response.checkStatus(200) ) throw new Error(response.last.statusCode+' '+response.last.body);
 
     let container = JSON.parse(response.last.body);
     return await jsonld.frame(container, frame);
+  }
+  
+  /**
+   * @method getForwardedHeader
+   * @description return the forwarded header for fcrepo responses that represent actual domain
+   * name and protocol, not docker fcrepo:8080 name.
+   * 
+   * @returns {String}
+   */
+  getForwardedHeader() {
+    return `host=${FIN_URL.host}; proto=${FIN_URL.protocol.replace(/:/, '')}`;
   }
 
   /**
