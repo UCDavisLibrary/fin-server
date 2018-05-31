@@ -47,7 +47,7 @@ export class FinApp extends Mixin(PolymerElement)
       },
       appRoutes : {
         type : Array,
-        value : () => []
+        value : () => APP_CONFIG.appRoutes
       }
     }
   }
