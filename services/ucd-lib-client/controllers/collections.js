@@ -1,6 +1,9 @@
-var router = require('express').Router();
-var model = require('../models/collections');
-var utils = require('./utils');
+const router = require('express').Router();
+const model = require('../models/collections');
+const utils = require('./utils');
+const cors = require('cors');
+
+router.use(cors());
 
 // all record
 router.get('/all', async (req, res) => {

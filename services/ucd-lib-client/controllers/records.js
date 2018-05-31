@@ -1,10 +1,9 @@
-var router = require('express').Router();
-var model = require('../models/records');
-var utils = require('./utils');
+const router = require('express').Router();
+const model = require('../models/records');
+const utils = require('./utils');
+const cors = require('cors');
 
-
-
-
+router.use(cors());
 
 router.post('/search', async (req, res) => {
   if( !req.body ) {
