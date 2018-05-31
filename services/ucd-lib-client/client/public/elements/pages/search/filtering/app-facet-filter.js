@@ -125,13 +125,6 @@ class AppFacetFilter extends Mixin(PolymerElement)
       });
     }
 
-    if( this.label === 'Subject' ) {
-      defaultFacets = Object.assign({}, defaultFacets);
-      for( var i = 0; i < 1000; i++ ) {
-        defaultFacets['t '+Math.random()] = Math.floor(Math.random() * 100);
-      }
-    }
-
     let buckets = [];
     for( var key in defaultFacets ) {
       let item = {
