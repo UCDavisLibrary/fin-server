@@ -1,9 +1,12 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
+
 import RecordInterface from '../../../interfaces/RecordInterface'
 import CollectionInterface from '../../../interfaces/CollectionInterface'
+
 import template from './app-facet-filter.html'
 
 import "./app-facet-checkbox"
+import "@polymer/iron-list"
 
 class AppFacetFilter extends Mixin(PolymerElement)
   .with(EventInterface, CollectionInterface, RecordInterface) {
@@ -30,6 +33,10 @@ class AppFacetFilter extends Mixin(PolymerElement)
         type : Array,
         value : () => []
       },
+      bucketsIronList : {
+        type : Array,
+        value : () => []
+      },
       activeFilters : {
         type : Array,
         value : null
@@ -44,6 +51,13 @@ class AppFacetFilter extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+    this.updateTimer = -1;
+  }
+
+  resize() {
+    requestAnimationFrame(() => {
+      this.$.list.fire('iron-resize');
+    });
   }
 
   static get template() {
@@ -83,9 +97,19 @@ class AppFacetFilter extends Mixin(PolymerElement)
     this._updateActiveFilters();
   }
 
-  async _updateActiveFilters() {
-    if( !this.activeFilters ) return;
+  _updateActiveFilters() {
+    if( this.updateTimer !== -1 ) {
+      clearTimeout(this.updateTimer);
+    }
 
+    this.updateTimer = setTimeout(() => {
+      this.updateTimer = -1;
+      this._updateActiveFiltersAsync();
+    }, 100);
+  }
+
+  async _updateActiveFiltersAsync() {
+    if( !this.activeFilters ) return;
 
     // grab default aggregations for collection
     let cid = this.selectedCollection;
@@ -99,6 +123,13 @@ class AppFacetFilter extends Mixin(PolymerElement)
       this.ignore.forEach(key => {
         if( defaultFacets[key] ) delete defaultFacets[key];
       });
+    }
+
+    if( this.label === 'Subject' ) {
+      defaultFacets = Object.assign({}, defaultFacets);
+      for( var i = 0; i < 1000; i++ ) {
+        defaultFacets['t '+Math.random()] = Math.floor(Math.random() * 100);
+      }
     }
 
     let buckets = [];
@@ -130,12 +161,20 @@ class AppFacetFilter extends Mixin(PolymerElement)
       return 0
     })
 
-    this.buckets = buckets;
+    if( Object.keys(buckets).length > 50 ) {
+      this.$.list.style.display = 'block';
+      this.bucketsIronList = buckets;
+      this.buckets = [];
+    } else {
+      this.$.list.style.display = 'none';
+      this.bucketsIronList = [];
+      this.buckets = buckets;
+    }
 
     this.dispatchEvent(
       new CustomEvent('update-visibility', {
         detail: {
-          show: (this.buckets.length !== 0)
+          show: (buckets.length !== 0)
         }
       })
     );

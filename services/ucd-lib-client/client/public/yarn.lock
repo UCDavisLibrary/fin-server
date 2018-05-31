@@ -115,6 +115,15 @@
     "@polymer/iron-validatable-behavior" "^3.0.0-pre.19"
     "@polymer/polymer" "^3.0.0"
 
+"@polymer/iron-list@^3.0.0-pre.19":
+  version "3.0.0-pre.19"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-list/-/iron-list-3.0.0-pre.19.tgz#0ba38b663dd3649a9d5e5660af465d2ce9ecaf02"
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.19"
+    "@polymer/iron-resizable-behavior" "^3.0.0-pre.19"
+    "@polymer/iron-scroll-target-behavior" "^3.0.0-pre.19"
+    "@polymer/polymer" "^3.0.0"
+
 "@polymer/iron-location@^3.0.0-pre.18":
   version "3.0.0-pre.19"
   resolved "https://registry.yarnpkg.com/@polymer/iron-location/-/iron-location-3.0.0-pre.19.tgz#092716cf677491eb0c53031eb4014f6af566694d"
@@ -165,7 +174,7 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-scroll-target-behavior@^3.0.0-pre.18":
+"@polymer/iron-scroll-target-behavior@^3.0.0-pre.18", "@polymer/iron-scroll-target-behavior@^3.0.0-pre.19":
   version "3.0.0-pre.19"
   resolved "https://registry.yarnpkg.com/@polymer/iron-scroll-target-behavior/-/iron-scroll-target-behavior-3.0.0-pre.19.tgz#4f13b0bd35257a2a4ba94419cc2f9431cd089789"
   dependencies:
