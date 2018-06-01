@@ -7,7 +7,7 @@ hash    := $(shell git log -1 --pretty=%h)
 branch := $(shell git rev-parse --abbrev-ref HEAD)
 tags   := $(shell git tag)
 
-git:=branch tags
+tag:=branch tags package
 
 service_dirs:=$(foreach d,basic-auth cas essync loris ucd-lib-client,../../services/$d)
 $(foreach d,${service_dirs},$(eval ${d}/image:=fin-$(notdir $d)-service))
@@ -33,17 +33,32 @@ INFO::
   echo "  build all images: 'make build'";\
   echo "  build and push all images: 'make build push'";\
   echo "  just push all images: 'make push'";\
-	echo "  make one image: 'make dirs=../../server build'";
-#	echo "  only tag with current git branch: 'make tag=branch build'";\
+	echo "  make one image: 'make dirs=../../server build'"; \
+	echo "  alternatively make one image: 'make fin-auto-generator-demo'"; \
+	echo "  include tag with current package.json version: 'make package-version=1 build'"
+#	echo "  include tag with current git branch: 'make tag=branch build'";\
 #	echo "  only tag with current git commit: 'make tag=hash build'";\
-#	echo "  only tag with current package.json verion: 'make tag=package build'"
-#	@echo -e "$(foreach d,${dirs},${d} -> ${${d}/image}\n)"
 
+
+ifdef package-version
+define package-version-tag
+	if [[ -f package.json ]]; then  \
+	  docker tag ${org}/$2:${branch} ${org}/$2:`jq -r .version < package.json`; \
+	fi; \
+	if [[ -f version ]]; then \
+	  docker tag ${org}/$2:${branch} ${org}/$2:`cat version`; \
+	fi
+endef
+else
+define package-version-tag
+	echo "No tags from package.json";
+endef
+endif
 
 define docker
 images::$2
 INFO::
-	@echo $1 $2
+	@echo $2: $1
 
 #	docker tag ${org}/$2:${branch} ${org}/$2:${hash};
 
@@ -56,13 +71,8 @@ $2:$1/Dockerfile
 	  for t in ${tags}; do \
 		  docker tag ${org}/$2:${branch} ${org}/$2:$$$$t; \
     done; \
-  fi; \
-	if [[ -f package.json ]]; then  \
-	  docker tag ${org}/$2:${branch} ${org}/$2:`jq -r .version < package.json`; \
-	fi; \
-	if [[ -f version ]]; then \
-	  docker tag ${org}/$2:${branch} ${org}/$2:`cat version`; \
-	fi
+  fi;\
+	$(call package-version-tag,$1,$2)
 
 push::
 	docker push ${org}/$2
