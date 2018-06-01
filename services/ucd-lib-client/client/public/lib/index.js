@@ -5,5 +5,6 @@ module.exports = {
   CollectionModel : require('./models/CollectionModel'),
   MediaModel : require('./models/MediaModel'),
   CitationModel : require('./models/CitationsModel'),
-  SeoModel : require('./models/SeoModel')
+  SeoModel : require('./models/SeoModel'),
+  FiltersModel : require('./models/FiltersModel')
 }

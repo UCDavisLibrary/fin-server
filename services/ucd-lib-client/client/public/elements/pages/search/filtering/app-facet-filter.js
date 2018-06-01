@@ -1,7 +1,7 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 
+import FiltersInterface from '../../../interfaces/FiltersInterface'
 import RecordInterface from '../../../interfaces/RecordInterface'
-import CollectionInterface from '../../../interfaces/CollectionInterface'
 
 import template from './app-facet-filter.html'
 
@@ -9,7 +9,7 @@ import "./app-facet-checkbox"
 import "@polymer/iron-list"
 
 class AppFacetFilter extends Mixin(PolymerElement)
-  .with(EventInterface, CollectionInterface, RecordInterface) {
+  .with(EventInterface, FiltersInterface, RecordInterface) {
 
   static get properties() {
     return {
@@ -37,13 +37,13 @@ class AppFacetFilter extends Mixin(PolymerElement)
         type : Array,
         value : () => []
       },
-      activeFilters : {
-        type : Array,
-        value : null
+      ironListActive : {
+        type : Boolean,
+        value : false
       },
-      allFilters : {
-        type : Array,
-        value : null
+      notified : {
+        type : Object,
+        value : () => ({})
       }
     };
   }
@@ -66,111 +66,48 @@ class AppFacetFilter extends Mixin(PolymerElement)
     return tag;
   }
 
-  /**
-   * @method _onSelectedCollectionUpdate
-   * @description from CollectionInterface
-   */
-  async _onSelectedCollectionUpdate(e) {
-    this.selectedCollection = e ? e.id : '';
-    this._updateActiveFilters();
-  }
+  _onFilterBucketsUpdate(e) {
+    if( e.filter !== this.filter ) return;
 
-  /**
-   * @method _onRecordSearchUpdate
-   * @description from RecordInterface
-   * 
-   * @param {*} e 
-   */
-  _onRecordSearchUpdate(e) {
-    if( e.state !== 'loaded' ) return;
-
-
-    var activeFilters = [];
-    if( e.searchDocument.filters[this.filter] ) {
-      activeFilters = e.searchDocument.filters[this.filter].value;
-    }
-    this.activeFilters = activeFilters;
-
-    this.availableFilters = e.payload.aggregations.facets[this.filter] || {};
-
-    
-    this._updateActiveFilters();
-  }
-
-  _updateActiveFilters() {
-    if( this.updateTimer !== -1 ) {
-      clearTimeout(this.updateTimer);
-    }
-
-    this.updateTimer = setTimeout(() => {
-      this.updateTimer = -1;
-      this._updateActiveFiltersAsync();
-    }, 100);
-  }
-
-  async _updateActiveFiltersAsync() {
-    if( !this.activeFilters ) return;
-
-    // grab default aggregations for collection
-    let cid = this.selectedCollection;
-    let result = await this._defaultRecordSearch(this.selectedCollection);
-    if( cid !== this.selectedCollection ) return; // make sure we haven't updated
-    this.default = result;
-
-    let defaultFacets = this.default.payload.aggregations.facets[this.filter] || {};
-
-    if( this.ignore && this.ignore.length ) {
-      this.ignore.forEach(key => {
-        if( defaultFacets[key] ) delete defaultFacets[key];
-      });
-    }
-
-    let buckets = [];
-    for( var key in defaultFacets ) {
-      let item = {
-        key,
-        sortKey : key.toLowerCase().replace(/\W/g,''),
-        doc_count: this.availableFilters[key] || 0
+    e.buckets.forEach(item => {
+      if( this.notified[item.key] && !item.active ) {
+        this._notifySelected(item.active, item.key);
+      } else if( !this.notified[item.key] && item.active ) {
+        this._notifySelected(item.active, item.key);
       }
+    });
 
-      if( this.activeFilters.indexOf(key) > -1 ) {
-        item.active = true;
-        this._notifySelected(true, key);
-      } else {
-        item.active = false;
-        this._notifySelected(false, key);
-      }
-
-      item.empty = item.doc_count ? false : true;
-
-      buckets.push(item);
-    }
-
-    buckets.sort((a,b) => {
-      if( a.doc_count < b.doc_count ) return 1;
-      if( a.doc_count > b.doc_count ) return -1;
-      if( a.sortKey > b.sortKey ) return 1;
-      if( a.sortKey < b.sortKey ) return -1;
-      return 0
-    })
-
-    if( Object.keys(buckets).length > 50 ) {
+    if( Object.keys(e.buckets).length > 50 ) {
       this.$.list.style.display = 'block';
-      this.bucketsIronList = buckets;
+      let top = this.$.list.scrollTop;
+
+      this.bucketsIronList = e.buckets;
       this.buckets = [];
+      this.ironListActive = true;
+
+      // make sure we don't change scroll position
+      this.$.list.scrollTop = top;
+      requestAnimationFrame(() => {
+        this.$.list.scrollTop = top;
+      });
     } else {
       this.$.list.style.display = 'none';
       this.bucketsIronList = [];
-      this.buckets = buckets;
+      this.buckets = e.buckets;
+      this.ironListActive = false;
     }
 
     this.dispatchEvent(
       new CustomEvent('update-visibility', {
         detail: {
-          show: (buckets.length !== 0)
+          show: (e.buckets.length !== 0)
         }
       })
     );
+  }
+
+  getBuckets() {
+    return this.ironListActive ? this.bucketsIronList : this.buckets;
   }
 
   /**
@@ -197,6 +134,12 @@ class AppFacetFilter extends Mixin(PolymerElement)
    * @param {String} key filter key/label
    */
   _notifySelected(selected, key) {
+    if( !selected && this.notified[key] ) {
+      delete this.notified[key];
+    } else if( selected ) {
+      this.notified[key] = true;
+    }
+
     this.dispatchEvent(
       new CustomEvent(`${selected ? 'add' : 'remove'}-selected`, {
         detail: {
@@ -212,7 +155,8 @@ class AppFacetFilter extends Mixin(PolymerElement)
   }
 
   appendFilter(e) {
-    var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
+    let buckets = this.getBuckets();
+    let item = buckets[parseInt(e.currentTarget.getAttribute('index'))];
     if( item.empty ) return;
 
     let searchDoc = this._getCurrentSearchDocument();
@@ -223,10 +167,9 @@ class AppFacetFilter extends Mixin(PolymerElement)
     this._notifySelected(true, item.key);
   }
 
-
-
   removeFilter(e) {
-    var item = this.buckets[parseInt(e.currentTarget.getAttribute('index'))];
+    let buckets = this.getBuckets();
+    let item = buckets[parseInt(e.currentTarget.getAttribute('index'))];
 
     let searchDoc = this._getCurrentSearchDocument();
     this._setPaging(searchDoc, 0);
