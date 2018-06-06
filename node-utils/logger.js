@@ -2,6 +2,7 @@ const bunyan = require('bunyan');
 const path = require('path');
 const fs = require('fs');
 const config = require('./config');
+const {URL} = require('url');
 
 // hack, see below
 const BUNYAN_TO_STACKDRIVER = {
@@ -50,14 +51,19 @@ if( fs.existsSync(config.google.serviceAccountFile) ) {
   streams.push(loggingBunyan.stream());
 }
 
+let host = 'unknown.host'
+try {
+  host = new URL(config.server.url).host;
+} catch(e) {}
+
 let logger = bunyan.createLogger({
-  name: process.env.FIN_LOGGER_NAME || global.LOGGER_NAME || 'fin-server-generic',
+  name: (process.env.FIN_LOGGER_NAME || global.LOGGER_NAME || 'fin-server-generic')+'-'+host,
   level: config.server.loglevel || 'info',
   streams: streams
 });
 
 let info = {
-  name: process.env.FIN_LOGGER_NAME || global.LOGGER_NAME || 'fin-server-generic',
+  name: (process.env.FIN_LOGGER_NAME || global.LOGGER_NAME || 'fin-server-generic')+'-'+host,
   level: config.server.loglevel || 'info',
   stackdriver : {
     enabled : projectId ? true : false,
