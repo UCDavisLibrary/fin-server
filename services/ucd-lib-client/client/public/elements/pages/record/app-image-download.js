@@ -203,6 +203,19 @@ export default class AppImageDownload extends PolymerElement {
     });
   }
 
+  /**
+   * @method _onDownloadClicked
+   * @description bound to download button click event, record analytics
+   */
+  _onDownloadClicked() {
+    let path = this.href.replace(config.fcrepoBasePath, '');
+    gtag('event', 'download', {
+      'event_category': 'image',
+      'event_label': path,
+      'value': 1
+    });
+  }
+
 }
 
 customElements.define('app-image-download', AppImageDownload);
