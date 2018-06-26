@@ -150,7 +150,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.fedoraValue.innerHTML =  `<a href="${link}">${record.id}</a>`;
 
     this._updateMetadataRows();
-    this._setTarHref();
+    // this._setTarHref();
 
     // render citations.. this might need to load library, do it last
     this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
