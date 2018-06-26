@@ -194,6 +194,15 @@
         <app-image-download id="download"></app-image-download>
       </div>
 
+      <!-- <div class="section bordered">
+        <div class="label">Download Image Bundle</div>
+
+        <form action$="/api/tar/[[tarName]]" method="POST" target="_blank">
+          <input type="text" hidden name="paths" id="tarPaths" style="display:none">
+          <input type="submit" value="Download Tar">
+        </form>
+      </div> -->
+
       <div hidden$="[[!rights]]">
         <a href$="[[rights.link]]" target="_block">
           <img src$="[[rights.icon]]" rights />

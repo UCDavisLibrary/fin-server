@@ -161,7 +161,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
   _getTotalIconWidth() {
     let totalIconWidth = this.iconWidth * 4; // nav icons and default icons
     if( this.isLightbox ) totalIconWidth += this.iconWidth * 2;
-    return ;
+    return totalIconWidth;
   }
 
   _setNavBreak(width) {

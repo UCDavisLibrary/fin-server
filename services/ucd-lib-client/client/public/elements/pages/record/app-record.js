@@ -1,10 +1,10 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 
 import template from "./app-record.html"
-import bytes from "bytes"
 import rightsDefinitions from "../../../lib/rights.json"
 import citations from "../../../lib/models/CitationsModel"
 import utils from "../../../lib/utils"
+import config from "../../../lib/config"
 
 import "./viewer/app-image-viewer-static"
 import "./app-image-download"
@@ -15,6 +15,7 @@ import AppStateInterface from "../../interfaces/AppStateInterface"
 import RecordInterface from "../../interfaces/RecordInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
+import TarService from "../../../lib/services/TarService"
 
 export default class AppRecord extends Mixin(PolymerElement)
       .with(EventInterface, AppStateInterface, RecordInterface, CollectionInterface, MediaInterface) {
@@ -149,11 +150,28 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.fedoraValue.innerHTML =  `<a href="${link}">${record.id}</a>`;
 
     this._updateMetadataRows();
+    this._setTarHref();
 
     // render citations.. this might need to load library, do it last
     this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
     this.$.apa.text = await citations.renderEsRecord(this.record, 'apa');
     this.$.chicago.text = await citations.renderEsRecord(this.record, 'chicago');
+  }
+
+  _setTarHref() {
+    let urls = {};
+    this._getImageMediaList(this.record)
+      .forEach(item => {
+        urls[item.filename || item.name] = this._getImgUrl(item['@id']).replace(config.fcrepoBasePath, '')
+      });
+
+    this.tarName = this.record.name.replace(/[^a-zA-Z0-9]/g, '');
+    this.$.tarPaths.value = JSON.stringify(urls);
+
+    // this.tarUrl = TarService.create(
+    //   encodeURI(this.record.name.replace(/[^a-zA-Z0-9]/g, '')), 
+    //   urls
+    // )
   }
 
   /**
