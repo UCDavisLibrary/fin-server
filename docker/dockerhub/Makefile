@@ -5,7 +5,7 @@ org:=ucdlib
 
 hash    := $(shell git log -1 --pretty=%h)
 branch := $(shell git rev-parse --abbrev-ref HEAD)
-tags   := $(shell git tag)
+tags   := $(shell git tag --contains)
 
 tag:=branch tags package
 
