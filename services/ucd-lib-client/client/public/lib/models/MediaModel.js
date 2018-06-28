@@ -20,6 +20,10 @@ class MediaModel extends BaseModel {
    * @returns {String} 
    */
   getImgPath(record) {
+    if( record.image ) {
+      return record.image.path;
+    }
+
     if( record.workExample ) {
       if( Array.isArray(record.workExample) ) return record.workExample[0];
       return record.workExample;

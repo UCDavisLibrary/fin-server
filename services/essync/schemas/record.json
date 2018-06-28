@@ -83,6 +83,10 @@
           "type":  "keyword"
         }
       }
+    },
+
+    "fileContents" : {
+      "type": "text"
     }
 
   }

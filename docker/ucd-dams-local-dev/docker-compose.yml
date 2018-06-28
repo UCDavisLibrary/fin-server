@@ -158,8 +158,8 @@ services:
       - FIN_URL=${FIN_URL}
     depends_on:
       - server
-    command: node service
-    # command: bash -c 'tail -f /dev/null'
+    # command: node service
+    command: bash -c 'tail -f /dev/null'
 
   auto-generator-demo:
     build: ../../services/auto-generator-demo
@@ -184,6 +184,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
+      - CAS_URL=https://ssodev.ucdavis.edu/cas
     depends_on:
       - server
     command: node service

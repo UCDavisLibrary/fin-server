@@ -5,6 +5,7 @@
     "lcna": "http://id.loc.gov/authorities/names/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "schema": "http://schema.org/",
+    "ucdlib": "http://digital.ucdavis.edu/schema#",
     "premis" : "http://www.loc.gov/premis/rdf/v1#",
     "ebucore" : "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
     "name" : {
@@ -59,6 +60,9 @@
     "lastModified" : {
       "@type" : "http://www.w3.org/2001/XMLSchema#dateTime",
       "@id" : "fedora:lastModified"
+    },
+    "textIndexable" : {
+      "@id" : "ucdlib:textIndexable"
     },
     "lastModifiedBy" : {
       "@id" : "fedora:lastModifiedBy"
@@ -131,6 +135,9 @@
     "@default" : ""
   },
   "createdBy" : {
+    "@default" : ""
+  },
+  "textIndexable" : {
     "@default" : ""
   },
   "isPartOf" : {

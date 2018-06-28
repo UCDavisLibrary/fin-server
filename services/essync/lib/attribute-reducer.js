@@ -2,6 +2,8 @@ const {logger} = require('@ucd-lib/fin-node-utils');
 const buffer = require('./buffer');
 const config = require('./config');
 
+const WEB_FRIENDLY = 'ucdlib:WebFriendlyMediaObject';
+
 class AttributeReducer {
   
   constructor(esClient) {
@@ -80,7 +82,11 @@ class AttributeReducer {
     if( !record.isRootRecord ) return;
 
     let reduced = {};
-    await this.walkRecord(record, reduced, e.alias);
+    let images = [];
+
+    await this.walkRecord(images, record, record, reduced, e.alias);
+
+    this.setImage(record, images);
     
     for( let key in reduced ) {
       record[key] = reduced[key];
@@ -98,21 +104,82 @@ class AttributeReducer {
   }
 
   /**
+   * @method setImagePath
+   * @description given a root record and a list of images from the record tree
+   * set the imagePath attribute.
+   * 
+   * @param {Object} record 
+   * @param {Array} images 
+   */
+  setImage(record, images) {
+    // does the record have an image?
+    if( record.workExample ) {
+      let path = '';
+      if( Array.isArray(record.workExample) ) {
+        path = record.workExample[0];
+      } else {
+        path = record.workExample;
+      }
+
+      record.image = {
+        path,
+        height : record.height,
+        width: record.width,
+        colorPalette : record.colorPalette
+      }
+      return;
+    }
+
+    if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
+      record.image = {
+        path : record.id,
+        height : record.height,
+        width: record.width,
+        colorPalette : record.colorPalette
+      }
+      return;
+    }
+
+    // find a web friendly image 
+    for( var i = 0; i < images.length; i++ ) {
+      if( !images[i].isWebFriendly ) continue;
+      return record.image = images[i];
+    }
+
+    // set any image
+    for( var i = 0; i < images.length; i++ ) {
+      return record.image = images[i];
+    }
+  }
+
+  /**
    * @method walkRecord
    * @description recursively walk to the associatedMedia and parts adding
    * reduced attributes as you go
    * 
+   * @param {Array} images list of images for this
    * @param {String|Object} record either record object or record id string
    * @param {Object} reduced current reduced attribute state
    * @param {String} alias (optional) index alias to use
    * 
    * @returns {Promise} 
    */
-  async walkRecord(record, reduced, alias) {
+  async walkRecord(images, parent, record, reduced, alias) {
     if( typeof record === 'string' ) {
       let exists = await this._exists(record, alias);
       if( !exists ) return;
       record = await this._get(record, alias);
+    }
+
+    // check for images to add to list
+    if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
+      images.push({
+        isWebFriendly : this.isWebFriendly(parent),
+        path : record.id,
+        height : record.height,
+        width : record.width,
+        colorPalette : record.colorPalette
+      });
     }
 
     this.addAttributes(record, reduced);
@@ -124,11 +191,22 @@ class AttributeReducer {
       let values = Array.isArray(record[childConnections[i]]) ? record[childConnections[i]] : [record[childConnections[i]]];
       
       for( let j = 0; j < values.length; j++ ) {
-        await this.walkRecord(values[j], reduced, alias);
+        await this.walkRecord(images, record, values[j], reduced, alias);
       }
     }
   }
-  
+
+  /**
+   * @method isWebFriendly
+   * @description is the record a web-friendly image list
+   * 
+   * @param {Object} record 
+   * 
+   * @returns {Boolean}
+   */
+  isWebFriendly(record) {
+    return (record['@type'].indexOf(WEB_FRIENDLY) > -1);
+  }
 
   /**
    * @method addAttributes

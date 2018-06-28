@@ -21,6 +21,7 @@ const SHORT_CREATIVE_WORK = 'schema:CreativeWork';
 const SHORT_MEDIA_OBJECT = 'schema:MediaObject';
 const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 const SHORT_BINARY = 'fedora:Binary';
+const TEXT_INDEXABLE = 'textIndexable';
 
 const FIN_URL = new URL(config.server.url);
 const HOST = FIN_URL.host;
@@ -331,8 +332,9 @@ class EsIndexer {
     frame.id = frame['@id'];
 
     this.stripFinHost(frame);
-    await this.setThumbnail(frame);
+    await this.setColorPalette(frame);
     await this.setImageResolution(frame);
+    await this.setFileContent(frame);
     this.setYearFromDate(frame);
     
     // JM: temp hack for our schema.  Mapping keywords -> about (See issue #42)
@@ -347,8 +349,8 @@ class EsIndexer {
   }
 
   /**
-   * @method setThumbnail
-   * @description given a JSON-LD frame, set the thumbnail.  If there is an workExample,
+   * @method setColorPalette
+   * @description given a JSON-LD frame, set the colorPalette.  If there is an workExample,
    * this property will be used otherwise the id of the frame.  The uri will be hit against
    * the iiif service.
    * 
@@ -356,7 +358,7 @@ class EsIndexer {
    * 
    * @returns {Object}
    */
-  async setThumbnail(json) {
+  async setColorPalette(json) {
     let imgPath = this.getImagePath(json);
     if( !imgPath ) return json;
 
@@ -368,7 +370,7 @@ class EsIndexer {
       uri: imgUrl
     });
 
-    json.thumbnailUrl = 'data:image/png;base64,'+new Buffer(result.body).toString('base64');
+    json.colorPalette = 'data:image/png;base64,'+new Buffer(result.body).toString('base64');
     return json;
   }
 
@@ -407,9 +409,31 @@ class EsIndexer {
   }
 
   /**
+   * @method setFileContent
+   * @description given a JSON-LD frame, set the file contents if the includeInIndex flag
+   * is provided.
+   * 
+   * @param {Object} json
+   * 
+   * @return {Object} 
+   */
+  async setFileContent(json) {
+    let include = json[TEXT_INDEXABLE];
+    if( include !== true && include !== 'true' ) return;
+
+    var result = await this.request({
+      type : 'GET',
+      uri: config.fin.host+config.fcrepo.root+json['@id']
+    });
+    json.fileContent = (result.body || '').replace(/(\n|\r)/g, ' ');
+
+    return json;
+  }
+
+  /**
    * @method getImagePath
    * @description return the representative image for record.  The order of lookup is
-   * workExample, record id (if fileFormat is of type image/*), associatedMedia
+   * workExample, record id (if fileFormat is of type image/*)
    * 
    * @param {Object} json record
    * 
@@ -424,9 +448,9 @@ class EsIndexer {
       return json.id
     }
     
-    if( json.associatedMedia ) {
-      return Array.isArray(json.associatedMedia) ? json.associatedMedia[0] : json.associatedMedia;
-    }
+    // if( json.associatedMedia ) {
+    //   return Array.isArray(json.associatedMedia) ? json.associatedMedia[0] : json.associatedMedia;
+    // }
 
     return null;
   }
