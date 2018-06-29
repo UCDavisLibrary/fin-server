@@ -15,8 +15,7 @@ When a set of images are ready to deploy, we can
 ``` bash
 git checkout master
 # get merge dev, eg.
-git tag -a $(date --iso)
-#git tag v1.0.1  If you want another  specific tag
+#git tag -a v1.0.2  # If you are updating our production servers get a new version
 git commit
 make build push
 ```
