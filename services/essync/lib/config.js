@@ -9,7 +9,7 @@ config.essync = {
     creator : 'creators',
     about : 'abouts',
     fileFormat : 'fileFormats',
-    fileContent : 'fileContents'
+    indexableContent : 'indexableContents'
   },
 
   // if these attributes exist, the ISO 8601 date will be stripped for

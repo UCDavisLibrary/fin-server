@@ -148,7 +148,7 @@ class RecordsModel extends ElasticSearchModel {
     options.index = config.elasticsearch.record.alias;
     options.body = body;
 
-    // options._sourceExclude = config.elasticsearch.fields.exclude;
+    options._sourceExclude = config.elasticsearch.fields.exclude;
 
     return es.search(options);
   }
@@ -180,6 +180,7 @@ class RecordsModel extends ElasticSearchModel {
     return es.get({
       index: config.elasticsearch.record.alias,
       type: '_all',
+      _sourceExclude : config.elasticsearch.fields.exclude,
       id: id
     });
   }

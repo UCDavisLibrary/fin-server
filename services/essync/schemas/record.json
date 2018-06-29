@@ -85,7 +85,7 @@
       }
     },
 
-    "fileContents" : {
+    "indexableContent" : {
       "type": "text"
     }
 

@@ -334,7 +334,7 @@ class EsIndexer {
     this.stripFinHost(frame);
     await this.setColorPalette(frame);
     await this.setImageResolution(frame);
-    await this.setFileContent(frame);
+    await this.setIndexableContent(frame);
     this.setYearFromDate(frame);
     
     // JM: temp hack for our schema.  Mapping keywords -> about (See issue #42)
@@ -409,7 +409,7 @@ class EsIndexer {
   }
 
   /**
-   * @method setFileContent
+   * @method setIndexableContent
    * @description given a JSON-LD frame, set the file contents if the includeInIndex flag
    * is provided.
    * 
@@ -417,7 +417,7 @@ class EsIndexer {
    * 
    * @return {Object} 
    */
-  async setFileContent(json) {
+  async setIndexableContent(json) {
     let include = json[TEXT_INDEXABLE];
     if( include !== true && include !== 'true' ) return;
 
@@ -425,7 +425,7 @@ class EsIndexer {
       type : 'GET',
       uri: config.fin.host+config.fcrepo.root+json['@id']
     });
-    json.fileContent = (result.body || '').replace(/(\n|\r)/g, ' ');
+    json.indexableContent = (result.body || '').replace(/(\n|\r)/g, ' ');
 
     return json;
   }

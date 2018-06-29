@@ -17,7 +17,7 @@ config.client = {
 }
 
 config.elasticsearch.fields = {
-  exclude : ['fileContent', 'fileContents'],
+  exclude : ['indexableContent', 'indexableContents'],
   fill : ['hasPart', 'associatedMedia']
 }
 
