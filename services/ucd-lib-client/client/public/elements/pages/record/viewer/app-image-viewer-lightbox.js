@@ -7,6 +7,7 @@ import leafletCss from "leaflet/dist/leaflet.css"
 
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
+import { debug } from "util";
 
 export default class AppImageViewer extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
@@ -131,18 +132,18 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     if( this.renderedMedia === this.media ) return;
     this.renderedMedia = this.media;
 
-    let height = this.media.height;
-    let width = this.media.width;
-    if( this.media.height > this.media.width ) {
-      if( this.media.height > this.maxImageSize ) {
-        let scale = this.maxImageSize / this.media.height;
-        height = Math.floor(this.media.height * scale);
+    let height = this.media.image.height;
+    let width = this.media.image.width;
+    if( height > width ) {
+      if( height > this.maxImageSize ) {
+        let scale = this.maxImageSize / height;
+        height = Math.floor(height * scale);
         width = '';
       }
     } else {
-      if( this.media.width > this.maxImageSize ) {
-        let scale = this.maxImageSize / this.media.width;
-        width = Math.floor(this.media.width * scale);
+      if( width > this.maxImageSize ) {
+        let scale = this.maxImageSize / width;
+        width = Math.floor(width * scale);
         height = '';
       }
     }

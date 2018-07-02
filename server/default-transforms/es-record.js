@@ -83,6 +83,12 @@ module.exports = async function(path, graph, utils) {
   });
 
   utils.add({
+    attr : 'hasPart',
+    value : ['schema', 'hasPart'],
+    type : 'id'
+  });
+
+  utils.add({
     attr : 'associatedMedia',
     value : ['schema', 'associatedMedia'],
     type : 'id'
@@ -148,7 +154,7 @@ module.exports = async function(path, graph, utils) {
   });
 
   utils.add({
-    attr : 'hasMimeType',
+    attr : 'fileFormat',
     value : ['ebucore', 'hasMimeType']
   });
 
@@ -159,8 +165,8 @@ module.exports = async function(path, graph, utils) {
 
   utils.add({
     attr : 'fileSize',
-    value : ['premis', 'fileSize'],
-    value : 'number'
+    value : ['premis', 'hasSize'],
+    type : 'number'
   });
 
   utils.add({

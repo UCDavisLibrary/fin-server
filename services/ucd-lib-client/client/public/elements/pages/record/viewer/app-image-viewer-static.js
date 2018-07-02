@@ -65,9 +65,9 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
   }
 
   _renderImg() {
-    let url = this._getImgUrl(this.media.id, '', this.height);
-    let r = 600 / this.media.height;
-    let w = this.media.width * r;
+    let url = this._getImgUrl(this.media.image.path, '', this.height);
+    let r = 600 / this.media.image.height;
+    let w = this.media.image.width * r;
     let eleWidth = this.offsetWidth-20;
     let startHeight = Math.ceil(eleWidth > w ? this.height : ((eleWidth/w)*this.height));
 

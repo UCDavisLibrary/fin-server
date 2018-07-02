@@ -376,8 +376,7 @@ class ProxyModel {
           details : {
             message : e.message,
             stack : e.stack
-          },
-          transform : service.transform
+          }
         });
       }
       

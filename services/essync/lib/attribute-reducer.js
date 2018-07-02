@@ -114,29 +114,10 @@ class AttributeReducer {
   setImage(record, images) {
     // does the record have an image?
     if( record.workExample ) {
-      let path = '';
-      if( Array.isArray(record.workExample) ) {
-        path = record.workExample[0];
-      } else {
-        path = record.workExample;
-      }
-
-      record.image = {
-        path,
-        height : record.height,
-        width: record.width,
-        colorPalette : record.colorPalette
-      }
       return;
     }
 
     if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
-      record.image = {
-        path : record.id,
-        height : record.height,
-        width: record.width,
-        colorPalette : record.colorPalette
-      }
       return;
     }
 
@@ -175,10 +156,10 @@ class AttributeReducer {
     if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
       images.push({
         isWebFriendly : this.isWebFriendly(parent),
-        path : record.id,
-        height : record.height,
-        width : record.width,
-        colorPalette : record.colorPalette
+        path : record.image.path,
+        height : record.image.height,
+        width : record.image.width,
+        colorPalette : record.image.colorPalette
       });
     }
 
@@ -240,8 +221,8 @@ class AttributeReducer {
     // reduce @type to type for schema.org attributes
     if( !reduced.type ) reduced.type = [];
     (record['@type'] || []).forEach(val => {
-      if( !val.match(/^schema:/) ) return;
-      val = val.replace(/^schema:/, '');
+      if( !val.match(/^schema:/) && !val.match(/^http:\/\/schema.org/) ) return;
+      val = val.replace(/^schema:/, '').replace('http://schema.org/', '');
       if( reduced.type.indexOf(val) > -1 ) return;
       reduced.type.push(val);
     });

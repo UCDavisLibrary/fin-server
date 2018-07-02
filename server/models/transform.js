@@ -178,13 +178,10 @@ class TransformUtils {
       return Array.isArray(json.workExample) ? json.workExample[0] : json.workExample;
     }
     
-    if( json.fileFormat && json.fileFormat.match(/image/i) ) {
+    if( json.fileFormat && json.fileFormat.match(/^image\//i) ) {
       return json.id
     }
-    if( json.hasMimeType && json.hasMimeType.match(/image/i) ) {
-      return json.id
-    }
-    if( json.encodingFormat && json.encodingFormat.match(/image/i) ) {
+    if( json.hasMimeType && json.hasMimeType.match(/^image\//i) ) {
       return json.id
     }
     
@@ -317,7 +314,7 @@ class TransformUtils {
     for( let dateAttr in this.dateToYear ) {
       if( !json[dateAttr] ) continue;
 
-      let year = json[dateAttr].match(/^\d\d\d\d/);
+      let year = (json[dateAttr]+'').match(/^\d\d\d\d/);
       if( !year ) continue;
 
       json[this.dateToYear[dateAttr]] = parseInt(year[0]);
