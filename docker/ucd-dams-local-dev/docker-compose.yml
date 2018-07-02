@@ -17,14 +17,15 @@ services:
       - ../../server/lib:/app/lib
       - ../../server/models:/app/models
       - ../../server/default-frames:/etc/fin/frames
+      - ../../server/default-transforms:/etc/fin/transforms
       - ../../services/default-services.js:/etc/fin/default-services.js
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
       - ../../server/backups:/fcrepo-backups
     ports:
       - 3000:3001
       - 9229:9229
-    # command: tail -f /dev/null
-    command: node app
+    command: tail -f /dev/null
+    # command: node app
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}

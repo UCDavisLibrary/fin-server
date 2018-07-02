@@ -24,6 +24,13 @@ module.exports = [
     url : 'http://auto-generator-demo:3333'
   },
   {
+    id : 'es-record-transform',
+    title : 'Elastic Search - Collection Record Transform',
+    description : 'Used for updating Elastic Search indexes when fedora updates',
+    type : 'TransformService',
+    transform : '/etc/fin/transforms/es-record.js'
+  },
+  {
     id : 'es-record-frame',
     title : 'Elastic Search - Collection Record Frame',
     description : 'Used for updating Elastic Search indexes when fedora updates',

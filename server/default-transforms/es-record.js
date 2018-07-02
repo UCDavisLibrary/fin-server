@@ -1,10 +1,21 @@
 const {config} = require('@ucd-lib/fin-node-utils');
 
 
-module.exports = async function(container, utils) {
+module.exports = async function(path, graph, utils) {
   let item = {};
+  let container = utils.get(path, graph);
+  if( !container ) {
+    throw new Error('unknown container: '+path);
+  }
+  
 
   utils.init(item, container);
+  
+
+  if( !utils.isType(container, 'http://fedora.info/definitions/v4/repository#Resource') ) {
+    throw new Error('invalid type');
+  }
+  
   utils.ns({
     "fedora" : "http://fedora.info/definitions/v4/repository#",
     "fast": "http://id.worldcat.org/fast/",
@@ -158,11 +169,10 @@ module.exports = async function(container, utils) {
   });
 
   utils.stripFinHost(item);
-  await utils.setThumbnail(item);
-  await utils.setImageResolution(item);
+  await utils.setImage(item);
   await utils.setIndexableContent(item);
 
-  utils.setYearFromDate(frame);
+  utils.setYearFromDate(item);
     
   // JM: temp hack for our schema.  Mapping keywords -> about (See issue #42)
   item.about = item.keywords;

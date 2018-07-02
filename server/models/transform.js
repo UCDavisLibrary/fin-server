@@ -2,8 +2,10 @@ const api = require('@ucd-lib/fin-node-api');
 const {logger, config} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
 const fs = require('fs-extra');
+const {URL} = require('url');
 const path = require('path');
 
+const NULL_VALUE = '';
 const FIN_URL = new URL(config.server.url);
 const ROOT_DIR = path.join(__dirname, 'loaded-transforms');
 let finUrlRegex = new RegExp(`^${config.server.url}${config.fcrepo.root}`);
@@ -28,6 +30,10 @@ class TransformUtils {
   init(item, container) {
     this.item = item;
     this.container = container;
+
+    item.id = container['@id'];
+    item['@id'] = container['@id'];
+    item['@type'] = container['@type'];
   }
 
   ns(namespace) {
@@ -37,26 +43,37 @@ class TransformUtils {
   add(opts) {
     let sAttr = this._getSourceAttribute(opts);
     let val = this._getValues(sAttr, opts);
-    this.item[opts.attr] = val;
+    if( val === null || val.length === 0 ) {
+      if( opts.default ) {
+        this.item[opts.attr] = opts.default;
+      }
+    } else {
+      if( val.length === 1 ) val = val[0];
+      this.item[opts.attr] = val;
+    }
   }
 
   _getValues(attr, opts) {
-    let val = this.item[attr];
+    let val = this.container[attr];
     if( val === undefined ) return null;
 
     if( Array.isArray(val) ) {
-      return val.map(v => this._getValue(v, opts));
+      return val.map(v => this._getValue(v, opts))
+                .filter(v => v !== null);
     }
-    return this._getValue(val, opts);
+
+    let v = this._getValue(val, opts)
+    return (v === null) ? '' : v; 
   }
 
   _getValue(obj, opts) {
     if( opts.type === 'id' ) {
       if( obj['@id'] !== undefined ) return obj['@id'];
-      return '';
+      return null;
     }
-
-    let val = obj['@value'] || '';
+    
+    let val = obj['@value'];
+    if( val === undefined ) return null;
 
     if( !opts.type && !opts.parser ) return val;
     if( opts.type === 'date' ) return new Date(val);
@@ -105,6 +122,17 @@ class TransformUtils {
     return json;
   }
 
+  async setImage(json) {
+    let imgPath = this.getImagePath(json);
+    if( !imgPath ) return json;
+
+    json.image = {
+      path : imgPath
+    };
+    await this._setImageResolution(json, imgPath);
+    await this._setColorPalette(json, imgPath);
+  }
+
   /**
    * @method setImageResolution
    * @description given a JSON-LD frame, set the image resolution.  If there is an workExample,
@@ -115,10 +143,7 @@ class TransformUtils {
    * 
    * @returns {Object}
    */
-  async setImageResolution(json) {
-    let imgPath = this.getImagePath(json);
-    if( !imgPath ) return json;
-
+  async _setImageResolution(json, imgPath) {
     let imgUrl = config.fin.host+config.fcrepo.root+imgPath+'/svc:iiif/info.json';
     
     var result = await this.request({
@@ -129,8 +154,8 @@ class TransformUtils {
     try {
       result = JSON.parse(result.body);
 
-      json.width = result.width;
-      json.height = result.height;
+      json.image.width = result.width;
+      json.image.height = result.height;
     } catch(e) {
       logger.error('failed to get image height/width for: '+json['@id'], result.body);
     }
@@ -156,6 +181,12 @@ class TransformUtils {
     if( json.fileFormat && json.fileFormat.match(/image/i) ) {
       return json.id
     }
+    if( json.hasMimeType && json.hasMimeType.match(/image/i) ) {
+      return json.id
+    }
+    if( json.encodingFormat && json.encodingFormat.match(/image/i) ) {
+      return json.id
+    }
     
     if( json.associatedMedia ) {
       return Array.isArray(json.associatedMedia) ? json.associatedMedia[0] : json.associatedMedia;
@@ -165,7 +196,7 @@ class TransformUtils {
   }
 
   /**
-   * @method setThumbnail
+   * @method setColorPalette
    * @description given a JSON-LD frame, set the thumbnail.  If there is an workExample,
    * this property will be used otherwise the id of the frame.  The uri will be hit against
    * the iiif service.
@@ -174,10 +205,7 @@ class TransformUtils {
    * 
    * @returns {Object}
    */
-  async setThumbnail(json, width='8') {
-    let imgPath = this.getImagePath(json);
-    if( !imgPath ) return json;
-
+  async _setColorPalette(json, imgPath, width='8') {
     let imgUrl = config.fin.host+config.fcrepo.root+imgPath+`/svc:iiif/full/${width},/0/default.png`;
 
     let result = await this.request({
@@ -186,7 +214,7 @@ class TransformUtils {
       uri: imgUrl
     });
 
-    json.thumbnailUrl = 'data:image/png;base64,'+new Buffer(result.body).toString('base64');
+    json.image.colorPalette = 'data:image/png;base64,'+new Buffer(result.body).toString('base64');
     return json;
   }
 
@@ -210,6 +238,41 @@ class TransformUtils {
     json.indexableContent = result.body;
 
     return json;
+  }
+
+  /**
+   * @method isType
+   * @description is container of given type
+   * 
+   * @param {String} type 
+   * 
+   * @returns {Boolean}
+   */
+  isType(container, type) {
+    return (container['@type'].indexOf(type) > -1);
+  }
+
+  /**
+   * @method get
+   * @description get a container from JSON-LD graph array by path/id
+   * 
+   * @param {String} path id of container to fetch from array  
+   * @param {Object|Array} container 
+   * 
+   * @returns {Object}
+   */
+  get(path, container) {
+    if( Array.isArray(container) ) {
+      for( var i = 0; i < container.length; i++ ) {
+        if( container[i]['@id'].endsWith(path) ) {
+          return container[i];
+        }
+      }
+    } else if( container['@id'].endsWith(path) ) {
+      return container;
+    }
+
+    return null;
   }
 
   /**
@@ -257,7 +320,7 @@ class TransformUtils {
       let year = json[dateAttr].match(/^\d\d\d\d/);
       if( !year ) continue;
 
-      json[this.transform.dateToYear[dateAttr]] = parseInt(year[0]);
+      json[this.dateToYear[dateAttr]] = parseInt(year[0]);
     }
   }
 
@@ -293,6 +356,8 @@ class TransformUtils {
 class TransformService {
 
   constructor() {
+    this.count = 0;
+
     if( fs.existsSync(ROOT_DIR) ) {
       fs.removeSync(ROOT_DIR);
     }
@@ -301,9 +366,11 @@ class TransformService {
   }
 
   async load(name, script) {
-    let script = path.join(ROOT_DIR, name+'.js');
+    // add -count so we always load a fresh instance
+    let file = path.join(ROOT_DIR, name+'-'+this.count+'.js');
     await fs.writeFile(file, script);
     this.transforms[name] = require(file);
+    this.count++;
   }
 
   async exec(name, path) {
@@ -317,11 +384,18 @@ class TransformService {
       }
     }
 
-    let response = await api.get(options);
-    if( !response.checkStatus(200) ) throw new Error(response.last.statusCode+' '+response.last.body);
+    let response = await api.head(options);
+    if( !api.isRdfContainer(response.last) ) {
+      options.path += '/fcr:metadata';
+    }
+
+    response = await api.get(options);
+    if( !response.checkStatus(200) ) {
+      throw new Error(response.last.statusCode+' '+response.last.body);
+    }
 
     let container = JSON.parse(response.last.body);
-    return this.transforms[name](container, new TransformUtils());
+    return this.transforms[name](path, container, new TransformUtils());
   }
 
   /**
