@@ -2,7 +2,7 @@ import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-image-download.html"
 
 import config from "../../../lib/config"
-import bytes from "bytes"
+// import bytes from "bytes"
 
 const SIZES = [
   {
@@ -91,15 +91,14 @@ export default class AppImageDownload extends PolymerElement {
       return {
         title : format.title,
         label : format.label,
-        size : [
-          Math.floor(options.resolution[0] * format.ratio),
-          Math.floor(options.resolution[1] * format.ratio)
-        ],
+        width: Math.floor(options.resolution[0] * format.ratio),
+        height : Math.floor(options.resolution[1] * format.ratio),
         selected : (format.label === 'FR')
       }
     });
-    this.size = bytes(options.size);
-    
+
+    // this.size = bytes(options.size);
+    console.log(this.sizes);
     
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();
 
@@ -143,14 +142,20 @@ export default class AppImageDownload extends PolymerElement {
    * @description called when user selects a size button.  Toggle over buttons
    * to off state and updates formats based on current size.
    */
-  _onSizeSelected(e) {
-    this.selectedSize = parseInt(e.currentTarget.getAttribute('index'));
+  _onSizeChange(e) {
+    let selected = e.currentTarget.value;
     
     this.sizes = this.sizes.map((size, index) => {
-      size.selected = (this.selectedSize === index);
+      if( selected === size.label ) {
+        size.selected = true;
+        this.selectedSize = index;
+      } else {
+        size.selected = false;
+      }
+      
       return Object.assign({}, size);
     });
-    this.resolutionTitle = this.sizes[this.selectedSize].title;
+    // this.resolutionTitle = this.sizes[this.selectedSize].title;
 
     this._renderFormats();
   }
@@ -179,7 +184,7 @@ export default class AppImageDownload extends PolymerElement {
    */
   _renderDownloadHref() {
     requestAnimationFrame(() => {
-      this.resolution = this.sizes[this.selectedSize].size.join(' x ')+' px';
+      // this.resolution = this.sizes[this.selectedSize].size.join(' x ')+' px';
 
       if( !this.selectedFormat || this.formats.indexOf(this.selectedFormat) === -1 ) {
         this.selectedFormat = this.formats[0].replace(/ .*/, '');
@@ -197,7 +202,8 @@ export default class AppImageDownload extends PolymerElement {
 
       this.defaultImage = false;
 
-      let size = this.sizes[this.selectedSize].size.join(',');
+      let size = this.sizes[this.selectedSize];
+      size = size.width+','+size.height;
 
       this.href = config.fcrepoBasePath + this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
     });

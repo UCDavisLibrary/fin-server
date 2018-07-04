@@ -30,7 +30,6 @@
   }
   select {
     border: none;
-    background-color: white;
     border-radius: 0;
     margin-right: 15px;
     height: 40px;
@@ -43,8 +42,10 @@
     background-position: right 10px center;
     background-size: 10px 6px;
     background-repeat: no-repeat;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2IiB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojZGFhYTAwO308L3N0eWxlPjwvZGVmcz48Zz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMCAwIDEwIDAgNSA2IDAgMCIvPjwvZz48L3N2Zz4=');
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2IiB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojMDAyNjU1O308L3N0eWxlPjwvZGVmcz48Zz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMCAwIDEwIDAgNSA2IDAgMCIvPjwvZz48L3N2Zz4=');
     @apply --fin-search-box-select-inverse;
+    background-color: var(--medium-background-color);
+    color: var(--default-primary-color);
   }
   /* for IE */
   select::-ms-expand {
@@ -53,20 +54,44 @@
   select option {
     text-transform: uppercase;
   }
+
+  .layout {
+    display:flex; 
+    align-items: center;
+  }
 </style>
 
-<div>
+<!-- <div>
   <template is="dom-repeat" items="[[sizes]]">
     <button index$="[[index]]" selected$="[[item.selected]]" on-click="_onSizeSelected">[[item.label]]</button>
   </template>
-</div>
+</div> -->
 
-<div class="info">
+<!-- <div class="info">
   [[resolutionTitle]] | [[resolution]] <span hidden$="[[!defaultImage]]">| [[size]]</span>
+</div> -->
+
+<div class="layout">
+  <div>
+    <input id="single" type="radio" name="set-size" checked /> 
+    <label for="single" >Single</label>
+  </div>
+  <div>
+      <input id="fullset" type="radio" name="set-size"/> 
+      <label for="fullset" >Full Set</label>
+    </div>
 </div>
 
-<div style="display:flex; align-items: center">
+<div class="layout">
   <select id="format" on-change="_onFormatSelected"></select>
+
+  <select on-change="_onSizeChange">
+    <template is="dom-repeat" items="[[sizes]]">
+      <option value$="[[item.label]]" selected$="[[item.selected]]">
+        [[item.title]] [[item.width]] x [[item.height]] px
+      </option>
+    </template>
+  </select>
 
   <a href="[[href]]" on-click="_onDownloadClicked" download target="_blank" rel="noopener">
     <iron-icon icon="file-download"></iron-icon>

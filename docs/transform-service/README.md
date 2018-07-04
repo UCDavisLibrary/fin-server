@@ -176,5 +176,5 @@ $ fin service create \
 
 ## Demo
 
-Demo frames definitions (JavaScript files) can be found here:
- - [Frames](../../server/default-transforms)
+Demo transform definitions (JavaScript files) can be found here:
+ - [Transforms](../../server/default-transforms)
