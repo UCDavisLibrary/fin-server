@@ -126,8 +126,10 @@ export default class AppRecord extends Mixin(PolymerElement)
 
 
     // render associated media
-    if( record.associatedMedia ) {
-      let imageList = this._getImageMediaList(record);
+    let imageList = this._getImageMediaList(record);
+    this.$.download.setRootRecord(record, imageList);
+
+    if( record.associatedMedia ) {  
       if( imageList.length ) this._setSelectedRecordMedia(imageList[0]);
       else this._setSelectedRecordMedia(record);
     } else {

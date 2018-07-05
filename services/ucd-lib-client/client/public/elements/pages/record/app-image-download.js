@@ -1,6 +1,8 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-image-download.html"
 
+import MediaModel from "../../../lib/models/MediaModel"
+
 import config from "../../../lib/config"
 // import bytes from "bytes"
 
@@ -70,6 +72,14 @@ export default class AppImageDownload extends PolymerElement {
       defaultImage : {
         type : Boolean,
         value : true
+      },
+      hasMultipleImages : {
+        type : Boolean,
+        value : false
+      },
+      multipleImagesSelected : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -86,20 +96,20 @@ export default class AppImageDownload extends PolymerElement {
    */
   render(options) {
     this.options = options;
-    this.selectedSize = SIZES.length - 1;
-    this.sizes = SIZES.map(format => {
+    this.sizes = SIZES.map((format, index) => {
       return {
         title : format.title,
         label : format.label,
         width: Math.floor(options.resolution[0] * format.ratio),
         height : Math.floor(options.resolution[1] * format.ratio),
-        selected : (format.label === 'FR')
+        selected : (this.selectedSize === index)
       }
     });
 
-    // this.size = bytes(options.size);
-    console.log(this.sizes);
-    
+    this.hasMultipleImages = (this.imagelist.length > 0);
+    this.multipleImagesSelected = false;
+
+    // this.size = bytes(options.size);    
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();
 
     this.$.format.value = this.originalFormat;
@@ -107,6 +117,17 @@ export default class AppImageDownload extends PolymerElement {
 
     this._renderFormats();
     
+  }
+
+  setRootRecord(record, imagelist) {
+    if( this.rootRecord === record ) return;
+
+    this.rootRecord = record;
+    this.imagelist = imagelist;
+    this.hasMultipleImages = (this.imagelist.length > 0);
+    this.multipleImagesSelected = false;
+
+    this.selectedSize = SIZES.length - 1;
   }
 
   /**
@@ -144,7 +165,7 @@ export default class AppImageDownload extends PolymerElement {
    */
   _onSizeChange(e) {
     let selected = e.currentTarget.value;
-    
+
     this.sizes = this.sizes.map((size, index) => {
       if( selected === size.label ) {
         size.selected = true;
@@ -194,6 +215,8 @@ export default class AppImageDownload extends PolymerElement {
         this.$.format.value = this.selectedFormat;
       }
 
+      this._setTarPaths();
+
       if( this.selectedFormat === this.originalFormat && 
         this.selectedSize === SIZES.length -1 ) {
         this.defaultImage = true;
@@ -206,6 +229,8 @@ export default class AppImageDownload extends PolymerElement {
       size = size.width+','+size.height;
 
       this.href = config.fcrepoBasePath + this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
+
+      
     });
   }
 
@@ -220,6 +245,50 @@ export default class AppImageDownload extends PolymerElement {
       'event_label': path,
       'value': 1
     });
+  }
+
+  /**
+   * @method _toggleMultipleDownload
+   * @description bound to radio buttons click event
+   */
+  _toggleMultipleDownload() {
+    this.multipleImagesSelected = this.$.fullset.checked ? true : false;
+  }
+
+  _setTarPaths() {
+    if( !SIZES[this.selectedSize] ) return;
+
+    let origin = false;
+
+    if( this.selectedFormat === this.originalFormat && 
+        this.selectedSize === SIZES.length -1 ) {
+      origin = true;
+    }
+
+    let urls = {};
+    this.imagelist.forEach(item => {
+      let name = item.filename || item.name;
+      if( origin ) {
+        urls[name] = item['@id'];
+      } else {
+        let s = SIZES[this.selectedSize];
+        name = name.replace(/\.[a-z]*$/, `_${s.label}_.${this.selectedFormat}`);
+        let w = Math.floor(item.image.width * s.ratio);
+        let h = Math.floor(item.image.height * s.ratio);
+        urls[name] = MediaModel.getImgUrl(item['@id'], w, h, this.selectedFormat).replace(config.fcrepoBasePath, '');
+      }
+    });
+
+    this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '');
+    this.$.tarPaths.value = JSON.stringify(urls);
+  }
+
+  /**
+   * @method _downloadTar
+   * @description bound to download set button click event
+   */
+  _downloadTar() {
+    this.$.downloadTar.submit();
   }
 
 }
