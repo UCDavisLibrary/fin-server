@@ -29,6 +29,11 @@ config.essync = {
   frameServices : {
     collection : 'es-collection-frame',
     record : 'es-record-frame'
+  },
+
+  transformServices : {
+    collection : 'es-collection-transform',
+    record : 'es-record-transform'
   }
 }
 

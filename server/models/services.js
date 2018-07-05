@@ -1,9 +1,11 @@
 const api = require('@ucd-lib/fin-node-api');
 const {logger, config} = require('@ucd-lib/fin-node-utils');
 const request = require('request');
+const fs = require('fs');
 const {URL} = require('url');
 const activeMqProxy = require('../lib/activeMqProxy');
 const jsonld = require('jsonld');
+const transform = require('./transform');
 const util = require('util');
 const redis = require('../lib/redisClient');
 const jwt = require('jsonwebtoken');
@@ -49,12 +51,11 @@ class ServiceModel {
 
     // make sure our root service container is in place
     await api.service.init();
-    let list = await api.service.list();
+    // let list = await api.service.list();
 
     // ensure all default services
     for( var i = 0; i < config.defaultServices.length; i++ ) {
       let service = config.defaultServices[i];
-
       var response = await api.head({
         path : '/'+api.service.ROOT+'/'+service.id
       });
@@ -66,7 +67,11 @@ class ServiceModel {
         })
       }
 
-      await api.service.create(service);
+      if( service.type === api.service.TYPES.TRANSFORM ) {
+        service.transform = fs.readFileSync(service.transform, 'utf-8');
+      }
+
+      response = await api.service.create(service);
 
       if( service.secret ) {
         await this.setServiceSecret(service.id, service.secret);
@@ -129,7 +134,14 @@ class ServiceModel {
     let services = {};
     this.authServiceDomains = {};
     
-    list.forEach(service => {
+    for( var i = 0; i < list.length; i++ ) {
+      let service = list[i];
+
+      if( service.type === api.service.TYPES.TRANSFORM ) {
+        let response = await api.get({path: service.path});
+        service.transform = response.last.body;
+      }
+      
       services[service.id] = new ServiceDefinition(service);
 
       if( service.type === api.service.TYPES.CLIENT ) {
@@ -137,8 +149,10 @@ class ServiceModel {
       } else if( service.type === api.service.TYPES.EXTERNAL ) {
         let domain = this.getRootDomain(service.urlTemplate);
         this.authServiceDomains[domain] = new RegExp(domain+'$', 'i');
+      } else if( service.type === api.service.TYPES.TRANSFORM ) {
+        await transform.load(service.id, service.transform);
       }
-    });
+    };
 
     this.services = services;
     logger.info('Services reloaded', Object.keys(services));
@@ -286,6 +300,10 @@ class ServiceModel {
 
     let container = JSON.parse(response.last.body);
     return await jsonld.frame(container, frame);
+  }
+
+  renderTransform(service, path) {
+    return transform.exec(service, path)
   }
   
   /**
@@ -546,6 +564,7 @@ class ServiceDefinition {
     this.url = data.url || '';
     this.title = data.title || '';
     this.description = data.description || '';
+    this.transform = data.transform || '';
     this.supportedTypes = data.supportedTypes || [];
     this.id = data.id || '';
   }
@@ -579,6 +598,14 @@ class ServiceDefinition {
 
   get frame() {
     return this._frame;
+  }
+
+  set transform(val) {
+    this._transform = val
+  }
+
+  get transform() {
+    return this._transform;
   }
 
   /**

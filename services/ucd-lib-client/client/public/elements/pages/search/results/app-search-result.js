@@ -96,7 +96,7 @@ export default class AppSearchResult extends Mixin(PolymerElement)
 
     let imgWidth = 250;
 
-    let img = this.data.image;
+    let img = this.data.image;  
     if( img ) {
       let ratio = img.height / img.width;
       this.imgHeight = Math.floor(imgWidth * ratio);

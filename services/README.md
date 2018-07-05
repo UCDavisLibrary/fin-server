@@ -30,6 +30,12 @@ A JSON-LD service that returns a framed JSON-LD response based on the fcrepo pat
 
 [FrameService Documentation](../docs/frame-service/README.md)
 
+## TransformService
+
+A service that returns a transfrom JSON-LD Object from a provided JavaScript module.
+
+[TransformService Documentation](../docs/transform-service/README.md)
+
 ## ExternalService
 
 A external service will send a HTTP 302 redirect to a external service.  The url of the redirect will include the current Fin url (host and fcrepo path) as well as a auth token if the user is logged in.  The external service can then request data and make updates to Fin on the users behalf.  YOU SHOULD HAVE TRUST IN ALL REGISTERED EXTERNAL SERVICES.

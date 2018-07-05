@@ -39,6 +39,11 @@ module.exports = async function(path, graph, utils) {
   });
 
   utils.add({
+    attr : 'keywords',
+    value : ['schema', 'keywords']
+  });
+
+  utils.add({
     attr : 'creator',
     value : ['schema', 'creator']
   });
@@ -58,11 +63,6 @@ module.exports = async function(path, graph, utils) {
   utils.add({
     attr : 'publisher',
     value : ['schema', 'publisher']
-  });
-
-  utils.add({
-    attr : 'position',
-    value : ['schema', 'position']
   });
 
   utils.add({
@@ -101,15 +101,15 @@ module.exports = async function(path, graph, utils) {
   });
 
   utils.add({
-    attr : 'lastModified',
-    value : ['fedora', 'lastModified'],
-    type : 'date'
+    attr : 'workExample',
+    value : ['schema', 'workExample'],
+    type : 'id'
   });
 
   utils.add({
-    attr : 'textIndexable',
-    value : ['ucdlib', 'textIndexable'],
-    type : 'boolean'
+    attr : 'lastModified',
+    value : ['fedora', 'lastModified'],
+    type : 'date'
   });
 
   utils.add({
@@ -128,22 +128,22 @@ module.exports = async function(path, graph, utils) {
   });
 
   utils.add({
-    attr : 'workExample',
-    value : ['schema', 'workExample']
-  });
-
-  utils.add({
     attr : 'datePublished',
     value : ['schema', 'datePublished']
   });
 
   utils.add({
-    attr : 'identifier',
+    attr : 'localIdentifier',
     value : ['schema', 'identifier']
   });
 
   utils.add({
-    attr : 'material',
+    attr : 'universalIdentifier',
+    value : ['schema', 'identifier']
+  });
+
+  utils.add({
+    attr : 'source',
     value : ['schema', 'material']
   });
 
@@ -151,27 +151,6 @@ module.exports = async function(path, graph, utils) {
     attr : 'license',
     value : ['schema', 'license'],
     type : 'id'
-  });
-
-  utils.add({
-    attr : 'fileFormat',
-    value : ['ebucore', 'hasMimeType']
-  });
-
-  utils.add({
-    attr : 'encodingFormat',
-    value : ['schema', 'encodingFormat']
-  });
-
-  utils.add({
-    attr : 'fileSize',
-    value : ['premis', 'hasSize'],
-    type : 'number'
-  });
-
-  utils.add({
-    attr : 'filename',
-    value : ['ebucore', 'filename']
   });
 
   utils.stripFinHost(item);
@@ -182,11 +161,6 @@ module.exports = async function(path, graph, utils) {
     
   // JM: temp hack for our schema.  Mapping keywords -> about (See issue #42)
   item.about = item.keywords;
-
-  if( utils.isRecord(item['@type']) ) {
-    item.collectionId = item['@id'].split('/').splice(0, 3).join('/');
-    utils.setRootRecord(item);
-  }
 
   return item;
 }

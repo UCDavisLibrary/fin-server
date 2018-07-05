@@ -7,6 +7,7 @@ import leafletCss from "leaflet/dist/leaflet.css"
 
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
+import config from "../../../../lib/config"
 
 export default class AppImageViewer extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
@@ -62,6 +63,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
 
     this.shadowRoot.removeChild(this.$.safeCover);
     document.body.appendChild(this.$.safeCover);
+
+    this.mainApp = document.querySelector('fin-app');
   }
 
   /**
@@ -86,6 +89,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     window.scrollTo(0,0);
     this.$.safeCover.style.display = 'block';
 
+    this.mainApp.style.display = 'none';
     setTimeout(() => this.$.nav.setFocus(), 0);
   }
 
@@ -96,6 +100,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     this.style.display = 'none';
     this.$.safeCover.style.display = 'none';
     document.body.style.overflow = 'auto';
+    this.mainApp.style.display = 'block';
     this.visible = false;
   }
 
@@ -131,23 +136,24 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     if( this.renderedMedia === this.media ) return;
     this.renderedMedia = this.media;
 
-    let height = this.media.height;
-    let width = this.media.width;
-    if( this.media.height > this.media.width ) {
-      if( this.media.height > this.maxImageSize ) {
-        let scale = this.maxImageSize / this.media.height;
-        height = Math.floor(this.media.height * scale);
-        width = '';
-      }
-    } else {
-      if( this.media.width > this.maxImageSize ) {
-        let scale = this.maxImageSize / this.media.width;
-        width = Math.floor(this.media.width * scale);
-        height = '';
-      }
-    }
+    let height = this.media.image.height;
+    let width = this.media.image.width;
+    // if( height > width ) {
+    //   if( height > this.maxImageSize ) {
+    //     let scale = this.maxImageSize / height;
+    //     height = Math.floor(height * scale);
+    //     width = '';
+    //   }
+    // } else {
+    //   if( width > this.maxImageSize ) {
+    //     let scale = this.maxImageSize / width;
+    //     width = Math.floor(width * scale);
+    //     height = '';
+    //   }
+    // }
 
-    let url = this._getImgUrl(this.media.id, width, height);
+    // let url = this._getImgUrl(this.media.id, width, height);
+    let url = config.fcrepoBasePath+this.media.id;
 
     if( this.viewer ) this.viewer.remove();
 

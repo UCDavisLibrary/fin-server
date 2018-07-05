@@ -56,15 +56,12 @@ class EsSyncMessageServer extends MessageServer {
    * @param {Object} msg webhook message
    */
   async onContainerCreated(path, msg) {
-    // grab the frame for the path
-    let frame = await indexer.getJsonFrame(path, msg.payload.body.type);
-    if( !frame ) return; // no access, quit out
-
-    // make required modifications to frame (see method docs for more information)
-    frame = await indexer.frameToEs(frame);
+    // grab the record for the path
+    let esRecord = await indexer.getTransformedContainer(path, msg.payload.body.type);
+    if( !esRecord ) return; // no access, quit out
 
     // insert into elasticsearch
-    indexer.update(frame);
+    indexer.update(esRecord);
   }
 
   /**
@@ -75,11 +72,11 @@ class EsSyncMessageServer extends MessageServer {
    * @param {Object} msg webhook message
    */
   async onContainerModified(path, msg) {
-    // grab the frame for the path
-    let frame = await indexer.getJsonFrame(path, msg.payload.body.type);
+    // grab the esRecord for the path
+    let esRecord = await indexer.getTransformedContainer(path, msg.payload.body.type);
           
     // at this point, likely doesn't have public access
-    if( !frame ) {
+    if( !esRecord ) {
       if( indexer.isCollection(msg.payload.body.type) ) {
         // remove collection and all children
         indexer.removeCollection(path);
@@ -111,11 +108,8 @@ class EsSyncMessageServer extends MessageServer {
       }
     }
 
-    // make required modifications to frame (see method docs for more information)
-    frame = await indexer.frameToEs(frame);
-
     // insert into elasticsearch
-    indexer.update(frame);
+    indexer.update(esRecord);
   }
 
  /**

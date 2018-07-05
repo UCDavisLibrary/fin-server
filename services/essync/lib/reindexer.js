@@ -115,7 +115,7 @@ class EsReindexer {
     let response = await api.head({path : url});
     
     if( response.last.statusCode === 403 ) {
-      logger.error('Ignoring non-public container: '+path);
+      logger.error('Ignoring non-public container: '+url);
       return;
     }
 
@@ -148,18 +148,16 @@ class EsReindexer {
     response = response.last;
     let jsonld = JSON.parse(response.body)[0];
 
-    // grab the frame for the container
-    let frame = await indexer.getJsonFrame(url, jsonld['@type']);
+    // grab the record for the container
+    let esRecord = await indexer.getTransformedContainer(url, jsonld['@type']);
 
-    // the getJsonFrame returns null if not a valid container type, 
-    // so we only update elasticsearch if a valid frame was returned
-    if( frame ) {
-      // munge the frame a bit (see method doc for more)
-      frame = await indexer.frameToEs(frame);
+    // the getTransformedContainer returns null if not a valid container type, 
+    // so we only update elasticsearch if a valid esRecord was returned
+    if( esRecord ) {
       // insert into elastic search
       // here we pass the temporary aliases instead for the active index
       // we will make the temp aliases the active index once we finish the crawl
-      await indexer.update(frame, recordIndex, collectionIndex);
+      await indexer.update(esRecord, recordIndex, collectionIndex);
     }
 
     // check if this container has children
