@@ -79,7 +79,7 @@ class TransformUtils {
     if( opts.type === 'date' ) return new Date(val);
     if( opts.type === 'number' ) return parseInt(val);
     if( opts.type === 'float' ) return parseFloat(val);
-    if( opts.type === 'boolean' ) return val === 'true' ? true : false;
+    if( opts.type === 'boolean' ) return ((val+'').toLowerCase().trim() === 'true') ? true : false;
     if( opts.parser ) return opts.parser(val);
     
     return val;
