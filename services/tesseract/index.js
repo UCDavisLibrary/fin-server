@@ -1,7 +1,7 @@
 global.LOGGER_NAME = 'tesseract';
 const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const {exec} = require('child_process');
-const url = require('url');
+const {URL} = require('url');
 const http = require('http');
 const uuid = require('uuid/v4');
 const request = require('request');
@@ -23,14 +23,17 @@ class TesseractServer {
     this.name = 'Tesseract Server'
 
     this.server = http.createServer(async (req, res) => {
-      let urlinfo = url.parse(req.url);
+      let urlinfo = new URL(req.url, 'https://example.org/');
+
+      let iiif = urlinfo.searchParams.get('svcPath');
+
       let txt = '';
       let id, type;
 
       logger.info(`Running tesseract for: ${urlinfo.pathname}`);
 
       try {
-        let file = await this.getFile(urlinfo.pathname);
+        let file = await this.getFile(urlinfo.pathname, iiif);
         id = file.id;
         type = file.type;
 
@@ -68,6 +71,8 @@ class TesseractServer {
   }
 
   cleanup(id, type) {
+    if( !id || !type ) return;
+
     let file = path.join(ROOT, id+type);
     if( fs.existsSync(file) ) fs.unlinkSync(file);
 
@@ -89,7 +94,7 @@ class TesseractServer {
     });
   }
 
-  async getFile(urlPath) {
+  async getFile(urlPath, iiif) {
     let id = uuid();
 
     // first grab fc metadata... this will also check access
@@ -111,7 +116,7 @@ class TesseractServer {
     // then load file
     return new Promise((resolve, reject) => {
       request
-        .get(this.getFcRepoBaseUrl() + urlPath)
+        .get(this.getFcRepoBaseUrl() + urlPath + (iiif ? '/svc:iiif'+iiif : ''))
         .on('error', (err) => reject(err))
         .on('end', () => resolve({id,type}))
         .pipe(fs.createWriteStream(file))
