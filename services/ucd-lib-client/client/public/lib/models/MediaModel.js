@@ -20,6 +20,10 @@ class MediaModel extends BaseModel {
    * @returns {String} 
    */
   getImgPath(record) {
+    if( record.image ) {
+      return record.image.path;
+    }
+
     if( record.workExample ) {
       if( Array.isArray(record.workExample) ) return record.workExample[0];
       return record.workExample;
@@ -37,14 +41,14 @@ class MediaModel extends BaseModel {
     return '';
   }
 
-  getImgUrl(path, width='', height='') {
+  getImgUrl(path, width='', height='', format='jpg') {
     if( width === null ) width = '';
     if( height === null ) height = '';
     
     let size = width+','+height;
     if( !width && !height ) size = 'full';
 
-    return `${config.fcrepoBasePath}${path}/svc:iiif/full/${size}/0/default.jpg`;
+    return `${config.fcrepoBasePath}${path}/svc:iiif/full/${size}/0/default.${format}`;
   }
 
   /**
@@ -62,7 +66,7 @@ class MediaModel extends BaseModel {
     // see if we have an image list
     for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
       let ef = rootRecord._associatedMedia[i].encodingFormat;
-      if( ef && ef.toLowerCase() === 'image list' ) {
+      if( ef && ef.toLowerCase().replace(/ /g, '') === 'imagelist' ) {
         rootRecord._imageList = rootRecord._associatedMedia[i]._hasPart || [];
         rootRecord._imageList.sort((a, b) => {
           if( a.position > b.position ) return 1;

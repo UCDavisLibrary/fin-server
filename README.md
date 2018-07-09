@@ -17,6 +17,7 @@ A demo for using Fin can be found in [docker/fin-demo](docker/fin-demo/README.md
   - [ClientService](docs/client-service/README.md)
   - [ExternalService](docs/external-service/README.md)
   - [FrameService](docs/frame-service/README.md)
+  - [TransformService](docs/transform-service/README.md)
   - [ProxyService](docs/proxy-service/README.md)
   - [WebhookService](docs/webhook-service/README.md)
 - [Config](docs/env-config.md)

@@ -126,8 +126,10 @@ export default class AppRecord extends Mixin(PolymerElement)
 
 
     // render associated media
-    if( record.associatedMedia ) {
-      let imageList = this._getImageMediaList(record);
+    let imageList = this._getImageMediaList(record);
+    this.$.download.setRootRecord(record, imageList);
+
+    if( record.associatedMedia ) {  
       if( imageList.length ) this._setSelectedRecordMedia(imageList[0]);
       else this._setSelectedRecordMedia(record);
     } else {
@@ -239,10 +241,10 @@ export default class AppRecord extends Mixin(PolymerElement)
    */
   _onSelectedRecordMediaUpdate(record) {
     this.$.download.render({
-      resolution : [record.width, record.height],
+      resolution : [record.image.width, record.image.height],
       fileFormat : record.fileFormat,
       size : record.fileSize ? parseInt(record.fileSize) : 0,
-      url : this._getImgPath(record)
+      url : record.image.path
     });
   }
 

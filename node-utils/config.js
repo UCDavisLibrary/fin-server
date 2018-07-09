@@ -29,6 +29,11 @@ module.exports = {
     url : process.env.CAS_URL || 'https://cas.ucdavis.edu/cas'
   },
 
+  rdf : {
+    baseUrl : 'http://digital.ucdavis.edu/schema#',
+    prefix : 'ucdlib'
+  },
+
   fcrepo : {
     hostname : fcrepoHostname,
     host : `http://${fcrepoHostname}:8080`,
@@ -57,7 +62,7 @@ module.exports = {
       schemaType : 'fcrepo-collection',
     },
     host : `http://elastic:changeme@${esHostname}:9200`,
-    log : process.env.ES_LOG_LEVEL || 'error'
+    log : process.env.ES_LOG_LEVEL || 'error',
   },
 
   redis : {

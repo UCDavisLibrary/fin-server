@@ -17,6 +17,7 @@ services:
       - ../../server/lib:/app/lib
       - ../../server/models:/app/models
       - ../../server/default-frames:/etc/fin/frames
+      - ../../server/default-transforms:/etc/fin/transforms
       - ../../services/default-services.js:/etc/fin/default-services.js
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
       - ../../server/backups:/fcrepo-backups
@@ -184,6 +185,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
+      - CAS_URL=https://ssodev.ucdavis.edu/cas
     depends_on:
       - server
     command: node service
@@ -205,8 +207,8 @@ services:
       #- FIN_ENV=prod
     depends_on:
       - server
-    # command: node service
-    command: bash -c 'tail -f /dev/null'
+    command: node service
+    # command: bash -c 'tail -f /dev/null'
 
   basic-auth:
     build: ../../services/basic-auth

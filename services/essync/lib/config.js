@@ -8,7 +8,8 @@ config.essync = {
   reduceAttributes : {
     creator : 'creators',
     about : 'abouts',
-    fileFormat : 'fileFormats'
+    fileFormat : 'fileFormats',
+    indexableContent : 'indexableContents'
   },
 
   // if these attributes exist, the ISO 8601 date will be stripped for
@@ -28,6 +29,11 @@ config.essync = {
   frameServices : {
     collection : 'es-collection-frame',
     record : 'es-record-frame'
+  },
+
+  transformServices : {
+    collection : 'es-collection-transform',
+    record : 'es-record-transform'
   }
 }
 

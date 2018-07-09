@@ -21,6 +21,7 @@ const SHORT_CREATIVE_WORK = 'schema:CreativeWork';
 const SHORT_MEDIA_OBJECT = 'schema:MediaObject';
 const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 const SHORT_BINARY = 'fedora:Binary';
+const TEXT_INDEXABLE = 'textIndexable';
 
 const FIN_URL = new URL(config.server.url);
 const HOST = FIN_URL.host;
@@ -273,22 +274,22 @@ class EsIndexer {
   }
 
   /**
-   * @method getJsonFrame
-   * @description get a fcrepo container frame at specified path. 
+   * @method getTransformedContainer
+   * @description get a es object for container at specified path. 
    * 
    * @param {String} path fcrepo url
    * @param {Array} types JSON-LD @type array 
    * 
    * @returns {Promise}
    */
-  async getJsonFrame(path='', types=[]) {
+  async getTransformedContainer(path='', types=[]) {
     if( path.match(/fcr:metadata$/) ) {
       path = path.replace(/\/fcr:metadata$/, '');
     }
 
     let svc = '';
-    if( this.isRecord(types) ) svc = config.essync.frameServices.record;
-    else if( this.isCollection(types) ) svc = config.essync.frameServices.collection;
+    if( this.isRecord(types) ) svc = config.essync.transformServices.record;
+    else if( this.isCollection(types) ) svc = config.essync.transformServices.collection;
 
     // we don't have a frame service for this
     if( !svc ) return null;
@@ -317,184 +318,6 @@ class EsIndexer {
   }
 
   /**
-   * @method frameToEs
-   * @description given a JSON-LD frame, extract the record or collection,
-   * set the local identifiers, set the base64 encoded thumbnail (if image), set
-   * the image resolution (if image)
-   * 
-   * @param {Object} frame
-   * 
-   * @returns {Promise} 
-   */
-  async frameToEs(frame) {
-    frame = this.getRecordOrCollectionFrame(frame);
-    frame.id = frame['@id'];
-
-    this.stripFinHost(frame);
-    await this.setThumbnail(frame);
-    await this.setImageResolution(frame);
-    this.setYearFromDate(frame);
-    
-    // JM: temp hack for our schema.  Mapping keywords -> about (See issue #42)
-    frame.about = frame.keywords;
-
-    if( this.isRecord(frame['@type']) ) {
-      frame.collectionId = frame['@id'].split('/').splice(0, 3).join('/');
-      this.setRootRecord(frame);
-    }
-
-    return frame;
-  }
-
-  /**
-   * @method setThumbnail
-   * @description given a JSON-LD frame, set the thumbnail.  If there is an workExample,
-   * this property will be used otherwise the id of the frame.  The uri will be hit against
-   * the iiif service.
-   * 
-   * @param {Object} json
-   * 
-   * @returns {Object}
-   */
-  async setThumbnail(json) {
-    let imgPath = this.getImagePath(json);
-    if( !imgPath ) return json;
-
-    let imgUrl = config.fin.host+config.fcrepo.root+imgPath+'/svc:iiif/full/8,/0/default.png';
-
-    let result = await this.request({
-      type : 'GET',
-      encoding : null,
-      uri: imgUrl
-    });
-
-    json.thumbnailUrl = 'data:image/png;base64,'+new Buffer(result.body).toString('base64');
-    return json;
-  }
-
-  /**
-   * @method setImageResolution
-   * @description given a JSON-LD frame, set the image resolution.  If there is an workExample,
-   * this property will be used otherwise the id of the frame.  The uri will be hit against
-   * the iiif service for resolution information.
-   * 
-   * @param {Object} json
-   * 
-   * @returns {Object}
-   */
-  async setImageResolution(json) {
-    let imgPath = this.getImagePath(json);
-    if( !imgPath ) return json;
-
-    let imgUrl = config.fin.host+config.fcrepo.root+imgPath+'/svc:iiif/info.json';
-    
-    var result = await this.request({
-      type : 'GET',
-      uri: imgUrl
-    });
-
-    try {
-      result = JSON.parse(result.body);
-
-      json.width = result.width;
-      json.height = result.height;
-    } catch(e) {
-      logger.error('failed to get image height/width for: '+json['@id'], result.body);
-    }
-    
-
-    return json;
-  }
-
-  /**
-   * @method getImagePath
-   * @description return the representative image for record.  The order of lookup is
-   * workExample, record id (if fileFormat is of type image/*), associatedMedia
-   * 
-   * @param {Object} json record
-   * 
-   * @returns {String|null}
-   */
-  getImagePath(json) {
-    if( json.workExample ) {
-      return Array.isArray(json.workExample) ? json.workExample[0] : json.workExample;
-    }
-    
-    if( json.fileFormat && json.fileFormat.match(/image/i) ) {
-      return json.id
-    }
-    
-    if( json.associatedMedia ) {
-      return Array.isArray(json.associatedMedia) ? json.associatedMedia[0] : json.associatedMedia;
-    }
-
-    return null;
-  }
-
-  /**
-   * @method setYearFromDate
-   * @description given ISO 8601 Date attributes, map them to a year
-   * attribute if the date attribute exits.
-   * 
-   * @param {Object} json record
-   */
-  setYearFromDate(json) {
-    for( let dateAttr in config.essync.dateToYear ) {
-      if( !json[dateAttr] ) continue;
-
-      let year = json[dateAttr].match(/^\d\d\d\d/);
-      if( !year ) continue;
-
-      json[config.essync.dateToYear[dateAttr]] = parseInt(year[0]);
-    }
-  }
-
-  /**
-   * @method setRootRecord
-   * @description given a record, set the isRootRecord flag if the
-   * isPartOf attribute is equal to the collection id
-   * 
-   * @param {Object} json record
-   */
-  async setRootRecord(json) {
-    if( json.isPartOf && json.isPartOf === json.collectionId ) {
-      json.isRootRecord = true;
-    }
-  }
-
-  /**
-   * @method stripFinHost
-   * @description short id's removing fin host and base path.  this also
-   * removes empty values
-   * 
-   * @param {Object} json
-   * 
-   * @return {Object}
-   */
-  stripFinHost(json) {
-    if( Array.isArray(json) ) {
-      json.forEach((item, index) => {
-        if( typeof item === 'object' ) {
-          this.stripFinHost(item);
-        } else if( typeof item === 'string' ) {
-          json[index] = json[index].replace(this.finUrlRegex, '');
-        }
-      });
-    } else {
-      for( var key in json ) {
-        if( typeof json[key] === 'object' ) {
-          this.stripFinHost(json[key]);
-        } else if( typeof json[key] === 'string' ) {
-          json[key] = json[key].replace(this.finUrlRegex, '');
-          if( json[key] === NULL_VALUE ) delete json[key];
-        }
-      }
-    }
-
-    return json;
-  }
-
-  /**
    * @method generateToken
    * @description create a new jwt token
    */
@@ -520,29 +343,6 @@ class EsIndexer {
     });
   }
 
-  /**
-   * @method getRecordOrCollectionFrame
-   * @description given a frame response, first grab the graph.  Then 
-   * look through the graph and return the first record or collection
-   * object you find
-   * 
-   * @param {Object} frame a response from a frame service
-   * 
-   * @returns {Object} 
-   */
-  getRecordOrCollectionFrame(frame={}) {
-    if( frame['@graph'] ) frame = frame['@graph'];
-    
-    if( Array.isArray(frame) ) {
-      return frame.find(item => {
-        if( this.isCollection(item['@type']) ||
-            this.isRecord(item['@type']) ) {
-          return true;
-        }
-      });
-    }
-    return frame;
-  }
 
   /** 
    * @method getFcRepoBaseUrl

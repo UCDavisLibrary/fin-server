@@ -16,4 +16,9 @@ config.client = {
   }
 }
 
+config.elasticsearch.fields = {
+  exclude : ['indexableContent', 'indexableContents'],
+  fill : ['hasPart', 'associatedMedia']
+}
+
 module.exports = config;

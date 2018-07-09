@@ -3,7 +3,7 @@ const config = require('../config');
 const ElasticSearchModel = require('./elasticsearch');
 const clone = require('clone');
 
-const FILL_ATTRIBUTES = ['hasPart', 'associatedMedia'];
+const FILL_ATTRIBUTES = config.elasticsearch.fields.fill;
 
 class RecordsModel extends ElasticSearchModel {
 
@@ -59,6 +59,10 @@ class RecordsModel extends ElasticSearchModel {
   
     for( var i = 0; i < record['_'+attribute].length; i++ ) {
       let childRecord = record['_'+attribute][i];
+      if( !childRecord ) {
+        record['_'+attribute][i] = {error:true, message:'record not found'}
+        continue;
+      }
       await this._fillRecord(childRecord);
     }
   }
@@ -144,6 +148,8 @@ class RecordsModel extends ElasticSearchModel {
     options.index = config.elasticsearch.record.alias;
     options.body = body;
 
+    options._sourceExclude = config.elasticsearch.fields.exclude;
+
     return es.search(options);
   }
 
@@ -174,6 +180,7 @@ class RecordsModel extends ElasticSearchModel {
     return es.get({
       index: config.elasticsearch.record.alias,
       type: '_all',
+      _sourceExclude : config.elasticsearch.fields.exclude,
       id: id
     });
   }

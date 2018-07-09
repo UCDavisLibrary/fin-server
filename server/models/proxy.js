@@ -1,4 +1,3 @@
-const express = require('express');
 const httpProxy = require('http-proxy');
 const {URL} = require('url');
 const request = require('request');
@@ -364,7 +363,23 @@ class ProxyModel {
           frame : service.frame
         });
       }
-    
+
+    } else if( service.type === api.service.TYPES.TRANSFORM ) {
+      try {
+        let fcPath = svcReq.fcPath.replace(api.getConfig().basePath, '');
+        let transformed = await serviceModel.renderTransform(service.id, fcPath);
+        res.json(transformed);
+      } catch(e) {
+        res.status(500).send({
+          error : true,
+          message : 'Unable to render from transform service '+service.id,
+          details : {
+            message : e.message,
+            stack : e.stack
+          }
+        });
+      }
+      
     // run the proxy service
     } else if( service.type === api.service.TYPES.PROXY ) {
       
