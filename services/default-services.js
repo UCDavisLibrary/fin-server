@@ -10,6 +10,13 @@ module.exports = [
     urlTemplate : 'http://loris:5004{{fcPath}}{{svcPath}}'
   },
   {
+    id : 'tesseract',
+    description : 'Image OCR',
+    type : 'ProxyService',
+    supportedType : 'http://www.w3.org/ns/ldp#NonRDFSource',
+    urlTemplate : 'http://tesseract:3333{{fcPath}}?svcPath={{svcPath}}'
+  },
+  {
     id : 'essync',
     title : 'Elastic Search Sync',
     description : 'Notify Elastic Search indexer when fedora updates',
