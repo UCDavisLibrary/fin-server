@@ -22,43 +22,55 @@ class TesseractServer {
     this.port = '3333';
     this.name = 'Tesseract Server'
 
+    // create server
     this.server = http.createServer(async (req, res) => {
-      let urlinfo = new URL(req.url, 'https://example.org/');
 
+      let extractTo = 'txt';
+      let accept = req.headers['accept'];
+      if( accept ) {
+        if( accept === 'application/hocr+xml' ) extractTo = 'hocr';
+        else if( accept === 'application/pdf' ) extractTo = 'pdf';
+      }
+
+      // parse service path and check for iiif information
+      let urlinfo = new URL(req.url, 'https://example.org/');
       let iiif = urlinfo.searchParams.get('svcPath');
 
       let txt = '';
-      let id, type;
+      let id, fileInfo;
 
-      logger.info(`Running tesseract for: ${urlinfo.pathname}`);
+      logger.info(`Running tesseract for: ${urlinfo.pathname}, extracting to ${extractTo}`);
 
       try {
+        // download image to tmp file
         let file = await this.getFile(urlinfo.pathname, iiif);
         id = file.id;
-        type = file.type;
+        fileInfo = file.fileInfo;
 
-        await this.ocr(id, type);
+        // run tesseract on tmp file
+        await this.ocr(id, fileInfo.ext, extractTo);
 
-        file = path.join(ROOT, id+'.txt');
-        if( fs.existsSync(file) ) {
-          txt = fs.readFileSync(file, 'utf-8');
-        }
-        this.cleanup(id, type);
+        // read in tesseract output
+
+
+        // send responses
+        res.setHeader('Content-type', accept || 'text/plain');
+        res.setHeader('Content-Disposition', `inline; filename="${fileInfo.name}.${extractTo}"`);
+
+        file = path.join(ROOT, id+'.'+extractTo);
+        fs.createReadStream(file)
+          .on('end', () => this.cleanup(id, fileInfo.ext))
+          .on('error', () => this.cleanup(id, fileInfo.ext))
+          .pipe(res);
 
       } catch(e) {
         logger.error(`Tesseract failed for: ${urlinfo.pathname}`, e);
 
-        this.cleanup(id, type);
+        this.cleanup(id, fileInfo.ext);
         res.statusCode = parseInt(e.code || SERVER_ERROR);
         res.write(e.message);
         res.end();
-        
-        return;
       }
-      
-      res.setHeader('Content-type', 'text/plain');
-      res.write(txt);
-      res.end();
     });
 
     this.server.listen(this.port, () => {
@@ -70,31 +82,57 @@ class TesseractServer {
     });
   }
 
-  cleanup(id, type) {
-    if( !id || !type ) return;
+  /**
+   * @method cleanup
+   * @description remove all tmp files if they exist
+   * 
+   * @param {String} id tmp file id
+   * @param {String} ext fcrepo file extension
+   */
+  cleanup(id, ext) {
+    if( !id ) return;
 
-    let file = path.join(ROOT, id+type);
-    if( fs.existsSync(file) ) fs.unlinkSync(file);
-
-    file = path.join(ROOT, id+'.txt');
-    if( fs.existsSync(id) ) fs.unlinkSync(file);
+    [ext, '.txt', '.pdf', '.hocr'].forEach(ext => {
+      let file = path.join(ROOT, id+ext);
+      if( fs.existsSync(file) ) fs.unlinkSync(file);
+    })
   }
 
-  async ocr(id, type) {
+  /**
+   * @method ocr
+   * @description run tesseract on tmp file
+   * 
+   * @param {String} id tmp file id 
+   * @param {String} ext fcrepo file extension
+   * @param {String} extractTo type of extract
+   * 
+   * @return {Promise}
+   */
+  ocr(id, type, extractTo) {
     return new Promise((resolve, reject) => {
       let options = {
         cwd : ROOT,
         shell : '/bin/bash'
       }
 
-      exec(`tesseract ${ROOT}/${id}${type} ${id} -l eng --psm 1 --oem 3 txt`, options, (error, stdout, stderr) => {
+      exec(`tesseract ${ROOT}/${id}${type} ${id} -l eng --psm 1 --oem 3 ${extractTo}`, options, (error, stdout, stderr) => {
         if( error ) reject(new ExecError(error.message, SERVER_ERROR));
         else resolve({stdout, stderr});
       }); 
     });
   }
 
+  /**
+   * @method getFile
+   * @description download fcrepo image file to local tmp file, returns file information
+   * 
+   * @param {String} urlPath fcrepo path
+   * @param {String} iiif (optional) iiif service path
+   * 
+   * @return {Promise}
+   */
   async getFile(urlPath, iiif) {
+    // generate tmp file id
     let id = uuid();
 
     // first grab fc metadata... this will also check access
@@ -106,25 +144,34 @@ class TesseractServer {
       uri : urlPath+'/fcr:metadata'
     });
 
+    // no public access, quit.... for now
     if( response.statusCode !== 200 ) {
       throw new Error(response.body, response.statusCode);
     }
 
-    let type = await this.extractFileType(urlPath, JSON.parse(response.body));
-    let file = path.join(ROOT, id+type);
+    let fileInfo = await this.extractFileInfo(urlPath, JSON.parse(response.body));
+    let file = path.join(ROOT, id+fileInfo.ext);
 
     // then load file
     return new Promise((resolve, reject) => {
       request
         .get(this.getFcRepoBaseUrl() + urlPath + (iiif ? '/svc:iiif'+iiif : ''))
         .on('error', (err) => reject(err))
-        .on('end', () => resolve({id,type}))
+        .on('end', () => resolve({id, fileInfo}))
         .pipe(fs.createWriteStream(file))
     });
     
   }
 
-  extractFileType(fcpath, graph) {
+  /**
+   * @method extractFileInfo
+   * @description given fcrepo path and JSON-LD response graph, find the JSON-LD item
+   * for the path and parse the ebucore filename information
+   * 
+   * @param {*} fcpath 
+   * @param {*} graph 
+   */
+  extractFileInfo(fcpath, graph) {
     let item;
     for( var i = 0; i < graph.length; i++ ) {
       if( graph[i]['@id'].endsWith(fcpath) ) {
@@ -140,7 +187,7 @@ class TesseractServer {
       throw new ExecError('Failed to parse file information', SERVER_ERROR);
     }
 
-    return info.ext;
+    return info;
   }
 
   /**
