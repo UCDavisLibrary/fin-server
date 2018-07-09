@@ -3,15 +3,18 @@ const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const {exec} = require('child_process');
 const url = require('url');
 const http = require('http');
-const uuid = require('uuid/v3');
+const uuid = require('uuid/v4');
 const request = require('request');
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = '/tmp-app-files';
-if( fs.existsSync(ROOT) ) {
+if( !fs.existsSync(ROOT) ) {
   fs.mkdirSync(ROOT);
 }
+
+const SERVER_ERROR = 500;
+const FILENAME = 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#filename';
 
 class TesseractServer {
 
@@ -19,22 +22,40 @@ class TesseractServer {
     this.port = '3333';
     this.name = 'Tesseract Server'
 
-    this.server = http.createServer((req, res) => {
+    this.server = http.createServer(async (req, res) => {
       let urlinfo = url.parse(req.url);
-      
+      let txt = '';
+      let id, type;
+
+      logger.info(`Running tesseract for: ${urlinfo.pathname}`);
+
       try {
-        await this.getFile(urlinfo);
+        let file = await this.getFile(urlinfo.pathname);
+        id = file.id;
+        type = file.type;
+
+        await this.ocr(id, type);
+
+        file = path.join(ROOT, id+'.txt');
+        if( fs.existsSync(file) ) {
+          txt = fs.readFileSync(file, 'utf-8');
+        }
+        this.cleanup(id, type);
+
       } catch(e) {
-        req.socket.destroy();
-        res.statusCode = parseInt(e.message);
-        return res.send('');
+        logger.error(`Tesseract failed for: ${urlinfo.pathname}`, e);
+
+        this.cleanup(id, type);
+        res.statusCode = parseInt(e.code || SERVER_ERROR);
+        res.write(e.message);
+        res.end();
+        
+        return;
       }
       
-      
-
-      res.writeHead(200);
+      res.setHeader('Content-type', 'text/plain');
+      res.write(txt);
       res.end();
-      
     });
 
     this.server.listen(this.port, () => {
@@ -44,37 +65,77 @@ class TesseractServer {
     this.server.on('error', (e) => {
       logger.critical(`${this.name} - Server failed to start`, e);
     });
-
-
   }
 
-  exec(id) {
-    
+  cleanup(id, type) {
+    let file = path.join(ROOT, id+type);
+    if( fs.existsSync(file) ) fs.unlinkSync(file);
+
+    file = path.join(ROOT, id+'.txt');
+    if( fs.existsSync(id) ) fs.unlinkSync(file);
+  }
+
+  async ocr(id, type) {
+    return new Promise((resolve, reject) => {
+      let options = {
+        cwd : ROOT,
+        shell : '/bin/bash'
+      }
+
+      exec(`tesseract ${ROOT}/${id}${type} ${id} -l eng --psm 1 --oem 3 txt`, options, (error, stdout, stderr) => {
+        if( error ) reject(new ExecError(error.message, SERVER_ERROR));
+        else resolve({stdout, stderr});
+      }); 
+    });
   }
 
   async getFile(urlPath) {
     let id = uuid();
-    let file = path.join(ROOT, id);
 
     // first grab fc metadata... this will also check access
     let response = await this.request({
-      method : 'HEAD',
-      uri : urlPath
+      method : 'GET',
+      headers : {
+        'Accept' : 'application/ld+json'
+      },
+      uri : urlPath+'/fcr:metadata'
     });
 
     if( response.statusCode !== 200 ) {
-      throw new Error(response.statusCode);
+      throw new Error(response.body, response.statusCode);
     }
+
+    let type = await this.extractFileType(urlPath, JSON.parse(response.body));
+    let file = path.join(ROOT, id+type);
 
     // then load file
     return new Promise((resolve, reject) => {
       request
         .get(this.getFcRepoBaseUrl() + urlPath)
         .on('error', (err) => reject(err))
-        .on('close', () => resolve(id))
+        .on('end', () => resolve({id,type}))
         .pipe(fs.createWriteStream(file))
     });
     
+  }
+
+  extractFileType(fcpath, graph) {
+    let item;
+    for( var i = 0; i < graph.length; i++ ) {
+      if( graph[i]['@id'].endsWith(fcpath) ) {
+        item = graph[i];
+      }
+    }
+    if( !item ) throw new ExecError('Failed to find graph node for: '+fcpath, SERVER_ERROR);
+
+    let info;
+    try {
+      info = path.parse(item[FILENAME][0]['@value']);
+    } catch(e) {
+      throw new ExecError('Failed to parse file information', SERVER_ERROR);
+    }
+
+    return info.ext;
   }
 
   /**
@@ -102,7 +163,7 @@ class TesseractServer {
    * @returns {String}
    */
   getFcRepoBaseUrl() {
-    return config.fin.host + config.fcrepo.root;
+    return config.fin.host;
   }
 
   sendJson(res, msg) {
@@ -112,6 +173,13 @@ class TesseractServer {
 
   
 
+}
+
+class ExecError extends Error {
+  constructor(msg, code) {
+    super(msg);
+    this.code = code;
+  }
 }
 
 new TesseractServer();
