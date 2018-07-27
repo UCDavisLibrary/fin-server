@@ -162,6 +162,20 @@ services:
     command: node service
     # command: bash -c 'tail -f /dev/null'
 
+  tesseract:
+    build: ../../services/tesseract
+    volumes:
+      - ../../services/tesseract/index.js:/service/index.js
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
+    # command: node service
+    command: bash -c 'tail -f /dev/null'
+
   auto-generator-demo:
     build: ../../services/auto-generator-demo
     volumes:
