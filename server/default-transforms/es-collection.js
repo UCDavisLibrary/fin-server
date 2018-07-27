@@ -34,6 +34,11 @@ module.exports = async function(path, graph, utils) {
   });
   
   utils.add({
+    attr : 'alternateHeadline',
+    value : ['schema', 'alternateHeadline']
+  });
+
+  utils.add({
     attr : 'description',
     value : ['schema', 'description']
   });

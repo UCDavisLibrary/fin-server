@@ -1,4 +1,5 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
+import {markdown} from "markdown";
 
 import template from "./app-record.html"
 import rightsDefinitions from "../../../lib/rights.json"
@@ -97,7 +98,15 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     this.name = this.record.name || '';
 
+    if( this.record.description ) {
+      this.$.description.style.display = 'flex';
+      this.$.descriptionValue.innerHTML = markdown.toHTML(this.record.description);
+    } else {
+      this.$.description.style.display = 'none';
+    }
+
     this.description = this.record.description || '';
+    this.alternateHeadline = this.record.alternateHeadline || '';
     this.$.link.value = window.location.href;
 
     
