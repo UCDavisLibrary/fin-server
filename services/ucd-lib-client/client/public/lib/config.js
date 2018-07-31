@@ -61,7 +61,7 @@ module.exports = {
     },
 
     textFields : {
-      record : ['name', 'description', 'abouts', 'indexableContents'],
+      record : ['name', 'description', 'abouts', 'alternativeHeadline', 'indexableContents'],
       collection : ['name', 'description', 'about']
     },
     

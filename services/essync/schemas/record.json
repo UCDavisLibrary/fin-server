@@ -85,6 +85,10 @@
       }
     },
 
+    "alternativeHeadline" : {
+      "type" : "text"
+    },
+
     "indexableContent" : {
       "type": "text"
     }

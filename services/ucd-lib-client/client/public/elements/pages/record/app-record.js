@@ -106,7 +106,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     }
 
     this.description = this.record.description || '';
-    this.alternateHeadline = this.record.alternateHeadline || '';
+    this.alternativeHeadline = this.record.alternativeHeadline || '';
     this.$.link.value = window.location.href;
 
     
