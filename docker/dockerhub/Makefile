@@ -9,7 +9,7 @@ tags   := $(shell git tag --contains)
 
 tag:=branch tags package
 
-service_dirs:=$(foreach d,basic-auth cas essync loris ucd-lib-client,../../services/$d)
+service_dirs:=$(foreach d,basic-auth cas essync loris ucd-lib-client tesseract,../../services/$d)
 $(foreach d,${service_dirs},$(eval ${d}/image:=fin-$(notdir $d)-service))
 
 # Snowflake for the client service
