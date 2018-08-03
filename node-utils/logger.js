@@ -5,14 +5,14 @@ const config = require('./config');
 const {URL} = require('url');
 
 // hack, see below
-const BUNYAN_TO_STACKDRIVER = {
-  60: 'CRITICAL',
-  50: 'ERROR',
-  40: 'WARNING',
-  30: 'INFO',
-  20: 'DEBUG',
-  10: 'DEBUG',
-};
+// const BUNYAN_TO_STACKDRIVER = {
+//   60: 'CRITICAL',
+//   50: 'ERROR',
+//   40: 'WARNING',
+//   30: 'INFO',
+//   20: 'DEBUG',
+//   10: 'DEBUG',
+// };
 
 const streams = [
   // Log to the console
@@ -37,14 +37,14 @@ if( fs.existsSync(config.google.serviceAccountFile) ) {
 
   // hack fix for issue we need to file
   // they are not properly setting the severity level
-  let googleFormatEntry = loggingBunyan.formatEntry_;
-  loggingBunyan.formatEntry_ = function(record) {
-    record = googleFormatEntry.call(loggingBunyan, record);
-    if( !record.metadata.severity ) {
-      record.metadata.severity = BUNYAN_TO_STACKDRIVER[record.data.level];
-    }
-    return record;
-  }
+  // let googleFormatEntry = loggingBunyan.formatEntry_;
+  // loggingBunyan.formatEntry_ = function(record) {
+  //   record = googleFormatEntry.call(loggingBunyan, record);
+  //   if( !record.metadata.severity ) {
+  //     record.metadata.severity = BUNYAN_TO_STACKDRIVER[record.data.level];
+  //   }
+  //   return record;
+  // }
   
 
   // add new logger stream

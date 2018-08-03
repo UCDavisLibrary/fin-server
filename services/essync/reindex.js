@@ -6,6 +6,12 @@ const reindexer = require('./lib/reindexer');
 const config = require('./lib/config');
 const {logger} = require('@ucd-lib/fin-node-utils');
 
+/**
+ * Log promise errors, uncaught exceptions
+ */
+process.on('unhandledRejection', e => logger.fatal(e));
+process.on('uncaughtException', e => logger.fatal(e));
+
 let collection = '';
 if( process.argv.length > 2 ) {
   collection = process.argv[2];

@@ -4,6 +4,12 @@ const {MessageServer, config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const indexer = require('./lib/indexer');
 const reindexer = require('./lib/reindexer');
 
+/**
+ * Log promise errors, uncaught exceptions
+ */
+process.on('unhandledRejection', e => logger.fatal(e));
+process.on('uncaughtException', e => logger.fatal(e));
+
 class EsSyncMessageServer extends MessageServer {
 
   constructor() {

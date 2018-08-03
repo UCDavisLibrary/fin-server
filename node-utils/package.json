@@ -9,7 +9,7 @@
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",
   "dependencies": {
-    "@google-cloud/logging-bunyan": "^0.8.0",
+    "@google-cloud/logging-bunyan": "^0.8.2",
     "body": "^5.1.0",
     "bunyan": "^1.8.12",
     "jsonld": "^0.4.12",
