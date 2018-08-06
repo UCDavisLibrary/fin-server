@@ -90,6 +90,7 @@ class AttributeReducer {
     
     for( let key in reduced ) {
       record[key] = reduced[key];
+      reduced[key] = reduced[key].length;
     }
 
     let index = e.alias || config.elasticsearch.record.alias;
