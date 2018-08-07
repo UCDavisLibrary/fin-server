@@ -9,12 +9,13 @@ const transform = require('./transform');
 const util = require('util');
 const redis = require('../lib/redisClient');
 const jwt = require('jsonwebtoken');
+const hdt = require('../lib/hdt');
 
 jsonld.frame = util.promisify(jsonld.frame);
 
 const FIN_URL = new URL(config.server.url);
-const SERVICE_CHAR = '/svc:'
-const AUTHENTICATION_SERVICE_CHAR = '^/auth'
+const SERVICE_CHAR = '/svc:';
+const AUTHENTICATION_SERVICE_CHAR = '^/auth';
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 const IS_AUTHENTICATION_SERVICE_URL = new RegExp(AUTHENTICATION_SERVICE_CHAR, 'i');
 const ACTIVE_MQ_HEADER_ID = 'org.fcrepo.jms.identifier';
@@ -96,6 +97,9 @@ class ServiceModel {
     // reload all service secrets from redis
     await this.reloadSecrets();
 
+    // update hdt cache files
+    hdt.init();
+
     // this is triggered by updating default services above
     // reload all service definitions from fedora
     if( !config.defaultServices.length ) {
@@ -131,7 +135,10 @@ class ServiceModel {
       api.service.testing(false);
     }
 
-    let services = {};
+    let services = {
+      // hardcoded collection label service
+      label : new ServiceDefinition({type: 'label'})
+    };
     this.authServiceDomains = {};
     
     for( var i = 0; i < list.length; i++ ) {
@@ -305,6 +312,12 @@ class ServiceModel {
   renderTransform(service, path) {
     return transform.exec(service, path)
   }
+
+  renderLabel(fcPath, svcPath = '') {
+    let collection = fcPath.split('/')[2];
+    let uri = decodeURIComponent(svcPath.replace(/^\//, ''));
+    return hdt.getSubjects(collection, uri);
+  }
   
   /**
    * @method getForwardedHeader
@@ -353,6 +366,10 @@ class ServiceModel {
     if( serviceIndex === 0 || testingServiceIndex === 0 ) {
       this.bufferedReload(testingServiceIndex === 0 ? id : null);
       return;
+    }
+
+    if( id.match(/^\/collection\/\w+$/) ) {
+      hdt.onCollectionUpdate(id.replace('/collection/', ''));
     }
 
     this._sendHttpNotificationBuffered(event);

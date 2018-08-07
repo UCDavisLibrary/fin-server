@@ -12,8 +12,8 @@ const api = require('@ucd-lib/fin-node-api');
 const SERVER_USERNAME = 'fin-server';
 
 // global catch alls for errors
-process.on('uncaughtException', (e) => logger.error(e));
-process.on('unhandledRejection', (e) => logger.error(e));
+process.on('uncaughtException', (e) => logger.fatal(e));
+process.on('unhandledRejection', (e) => logger.fatal(e));
 
 
 // wire up fin api for server

@@ -31,6 +31,8 @@ const CORS_HEADERS = {
   ['Access-Control-Allow-Credentials'] : 'true'
 }
 
+const LABEL_SERVICE = 'label';
+
 const ROOT_DOMAIN = serviceModel.getRootDomain(config.server.url);
 
 /**
@@ -401,6 +403,23 @@ class ProxyModel {
       res.set(serviceModel.SIGNATURE_HEADER, serviceModel.createServiceSignature(service.id));
       res.redirect(url);
 
+    // run server label service 
+    } else if( service.type === LABEL_SERVICE ) {
+      try {
+        let fcPath = svcReq.fcPath.replace(api.getConfig().basePath, '');
+        let resp = await serviceModel.renderLabel(fcPath, svcReq.svcPath);
+        res.json(resp);
+      } catch(e) {
+        res.status(500).send({
+          error : true,
+          message : 'Unable to render from label service',
+          details : {
+            message : e.message,
+            stack : e.stack
+          }
+        });
+      }
+      
     // unknown service type
     } else {
       this._setReqTime(expReq);
