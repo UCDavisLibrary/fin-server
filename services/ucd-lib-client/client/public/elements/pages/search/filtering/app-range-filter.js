@@ -155,7 +155,7 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
    * @param {Object} e
    */
   _onSelectedCollectionUpdate(e) {
-    this.selectedCollection = e ? e.id : '';
+    this.selectedCollection = e ? e['@id'] : '';
     this._renderFilters();
   }
 

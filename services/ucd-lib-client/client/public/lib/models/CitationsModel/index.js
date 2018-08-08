@@ -93,7 +93,7 @@ class CitationsModel {
       URL : window.location.href,
       title : record.name,
       type : 'webpage',
-      publisher : record.publisher,
+      publisher : record.publisher ? record.publisher.name : undefined,
       source : window.location.host,
       accessed : {
         'date-parts': [[ d.getFullYear(), d.getMonth()+1, d.getDate()]]
@@ -104,9 +104,9 @@ class CitationsModel {
       cslJson['collection-title'] = record.collectionName;
     }
 
-    if( record.creator ) {
+    if( record.creator && record.creator.name ) {
       cslJson.author = [{
-        family: record.creator
+        family: record.creator.name
       }];
     }
 

@@ -344,10 +344,10 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    */
   _onCollectionClicked(e) {
     if( e.type === 'keyup' && e.which !== 13 ) return;
-    let id = e.currentTarget.collection.id
+    let id = e.currentTarget.collection['@id']
 
     let searchDoc = this._getEmptySearchDocument();
-    this._setKeywordFilter(searchDoc, 'isPartOf', id);
+    this._setKeywordFilter(searchDoc, 'isPartOf.@id', id);
     this._searchRecords(searchDoc);
   }
 

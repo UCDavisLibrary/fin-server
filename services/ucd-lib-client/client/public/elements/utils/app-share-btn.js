@@ -103,7 +103,7 @@ export default class AppShareBtn extends Mixin(PolymerElement)
    */
   _onSocialIconClick(e) {
     if( e.type === 'keyup' && e.which !== 13 ) return;
-    let id = e.currentTarget.id;
+    let id = e.currentTarget['@id'];
 
     let url = BASE_SHARE_LINKS[id];
     let qso = {};

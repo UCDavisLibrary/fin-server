@@ -216,7 +216,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     this.thumbnails = this.mediaList.map(record => {
 
       let thumbnail = {
-        id : record.id,
+        id : record['@id'],
         position : record.position,
         selected : false,
         disabled : true,
@@ -224,9 +224,9 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
       }
 
       if( record.width > record.height ) {
-        thumbnail.src = this._getImgUrl(record.id, '', 50);
+        thumbnail.src = this._getImgUrl(record['@id'], '', 50);
       }
-      thumbnail.src = this._getImgUrl(record.id, 50, '');
+      thumbnail.src = this._getImgUrl(record['@id'], 50, '');
 
       return thumbnail;
     });
@@ -248,7 +248,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     this.media = media;
     
     this.thumbnails.forEach((thumbnail, index) => {
-      this.set(`thumbnails.${index}.selected`, (media.id === thumbnail.id));
+      this.set(`thumbnails.${index}.selected`, (media['@id'] === thumbnail['@id']));
     });
   }
 
@@ -260,7 +260,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    */
   _onThumbnailClicked(e) {
     let id = e.currentTarget.getAttribute('media-id');
-    let media = this.mediaList.find(item => item.id === id);
+    let media = this.mediaList.find(item => item['@id'] === id);
     this._setSelectedRecordMedia(media);
   }
 

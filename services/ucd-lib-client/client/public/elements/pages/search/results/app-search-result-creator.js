@@ -11,10 +11,14 @@ export default class AppSearchResultCreator extends PolymerElement {
 
   static get properties() {
     return {
+      creator : {
+        type : Object,
+        value : null,
+        observer : '_onCreatorUpdate'
+      },
       label : {
         type : String,
-        value : '',
-        observer : '_onLabelUpdate'
+        value : ''
       },
       link : {
         type : Boolean,
@@ -28,9 +32,14 @@ export default class AppSearchResultCreator extends PolymerElement {
    * @description fired when label updates.  This element detects if the creator
    * is an external link or a string label.  Then renders a link
    */
-  _onLabelUpdate() {
-    if( this.label.match(/^http/i) ) this.link = true;
+  _onCreatorUpdate() {
+    if( !this.creator ) return;
+
+    if( this.label['@id'] ) this.link = true;
     else this.link = false;
+
+    if( this.creator.name ) this.label = this.creator.name;
+    else this.label = this.creator['@id'];
   }
 }
 

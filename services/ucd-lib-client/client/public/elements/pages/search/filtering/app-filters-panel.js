@@ -108,7 +108,7 @@ class AppFiltersPanel extends Mixin(PolymerElement)
    */
   _removeCollectionFilter() {
     let searchDoc = this._getCurrentSearchDocument();
-    this._removeKeywordFilter(searchDoc, 'isPartOf');
+    this._removeKeywordFilter(searchDoc, 'isPartOf.@id');
     this._setPaging(searchDoc, 0);
     this._searchRecords(searchDoc);
   }

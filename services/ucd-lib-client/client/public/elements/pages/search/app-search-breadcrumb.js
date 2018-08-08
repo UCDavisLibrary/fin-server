@@ -64,8 +64,8 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
     this.record = await this._getRecord(this.currentRecordId);
     this.record = this.record.payload;
 
-    if( this.record.isPartOf ) {
-      this.collection = await this._getCollection(this.record.isPartOf);
+    if( this.record.isPartOf && this.record.isPartOf['@id'] ) {
+      this.collection = await this._getCollection(this.record.isPartOf['@id']);
     } else {
       this.collection = null;
     }
@@ -87,7 +87,7 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
   _onCollectionClicked(e) {
     if( e.type === 'keyup' && e.which !== 13 ) return;
     let searchDoc = this._getEmptySearchDocument();
-    this._setKeywordFilter(searchDoc, 'isPartOf', this.collection.id);
+    this._setKeywordFilter(searchDoc, 'isPartOf.@id', this.collection['@id']);
     this._searchRecords(searchDoc);
   }
 

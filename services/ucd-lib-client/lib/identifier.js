@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('http-proxy');
 const es = require('./esClient');
 const config = require('../config');
+const {logger} = require('@ucd-lib/fin-node-utils')
 
 let idRegExp = /(ark|doi):\/?[a-zA-Z0-9\.]+\/[a-zA-Z0-9\.]+/;
 
@@ -29,18 +30,25 @@ async function handleRequest(req, resp) {
   }
 
   // request record from identifier field in elasticsearch
-  let record = await get(info.id);
+  let record;
+  try {
+    record = await get(info.id);
+  } catch(e) {
+    logger.error('error looking up ark: ', info, e);
+    return resp.status(500).json({error: true, message: e.message, stack: e.stack});
+  }
 
   // if we dont find a record, send unknown id message
   if( !record ) {
     return resp.status(404).send(`Unknown ${info.type} identifier: ${info.id}`);
   }
 
+
   // if the Accept header contains text/html and there is no
   // suffix in the url, ie just the ark or doi is provided
   // redirect to ucd dams UI.  otherwise send to fcrepo UI
-  if( req.get('accept').match(/text\/html/) && !info.suffix ) {
-    resp.redirect('/record'+record.id);
+  if( (req.get('accept') || '').match(/text\/html/) && !info.suffix ) {
+    resp.redirect('/record'+record['@id']);
   } else {
     resp.redirect(config.fcrepo.root+record.id+info.suffix);
   }
@@ -60,8 +68,11 @@ async function get(id) {
     index: config.elasticsearch.record.alias,
     body : {
       query : {
-        term : {
-          identifier : id
+        bool : {
+          filter : [
+            {term : {'identifier.raw' : id}},
+            {term : {isRootRecord : true}}
+          ]
         }
       }
     }

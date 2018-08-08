@@ -91,9 +91,9 @@ export default class AppRecord extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   async _onSelectedRecordUpdate(record) {
-    if( record.id === this.renderedRecordId ) return;
+    if( record['@id'] === this.renderedRecordId ) return;
 
-    this.renderedRecordId = record.id;
+    this.renderedRecordId = record['@id'];
     this.record = record;
 
     this.name = this.record.name || '';
@@ -126,7 +126,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.rights = null;
     }
 
-    this.collectionName = this.record.isPartOf || '';
+    this.collectionName = this.record.isPartOf ? this.record.isPartOf['@id'] : '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.name;
@@ -151,14 +151,14 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     // set collection link
     let searchDoc = this._getEmptySearchDocument();
-    this._appendKeywordFilter(searchDoc, 'isPartOf', record.collectionId);
+    this._appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
     let link = this._getHost()+'search/'+this._searchDocumentToUrl(searchDoc);
     this.$.collectionValue.innerHTML = `<a href="${link}">${this.collectionName}</a>`;
 
     // set fedora collection link
     let metadataPart = record['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
-    link = this._getHost()+'fcrepo/rest'+record.id+metadataPart;
-    this.$.fedoraValue.innerHTML =  `<a href="${link}">${record.id}</a>`;
+    link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
+    this.$.fedoraValue.innerHTML =  `<a href="${link}">${record['@id']}</a>`;
 
     this._updateMetadataRows();
     // this._setTarHref();
@@ -201,7 +201,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       .map(creator => {
         let searchDoc = this._getEmptySearchDocument();
         this._appendKeywordFilter(searchDoc, 'creators', creator);
-        this._appendKeywordFilter(searchDoc, 'isPartOf', record.collectionId);
+        this._appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
         let link = this._getHost()+'search/'+this._searchDocumentToUrl(searchDoc);
         return `<a href="${link}">${creator}</a>`;
       })

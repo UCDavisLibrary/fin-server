@@ -96,7 +96,7 @@ Sitemap: ${config.server.url}/sitemap.xml`);
       bool: {
         filter: [
           {term: {isRootRecord: true}},
-          {term: {isPartOf: `/collection/${id}`}}
+          {term: {'isPartOf.@id': `/collection/${id}`}}
         ]
       }
     };

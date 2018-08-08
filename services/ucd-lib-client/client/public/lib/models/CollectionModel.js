@@ -72,11 +72,11 @@ class CollectionModel extends BaseModel {
     async _onSearchDocumentUpdate(e) {
       let selected = null;
 
-      if( e.searchDocument.filters.isPartOf ) {
-        selected = await this.get(e.searchDocument.filters.isPartOf.value[0]);
+      if( e.searchDocument.filters['isPartOf.@id'] ) {
+        selected = await this.get(e.searchDocument.filters['isPartOf.@id'].value[0]);
       }
 
-      if( !e.searchDocument.filters.isPartOf && e.searchDocument.text ) {
+      if( !e.searchDocument.filters['isPartOf.@id'] && e.searchDocument.text ) {
         if( e.state === 'loading' ) {
           this.search({text: e.searchDocument.text});
         }

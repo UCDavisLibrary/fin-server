@@ -48,7 +48,7 @@ class AppHome extends Mixin(PolymerElement)
     });
 
     overview.forEach(item => {
-      browse[item.id] = item.name;
+      browse[item['@id']] = item.name;
       item.thumbnail = '/fcrepo/rest'+item.workExample+'/svc:iiif/full/,320/0/default.jpg'
     });
 
@@ -95,7 +95,7 @@ class AppHome extends Mixin(PolymerElement)
    * @description filter based on a collection using short ids.
    */
   _onCollectionSelected(id) {
-    let searchDoc = this._setKeywordFilter(this._getEmptySearchDocument(), 'isPartOf', id);
+    let searchDoc = this._setKeywordFilter(this._getEmptySearchDocument(), 'isPartOf.@id', id);
     this._searchRecords(searchDoc);
   }
   

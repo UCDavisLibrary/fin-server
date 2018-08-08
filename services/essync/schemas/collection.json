@@ -5,19 +5,7 @@
       "type" : "keyword"
     },
 
-    "id" : {
-      "type" : "keyword" 
-    },
-
     "identifier" : {
-      "type" : "keyword" 
-    },
-
-    "collectionId" : {
-      "type" : "keyword" 
-    },
-
-    "about" : {
       "type" : "text",
       "fields": {
         "raw": { 
@@ -26,22 +14,17 @@
       }
     },
 
-    "created" : {
-      "type" : "date",
-      "format" : "date_optional_time"
+    "collectionId" : {
+      "type" : "keyword" 
     },
 
-    "createdBy" : {
-      "type" : "keyword"
-    },
-
-    "lastModified" : {
-      "type" : "date",
-      "format" : "date_optional_time"
-    },
-
-    "lastModifiedBy" : {
-      "type" : "keyword"
+    "about.name" : {
+      "type" : "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
     },
 
     "name" : {

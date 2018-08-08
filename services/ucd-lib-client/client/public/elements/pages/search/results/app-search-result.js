@@ -87,9 +87,9 @@ export default class AppSearchResult extends Mixin(PolymerElement)
     let data = Object.assign({}, this.data);
     if( !data['@id'] ) return;
     
-    this.fetchId = data.id;   
+    this.fetchId = data['@id'];   
 
-    this.name = this.data.name || this.data.identifier || '';
+    this.name = this.data.name || (this.data.identifier ? this.data.identifier['@id'] : '');
 
     let imgEle = this.shadowRoot.querySelector('#img');
     if( imgEle ) imgEle.style.display = 'none';
@@ -127,7 +127,7 @@ export default class AppSearchResult extends Mixin(PolymerElement)
       this.creator = [data.creator || ''];
     }
 
-    this.collectionName = this.data.isPartOf || '';
+    this.collectionName = this.data.isPartOf ? this.data.isPartOf['@id'] : '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.name;

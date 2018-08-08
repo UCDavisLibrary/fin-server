@@ -27,153 +27,145 @@ module.exports = async function(path, graph, utils) {
     "ebucore" : "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#"
   });
 
-  utils.add({
+  await utils.add({
     attr : 'name',
     value : ['schema', 'name']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'alternativeHeadline',
     value : ['schema', 'alternativeHeadline']
   });
   
-  utils.add({
+  await utils.add({
     attr : 'description',
     value : ['schema', 'description']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'creator',
-    value : ['schema', 'creator']
-  });
-
-  utils.add({
-    attr : 'creatorLink',
     value : ['schema', 'creator'],
     type : 'id'
   });
 
-  utils.add({
-    attr : 'publisherLink',
+  await utils.add({
+    attr : 'publisher',
     value : ['schema', 'publisher'],
     type : 'id'
   });
 
-  utils.add({
-    attr : 'publisher',
-    value : ['schema', 'publisher']
-  });
-
-  utils.add({
+  await utils.add({
     attr : 'position',
     value : ['schema', 'position']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'createdBy',
     value : ['fedora', 'createdBy']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'parent',
     value : ['fedora', 'hasParent'],
     type : 'id'
   });
 
-  utils.add({
+  await utils.add({
     attr : 'isPartOf',
     value : ['schema', 'isPartOf'],
     type : 'id'
   });
 
-  utils.add({
+  await utils.add({
     attr : 'hasPart',
     value : ['schema', 'hasPart'],
     type : 'id'
   });
 
-  utils.add({
+  await utils.add({
     attr : 'associatedMedia',
     value : ['schema', 'associatedMedia'],
     type : 'id'
   });
 
-  utils.add({
+  await utils.add({
     attr : 'encodesCreativeWork',
     value : ['schema', 'encodesCreativeWork'],
     type : 'id'
   });
 
-  utils.add({
+  await utils.add({
     attr : 'lastModified',
     value : ['fedora', 'lastModified'],
     type : 'date'
   });
 
-  utils.add({
+  await utils.add({
     attr : 'textIndexable',
     value : ['ucdlib', 'textIndexable'],
     type : 'boolean'
   });
 
-  utils.add({
+  await utils.add({
     attr : 'lastModifiedBy',
     value : ['fedora', 'lastModifiedBy']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'about',
-    value : ['fedora', 'about']
+    value : ['schema', 'about'],
+    type : 'id'
   });
 
-  utils.add({
-    attr : 'aboutLink',
-    value : ['fedora', 'aboutLink']
+  await utils.add({
+    attr : 'keywords',
+    value : ['schema', 'keywords']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'workExample',
-    value : ['schema', 'workExample']
+    value : ['schema', 'workExample'],
+    type : 'id'
   });
 
-  utils.add({
+  await utils.add({
     attr : 'datePublished',
     value : ['schema', 'datePublished']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'identifier',
     value : ['schema', 'identifier']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'material',
     value : ['schema', 'material']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'license',
     value : ['schema', 'license'],
     type : 'id'
   });
 
-  utils.add({
+  await utils.add({
     attr : 'fileFormat',
     value : ['ebucore', 'hasMimeType']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'encodingFormat',
     value : ['schema', 'encodingFormat']
   });
 
-  utils.add({
+  await utils.add({
     attr : 'fileSize',
     value : ['premis', 'hasSize'],
     type : 'number'
   });
 
-  utils.add({
+  await utils.add({
     attr : 'filename',
     value : ['ebucore', 'filename']
   });
@@ -183,9 +175,6 @@ module.exports = async function(path, graph, utils) {
   await utils.setIndexableContent(item);
 
   utils.setYearFromDate(item);
-    
-  // JM: temp hack for our schema.  Mapping keywords -> about (See issue #42)
-  item.about = item.keywords;
 
   if( utils.isRecord(item['@type']) ) {
     item.collectionId = item['@id'].split('/').splice(0, 3).join('/');

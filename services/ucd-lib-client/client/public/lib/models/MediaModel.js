@@ -25,17 +25,17 @@ class MediaModel extends BaseModel {
     }
 
     if( record.workExample ) {
-      if( Array.isArray(record.workExample) ) return record.workExample[0];
-      return record.workExample;
+      if( Array.isArray(record.workExample) ) return record.workExample[0]['@id'];
+      return record.workExample['@id'];
     }
 
     if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
-      return record.id;
+      return record['@id'];
     }
 
     if( record.associatedMedia ) {
-      if( Array.isArray(record.associatedMedia) ) return record.associatedMedia[0];
-      return record.associatedMedia;
+      if( Array.isArray(record.associatedMedia) ) return record.associatedMedia[0]['@id'];
+      return record.associatedMedia['@id'];
     }
 
     return '';
@@ -61,13 +61,13 @@ class MediaModel extends BaseModel {
    */
   getImageMediaList(rootRecord) {
     if( rootRecord._imageList ) return rootRecord._imageList;
-    if( !rootRecord._associatedMedia ) return [];
+    if( !rootRecord.associatedMedia ) return [];
 
     // see if we have an image list
-    for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
-      let ef = rootRecord._associatedMedia[i].encodingFormat;
+    for( var i = 0; i < rootRecord.associatedMedia.length; i++ ) {
+      let ef = rootRecord.associatedMedia[i].encodingFormat;
       if( ef && ef.toLowerCase().replace(/ /g, '') === 'imagelist' ) {
-        rootRecord._imageList = rootRecord._associatedMedia[i]._hasPart || [];
+        rootRecord._imageList = rootRecord.associatedMedia[i]._hasPart || [];
         rootRecord._imageList.sort((a, b) => {
           if( a.position > b.position ) return 1;
           if( a.position < b.position ) return -1;
@@ -80,10 +80,10 @@ class MediaModel extends BaseModel {
 
     // if no image list, return list of images
     let imageRecords = [];
-    for( var i = 0; i < rootRecord._associatedMedia.length; i++ ) {
-      let ff = rootRecord._associatedMedia[i].fileFormat;
+    for( var i = 0; i < rootRecord.associatedMedia.length; i++ ) {
+      let ff = rootRecord.associatedMedia[i].fileFormat;
       if( ff && ff.match(/^image/i) ) {
-        imageRecords.push(rootRecord._associatedMedia[i]);
+        imageRecords.push(rootRecord.associatedMedia[i]);
       }
     }
     rootRecord._imageList = imageRecords;

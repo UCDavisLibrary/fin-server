@@ -24,8 +24,8 @@ services:
     ports:
       - 3000:3001
       - 9229:9229
-    command: tail -f /dev/null
-    # command: node app
+    # command: tail -f /dev/null
+    command: node app
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -148,7 +148,7 @@ services:
     build: ../../services/essync
     volumes:
       - ../../services/essync/lib:/service/lib
-      - ../../services/essync/schema:/service/schema
+      - ../../services/essync/schemas:/service/schemas
       - ../../services/essync/index.js:/service/index.js
       - ../../services/essync/reindex.js:/service/reindex.js
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
@@ -220,8 +220,8 @@ services:
       #- FIN_ENV=prod
     depends_on:
       - server
-    command: node service
-    # command: bash -c 'tail -f /dev/null'
+    # command: node service
+    command: bash -c 'tail -f /dev/null'
 
   basic-auth:
     build: ../../services/basic-auth

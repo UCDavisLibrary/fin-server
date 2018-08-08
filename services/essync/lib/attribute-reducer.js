@@ -27,11 +27,11 @@ class AttributeReducer {
     }
 
     if( e.record.isRootRecord ) {
-      return buffer.add({id: e.record.id, alias: e.alias});
+      return buffer.add({'@id': e.record['@id'], alias: e.alias});
     }
 
-    let rootRecordPath = await this.findRootRecord(e.record.id, e.alias);
-    if( rootRecordPath ) buffer.add({id: rootRecordPath, alias: e.alias});
+    let rootRecordPath = await this.findRootRecord(e.record['@id'], e.alias);
+    if( rootRecordPath ) buffer.add({'@id': rootRecordPath, alias: e.alias});
   }
 
   /**
@@ -52,13 +52,13 @@ class AttributeReducer {
     let record = await this._get(path, alias);
 
     if( record.isRootRecord ) {
-      return record.id;
+      return record['@id'];
     }
 
     let parentConnections = config.essync.parentConnections;
     for( let i = 0; i < parentConnections.length; i++ ) {
       if( record[parentConnections[i]] ) {
-        return await this.findRootRecord(record[parentConnections[i]], alias);
+        return await this.findRootRecord(record[parentConnections[i]]['@id'], alias);
       }
     }
 
@@ -75,10 +75,10 @@ class AttributeReducer {
    * @param {String} e.alias alias to add record to
    */
   async reduceAttributes(e) {
-    let exists = await this._exists(e.id, e.alias);
+    let exists = await this._exists(e['@id'], e.alias);
     if( !exists ) return;
 
-    let record = await this._get(e.id, e.alias);
+    let record = await this._get(e['@id'], e.alias);
     if( !record.isRootRecord ) return;
 
     let reduced = {};
@@ -94,12 +94,12 @@ class AttributeReducer {
     }
 
     let index = e.alias || config.elasticsearch.record.alias;
-    logger.info('Setting reduced attributes', e.id, index, reduced);
+    logger.info('Setting reduced attributes', e['@id'], index, reduced);
 
     await this.esClient.index({
       index : index,
       type: config.elasticsearch.record.schemaType,
-      id : record.id,
+      id : record['@id'],
       body: record
     });
   }
@@ -202,12 +202,13 @@ class AttributeReducer {
    */
   addAttributes(record, reduced = {}) {
     for( var key in config.essync.reduceAttributes ) {
-      if( !record[key] ) continue;
+      let rkey = config.essync.reduceAttributes[key];
+      var {key, wrecord} = this._walkAttribute(key, record);
+      if( !wrecord[key] ) continue;
 
-      let values = record[key];
+      let values = wrecord[key];
       if( !Array.isArray(values) ) values = [values];
       
-      let rkey = config.essync.reduceAttributes[key];
       if( !reduced[rkey] ) {
         reduced[rkey] = values;
         continue;
@@ -229,6 +230,25 @@ class AttributeReducer {
     });
 
     return reduced;
+  }
+
+  _walkAttribute(attribute, record) {
+    let attrs = attribute.split('.');
+    for( var i = 0; i < attrs.length-1; i++ ) {
+      record = record[attrs[i]];
+
+      if( !record ) {
+          return {
+          key: attrs[attrs.length-1],
+          wrecord : {}
+        };
+      }
+    }
+
+    return {
+      key: attrs[attrs.length-1],
+      wrecord : record
+    }
   }
 
   _exists(id, alias) {

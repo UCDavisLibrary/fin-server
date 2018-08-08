@@ -31,18 +31,20 @@ class TransformUtils {
     this.item = item;
     this.container = container;
 
-    item.id = container['@id'];
     item['@id'] = container['@id'];
     item['@type'] = container['@type'];
+
+    let re = new RegExp('.*'+config.fcrepo.root+'/collection/');
+    this.collection = container['@id'].replace(re, '').split('/')[0];
   }
 
   ns(namespace) {
     this.namespace = namespace;
   }
 
-  add(opts) {
+  async add(opts) {
     let sAttr = this._getSourceAttribute(opts);
-    let val = this._getValues(sAttr, opts);
+    let val = await this._getValues(sAttr, opts);
     if( val === null || val.length === 0 ) {
       if( opts.default ) {
         this.item[opts.attr] = opts.default;
@@ -53,22 +55,30 @@ class TransformUtils {
     }
   }
 
-  _getValues(attr, opts) {
+  async _getValues(attr, opts) {
     let val = this.container[attr];
     if( val === undefined ) return null;
 
     if( Array.isArray(val) ) {
-      return val.map(v => this._getValue(v, opts))
-                .filter(v => v !== null);
+      for( let i = 0; i < val.length; i++ ) {
+        val[i] = await this._getValue(val[i], opts);
+      }
+      return val.filter(v => v !== null);
     }
 
-    let v = this._getValue(val, opts)
+    let v = await this._getValue(val, opts)
     return (v === null) ? '' : v; 
   }
 
-  _getValue(obj, opts) {
+  async _getValue(obj, opts) {
+    if( obj === null ) return null;
+
     if( opts.type === 'id' ) {
-      if( obj['@id'] !== undefined ) return obj['@id'];
+      if( obj['@value'] !== undefined ) {
+        return {name: obj['@value']};
+      } else if( obj['@id'] !== undefined ) {
+        return await this._lookupLabel(obj['@id']);
+      }
       return null;
     }
     
@@ -83,6 +93,29 @@ class TransformUtils {
     if( opts.parser ) return opts.parser(val);
     
     return val;
+  }
+
+  async _lookupLabel(uri) {
+    let result = {'@id': uri};
+    try {
+      let response = await this.request({
+        uri: this.getFcRepoBaseUrl()+'/collection/'+this.collection+'/svc:label/'+encodeURIComponent(uri)
+      });
+      response = JSON.parse(response.body);
+      response.forEach(item => this._addLabel(result, item));
+    } catch(e) {
+      logger.warn('Label service lookup failed in transform, collection:'+this.collection+': '+uri, e);
+    }
+
+    return result;
+  }
+
+  _addLabel(result, item) {
+    let key = new URL(item.predicate);
+    if( key.hash ) key = key.hash;
+    else key = key.pathname.split('/').pop();
+
+    result[key] = item.object;
   }
 
   _getSourceAttribute(opts) {
@@ -179,14 +212,14 @@ class TransformUtils {
     }
     
     if( json.fileFormat && json.fileFormat.match(/^image\//i) ) {
-      return json.id
+      return json['@id']
     }
     if( json.hasMimeType && json.hasMimeType.match(/^image\//i) ) {
-      return json.id
+      return json['@id']
     }
     
     if( json.associatedMedia ) {
-      return Array.isArray(json.associatedMedia) ? json.associatedMedia[0] : json.associatedMedia;
+      return Array.isArray(json.associatedMedia) ? json.associatedMedia[0]['@id'] : json.associatedMedia['@id'];
     }
 
     return null;
@@ -298,7 +331,7 @@ class TransformUtils {
    * @param {Object} json record
    */
   setRootRecord(json) {
-    if( json.isPartOf && json.isPartOf === json.collectionId ) {
+    if( json.isPartOf && json.isPartOf['@id'] === json.collectionId ) {
       json.isRootRecord = true;
     }
   }

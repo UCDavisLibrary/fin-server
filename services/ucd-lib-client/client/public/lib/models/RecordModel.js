@@ -79,14 +79,14 @@ class RecordModel extends ElasticSearchModel {
 
     // first, we need to verify all filters are available to us
     let collectionId = '';
-    if( searchDocument.filters.isPartOf ) {
-      collectionId = searchDocument.filters.isPartOf.value[0];
+    if( searchDocument.filters['isPartOf.@id'] ) {
+      collectionId = searchDocument.filters['isPartOf.@id'].value[0];
     }
 
     let defaultSearch = await this.defaultSearch(collectionId);
     let corrections = false;
     for( var key in searchDocument.filters ) {
-      if( key === 'isPartOf' ) continue;
+      if( key === 'isPartOf.@id' ) continue;
 
 
       let type = config.elasticSearch.facets[key].type;

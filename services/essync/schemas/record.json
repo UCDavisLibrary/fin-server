@@ -5,19 +5,20 @@
       "type" : "keyword"
     },
 
-    "id" : {
-      "type" : "keyword" 
-    },
-
     "type" : {
       "type" : "keyword" 
     },
 
     "identifier" : {
-      "type" : "keyword" 
+      "type" : "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
     },
 
-    "isPartOf" : {
+    "isPartOf.@id" : {
       "type" : "keyword" 
     },
 
@@ -30,7 +31,7 @@
       }
     },
 
-    "license" : {
+    "license.@id" : {
       "type" : "keyword"
     },
 
@@ -51,11 +52,7 @@
       "format" : "date_optional_time"
     },
 
-    "createdBy" : {
-      "type" : "keyword"
-    },
-
-    "hasParent" : {
+    "parent.@id" : {
       "type" : "keyword"
     },
 
@@ -63,17 +60,8 @@
       "type" : "keyword"
     },
 
-    "lastModified" : {
-      "type" : "date",
-      "format" : "date_optional_time"
-    },
-
     "yearPublished" : {
       "type" : "integer"
-    },
-
-    "lastModifiedBy" : {
-      "type" : "keyword"
     },
 
     "name" : {

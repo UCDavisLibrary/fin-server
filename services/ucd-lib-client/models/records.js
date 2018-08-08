@@ -46,21 +46,26 @@ class RecordsModel extends ElasticSearchModel {
   async _fillAttribute(record, attribute) {
     let values = record[attribute];
     if( !Array.isArray(values) ) values = [values];
-  
-    record['_'+attribute] = [];
+    
+    values = values.map(v => {
+      if( typeof v === 'object' ) return v['@id'];
+      return v;
+    })
+
+    // record['_'+attribute] = [];
   
     try {
       let resp = await this.esMget(values);
-      record['_'+attribute] = await resp.docs.map(doc => doc._source);
+      record[attribute] = await resp.docs.map(doc => doc._source);
     } catch(e) {
       // hummmm....
-      record['_'+attribute] = e.message;
+      record[attribute] = e.message;
     }
   
-    for( var i = 0; i < record['_'+attribute].length; i++ ) {
-      let childRecord = record['_'+attribute][i];
+    for( var i = 0; i < record[attribute].length; i++ ) {
+      let childRecord = record[attribute][i];
       if( !childRecord ) {
-        record['_'+attribute][i] = {error:true, message:'record not found'}
+        record[attribute][i] = {error:true, message:'record not found'}
         continue;
       }
       await this._fillRecord(childRecord);
