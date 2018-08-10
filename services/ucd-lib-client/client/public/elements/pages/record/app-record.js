@@ -251,8 +251,8 @@ export default class AppRecord extends Mixin(PolymerElement)
   _onSelectedRecordMediaUpdate(record) {
     this.$.download.render({
       resolution : [record.image.width, record.image.height],
-      fileFormat : record.fileFormat,
-      size : record.fileSize ? parseInt(record.fileSize) : 0,
+      fileFormat : record.image.encodingFormat,
+      size : record.image.contentSize ? parseInt(record.image.contentSize) : 0,
       url : record.image.url
     });
   }
