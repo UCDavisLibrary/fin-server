@@ -146,7 +146,7 @@
   <div class="collections">
     <template is="dom-repeat" items="[[highlightedCollections]]">
       <app-collection-card 
-        data-id$="[[item.@id]]" 
+        data-id$="[[item._id]]" 
         collection="[[item]]" 
         on-keyup="_onCollectionClicked"
         on-click="_onCollectionClicked">

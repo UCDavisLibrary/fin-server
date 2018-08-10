@@ -13,7 +13,7 @@ export default class AppCollectionCard extends PolymerElement {
     return {
       collection : {
         type : Object,
-        value : () => {}
+        value : () => ({})
       },
       tabindex : {
         type : Number,

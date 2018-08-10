@@ -79,6 +79,7 @@ class CollectionStore extends BaseStore {
     payload = payload.results;
 
     payload.forEach(item => {
+      item._id = item['@id']; // friendly id for polymer data binding
       this.data.byId[item['@id']] = item;
     });
 

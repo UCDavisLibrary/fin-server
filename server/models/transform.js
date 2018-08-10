@@ -18,6 +18,12 @@ class TransformUtils {
     this.SHORT_MEDIA_OBJECT = 'schema:MediaObject';
     this.CREATIVE_WORK = 'http://schema.org/CreativeWork';
     this.MEDIA_OBJECT = 'http://schema.org/MediaObject';
+    this.FILE_FORMAT = 'http://schema.org/fileFormat';
+    this.HAS_MIME_TYPE = 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#hasMimeType';
+    this.IMAGE_LIST = 'http://digital.ucdavis.edu/schema#ImageList';
+    this.HAS_PART = 'http://schema.org/hasPart';
+
+    this.MAX_THUMBNAIL_SIZE = 500;
 
     // if these attributes exist, the ISO 8601 date will be stripped for
     // everything but the year and a new attribute created with the name
@@ -156,14 +162,15 @@ class TransformUtils {
   }
 
   async setImage(json) {
-    let imgPath = this.getImagePath(json);
+    let imgPath = await this.getImagePath(json);
     if( !imgPath ) return json;
 
     json.image = {
-      path : imgPath
+      url : config.fcrepo.root+imgPath
     };
-    await this._setImageResolution(json, imgPath);
-    await this._setColorPalette(json, imgPath);
+    await this._setImageResolution(json);
+    await this._setThumbnailUrl(json);
+    await this._setColorPalette(json);
   }
 
   /**
@@ -176,8 +183,30 @@ class TransformUtils {
    * 
    * @returns {Object}
    */
-  async _setImageResolution(json, imgPath) {
-    let imgUrl = config.fin.host+config.fcrepo.root+imgPath+'/svc:iiif/info.json';
+  async _setImageResolution(json) {
+    if( json.image.url.match(/svc:iiif/) ) {
+      let parts = json.image.url.split('/svc:iiif/');
+      let iiif = parts[1].split('/');
+
+      json.image.iiif = {
+        region : iiif[0],
+        size : iiif[1],
+        rotation : iiif[2],
+        quality : iiif[3].split('.')[0],
+        format : iiif[3].split('.')[1]
+      }
+      json.image.url = parts[0];
+    } else {
+      json.image.iiif = {
+        region : 'full',
+        size : 'full',
+        rotation : 0,
+        quality : 'default',
+        format : 'jpg'
+      }
+    }
+
+    let imgUrl = config.fin.host+config.fcrepo.root+json.image.url+'/svc:iiif/info.json';
     
     var result = await this.request({
       type : 'GET',
@@ -197,6 +226,34 @@ class TransformUtils {
     return json;
   }
 
+  _setThumbnailUrl(json) {
+    let h, w;
+    if( json.image.height > json.image.width ) {
+      if( json.image.height > this.MAX_THUMBNAIL_SIZE ) {
+        w = Math.floor((this.MAX_THUMBNAIL_SIZE / json.image.height) * json.image.width)
+        h = this.MAX_THUMBNAIL_SIZE;
+      } 
+    } else {
+      if( json.image.width > this.MAX_THUMBNAIL_SIZE ) {
+        h = Math.floor((this.MAX_THUMBNAIL_SIZE / json.image.width) * json.image.height)
+        w = this.MAX_THUMBNAIL_SIZE;
+      }
+    }
+
+    let size;
+    if( !h && !w ) size = 'full';
+    else size = w+','+h;
+
+    json.thumbnailUrl = config.fcrepo.root + 
+      json.image.url + '/svc:iiif/' +
+      json.image.iiif.region + '/' +
+      size + '/' +
+      json.image.iiif.rotation + '/' +
+      json.image.iiif.quality + '.' + json.image.iiif.format;
+
+    return json;
+  }
+
   /**
    * @method getImagePath
    * @description return the representative image for record.  The order of lookup is
@@ -206,9 +263,10 @@ class TransformUtils {
    * 
    * @returns {String|null}
    */
-  getImagePath(json) {
+  async getImagePath(json) {
+    // TODO: this might not be set yet!
     if( json.workExample ) {
-      return Array.isArray(json.workExample) ? json.workExample[0] : json.workExample;
+      return Array.isArray(json.workExample) ? json.workExample[0]['@id'] : json.workExample['@id'];
     }
     
     if( json.fileFormat && json.fileFormat.match(/^image\//i) ) {
@@ -218,8 +276,40 @@ class TransformUtils {
       return json['@id']
     }
     
+    if( json.image ) {
+      return json['@id'].replace(finUrlRegex, '')+json.image;
+    }
+
     if( json.associatedMedia ) {
-      return Array.isArray(json.associatedMedia) ? json.associatedMedia[0]['@id'] : json.associatedMedia['@id'];
+      let media = Array.isArray(json.associatedMedia) ? json.associatedMedia : [json.associatedMedia];
+      for( var i = 0; i < media.length; i++ ) {
+        if( !media[i]['@id'] ) continue;
+
+        let uri = media[i]['@id'];
+        let response = await this.request({
+          type : 'HEAD', uri
+        });
+        if( !api.isRdfContainer(response) ) {
+          uri += '/fcr:metadata';
+        }
+
+        response = await this.request({
+          type : 'GET', uri,
+          headers : {
+            Accept : api.RDF_FORMATS.JSON_LD
+          }
+        });
+
+        response = JSON.parse(response.body)[0];
+        if( (response[this.FILE_FORMAT] && response[this.FILE_FORMAT][0]['@value'].match(/^image\//i)) ||
+            (response[this.HAS_MIME_TYPE] && response[this.HAS_MIME_TYPE][0]['@value'].match(/^image\//i)) ) {
+          return response['@id'].replace(finUrlRegex, '');
+        }
+
+        if( response['@type'].indexOf(this.IMAGE_LIST) > -1 && response[this.HAS_PART] ) {
+          return response[this.HAS_PART][0]['@id'];
+        }
+      }
     }
 
     return null;
@@ -235,8 +325,8 @@ class TransformUtils {
    * 
    * @returns {Object}
    */
-  async _setColorPalette(json, imgPath, width='8') {
-    let imgUrl = config.fin.host+config.fcrepo.root+imgPath+`/svc:iiif/full/${width},/0/default.png`;
+  async _setColorPalette(json, width='8') {
+    let imgUrl = config.fin.host+json.image.url+`/svc:iiif/full/${width},/0/default.jpg`;
 
     let result = await this.request({
       type : 'GET',
@@ -244,7 +334,7 @@ class TransformUtils {
       uri: imgUrl
     });
 
-    json.image.colorPalette = 'data:image/png;base64,'+new Buffer(result.body).toString('base64');
+    json.image.colorPalette = 'data:image/jpg;base64,'+new Buffer(result.body).toString('base64');
     return json;
   }
 

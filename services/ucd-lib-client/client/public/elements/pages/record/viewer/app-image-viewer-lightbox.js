@@ -152,8 +152,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     //   }
     // }
 
-    // let url = this._getImgUrl(this.media.id, width, height);
-    let url = config.fcrepoBasePath+this.media['@id'];
+    let url = this._getImgUrl(this.media['@id'], '', '');
+    // let url = config.fcrepoBasePath+this.media['@id'];
 
     if( this.viewer ) this.viewer.remove();
 

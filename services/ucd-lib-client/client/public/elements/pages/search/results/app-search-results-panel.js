@@ -331,7 +331,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
   _onCollectionSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this.collectionResults = e.payload.results.map(c => {
-      c.thumbnail = this._getImgUrl(c.workExample, 320, '');
+      c.thumbnail = this._getImgUrl(c.workExample['@id'], 320, '');
       return c;
     });
   }

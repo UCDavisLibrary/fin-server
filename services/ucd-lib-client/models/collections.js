@@ -52,7 +52,7 @@ class CollectionsModel extends ElasticSearchModel {
    */
   get(id) {
     return es.search({
-      index : config.elasticsearch.collections.alias,
+      index : config.elasticsearch.collection.alias,
       type: '_all',
       id: id
     });
