@@ -22,6 +22,9 @@ class TransformUtils {
     this.HAS_MIME_TYPE = 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#hasMimeType';
     this.IMAGE_LIST = 'http://digital.ucdavis.edu/schema#ImageList';
     this.HAS_PART = 'http://schema.org/hasPart';
+    this.ENCODING_FORMAT = 'http://schema.org/encodingFormat';
+    this.HAS_SIZE = 'http://www.loc.gov/premis/rdf/v1#hasSize';
+    this.FILENAME = 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#filename';
 
     this.MAX_THUMBNAIL_SIZE = 500;
 
@@ -206,22 +209,49 @@ class TransformUtils {
       }
     }
 
-    let imgUrl = config.fin.host+config.fcrepo.root+json.image.url+'/svc:iiif/info.json';
-    
+    let imgUrl = config.fin.host+json.image.url+'/svc:iiif/info.json';
     var result = await this.request({
       type : 'GET',
       uri: imgUrl
     });
 
+    let body = result.body;
     try {
       result = JSON.parse(result.body);
 
       json.image.width = result.width;
       json.image.height = result.height;
     } catch(e) {
-      logger.error('failed to get image height/width for: '+json['@id'], result.body);
+      logger.error('failed to get image height/width for: '+json['@id'], e,  body);
     }
     
+    imgUrl = config.fin.host+json.image.url+'/fcr:metadata';
+    result = await this.request({
+      type : 'GET',
+      uri: imgUrl,
+      headers : {
+        Accept : api.RDF_FORMATS.JSON_LD
+      }
+    });
+    
+    body = result.body;
+    try {
+      result = JSON.parse(result.body)[0];
+      if( result[this.FILENAME] ) {
+        json.image.name = result[this.FILENAME][0]['@value'];
+      }
+      if( result[this.HAS_SIZE] ) {
+        json.image.contentSize = result[this.HAS_SIZE][0]['@value'];
+      }
+      if( result[this.FILE_FORMAT] ) {
+        json.image.encodingFormat = result[this.FILE_FORMAT][0]['@value'];
+      }
+      if( result[this.HAS_MIME_TYPE] ) {
+        json.image.encodingFormat = result[this.HAS_MIME_TYPE][0]['@value'];
+      }
+    } catch(e) {
+      logger.error('failed to get image metadata for: '+json['@id'], e, body);
+    }
 
     return json;
   }
@@ -264,7 +294,6 @@ class TransformUtils {
    * @returns {String|null}
    */
   async getImagePath(json) {
-    // TODO: this might not be set yet!
     if( json.workExample ) {
       return Array.isArray(json.workExample) ? json.workExample[0]['@id'] : json.workExample['@id'];
     }

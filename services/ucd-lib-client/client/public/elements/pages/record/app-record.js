@@ -253,7 +253,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       resolution : [record.image.width, record.image.height],
       fileFormat : record.fileFormat,
       size : record.fileSize ? parseInt(record.fileSize) : 0,
-      url : record.image.path
+      url : record.image.url
     });
   }
 

@@ -5,7 +5,7 @@ const spaMiddleware = require('@ucd-lib/spa-router-middleware');
 const config = require('../config');
 const authUtils = require('./auth');
 const records = require('../models/records');
-
+const transform = require('./seo-transform');
 
 const bundle = `
   <script>
@@ -60,11 +60,11 @@ module.exports = (app) => {
 
       let id = req.originalUrl.replace(/^\/record/, '');
       let record = await records.esGet(id);
-      record = record._source;
-      record['@context'] = 'http://schema.org';
-      record['@type'] = record['@type']
-        .filter(type => type.match(/^schema:/) ? true : false)
-        .map(type => type.replace(/^schema:/, ''));
+      record = transform(record._source);
+      // record['@context'] = 'http://schema.org';
+      // record['@type'] = record['@type']
+      //   .filter(type => type.match(/^schema:/) ? true : false)
+      //   .map(type => type.replace(/^schema:/, ''));
 
       jsonld = JSON.stringify(record, '  ', '  ');
 

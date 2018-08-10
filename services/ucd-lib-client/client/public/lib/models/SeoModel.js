@@ -3,6 +3,7 @@ const AppStateModel = require('./AppStateModel');
 const RecordModel = require('./RecordModel');
 const config = require('../config');
 const clone = require('clone');
+const transform = require('../../../../lib/seo-transform');
 
 // keep the JSON-LD script tag up to date
 class SeoModel extends BaseModel {
@@ -71,15 +72,11 @@ class SeoModel extends BaseModel {
 
   _setJsonLd(selectedRecord) {
     let record = clone(selectedRecord);
-
-    record['@context'] = 'http://schema.org';
-    record['@type'] = record['@type']
-      .filter(type => type.match(/^schema:/) ? true : false)
-      .map(type => type.replace(/^schema:/, ''));
-
+    
     for( var key in record ) {
       if( key[0] === '_' ) delete record[key];
     }
+    record = transform(record);
 
     this.ele.innerHTML = JSON.stringify(record, '  ', '  ');
   }

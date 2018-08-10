@@ -96,11 +96,12 @@ export default class AppSearchResult extends Mixin(PolymerElement)
 
     let imgWidth = 250;
 
+    
     let img = this.data.image;  
     if( img ) {
       let ratio = img.height / img.width;
       this.imgHeight = Math.floor(imgWidth * ratio);
-      this.imgUrl = this._getImgUrl(img.path, null, this.imgHeight);
+      this.imgUrl = this._getImgUrl(img.url, null, this.imgHeight);
 
       if( img.colorPalette ) {
         this.imgThumbail = img.colorPalette;

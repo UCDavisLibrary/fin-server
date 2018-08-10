@@ -21,7 +21,7 @@ class MediaModel extends BaseModel {
    */
   getImgPath(record) {
     if( record.image ) {
-      return record.image.path;
+      return record.image.url;
     }
 
     if( record.workExample ) {
@@ -41,14 +41,23 @@ class MediaModel extends BaseModel {
     return '';
   }
 
-  getImgUrl(path, width='', height='', format='jpg') {
+  getImgUrl(path, width='', height='', options={}) {
+    let size;
+
     if( width === null ) width = '';
     if( height === null ) height = '';
-    
-    let size = width+','+height;
     if( !width && !height ) size = 'full';
+    else size = width+','+height;
 
-    return `${config.fcrepoBasePath}${path}/svc:iiif/full/${size}/0/default.${format}`;
+    let region = options.region || 'full';
+    let quality = options.quality || 'default';
+    let rotation = options.rotation || 0;
+    let format = options.format || 'jpg';
+
+    path = `${path}/svc:iiif/${region}/${size}/${rotation}/${quality}.${format}`;
+    if( path.indexOf(config.fcrepoBasePath) !== 0 ) path = config.fcrepoBasePath+path;
+    
+    return path; 
   }
 
   /**

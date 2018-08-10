@@ -275,7 +275,7 @@ export default class AppImageDownload extends PolymerElement {
         name = name.replace(/\.[a-z]*$/, `_${s.label}_.${this.selectedFormat}`);
         let w = Math.floor(item.image.width * s.ratio);
         let h = Math.floor(item.image.height * s.ratio);
-        urls[name] = MediaModel.getImgUrl(item['@id'], w, h, this.selectedFormat).replace(config.fcrepoBasePath, '');
+        urls[name] = MediaModel.getImgUrl(item['@id'], w, h, {format:this.selectedFormat}).replace(config.fcrepoBasePath, '');
       }
     });
 
