@@ -90,15 +90,6 @@ export class AppSearch extends Mixin(PolymerElement)
   }
 
   /**
-   * @method _onCollectionOverviewUpdate
-   * @description CollectionInterface, fired when the collection overview updates
-   * TODO: we should not preform a search untill this is fired 
-   */
-  // _onCollectionOverviewUpdate(e) {
-  //   if( e.state === 'loaded' ) this._esDefaultSearch();
-  // }
-
-  /**
    * @method _onEsSearchUpdate
    * @description RecordInterface, fired when search updates
    * 

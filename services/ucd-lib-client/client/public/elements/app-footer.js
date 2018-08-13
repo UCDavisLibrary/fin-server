@@ -1,12 +1,13 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import AppStateInterface from "./interfaces/AppStateInterface"
 import CollectionInterface from "./interfaces/CollectionInterface"
+import RecordInterface from "./interfaces/RecordInterface"
 import "./auth/app-auth-footer"
 
 import template from "./app-footer.html"
 
 class AppFooter extends Mixin(PolymerElement)
-      .with(EventInterface, AppStateInterface, CollectionInterface) {
+      .with(EventInterface, AppStateInterface, CollectionInterface, RecordInterface) {
   
   static get template() {
     let tag = document.createElement('template');
@@ -46,7 +47,7 @@ class AppFooter extends Mixin(PolymerElement)
    */
   _onBrowseCollection(e) {
     let id = e.currentTarget.getAttribute('data-id');
-    this._esSetKeywordFilter('isPartOf.@id', id);
+    this._setKeywordFilter('isPartOf.@id', id);
   }
 }
 

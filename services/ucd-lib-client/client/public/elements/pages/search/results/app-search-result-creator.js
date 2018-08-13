@@ -16,7 +16,7 @@ export default class AppSearchResultCreator extends PolymerElement {
         value : null,
         observer : '_onCreatorUpdate'
       },
-      label : {
+      textLabel : {
         type : String,
         value : ''
       },
@@ -35,11 +35,19 @@ export default class AppSearchResultCreator extends PolymerElement {
   _onCreatorUpdate() {
     if( !this.creator ) return;
 
-    if( this.label['@id'] ) this.link = true;
+    if( this.creator['@id'] ) this.link = true;
     else this.link = false;
 
-    if( this.creator.name ) this.label = this.creator.name;
-    else this.label = this.creator['@id'];
+    if( this.creator.name ) this.textLabel = this.creator.name;
+    else this.textLabel = this.creator['@id'];
+  }
+
+  /**
+   * @method _onClick
+   * @description bound to anchor tag click event. Stop event from bubbling;
+   */
+  _onClick(e) {
+    e.stopPropagation();
   }
 }
 

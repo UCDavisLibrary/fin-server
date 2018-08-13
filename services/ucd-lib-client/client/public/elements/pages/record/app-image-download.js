@@ -106,7 +106,7 @@ export default class AppImageDownload extends PolymerElement {
       }
     });
 
-    this.hasMultipleImages = (this.imagelist.length > 0);
+    this.hasMultipleImages = (this.imagelist.length > 1);
     this.multipleImagesSelected = false;
 
     // this.size = bytes(options.size);    

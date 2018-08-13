@@ -57,7 +57,7 @@ router.get('/*', async (req, res) => {
   }
 
   try {
-    let result = await model.get(id);
+    let result = await model.get(id, (req.query.seo || req.query.schema));
     res.json(result);
   } catch(e) {
     res.json(utils.errorResponse(e, 'Error retrieving record: '+id));

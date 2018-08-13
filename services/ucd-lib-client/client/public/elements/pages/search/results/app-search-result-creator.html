@@ -4,12 +4,14 @@
   }
   .text {
     display: block;
+    color: var(--gray-text);
+  }
+  :host([grid]) .text {
     overflow: hidden;
     text-overflow: ellipsis;
     width: calc(var(--grid-cell-width) - 30px);
-    color: var(--gray-text);
   }
 </style>
 
-<a class="text" hidden="[[!link]]" href="[[label]]" target="_blank" rel="noopener">[[label]]</a>
-<div class="text" hidden="[[link]]">[[label]]</div>
+<a class="text" hidden="[[!link]]" href="[[textLabel]]" target="_blank" rel="noopener" on-click="_onClick">[[textLabel]]</a>
+<div class="text" hidden="[[link]]">[[textLabel]]</div>

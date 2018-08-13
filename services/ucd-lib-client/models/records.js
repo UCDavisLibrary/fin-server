@@ -2,6 +2,7 @@ const es = require('../lib/esClient');
 const config = require('../config');
 const ElasticSearchModel = require('./elasticsearch');
 const clone = require('clone');
+const transform = require('../lib/seo-transform');
 
 const FILL_ATTRIBUTES = config.elasticsearch.fields.fill;
 
@@ -14,12 +15,15 @@ class RecordsModel extends ElasticSearchModel {
    * '_associatedMedia' respectively.
    * 
    * @param {String} id record id
+   * @param {Boolean} seo apply seo/schema.org transform.  This will provide json-ld
+   * that can be validated against a schema.org parser.
    * 
    * @return {Promise} resolves to record
    */
-  async get(id) {
+  async get(id, seo=false) {
     let result = await this.esGet(id);
-    await this._fillRecord(result._source);
+    await this._fillRecord(result._source, seo);
+    if( seo ) transform(result._source);
     return result._source;
   }
 
@@ -28,12 +32,13 @@ class RecordsModel extends ElasticSearchModel {
    * @description helper 'get' method for walking 'fill' attributes
    * 
    * @param {Object} record 
+   * @param {Boolean} seo
    */
-  async _fillRecord(record) {
+  async _fillRecord(record, seo) {
     for( var i = 0; i < FILL_ATTRIBUTES.length; i++ ) {
       if( !record[FILL_ATTRIBUTES[i]] ) continue;
   
-      await this._fillAttribute(record, FILL_ATTRIBUTES[i]);
+      await this._fillAttribute(record, FILL_ATTRIBUTES[i], seo);
     }
   }
   
@@ -41,9 +46,11 @@ class RecordsModel extends ElasticSearchModel {
    * @method _fillAttribute
    * @description helper 'get' method for walking 'fill' attributes
    * 
-   * @param {Object} record 
+   * @param {Object} record
+   * @param {String} attribute
+   * @param {Boolean} seo
    */
-  async _fillAttribute(record, attribute) {
+  async _fillAttribute(record, attribute, seo) {
     let values = record[attribute];
     if( !Array.isArray(values) ) values = [values];
     
@@ -56,7 +63,7 @@ class RecordsModel extends ElasticSearchModel {
   
     try {
       let resp = await this.esMget(values);
-      record[attribute] = await resp.docs.map(doc => doc._source);
+      record[attribute] = await resp.docs.map(doc => seo ? transform(doc._source) : doc._source);
     } catch(e) {
       // hummmm....
       record[attribute] = e.message;
@@ -68,7 +75,7 @@ class RecordsModel extends ElasticSearchModel {
         record[attribute][i] = {error:true, message:'record not found'}
         continue;
       }
-      await this._fillRecord(childRecord);
+      await this._fillRecord(childRecord, seo);
     }
   }
 

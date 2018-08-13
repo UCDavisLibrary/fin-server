@@ -1,5 +1,6 @@
 const remove = ['createdBy', 'lastModifiedBy', 'yearPublished', 
-'collectionId', 'isRootRecord', 'parent'];
+'collectionId', 'isRootRecord', 'parent', 'creators', 'abouts',
+'fileFormats', 'indexableContents', 'indexableContent', 'type'];
 const map = {
   lastModified : 'dateModified'
 }
@@ -34,22 +35,32 @@ module.exports = (jsonld) => {
     jsonld.image['@type'] = 'ImageObject';
     if( jsonld.image.colorPalette ) delete jsonld.image.colorPalette;
     if( jsonld.image.iiif ) delete jsonld.image.iiif;
-  }
 
-  if( jsonld.filename ) {
-    if( !jsonld.image ) jsonld.image = {};
-    if( !jsonld.image.name ) jsonld.image.name = jsonld.filename;
-    delete jsonld.filename;
-  }
-  if( jsonld.fileSize ) {
-    if( !jsonld.image ) jsonld.image = {};
-    if( !jsonld.image.contentSize ) jsonld.image.contentSize = jsonld.fileSize;
-    delete jsonld.fileSize;
-  }
-  if( jsonld.fileFormat ) {
-    if( !jsonld.image ) jsonld.image = {};
-    if( !jsonld.image.encodingFormat ) jsonld.image.encodingFormat = jsonld.fileFormat;
-    delete jsonld.fileFormat;
+    if( jsonld.filename ) {
+      if( !jsonld.image.name ) jsonld.image.name = jsonld.filename;
+      delete jsonld.filename;
+    }
+    if( jsonld.fileSize ) {
+      if( !jsonld.image.contentSize ) jsonld.image.contentSize = jsonld.fileSize;
+      delete jsonld.fileSize;
+    }
+    if( jsonld.fileFormat ) {
+      if( !jsonld.image.encodingFormat ) jsonld.image.encodingFormat = jsonld.fileFormat;
+      delete jsonld.fileFormat;
+    }
+  } else {
+    if( jsonld.filename ) {
+      if( !jsonld.name ) jsonld.name = jsonld.filename;
+      delete jsonld.filename;
+    }
+    if( jsonld.fileSize ) {
+      if( !jsonld.contentSize ) jsonld.contentSize = jsonld.fileSize;
+      delete jsonld.fileSize;
+    }
+    if( jsonld.fileFormat ) {
+      if( !jsonld.encodingFormat ) jsonld.encodingFormat = jsonld.fileFormat;
+      delete jsonld.fileFormat;
+    }
   }
 
   if( jsonld.license ) {
