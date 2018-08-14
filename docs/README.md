@@ -37,7 +37,13 @@ Administrators are users that access the fedora component with webac disabled. T
 docker-compose exec server node app/cli admin add-admin -u quinn
 ```
 
-This will give the user `quinn` admin access to the system.
+This will give the user `quinn` admin access to the system.  If you are using CAS authentication with a subdomain (ex: ucdavis.edu), then the command should be:
+
+```bash
+docker-compose exec server node app/cli admin add-admin -u quinn@ucdavis.edu
+```
+
+Which gives user `quinn@ucdavis.edu` admin access to the system.
 
 ## Fin Config (Environmental Variables)
 
