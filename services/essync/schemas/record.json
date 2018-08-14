@@ -1,4 +1,6 @@
 {
+  "dynamic": false,
+
   "properties" : {
 
     "@id" : {
