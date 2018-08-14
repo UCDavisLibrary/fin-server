@@ -5,7 +5,6 @@ const schemaCollection = require('../schemas/collection');
 const {logger, jwt} = require('@ucd-lib/fin-node-utils');
 const fs = require('fs');
 const {URL} = require('url');
-const api = require('@ucd-lib/fin-node-api');
 const config = require('./config');
 const AttributeReducer = require('./attribute-reducer');
 
@@ -334,6 +333,7 @@ class EsIndexer {
     if( !options.uri.match(/^http/i) ) {
       options.uri = this.getFcRepoBaseUrl() + options.uri;
     }
+    options.timeout = 2*60*1000;
 
     return new Promise((resolve, reject) => {
       request(options, (error, response, body) => {

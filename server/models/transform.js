@@ -10,6 +10,9 @@ const FIN_URL = new URL(config.server.url);
 const ROOT_DIR = path.join(__dirname, 'loaded-transforms');
 let finUrlRegex = new RegExp(`^${config.server.url}${config.fcrepo.root}`);
 
+const BLACK_LIST_LABEL_ATTRS = ['http://schema.org/hasPart', 'http://schema.org/associatedMedia', 
+'http://www.w3.org/ns/ldp#contains', 'http://schema.org/workExample'];
+
 class TransformUtils {
 
   constructor() {
@@ -70,23 +73,23 @@ class TransformUtils {
 
     if( Array.isArray(val) ) {
       for( let i = 0; i < val.length; i++ ) {
-        val[i] = await this._getValue(val[i], opts);
+        val[i] = await this._getValue(attr, val[i], opts);
       }
       return val.filter(v => v !== null);
     }
 
-    let v = await this._getValue(val, opts)
+    let v = await this._getValue(attr, val, opts)
     return (v === null) ? '' : v; 
   }
 
-  async _getValue(obj, opts) {
+  async _getValue(attr, obj, opts) {
     if( obj === null ) return null;
 
     if( opts.type === 'id' ) {
       if( obj['@value'] !== undefined ) {
         return {name: obj['@value']};
       } else if( obj['@id'] !== undefined ) {
-        return await this._lookupLabel(obj['@id']);
+        return await this._lookupLabel(attr, obj['@id']);
       }
       return null;
     }
@@ -104,8 +107,13 @@ class TransformUtils {
     return val;
   }
 
-  async _lookupLabel(uri) {
+  async _lookupLabel(attr, uri) {
     let result = {'@id': uri};
+
+    if( BLACK_LIST_LABEL_ATTRS.indexOf(attr) > -1 ) {
+      return result;
+    }
+
     try {
       let response = await this.request({
         uri: this.getFcRepoBaseUrl()+'/collection/'+this.collection+'/svc:label/'+encodeURIComponent(uri)

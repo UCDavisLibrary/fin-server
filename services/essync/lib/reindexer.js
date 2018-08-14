@@ -14,6 +14,8 @@ api.setConfig({
   fcBasePath: config.fcrepo.root
 });
 
+const DEFAULT_TIMEOUT = 2*60*1000;
+
 class EsReindexer {
 
   /**
@@ -76,6 +78,7 @@ class EsReindexer {
   async getRootCollections() {
     let response = await api.get({
       path: config.essync.basePath,
+      timeout: DEFAULT_TIMEOUT,
       headers : {
         accept : api.RDF_FORMATS.JSON_LD
       }
@@ -112,7 +115,7 @@ class EsReindexer {
     url = url.split(config.fcrepo.root)[1];
 
     // make a head request for access and container type info
-    let response = await api.head({path : url});
+    let response = await api.head({path : url, timeout: DEFAULT_TIMEOUT});
     
     if( response.last.statusCode === 403 ) {
       logger.error('Ignoring non-public container: '+url);
@@ -130,11 +133,14 @@ class EsReindexer {
       url = url + '/fcr:metadata'
     }
     
+    logger.info('Crawling: '+url);
+
     // grab the current container as json-ld because we need full type 
     // information in order to know which frame service to access.  We
     // also need the contains information to continue the crawl
     response = await api.get({
       path: url,
+      timeout : DEFAULT_TIMEOUT,
       headers : {
         accept : api.RDF_FORMATS.JSON_LD
       }
