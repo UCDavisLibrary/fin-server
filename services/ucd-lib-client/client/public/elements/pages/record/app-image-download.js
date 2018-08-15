@@ -220,7 +220,7 @@ export default class AppImageDownload extends PolymerElement {
       if( this.selectedFormat === this.originalFormat && 
         this.selectedSize === SIZES.length -1 ) {
         this.defaultImage = true;
-        return this.href = config.fcrepoBasePath + this.options.url;
+        return this.href = this.options.url;
       }
 
       this.defaultImage = false;
@@ -228,9 +228,7 @@ export default class AppImageDownload extends PolymerElement {
       let size = this.sizes[this.selectedSize];
       size = size.width+','+size.height;
 
-      this.href = config.fcrepoBasePath + this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
-
-      
+      this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
     });
   }
 
