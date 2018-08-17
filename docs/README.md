@@ -51,7 +51,7 @@ See docs [here](env-config.md)
 
 ## Demo
 
-[UC Davis DAMS Demo](../docker/fin-demo/README.md).  A great quick start and overview of Fin services in action.
+[UC Davis DAMS Demo](../docker/ucd-dams/README.md).  A great quick start and overview of Fin services in action.
 
 ## CORS
 
