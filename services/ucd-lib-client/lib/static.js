@@ -72,7 +72,7 @@ module.exports = (app) => {
         jsonld, bundle,
         title : record.name + ' - '+ config.server.title,
         description : record.description || '',
-        keywords : (record.abouts || []).join(', ')
+        keywords : (record.keywords || []).join(', ')
       }
     }
   });

@@ -282,7 +282,7 @@ class TransformUtils {
     if( !h && !w ) size = 'full';
     else size = w+','+h;
 
-    json.thumbnailUrl = config.fcrepo.root + 
+    json.thumbnailUrl =
       json.image.url + '/svc:iiif/' +
       json.image.iiif.region + '/' +
       size + '/' +

@@ -147,7 +147,7 @@ class EsReindexer {
     });
 
     if( !response.checkStatus(200) ) {
-      logger.fatal('Non 200 status code for '+path, response.last.statusCode);
+      logger.fatal('Non 200 status code for '+url, response.last ? response.las.statusCode : response.statusCode);
       return;
     }
 
