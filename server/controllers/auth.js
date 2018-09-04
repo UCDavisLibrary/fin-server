@@ -2,9 +2,11 @@ const router = require('express').Router();
 const model = require('../models/auth');
 const serviceModel = require('../models/services');
 const middleware = require('./middleware');
-const utils = require('./utils');
-const {config, jwt} = require('@ucd-lib/fin-node-utils');
-const {URL} = require('url');
+const {jwt} = require('@ucd-lib/fin-node-utils');
+const path = require('path');
+const fs = require('fs-extra');
+
+const ASSETS_DIR = path.resolve(__dirname, '..', 'assets');
 
 router.get('/service/:id', middleware.admin, async (req, res) => {
   try {
@@ -115,5 +117,9 @@ router.get('/mint', middleware.admin, (req, res) => {
   });
 });
 
+router.get('/login-shell', async (req, res) => {
+  res.set('Content-Type', 'text/html');
+  res.send(await fs.readFile(path.join(ASSETS_DIR, 'login-shell.html'), 'utf-8'));
+});
 
 module.exports = router;

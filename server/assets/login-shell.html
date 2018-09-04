@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Shell Login</title>
+    <style>
+      input {
+        width: 400px;
+        margin: 10px 0;
+        padding: 5px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="username"></div><br />
+    <div>Copy and paste code below into your shell:</div>
+    <div><input type="text" id="code"/></div>
+
+    <script>
+      function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+      }
+      
+      document.querySelector('#username').innerHTML = getParameterByName('username')+',';
+
+      let ele = document.querySelector('#code');
+      ele.value = getParameterByName('jwt');
+      ele.select();
+    </script>
+  </body>
+</html>

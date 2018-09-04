@@ -69,7 +69,7 @@ class ProxyModel {
     
     // handle AuthenticationService requests. Do not handle Fin auth endpoints
     // of /auth/token /auth/user /auth/logout /auth/mint /auth/service, these are reserved
-    app.use(/^\/auth\/(?!token|user|logout|mint|service).*/i, this._proxyAuthenticationService.bind(this));
+    app.use(/^\/auth\/(?!token|user|logout|mint|service|login-shell).*/i, this._proxyAuthenticationService.bind(this));
     
     // send all requests that are not /fcrepo, /auth or /fin to the ClientService
     // fcrepo is really handled above but reads a little better to add... :/
@@ -302,10 +302,13 @@ class ProxyModel {
     let token = jwt.create(username, isAdmin);
 
     // set redirect url
+    logger.info('redirect debug', req.query.cliRedirectUrl, req.query.redirectUrl, '/');
     let url = req.query.cliRedirectUrl || req.query.redirectUrl || '/';
     if( req.query.provideJwt === 'true') {
       url += '?jwt='+token+'&username='+username;
     }
+
+    logger.info('redirect debug', url);
     
     // hijack response, setting redirect to desired location
     res.statusCode = 302;

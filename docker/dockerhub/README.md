@@ -22,3 +22,10 @@ make build push
 
 Then on the production server, you can set your version to `$(date --iso)` pull,
 and you are ready to go.
+
+### Build/push single image 
+
+This is example is for essync
+```
+make dirs=../../services/essync build push
+```

@@ -15,6 +15,7 @@ services:
       - ../../server/cli:/app/cli
       - ../../server/controllers:/app/controllers
       - ../../server/lib:/app/lib
+      - ../../server/assets:/app/assets
       - ../../server/models:/app/models
       - ../../server/default-frames:/etc/fin/frames
       - ../../server/default-transforms:/etc/fin/transforms
@@ -51,6 +52,7 @@ services:
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     ports:
       - 8080:8080
+      - 8002:8002
       - 61613:61613
     environment:
       - JWT_SECRET=${JWT_SECRET}

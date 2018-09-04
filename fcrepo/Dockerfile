@@ -44,7 +44,24 @@ COPY ./etc/fcrepo/* ${FCREPO_ETC}/
 RUN mkdir -p ${FCREPO_HOME} && chmod -R a+rw ${FCREPO_HOME}
 VOLUME ["$FCREPO_HOME"]
 
+# DEBUG
+# ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
+#     -Dfcrepo.home=${FCREPO_HOME} \
+#     -Dfcrepo.log=DEBUG \ 
+#     -Dfcrepo.log.auth=DEBUG \
+#     -Dfcrepo.modeshape.configuration=${FCREPO_MODESHAPE_CONFIGURATION}" \
+#     -Dfcrepo.auth.webac.authorization=${FCREPO_AUTH_WEBAC_AUTHORIZATION}" \
+#     -Dfcrepo.activemq.configuration=${FCREPO_ACTIVEMQ_CONFIGURATION}"
+
+# ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
+#     -Dfcrepo.home=${FCREPO_HOME} \
+#     -Dfcrepo.modeshape.configuration=${FCREPO_MODESHAPE_CONFIGURATION}" \
+#     -Dfcrepo.auth.webac.authorization=${FCREPO_AUTH_WEBAC_AUTHORIZATION}" \
+#     -Dfcrepo.activemq.configuration=${FCREPO_ACTIVEMQ_CONFIGURATION}"
+
 ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
+    -Xdebug \
+    -Xrunjdwp:transport=dt_socket,address=8002,server=y,suspend=n \
     -Dfcrepo.home=${FCREPO_HOME} \
     -Dfcrepo.modeshape.configuration=${FCREPO_MODESHAPE_CONFIGURATION}" \
     -Dfcrepo.auth.webac.authorization=${FCREPO_AUTH_WEBAC_AUTHORIZATION}" \

@@ -10,6 +10,7 @@ ADD cli /app/cli
 ADD controllers /app/controllers
 ADD lib /app/lib
 ADD models /app/models
+ADD assets /app/assets
 ADD index.js /app/
 ADD package.json /app/
 ADD package-lock.json /app/

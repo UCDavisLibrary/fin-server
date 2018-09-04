@@ -31,12 +31,14 @@ class EsIndexer {
     this.name = 'essync-indexer';
     this.esClient = new elasticsearch.Client({
       host: config.elasticsearch.host,
-      log: config.elasticsearch.log
+      log: config.elasticsearch.log,
+      requestTimeout : 3*60*1000
     });
 
     this.attributeReducer = new AttributeReducer(this.esClient);
     this.finUrlRegex = new RegExp(`^${config.server.url}${config.fcrepo.root}`);
 
+    setInterval(() => this.generateToken(), 1000 * 60 * 60 * 6);
     this.init();
   }
 
@@ -321,6 +323,7 @@ class EsIndexer {
    * @description create a new jwt token
    */
   generateToken() {
+    logger.info('Setting essync jwt token');
     this.token = jwt.create(this.name, true);
   }
 
@@ -334,6 +337,11 @@ class EsIndexer {
       options.uri = this.getFcRepoBaseUrl() + options.uri;
     }
     options.timeout = 2*60*1000;
+
+    if( !options.headers ) options.headers = {};
+    if( !options.headers.Authorization ) {
+      options.headers.Authorization = `Bearer ${this.token}`;
+    }
 
     return new Promise((resolve, reject) => {
       request(options, (error, response, body) => {

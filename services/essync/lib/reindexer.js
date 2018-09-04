@@ -1,11 +1,7 @@
-const request = require('superagent');
-const elasticsearch = require('elasticsearch');
-const {jwt, logger} = require('@ucd-lib/fin-node-utils');
+const {logger, jwt} = require('@ucd-lib/fin-node-utils');
 const schemaRecord = require('../schemas/record');
 const schemaCollection = require('../schemas/collection');
-const clone = require('clone');
 const indexer = require('./indexer');
-const {URL} = require('url');
 const api = require('@ucd-lib/fin-node-api');
 const config = require('./config');
 
@@ -57,7 +53,9 @@ class EsReindexer {
     let collections = await this.getRootCollections();
 
     // we want to crawl as a public user (no jwt)
-    api.setConfig({jwt: null});
+    // TODO: set this when we fix webac slowness issue
+    // api.setConfig({jwt: null});
+    
     // crawl all collections
     for( var i = 0; i < collections.length; i++ ) {
       await this.crawl(collections[i], newRecordIndexName, newCollectionIndexName);
@@ -147,7 +145,7 @@ class EsReindexer {
     });
 
     if( !response.checkStatus(200) ) {
-      logger.fatal('Non 200 status code for '+url, response.last ? response.las.statusCode : response.statusCode);
+      logger.fatal('Non 200 status code for '+url, response.last ? response.last.statusCode : response.statusCode);
       return;
     }
 
