@@ -303,14 +303,14 @@ class TransformUtils {
    */
   async getImagePath(json) {
     if( json.workExample ) {
-      return Array.isArray(json.workExample) ? json.workExample[0]['@id'] : json.workExample['@id'];
+      return Array.isArray(json.workExample) ? json.workExample[0]['@id'].replace(finUrlRegex, '') : json.workExample['@id'].replace(finUrlRegex, '');
     }
     
     if( json.fileFormat && json.fileFormat.match(/^image\//i) ) {
-      return json['@id']
+      return json['@id'].replace(finUrlRegex, '');
     }
     if( json.hasMimeType && json.hasMimeType.match(/^image\//i) ) {
-      return json['@id']
+      return json['@id'].replace(finUrlRegex, '');
     }
     
     if( json.image ) {
@@ -344,7 +344,7 @@ class TransformUtils {
         }
 
         if( response['@type'].indexOf(this.IMAGE_LIST) > -1 && response[this.HAS_PART] ) {
-          return response[this.HAS_PART][0]['@id'];
+          return response[this.HAS_PART][0]['@id'].replace(finUrlRegex, '');
         }
       }
     }

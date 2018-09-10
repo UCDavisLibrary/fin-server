@@ -248,7 +248,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     this.media = media;
     
     this.thumbnails.forEach((thumbnail, index) => {
-      this.set(`thumbnails.${index}.selected`, (media['@id'] === thumbnail['@id']));
+      this.set(`thumbnails.${index}.selected`, (media['@id'] === thumbnail.id));
     });
   }
 

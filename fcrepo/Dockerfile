@@ -67,4 +67,5 @@ ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
     -Dfcrepo.auth.webac.authorization=${FCREPO_AUTH_WEBAC_AUTHORIZATION}" \
     -Dfcrepo.activemq.configuration=${FCREPO_ACTIVEMQ_CONFIGURATION}"
 
-CMD java $JAVA_OPTS -jar "$JETTY_HOME/start.jar"
+CMD chmod a+rw ${FCREPO_HOME} && \
+    java $JAVA_OPTS -jar "$JETTY_HOME/start.jar"

@@ -1,6 +1,8 @@
 const {BaseModel} = require('@ucd-lib/cork-app-utils');
 const config = require('../config');
 
+const IMAGE_LIST = 'http://digital.ucdavis.edu/schema#ImageList';
+
 class MediaModel extends BaseModel {
   
   constructor() {
@@ -74,9 +76,9 @@ class MediaModel extends BaseModel {
 
     // see if we have an image list
     for( var i = 0; i < rootRecord.associatedMedia.length; i++ ) {
-      let ef = rootRecord.associatedMedia[i].encodingFormat;
-      if( ef && ef.toLowerCase().replace(/ /g, '') === 'imagelist' ) {
-        rootRecord._imageList = rootRecord.associatedMedia[i]._hasPart || [];
+      let types = rootRecord.associatedMedia[i]['@type'];
+      if( types && types.indexOf(IMAGE_LIST) > -1 ) {
+        rootRecord._imageList = rootRecord.associatedMedia[i].hasPart || [];
         rootRecord._imageList.sort((a, b) => {
           if( a.position > b.position ) return 1;
           if( a.position < b.position ) return -1;
