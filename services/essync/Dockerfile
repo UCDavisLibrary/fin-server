@@ -7,6 +7,6 @@ COPY reindex.js /service/reindex.js
 COPY package.json /service/package.json
 COPY package-lock.json /service/package-lock.json
 
-RUN cd /service && npm install --production
+RUN cd /service && npm install --production && npm dedupe
 
 CMD node service

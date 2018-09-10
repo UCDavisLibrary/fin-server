@@ -9,6 +9,6 @@ ADD controllers /service/controllers
 ADD lib /service/lib
 ADD models /service/models
 
-RUN cd /service && npm install --production
+RUN cd /service && npm install --production && npm dedupe
 
 CMD node service

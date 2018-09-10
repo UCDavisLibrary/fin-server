@@ -68,11 +68,17 @@ module.exports = (app) => {
 
       jsonld = JSON.stringify(record, '  ', '  ');
 
+      let keywords = [];
+      if( record.keywords ) {
+        if( !Array.isArray(record.keywords) ) keywords = [record.keywords];
+        else keywords = record.keywords;
+      }
+
       return {
         jsonld, bundle,
         title : record.name + ' - '+ config.server.title,
         description : record.description || '',
-        keywords : (record.keywords || []).join(', ')
+        keywords : keywords.join(', ')
       }
     }
   });

@@ -7,7 +7,7 @@ const {logger, config, jwt} = require('@ucd-lib/fin-node-utils');
 
 const authModel = require('./auth');
 const serviceModel = require('./services');
-const cache = require('./cache');
+// const cache = require('./cache');
 
 var proxy = httpProxy.createProxyServer({
     ignorePath : true
@@ -110,13 +110,14 @@ class ProxyModel {
 
     this._setNoCacheHeaders(proxyRes);
 
+    // JM - disabling cache
     // set the cache
-    if( cache.isCacheableRequest(req) ) {
-      cache.set(req.originalUrl, proxyRes, req);
-    }
+    // if( cache.isCacheableRequest(req) ) {
+    //   cache.set(req.originalUrl, proxyRes, req);
+    // }
 
     // finally set the cache header (either miss or ignored)
-    proxyRes.headers[cache.HEADER] = req.cacheStatus;
+    // proxyRes.headers[cache.HEADER] = req.cacheStatus;
   }
 
   /**
@@ -220,40 +221,41 @@ class ProxyModel {
     // store for serivce headers
     req.fcPath = path;
 
+    // JM - disabling cache
     // see if a cache hit
-    if( cache.isCacheableRequest(req) ) {
+    // if( cache.isCacheableRequest(req) ) {
     
-      // first preflight a head request for headers so we can check out and cache
-      let info = await this._getContainerAccessAndInfo(req.originalUrl, req);
-      if( !info.access ) {
-        return res.status(info.response.statusCode).send(info.response.body || '');
-      }
+    //   // first preflight a head request for headers so we can check out and cache
+    //   let info = await this._getContainerAccessAndInfo(req.originalUrl, req);
+    //   if( !info.access ) {
+    //     return res.status(info.response.statusCode).send(info.response.body || '');
+    //   }
       
-      // we don't cache binary resources
-      if( info.binary ) {
-        req.cacheStatus = 'ignored';
-      } else {
-        // see if there is something in the cache
+    //   // we don't cache binary resources
+    //   if( info.binary ) {
+    //     req.cacheStatus = 'ignored';
+    //   } else {
+    //     // see if there is something in the cache
         
-        // we had a true fcrepo request, append appropriate fin service link headers
-        this._appendServiceLinkHeaders(req, info.response);
-        let cachedRes = await cache.get(req.originalUrl, info.response.headers, req);
+    //     // we had a true fcrepo request, append appropriate fin service link headers
+    //     this._appendServiceLinkHeaders(req, info.response);
+    //     let cachedRes = await cache.get(req.originalUrl, info.response.headers, req);
        
-        // cache hit, set headers, body, return.  we are done.
-        if( cachedRes ) {
-          this._setReqTime(req);
-          for( var key in cachedRes.headers ) {
-            res.set(key, cachedRes.headers[key]);
-          }
-          res.set(cache.HEADER, 'hit');
-          return res.send(cachedRes.body);
+    //     // cache hit, set headers, body, return.  we are done.
+    //     if( cachedRes ) {
+    //       this._setReqTime(req);
+    //       for( var key in cachedRes.headers ) {
+    //         res.set(key, cachedRes.headers[key]);
+    //       }
+    //       res.set(cache.HEADER, 'hit');
+    //       return res.send(cachedRes.body);
 
-        // cache miss, store status so we can set header
-        } else {
-          req.cacheStatus = 'miss';
-        }
-      }
-    }
+    //     // cache miss, store status so we can set header
+    //     } else {
+    //       req.cacheStatus = 'miss';
+    //     }
+    //   }
+    // }
 
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
     logger.debug(`Fcrepo proxy request: ${url}`);
