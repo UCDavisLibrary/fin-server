@@ -52,7 +52,7 @@ docker-compose up
 
 Now visit `http://localhost:3000` in your browser.
 
-Directions for adding admin users can be found in the [main docs](../../docs/README.md) for this repo
+Directions for adding admin users can be found in the [main docs](../../docs/README.md#administrators) for this repo
 
 ## Example Data
 
