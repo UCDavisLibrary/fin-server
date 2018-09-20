@@ -32,6 +32,12 @@ class TesseractServer {
         else if( accept === 'application/pdf' ) extractTo = 'pdf';
       }
 
+      let args = '-l eng --psm 1 --oem 3'
+      // see: https://github.com/tesseract-ocr/tesseract/wiki/Command-Line-Usage
+      if( req.headers['x-tesseract-args'] ) {
+        args = req.headers['x-tesseract-args']
+      }
+
       // parse service path and check for iiif information
       let urlinfo = new URL(req.url, 'https://example.org/');
       let iiif = urlinfo.searchParams.get('svcPath');
@@ -48,7 +54,7 @@ class TesseractServer {
         fileInfo = file.fileInfo;
 
         // run tesseract on tmp file
-        await this.ocr(id, fileInfo.ext, extractTo);
+        await this.ocr(id, fileInfo.ext, extractTo, args);
 
         // read in tesseract output
 
@@ -105,17 +111,18 @@ class TesseractServer {
    * @param {String} id tmp file id 
    * @param {String} ext fcrepo file extension
    * @param {String} extractTo type of extract
+   * @param {String} args tesseract args
    * 
    * @return {Promise}
    */
-  ocr(id, type, extractTo) {
+  ocr(id, type, extractTo, args) {
     return new Promise((resolve, reject) => {
       let options = {
         cwd : ROOT,
         shell : '/bin/bash'
       }
 
-      exec(`tesseract ${ROOT}/${id}${type} ${id} -l eng --psm 1 --oem 3 ${extractTo}`, options, (error, stdout, stderr) => {
+      exec(`tesseract ${ROOT}/${id}${type} ${id} ${args} ${extractTo}`, options, (error, stdout, stderr) => {
         if( error ) reject(new ExecError(error.message, SERVER_ERROR));
         else resolve({stdout, stderr});
       }); 
