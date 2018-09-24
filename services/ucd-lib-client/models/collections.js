@@ -51,7 +51,7 @@ class CollectionsModel extends ElasticSearchModel {
    * @returns {Promise} resolves to elasticsearch result
    */
   get(id) {
-    return es.search({
+    return es.get({
       index : config.elasticsearch.collection.alias,
       type: '_all',
       id: id

@@ -317,6 +317,11 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
     }));
   }
 
+  /**
+   * @method _updateCollectionResultsVisibility
+   * @description bound to collection visibility updates (see contructor).  Fired
+   * via CollectionModel which decides if a collection search should be preformed.
+   */
   _updateCollectionResultsVisibility(show) {
     this.showCollectionResults = show;
   }
@@ -330,10 +335,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    */
   _onCollectionSearchUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this.collectionResults = e.payload.results.map(c => {
-      c.thumbnail = this._getImgUrl(c.workExample['@id'], 320, '');
-      return c;
-    });
+    this.collectionResults = e.payload.results;
   }
 
   /**

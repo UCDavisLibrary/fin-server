@@ -9,12 +9,12 @@ class RootRecordBuffer extends EventEmitter {
   }
 
   add(e) {
-    if( this.buffer[e.id] ) {
-      clearTimeout(this.buffer[e.id]);
+    if( this.buffer[e['@id']] ) {
+      clearTimeout(this.buffer[e['@id']]);
     }
 
-    this.buffer[e.id] = setTimeout(() => {
-      delete this.buffer[e.id];
+    this.buffer[e['@id']] = setTimeout(() => {
+      delete this.buffer[e['@id']];
       this.emit('record-update', e);
     }, this.bufferTime);
   }

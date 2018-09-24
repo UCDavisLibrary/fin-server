@@ -86,7 +86,7 @@
         label-map="[[valueMap]]"
         checked$="[[item.active]]" 
         on-change="_toggleFilter"
-        disabled$="[[item.empty]]">
+        disabled$="[[item.disabled]]">
       </app-normal-checkbox>
 
       <div class="count">[[item.doc_count]]</div>
@@ -107,7 +107,7 @@
           label-map="[[valueMap]]"
           checked$="[[item.active]]" 
           on-change="_toggleFilter"
-          disabled$="[[item.empty]]">
+          disabled$="[[item.disabled]]">
         </app-normal-checkbox>
 
         <div class="count">[[item.doc_count]]</div>

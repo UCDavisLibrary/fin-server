@@ -1,9 +1,11 @@
 const {BaseModel} = require('@ucd-lib/cork-app-utils');
 const AppStateModel = require('./AppStateModel');
-const RecordModel = require('./RecordModel');
+const CollectionModel = require('./CollectionModel');
 const config = require('../config');
 const clone = require('clone');
 const transform = require('../../../../lib/seo-transform');
+const collectionTransform = require('../../../../lib/seo-collection-transform');
+
 
 // keep the JSON-LD script tag up to date
 class SeoModel extends BaseModel {
@@ -15,15 +17,20 @@ class SeoModel extends BaseModel {
     
     this.MasterController.on(AppStateModel.store.events.APP_STATE_UPDATE, (e) => this._onAppStateUpdate(e));
     this.MasterController.on(AppStateModel.store.events.SELECTED_RECORD_UPDATE, (e) => this._onAppStateUpdate(e));
+    this.MasterController.on(CollectionModel.store.events.SELECTED_COLLECTION_UPDATE, (e) => this._onAppStateUpdate(e));
   }
 
-    /**
+  /**
    * @method _onAppStateUpdate
    * @description set site meta tags and jsonld
    */
   _onAppStateUpdate() {
     let state = AppStateModel.store.data;
     let isRecord = state.location.pathname.match(/^\/record\//);
+    let isCollection = (
+      state.location.pathname.match(/^\/search\//) &&
+      CollectionModel.getSelectedCollection()
+    ) ? true : false;
 
     if( state.selectedRecord && isRecord ) {
       this._setJsonLd(state.selectedRecord);
@@ -31,6 +38,14 @@ class SeoModel extends BaseModel {
         title : state.selectedRecord.name + ' - ' + config.metadata.title,
         description : state.selectedRecord.description || '',
         keywords : (state.selectedRecord.abouts || []).join(', ')
+      });
+    } else if ( isCollection ) {
+      let collection = CollectionModel.getSelectedCollection();
+      this._setCollectionJsonLd(collection);
+      this._setMetaTags({
+        title : collection.name + ' - ' + config.metadata.title,
+        description : collection.description || '',
+        keywords : (collection.abouts || []).join(', ')
       });
     } else if( !isRecord ) {
       this._clearJsonLd();
@@ -79,6 +94,17 @@ class SeoModel extends BaseModel {
     record = transform(record);
 
     this.ele.innerHTML = JSON.stringify(record, '  ', '  ');
+  }
+
+  _setCollectionJsonLd(selectedCollection) {
+    let collection = clone(selectedCollection);
+    
+    for( var key in collection ) {
+      if( key[0] === '_' ) delete collection[key];
+    }
+    collection = collectionTransform(collection, window.location.protocol+'//'+window.location.host);
+
+    this.ele.innerHTML = JSON.stringify(collection, '  ', '  ');
   }
 
   _clearJsonLd() {

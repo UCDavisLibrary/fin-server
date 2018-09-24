@@ -54,7 +54,7 @@ class FiltersModel extends BaseModel {
 
     var activeFilters = [];
     if( e.searchDocument.filters[filter] ) {
-      activeFilters = e.searchDocument.filters[filter].value;
+      activeFilters = e.searchDocument.filters[filter].value || [];
     }
 
     if( !activeFilters ) {
@@ -91,12 +91,22 @@ class FiltersModel extends BaseModel {
       }
 
       item.empty = item.doc_count ? false : true;
+      item.disabled = item.active ? false : item.empty;
       buckets.push(item);
     }
 
     buckets.sort((a,b) => {
+      if( !a.active && b.active ) return 1;
+      if( a.active && !b.active ) return -1;
+
+      if( a.active && b.active ) {
+        if( a.doc_count < b.doc_count ) return -1;
+        if( a.doc_count > b.doc_count ) return 1;
+      }
+
       if( a.doc_count < b.doc_count ) return 1;
       if( a.doc_count > b.doc_count ) return -1;
+      
       if( a.sortKey > b.sortKey ) return 1;
       if( a.sortKey < b.sortKey ) return -1;
       return 0

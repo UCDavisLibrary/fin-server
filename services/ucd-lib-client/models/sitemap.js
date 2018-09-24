@@ -2,6 +2,8 @@ const collections = require('./collections');
 const records = require('./records');
 const config = require('../config');
 
+const COLLECTIONS_SITEMAP = '_collections';
+
 class SitemapModel {
 
   /**
@@ -41,11 +43,16 @@ Sitemap: ${config.server.url}/sitemap.xml`);
         return res.send(await this.getRoot());
       }
 
+      collection = collection.replace(/^-/,'');
+      if( collection === COLLECTIONS_SITEMAP ) {
+        return await this.getCollections(res);
+      }
+
       // send express response, we are going to stream out the xml result
       this.getCollection(collection.replace(/^-/,''), res);
     } catch(e) {
       res.set('Content-Type', 'application/json');
-      res.json({
+      res.status(500).json({
         error : true,
         message : e.message,
         stack : e.stack
@@ -71,8 +78,42 @@ Sitemap: ${config.server.url}/sitemap.xml`);
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>${config.server.url}/sitemap-${COLLECTIONS_SITEMAP}.xml</loc>
+  </sitemap>
   ${sitemaps.join('\n')}
 </sitemapindex>`;
+  }
+
+  /**
+   * @method getCollections
+   * 
+   */
+  async getCollections(resp) {
+    resp.write(`<?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`);
+
+    let sitemaps = await collections.esSearch({
+      _source : ['name']
+    });
+
+    (sitemaps.hits.hits || [])
+      .map(result => {
+        let query = JSON.stringify([
+          ["isPartOf.@id","or",`/collection/${result._id.replace('/collection/','')}`]
+        ]);
+        return `${config.server.url}/search//${encodeURIComponent(query)}//10/`
+      })
+      .forEach(url => {
+        resp.write(`<url>
+          <loc>${url}</loc>
+          <changefreq>weekly</changefreq>
+          <priority>.5</priority>
+        </url>\n`);
+      });
+
+    resp.write('</urlset>');
+    resp.end();
   }
 
   /**
