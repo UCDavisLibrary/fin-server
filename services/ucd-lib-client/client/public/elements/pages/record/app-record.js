@@ -16,7 +16,7 @@ import AppStateInterface from "../../interfaces/AppStateInterface"
 import RecordInterface from "../../interfaces/RecordInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
-import TarService from "../../../lib/services/TarService"
+// import TarService from "../../../lib/services/TarService"
 
 export default class AppRecord extends Mixin(PolymerElement)
       .with(EventInterface, AppStateInterface, RecordInterface, CollectionInterface, MediaInterface) {
@@ -115,10 +115,13 @@ export default class AppRecord extends Mixin(PolymerElement)
     // TODO: add back in when we figure out consolidated resource type 
     // this.$.resourceType.innerHTML = this.record.type ? '<div>'+this.record.type.join('</div><div>')+'</div>' : 'Unknown';
 
-    if( this.record.license && rightsDefinitions[this.record.license] ) {
-      let def = rightsDefinitions[this.record.license];
+    if( this.record.license &&
+      this.record.license['@id']  && 
+      rightsDefinitions[this.record.license['@id']] ) {
+
+      let def = rightsDefinitions[this.record.license['@id']];
       this.rights = {
-        link : this.record.license,
+        link : this.record.license['@id'],
         label : def.text,
         icon : `/images/rights-icons/${def.icon}.svg`
       }
@@ -197,6 +200,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     }
     let creators = Array.isArray(record.creators) ? record.creators : [record.creators];
 
+    // TODO: label is under creator.name
     this.$.creatorValue.innerHTML = creators
       .map(creator => {
         let searchDoc = this._getEmptySearchDocument();
