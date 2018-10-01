@@ -16,7 +16,6 @@ import AppStateInterface from "../../interfaces/AppStateInterface"
 import RecordInterface from "../../interfaces/RecordInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
-// import TarService from "../../../lib/services/TarService"
 
 export default class AppRecord extends Mixin(PolymerElement)
       .with(EventInterface, AppStateInterface, RecordInterface, CollectionInterface, MediaInterface) {
@@ -195,14 +194,18 @@ export default class AppRecord extends Mixin(PolymerElement)
    * @param {Object} record
    */
   _renderCreators(record) {
-    if( !record.creators ) {
+    // filter to those w/ labels
+    let creators = utils.asArray(record, 'creator')
+      .filter(creator => creator.name ? true : false);
+
+    if( creators.length === 0 ) {
       return this.$.creator.style.display = 'none';
     }
-    let creators = Array.isArray(record.creators) ? record.creators : [record.creators];
 
     // TODO: label is under creator.name
-    this.$.creatorValue.innerHTML = creators
+    this.$.creatorValue.innerHTML = creators 
       .map(creator => {
+        creator = creator.name;
         let searchDoc = this._getEmptySearchDocument();
         this._appendKeywordFilter(searchDoc, 'creators', creator);
         this._appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);

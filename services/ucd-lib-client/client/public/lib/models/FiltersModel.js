@@ -96,13 +96,12 @@ class FiltersModel extends BaseModel {
     }
 
     buckets.sort((a,b) => {
-      if( !a.active && b.active ) return 1;
-      if( a.active && !b.active ) return -1;
-
-      if( a.active && b.active ) {
-        if( a.doc_count < b.doc_count ) return -1;
-        if( a.doc_count > b.doc_count ) return 1;
-      }
+      // this is for if there is an active item but it has not results
+      // under this condition, we don't want the result buried at
+      // the bottom of the filter list, we want it on top so the can
+      // (most likely) remove the filter
+      if( a.active && a.doc_count === 0 ) return -1;
+      if( b.active && b.doc_count === 0 ) return 1;
 
       if( a.doc_count < b.doc_count ) return 1;
       if( a.doc_count > b.doc_count ) return -1;

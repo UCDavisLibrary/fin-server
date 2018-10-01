@@ -203,12 +203,10 @@ class AttributeReducer {
   addAttributes(record, reduced = {}) {
     for( var key in config.essync.reduceAttributes ) {
       let rkey = config.essync.reduceAttributes[key];
-      var {key, wrecord} = this._walkAttribute(key, record);
-      if( !wrecord[key] ) continue;
 
-      let values = wrecord[key];
-      if( !Array.isArray(values) ) values = [values];
-      
+      let values = this._getAttributeValues(0, key, record);
+      if( values.length === 0 ) continue;
+
       if( !reduced[rkey] ) {
         reduced[rkey] = values;
         continue;
@@ -232,23 +230,71 @@ class AttributeReducer {
     return reduced;
   }
 
-  _walkAttribute(attribute, record) {
-    let attrs = attribute.split('.');
-    for( var i = 0; i < attrs.length-1; i++ ) {
-      record = record[attrs[i]];
+  /**
+   * @method _getAttributeValues
+   * @description given an attribute dot path, walk object and return all values
+   * at nested path.
+   * 
+   * @param index {Number} call this with 0 on start
+   * @param attrArray {Array|String} dot path to crawl.  if string, should be foo.bar.baz
+   * @param obj object to walk for values.  probably JSON-LD here.
+   * 
+   * @return {Array}
+   */
+  _getAttributeValues(index, attrArray, obj) {
+    if( !Array.isArray(attrArray) ) attrArray = attrArray.split('.');
 
-      if( !record ) {
-          return {
-          key: attrs[attrs.length-1],
-          wrecord : {}
-        };
+    // if we are at the end of the index, return values
+    if( index === attrArray.length ) {
+
+      // make sure we are handling an array
+      if( !Array.isArray(obj) ) {
+        obj = [obj];
       }
+      
+      // only return unqiue values in array
+      let unique = [];
+      obj.forEach(value => {
+        if( unique.indexOf(value) === -1 ) {
+          unique.push(value);
+        }
+      });
+  
+      return unique;
     }
+  
+    // get current key
+    let key = attrArray[index];
+    index++;
+  
+    if( Array.isArray(obj) ) {
+      let arr = [];
+      obj
+        // filter out array items that don't have our current key
+        .filter(value => {
+          return (typeof value === 'object' && value[key] !== undefined);
+        })
+        // append current values to new array
+        .forEach(value => {
+          if( Array.isArray(value[key]) ) {
+            arr = arr.concat(value[key]);
+          } else {
+            arr.push(value[key]);
+          }
+        });
 
-    return {
-      key: attrs[attrs.length-1],
-      wrecord : record
+      // set object to new appended array
+      obj = arr;
+    } else if( typeof obj === 'object' && obj[key] !== undefined ) {
+      // if we are looking at an object, this is a simple operation
+      obj = obj[key];
+    } else {
+      // attribute was not found
+      return [];
     }
+    
+    // walk next level in attribute array
+    return this._getAttributeValues(index, attrArray, obj);
   }
 
   _exists(id, alias) {

@@ -74,7 +74,7 @@ class RecordModel extends ElasticSearchModel {
    * 
    * @returns {Promise}
    */
-  async search(searchDocument = {}) {
+  async search(searchDocument = {}, updateHistoryState=true) {
     if( !searchDocument.filters ) searchDocument.filters = {};
 
     // first, we need to verify all filters are available to us
@@ -95,11 +95,13 @@ class RecordModel extends ElasticSearchModel {
         let bucket = defaultSearch.payload.aggregations.facets[key];
         if( bucket === undefined ) {
           corrections = true;
+          console.warn(`Collection '${collectionId}' unknown bucket '${key}', correcting search.`);
           delete searchDocument.filters[key];
         } else {
           searchDocument.filters[key].value = searchDocument.filters[key].value
             .filter(value => {
               if( bucket[value] === undefined ) {
+                console.warn(`Collection '${collectionId}' bucket '${key}' has no value: '${value}', correcting search.`, defaultSearch.payload.aggregations.facets);
                 corrections = true;
                 return false;
               }
@@ -115,14 +117,17 @@ class RecordModel extends ElasticSearchModel {
 
     let path = '/search/'+this.searchDocumentToUrl(searchDocument);
     if( corrections ) {
-      AppStateModel.setLocation(path);
-      return await this.search(searchDocument);
+      // This causes loop badness
+      // AppStateModel.setLocation(path);
+      return await this.search(searchDocument, false);
     }
     
-    if( !history.state ) {
-      AppStateModel.setLocation(path);
-    } if( history.state && history.state.location !== path ) {
-      AppStateModel.setLocation(path);
+    if( updateHistoryState ) {
+      if( !history.state ) {
+        AppStateModel.setLocation(path);
+      } if( history.state && history.state.location !== path ) {
+        AppStateModel.setLocation(path);
+      }
     }
 
     if( searchDocument.limit + searchDocument.offset > this.MAX_WINDOW ) {
