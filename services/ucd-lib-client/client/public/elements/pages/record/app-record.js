@@ -150,6 +150,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     // find arks or doi
     this._renderIdentifier(record);
     this._renderCreators(record);
+    this._renderSubjects(record);
 
     // set collection link
     let searchDoc = this._getEmptySearchDocument();
@@ -195,8 +196,8 @@ export default class AppRecord extends Mixin(PolymerElement)
    */
   _renderCreators(record) {
     // filter to those w/ labels
-    let creators = utils.asArray(record, 'creator')
-      .filter(creator => creator.name ? true : false);
+    let creators = utils.asArray(record, 'creators');
+      // .filter(creator => creator.name ? true : false);
 
     if( creators.length === 0 ) {
       return this.$.creator.style.display = 'none';
@@ -205,7 +206,8 @@ export default class AppRecord extends Mixin(PolymerElement)
     // TODO: label is under creator.name
     this.$.creatorValue.innerHTML = creators 
       .map(creator => {
-        creator = creator.name;
+        // debugger;
+        // creator = creator.name;
         let searchDoc = this._getEmptySearchDocument();
         this._appendKeywordFilter(searchDoc, 'creators', creator);
         this._appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
@@ -215,6 +217,37 @@ export default class AppRecord extends Mixin(PolymerElement)
       .join(', ');
 
     this.$.creator.style.display = 'flex';
+  }
+
+  /**
+   * @method _renderSubjects
+   * @description render subject field, which is really 'abouts' derived from 'schema:about'
+   * 
+   * @param {Object} record
+   */
+  _renderSubjects(record) {
+    // filter to those w/ labels
+    let subjects = utils.asArray(record, 'abouts');
+      // .filter(subject => subject.name ? true : false);
+
+    if( subjects.length === 0 ) {
+      return this.$.subject.style.display = 'none';
+    }
+
+    // TODO: label is under creator.name
+    this.$.subjectValue.innerHTML = subjects 
+      .map(subject => {
+        // debugger;
+        // subject = subject.name;
+        let searchDoc = this._getEmptySearchDocument();
+        this._appendKeywordFilter(searchDoc, 'abouts.raw', subject);
+        this._appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
+        let link = this._getHost()+'search/'+this._searchDocumentToUrl(searchDoc);
+        return `<a href="${link}">${subject}</a>`;
+      })
+      .join(', ');
+
+    this.$.subject.style.display = 'flex';
   }
 
   /**
