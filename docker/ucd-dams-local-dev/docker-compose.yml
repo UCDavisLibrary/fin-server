@@ -20,6 +20,7 @@ services:
       - ../../server/default-frames:/etc/fin/frames
       - ../../server/default-transforms:/etc/fin/transforms
       - ../../services/default-services.js:/etc/fin/default-services.js
+      - ../../server/gitinfo.json:/app/gitinfo.json
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
       - ../../server/backups:/fcrepo-backups
     ports:
@@ -153,6 +154,7 @@ services:
       - ../../services/essync/schemas:/service/schemas
       - ../../services/essync/index.js:/service/index.js
       - ../../services/essync/reindex.js:/service/reindex.js
+      - ../../services/essync/gitinfo.json:/service/gitinfo.json
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
@@ -209,6 +211,7 @@ services:
     build: ../../services/ucd-lib-client
     volumes:
       - ../../services/ucd-lib-client/index.js:/service/index.js
+      - ../../services/ucd-lib-client/gitinfo.json:/service/gitinfo.json
       - ../../services/ucd-lib-client/config.js:/service/config.js
       - ../../services/ucd-lib-client/client:/service/client
       - ../../services/ucd-lib-client/controllers:/service/controllers

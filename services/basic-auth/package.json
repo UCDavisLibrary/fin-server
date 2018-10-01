@@ -12,7 +12,7 @@
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",
   "dependencies": {
-    "@ucd-lib/fin-node-utils": "^0.2.10",
+    "@ucd-lib/fin-node-utils": "^0.2.12",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",

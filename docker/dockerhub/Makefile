@@ -6,6 +6,7 @@ org:=ucdlib
 hash    := $(shell git log -1 --pretty=%h)
 branch := $(shell git rev-parse --abbrev-ref HEAD)
 tags   := $(shell git tag --contains)
+currenttag := $(shell git describe --tags)
 
 tag:=branch tags
 
@@ -67,11 +68,12 @@ INFO::
 build::$2
 $2:$1/Dockerfile
 	@cd $1;\
-	docker build -t ${org}/$2:${branch} .; \
+	echo "{\"tag\":\"${currenttag}\",\"branch\":\"${branch}\",\"commit\":\"${hash}\"}" > gitinfo.json;\
+  docker build -t ${org}/$2:${branch} .; \
 	if [[ -n "${tags}" ]]; then \
-	  for t in ${tags}; do \
+	 for t in ${tags}; do \
 		  docker tag ${org}/$2:${branch} ${org}/$2:$$$$t; \
-    done; \
+   done; \
   fi;\
 #	$(call package-version-tag,$1,$2)
 

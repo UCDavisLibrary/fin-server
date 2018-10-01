@@ -3,6 +3,7 @@ global.LOGGER_NAME = 'essync';
 const {MessageServer, config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const indexer = require('./lib/indexer');
 const reindexer = require('./lib/reindexer');
+const gitinfo = require('./gitinfo.json');
 
 /**
  * Log promise errors, uncaught exceptions
@@ -128,6 +129,10 @@ class EsSyncMessageServer extends MessageServer {
   async onContainerDeleted(path, msg) {
     // remove from elastic search
     indexer.remove(path, msg.payload.body.type);
+  }
+
+  version() {
+    return gitinfo;
   }
 }
 

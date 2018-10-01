@@ -23,6 +23,17 @@ class MessageServer {
     this.WEBHOOK_EVENT_TYPES = WEBHOOK_EVENT_TYPES;
 
     this.server = http.createServer((req, res) => {
+      if( req.url === '/_version' ) {
+        let response = JSON.stringify(this.version());
+        res.writeHead(200, {
+          'Content-Length': response.length,
+          'Content-Type': 'application/json'
+        });
+        res.end(response);
+        req.socket.destroy();
+        return;
+      }
+
       body(req, async (err, body) => {
         if( err ) {
           logger.error(`${name} - failed to parse message`, err);
@@ -166,6 +177,17 @@ class MessageServer {
 
   async handleMessage(msg) {
     // TODO: implmentment me
+  }
+
+  /**
+   * @method version
+   * @description optional. return version information about service.
+   * THIS IS A PUBLIC API.  This information will be exposed by fin.
+   * 
+   * @returns {Object}
+   */
+  version() {
+    return {};
   }
 
 }

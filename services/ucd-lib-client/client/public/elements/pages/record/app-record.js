@@ -151,6 +151,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this._renderIdentifier(record);
     this._renderCreators(record);
     this._renderSubjects(record);
+    this._renderPublisher(record);
 
     // set collection link
     let searchDoc = this._getEmptySearchDocument();
@@ -197,7 +198,6 @@ export default class AppRecord extends Mixin(PolymerElement)
   _renderCreators(record) {
     // filter to those w/ labels
     let creators = utils.asArray(record, 'creators');
-      // .filter(creator => creator.name ? true : false);
 
     if( creators.length === 0 ) {
       return this.$.creator.style.display = 'none';
@@ -206,8 +206,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     // TODO: label is under creator.name
     this.$.creatorValue.innerHTML = creators 
       .map(creator => {
-        // debugger;
-        // creator = creator.name;
         let searchDoc = this._getEmptySearchDocument();
         this._appendKeywordFilter(searchDoc, 'creators', creator);
         this._appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
@@ -248,6 +246,28 @@ export default class AppRecord extends Mixin(PolymerElement)
       .join(', ');
 
     this.$.subject.style.display = 'flex';
+  }
+
+  /**
+   * @method _renderPublisher
+   * @description render publisher field
+   * 
+   * @param {Object} record
+   */
+  _renderPublisher(record) {
+    // filter to those w/ labels
+    let publishers = utils.asArray(record, 'publisher')
+      .filter(publisher => publisher.name ? true : false);
+
+    if( publishers.length === 0 ) {
+      return this.$.publisher.style.display = 'none';
+    }
+
+    this.$.publisherValue.innerHTML = publishers 
+      .map(publisher => publisher.name)
+      .join(', ');
+
+    this.$.publisher.style.display = 'flex';
   }
 
   /**
