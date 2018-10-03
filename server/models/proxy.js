@@ -389,8 +389,19 @@ class ProxyModel {
       
     // run the proxy service
     } else if( service.type === api.service.TYPES.PROXY ) {
+      let params = {fcPath : svcReq.fcPath, svcPath: svcReq.svcPath};
+
+      // if the service has multiple endpoints, the first part of the 
+      // service is the route
+      if( service.multiRouteTemplate ) {
+        let parts = (svcReq.svcPath || '').replace(/^\//, '').split('/');
+        if( parts.length > 0 ) {
+          params.route = parts.splice(0, 1)[0];
+          params.svcPath = parts.join('/');
+        }
+      }
       
-      let url = service.renderUrlTemplate({fcPath : svcReq.fcPath, svcPath: svcReq.svcPath});
+      let url = service.renderUrlTemplate(params);
       proxy.web(expReq, res, {
         target : url,
         headers : {

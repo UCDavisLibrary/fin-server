@@ -17,18 +17,19 @@ module.exports = [
     urlTemplate : 'http://tesseract:3333{{fcPath}}?svcPath={{svcPath}}'
   },
   {
+    id : 'tar',
+    description : 'List and extract files from a tar file',
+    type : 'ProxyService',
+    supportedType : 'http://www.w3.org/ns/ldp#NonRDFSource',
+    multiRouteTemplate : true,
+    urlTemplate : 'http://tar:3333/{{route}}/fcrepoPath={{fcPath}}&filePath={{svcPath}}'
+  },
+  {
     id : 'essync',
     title : 'Elastic Search Sync',
     description : 'Notify Elastic Search indexer when fedora updates',
     type : 'WebhookService',
     url : 'http://essync:3333'
-  },
-  {
-    id : 'auto-generator-demo',
-    title : 'Auto Generator Demo',
-    description : 'Demo of automatic container generation',
-    type : 'WebhookService',
-    url : 'http://auto-generator-demo:3333'
   },
   {
     id : 'es-record-transform',
@@ -43,20 +44,6 @@ module.exports = [
     description : 'Used for updating Elastic Search indexes when fedora updates',
     type : 'TransformService',
     transform : '/etc/fin/transforms/es-collection.js'
-  },
-  {
-    id : 'es-record-frame',
-    title : 'Elastic Search - Collection Record Frame',
-    description : 'Used for updating Elastic Search indexes when fedora updates',
-    type : 'FrameService',
-    frame : require('./frames/es-record.json')
-  },
-  {
-    id : 'es-collection-frame',
-    title : 'Elastic Search - Collection Frame',
-    description : 'Used for updating Search indexes when fedora updates',
-    type : 'FrameService',
-    frame : require('./frames/es-collection.json')
   },
   {
     id : 'cas',

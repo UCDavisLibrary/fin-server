@@ -578,6 +578,7 @@ class ServiceDefinition {
     this.type = data.type || '';
     this.frame = data.frame || '';
     this.urlTemplate = data.urlTemplate || '';
+    this.multiRouteTemplate = data.multiRouteTemplate ? true : false;
     this.url = data.url || '';
     this.title = data.title || '';
     this.description = data.description || '';

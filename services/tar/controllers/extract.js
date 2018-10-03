@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     });
   }
 
-  logger.info(`bag service extracting ${filename} from ${path}`);
+  logger.info(`tar service extracting ${filename} from ${path}`);
 
   try {
     let fileStream = await tar.extractFileFromBag({
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 
     fileStream.pipe(res);
   } catch(e) {
-    logger.error(`bag service failed to extract ${filename} from ${path}`, e);
+    logger.error(`tar service failed to extract ${filename} from ${path}`, e);
     res.status(400).json({
       error : true,
       message : e.message,
