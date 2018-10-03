@@ -50,7 +50,7 @@ class TarModel {
       }
 
       let files = await this.extractFileListFromStream({
-        stream: request(`http://server:3001/fcrepo/rest/${options.path}`),
+        stream: request(`${config.fin.host}/fcrepo/rest/${options.path}`),
         ignoreDotFiles : true,
         gzip: filename.match(/\.gz$/) ? true : false
       });
@@ -91,7 +91,7 @@ class TarModel {
       }
 
       let filestream = await this.extractFileFromStream({
-        stream: request(`http://server:3001/fcrepo/rest/${options.path}`),
+        stream: request(`${config.fin.host}/fcrepo/rest/${options.path}`),
         filename: options.filename,
         gzip: filename.match(/\.gz$/) ? true : false
       });

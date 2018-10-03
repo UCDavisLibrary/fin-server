@@ -402,7 +402,6 @@ class ProxyModel {
       }
       
       let url = service.renderUrlTemplate(params);
-      console.log(url, params, service.multiRouteTemplate)
 
       proxy.web(expReq, res, {
         target : url,
