@@ -14,6 +14,7 @@ ADD assets /app/assets
 ADD index.js /app/
 ADD package.json /app/
 ADD package-lock.json /app/
+ADD gitinfo.json /app/
 
 COPY default-frames /etc/fin/frames
 

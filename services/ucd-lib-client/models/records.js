@@ -11,8 +11,7 @@ class RecordsModel extends ElasticSearchModel {
   /**
    * @method get
    * @description get a record by id.  This method will walk 'hasPart'
-   * and 'associatedMedia' array filling in child records in '_hasPart' and
-   * '_associatedMedia' respectively.
+   * and 'associatedMedia' array filling in child records.
    * 
    * @param {String} id record id
    * @param {Boolean} seo apply seo/schema.org transform.  This will provide json-ld
@@ -37,7 +36,6 @@ class RecordsModel extends ElasticSearchModel {
   async _fillRecord(record, seo) {
     for( var i = 0; i < FILL_ATTRIBUTES.length; i++ ) {
       if( !record[FILL_ATTRIBUTES[i]] ) continue;
-  
       await this._fillAttribute(record, FILL_ATTRIBUTES[i], seo);
     }
   }
@@ -60,7 +58,7 @@ class RecordsModel extends ElasticSearchModel {
     })
 
     // record['_'+attribute] = [];
-  
+
     try {
       let resp = await this.esMget(values);
       record[attribute] = await resp.docs.map(doc => seo ? transform(doc._source) : doc._source);
@@ -209,6 +207,7 @@ class RecordsModel extends ElasticSearchModel {
     return es.mget({
       index: config.elasticsearch.record.alias,
       type: '_all',
+      _sourceExclude : config.elasticsearch.fields.exclude,
       body: {ids}
     });
   }

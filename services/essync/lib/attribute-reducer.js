@@ -173,6 +173,9 @@ class AttributeReducer {
       let values = Array.isArray(record[childConnections[i]]) ? record[childConnections[i]] : [record[childConnections[i]]];
       
       for( let j = 0; j < values.length; j++ ) {
+        if( values[j] && values[j]['@id'] ) {
+          values[j] = values[j]['@id'];
+        }
         await this.walkRecord(images, record, values[j], reduced, alias);
       }
     }
@@ -201,7 +204,7 @@ class AttributeReducer {
    * @returns {Object} 
    */
   addAttributes(record, reduced = {}) {
-    for( var key in config.essync.reduceAttributes ) {
+    for( var key in config.essync.reduceAttributes ) {      
       let rkey = config.essync.reduceAttributes[key];
 
       let values = this._getAttributeValues(0, key, record);
