@@ -45,7 +45,8 @@ module.exports = (app) => {
 
       return {
         user : user,
-        appRoutes : config.server.appRoutes
+        appRoutes : config.server.appRoutes,
+        recordCount: (await records.rootCount()).count
       }
     },
     template : async (req, res) => {
