@@ -21,6 +21,12 @@ class AppHome extends Mixin(PolymerElement)
       highlightedCollections : {
         type : Array,
         value : () => []
+      },
+      count : {
+        type : String,
+        value : (APP_CONFIG.recordCount || 0)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
       }
     }
   }

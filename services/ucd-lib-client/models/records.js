@@ -212,6 +212,30 @@ class RecordsModel extends ElasticSearchModel {
     });
   }
 
+  /**
+   * @method rootCount
+   * @description get count of all root records
+   * 
+   * @returns {Promise} resolves to {Number}
+   */
+  rootCount() {
+    return es.count({
+      index: config.elasticsearch.record.alias,
+      type: '_all',
+      body : {
+        query : {
+          bool : {
+            filter : {
+              term : {
+                isRootRecord : true
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
 }
 
 module.exports = new RecordsModel();
