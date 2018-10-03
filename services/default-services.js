@@ -22,7 +22,7 @@ module.exports = [
     type : 'ProxyService',
     supportedType : 'http://www.w3.org/ns/ldp#NonRDFSource',
     multiRouteTemplate : true,
-    urlTemplate : 'http://tar:3333/{{route}}/fcrepoPath={{fcPath}}&filePath={{svcPath}}'
+    urlTemplate : 'http://tar:3333/{{route}}?fcrepoPath={{fcPath}}&filePath={{svcPath}}'
   },
   {
     id : 'essync',

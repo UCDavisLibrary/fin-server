@@ -24,17 +24,27 @@ class TarModel {
    * @returns {Promise} resolves to {Stream}
    */
   async extractFileListFromBag(options) {
+    options.path = options.path.replace(config.fcrepo.root, '');
+
     return new Promise(async (resolve, reject) => {
+      let headers = {
+        accept : api.RDF_FORMATS.JSON_LD
+      }
+      if( options.jwt ) {
+        headers.Authorization = `Bearer ${options.jwt}`;
+      }
+
       let response = await api.get({
         path: options.path+'/fcr:metadata',
-        headers : {
-          accept : api.RDF_FORMATS.JSON_LD,
-          Authorization : `Bearer ${options.jwt}`
-        }
+        headers
       });
       response = response.last;
 
-      let filename = this._getFilename(response.body);
+      let filename = '';
+      try {
+        filename = this._getFilename(response.body);
+      } catch(e) { return reject(e) }
+
       if( !filename.match(/\.tar/) ) {
         return reject(new Error('File must have tar extension'));
       }
@@ -60,13 +70,18 @@ class TarModel {
    * @returns {Promise} resolves to {Stream}
    */
   async extractFileFromBag(options) {
+    options.path = options.path.replace(config.fcrepo.root, '');
+
     return new Promise(async (resolve, reject) => {
+      let headers = {
+        accept : api.RDF_FORMATS.JSON_LD
+      }
+      if( options.jwt ) {
+        headers.Authorization = `Bearer ${options.jwt}`;
+      }
       let response = await api.get({
         path: options.path+'/fcr:metadata',
-        headers : {
-          accept : api.RDF_FORMATS.JSON_LD,
-          Authorization : `Bearer ${options.jwt}`
-        }
+        headers
       });
       response = response.last;
 
@@ -121,19 +136,21 @@ class TarModel {
     let stream = options.stream;
     let extract = tar.extract();
     let found = false;
+    let re = new RegExp('/'+options.filename+'$');
 
     return new Promise((resolve, reject) => {
-      extract.on('entry', function(header, stream, next) {
-        if( header.name === options.filename ){
-          found = true;
-          resolve(stream);
-        }
-      
-        stream.on('end', () => {
+      extract.on('entry', function(header, fstream, next) {
+        fstream.on('end', () => {
           if( found ) stream.destroy(); // this should stop rest of stream read...
           else next();
         });
-        stream.resume();      
+
+        if( header.name.match(re) && !found ){
+          found = true;
+          resolve(fstream);
+        } else {
+          fstream.resume();
+        }
       });
 
       extract.on('finish', () => {
@@ -182,7 +199,6 @@ class TarModel {
           if( f.type === 'directory' && (f.name.length < rootDir.length || !rootDir) )  {
             rootDir = f.name;
           } else if( f.type === 'file' ) {
-            console.log(f.name, options.ignoreDotFiles, path.parse(f.name).base);
             if( !(options.ignoreDotFiles && path.parse(f.name).base[0] === '.') ) {
               tmp.push(f);
             }

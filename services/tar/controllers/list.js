@@ -3,7 +3,7 @@ const {logger} = require('@ucd-lib/fin-node-utils');
 const tar = require('../lib/tar');
 const path = require('path');
 
-router.get('/', async (req, res) => {
+router.get('*', async (req, res) => {
   let path = req.query.fcrepoPath;
   let jwt = (req.headers.authorization || '').replace(/bearer /i, '');
 
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 
   try {
     let files = await tar.extractFileListFromBag({path, jwt});
-    json.send(files);
+    res.json(files);
   } catch(e) {
     logger.error(`tar service failed to list files from ${path}`, e);
     res.status(400).json({
