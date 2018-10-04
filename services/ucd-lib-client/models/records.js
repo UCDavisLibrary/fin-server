@@ -221,7 +221,6 @@ class RecordsModel extends ElasticSearchModel {
   rootCount() {
     return es.count({
       index: config.elasticsearch.record.alias,
-      type: '_all',
       body : {
         query : {
           bool : {
