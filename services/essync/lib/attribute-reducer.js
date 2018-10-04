@@ -86,7 +86,7 @@ class AttributeReducer {
 
     await this.walkRecord(images, record, record, reduced, e.alias);
 
-    this.setImage(record, images);
+    // this.setImage(record, images);
     
     for( let key in reduced ) {
       record[key] = reduced[key];
@@ -157,7 +157,7 @@ class AttributeReducer {
     if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
       images.push({
         isWebFriendly : this.isWebFriendly(parent),
-        path : record.image.path,
+        url : record.image.url,
         height : record.image.height,
         width : record.image.width,
         colorPalette : record.image.colorPalette
