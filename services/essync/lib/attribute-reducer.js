@@ -86,7 +86,7 @@ class AttributeReducer {
 
     await this.walkRecord(images, record, record, reduced, e.alias);
 
-    // this.setImage(record, images);
+    this.setImage(record, images);
     
     for( let key in reduced ) {
       record[key] = reduced[key];
@@ -114,11 +114,7 @@ class AttributeReducer {
    */
   setImage(record, images) {
     // does the record have an image?
-    if( record.workExample ) {
-      return;
-    }
-
-    if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
+    if( record.image ) {
       return;
     }
 
@@ -156,6 +152,7 @@ class AttributeReducer {
     // check for images to add to list
     if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
       images.push({
+        inheritedFrom : record['@id'],
         isWebFriendly : this.isWebFriendly(parent),
         url : record.image.url,
         height : record.image.height,
