@@ -172,7 +172,6 @@ services:
     command: node service
     # command: bash -c 'tail -f /dev/null'
 
-<<<<<<< HEAD
   tar:
     build: ../../services/tar
     volumes:
@@ -185,8 +184,6 @@ services:
     # command: node service
     command: bash -c 'tail -f /dev/null'
 
-=======
->>>>>>> master
   # auto-generator-demo:
   #   build: ../../services/auto-generator-demo
   #   volumes:
