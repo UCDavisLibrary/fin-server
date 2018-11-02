@@ -339,7 +339,7 @@ class ProxyModel {
     let info = await this._getContainerAccessAndInfo(svcReq.fcPath, expReq);
     if( !info.access ) {
       this._setReqTime(expReq);
-      return res.status(403).send('Unauthorized');
+      return res.status(info.response.statusCode).send(info.response.body);
     }
 
     // grab the service definition

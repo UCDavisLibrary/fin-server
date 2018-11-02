@@ -25,7 +25,7 @@ api.setConfig({
 
 logger.info('waiting for fcrepo connection');
 require('./lib/startupCheck')(() => {
-  logger.info('waiting for fcrepo connection established');
+  logger.info('fcrepo connection established');
 
   // create express instance
   const app = express();
@@ -48,12 +48,15 @@ require('./lib/startupCheck')(() => {
 
   // setup simple http logging
   app.use((req, res, next) => {
+    let userAgent = req.get('User-Agent') || 'no-user-agent';
+    let url = req.originalUrl || req.url;
+
+    // help debug hanging requests
+    logger.debug(`request: ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}`);
+
     res.on('finish',() => {
       let fcrepoProxyTime = req.fcrepoProxyTime ? 'fcrepo:'+req.fcrepoProxyTime+'ms' : '';
-      let userAgent = req.get('User-Agent') || 'no-user-agent';
-      let url = req.originalUrl || req.url;
       let cache = 'cache:' + (res.get('x-fin-cache') || 'no-cache');
-
       logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}, ${fcrepoProxyTime} ${cache}`);
     });
     next();

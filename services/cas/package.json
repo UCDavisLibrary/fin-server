@@ -9,7 +9,7 @@
   "author": "jrmerz@ucdavis.edu",
   "license": "ISC",
   "dependencies": {
-    "@ucd-lib/fin-node-utils": "^0.2.12",
+    "@ucd-lib/fin-node-utils": "^0.2.13",
     "body-parser": "^1.18.2",
     "cas-authentication": "0.0.8",
     "express": "^4.16.2",

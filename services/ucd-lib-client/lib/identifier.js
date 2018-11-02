@@ -50,7 +50,7 @@ async function handleRequest(req, resp) {
   if( (req.get('accept') || '').match(/text\/html/) && !info.suffix ) {
     resp.redirect('/record'+record['@id']);
   } else {
-    resp.redirect(config.fcrepo.root+record.id+info.suffix);
+    resp.redirect(config.fcrepo.root+record['@id']+info.suffix);
   }
 };
 

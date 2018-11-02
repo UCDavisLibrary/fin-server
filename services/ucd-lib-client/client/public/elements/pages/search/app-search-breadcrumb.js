@@ -64,8 +64,8 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
     this.record = await this._getRecord(this.currentRecordId);
     this.record = this.record.payload;
 
-    if( this.record.isPartOf && this.record.isPartOf['@id'] ) {
-      this.collection = await this._getCollection(this.record.isPartOf['@id']);
+    if( this.record.collectionId ) {
+      this.collection = await this._getCollection(this.record.collectionId);
     } else {
       this.collection = null;
     }

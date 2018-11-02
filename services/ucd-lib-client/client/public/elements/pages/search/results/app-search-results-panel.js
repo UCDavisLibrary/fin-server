@@ -117,7 +117,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
     this.resizeTimer = -1;
     window.addEventListener('resize', () => this._resizeAsync());
 
-    this.MasterController().on('show-collection-search-results', show => this._updateCollectionResultsVisibility(show));
+    this.EventBus().on('show-collection-search-results', show => this._updateCollectionResultsVisibility(show));
   }
 
   /**
