@@ -15,8 +15,8 @@ class FiltersModel extends BaseModel {
     this.updateTimer = -1;
     this.selectedCollection = null;
 
-    this.MasterController.on(RecordModel.store.events.RECORD_SEARCH_UPDATE, e => this._update());
-    this.MasterController.on(CollectionModel.store.events.SELECTED_COLLECTION_UPDATE, e => {
+    this.EventBus.on(RecordModel.store.events.RECORD_SEARCH_UPDATE, e => this._update());
+    this.EventBus.on(CollectionModel.store.events.SELECTED_COLLECTION_UPDATE, e => {
       this.selectedCollection = e ? e['@id'] : '';
       this._update();
     });

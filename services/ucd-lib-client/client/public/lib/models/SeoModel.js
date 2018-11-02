@@ -15,9 +15,9 @@ class SeoModel extends BaseModel {
     if( typeof window === 'undefined' ) return;
     this.ele = document.querySelector('#seo-jsonld');
     
-    this.MasterController.on(AppStateModel.store.events.APP_STATE_UPDATE, (e) => this._onAppStateUpdate(e));
-    this.MasterController.on(AppStateModel.store.events.SELECTED_RECORD_UPDATE, (e) => this._onAppStateUpdate(e));
-    this.MasterController.on(CollectionModel.store.events.SELECTED_COLLECTION_UPDATE, (e) => this._onAppStateUpdate(e));
+    this.EventBus.on(AppStateModel.store.events.APP_STATE_UPDATE, (e) => this._onAppStateUpdate(e));
+    this.EventBus.on(AppStateModel.store.events.SELECTED_RECORD_UPDATE, (e) => this._onAppStateUpdate(e));
+    this.EventBus.on(CollectionModel.store.events.SELECTED_COLLECTION_UPDATE, (e) => this._onAppStateUpdate(e));
   }
 
   /**

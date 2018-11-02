@@ -458,8 +458,13 @@ class TransformUtils {
    * @param {Object} json record
    */
   setRootRecord(json) {
-    if( json.isPartOf && json.isPartOf['@id'] === json.collectionId ) {
-      json.isRootRecord = true;
+    if( !json.isPartOf ) return;
+    let isPartOf = Array.isArray(json.isPartOf) ? json.isPartOf : [json.isPartOf];
+    for( let part of isPartOf ) {
+      if( part['@id'] === json.collectionId ) {
+        json.isRootRecord = true;
+        return;
+      }
     }
   }
 

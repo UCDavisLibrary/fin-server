@@ -31,6 +31,16 @@ module.exports = [
     type : 'WebhookService',
     url : 'http://essync:3333'
   },
+<<<<<<< HEAD
+=======
+  // {
+  //   id : 'auto-generator-demo',
+  //   title : 'Auto Generator Demo',
+  //   description : 'Demo of automatic container generation',
+  //   type : 'WebhookService',
+  //   url : 'http://auto-generator-demo:3333'
+  // },
+>>>>>>> master
   {
     id : 'es-record-transform',
     title : 'Elastic Search - Record Record Transform',
@@ -45,6 +55,23 @@ module.exports = [
     type : 'TransformService',
     transform : '/etc/fin/transforms/es-collection.js'
   },
+<<<<<<< HEAD
+=======
+  // {
+  //   id : 'es-record-frame',
+  //   title : 'Elastic Search - Collection Record Frame',
+  //   description : 'Used for updating Elastic Search indexes when fedora updates',
+  //   type : 'FrameService',
+  //   frame : require('./frames/es-record.json')
+  // },
+  // {
+  //   id : 'es-collection-frame',
+  //   title : 'Elastic Search - Collection Frame',
+  //   description : 'Used for updating Search indexes when fedora updates',
+  //   type : 'FrameService',
+  //   frame : require('./frames/es-collection.json')
+  // },
+>>>>>>> master
   {
     id : 'cas',
     description : 'UCD CAS authentication service',

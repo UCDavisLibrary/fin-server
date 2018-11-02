@@ -196,17 +196,21 @@ class EsIndexer {
    */
   async remove(path='', types=[]) {
     if( this.isRecord(types) ) {
+      logger.info(`ES Indexer removing record container: ${path}`);
+
       let exists = await this.esClient.exists({
         index : config.elasticsearch.record.alias,
         type: config.elasticsearch.record.schemaType,
         id : path
       });
-      if( !exists ) return;
+      if( !exists ) {
+        logger.info(`ES Indexer ignoring remove record container: ${path}, record does not exist in es`);
+      }
 
       try {
 
         // start the timer for the attribute reducing
-        this.attributeReducer.onRecordUpdate({record: path});
+        await this.attributeReducer.onRecordUpdate({record: path});
 
         await this.esClient.delete({
           index : config.elasticsearch.record.alias,
@@ -295,6 +299,29 @@ class EsIndexer {
     // we don't have a frame service for this
     if( !svc ) return null;
 
+    let response = await this._requestContainer(path, svc);
+    if( !response ) return null;
+
+    try {
+      return JSON.parse(response.body);
+    } catch(e) {
+      logger.fatal('Failed to get transform for: '+path, response.statusCode+' '+response.body,  e);
+      return null;
+    }
+  }
+
+  /**
+   * @method _requestContainer
+   * @description request a container, if a non-200 status code that is not
+   * a 403 is returned, will automatically try request again
+   * 
+   * @param {String} path fcrepo path
+   * @param {String} svc fin service
+   * @param {Boolean} retry leave as false, function will handle this param
+   * 
+   * @return {Promise} resolves to null or response object
+   */
+  async _requestContainer(path, svc, retry=false) {
     var response = await this.request({
       type : 'GET',
       uri : path+`/svc:${svc}`
@@ -306,16 +333,13 @@ class EsIndexer {
     }
 
     if( response.statusCode !== 200 ) {
-      logger.fatal('Non 200 status code for frame request '+path, response.statusCode, response.body);
-      return null;
+      logger.error('Non 200 status code for transform request '+path, response.statusCode, response.body);
+      if( retry ) return null;
+      logger.info('Retrying request for transform: '+path);
+      return await this._requestContainer(path, svc, true);
     }
 
-    try {
-      return JSON.parse(response.body);
-    } catch(e) {
-      logger.fatal('Failed to get frame for: '+path, response.statusCode+' '+response.body,  e);
-      return null;
-    }
+    return response;
   }
 
   /**

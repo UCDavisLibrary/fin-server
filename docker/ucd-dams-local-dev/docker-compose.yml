@@ -35,13 +35,6 @@ services:
       - FIN_ENV=dev
       - FIN_ALLOW_ORIGINS=localhost:8081
 
-  # postgres:
-  #   image: postgres:9
-  #   ports:
-  #     - 5432:5432
-  #   volumes:
-  #     - pg-data:/var/lib/postgresql/data
-
   ###
   # Fedora Repository
   ###
@@ -179,6 +172,7 @@ services:
     command: node service
     # command: bash -c 'tail -f /dev/null'
 
+<<<<<<< HEAD
   tar:
     build: ../../services/tar
     volumes:
@@ -191,6 +185,8 @@ services:
     # command: node service
     command: bash -c 'tail -f /dev/null'
 
+=======
+>>>>>>> master
   # auto-generator-demo:
   #   build: ../../services/auto-generator-demo
   #   volumes:

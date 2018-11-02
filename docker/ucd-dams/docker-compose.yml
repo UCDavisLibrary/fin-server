@@ -1,53 +1,78 @@
-
-version: '2'
+version: '3'
 
 ###
-# Prod
+# Demo Fin Server from deployed DockerHub container images
 ###
 services:
 
   ###
-  # Font End NodeJS Application Server & Proxy
+  # Font End NodeJS Application Server
   ###
   server:
-    build: ../../server
-    volumes:
-      - ../../services/frames:/etc/fin/frames
-      - ../../services/default-services.js:/etc/fin/default-services.js
-      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
+    image: ucdlib/fin-server:master
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
+      - FIN_ENV=dev
+      - FIN_ALLOW_ORIGINS=localhost:8081
+    volumes:
+      - ../../services/default-services.js:/etc/fin/default-services.js
+      - ../../server/gitinfo.json:/app/gitinfo.json
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
+      - ../../server/backups:/fcrepo-backups
+      - ../../server/default-transforms:/etc/fin/transforms
     ports:
       - 3000:3001
+    depends_on:
+      - fcrepo
+      - redis
+      - elasticsearch
 
   ###
   # Fedora Repository
   ###
   fcrepo:
-    build: ../../fcrepo
-    volumes:
-      - fedora-data:/var/lib/jetty/fedora-data
+    image: ucdlib/fin-fcrepo:master
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_VERBOSE=${JWT_VERBOSE}
       - FIN_URL=${FIN_URL}
+    volumes:
+      - fedora-data:/var/lib/jetty/fedora-data
+      - ./backups:/var/lib/jetty/fcrepo-backups
+
+  ###
+  # Session, admin store
+  ###
+  redis:
+    image: redis:3.2
+    volumes:
+      - redis-data:/data
+    depends_on:
+      - fcrepo
 
   ###
   # UC DAMS Client UI
   ###
   ucd-lib-client:
-    build: ../../services/ucd-lib-client
-    volumes:
-      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
+    image: ucdlib/fin-ucd-lib-client:master
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
-      - FIN_ENV=prod
     depends_on:
       - elasticsearch
+
+  tesseract:
+    image: ucdlib/fin-tesseract-service:master
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+    depends_on:
+      - server
 
   ###
   # Search
@@ -65,104 +90,69 @@ services:
       - es-data:/usr/share/elasticsearch/data
       - ../elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     depends_on:
-      - server
-
-  ###
-  # Session, local user and role store
-  ###
-  redis:
-    image: redis:3.2
-    volumes:
-      - redis-data:/data
-    depends_on:
-      - fcrepo  
+      - fcrepo
 
   ###
   # Trusted Proxy for Services
   ###
   trustedproxy:
-    build: ../../services/trusted-proxy
-    volumes:
-      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
-    depends_on:
-      - fcrepo
+    image: ucdlib/fin-trusted-proxy:master
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_TTL=${JWT_TTL}
+    depends_on:
+      - fcrepo
 
   ###
-  # API Extension Services
+  # IIIF Service
   ###
-
-  # iiif server
   loris:
-    build: ../../services/loris
+    image: ucdlib/fin-loris-service:master
     depends_on:
       - fcrepo
     volumes:
       - loris-data:/usr/local/share/images/loris
-
-  # elastic search indexer
+      - ../../services/loris/loris2.conf:/opt/loris/etc/loris2.conf
+      - ../../services/loris/start.py:/opt/loris/loris/start.py
+  ###
+  # ES Indexer
+  ###
   essync:
-    build: ../../services/essync
-    volumes:
-      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
+    image: ucdlib/fin-essync-service:master
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
     depends_on:
       - server
-      - fcrepo
-      - elasticsearch
-
-  # auto generator service demo
-  auto-generator-demo:
-    build: ../../services/auto-generator-demo
-    volumes:
-      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER}
-      - FIN_URL=${FIN_URL}
-    depends_on:
-      - server
-    # command: bash -c "tail -f /dev/null"
-
-  ###
-  # CAS AuthenticationService
-  ###
+  
   cas:
-    build: ../../services/cas
+    image: ucdlib/fin-cas-service:master
     volumes:
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
+      - CAS_URL=https://ssodev.ucdavis.edu/cas
     depends_on:
       - server
+    command: node service
 
-  ###
-  # Basic Username/Password AuthenticationService
-  ###
-  basic-auth:
-    build: ../../services/basic-auth
-    volumes:
-      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER}
-      - FIN_URL=${FIN_URL}
-    depends_on:
-      - server
-
+###
+# Docker data volumes
+###
 volumes:
   fedora-data:
+    driver: local
+  fedora-serialized-data:
     driver: local
   es-data:
     driver: local
   redis-data:
     driver: local
   loris-data:
+    driver: local
+  loris-cache:
     driver: local

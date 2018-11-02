@@ -9,8 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "@ucd-lib/fin-node-api": "^0.9.7",
     "@ucd-lib/fin-node-utils": "^0.2.12",
+=======
+    "@ucd-lib/fin-node-api": "^0.9.4",
+    "@ucd-lib/fin-node-utils": "^0.2.13",
+>>>>>>> master
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cas-authentication": "0.0.8",

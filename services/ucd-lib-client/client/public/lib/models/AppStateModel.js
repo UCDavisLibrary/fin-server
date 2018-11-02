@@ -8,7 +8,7 @@ class AppStateModelImpl extends AppStateModel {
     super();
     this.store = AppStateStore;
 
-    this.MasterController.on(this.store.events.APP_STATE_UPDATE, () => this._sendGA());
+    this.EventBus.on(this.store.events.APP_STATE_UPDATE, () => this._sendGA());
     this._sendGA();
   }
 

@@ -128,7 +128,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.rights = null;
     }
 
-    this.collectionName = this.record.isPartOf ? this.record.isPartOf['@id'] : '';
+    this.collectionName = this.record.collectionId || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.name;

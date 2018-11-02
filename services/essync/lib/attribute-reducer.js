@@ -22,7 +22,10 @@ class AttributeReducer {
   async onRecordUpdate(e) {
     if( typeof e.record === 'string' ) {
       let exists = await this._exists(e.record, e.alias);
-      if( !exists ) return;
+      if( !exists ) {
+        logger.info(`ES Indexer attribute-reducer ignoring remove record container: ${e.record}, record does not exist in es`);
+        return;
+      }
       e.record = await this._get(e.record, e.alias);
     }
 
@@ -45,7 +48,9 @@ class AttributeReducer {
    * 
    * @returns {Promise} resolves to String or null 
    */
-  async findRootRecord(path, alias) {
+  async findRootRecord(path='', alias) {
+    if( path.match(/^http/) ) return null;
+
     let exists = await this._exists(path, alias);
     if( !exists ) return null;
 
@@ -55,10 +60,19 @@ class AttributeReducer {
       return record['@id'];
     }
 
-    let parentConnections = config.essync.parentConnections;
-    for( let i = 0; i < parentConnections.length; i++ ) {
-      if( record[parentConnections[i]] ) {
-        return await this.findRootRecord(record[parentConnections[i]]['@id'], alias);
+    for( let attr of config.essync.parentConnections ) {
+      if( !record[attr] ) continue;
+      
+      let property = record[attr];
+      if( !Array.isArray(property) ) {
+        property = [property];
+      }
+
+      for( let item of property ) {
+        if( !item['@id'] ) continue;
+        if( item['@id'].match(/^http/) ) continue;
+
+        return await this.findRootRecord(item['@id'], alias);
       }
     }
 
@@ -114,11 +128,7 @@ class AttributeReducer {
    */
   setImage(record, images) {
     // does the record have an image?
-    if( record.workExample ) {
-      return;
-    }
-
-    if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
+    if( record.image ) {
       return;
     }
 
@@ -156,8 +166,9 @@ class AttributeReducer {
     // check for images to add to list
     if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
       images.push({
+        inheritedFrom : record['@id'],
         isWebFriendly : this.isWebFriendly(parent),
-        path : record.image.path,
+        url : record.image.url,
         height : record.image.height,
         width : record.image.width,
         colorPalette : record.image.colorPalette
@@ -300,21 +311,37 @@ class AttributeReducer {
     return this._getAttributeValues(index, attrArray, obj);
   }
 
-  _exists(id, alias) {
-    return this.esClient.exists({
-      index : alias || config.elasticsearch.record.alias,
-      type: config.elasticsearch.record.schemaType,
-      id : id
-    });
+  async _exists(id, alias) {
+    try {
+      let exists = await this.esClient.exists({
+        index : alias || config.elasticsearch.record.alias,
+        type: config.elasticsearch.record.schemaType,
+        id : id
+      });
+      return exists;
+    } catch(e) {
+      logger.error(`Failed check id ${id} exists in elasticsearch`, e);
+    }
+    return false;
   }
 
   async _get(id, alias) {
-    let record = await this.esClient.get({
-      index: alias || config.elasticsearch.record.alias,
-      type: config.elasticsearch.record.schemaType,
-      id: id
-    });
-    return record._source;
+    let stackTrace;
+    try { throw new Error('Stack Trace') }
+    catch(e) {stackTrace = e.stack};
+
+    try {
+      let record = await this.esClient.get({
+        index: alias || config.elasticsearch.record.alias,
+        type: config.elasticsearch.record.schemaType,
+        id: id
+      });
+      return record._source;
+    } catch(e) {
+      logger.error(`Failed to get '${id}' in elasticsearch`, e);
+      logger.error(stackTrace);
+    }
+    return {};
   }
 
 }

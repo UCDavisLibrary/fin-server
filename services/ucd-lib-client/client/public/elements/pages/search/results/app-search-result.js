@@ -128,7 +128,7 @@ export default class AppSearchResult extends Mixin(PolymerElement)
       this.creator = [data.creator || ''];
     }
 
-    this.collectionName = this.data.isPartOf ? this.data.isPartOf['@id'] : '';
+    this.collectionName = this.data.collectionId || '';
     if( this.collectionName ) {
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.name;
