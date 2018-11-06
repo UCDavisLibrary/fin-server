@@ -129,6 +129,12 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
+    attr : 'thumbnailUrl',
+    value : ['schema', 'thumbnailUrl'],
+    type : 'id'
+  });
+
+  await utils.add({
     attr : 'datePublished',
     value : ['schema', 'datePublished']
   });

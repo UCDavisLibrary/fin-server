@@ -8,7 +8,7 @@ class AttributeReducer {
   
   constructor(esClient) {
     this.esClient = esClient;
-    buffer.on('record-update', (e) => this.reduceAttributes(e));
+    buffer.on('attributes-update', (e) => this.reduceAttributes(e));
   }
 
   /**
@@ -30,11 +30,11 @@ class AttributeReducer {
     }
 
     if( e.record.isRootRecord ) {
-      return buffer.add({'@id': e.record['@id'], alias: e.alias});
+      return buffer.add('attributes', e.record['@id'], {'@id': e.record['@id'], alias: e.alias});
     }
 
     let rootRecordPath = await this.findRootRecord(e.record['@id'], e.alias);
-    if( rootRecordPath ) buffer.add({'@id': rootRecordPath, alias: e.alias});
+    if( rootRecordPath ) buffer.add('attributes', rootRecordPath, {'@id': rootRecordPath, alias: e.alias});
   }
 
   /**

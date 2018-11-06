@@ -179,13 +179,13 @@ class TransformUtils {
     json.image = {
       url : config.fcrepo.root+imgPath
     };
-    await this._setImageResolution(json);
+    await this._setImageMetadata(json);
     await this._setThumbnailUrl(json);
     await this._setColorPalette(json);
   }
 
   /**
-   * @method setImageResolution
+   * @method _setImageMetadata
    * @description given a JSON-LD frame, set the image resolution.  If there is an workExample,
    * this property will be used otherwise the id of the frame.  The uri will be hit against
    * the iiif service for resolution information.
@@ -194,7 +194,7 @@ class TransformUtils {
    * 
    * @returns {Object}
    */
-  async _setImageResolution(json) {
+  async _setImageMetadata(json) {
     if( json.image.url.match(/svc:iiif/) ) {
       let parts = json.image.url.split('/svc:iiif/');
       let iiif = parts[1].split('/');
@@ -282,12 +282,24 @@ class TransformUtils {
     if( !h && !w ) size = 'full';
     else size = w+','+h;
 
-    json.thumbnailUrl =
+    let thumbnailUrl = (this._getJsonLdProperty(json.thumbnailUrl) || []);
+    thumbnailUrl = thumbnailUrl.map(url => {
+      if( typeof url === 'string' ) return url;
+      return url['@id'] || url['@value'];
+    });
+
+    thumbnailUrl.unshift(
       json.image.url + '/svc:iiif/' +
       json.image.iiif.region + '/' +
       size + '/' +
       json.image.iiif.rotation + '/' +
-      json.image.iiif.quality + '.' + json.image.iiif.format;
+      json.image.iiif.quality + '.' + json.image.iiif.format
+    );
+
+    if( thumbnailUrl.length === 1 ) {
+      thumbnailUrl = thumbnailUrl[0];
+    }
+    json.thumbnailUrl = thumbnailUrl;
 
     return json;
   }
@@ -295,34 +307,36 @@ class TransformUtils {
   /**
    * @method getImagePath
    * @description return the representative image for record.  The order of lookup is
-   * workExample, record id (if fileFormat is of type image/*), associatedMedia
+   * image, record id (if fileFormat is of type image/*), associatedMedia
    * 
    * @param {Object} json record
    * 
    * @returns {String|null}
    */
   async getImagePath(json) {
-    if( json.workExample ) {
-      return Array.isArray(json.workExample) ? json.workExample[0]['@id'].replace(finUrlRegex, '') : json.workExample['@id'].replace(finUrlRegex, '');
-    }
-    
-    if( json.fileFormat && json.fileFormat.match(/^image\//i) ) {
-      return json['@id'].replace(finUrlRegex, '');
-    }
-    if( json.hasMimeType && json.hasMimeType.match(/^image\//i) ) {
-      return json['@id'].replace(finUrlRegex, '');
-    }
-    
-    if( json.image ) {
-      return json['@id'].replace(finUrlRegex, '')+json.image;
+    let imagePath = this._getJsonLdProperty(json.image, true);
+
+    if( imagePath ) {
+      if( json.image.match(/^\//) ) return imagePath;
+      return json['@id'].replace(finUrlRegex, '')+imagePath;
     }
 
-    if( json.associatedMedia ) {
-      let media = Array.isArray(json.associatedMedia) ? json.associatedMedia : [json.associatedMedia];
-      for( var i = 0; i < media.length; i++ ) {
-        if( !media[i]['@id'] ) continue;
+    imagePath = this._getJsonLdProperty(json.fileFormat, true);
+    if( imagePath && imagePath.match(/^image\//i) ) {
+      return json['@id'].replace(finUrlRegex, '');
+    }
 
-        let uri = media[i]['@id'];
+    imagePath = this._getJsonLdProperty(json.hasMimeType, true);
+    if( imagePath && imagePath.match(/^image\//i) ) {
+      return json['@id'].replace(finUrlRegex, '');
+    }
+    
+    let associatedMedia = this._getJsonLdProperty(json.associatedMedia);
+    if( associatedMedia ) {
+      for( var i = 0; i < associatedMedia.length; i++ ) {
+        if( !associatedMedia[i]['@id'] ) continue;
+
+        let uri = associatedMedia[i]['@id'];
         let response = await this.request({
           type : 'HEAD', uri
         });
@@ -363,7 +377,8 @@ class TransformUtils {
    * @returns {Object}
    */
   async _setColorPalette(json, width='8') {
-    let imgUrl = config.fin.host+json.image.url+`/svc:iiif/full/${width},/0/default.jpg`;
+    let imgPath = json.image.url.replace(/\/?svc:iiif\/.*/, '');
+    let imgUrl = config.fin.host+imgPath+`/svc:iiif/full/${width},/0/default.jpg`;
 
     let result = await this.request({
       type : 'GET',
@@ -512,6 +527,26 @@ class TransformUtils {
         else resolve(response);
       });
     });
+  }
+
+  _getJsonLdProperty(value, returnFirst=false) {
+    if( value === undefined ) return null;
+    
+    if( !Array.isArray(value) ) {
+      value = [value];
+    }
+
+    if( value.length === 0 ) return null;
+
+    if( returnFirst ) {
+      value = value[0];
+      if( typeof value === 'object' ) {
+        return object['@id'] || object['@value'];
+      }
+      return value;
+    }
+
+    return value;
   }
 }
 

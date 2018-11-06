@@ -3,6 +3,7 @@ global.LOGGER_NAME = 'essync';
 const {MessageServer, config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const indexer = require('./lib/indexer');
 const reindexer = require('./lib/reindexer');
+const buffer = require('./lib/buffer');
 const gitinfo = require('./gitinfo.json');
 
 /**
@@ -15,6 +16,7 @@ class EsSyncMessageServer extends MessageServer {
 
   constructor() {
     super('Elasticsearch Sync');
+    buffer.on('container-update', e => this.onContainerEvent(e));
   }
 
   /**
@@ -49,10 +51,27 @@ class EsSyncMessageServer extends MessageServer {
       return;
     }
 
-    // handle event type
-    if( this.isCreate(eventTypes) ) this.onContainerCreated(path, msg);
-    else if( this.isModify(eventTypes) ) this.onContainerModified(path, msg);
-    else if( this.isDelete(eventTypes) ) this.onContainerDeleted(path, msg);
+    // walk path and register all containers in buffer
+    let parts = path.replace(/\/collection\/?/, '').split('/');
+    for( let i = parts.length; i >= 0; i-- ) {
+      path = parts.slice(0, i).join('/').trim();
+      if( !path ) continue;
+
+      path = '/collection/'+path;
+      buffer.add('container', path, {path, msg, eventTypes});
+    }
+  }
+
+  /**
+   * @method onContainerEvent
+   * @description called been buffer event timer fires
+   * 
+   * @param {Object} e event payload passed to buffer.
+   */
+  onContainerEvent(e) {
+    if( this.isCreate(e.eventTypes) ) this.onContainerCreated(e.path, e.msg);
+    else if( this.isModify(e.eventTypes) ) this.onContainerModified(e.path, e.msg);
+    else if( this.isDelete(e.eventTypes) ) this.onContainerDeleted(e.path, e.msg);
   }
 
   /**

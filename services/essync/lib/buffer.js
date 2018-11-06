@@ -1,24 +1,29 @@
 const EventEmitter = require('events');
 
-class RootRecordBuffer extends EventEmitter {
+class UpdateBuffer extends EventEmitter {
 
   constructor() {
     super();
     this.buffer = {};
-    this.bufferTime = 1000 * 10;
+    this.bufferTime = 1000 * 30;
   }
 
-  add(e) {
-    if( this.buffer[e['@id']] ) {
-      clearTimeout(this.buffer[e['@id']]);
+  add(type, id, data) {
+    if( !this.buffer[type] ) {
+      this.buffer[type] = {};
+    }
+    let buffer = this.buffer[type];
+
+    if( buffer[id] ) {
+      clearTimeout(buffer[id]);
     }
 
-    this.buffer[e['@id']] = setTimeout(() => {
-      delete this.buffer[e['@id']];
-      this.emit('record-update', e);
+    buffer[id] = setTimeout(() => {
+      delete buffer[id];
+      this.emit(type+'-update', data);
     }, this.bufferTime);
   }
 
 }
 
-module.exports = new RootRecordBuffer();
+module.exports = new UpdateBuffer();
