@@ -81,6 +81,10 @@
 
     "indexableContents" : {
       "type": "text"
+    },
+
+    "indexableContent" : {
+      "type": "text"
     }
 
   }

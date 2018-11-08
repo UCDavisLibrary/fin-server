@@ -97,8 +97,19 @@ class AttributeReducer {
 
     let reduced = {};
     let images = [];
+    let visited = {};
+    let identifier = null;
+    if( record.identifier ) { 
+      let ark = record.identifier.find(id => id.match(/^ark:\//));
+      if( ark ) {
+        identifier = {
+          ark,
+          id: e['@id']
+        }
+      }
+    }
 
-    await this.walkRecord(images, record, record, reduced, e.alias);
+    await this.walkRecord(images, record, record, reduced, visited, identifier, e.alias);
 
     this.setImage(record, images);
     
@@ -152,15 +163,44 @@ class AttributeReducer {
    * @param {Array} images list of images for this
    * @param {String|Object} record either record object or record id string
    * @param {Object} reduced current reduced attribute state
+   * @param {Object} visited hash of ids that have been visited
+   * @param {Object} identifier identifier information (ark and id) of root record if it exists 
    * @param {String} alias (optional) index alias to use
    * 
    * @returns {Promise} 
    */
-  async walkRecord(images, parent, record, reduced, alias) {
+  async walkRecord(images, parent, record, reduced, visited, identifier, alias) {
     if( typeof record === 'string' ) {
       let exists = await this._exists(record, alias);
       if( !exists ) return;
       record = await this._get(record, alias);
+    }
+
+    if( visited[record['@id']] ) return;
+    visited[record['@id']] = true;
+
+    // append id information
+    if( identifier ) {
+      let recordIdentifier = record.identifier || [];
+      if( !Array.isArray(recordIdentifier) ) {
+        recordIdentifier = [recordIdentifier];
+      }
+      let localArk = identifier.ark+record['@id'].replace(identifier.id, '');
+
+      if( recordIdentifier.indexOf(identifier.ark) === -1 ) {
+        recordIdentifier.push(identifier.ark);
+      }
+      if( recordIdentifier.indexOf(localArk) === -1 ) {
+        recordIdentifier.push(localArk);
+      }
+      record.identifier = recordIdentifier;
+
+      await this.esClient.index({
+        index : alias,
+        type: config.elasticsearch.record.schemaType,
+        id : record['@id'],
+        body: record
+      });
     }
 
     // check for images to add to list
@@ -184,10 +224,11 @@ class AttributeReducer {
       let values = Array.isArray(record[childConnections[i]]) ? record[childConnections[i]] : [record[childConnections[i]]];
       
       for( let j = 0; j < values.length; j++ ) {
-        if( values[j] && values[j]['@id'] ) {
+        if( !values[j] ) continue;
+        if( values[j]['@id'] ) {
           values[j] = values[j]['@id'];
         }
-        await this.walkRecord(images, record, values[j], reduced, alias);
+        await this.walkRecord(images, record, values[j], reduced, visited, identifier, alias);
       }
     }
   }
