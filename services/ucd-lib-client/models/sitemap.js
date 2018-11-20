@@ -13,11 +13,17 @@ class SitemapModel {
    * @param {Object} app express app instance
    */
   middleware(app) {
+    let allow = 'Disallow: /';
+    if( config.server.url.match('https://digital.ucdavis.edu') ) {
+      allow = 'Allow: /';
+    }
+
     app.get(/^\/sitemap.*/, (req, res) => this._onRequest(req, res));
     app.get('/robots.txt', (req, res) => {
       res.set('Content-Type', 'text/plain');
       res.send(`User-agent: * 
-Disallow: /fcrepo/rest/
+${allow}
+
 Sitemap: ${config.server.url}/sitemap.xml`);
     });
   }

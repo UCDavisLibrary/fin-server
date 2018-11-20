@@ -8,7 +8,13 @@ class AttributeReducer {
   
   constructor(esClient) {
     this.esClient = esClient;
-    buffer.on('attributes-update', (e) => this.reduceAttributes(e));
+    buffer.on('attributes-update', async (e) => {
+      try {
+        await this.reduceAttributes(e)
+      } catch(err) {
+        logger.error('Failed to reduce attributes for: ', e['@id'], err);
+      }
+    });
   }
 
   /**
@@ -34,7 +40,9 @@ class AttributeReducer {
     }
 
     let rootRecordPath = await this.findRootRecord(e.record['@id'], e.alias);
-    if( rootRecordPath ) buffer.add('attributes', rootRecordPath, {'@id': rootRecordPath, alias: e.alias});
+    if( rootRecordPath ) {
+      buffer.add('attributes', rootRecordPath, {'@id': rootRecordPath, alias: e.alias});
+    }
   }
 
   /**
@@ -98,14 +106,15 @@ class AttributeReducer {
     let reduced = {};
     let images = [];
     let visited = {};
-    let identifier = null;
-    if( record.identifier ) { 
-      let ark = record.identifier.find(id => id.match(/^ark:\//));
-      if( ark ) {
-        identifier = {
-          ark,
-          id: e['@id']
-        }
+    let identifier = record.identifier;
+    if( identifier ) { 
+      if( !Array.isArray(identifier) ) {
+        identifier = [identifier];
+      }
+
+      identifier = {
+        ark : record.identifier.find(id => id.match(/^ark:\//)),
+        id: record['@id']
       }
     }
 
@@ -185,14 +194,22 @@ class AttributeReducer {
       if( !Array.isArray(recordIdentifier) ) {
         recordIdentifier = [recordIdentifier];
       }
-      let localArk = identifier.ark+record['@id'].replace(identifier.id, '');
 
-      if( recordIdentifier.indexOf(identifier.ark) === -1 ) {
-        recordIdentifier.push(identifier.ark);
+      if( recordIdentifier.indexOf(identifier.id) === -1 ) {
+        recordIdentifier.push(identifier.id);
       }
-      if( recordIdentifier.indexOf(localArk) === -1 ) {
-        recordIdentifier.push(localArk);
+
+      if( identifier.ark ) {
+        let localArk = identifier.ark+record['@id'].replace(identifier.id, '');
+
+        if( recordIdentifier.indexOf(identifier.ark) === -1 ) {
+          recordIdentifier.push(identifier.ark);
+        }
+        if( recordIdentifier.indexOf(localArk) === -1 ) {
+          recordIdentifier.push(localArk);
+        }
       }
+      
       record.identifier = recordIdentifier;
 
       await this.esClient.index({
