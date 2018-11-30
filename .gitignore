@@ -10,3 +10,4 @@ services/ucd-lib-client/client/public/js/*bundle*.js
 services/ucd-lib-client/client/public/js/*ie-bundle*.js
 loaded-transforms
 gitinfo.json
+fcrepo-webapp-5.0.0-SNAPSHOT.war

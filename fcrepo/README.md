@@ -42,3 +42,18 @@ To build a new container image with and updated version of fedora:
 - run `download-webac.sh`
 - update `Dockerfile` and set `FCREPO_VERSION` to new version number
 - rebuild image using docker or docker-compose
+
+## 5.0 Help 
+
+some commands...
+
+run:
+MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=1024m -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y" mvn jetty:run -pl fcrepo-webapp/
+
+full build
+mvn clean install -Dcheckstyle.skip
+
+partial build
+mvn clean install -Dcheckstyle.skip -DskipTests -rf :fcrepo-http-api
+
+Then remote debug in Eclipse

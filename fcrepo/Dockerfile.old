@@ -18,25 +18,20 @@ RUN apt-get install -y wget unzip
 
 # Workaround for broken pre-made war above.
 # going to add files ourselves to base Fedora war
-# RUN wget https://github.com/fcrepo4/fcrepo4/releases/download/fcrepo-${FCREPO_VERSION}/fcrepo-webapp-${FCREPO_VERSION}.war -O ${FCREPO_WAR}
+RUN wget https://github.com/fcrepo4/fcrepo4/releases/download/fcrepo-${FCREPO_VERSION}/fcrepo-webapp-${FCREPO_VERSION}.war -O ${FCREPO_WAR}
 
-# RUN cd /var/lib/jetty/webapps && \
-#     unzip ${FCREPO_NAME}.war -d ${FCREPO_NAME} && \
-#     rm ${FCREPO_NAME}.war
-
-# COPY ./webac-jars/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
-# COPY ./http-api/fcrepo-http-api-${FCREPO_VERSION}.jar /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
-# RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
-# COPY ./webac-spring-files/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
-# RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
-# COPY ./fin-config/web.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/
-# COPY ./fin-config/activemq.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/config/
-# end workaround
-
-COPY fcrepo-webapp-5.0.0-SNAPSHOT.war /var/lib/jetty/webapps/fcrepo.war
 RUN cd /var/lib/jetty/webapps && \
     unzip ${FCREPO_NAME}.war -d ${FCREPO_NAME} && \
     rm ${FCREPO_NAME}.war
+
+COPY ./webac-jars/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
+COPY ./http-api/fcrepo-http-api-${FCREPO_VERSION}.jar /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
+RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/lib/
+COPY ./webac-spring-files/* /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
+RUN chmod -R a+r /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/spring/
+COPY ./fin-config/web.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/
+COPY ./fin-config/activemq.xml /var/lib/jetty/webapps/${FCREPO_NAME}/WEB-INF/classes/config/
+# end workaround
 
 # Add files for jetty / cas / jwt authentication
 COPY ./jetty-auth-jars/* /var/lib/jetty/lib/ext/
