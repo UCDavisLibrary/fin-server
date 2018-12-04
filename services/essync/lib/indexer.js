@@ -2,8 +2,7 @@ const elasticsearch = require('elasticsearch');
 const request = require('request');
 const schemaRecord = require('../schemas/record');
 const schemaCollection = require('../schemas/collection');
-const {logger, jwt} = require('@ucd-lib/fin-node-utils');
-const fs = require('fs');
+const {logger, jwt, waitUntil} = require('@ucd-lib/fin-node-utils');
 const {URL} = require('url');
 const config = require('./config');
 const AttributeReducer = require('./attribute-reducer');
@@ -30,7 +29,7 @@ class EsIndexer {
   constructor() {
     this.name = 'essync-indexer';
     this.esClient = new elasticsearch.Client({
-      host: config.elasticsearch.host,
+      host: config.elasticsearch.connStr,
       log: config.elasticsearch.log,
       requestTimeout : 3*60*1000
     });
@@ -46,33 +45,15 @@ class EsIndexer {
    * @method isConnected
    * @description make sure we are connected to elasticsearch
    */
-  isConnected() {
-    return new Promise((resolve, reject) => {
-      this._connect(0, resolve, reject);
-    });
-  }
+  async isConnected() {
+    await waitUntil(config.elasticsearch.host, config.elasticsearch.port);
 
-  /**
-   * @method _connect
-   * @description actually try to connect to elasticsearch, throttle delay back
-   * on failure.
-   * 
-   * @param {Number} count number of connection attempts
-   * @param {Function} resolve resolve wrapper promise
-   * @param {Function} reject reject wrapper promise
-   */
-  async _connect(count, resolve, reject) {
-    if( count === 5 ) return reject('Unable to connect to Elastic Search');
-    setTimeout(async () => {
-      try {
-        await this.esClient.ping({requestTimeout: 5000});
-        resolve();
-      } catch(e) {
-        count++;
-        this._connect(count, resolve, reject);
-      }
-      // grrrrr just waiting a bit for es to start
-    }, 20000 + (1000 * count));
+    // sometimes we still aren't ready....
+    try {
+      await this.esClient.ping({requestTimeout: 5000});
+    } catch(e) {
+      await this.isConnected();
+    }
   }
 
   /**
@@ -155,7 +136,17 @@ class EsIndexer {
     if( !jsonld ) return;
 
     // only index binary and collections
-    if( this.isRecord(jsonld['@type']) ) {
+    if ( this.isCollection(jsonld['@type']) ) {
+      logger.info(`ES Indexer updating collection container: ${jsonld['@id']}`);
+
+      await this.esClient.index({
+        index : collectionIndex || config.elasticsearch.collection.alias,
+        type: config.elasticsearch.collection.schemaType,
+        id : jsonld['@id'],
+        body: jsonld
+      });
+
+    } else if( this.isRecord(jsonld['@type']) ) {
       logger.info(`ES Indexer updating record container: ${jsonld['@id']}`);
 
       await this.esClient.index({
@@ -169,16 +160,6 @@ class EsIndexer {
       this.attributeReducer.onRecordUpdate({
         record: jsonld,
         alias : recordIndex || config.elasticsearch.record.alias
-      });
-
-    } else if ( this.isCollection(jsonld['@type']) ) {
-      logger.info(`ES Indexer updating collection container: ${jsonld['@id']}`);
-
-      await this.esClient.index({
-        index : collectionIndex || config.elasticsearch.collection.alias,
-        type: config.elasticsearch.collection.schemaType,
-        id : jsonld['@id'],
-        body: jsonld
       });
 
     } else {
@@ -195,34 +176,14 @@ class EsIndexer {
    * @returns {Promise}
    */
   async remove(path='', types=[]) {
-    if( this.isRecord(types) ) {
-      logger.info(`ES Indexer removing record container: ${path}`);
+    // console.log(path);
+    // console.log(types);
+    // console.log(this.isRecord(types));
+    // console.log(this.isCollection(types));
 
-      let exists = await this.esClient.exists({
-        index : config.elasticsearch.record.alias,
-        type: config.elasticsearch.record.schemaType,
-        id : path
-      });
-      if( !exists ) {
-        logger.info(`ES Indexer ignoring remove record container: ${path}, record does not exist in es`);
-      }
+    if( this.isCollection(types) ) {
+      logger.info(`ES Indexer removing collection container: ${path}`, types);
 
-      try {
-
-        // start the timer for the attribute reducing
-        await this.attributeReducer.onRecordUpdate({record: path});
-
-        await this.esClient.delete({
-          index : config.elasticsearch.record.alias,
-          type: config.elasticsearch.record.schemaType,
-          id : path
-        });
-  
-        logger.info(`ES Indexer removed record container: ${path}`);
-      } catch(e) {
-        logger.error('Failed to remove record container from elasticsearch: '+path, e);
-      }
-    } else if( this.isCollection(types) ) {
       let exists = await this.esClient.exists({
         index : config.elasticsearch.collection.alias,
         type: config.elasticsearch.collection.schemaType,
@@ -240,6 +201,34 @@ class EsIndexer {
         logger.info(`ES Indexer removed collection container: ${path}`);
       } catch(e) {
         logger.error('Failed to remove collection container from elasticsearch: '+path, e);
+      }
+    } else if( this.isRecord(types) ) {
+      logger.info(`ES Indexer removing record container: ${path}`, types);
+
+      let exists = await this.esClient.exists({
+        index : config.elasticsearch.record.alias,
+        type: config.elasticsearch.record.schemaType,
+        id : path
+      });
+      if( !exists ) {
+        logger.info(`ES Indexer ignoring remove record container: ${path}, record does not exist in es`);
+        return;
+      }
+
+      try {
+
+        // start the timer for the attribute reducing
+        await this.attributeReducer.onRecordUpdate({record: path, alias: config.elasticsearch.record.alias});
+
+        await this.esClient.delete({
+          index : config.elasticsearch.record.alias,
+          type: config.elasticsearch.record.schemaType,
+          id : path
+        });
+  
+        logger.info(`ES Indexer removed record container: ${path}`);
+      } catch(e) {
+        logger.error('Failed to remove record container from elasticsearch: '+path, e);
       }
     } else {
       logger.info('Unknown type of container to remove', types);
@@ -293,13 +282,13 @@ class EsIndexer {
     }
 
     let svc = '';
-    if( this.isRecord(types) ) svc = config.essync.transformServices.record;
-    else if( this.isCollection(types) ) svc = config.essync.transformServices.collection;
+    if( this.isCollection(types) ) svc = config.essync.transformServices.collection;
+    else if( this.isRecord(types) ) svc = config.essync.transformServices.record;
 
     // we don't have a frame service for this
     if( !svc ) return null;
 
-    let response = await this._requestContainer(path, svc);
+    let response = await this._requestSvcContainer(path, svc);
     if( !response ) return null;
 
     try {
@@ -311,7 +300,31 @@ class EsIndexer {
   }
 
   /**
-   * @method _requestContainer
+   * @method getContainer
+   * @description get a es object for container at specified path. 
+   * 
+   * @param {String} path fcrepo url
+   * 
+   * @returns {Promise}
+   */
+  async getContainer(path='') {
+    if( path.match(/fcr:metadata$/) ) {
+      path = path.replace(/\/fcr:metadata$/, '');
+    }
+
+    let response = await this._requestContainer(path);
+    if( !response ) return null;
+
+    try {
+      return JSON.parse(response.body);
+    } catch(e) {
+      logger.fatal('Failed to get container for: '+path, response.statusCode+' '+response.body,  e);
+      return null;
+    }
+  }
+
+  /**
+   * @method _requestSvcContainer
    * @description request a container, if a non-200 status code that is not
    * a 403 is returned, will automatically try request again
    * 
@@ -321,7 +334,7 @@ class EsIndexer {
    * 
    * @return {Promise} resolves to null or response object
    */
-  async _requestContainer(path, svc, retry=false) {
+  async _requestSvcContainer(path, svc, retry=false) {
     var response = await this.request({
       type : 'GET',
       uri : path+`/svc:${svc}`
@@ -336,7 +349,41 @@ class EsIndexer {
       logger.error('Non 200 status code for transform request '+path, response.statusCode, response.body);
       if( retry ) return null;
       logger.info('Retrying request for transform: '+path);
-      return await this._requestContainer(path, svc, true);
+      return await this._requestSvcContainer(path, svc, true);
+    }
+
+    return response;
+  }
+
+    /**
+   * @method _requestContainer
+   * @description request a container, if a non-200 status code that is not
+   * a 403 is returned, will automatically try request again
+   * 
+   * @param {String} path fcrepo path
+   * @param {Boolean} retry leave as false, function will handle this param
+   * 
+   * @return {Promise} resolves to null or response object
+   */
+  async _requestContainer(path, retry=false) {
+    var response = await this.request({
+      type : 'GET',
+      uri : path,
+      headers : {
+        accept : 'application/ld+json'
+      }
+    });
+    
+    if( response.statusCode === 403 ) {
+      logger.error('Ignoring non-public container: '+path);
+      return null;
+    }
+
+    if( response.statusCode !== 200 ) {
+      logger.error('Non 200 status code for container request '+path, response.statusCode, response.body);
+      if( retry ) return null;
+      logger.info('Retrying request for container: '+path);
+      return await this._requestContainer(path, true);
     }
 
     return response;

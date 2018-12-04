@@ -27,12 +27,12 @@ class AttributeReducer {
    */
   async onRecordUpdate(e) {
     if( typeof e.record === 'string' ) {
-      let exists = await this._exists(e.record, e.alias);
-      if( !exists ) {
+      let record = await this._get(e.record, e.alias);
+      if( !record ) {
         logger.info(`ES Indexer attribute-reducer ignoring remove record container: ${e.record}, record does not exist in es`);
         return;
       }
-      e.record = await this._get(e.record, e.alias);
+      e.record = record;
     }
 
     if( e.record.isRootRecord ) {
@@ -59,10 +59,8 @@ class AttributeReducer {
   async findRootRecord(path='', alias) {
     if( path.match(/^http/) ) return null;
 
-    let exists = await this._exists(path, alias);
-    if( !exists ) return null;
-
     let record = await this._get(path, alias);
+    if( !record ) return null;
 
     if( record.isRootRecord ) {
       return record['@id'];
@@ -97,10 +95,8 @@ class AttributeReducer {
    * @param {String} e.alias alias to add record to
    */
   async reduceAttributes(e) {
-    let exists = await this._exists(e['@id'], e.alias);
-    if( !exists ) return;
-
     let record = await this._get(e['@id'], e.alias);
+    if( !record ) return;
     if( !record.isRootRecord ) return;
 
     let reduced = {};
@@ -180,9 +176,8 @@ class AttributeReducer {
    */
   async walkRecord(images, parent, record, reduced, visited, identifier, alias) {
     if( typeof record === 'string' ) {
-      let exists = await this._exists(record, alias);
-      if( !exists ) return;
       record = await this._get(record, alias);
+      if( !record ) return;
     }
 
     if( visited[record['@id']] ) return;
@@ -369,20 +364,6 @@ class AttributeReducer {
     return this._getAttributeValues(index, attrArray, obj);
   }
 
-  async _exists(id, alias) {
-    try {
-      let exists = await this.esClient.exists({
-        index : alias || config.elasticsearch.record.alias,
-        type: config.elasticsearch.record.schemaType,
-        id : id
-      });
-      return exists;
-    } catch(e) {
-      logger.error(`Failed check id ${id} exists in elasticsearch`, e);
-    }
-    return false;
-  }
-
   async _get(id, alias) {
     let stackTrace;
     try { throw new Error('Stack Trace') }
@@ -396,10 +377,11 @@ class AttributeReducer {
       });
       return record._source;
     } catch(e) {
+      if( e.status === 404 ) return null;
       logger.error(`Failed to get '${id}' in elasticsearch`, e);
       logger.error(stackTrace);
     }
-    return {};
+    return null;
   }
 
 }

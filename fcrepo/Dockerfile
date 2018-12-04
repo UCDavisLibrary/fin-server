@@ -60,8 +60,6 @@ VOLUME ["$FCREPO_HOME"]
 #     -Dfcrepo.activemq.configuration=${FCREPO_ACTIVEMQ_CONFIGURATION}"
 
 ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
-    -Xdebug \
-    -Xrunjdwp:transport=dt_socket,address=8002,server=y,suspend=n \
     -Dfcrepo.home=${FCREPO_HOME} \
     -Dfcrepo.modeshape.configuration=${FCREPO_MODESHAPE_CONFIGURATION}" \
     -Dfcrepo.auth.webac.authorization=${FCREPO_AUTH_WEBAC_AUTHORIZATION}" \

@@ -42,15 +42,6 @@ class EsSyncMessageServer extends MessageServer {
     // grab the resource path
     let path = this.getPath(msg);
 
-    // we don't want anything in a dot path
-    if( this.isDotPath(path) ) return;
-
-    // we only want collection and record types
-    if( !indexer.isCollection(msg.payload.body.type) && 
-        !indexer.isRecord(msg.payload.body.type) ) {
-      return;
-    }
-
     // walk path and register all containers in buffer
     let parts = path.replace(/\/collection\/?/, '').split('/');
     for( let i = parts.length; i >= 0; i-- ) {
@@ -58,6 +49,17 @@ class EsSyncMessageServer extends MessageServer {
       if( !path ) continue;
 
       path = '/collection/'+path;
+
+      // we don't want anything in a dot path
+      if( this.isDotPath(path) ) continue;
+
+      // if not the event container, we have to look up type
+      // and fake message payload after buffer
+      if( i !== parts.length ) {
+        msg = null;
+        eventTypes =  null;
+      }
+
       buffer.add('container', path, {path, msg, eventTypes});
     }
   }
@@ -68,7 +70,28 @@ class EsSyncMessageServer extends MessageServer {
    * 
    * @param {Object} e event payload passed to buffer.
    */
-  onContainerEvent(e) {
+  async onContainerEvent(e) {
+    // we need to look up type and set
+    if( !e.msg ) {
+      let container = await indexer.getContainer(e.path);
+      if( !container ) return;
+      if( Array.isArray(container) ) container = container[0];
+
+      let type = container['@type'];
+      e.msg = {
+        payload : {
+          body : {type}
+        }
+      }
+      e.eventTypes = ['ResourceModification'];
+    }
+
+    // we only want collection and record types
+    if( !indexer.isCollection(e.msg.payload.body.type) && 
+      !indexer.isRecord(e.msg.payload.body.type) ) {
+      return;
+    }
+
     if( this.isCreate(e.eventTypes) ) this.onContainerCreated(e.path, e.msg);
     else if( this.isModify(e.eventTypes) ) this.onContainerModified(e.path, e.msg);
     else if( this.isDelete(e.eventTypes) ) this.onContainerDeleted(e.path, e.msg);
@@ -116,22 +139,23 @@ class EsSyncMessageServer extends MessageServer {
     // if the collection doesn't exist in the  
     // elasticsearch we need to reindex the entire collection
     if( indexer.isCollection(msg.payload.body.type) ) {
-      let exists = await indexer.esClient.exists({
-        index : config.elasticsearch.collection.alias,
-        type: config.elasticsearch.collection.schemaType,
-        id : path
-      });
+      // TODO: just update container...
+      // let exists = await indexer.esClient.exists({
+      //   index : config.elasticsearch.collection.alias,
+      //   type: config.elasticsearch.collection.schemaType,
+      //   id : path
+      // });
 
-      if( !exists ) {
-        logger.info('Modification to existing collection not in elasticsearch, reindexing collection: '+path);
-        await reindexer.crawl(
-          indexer.getBaseUrl()+path,  
-          config.elasticsearch.record.alias,
-          config.elasticsearch.collection.alias
-        );
-        logger.info('Reindexing collection complete: '+path);
-        return;
-      }
+      // if( !exists ) {
+      //   logger.info('Modification to existing collection not in elasticsearch, reindexing collection: '+path);
+      //   await reindexer.crawl(
+      //     indexer.getFcRepoBaseUrl()+path,  
+      //     config.elasticsearch.record.alias,
+      //     config.elasticsearch.collection.alias
+      //   );
+      //   logger.info('Reindexing collection complete: '+path);
+      //   return;
+      // }
     }
 
     // insert into elasticsearch

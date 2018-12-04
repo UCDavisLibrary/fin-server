@@ -7,6 +7,7 @@ if( fs.existsSync('/etc/fin/default-services.js') ) {
 
 var fcrepoHostname = process.env.FCREPO_HOST || 'fcrepo';
 var esHostname = process.env.ES_HOST || 'elasticsearch';
+var esPort = process.env.ES_PORT || 9200;
 
 module.exports = {
 
@@ -62,7 +63,11 @@ module.exports = {
       alias : 'fcrepo-collections',
       schemaType : 'fcrepo-collection',
     },
-    host : `http://elastic:changeme@${esHostname}:9200`,
+    host : esHostname,
+    port : esPort,
+    get connStr () {
+      return `http://elastic:changeme@${this.host}:${this.port}`
+    }, 
     log : process.env.ES_LOG_LEVEL || 'error',
   },
 

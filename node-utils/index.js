@@ -5,5 +5,6 @@ module.exports = {
   logger : require('./logger'),
   MessageServer : require('./MessageServer'),
   utils : require('./utils'),
-  AutoGenerator : require('./AutoGenerator')
+  AutoGenerator : require('./AutoGenerator'),
+  waitUtil : require('./wait-until')
 }
