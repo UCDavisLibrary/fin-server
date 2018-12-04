@@ -5,11 +5,20 @@
   <Set name="contextPath">/fcrepo</Set>
   
   <!-- Use line below once workaround is removed -->
-  <!-- <Set name="war"><SystemProperty name="jetty.base" default="."/>/webapps/fcrepo.war</Set> -->
-  <Set name="war"><SystemProperty name="jetty.base" default="."/>/webapps/fcrepo</Set>
+  <Set name="war"><SystemProperty name="jetty.base" default="."/>/webapps/fcrepo.war</Set>
+  <!-- <Set name="war"><SystemProperty name="jetty.base" default="."/>/webapps/fcrepo</Set> -->
   
   <!-- Remove line below when workaround is removed-->
   <!-- <Set name="overrideDescriptor"><SystemProperty name="jetty.base" default="."/>/overlay-web.xml</Set> -->
+
+  <!--
+    Added because we are hitting this issue w/ v5:
+    https://stackoverflow.com/questions/41995029/jersey-spring3-2-25-1-produces-failed-startup-of-context-error-in-jetty-9-3
+  -->
+  <Call name="setAttribute">
+    <Arg>org.eclipse.jetty.server.webapp.WebInfIncludeJarPattern</Arg>
+    <Arg>.*/^(asm-all-repackaged)[^/]*\.jar$</Arg>
+  </Call>
 
   <Get name="securityHandler">
     <Set name="authenticator">

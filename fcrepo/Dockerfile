@@ -34,9 +34,9 @@ RUN apt-get install -y wget unzip
 # end workaround
 
 COPY fcrepo-webapp-5.0.0-SNAPSHOT.war /var/lib/jetty/webapps/fcrepo.war
-RUN cd /var/lib/jetty/webapps && \
-    unzip ${FCREPO_NAME}.war -d ${FCREPO_NAME} && \
-    rm ${FCREPO_NAME}.war
+# RUN cd /var/lib/jetty/webapps && \
+#     unzip ${FCREPO_NAME}.war -d ${FCREPO_NAME} && \
+#     rm ${FCREPO_NAME}.war
 
 # Add files for jetty / cas / jwt authentication
 COPY ./jetty-auth-jars/* /var/lib/jetty/lib/ext/
@@ -66,7 +66,7 @@ VOLUME ["$FCREPO_HOME"]
 
 ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
     -Xdebug \
-    -Xrunjdwp:transport=dt_socket,address=8002,server=y,suspend=n \
+    -Xrunjdwp:transport=dt_socket,address=8002,server=y,suspend=y \
     -Dfcrepo.home=${FCREPO_HOME} \
     -Dfcrepo.modeshape.configuration=${FCREPO_MODESHAPE_CONFIGURATION}" \
     -Dfcrepo.auth.webac.authorization=${FCREPO_AUTH_WEBAC_AUTHORIZATION}" \
