@@ -3,6 +3,7 @@ const request = require('request');
 const schemaRecord = require('../schemas/record');
 const schemaCollection = require('../schemas/collection');
 const {logger, jwt, waitUntil} = require('@ucd-lib/fin-node-utils');
+const api = require('@ucd-lib/fin-node-api');
 const {URL} = require('url');
 const config = require('./config');
 const AttributeReducer = require('./attribute-reducer');
@@ -175,22 +176,16 @@ class EsIndexer {
    * 
    * @returns {Promise}
    */
-  async remove(path='', types=[]) {
-    // console.log(path);
-    // console.log(types);
-    // console.log(this.isRecord(types));
-    // console.log(this.isCollection(types));
-
-    if( this.isCollection(types) ) {
-      logger.info(`ES Indexer removing collection container: ${path}`, types);
-
-      let exists = await this.esClient.exists({
-        index : config.elasticsearch.collection.alias,
-        type: config.elasticsearch.collection.schemaType,
-        id : path
-      });
-      if( !exists ) return;
-
+  async remove(path='') {
+    
+    // check collection
+    let exists = await this.esClient.exists({
+      index : config.elasticsearch.collection.alias,
+      type: config.elasticsearch.collection.schemaType,
+      id : path
+    });
+    if( exists ) {
+      logger.info(`ES Indexer removing collection container: ${path}`);
       try {
         await this.esClient.delete({
           index : config.elasticsearch.collection.alias,
@@ -202,21 +197,18 @@ class EsIndexer {
       } catch(e) {
         logger.error('Failed to remove collection container from elasticsearch: '+path, e);
       }
-    } else if( this.isRecord(types) ) {
-      logger.info(`ES Indexer removing record container: ${path}`, types);
+    }
 
-      let exists = await this.esClient.exists({
-        index : config.elasticsearch.record.alias,
-        type: config.elasticsearch.record.schemaType,
-        id : path
-      });
-      if( !exists ) {
-        logger.info(`ES Indexer ignoring remove record container: ${path}, record does not exist in es`);
-        return;
-      }
-
+    // check container
+    exists = await this.esClient.exists({
+      index : config.elasticsearch.record.alias,
+      type: config.elasticsearch.record.schemaType,
+      id : path
+    });
+    if( exists ) {
+      logger.info(`ES Indexer removing record container: ${path}`);
+      
       try {
-
         // start the timer for the attribute reducing
         await this.attributeReducer.onRecordUpdate({record: path, alias: config.elasticsearch.record.alias});
 
@@ -230,8 +222,6 @@ class EsIndexer {
       } catch(e) {
         logger.error('Failed to remove record container from elasticsearch: '+path, e);
       }
-    } else {
-      logger.info('Unknown type of container to remove', types);
     }
   }
 
@@ -361,12 +351,30 @@ class EsIndexer {
    * a 403 is returned, will automatically try request again
    * 
    * @param {String} path fcrepo path
-   * @param {Boolean} retry leave as false, function will handle this param
    * 
    * @return {Promise} resolves to null or response object
    */
-  async _requestContainer(path, retry=false) {
-    var response = await this.request({
+  async _requestContainer(path) {
+    // make a head request for access and container type info
+    let response = await api.head({path});
+        
+    if( response.last.statusCode === 403 ) {
+      logger.debug('Ignoring non-public container: '+path);
+      return null;
+    }
+
+    // make a head request for access and container type info
+    if( !response.checkStatus(200) ) {
+      logger.debug('Non 200 status code for '+path, response.last.statusCode);
+      return null;
+    }
+
+    // if this is binary container, append /fcr:metadata to path
+    if( !api.isRdfContainer(response) ) {
+      path = path + '/fcr:metadata'
+    }
+
+    response = await this.request({
       type : 'GET',
       uri : path,
       headers : {
@@ -375,15 +383,13 @@ class EsIndexer {
     });
     
     if( response.statusCode === 403 ) {
-      logger.error('Ignoring non-public container: '+path);
+      logger.debug('Ignoring non-public container: '+path);
       return null;
     }
 
     if( response.statusCode !== 200 ) {
-      logger.error('Non 200 status code for container request '+path, response.statusCode, response.body);
-      if( retry ) return null;
-      logger.info('Retrying request for container: '+path);
-      return await this._requestContainer(path, true);
+      logger.debug('Non 200 status code for container request '+path, response.statusCode, response.body);
+      return null;
     }
 
     return response;

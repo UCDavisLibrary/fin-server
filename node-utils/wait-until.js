@@ -28,7 +28,7 @@ function attempt(host, port, delayTime, resolve) {
     client.destroy();
   });
   client.on('error', function(e) {
-    setTimeout(() => attempt(host, port, resolve), delayTime);
+    setTimeout(() => attempt(host, port, delayTime, resolve), delayTime);
     client.destroy(); 
   });
 }

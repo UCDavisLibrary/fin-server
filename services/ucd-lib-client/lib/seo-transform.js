@@ -1,11 +1,13 @@
 const remove = ['createdBy', 'lastModifiedBy', 'yearPublished', 
-'collectionId', 'isRootRecord', 'parent', 'creators', 'abouts',
-'fileFormats', 'indexableContents', 'indexableContent', 'type'];
+'collectionId', 'isRootRecord', 'parent', 'creators', 'abouts', 'identifiers',
+'fileFormats', 'indexableContents', 'indexableContent', 'type', 'textIndexable'];
+const nested = ['associatedMedia', 'hasPart'];
+
 const map = {
   lastModified : 'dateModified'
 }
 
-module.exports = (jsonld) => {
+function transform(jsonld) {
   jsonld['@context'] = {
     "@vocab" : "http://schema.org/"
   }
@@ -69,5 +71,11 @@ module.exports = (jsonld) => {
     else delete jsonld.license;
   }
 
+  nested.forEach(key => {
+    (jsonld[key] || []).forEach(item => transform(item));
+  });
+  
   return jsonld;
 }
+
+ module.exports = transform;

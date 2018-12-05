@@ -20,6 +20,15 @@
       }
     },
 
+    "identifiers" : {
+      "type" : "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
     "isPartOf.@id" : {
       "type" : "keyword" 
     },

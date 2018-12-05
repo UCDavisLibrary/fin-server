@@ -88,12 +88,21 @@ class CitationsModel {
   esRecordToCslJson(record) {
     let d = new Date();
 
+    let publisher = undefined;
+    if( record.publisher ) {
+      if( !Array.isArray(record.publisher) ) {
+        record.publisher = [record.publisher];
+      }
+      publisher = record.publisher.find(item => item.name ? true : false);
+      if( publisher ) publisher = publisher.name;
+    }
+
     let cslJson = {
       id : record['@id'],
       URL : window.location.href,
       title : record.name,
       type : 'webpage',
-      publisher : record.publisher ? record.publisher.name : undefined,
+      publisher,
       source : window.location.host,
       accessed : {
         'date-parts': [[ d.getFullYear(), d.getMonth()+1, d.getDate()]]

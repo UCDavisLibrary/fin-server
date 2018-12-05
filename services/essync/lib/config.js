@@ -9,6 +9,7 @@ config.essync = {
     'creator.name' : 'creators',
     'about.name' : 'abouts',
     fileFormat : 'fileFormats',
+    identifier : 'identifiers',
     indexableContent : 'indexableContents'
   },
 

@@ -109,7 +109,7 @@ class AttributeReducer {
       }
 
       identifier = {
-        ark : record.identifier.find(id => id.match(/^ark:\//)),
+        ark : identifier.find(id => id.match(/^ark:\//)),
         id: record['@id']
       }
     }

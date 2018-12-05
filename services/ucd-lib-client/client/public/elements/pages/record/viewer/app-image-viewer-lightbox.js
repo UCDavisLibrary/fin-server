@@ -2,7 +2,7 @@ import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-image-viewer-lightbox.html"
 
 import "@polymer/paper-spinner/paper-spinner-lite"
-import leaflet from "leaflet"
+import "leaflet"
 import leafletCss from "leaflet/dist/leaflet.css"
 
 import AppStateInterface from "../../../interfaces/AppStateInterface"

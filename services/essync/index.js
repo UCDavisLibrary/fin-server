@@ -36,9 +36,6 @@ class EsSyncMessageServer extends MessageServer {
     // MessageServer is automatically keeping the token up to date for us
     indexer.token = this.token;
 
-    // grab event types
-    let eventTypes = this.getEventTypes(msg);
-
     // grab the resource path
     let path = this.getPath(msg);
 
@@ -53,14 +50,7 @@ class EsSyncMessageServer extends MessageServer {
       // we don't want anything in a dot path
       if( this.isDotPath(path) ) continue;
 
-      // if not the event container, we have to look up type
-      // and fake message payload after buffer
-      if( i !== parts.length ) {
-        msg = null;
-        eventTypes =  null;
-      }
-
-      buffer.add('container', path, {path, msg, eventTypes});
+      buffer.add('container', path, {path});
     }
   }
 
@@ -71,107 +61,32 @@ class EsSyncMessageServer extends MessageServer {
    * @param {Object} e event payload passed to buffer.
    */
   async onContainerEvent(e) {
-    // we need to look up type and set
-    if( !e.msg ) {
-      let container = await indexer.getContainer(e.path);
-      if( !container ) return;
-      if( Array.isArray(container) ) container = container[0];
-
-      let type = container['@type'];
-      e.msg = {
-        payload : {
-          body : {type}
-        }
-      }
-      e.eventTypes = ['ResourceModification'];
+    let path = e.path;
+    let container = await indexer.getContainer(path);
+    
+    // either doesn't exist or we don't have access
+    if( !container ) {
+      // remove from elastic search
+      return indexer.remove(path);
     }
+
+    // grab the esRecord for the path
+    if( Array.isArray(container) ) container = container[0];
+    let type = container['@type'];
 
     // we only want collection and record types
-    if( !indexer.isCollection(e.msg.payload.body.type) && 
-      !indexer.isRecord(e.msg.payload.body.type) ) {
+    if( !indexer.isCollection(type) && 
+        !indexer.isRecord(type) ) {
       return;
     }
 
-    if( this.isCreate(e.eventTypes) ) this.onContainerCreated(e.path, e.msg);
-    else if( this.isModify(e.eventTypes) ) this.onContainerModified(e.path, e.msg);
-    else if( this.isDelete(e.eventTypes) ) this.onContainerDeleted(e.path, e.msg);
-  }
-
-  /**
-   * @method onContainerCreated
-   * @description handle container creation event
-   * 
-   * @param {String} path fcrepo container path 
-   * @param {Object} msg webhook message
-   */
-  async onContainerCreated(path, msg) {
-    // grab the record for the path
-    let esRecord = await indexer.getTransformedContainer(path, msg.payload.body.type);
-    if( !esRecord ) return; // no access, quit out
-
-    // insert into elasticsearch
-    indexer.update(esRecord);
-  }
-
-  /**
-   * @method onContainerModified
-   * @description handle container modified event
-   * 
-   * @param {String} path fcrepo container path 
-   * @param {Object} msg webhook message
-   */
-  async onContainerModified(path, msg) {
-    // grab the esRecord for the path
-    let esRecord = await indexer.getTransformedContainer(path, msg.payload.body.type);
-          
-    // at this point, likely doesn't have public access
+    let esRecord = await indexer.getTransformedContainer(path, type);
     if( !esRecord ) {
-      if( indexer.isCollection(msg.payload.body.type) ) {
-        // remove collection and all children
-        indexer.removeCollection(path);
-      } else {
-        // remove from elastic search
-        indexer.remove(path, msg.payload.body.type);
-      }
-      return;
+      return logger.error('Failed to get transform for container: ', path);
     }
 
-    // if the collection doesn't exist in the  
-    // elasticsearch we need to reindex the entire collection
-    if( indexer.isCollection(msg.payload.body.type) ) {
-      // TODO: just update container...
-      // let exists = await indexer.esClient.exists({
-      //   index : config.elasticsearch.collection.alias,
-      //   type: config.elasticsearch.collection.schemaType,
-      //   id : path
-      // });
-
-      // if( !exists ) {
-      //   logger.info('Modification to existing collection not in elasticsearch, reindexing collection: '+path);
-      //   await reindexer.crawl(
-      //     indexer.getFcRepoBaseUrl()+path,  
-      //     config.elasticsearch.record.alias,
-      //     config.elasticsearch.collection.alias
-      //   );
-      //   logger.info('Reindexing collection complete: '+path);
-      //   return;
-      // }
-    }
-
-    // insert into elasticsearch
+    // update elasticsearch
     indexer.update(esRecord);
-  }
-
- /**
-   * @method onContainerDeleted
-   * @description handle container delete event
-   * 
-   * @param {String} path fcrepo container path 
-   * @param {Object} msg webhook message
-   */
-  async onContainerDeleted(path, msg) {
-    // remove from elastic search
-    indexer.remove(path, msg.payload.body.type);
   }
 
   version() {
