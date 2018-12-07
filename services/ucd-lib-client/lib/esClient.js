@@ -5,7 +5,7 @@ const {config} = require('@ucd-lib/fin-node-utils');
 
 
 var client = new elasticsearch.Client({
-  host: config.elasticsearch.host,
+  host: config.elasticsearch.connStr,
   log: config.elasticsearch.log
 });
 
