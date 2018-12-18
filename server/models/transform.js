@@ -317,7 +317,7 @@ class TransformUtils {
     let imagePath = this._getJsonLdProperty(json.image, true);
 
     if( imagePath ) {
-      if( json.image.match(/^\//) ) return imagePath;
+      if( imagePath.match(/^\//) ) return imagePath;
       return json['@id'].replace(finUrlRegex, '')+imagePath;
     }
 
@@ -361,6 +361,11 @@ class TransformUtils {
           return response[this.HAS_PART][0]['@id'].replace(finUrlRegex, '');
         }
       }
+    }
+
+    imagePath = this._getJsonLdProperty(json.workExample, true);
+    if( imagePath ) {
+      return imagePath.replace(finUrlRegex, '');
     }
 
     return null;
@@ -541,7 +546,7 @@ class TransformUtils {
     if( returnFirst ) {
       value = value[0];
       if( typeof value === 'object' ) {
-        return object['@id'] || object['@value'];
+        return value['@id'] || value['@value'];
       }
       return value;
     }

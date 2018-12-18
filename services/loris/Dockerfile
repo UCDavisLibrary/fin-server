@@ -3,13 +3,14 @@ FROM ubuntu:16.04
 
 MAINTAINER eliotj@princeton.edu
 
+ENV LORIS_VERSION=2.3.3
 ENV HOME /root
 
 # Update packages and install tools 
 RUN apt-get update -y && apt-get install -y wget git unzip
 
 # Install pip and python libs
-RUN apt-get install -y python-dev python-setuptools python-pip
+RUN apt-get install -y python-dev python-setuptools python-pip libffi-dev libssl-dev
 RUN pip install --upgrade pip
 RUN pip2.7 install Werkzeug
 RUN pip2.7 install configobj
@@ -39,10 +40,10 @@ RUN pip2.7 install Pillow
 WORKDIR /opt
 
 # Get loris and unzip. 
-RUN wget --no-check-certificate https://github.com/loris-imageserver/loris/archive/v2.2.0.zip \
-	&& unzip v2.2.0.zip \
-	&& mv loris-2.2.0/ loris/ \
-	&& rm v2.2.0.zip
+RUN wget --no-check-certificate https://github.com/loris-imageserver/loris/archive/v${LORIS_VERSION}.zip
+RUN unzip v${LORIS_VERSION}.zip
+RUN mv loris-${LORIS_VERSION}/ loris/
+RUN rm v${LORIS_VERSION}.zip
 
 RUN useradd -d /var/www/loris -s /sbin/false loris
 

@@ -129,22 +129,46 @@ utils.stripFinHost(item);
 
 #### utils.setImage
 
-Set the item.image object.  If the container has a workExample or fileFormat or hasMimeType is of type image/* then the path is used to lookup image dimensions from the IIIF service.  A colorPalette attribute will be set as well, which is a base64 encoded png image uri for a 8 x X px image.  Used for loading effect.
+Set the item.image object.  The colorPalette attribute will be set as a base64 encoded png image uri for a 8 x X px image.  Used for loading effect.
 
-The resulting image object should look like the following:
+The resulting image object will look like the following:
 
 ```javascript
 {
-  path : String,
-  width : Number,
-  height : Number,
-  colorPalette: String
+  colorPalette: String,
+  contentSize: String,
+  encodingFormat: String,
+  height: Number,
+  width: Number,
+  name: String,
+  url: String,
+  iiif: {
+    region: String, 
+    size: String, 
+    rotation: Number, 
+    quality: String, 
+    format: String
+  }
 }
 ```
+
+usage:
 
 ```javascript
 utils.setImage(item);
 ```
+
+The following is the order in which a image container is searched for:
+
+- property schema:image
+  - should be path to binary image container
+- properties schema:fileFormat or schema:hasMimeType is string matching image/*
+  - The container itself must be a binary image container for this case
+- property schema:associatedMedia
+  - containers in associatedMedia array are checked for fileFormat/hasMimeType matching image/*.  First container to match is used.
+- property schema:workExample
+  - should be path to binary image container
+  
 
 #### utils.setIndexableContent
 
