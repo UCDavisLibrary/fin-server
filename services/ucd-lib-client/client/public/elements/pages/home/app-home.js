@@ -109,8 +109,9 @@ class AppHome extends Mixin(PolymerElement)
    * @description filter based on a collection using short ids.
    */
   _onCollectionSelected(id) {
-    let searchDoc = this._setKeywordFilter(this._getEmptySearchDocument(), 'isPartOf.@id', id);
-    this._searchRecords(searchDoc);
+    this._setWindowLocation(id);
+    // let searchDoc = this._setKeywordFilter(this._getEmptySearchDocument(), 'isPartOf.@id', id);
+    // this._searchRecords(searchDoc);
   }
   
 }

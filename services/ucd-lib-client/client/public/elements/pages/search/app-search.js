@@ -66,7 +66,10 @@ export class AppSearch extends Mixin(PolymerElement)
    */
   _onAppStateUpdate(e) {
     this.appState = e;
-    if( e.location.path[0] !== 'search' ) return;
+    if( 
+      e.location.path[0] !== 'search' &&
+      e.location.path[0] !== 'collection'
+    ) return;
     this._searchFromAppState();
   }
 
@@ -80,12 +83,21 @@ export class AppSearch extends Mixin(PolymerElement)
 
     let searchUrlParts = this.appState.location.path;
     let query;
-    if( searchUrlParts.length > 1 ) {
+
+    console.log(searchUrlParts);
+
+    if( searchUrlParts[0] === 'collection' ) {
+      query = this._urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
+        ["isPartOf.@id","or",`/collection/${searchUrlParts[1]}`]
+      ])),'', '10']);
+      this._searchRecords(query, false);
+      return;
+     } else if( searchUrlParts[0] === 'search' && searchUrlParts.length > 1 ) {
       query = this._urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
     } else {
       query = this._getCurrentSearchDocument();
     }
-
+    
     this._searchRecords(query);
   }
 

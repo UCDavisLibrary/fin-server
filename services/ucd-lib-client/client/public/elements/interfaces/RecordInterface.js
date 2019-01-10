@@ -14,8 +14,8 @@ module.exports = subclass =>
       return this.RecordModel.get(id);
     }
 
-    _searchDocumentToUrl(searchDocument) {
-      return this.RecordModel.searchDocumentToUrl(searchDocument);
+    _searchDocumentToUrl(searchDocument, allowSpecial) {
+      return this.RecordModel.searchDocumentToUrl(searchDocument, allowSpecial);
     }
 
     _urlToSearchDocument(url) {
@@ -38,8 +38,8 @@ module.exports = subclass =>
       return this.RecordModel.removeKeywordFilter(searchDocument, attr, value);
     }
 
-    _searchRecords(searchDocument) {
-      return this.RecordModel.search(searchDocument);
+    _searchRecords(searchDocument, updateHistoryState) {
+      return this.RecordModel.search(searchDocument, updateHistoryState);
     }
 
     _getCurrentSearchDocument() {

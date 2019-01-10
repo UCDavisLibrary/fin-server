@@ -15,9 +15,7 @@ module.exports = (jsonld, host='https://digital.ucdavis.edu') => {
   // TODO
   // jsonld.genre = '';
 
-  let path = JSON.stringify([['isPartOf.@id','or',jsonld['@id']]]);
-  path = `/search//${encodeURIComponent(path)}//10/`;
-  jsonld.url = host+path;
+  jsonld.url = host+jsonld['@id'];
 
   jsonld.provider = {
     '@type': 'Organization',

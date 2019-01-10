@@ -122,7 +122,7 @@ class ElasticSearchModel extends BaseModel {
    * 
    * @return {String} url path string
    */
-  searchDocumentToUrl(searchDocument) {
+  searchDocumentToUrl(searchDocument, allowSpecial=false) {
     let filters = [];
     if( searchDocument.filters ) {
       for( var attr in searchDocument.filters ) {
@@ -134,6 +134,20 @@ class ElasticSearchModel extends BaseModel {
 
         filters.push(arr);
       }
+    }
+
+    // special collection url
+    if( allowSpecial &&
+        !searchDocument.text &&
+        !searchDocument.sort &&
+        !searchDocument.offset &&
+        filters.length === 1 && 
+        searchDocument.limit === 10 &&
+        filters[0].length === 3 &&
+        filters[0][0] === 'isPartOf.@id' &&
+        filters[0][1] === 'or' &&
+        filters[0][2].match(/^\/collection\//) ) {
+      return filters[0][2];
     }
 
     return [

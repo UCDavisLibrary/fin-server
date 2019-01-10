@@ -105,10 +105,7 @@ Sitemap: ${config.server.url}/sitemap.xml`);
 
     (sitemaps.hits.hits || [])
       .map(result => {
-        let query = JSON.stringify([
-          ["isPartOf.@id","or",`/collection/${result._id.replace('/collection/','')}`]
-        ]);
-        return `${config.server.url}/search//${encodeURIComponent(query)}//10/`
+        return `${config.server.url}${result._id}`
       })
       .forEach(url => {
         resp.write(`<url>

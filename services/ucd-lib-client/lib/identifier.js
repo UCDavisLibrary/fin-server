@@ -43,12 +43,15 @@ async function handleRequest(req, resp) {
     return resp.status(404).send(`Unknown ${info.type} identifier: ${info.id}`);
   }
 
-
   // if the Accept header contains text/html and there is no
   // suffix in the url, ie just the ark or doi is provided
   // redirect to ucd dams UI.  otherwise send to fcrepo UI
   if( (req.get('accept') || '').match(/text\/html/) && !info.suffix ) {
-    resp.redirect('/record'+record['@id']);
+    if( record['@type'].indexOf('http://schema.org/Collection') > -1 ) {
+      resp.redirect(record['@id']);
+    } else {
+      resp.redirect('/record'+record['@id']);
+    }
   } else {
     resp.redirect(config.fcrepo.root+record['@id']+info.suffix);
   }
@@ -77,6 +80,22 @@ async function get(id) {
       }
     }
   });
+
+  // see if its a collection
+  if( result.hits.total === 0 )  {
+    result = await es.search({
+      index : config.elasticsearch.collection.alias,
+      body : {
+        query : {
+          bool : {
+            filter : [
+              {term : {'identifier.raw' : id}},
+            ]
+          }
+        }
+      }
+    });
+  }
 
   if( result.hits.total === 0 ) return null;
   return result.hits.hits[0]._source;

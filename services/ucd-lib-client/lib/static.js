@@ -116,6 +116,10 @@ module.exports = (app) => {
 }
 
 function isCollectionReq(req) {
+  if( req.originalUrl.match(/^\/collection/) ) {
+    return req.originalUrl;
+  } 
+
   if( !req.originalUrl.match(/^\/search/) ) {
     return false;
   } 

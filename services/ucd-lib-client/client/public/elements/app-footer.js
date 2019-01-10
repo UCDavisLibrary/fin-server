@@ -36,7 +36,10 @@ class AppFooter extends Mixin(PolymerElement)
    */
   _onCollectionOverviewUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this.collections = e.payload;
+    this.collections = e.payload.map(item => ({
+      id: item['@id'],
+      name : item.name
+    }));
   }
 
   /**
@@ -47,7 +50,8 @@ class AppFooter extends Mixin(PolymerElement)
    */
   _onBrowseCollection(e) {
     let id = e.currentTarget.getAttribute('data-id');
-    this._setKeywordFilter('isPartOf.@id', id);
+    debugger;
+    this._setWindowLocation(id);
   }
 }
 

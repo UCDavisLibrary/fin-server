@@ -75,6 +75,7 @@ class RecordModel extends ElasticSearchModel {
    * @returns {Promise}
    */
   async search(searchDocument = {}, updateHistoryState=true) {
+    console.log(updateHistoryState);
     if( !searchDocument.filters ) searchDocument.filters = {};
 
     // first, we need to verify all filters are available to us

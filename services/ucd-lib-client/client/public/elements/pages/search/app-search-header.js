@@ -3,10 +3,11 @@ import {PolymerElement} from "@polymer/polymer/polymer-element"
 import "../../auth/app-auth-header";
 import template from "./app-search-header.html"
 import RecordInterface from '../../interfaces/RecordInterface'
-import CollectionInferface from '../../interfaces/CollectionInterface'
+import CollectionInterface from '../../interfaces/CollectionInterface'
+import AppStateInterface from '../../interfaces/AppStateInterface'
 
 class AppSearchHeader extends Mixin(PolymerElement)
-      .with(EventInterface, RecordInterface, CollectionInferface) {
+      .with(EventInterface, RecordInterface, CollectionInterface, AppStateInterface) {
 
   static get properties() {
     return {
@@ -62,9 +63,7 @@ class AppSearchHeader extends Mixin(PolymerElement)
       return this._searchRecords(this._getEmptySearchDocument());
     }
 
-    let searchDoc = this._getEmptySearchDocument();
-    this._setKeywordFilter(searchDoc, 'isPartOf.@id', id);
-    this._searchRecords(searchDoc);    
+    this._setWindowLocation(id);
   }
 
   /**
