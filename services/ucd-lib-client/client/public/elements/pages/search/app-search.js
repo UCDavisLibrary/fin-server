@@ -84,8 +84,6 @@ export class AppSearch extends Mixin(PolymerElement)
     let searchUrlParts = this.appState.location.path;
     let query;
 
-    console.log(searchUrlParts);
-
     if( searchUrlParts[0] === 'collection' ) {
       query = this._urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
         ["isPartOf.@id","or",`/collection/${searchUrlParts[1]}`]

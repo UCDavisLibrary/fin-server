@@ -50,7 +50,6 @@ class AppFooter extends Mixin(PolymerElement)
    */
   _onBrowseCollection(e) {
     let id = e.currentTarget.getAttribute('data-id');
-    debugger;
     this._setWindowLocation(id);
   }
 }
