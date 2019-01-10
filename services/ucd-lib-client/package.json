@@ -1,6 +1,6 @@
 {
   "name": "ucd-lib-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "UI client application for UCD Library DAMS",
   "main": "index.js",
   "directories": {
