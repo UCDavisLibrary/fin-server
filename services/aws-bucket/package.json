@@ -1,5 +1,5 @@
 {
-  "name": "@ucd-lib/fin-bag-service",
+  "name": "@ucd-lib/fin-aws-bucket-service",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -11,9 +11,8 @@
   "dependencies": {
     "@ucd-lib/fin-node-api": "^0.9.5",
     "@ucd-lib/fin-node-utils": "^0.2.12",
+    "aws-sdk": "^2.394.0",
     "express": "^4.16.3",
-    "request": "^2.88.0",
-    "tar": "^4.4.6",
-    "tar-stream": "^1.6.2"
+    "request": "^2.88.0"
   }
 }

@@ -172,15 +172,20 @@ services:
     command: node service
     # command: bash -c 'tail -f /dev/null'
 
-  tar:
-    build: ../../services/tar
+  aws-bucket:
+    build: ../../services/aws-bucket
     volumes:
-      - ../../services/tar/index.js:/service/index.js
-      - ../../services/tar/controllers:/service/controllers
-      - ../../services/tar/lib:/service/lib
-      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
+      - ../../services/aws-bucket/index.js:/service/index.js
+      - ../../services/aws-bucket/lib:/service/lib
     depends_on:
       - server
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+      - AWS_BUCKET_REGION=${AWS_BUCKET_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     # command: node service
     command: bash -c 'tail -f /dev/null'
 
@@ -231,8 +236,8 @@ services:
       #- FIN_ENV=prod
     depends_on:
       - server
-    # command: node service
-    command: bash -c 'tail -f /dev/null'
+    command: node service
+    # command: bash -c 'tail -f /dev/null'
 
   basic-auth:
     build: ../../services/basic-auth

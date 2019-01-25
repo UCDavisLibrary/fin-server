@@ -17,12 +17,12 @@ module.exports = [
     urlTemplate : 'http://tesseract:3333{{fcPath}}?svcPath={{svcPath}}'
   },
   {
-    id : 'tar',
-    description : 'List and extract files from a tar file',
+    id : 'aws-bucket',
+    description : 'access files in AWS S3',
     type : 'ProxyService',
     supportedType : 'http://www.w3.org/ns/ldp#NonRDFSource',
     multiRouteTemplate : true,
-    urlTemplate : 'http://tar:3333/{{route}}?fcrepoPath={{fcPath}}&filePath={{svcPath}}'
+    urlTemplate : 'http://aws-bucket:3333/{{route}}?fcrepoPath={{fcPath}}'
   },
   {
     id : 'essync',
