@@ -9,11 +9,8 @@
     },
     "storage" : {
         "persistence": {
-            "type" : "db",
-            "connectionUrl": "jdbc:postgresql://postgres:5432/postgres",
-            "driver" : "org.postgresql.Driver",
-            "username" : "postgres",
-            "password" : ""
+            "type": "file",
+            "path" : "${fcrepo.object.directory:target/objects}"
         },
         "binaryStorage" : {
             "type" : "file",
