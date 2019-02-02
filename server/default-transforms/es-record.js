@@ -145,6 +145,12 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
+    attr : 'image',
+    value : ['schema', 'image'],
+    type : 'id'
+  });
+
+  await utils.add({
     attr : 'material',
     value : ['schema', 'material']
   });

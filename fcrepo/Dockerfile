@@ -61,9 +61,9 @@ VOLUME ["$FCREPO_HOME"]
 
 ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
     -Dfcrepo.home=${FCREPO_HOME} \
-    -Dfcrepo.modeshape.configuration=${FCREPO_MODESHAPE_CONFIGURATION}" \
-    -Dfcrepo.auth.webac.authorization=${FCREPO_AUTH_WEBAC_AUTHORIZATION}" \
-    -Dfcrepo.activemq.configuration=${FCREPO_ACTIVEMQ_CONFIGURATION}"
+    -Dfcrepo.modeshape.configuration=${FCREPO_MODESHAPE_CONFIGURATION} \
+    -Dfcrepo.auth.webac.authorization=${FCREPO_AUTH_WEBAC_AUTHORIZATION} \
+    -Dfcrepo.streaming.parallel=true"
 
 CMD chmod a+rw ${FCREPO_HOME} && \
     java $JAVA_OPTS -jar "$JETTY_HOME/start.jar"
