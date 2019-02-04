@@ -5,7 +5,7 @@
         "predefined" : ["default"],
         "default" : "default",
         "allowCreation" : true,
-        "cacheSize" : 10000
+        "cacheSize" : 1000000
     },
     "storage" : {
         "persistence": {
