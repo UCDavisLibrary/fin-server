@@ -11,7 +11,7 @@ import MediaInterface from "../../../interfaces/MediaInterface"
 export default class AppImageViewerStatic extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
   
-    static get template() {
+  static get template() {
     let tag = document.createElement('template');
     tag.innerHTML = template;
     return tag;
@@ -60,6 +60,12 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
    * @param {Object} media 
    */
   _onSelectedRecordMediaUpdate(media) {
+    if( this.MediaModel.get360Media(media).length ) {
+      this.style.display = 'none';
+      return;
+    }
+    this.style.display = 'block';
+
     this.media = media;
     this._renderImg();
   }

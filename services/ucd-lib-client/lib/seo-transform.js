@@ -72,7 +72,9 @@ function transform(jsonld) {
   }
 
   nested.forEach(key => {
-    (jsonld[key] || []).forEach(item => transform(item));
+    let data = (jsonld[key] || [])
+    if( !Array.isArray(data) ) data = [data];
+    data.forEach(item => transform(item));
   });
   
   return jsonld;

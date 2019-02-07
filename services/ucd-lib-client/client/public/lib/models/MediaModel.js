@@ -2,11 +2,16 @@ const {BaseModel} = require('@ucd-lib/cork-app-utils');
 const config = require('../config');
 
 const IMAGE_LIST = 'http://digital.ucdavis.edu/schema#ImageList';
+const IMAGE_LIST_360 = 'http://digital.ucdavis.edu/schema#ImageList360';
 
 class MediaModel extends BaseModel {
   
   constructor() {
     super();
+
+    this.TYPES = {
+      IMAGE_LIST, IMAGE_LIST_360
+    };
 
     this.register('MediaModel');
   }
@@ -62,6 +67,12 @@ class MediaModel extends BaseModel {
     return path; 
   }
 
+  get360Media(record) {
+    let list = this.getImageMediaList(record, IMAGE_LIST_360);
+    if( list ) record._has360ImageList = true;
+    return list;
+  }
+
   /**
    * @method getImageMediaList
    * @description given a root record that has been has it's hasParts/associatedMedia
@@ -70,20 +81,23 @@ class MediaModel extends BaseModel {
    * @param {Object} rootRecord a filled in root record
    * @returns {Array}
    */
-  getImageMediaList(rootRecord) {
-    if( rootRecord._imageList ) return rootRecord._imageList;
+  getImageMediaList(rootRecord, type) {
+    if( rootRecord._imageList && rootRecord._imageList.length ) return rootRecord._imageList;
     if( !rootRecord.associatedMedia ) return [];
 
     // see if we have an image list
     for( var i = 0; i < rootRecord.associatedMedia.length; i++ ) {
       let types = rootRecord.associatedMedia[i]['@type'];
-      if( types && types.indexOf(IMAGE_LIST) > -1 ) {
+      if( types && types.indexOf(type || IMAGE_LIST) > -1 ) {
         rootRecord._imageList = rootRecord.associatedMedia[i].hasPart || [];
-        rootRecord._imageList.sort((a, b) => {
-          if( a.position > b.position ) return 1;
-          if( a.position < b.position ) return -1;
-          return 1;
-        });
+        rootRecord._imageList
+          .forEach(item => item.position = parseInt(item.position));
+        rootRecord._imageList
+          .sort((a, b) => {
+            if( a.position > b.position ) return 1;
+            if( a.position < b.position ) return -1;
+            return 1;
+          });
 
         return rootRecord._imageList;
       }
