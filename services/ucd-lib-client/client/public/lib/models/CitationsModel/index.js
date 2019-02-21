@@ -88,19 +88,16 @@ class CitationsModel {
   esRecordToCslJson(record) {
     let d = new Date();
 
-    let publisher = undefined;
-    if( record.publisher ) {
-      if( !Array.isArray(record.publisher) ) {
-        record.publisher = [record.publisher];
-      }
-      publisher = record.publisher.find(item => item.name ? true : false);
+    let publisher = this._getRecordValue(record, 'publisher');
+    if( publisher ) {
+      publisher = publisher.find(item => item.name ? true : false);
       if( publisher ) publisher = publisher.name;
     }
 
     let cslJson = {
       id : record['@id'],
       URL : window.location.href,
-      title : record.name,
+      title : this._getRecordValue(record, 'name', true),
       type : 'webpage',
       publisher,
       source : window.location.host,
@@ -113,23 +110,37 @@ class CitationsModel {
       cslJson['collection-title'] = record.collectionName;
     }
 
-    if( record.creator && record.creator.name ) {
-      cslJson.author = [{
-        family: record.creator.name
-      }];
+    let creator = (this._getRecordValue(record, 'creator') || [])
+      .filter(v => v.name ? true : false)
+      .map(v => v.name);
+    if( creator.length ) {
+      cslJson.author = creator.map(name => ({family: name}));
     }
 
-    if( record.datePublished ) {
+    let datePublished = this._getRecordValue(record, 'datePublished', true);
+    let yearPublished = this._getRecordValue(record, 'yearPublished', true);
+    if( datePublished ) {
       cslJson.issued = {
-        "raw": record.datePublished
+        "raw": datePublished
       }
-    } else if( record.yearPublished ) {
+    } else if( yearPublished ) {
       cslJson.issued = {
-        "raw": record.yearPublished+''
+        "raw": yearPublished+''
       }
     }
 
     return cslJson;
+  }
+
+  _getRecordValue(record, value, first) {
+    if( !record[value] ) return undefined;
+    value = record[value];
+    if( !Array.isArray(value) ) value = [value];
+    if( first ) {
+      if( !value.length ) return undefined;
+      return value[0];
+    } 
+    return value;
   }
 
   /**

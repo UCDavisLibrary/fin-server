@@ -11,6 +11,7 @@ import "./viewer/app-image-viewer-static"
 import "./app-image-download"
 import "./app-record-metadata-layout"
 import "./app-copy-cite"
+import "./viewer/app-360-image-viewer"
 
 import AppStateInterface from "../../interfaces/AppStateInterface"
 import RecordInterface from "../../interfaces/RecordInterface"
@@ -135,12 +136,11 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.record.collectionName = collection.name;
     }
 
-
     // render associated media
     let imageList = this._getImageMediaList(record);
     this.$.download.setRootRecord(record, imageList);
 
-    if( record.associatedMedia ) {  
+    if( record.associatedMedia ) { 
       if( imageList.length ) this._setSelectedRecordMedia(imageList[0]);
       else this._setSelectedRecordMedia(record);
     } else {
@@ -309,6 +309,12 @@ export default class AppRecord extends Mixin(PolymerElement)
    * @param {Object} record 
    */
   _onSelectedRecordMediaUpdate(record) {
+    if( record._has360ImageList ) {
+      this.$.download.style.display = 'none';
+      return;
+    }
+
+    this.$.download.style.display = 'block';
     this.$.download.render({
       resolution : [record.image.width, record.image.height],
       fileFormat : record.image.encodingFormat,

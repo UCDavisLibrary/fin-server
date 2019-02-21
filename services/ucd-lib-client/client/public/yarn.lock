@@ -26,7 +26,7 @@
     "@polymer/iron-location" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/font-roboto@^3.0.0-pre.18", "@polymer/font-roboto@^3.0.1":
+"@polymer/font-roboto@3.0.2", "@polymer/font-roboto@^3.0.1":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@polymer/font-roboto/-/font-roboto-3.0.2.tgz#80cdaa7225db2359130dfb2c6d9a3be1820020c3"
 
@@ -36,7 +36,7 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-a11y-keys-behavior@^3.0.0-pre.19", "@polymer/iron-a11y-keys-behavior@^3.0.0-pre.26":
+"@polymer/iron-a11y-keys-behavior@3.0.1", "@polymer/iron-a11y-keys-behavior@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-a11y-keys-behavior/-/iron-a11y-keys-behavior-3.0.1.tgz#2868ea72912d2007ffab4734684a91f5aac49b84"
   dependencies:
@@ -51,14 +51,14 @@
     "@polymer/iron-validatable-behavior" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-behaviors@^3.0.0-pre.19", "@polymer/iron-behaviors@^3.0.0-pre.26":
+"@polymer/iron-behaviors@3.0.1", "@polymer/iron-behaviors@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-behaviors/-/iron-behaviors-3.0.1.tgz#a3b6f876779a7f0a91a15e4423890968b6525901"
   dependencies:
     "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-checked-element-behavior@^3.0.0-pre.19", "@polymer/iron-checked-element-behavior@^3.0.0-pre.26":
+"@polymer/iron-checked-element-behavior@3.0.1", "@polymer/iron-checked-element-behavior@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-checked-element-behavior/-/iron-checked-element-behavior-3.0.1.tgz#7a4b49646603657ab2c5e5ca7bd97f34444fdaf5"
   dependencies:
@@ -72,19 +72,19 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-flex-layout@^3.0.0-pre.18", "@polymer/iron-flex-layout@^3.0.0-pre.19", "@polymer/iron-flex-layout@^3.0.0-pre.26":
+"@polymer/iron-flex-layout@3.0.1", "@polymer/iron-flex-layout@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-flex-layout/-/iron-flex-layout-3.0.1.tgz#36f9e1a8eb792d279b2bc75d362628721ad37f0c"
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-form-element-behavior@^3.0.0-pre.19", "@polymer/iron-form-element-behavior@^3.0.0-pre.26":
+"@polymer/iron-form-element-behavior@3.0.1", "@polymer/iron-form-element-behavior@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-form-element-behavior/-/iron-form-element-behavior-3.0.1.tgz#4c79e1981d7796ce659e997f3b8f5e14b4a075a4"
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-icon@^3.0.0-pre.1", "@polymer/iron-icon@^3.0.0-pre.18", "@polymer/iron-icon@^3.0.0-pre.26":
+"@polymer/iron-icon@3.0.1", "@polymer/iron-icon@^3.0.0-pre.1", "@polymer/iron-icon@^3.0.0-pre.18", "@polymer/iron-icon@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-icon/-/iron-icon-3.0.1.tgz#93211c39d8825fe4965a68419566036c1df291eb"
   dependencies:
@@ -100,7 +100,7 @@
     "@polymer/iron-iconset-svg" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-iconset-svg@^3.0.0-pre.18", "@polymer/iron-iconset-svg@^3.0.0-pre.26":
+"@polymer/iron-iconset-svg@3.0.1", "@polymer/iron-iconset-svg@^3.0.0-pre.18", "@polymer/iron-iconset-svg@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-iconset-svg/-/iron-iconset-svg-3.0.1.tgz#568d6e7dbc120299dae63be3600aeba0d30ddbea"
   dependencies:
@@ -124,7 +124,7 @@
     "@polymer/iron-scroll-target-behavior" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-location@^3.0.0-pre.18", "@polymer/iron-location@^3.0.0-pre.26":
+"@polymer/iron-location@3.0.1", "@polymer/iron-location@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-location/-/iron-location-3.0.1.tgz#43a59fced248ea71db5833116fcdefa186b79527"
   dependencies:
@@ -145,7 +145,7 @@
     "@polymer/iron-selector" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-meta@^3.0.0-pre.19", "@polymer/iron-meta@^3.0.0-pre.26":
+"@polymer/iron-meta@3.0.1", "@polymer/iron-meta@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-meta/-/iron-meta-3.0.1.tgz#7f140628d127b0a284f882f1bb323a261bc125f5"
   dependencies:
@@ -186,14 +186,14 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-validatable-behavior@^3.0.0-pre.19", "@polymer/iron-validatable-behavior@^3.0.0-pre.26":
+"@polymer/iron-validatable-behavior@3.0.1", "@polymer/iron-validatable-behavior@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-validatable-behavior/-/iron-validatable-behavior-3.0.1.tgz#73538f005a07741c31b6fc1e981168c3d3e0d92b"
   dependencies:
     "@polymer/iron-meta" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/paper-behaviors@^3.0.0-pre.18", "@polymer/paper-behaviors@^3.0.0-pre.27":
+"@polymer/paper-behaviors@3.0.1", "@polymer/paper-behaviors@^3.0.0-pre.27":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/paper-behaviors/-/paper-behaviors-3.0.1.tgz#83f1cd06489f484c1b108a2967fb01952df722ad"
   dependencies:
@@ -250,7 +250,7 @@
     "@polymer/paper-styles" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/paper-ripple@^3.0.0-pre.19", "@polymer/paper-ripple@^3.0.0-pre.26":
+"@polymer/paper-ripple@3.0.1", "@polymer/paper-ripple@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/paper-ripple/-/paper-ripple-3.0.1.tgz#28e506f079f840703bf8cbfd62966e1e83ebc3c3"
   dependencies:
@@ -264,7 +264,7 @@
     "@polymer/paper-styles" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/paper-styles@3.0.1", "@polymer/paper-styles@^3.0.0-pre.18", "@polymer/paper-styles@^3.0.0-pre.26":
+"@polymer/paper-styles@3.0.1", "@polymer/paper-styles@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/paper-styles/-/paper-styles-3.0.1.tgz#bd4962b83ab8432cd1cf197bb5222d3a08f135e1"
   dependencies:
@@ -296,11 +296,18 @@
     "@polymer/iron-overlay-behavior" "^3.0.0-pre.27"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/polymer@^3.0.0", "@polymer/polymer@^3.0.0-pre.1", "@polymer/polymer@^3.1.0":
+"@polymer/polymer@3.1.0", "@polymer/polymer@^3.0.0", "@polymer/polymer@^3.0.0-pre.1", "@polymer/polymer@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@polymer/polymer/-/polymer-3.1.0.tgz#3e1b7447a1e350fd654e1823def655d0f0828a70"
   dependencies:
     "@webcomponents/shadycss" "^1.5.2"
+
+"@ucd-lib/cork-360-image-viewer@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-360-image-viewer/-/cork-360-image-viewer-0.0.1.tgz#665de4ff7ca87852fdc3ef516f01eb681dea74a2"
+  integrity sha512-U35rTSOZOqoD7sGlhLNBksYQQRpcD6a7ACKcl1wmZInGhEkULD3tqIwc/cncEkCxG4NQyDpsrhXIYuorOAVTPA==
+  dependencies:
+    "@polymer/polymer" "^3.1.0"
 
 "@ucd-lib/cork-app-elastic-search@0.2.1":
   version "0.2.1"
@@ -363,7 +370,7 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@webcomponents/shadycss@^1.2.0", "@webcomponents/shadycss@^1.5.2":
+"@webcomponents/shadycss@1.5.2", "@webcomponents/shadycss@^1.5.2":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@webcomponents/shadycss/-/shadycss-1.5.2.tgz#ad72f43000c39ba4ac61e625131f34f4b7cfe55f"
 
