@@ -127,7 +127,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    * @param {Object} e 
    */
   _onAppStateUpdate(e) {
-    if( e.location.path[0] !== 'search') return;
+    if( e.location.page !== 'search') return;
     this._resizeAsync();
   }
 

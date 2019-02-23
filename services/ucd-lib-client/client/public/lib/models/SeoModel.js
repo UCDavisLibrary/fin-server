@@ -26,11 +26,17 @@ class SeoModel extends BaseModel {
    */
   _onAppStateUpdate() {
     let state = AppStateModel.store.data;
-    let isRecord = state.location.pathname.match(/^\/record\//);
+
+    let isRecord = (state.location.page === 'record');
     let isCollection = (
       state.location.pathname.match(/^\/search\//) &&
       CollectionModel.getSelectedCollection()
     ) ? true : false;
+    if( !isCollection && 
+        state.location.path.length === 2 &&
+        state.location.path[0] === 'collection' ) {
+      isCollection = true;
+    }
 
     if( state.selectedRecord && isRecord ) {
       this._setJsonLd(state.selectedRecord);

@@ -72,13 +72,11 @@ export default class AppRecord extends Mixin(PolymerElement)
    * @param {*} e 
    */
   async _onAppStateUpdate(e) {
-    if( e.location.path[0] !== 'record' ) return;
+    if( e.location.page !== 'record' ) return;
 
-    let path = e.location.path.slice(0);
-    path.splice(0, 1);
-    if( this.currentRecordId === '/'+path.join('/') ) return;
-
-    this.currentRecordId = '/'+path.join('/');
+    let id = '/'+e.location.path.join('/');
+    if( this.currentRecordId === id ) return;
+    this.currentRecordId = id;
 
     let result = await this._getRecord(this.currentRecordId);
     this._setSelectedRecord(result.payload);
@@ -154,14 +152,11 @@ export default class AppRecord extends Mixin(PolymerElement)
     this._renderPublisher(record);
 
     // set collection link
-    let searchDoc = this._getEmptySearchDocument();
-    this._appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
-    let link = this._getHost()+'search/'+this._searchDocumentToUrl(searchDoc);
-    this.$.collectionValue.innerHTML = `<a href="${link}">${this.collectionName}</a>`;
+    this.$.collectionValue.innerHTML = `<a href="${record.collectionId}">${this.collectionName}</a>`;
 
     // set fedora collection link
     let metadataPart = record['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
-    link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
+    let link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
     this.$.fedoraValue.innerHTML =  `<a href="${link}">${record['@id']}</a>`;
 
     this._updateMetadataRows();

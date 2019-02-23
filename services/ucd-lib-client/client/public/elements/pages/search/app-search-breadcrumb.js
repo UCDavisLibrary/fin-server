@@ -49,17 +49,14 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * as the current collection
    */
   async _onAppStateUpdate(e) {
-    if( e.location.path[0] === 'search' ) {
+    if( e.location.page === 'search' ) {
       this.lastSearch = e.location.pathname;
       this.record = null;
       return;
     }
 
-    if( e.location.path[0] !== 'record' ) return;
-
-    let path = e.location.path.slice(0);
-    path.splice(0, 1);
-    this.currentRecordId = '/'+path.join('/');
+    if( e.location.page !== 'record' ) return;
+    this.currentRecordId = e.location.pathname;
 
     this.record = await this._getRecord(this.currentRecordId);
     this.record = this.record.payload;
@@ -86,9 +83,7 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    */
   _onCollectionClicked(e) {
     if( e.type === 'keyup' && e.which !== 13 ) return;
-    let searchDoc = this._getEmptySearchDocument();
-    this._setKeywordFilter(searchDoc, 'isPartOf.@id', this.collection['@id']);
-    this._searchRecords(searchDoc);
+    this._setWindowLocation(this.collection['@id']);
   }
 
   /**
@@ -96,6 +91,7 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * @description CollectionInterface, fired when selected collection updates
    */
   _onSelectedCollectionUpdate(e) {
+    if( this.collection && this.collection['@id'] === e['@id'] ) return;
     this.collection = e;
     this.record = null;
   }

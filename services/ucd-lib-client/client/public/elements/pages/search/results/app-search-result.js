@@ -76,7 +76,7 @@ export default class AppSearchResult extends Mixin(PolymerElement)
    * @description Fired when this element is clicked
    */
   _onClick() {
-    this._setWindowLocation('/record'+this.fetchId);
+    this._setWindowLocation(this.fetchId);
   }
 
   /**
