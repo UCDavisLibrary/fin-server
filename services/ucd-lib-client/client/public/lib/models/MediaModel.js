@@ -68,8 +68,8 @@ class MediaModel extends BaseModel {
   }
 
   get360Media(record) {
-    let list = this.getImageMediaList(record, IMAGE_LIST_360);
-    if( list ) record._has360ImageList = true;
+    let list = this.getImageMediaList(record, IMAGE_LIST_360) || [];
+    if( list.length ) record._has360ImageList = true;
     return list;
   }
 

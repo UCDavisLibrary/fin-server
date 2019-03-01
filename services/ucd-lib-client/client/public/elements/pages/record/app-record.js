@@ -17,6 +17,7 @@ import AppStateInterface from "../../interfaces/AppStateInterface"
 import RecordInterface from "../../interfaces/RecordInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
+import { debug } from "util";
 
 export default class AppRecord extends Mixin(PolymerElement)
       .with(EventInterface, AppStateInterface, RecordInterface, CollectionInterface, MediaInterface) {

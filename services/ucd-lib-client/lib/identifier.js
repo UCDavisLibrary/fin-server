@@ -50,7 +50,7 @@ async function handleRequest(req, resp) {
     if( record['@type'].indexOf('http://schema.org/Collection') > -1 ) {
       resp.redirect(record['@id']);
     } else {
-      resp.redirect('/record'+record['@id']);
+      resp.redirect(record['@id']);
     }
   } else {
     resp.redirect(config.fcrepo.root+record['@id']+info.suffix);
