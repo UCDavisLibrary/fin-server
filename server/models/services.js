@@ -368,7 +368,7 @@ class ServiceModel {
       return;
     }
 
-    if( id.match(/^\/collection\/\w+$/) ) {
+    if( id.match(/^\/collection\/[\w-_]+$/) ) {
       hdt.onCollectionUpdate(id.replace('/collection/', ''));
     }
 
