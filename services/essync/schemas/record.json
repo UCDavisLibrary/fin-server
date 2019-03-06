@@ -42,6 +42,10 @@
       }
     },
 
+    "keywords" : {
+      "type" : "text"
+    },
+
     "license.@id" : {
       "type" : "keyword"
     },

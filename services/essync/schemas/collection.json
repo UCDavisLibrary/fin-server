@@ -20,6 +20,10 @@
       "type" : "keyword" 
     },
 
+    "keywords" : {
+      "type" : "text"
+    },
+
     "about.name" : {
       "type" : "text",
       "fields": {

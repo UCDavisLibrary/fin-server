@@ -61,8 +61,8 @@ module.exports = {
     },
 
     textFields : {
-      record : ['name', 'description', 'abouts', 'alternativeHeadline', 'indexableContents'],
-      collection : ['name', 'description', 'about']
+      record : ['name', 'description', 'identifiers', 'abouts', 'keywords', 'alternativeHeadline', 'indexableContents'],
+      collection : ['name', 'description', 'about', 'keywords']
     },
     
     // max number of facets filter options
