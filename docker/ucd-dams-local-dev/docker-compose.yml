@@ -213,6 +213,7 @@ services:
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
       - CAS_URL=https://ssodev.ucdavis.edu/cas
+      # - CAS_URL=https://ssodev5.ucdavis.edu/cas
     depends_on:
       - server
     command: node service
