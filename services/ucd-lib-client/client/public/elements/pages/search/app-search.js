@@ -66,38 +66,8 @@ export class AppSearch extends Mixin(PolymerElement)
    */
   _onAppStateUpdate(e) {
     this.appState = e;
-    if( 
-      e.location.path[0] !== 'search' &&
-      e.location.path[0] !== 'collection'
-    ) return;
-    this._searchFromAppState();
   }
 
-  /**
-   * @method _searchFromAppState
-   * @description use current app state to preform a search, should be called on first load
-   * or if state update event is from popup state (forward, back button hit)
-   */
-  _searchFromAppState() {
-    this.firstLoad = false;
-
-    let searchUrlParts = this.appState.location.path;
-    let query;
-
-    if( searchUrlParts[0] === 'collection' ) {
-      query = this._urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
-        ["isPartOf.@id","or",`/collection/${searchUrlParts[1]}`]
-      ])),'', '10']);
-      this._searchRecords(query, false);
-      return;
-     } else if( searchUrlParts[0] === 'search' && searchUrlParts.length > 1 ) {
-      query = this._urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
-    } else {
-      query = this._getCurrentSearchDocument();
-    }
-    
-    this._searchRecords(query);
-  }
 
   /**
    * @method _onEsSearchUpdate

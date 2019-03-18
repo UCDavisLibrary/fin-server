@@ -4,7 +4,7 @@ import CollectionInterface from '../../interfaces/CollectionInterface'
 import template from "./app-collection-info-panel.html"
 
 class AppCollectionInfoPanel extends Mixin(PolymerElement)
-      .with(EventInterface, CollectionInterface) {
+      .with(EventInterface) {
   
   static get template() {
     let tag = document.createElement('template');
@@ -31,24 +31,30 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
 
   constructor() {
     super();
-    this.active = true;
+
+    this.selectedCollectionId = '';
+    this._injectModel('AppStateModel', 'CollectionModel');
   }
 
   /**
-   * @method _onSelectedCollectionUpdate
-   * @description from CollectionInterface, called when a collection is selected.
-   * This is done by setting a collection filter.
+   * @method _onAppStateUpdate
+   * @description bound to app-state-update event.  Set current collection information
    * 
-   * @param {Object} selected currently selected collection 
+   * @param {Object} e 
    */
-  _onSelectedCollectionUpdate(selected) {
-    if( !selected ) {
+  async _onAppStateUpdate(e) {
+    if( this.selectedCollectionId === e.selectedCollection ) return;
+    this.selectedCollectionId = e.selectedCollection;
+
+    if( !e.selectedCollection ) {
       this.description = '';
       this.subject = '';
       this.coverage = '';
       return;
     }
 
+    let selected = await this.CollectionModel.get(this.selectedCollectionId);
+    
     this.description = selected.description || '';
 
     if( selected.subject ) {

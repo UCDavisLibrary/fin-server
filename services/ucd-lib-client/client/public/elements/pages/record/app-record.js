@@ -74,22 +74,23 @@ export default class AppRecord extends Mixin(PolymerElement)
    */
   async _onAppStateUpdate(e) {
     if( e.location.page !== 'record' ) return;
+    if( this.currentRecordId === e.selectedRecord ) return;
+    this.currentRecordId = e.selectedRecord;
+    
+    if( !this.currentRecordId ) return;
 
-    let id = '/'+e.location.path.join('/');
-    if( this.currentRecordId === id ) return;
-    this.currentRecordId = id;
 
     let result = await this._getRecord(this.currentRecordId);
-    this._setSelectedRecord(result.payload);
+    this._renderRecord(result.payload);
   }
 
   /**
-   * @method _onSelectedRecordUpdate
+   * @method _renderRecord
    * @description from AppStateInterface, called when a record is selected
    * 
    * @param {Object} record selected record
    */
-  async _onSelectedRecordUpdate(record) {
+  async _renderRecord(record) {
     if( record['@id'] === this.renderedRecordId ) return;
 
     this.renderedRecordId = record['@id'];

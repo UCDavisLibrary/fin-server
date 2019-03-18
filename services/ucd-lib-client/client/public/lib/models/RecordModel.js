@@ -15,7 +15,39 @@ class RecordModel extends ElasticSearchModel {
 
     this.MAX_WINDOW = 10000;
 
+    AppStateModel.registerUpdateHandler(update => this._appStateUpdateHandler(update));
+
     this.register('RecordModel');
+  }
+
+  _appStateUpdateHandler(update) {
+    if( !update.location ) return;
+
+    let searchUrlParts = update.location.path;
+    let searchDocument;
+
+    if( searchUrlParts[0] === 'collection' ) {
+      searchDocument = this.urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
+        ["isPartOf.@id","or",`/collection/${searchUrlParts[1]}`]
+      ])),'', '10']);
+     } else if( searchUrlParts[0] === 'search' && searchUrlParts.length > 1 ) {
+      searchDocument = this.urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
+    } else {
+      searchDocument = this.getCurrentSearchDocument();
+    }
+
+    update.searchDocument = searchDocument;
+
+    if( update.searchDocument &&
+      update.searchDocument.filters &&
+      update.searchDocument.filters['isPartOf.@id'] ) {
+      update.selectedCollection = update.searchDocument.filters['isPartOf.@id'].value[0];
+    } else {
+      update.selectedCollection = null;
+    }
+
+    if( update.location.page !== 'search' ) return;
+    this.search(searchDocument);
   }
 
   /**
@@ -66,6 +98,12 @@ class RecordModel extends ElasticSearchModel {
     return this.store.data.byId[id];
   }
 
+  /**
+   * @method setSearchLocation
+   * @description set window location for a search document
+   * 
+   * @param {Object} searchDocument 
+   */
   setSearchLocation(searchDocument) {
     AppStateModel.setLocation('/search/'+this.searchDocumentToUrl(searchDocument));
   }
@@ -120,19 +158,9 @@ class RecordModel extends ElasticSearchModel {
     }
 
     if( corrections ) {
-      // This causes loop badness
-      // AppStateModel.setLocation(path);
       return await this.search(searchDocument, false);
     }
     
-    // if( updateHistoryState ) {
-    //   if( !history.state ) {
-    //     AppStateModel.setLocation(path);
-    //   } if( history.state && history.state.location !== path ) {
-    //     AppStateModel.setLocation(path);
-    //   }
-    // }
-
     if( searchDocument.limit + searchDocument.offset > this.MAX_WINDOW ) {
       this.store.setSearchError(searchDocument, new Error('Sorry, digital.ucdavis.edu does not serve more than 10,000 results for a query'), true);
       return this.store.getSearch();

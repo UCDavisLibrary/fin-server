@@ -81,23 +81,6 @@ export class FinApp extends Mixin(PolymerElement)
     this.page = e.location.page;
   }
 
-  /**
-   * @method _onRecordSearchUpdate
-   * @description RecordInterface, fired when search document updates.
-   * used to set the window url
-   * 
-   */
-  // _onRecordSearchUpdate(e) {
-  //   if( this.appState.location.path[0] === 'collection' ) return;
-
-  //   let path = this._searchDocumentToUrl(e.searchDocument, true);
-  //   if( path.match(/\/collection/) ) {
-  //     this._setWindowLocation(path);
-  //   } else {
-  //     this._setWindowLocation('/search/'+path);
-  //   }
-    
-  // }
 }
 
 customElements.define('fin-app', FinApp);

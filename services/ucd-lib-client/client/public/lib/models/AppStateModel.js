@@ -8,12 +8,19 @@ class AppStateModelImpl extends AppStateModel {
     super();
     this.store = AppStateStore;
 
-    this.EventBus.on(this.store.events.APP_STATE_UPDATE, () => this._sendGA());
     this._sendGA();
+
+    this.appStateUpdateHandlers = [];
   }
 
-  set(update) {
+  registerUpdateHandler(handler) {
+    this.appStateUpdateHandlers.push(handler);
+  }
+
+  async set(update) {
+
     if( update.location ) {
+      let selectedRecord = null;
       // /collection/* is an alias for a base collection search
 
       let page = update.location.path ? update.location.path[0] : 'home';
@@ -24,12 +31,19 @@ class AppStateModelImpl extends AppStateModel {
           page = 'search';
         } else {
           page = 'record';
+          selectedRecord = '/'+update.location.path.join('/');
         }
       }
-      
+
+      update.selectedRecord = selectedRecord;
       update.location.page = page;
     }
 
+    for( let handler of this.appStateUpdateHandlers ) {
+      await handler(update);
+    }
+
+    this._sendGA();
     return super.set(update);
   }
 
@@ -45,14 +59,6 @@ class AppStateModelImpl extends AppStateModel {
     gtag('config', config.gaCode, {
       page_path: window.location.pathname
     });
-  }
-
-  setSelectedRecord(record) {
-    this.store.setSelectedRecord(record);
-  }
-
-  getSelectedRecord() {
-    return this.store.getSelectedRecord();
   }
 
   setSelectedRecordMedia(record) {
