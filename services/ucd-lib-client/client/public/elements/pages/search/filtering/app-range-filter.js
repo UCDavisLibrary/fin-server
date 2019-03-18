@@ -79,7 +79,7 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
       
       let searchDoc = this._getCurrentSearchDocument();
       this._removeRangeFilter(searchDoc, this.filter);
-      this._searchRecords(searchDoc);
+      this.RecordModel.setSearchLocation(searchDoc);
 
       return true;
     }
@@ -121,7 +121,7 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
     let searchDoc = this._getCurrentSearchDocument();
     this._setPaging(searchDoc, 0);
     this._appendRangeFilter(searchDoc, this.filter, value);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
   }
 
   /**

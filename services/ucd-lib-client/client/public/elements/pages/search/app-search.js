@@ -131,7 +131,7 @@ export class AppSearch extends Mixin(PolymerElement)
   _onPageSizeChange(e) {
     let searchDoc = this._getCurrentSearchDocument();
     this._setPaging(searchDoc, searchDoc.offset, e.detail);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
   }
 
   /**
@@ -143,7 +143,7 @@ export class AppSearch extends Mixin(PolymerElement)
   _onPaginationChange(e) {
     let searchDoc = this._getCurrentSearchDocument();
     this._setPaging(searchDoc, e.detail.startIndex);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
   }
 
   /**

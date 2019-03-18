@@ -350,7 +350,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
 
     let searchDoc = this._getEmptySearchDocument();
     this._setKeywordFilter(searchDoc, 'isPartOf.@id', id);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
   }
 
 }

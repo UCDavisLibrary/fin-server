@@ -42,7 +42,12 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
    * @param {Object} selected currently selected collection 
    */
   _onSelectedCollectionUpdate(selected) {
-    if( !selected ) return;
+    if( !selected ) {
+      this.description = '';
+      this.subject = '';
+      this.coverage = '';
+      return;
+    }
 
     this.description = selected.description || '';
 

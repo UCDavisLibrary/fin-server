@@ -77,7 +77,7 @@ class AppHome extends Mixin(PolymerElement)
   _onBrowse(e) {
     let id = e.detail;
     if( !id || id === 'Browse' ) {
-      return this._searchRecords(this._getEmptySearchDocument());
+      return this.RecordModel.setSearchLocation(this._getEmptySearchDocument());
     }
     this.$.searchBox.browseValue = 'Browse';
     this._onCollectionSelected(id);
@@ -91,7 +91,7 @@ class AppHome extends Mixin(PolymerElement)
   _onSearch(e) {
     let searchDoc = this._getEmptySearchDocument();
     this._setTextFilter(searchDoc, e.detail);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
   }
 
   /**
@@ -110,8 +110,6 @@ class AppHome extends Mixin(PolymerElement)
    */
   _onCollectionSelected(id) {
     this._setWindowLocation(id);
-    // let searchDoc = this._setKeywordFilter(this._getEmptySearchDocument(), 'isPartOf.@id', id);
-    // this._searchRecords(searchDoc);
   }
   
 }
