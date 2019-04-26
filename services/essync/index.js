@@ -63,15 +63,18 @@ class EsSyncMessageServer extends MessageServer {
   async onContainerEvent(e) {
     let path = e.path;
     let container = await indexer.getContainer(path);
-    
+
     // either doesn't exist or we don't have access
     if( !container ) {
       // remove from elastic search
       return indexer.remove(path);
     }
 
-    // grab the esRecord for the path
-    if( Array.isArray(container) ) container = container[0];
+    container = this._getGraphById(container, config.server.url+config.fcrepo.root+path);
+    if( !container ) {
+      return logger.error('Failed to get container: ', path);
+    }
+
     let type = container['@type'];
 
     // we only want collection and record types
@@ -82,11 +85,25 @@ class EsSyncMessageServer extends MessageServer {
 
     let esRecord = await indexer.getTransformedContainer(path, type);
     if( !esRecord ) {
-      return logger.error('Failed to get transform for container: ', path);
+      return logger.error('Failed to get transform for container:', path);
     }
 
     // update elasticsearch
-    indexer.update(esRecord);
+    try {
+      await indexer.update(esRecord);
+    } catch(e) {
+      logger.error('Failed to update: '+path, e);
+    }
+  }
+
+  _getGraphById(graphs, path) {
+    if( !Array.isArray(graphs) ) return graphs;
+    for( let graph of graphs ) {
+      if( graph['@id'] === path ) {
+        return graph;
+      }
+    }
+    return null;
   }
 
   version() {
