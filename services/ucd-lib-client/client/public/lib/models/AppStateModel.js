@@ -12,6 +12,27 @@ class AppStateModelImpl extends AppStateModel {
     this._sendGA();
   }
 
+  set(update) {
+    if( update.location ) {
+      // /collection/* is an alias for a base collection search
+
+      let page = update.location.path ? update.location.path[0] : 'home';
+      if( !page ) page = 'home'
+
+      if( page === 'collection' ) {
+        if( update.location.path.length === 2 ) {
+          page = 'search';
+        } else {
+          page = 'record';
+        }
+      }
+      
+      update.location.page = page;
+    }
+
+    return super.set(update);
+  }
+
   /**
    * @method _sendGA
    * @description send a google analytics event if pathname has changed

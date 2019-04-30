@@ -121,7 +121,7 @@ class AppFacetFilter extends Mixin(PolymerElement)
     let searchDoc = this._getCurrentSearchDocument();
     this._setPaging(searchDoc, 0);
     this._removeKeywordFilter(searchDoc, this.filter, key);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
 
     this._notifySelected(false, key);
   };
@@ -162,7 +162,7 @@ class AppFacetFilter extends Mixin(PolymerElement)
     let searchDoc = this._getCurrentSearchDocument();
     this._setPaging(searchDoc, 0);
     this._appendKeywordFilter(searchDoc, this.filter, item.key);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
 
     this._notifySelected(true, item.key);
   }
@@ -174,7 +174,7 @@ class AppFacetFilter extends Mixin(PolymerElement)
     let searchDoc = this._getCurrentSearchDocument();
     this._setPaging(searchDoc, 0);
     this._removeKeywordFilter(searchDoc, this.filter, item.key);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
 
     this._notifySelected(false, item.key);
   }

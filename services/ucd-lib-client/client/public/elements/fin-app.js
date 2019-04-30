@@ -74,17 +74,11 @@ export class FinApp extends Mixin(PolymerElement)
    * @description AppStateInterface
    */
   _onAppStateUpdate(e) {
+    if( e.location.page === this.page ) return;
+
     this.appState = e;
-    let page = e.location.path ? e.location.path[0] : 'home';
-    if( !page ) page = 'home'
-
-    if( page === this.page ) return;
-
-    // /collection/* is an alias for a base collection search
-    if( page === 'collection' ) page = 'search';
-    
     window.scrollTo(0, 0);
-    this.page = page;
+    this.page = e.location.page;
   }
 
   /**
@@ -93,16 +87,17 @@ export class FinApp extends Mixin(PolymerElement)
    * used to set the window url
    * 
    */
-  _onRecordSearchUpdate(e) {
-    if( this.appState.location.path[0] === 'collection' ) return;
-    let path = this._searchDocumentToUrl(e.searchDocument, true);
-    if( path.match(/\/collection/) ) {
-      this._setWindowLocation(path);
-    } else {
-      this._setWindowLocation('/search/'+path);
-    }
+  // _onRecordSearchUpdate(e) {
+  //   if( this.appState.location.path[0] === 'collection' ) return;
+
+  //   let path = this._searchDocumentToUrl(e.searchDocument, true);
+  //   if( path.match(/\/collection/) ) {
+  //     this._setWindowLocation(path);
+  //   } else {
+  //     this._setWindowLocation('/search/'+path);
+  //   }
     
-  }
+  // }
 }
 
 customElements.define('fin-app', FinApp);

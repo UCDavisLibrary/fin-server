@@ -24,13 +24,19 @@ class SeoModel extends BaseModel {
    * @method _onAppStateUpdate
    * @description set site meta tags and jsonld
    */
-  _onAppStateUpdate() {
+  async _onAppStateUpdate() {
     let state = AppStateModel.store.data;
-    let isRecord = state.location.pathname.match(/^\/record\//);
+
+    let isRecord = (state.location.page === 'record');
     let isCollection = (
       state.location.pathname.match(/^\/search\//) &&
       CollectionModel.getSelectedCollection()
     ) ? true : false;
+    if( !isCollection && 
+        state.location.path.length === 2 &&
+        state.location.path[0] === 'collection' ) {
+      isCollection = '/'+state.location.path.join('/');
+    }
 
     if( state.selectedRecord && isRecord ) {
       this._setJsonLd(state.selectedRecord);
@@ -41,6 +47,10 @@ class SeoModel extends BaseModel {
       });
     } else if ( isCollection ) {
       let collection = CollectionModel.getSelectedCollection();
+      if( !collection && typeof isCollection === 'string' ) {
+        collection = await CollectionModel.get(isCollection);
+      }
+
       this._setCollectionJsonLd(collection);
       this._setMetaTags({
         title : collection.name + ' - ' + config.metadata.title,

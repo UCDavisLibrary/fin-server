@@ -66,6 +66,10 @@ class RecordModel extends ElasticSearchModel {
     return this.store.data.byId[id];
   }
 
+  setSearchLocation(searchDocument) {
+    AppStateModel.setLocation('/search/'+this.searchDocumentToUrl(searchDocument));
+  }
+
   /**
    * @method search
    * @description preform a es collection search given an app search document
@@ -74,7 +78,7 @@ class RecordModel extends ElasticSearchModel {
    * 
    * @returns {Promise}
    */
-  async search(searchDocument = {}, updateHistoryState=true) {
+  async search(searchDocument = {}) {
     if( !searchDocument.filters ) searchDocument.filters = {};
 
     // first, we need to verify all filters are available to us
@@ -115,20 +119,19 @@ class RecordModel extends ElasticSearchModel {
       }
     }
 
-    let path = '/search/'+this.searchDocumentToUrl(searchDocument);
     if( corrections ) {
       // This causes loop badness
       // AppStateModel.setLocation(path);
       return await this.search(searchDocument, false);
     }
     
-    if( updateHistoryState ) {
-      if( !history.state ) {
-        AppStateModel.setLocation(path);
-      } if( history.state && history.state.location !== path ) {
-        AppStateModel.setLocation(path);
-      }
-    }
+    // if( updateHistoryState ) {
+    //   if( !history.state ) {
+    //     AppStateModel.setLocation(path);
+    //   } if( history.state && history.state.location !== path ) {
+    //     AppStateModel.setLocation(path);
+    //   }
+    // }
 
     if( searchDocument.limit + searchDocument.offset > this.MAX_WINDOW ) {
       this.store.setSearchError(searchDocument, new Error('Sorry, digital.ucdavis.edu does not serve more than 10,000 results for a query'), true);

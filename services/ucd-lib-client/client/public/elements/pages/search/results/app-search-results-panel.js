@@ -127,7 +127,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    * @param {Object} e 
    */
   _onAppStateUpdate(e) {
-    if( e.location.path[0] !== 'search') return;
+    if( e.location.page !== 'search') return;
     this._resizeAsync();
   }
 
@@ -350,7 +350,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
 
     let searchDoc = this._getEmptySearchDocument();
     this._setKeywordFilter(searchDoc, 'isPartOf.@id', id);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
   }
 
 }

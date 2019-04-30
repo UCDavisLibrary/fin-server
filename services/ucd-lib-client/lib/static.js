@@ -52,8 +52,16 @@ module.exports = (app) => {
     template : async (req, res) => {
       let jsonld = '';
 
-      let isRecord = req.originalUrl.match(/^\/record/);
-      let isCollection = isCollectionReq(req);
+      let isRecord = false;
+      let isCollection = false;
+
+      let parts = req.originalUrl.split('/').filter(p => p ? true : false);
+      if( parts[0] === 'collection' ) {
+        if( parts.length === 2 ) isCollection = '/'+parts.join('/');
+        else isRecord = true;
+      } else if( parts[0] === 'search' ) {
+        isCollection = isSearchCollectionReq(req);
+      }
 
       if( !isRecord && !isCollection ) {
         return {
@@ -64,44 +72,54 @@ module.exports = (app) => {
         };
       }
 
-      if( isCollection ) {
-        let collection = await collections.get(isCollection);
-        collection = collectionTransform(collection._source);
-        jsonld = JSON.stringify(collection, '  ', '  ');
-  
-        let keywords = [];
-        if( collection.keywords ) {
-          if( !Array.isArray(collection.keywords) ) keywords = [collection.keywords];
-          else keywords = collection.keywords;
+      try {
+        if( isCollection ) {
+          let collection = await collections.get(isCollection);
+          collection = collectionTransform(collection._source);
+          jsonld = JSON.stringify(collection, '  ', '  ');
+    
+          let keywords = [];
+          if( collection.keywords ) {
+            if( !Array.isArray(collection.keywords) ) keywords = [collection.keywords];
+            else keywords = collection.keywords;
+          }
+    
+          return {
+            jsonld, bundle,
+            title : collection.name + ' - '+ config.server.title,
+            description : collection.description || '',
+            keywords : keywords.join(', ')
+          }
+
+        } else {
+
+          let id = req.originalUrl;
+          let record = await records.esGet(id);
+          record = transform(record._source);
+          jsonld = JSON.stringify(record, '  ', '  ');
+    
+          let keywords = [];
+          if( record.keywords ) {
+            if( !Array.isArray(record.keywords) ) keywords = [record.keywords];
+            else keywords = record.keywords;
+          }
+    
+          return {
+            jsonld, bundle,
+            title : record.name + ' - '+ config.server.title,
+            description : record.description || '',
+            keywords : keywords.join(', ')
+          }
+
         }
-  
+      } catch(e) {
+        console.log(e);
         return {
           jsonld, bundle,
-          title : collection.name + ' - '+ config.server.title,
-          description : collection.description || '',
-          keywords : keywords.join(', ')
+          title : 'Server Error',
+          description : 'Invalid URL: '+req.originalUrl,
+          keywords : ''
         }
-
-      } else {
-
-        let id = req.originalUrl.replace(/^\/record/, '');
-        let record = await records.esGet(id);
-        record = transform(record._source);
-        jsonld = JSON.stringify(record, '  ', '  ');
-  
-        let keywords = [];
-        if( record.keywords ) {
-          if( !Array.isArray(record.keywords) ) keywords = [record.keywords];
-          else keywords = record.keywords;
-        }
-  
-        return {
-          jsonld, bundle,
-          title : record.name + ' - '+ config.server.title,
-          description : record.description || '',
-          keywords : keywords.join(', ')
-        }
-
       }
     }
   });
@@ -115,11 +133,7 @@ module.exports = (app) => {
   }));
 }
 
-function isCollectionReq(req) {
-  if( req.originalUrl.match(/^\/collection/) ) {
-    return req.originalUrl;
-  } 
-
+function isSearchCollectionReq(req) {
   if( !req.originalUrl.match(/^\/search/) ) {
     return false;
   } 

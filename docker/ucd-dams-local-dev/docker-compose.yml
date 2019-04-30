@@ -162,8 +162,8 @@ services:
       - FIN_URL=${FIN_URL}
     depends_on:
       - server
-    command: node service
-    # command: bash -c 'tail -f /dev/null'
+    # command: node service
+    command: bash -c 'tail -f /dev/null'
 
   tesseract:
     build: ../../services/tesseract
@@ -219,7 +219,8 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
-      - CAS_URL=https://ssodev.ucdavis.edu/cas
+      # - CAS_URL=https://ssodev.ucdavis.edu/cas
+      - CAS_URL=https://ssodev1.ucdavis.edu/cas
     depends_on:
       - server
     command: node service

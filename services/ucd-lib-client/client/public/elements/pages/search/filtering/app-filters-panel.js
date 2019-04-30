@@ -110,7 +110,7 @@ class AppFiltersPanel extends Mixin(PolymerElement)
     let searchDoc = this._getCurrentSearchDocument();
     this._removeKeywordFilter(searchDoc, 'isPartOf.@id');
     this._setPaging(searchDoc, 0);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
   }
 }
 

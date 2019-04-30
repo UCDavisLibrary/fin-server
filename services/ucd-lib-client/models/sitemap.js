@@ -182,7 +182,7 @@ Sitemap: ${config.server.url}/sitemap.xml`);
    */
   _writeResult(resp, result) {
     resp.write(`<url>
-        <loc>${config.server.url}/record${result._id}</loc>
+        <loc>${config.server.url}${result._id}</loc>
         <changefreq>weekly</changefreq>
         <priority>.5</priority>
     </url>\n`);

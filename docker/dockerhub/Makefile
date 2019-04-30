@@ -8,7 +8,8 @@ branch := $(shell git rev-parse --abbrev-ref HEAD)
 tags   := $(shell git tag --contains)
 currenttag := $(shell git describe --tags)
 
-tag:=branch tags
+# Use tag=branch tags to add git tags (VERSIONS) to push
+tag:=branch
 
 service_dirs:=$(foreach d,basic-auth cas essync loris ucd-lib-client tesseract,../../services/$d)
 $(foreach d,${service_dirs},$(eval ${d}/image:=fin-$(notdir $d)-service))
@@ -78,7 +79,12 @@ $2:$1/Dockerfile
 #	$(call package-version-tag,$1,$2)
 
 push::
-	docker push ${org}/$2
+	docker push ${org}/$2:${branch};\
+  if [[ -n "${tags}" ]]; then \
+  for t in ${tags}; do \
+	  docker push ${org}/$2:$$$$t;\
+  done;\
+	fi;
 
 endef
 
