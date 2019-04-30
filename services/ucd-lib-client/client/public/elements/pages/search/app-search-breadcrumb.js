@@ -91,6 +91,13 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * @description CollectionInterface, fired when selected collection updates
    */
   _onSelectedCollectionUpdate(e) {
+    if( !e ) {
+      if( !this.record ) {
+        this.collection = null;
+      }
+      return;
+    }
+
     if( this.collection && this.collection['@id'] === e['@id'] ) return;
     this.collection = e;
     this.record = null;

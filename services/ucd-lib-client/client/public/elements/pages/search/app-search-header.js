@@ -60,7 +60,7 @@ class AppSearchHeader extends Mixin(PolymerElement)
     this.$.searchInput.browseValue = 'Browse';
 
     if( !id || id === 'Browse' ) {
-      return this._searchRecords(this._getEmptySearchDocument());
+      return this.RecordModel.setSearchLocation(this._getEmptySearchDocument());
     }
 
     this._setWindowLocation(id);
@@ -77,7 +77,7 @@ class AppSearchHeader extends Mixin(PolymerElement)
     let searchDoc = this._getCurrentSearchDocument();
     this._setPaging(searchDoc, 0);
     this._setTextFilter(searchDoc, e.detail);
-    this._searchRecords(searchDoc);
+    this.RecordModel.setSearchLocation(searchDoc);
   }
 
   /**
