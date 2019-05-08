@@ -10,9 +10,9 @@ class AttributeReducer {
     this.esClient = esClient;
     buffer.on('attributes-update', async (e) => {
       try {
-        await this.reduceAttributes(e)
+        await this.reduceAttributes(e.data)
       } catch(err) {
-        logger.error('Failed to reduce attributes for: ', e['@id'], err);
+        logger.error('Failed to reduce attributes for: ', e.data['@id'], err);
       }
     });
   }
