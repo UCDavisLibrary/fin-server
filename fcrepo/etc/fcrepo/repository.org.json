@@ -5,7 +5,7 @@
         "predefined" : ["default"],
         "default" : "default",
         "allowCreation" : true,
-        "cacheSize" : 1000000
+        "cacheSize" : 10000
     },
     "storage" : {
         "persistence": {
@@ -34,4 +34,3 @@
     },
 	"node-types" : ["fedora-node-types.cnd", "file:/etc/fcrepo/namespaces.cnd"]
 }
-

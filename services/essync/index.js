@@ -4,6 +4,7 @@ const {MessageServer, config, logger, jwt} = require('@ucd-lib/fin-node-utils');
 const indexer = require('./lib/indexer');
 const reindexer = require('./lib/reindexer');
 const buffer = require('./lib/buffer');
+const JobQueue = require('./lib/queue');
 const gitinfo = require('./gitinfo.json');
 
 /**
@@ -16,7 +17,11 @@ class EsSyncMessageServer extends MessageServer {
 
   constructor() {
     super('Elasticsearch Sync');
-    buffer.on('container-update', e => this.onContainerEvent(e));
+
+    this.queue = new JobQueue();
+    this.queue.process = this.onContainerEvent.bind(this);
+
+    buffer.on('container-update', e => this.queue.add(e.id, e.data));
   }
 
   /**

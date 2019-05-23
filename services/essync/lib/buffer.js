@@ -20,7 +20,7 @@ class UpdateBuffer extends EventEmitter {
 
     buffer[id] = setTimeout(() => {
       delete buffer[id];
-      this.emit(type+'-update', data);
+      this.emit(type+'-update', {data, id});
     }, this.bufferTime);
   }
 

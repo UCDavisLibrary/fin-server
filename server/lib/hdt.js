@@ -28,13 +28,19 @@ class HdtWrapper {
       headers : {Accept : api.RDF_FORMATS.JSON_LD}
     });
 
-    let body = JSON.parse(response.last.body);
-    body = this._get('/collection', body);
+    if( !response.last.body ) return;
+    
+    try {
+      let body = JSON.parse(response.last.body);
+      body = this._get('/collection', body);
 
-    let contains = body[CONTAINS];
-    for( let i = 0; i < contains.length; i++ ) {
-      let collectionName = contains[i]['@id'].replace(/.*\/collection\//, '');
-      await this._getHdtFiles(collectionName);
+      let contains = body[CONTAINS];
+      for( let i = 0; i < contains.length; i++ ) {
+        let collectionName = contains[i]['@id'].replace(/.*\/collection\//, '');
+        await this._getHdtFiles(collectionName);
+      }
+    } catch(e) {
+      console.log('Failed to init HDT library', e);
     }
   }
 
