@@ -9,8 +9,11 @@
     },
     "storage" : {
         "persistence": {
-            "type": "file",
-            "path" : "${fcrepo.object.directory:target/objects}"
+            "type" : "db",
+            "connectionUrl": "jdbc:postgresql://postgres:5432/fcrepo",
+            "driver" : "org.postgresql.Driver",
+            "username" : "postgres",
+            "password" : ""
         },
         "binaryStorage" : {
             "type" : "file",
@@ -32,6 +35,6 @@
         "initialTime" : "00:00",
         "intervalInHours" : 24
     },
-	"node-types" : ["fedora-node-types.cnd", "file:/etc/fcrepo/namespaces.cnd"]
-}
+    "node-types" : ["fedora-node-types.cnd", "file:/etc/fcrepo/namespaces.cnd"]
+  }
 
