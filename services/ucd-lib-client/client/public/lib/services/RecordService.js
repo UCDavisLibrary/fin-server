@@ -11,10 +11,10 @@ class RecordService extends BaseService {
     this.baseUrl = '/api/records'
   }
 
-  async get(id) {
-    return await this.request({
-      url : `${this.baseUrl}${id}`,
-      checkCached : () => this.store.data.byId[id],
+  get(id) {
+    return this.request({
+      url : `${this.baseUrl}${id}?root=true`,
+      checkCached : () => this.store.getRecord(id),
       onLoading : request => this.store.setRecordLoading(id, request),
       onLoad : result => this.store.setRecordLoaded(id, result.body),
       onError : e => this.store.setRecordError(id, e)
@@ -29,7 +29,7 @@ class RecordService extends BaseService {
    * 
    * @returns {Promise}
    */
-  async search(searchDocument = {}) {
+  search(searchDocument = {}) {
     searchDocument.textFields = config.elasticSearch.textFields.record;
 
     // make sure we aren't sending the same query twice
@@ -38,7 +38,7 @@ class RecordService extends BaseService {
       return this.store.getSearch();
     }
 
-    return await this.request({
+    return this.request({
       url : `${this.baseUrl}/search?debug=true`,
       fetchOptions : {
         method : 'POST',
@@ -61,8 +61,8 @@ class RecordService extends BaseService {
    * @param {Object} searchDocument elastic search query parameters
    * @returns {Promise}
    */
-  async defaultSearch(id, searchDocument = {}) {
-    return await this.request({
+  defaultSearch(id, searchDocument = {}) {
+    return this.request({
       url : `${this.baseUrl}/search?debug=true`,
       fetchOptions : {
         method : 'POST',

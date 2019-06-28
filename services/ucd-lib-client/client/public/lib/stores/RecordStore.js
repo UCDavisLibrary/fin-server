@@ -23,6 +23,18 @@ class RecordStore extends BaseStore {
 
   }
 
+  getRecord(id) {
+    let parts = id.split('/').filter(p => p !== '');
+    for( let i = parts.length-1; i >= 0; i-- ) {
+      let pid = '/'+parts.join('/');
+      if( this.data.byId[pid] ) {
+        return this.data.byId[pid];
+      }
+      parts.splice(i, 1);
+    }
+    return null;
+  }
+
   setRecordLoading(id, promise) {
     this._setRecordState({
       state: this.STATE.LOADING, 
@@ -33,7 +45,8 @@ class RecordStore extends BaseStore {
 
   setRecordLoaded(id, payload) {
     this._setRecordState({
-      state: this.STATE.LOADED,   
+      state: this.STATE.LOADED,
+      rootId : payload['@id'],
       payload, id
     });
   }
@@ -47,6 +60,9 @@ class RecordStore extends BaseStore {
 
   _setRecordState(state) {
     this.data.byId[state.id] = state;
+    if( state.rootId ) {
+      this.data.byId[state.rootId] = state;
+    }
     this.emit(this.events.RECORD_UPDATE, state);
   }
 

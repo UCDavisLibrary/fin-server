@@ -90,7 +90,9 @@ export default class AppRecord extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   async _onSelectedRecordUpdate(record) {
-    if( record['@id'] === this.renderedRecordId ) return;
+    if( record['@id'] === this.renderedRecordId ) {
+      return this._renderSelectedMedia();
+    }
 
     this.renderedRecordId = record['@id'];
     this.record = record;
@@ -135,16 +137,11 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.record.collectionName = collection.name;
     }
 
+    this._renderSelectedMedia();
+
     // render associated media
     let imageList = this._getImageMediaList(record);
     this.$.download.setRootRecord(record, imageList);
-
-    if( record.associatedMedia ) { 
-      if( imageList.length ) this._setSelectedRecordMedia(imageList[0]);
-      else this._setSelectedRecordMedia(record);
-    } else {
-      this._setSelectedRecordMedia(record);
-    }
 
     // find arks or doi
     this._renderIdentifier(record);
@@ -167,6 +164,28 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
     this.$.apa.text = await citations.renderEsRecord(this.record, 'apa');
     this.$.chicago.text = await citations.renderEsRecord(this.record, 'chicago');
+  }
+
+  _renderSelectedMedia() {
+    let imageList = this._getImageMediaList(this.record);
+    if( this.record.associatedMedia ) { 
+      if( imageList.length ) {
+
+        // see if url has selected an image
+        let selected = imageList[0];
+        for( let img of imageList ) {
+          if( img['@id'] === window.location.pathname ) {
+            selected = img;
+          }
+        }
+
+        this._setSelectedRecordMedia(selected);
+      } else {
+        this._setSelectedRecordMedia(this.record);
+      }
+    } else {
+      this._setSelectedRecordMedia(this.record);
+    }
   }
 
   _setTarHref() {

@@ -211,6 +211,8 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
+    if( this.selectedRecordId === record['@id'] ) return;
+    this.selectedRecordId = record['@id'];
     this.mediaList = this._getImageMediaList(record);
 
     this.thumbnails = this.mediaList.map(record => {
@@ -260,8 +262,9 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    */
   _onThumbnailClicked(e) {
     let id = e.currentTarget.getAttribute('media-id');
-    let media = this.mediaList.find(item => item['@id'] === id);
-    this._setSelectedRecordMedia(media);
+    this.AppStateModel.setLocation(id);
+    // let media = this.mediaList.find(item => item['@id'] === id);
+    // this._setSelectedRecordMedia(media);
   }
 
   /**
