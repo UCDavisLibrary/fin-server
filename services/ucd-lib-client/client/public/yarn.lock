@@ -302,10 +302,10 @@
   dependencies:
     "@webcomponents/shadycss" "^1.5.2"
 
-"@ucd-lib/cork-360-image-viewer@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-360-image-viewer/-/cork-360-image-viewer-0.0.2.tgz#de166df3dfc6485fb48609b4161796ec14987b59"
-  integrity sha512-pqzgJuEHOHDU/0fZ+buQC7S8n6CXuQBh3pRMk8E6wAP92mH790PIJDc3CnH8by2BupXgBjNSeaZ1KqtfCEZ4tg==
+"@ucd-lib/cork-360-image-viewer@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-360-image-viewer/-/cork-360-image-viewer-0.0.3.tgz#d87ea9020f56f1774fe1089eee958a59027068b3"
+  integrity sha512-Pg58/67ElYDZPaX3Cpwu93iLGmPMa0sKXwMm5GntJgWOlxZ9YVA8JASYelPhdNJXFRR4q8GpTeE5Lb33FJODaw==
   dependencies:
     "@polymer/polymer" "^3.1.0"
 

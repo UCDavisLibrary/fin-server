@@ -153,9 +153,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.collectionValue.innerHTML = `<a href="${record.collectionId}">${this.collectionName}</a>`;
 
     // set fedora collection link
-    let metadataPart = record['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
-    let link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
-    this.$.fedoraValue.innerHTML =  `<a href="${link}">${record['@id']}</a>`;
+    this._renderFcLink(record);
 
     this._updateMetadataRows();
     // this._setTarHref();
@@ -164,6 +162,20 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
     this.$.apa.text = await citations.renderEsRecord(this.record, 'apa');
     this.$.chicago.text = await citations.renderEsRecord(this.record, 'chicago');
+  }
+
+  _renderFcLink(record, media) {
+    let metadataPart = record['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
+    let link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
+    let html = `<a href="${link}">${record['@id']}</a>`;
+
+    if( media ) {
+      metadataPart = media['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
+      link = this._getHost()+'fcrepo/rest'+media['@id']+metadataPart;
+      html += `<br /><a href="${link}">${media['@id']}</a>`;
+    }
+
+    this.$.fedoraValue.innerHTML = html;
   }
 
   _renderSelectedMedia() {
@@ -291,7 +303,7 @@ export default class AppRecord extends Mixin(PolymerElement)
    * 
    * @param {Object} record 
    */
-  _renderIdentifier(record) {
+  _renderIdentifier(record, media) {
     if( !record.identifier ) {
       return this.$.identifier.style.display = 'none';
     }
@@ -300,6 +312,16 @@ export default class AppRecord extends Mixin(PolymerElement)
     ids = ids.filter(id => id.match(/^(ark|doi)/) ? true : false);
 
     if( ids.length ) {
+
+      // if we are passed a selected media, append identifiers as well
+      if( media && media.identifier ) {
+        let mediaIds = Array.isArray(media.identifier) ? media.identifier : [media.identifier];
+        mediaIds = mediaIds.filter(id => id.match(/^(ark|doi)/) ? true : false);
+        for( let id of mediaIds ) {
+          if( ids.indexOf(id) === -1 ) ids.push(id);
+        }
+      }
+
       this.$.identifier.style.display = 'flex';
       this.$.identifierValue.innerHTML = ids.map(id => `<div><a href="${this._getHost()}${id}">${id}</a></div>`).join('')
     } else {
@@ -336,6 +358,9 @@ export default class AppRecord extends Mixin(PolymerElement)
       size : record.image.contentSize ? parseInt(record.image.contentSize) : 0,
       url : record.image.url
     });
+
+    this._renderIdentifier(this.record, record);
+    this._renderFcLink(this.record, record);
   }
 
   /**

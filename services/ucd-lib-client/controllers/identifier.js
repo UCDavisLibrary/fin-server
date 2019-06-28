@@ -45,11 +45,11 @@ async function handleRequest(req, resp) {
   // if the Accept header contains text/html and there is no
   // suffix in the url, ie just the ark or doi is provided
   // redirect to ucd dams UI.  otherwise send to fcrepo UI
-  if( (req.get('accept') || '').match(/text\/html/) && !info.suffix ) {
+  if( (req.get('accept') || '').match(/text\/html/) ) {
     if( record['@type'].indexOf('http://schema.org/Collection') > -1 ) {
       resp.redirect(record['@id']);
     } else {
-      resp.redirect(record['@id']);
+      resp.redirect(record['@id']+info.suffix);
     }
   } else {
     resp.redirect(config.fcrepo.root+record['@id']+info.suffix);
