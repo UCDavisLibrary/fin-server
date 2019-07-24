@@ -20,6 +20,10 @@ export default class AppSearchResult extends Mixin(PolymerElement)
         type : String,
         value : ''
       },
+      isVideo: {
+        type: Boolean,
+        value: false
+      },
       isImage : {
         type : Boolean,
         value : false
@@ -84,19 +88,26 @@ export default class AppSearchResult extends Mixin(PolymerElement)
    * @description fired when `data` property updates.  Set UI properties.
    */
   async _onDataUpdate() {
+    console.log("this.data: ", this.data);
+
     let data = Object.assign({}, this.data);
     if( !data['@id'] ) return;
     
-    this.fetchId = data['@id'];   
+    this.fetchId = data['@id'];
 
     this.name = this.data.name || (this.data.identifier ? this.data.identifier['@id'] : '');
 
+    let video = this.data.video;
+    if ( video ) {
+      console.log("this.fetchId: ", this.fetchId);
+      console.log("video: ", video);
+      this.isVideo = true;
+    }
+    
     let imgEle = this.shadowRoot.querySelector('#img');
     if( imgEle ) imgEle.style.display = 'none';
 
-    let imgWidth = 250;
-
-    
+    let imgWidth = 250;    
     let img = this.data.image;  
     if( img ) {
       let ratio = img.height / img.width;
