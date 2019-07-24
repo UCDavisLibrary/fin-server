@@ -8,9 +8,7 @@ module.exports = async function(path, graph, utils) {
     throw new Error('unknown container: '+path);
   }
   
-
-  utils.init(item, container);
-  
+  utils.init(item, container);  
 
   if( !utils.isType(container, 'http://fedora.info/definitions/v4/repository#Resource') ) {
     throw new Error('invalid type');
@@ -142,6 +140,12 @@ module.exports = async function(path, graph, utils) {
   await utils.add({
     attr : 'identifier',
     value : ['schema', 'identifier']
+  });
+
+  await utils.add({
+    attr : 'video',
+    value : ['schema', 'video'],
+    type: 'id'
   });
 
   await utils.add({
