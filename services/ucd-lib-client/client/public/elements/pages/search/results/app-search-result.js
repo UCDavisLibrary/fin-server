@@ -88,8 +88,6 @@ export default class AppSearchResult extends Mixin(PolymerElement)
    * @description fired when `data` property updates.  Set UI properties.
    */
   async _onDataUpdate() {
-    console.log("this.data: ", this.data);
-
     let data = Object.assign({}, this.data);
     if( !data['@id'] ) return;
     
@@ -99,8 +97,6 @@ export default class AppSearchResult extends Mixin(PolymerElement)
 
     let video = this.data.video;
     if ( video ) {
-      console.log("this.fetchId: ", this.fetchId);
-      console.log("video: ", video);
       this.isVideo = true;
     }
     

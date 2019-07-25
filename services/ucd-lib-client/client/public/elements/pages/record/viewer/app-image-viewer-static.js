@@ -2,6 +2,7 @@ import {PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-spinner/paper-spinner-lite"
 import template from "./app-image-viewer-static.html"
 
+import "./app-video-viewer"
 import "./app-image-viewer-nav"
 import "./app-image-viewer-lightbox"
 
@@ -67,6 +68,15 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
     this.style.display = 'block';
 
     this.media = media;
+
+    if (this.media.video) {
+      this.loading = false;
+      this.$.lightbox.style.display = 'none';
+      return;
+    } else {
+      this.$.videoPlayer.style.display = 'none';
+    }
+
     this._renderImg();
   }
 
