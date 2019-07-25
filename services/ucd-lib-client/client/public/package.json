@@ -60,5 +60,6 @@
     "@polymer/iron-validatable-behavior": "3.0.1",
     "@polymer/iron-form-element-behavior": "3.0.1",
     "@polymer/font-roboto": "3.0.2"
-  }
+  },
+  "devDependencies": {}
 }

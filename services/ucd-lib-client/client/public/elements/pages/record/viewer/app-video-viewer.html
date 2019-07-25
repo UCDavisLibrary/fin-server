@@ -1,1 +1,22 @@
-<video controls width="100%" src="[[url]]"></video>
+<style>
+    :host {
+      display: block;
+      background: black;
+      padding: 20px 0 0 0;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    #player {
+        width: 100%;
+    }
+</style>
+
+<video 
+  poster="[[poster]]" 
+  src="[[url]]" 
+  id="player" 
+  playsinline 
+  controls 
+  crossorigin>
+</video>
