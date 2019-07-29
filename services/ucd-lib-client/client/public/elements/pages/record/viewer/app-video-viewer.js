@@ -1,18 +1,26 @@
-import {PolymerElement, html} from "@polymer/polymer"
+import { PolymerElement } from "@polymer/polymer"
 import template from "./app-video-viewer.html"
+
+/* https://github.com/sampotts/plyr */
+import Plyr from "plyr"
+import plyrCss from "plyr/dist/plyr.css"
 
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
 
 import config from "../../../../lib/config"
 
-import Plyr from "plyr"
-
 export default class AppVideoViewer extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
 
   static get template() {
-    return html([template]);
+    let tag = document.createElement('template');
+    
+    tag.innerHTML = `<style>${plyrCss}</style>${template}`;
+    
+    return tag;
+
+    //return html([template]);
   }
 
   static get properties() {
@@ -24,26 +32,20 @@ export default class AppVideoViewer extends Mixin(PolymerElement)
       poster : {
         type: String,
         default: ''
-      },
-      player: {
-        type: Object,
-        value : null
       }
     }
   }
 
   constructor() {
     super();
-
     console.log("App Video Viewer");
-    // https://github.com/sampotts/plyr
+  }
 
-    this.player = new Plyr('#player', {
-      title: 'Example Title',
-      enabled: true,
-      debug: true,
-      loop: true
-    });
+  load() {
+    super.load();
+
+    // Trying to debug SVG loading error
+    // https://gist.github.com/leonderijke/c5cf7c5b2e424c0061d2
   }
 
   /**
@@ -57,6 +59,13 @@ export default class AppVideoViewer extends Mixin(PolymerElement)
     
     this.url = url;
     this.poster = media['thumbnailUrl'];
+
+    const supported = Plyr.supported('video', 'html5', true);
+    //console.log("supported: ", supported);
+    
+    const player = new Plyr(this.$.player, {
+      debug: true
+    });
   }
 
 }
