@@ -1,18 +1,31 @@
 <style>
-    :host {
-      display: block;
-      background: black;
-      padding: 20px 0 0 0;
-      position: relative;
-      box-sizing: border-box;
+    /*
+        https://css-tricks.com/change-color-of-svg-on-hover/
+
+        Revisit, this is probably not the best way to include the SVGs
+            - Leigh | July 29, 2019
+    */
+
+    button.plyr__control > svg {
+        background: white;
+        mask-size: cover;
+    }
+
+    [data-plyr='play'] svg {
+        mask: url(../../../../images/sprite/plyr-play.svg);
+    }
+
+    [data-plyr='fullscreen'] svg {
+        mask: url(../../../../images/sprite/plyr-enter-fullscreen.svg);
+    }
+
+    [data-plyr='mute'] svg {
+        mask: url(../../../../images/sprite/plyr-volume.svg);
+    }
+
+    [data-plyr='settings'] svg {
+        mask: url(../../../../images/sprite/plyr-settings.svg);
     }
 </style>
 
-<video 
-  poster="[[poster]]" 
-  src="[[url]]" 
-  id="player" 
-  playsinline 
-  controls 
-  crossorigin>
-</video>
+<video id="player" playsinline controls crossorigin></video>
