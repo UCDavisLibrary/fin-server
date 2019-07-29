@@ -73,6 +73,7 @@ export default class AppVideoViewer extends Mixin(PolymerElement)
         }
       ],
       poster: this.poster,
+      loadSprite: true,
       iconPrefix: 'plyr',
       iconUrl: '../../../../images/sprite/',
       
