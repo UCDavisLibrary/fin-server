@@ -179,6 +179,7 @@ class TransformUtils {
     json.image = {
       url : config.fcrepo.root+imgPath
     };
+
     await this._setImageMetadata(json);
     await this._setThumbnailUrl(json);
     await this._setColorPalette(json);

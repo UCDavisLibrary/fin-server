@@ -86,7 +86,17 @@ module.exports = async function(path, graph, utils) {
   await utils.add({
     attr : 'video',
     value : ['schema', 'video'],
-    type: 'id'
+    type : 'id'
+  });
+
+  await utils.add({
+    attr : 'videoFrameSize',
+    value : ['schema', 'videoFrameSize']
+  });
+
+  await utils.add({
+    attr : 'videoQuality',
+    value : ['schema', 'videoQuality']
   });
 
   await utils.add({
@@ -99,12 +109,6 @@ module.exports = async function(path, graph, utils) {
     attr : 'associatedMedia',
     value : ['schema', 'associatedMedia'],
     type : 'id'
-  });
-
-  await utils.add({
-    attr : 'video',
-    value : ['schema', 'video'],
-    type: 'id'
   });
 
   await utils.add({

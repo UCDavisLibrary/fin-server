@@ -8,7 +8,7 @@ import utils from "../../../lib/utils"
 import config from "../../../lib/config"
 
 import "./viewer/app-image-viewer-static"
-import "./app-image-download"
+import "./app-media-download"
 import "./app-record-metadata-layout"
 import "./app-copy-cite"
 import "./viewer/app-360-image-viewer"
@@ -95,6 +95,16 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     this.renderedRecordId = record['@id'];
     this.record = record;
+
+    /* 
+      Have Justin show how to move this into transforms file.
+      just putting this here for now.
+    */
+    this.record.video = {
+      name: this.record.video['name'],
+      videoFrameSize: this.record.videoFrameSize,
+      videoQuality: this.record.videoQuality
+    }
 
     this.name = this.record.name || '';
 
@@ -312,8 +322,13 @@ export default class AppRecord extends Mixin(PolymerElement)
     }
 
     if (this.record.video) {
-      this.$.download.style.display = 'none';
       this.$.viewerStatic.style.display = 'none';
+      this.$.download.render({
+        resolution: [600, 500],
+        fileFormat: record.encodingFormat,
+        size: record.fileSize,
+        url: record['@id']
+      });
       return;
     } else {
       this.$.videoPlayer.style.display = 'none';

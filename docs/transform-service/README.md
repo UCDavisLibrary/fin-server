@@ -194,7 +194,7 @@ Example using the es-record-tranform service from the demo
 $ fin service create \
   --title "Elasticsearch - Collection Record Transform" \
   --description "Used for updating Elasticsearch indexes when fedora updates" \
-  --transform /path/to/transform.js \
+  --transform ./server/default-transforms \
   es-record-transform TransformService
 ```
 

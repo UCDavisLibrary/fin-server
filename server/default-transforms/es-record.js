@@ -149,6 +149,16 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
+    attr : 'videoFrameSize',
+    value : ['schema', 'videoFrameSize']
+  });
+
+  await utils.add({
+    attr : 'videoQuality',
+    value : ['schema', 'videoQuality']
+  });
+
+  await utils.add({
     attr : 'image',
     value : ['schema', 'image'],
     type : 'id'

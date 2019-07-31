@@ -1,5 +1,5 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
-import template from "./app-image-download.html"
+import template from "./app-media-download.html"
 
 import MediaModel from "../../../lib/models/MediaModel"
 
@@ -31,7 +31,7 @@ const SIZES = [
 
 const FORMATS = ['png', 'jpg', 'webp'];
 
-export default class AppImageDownload extends PolymerElement {
+export default class AppMediaDownload extends PolymerElement {
 
   static get template() {
     let tag = document.createElement('template');
@@ -95,6 +95,7 @@ export default class AppImageDownload extends PolymerElement {
    * @param {String} options.url fedora image url
    */
   render(options) {
+    console.log("");
     this.options = options;
     this.sizes = SIZES.map((format, index) => {
       return {
@@ -291,4 +292,4 @@ export default class AppImageDownload extends PolymerElement {
 
 }
 
-customElements.define('app-image-download', AppImageDownload);
+customElements.define('app-media-download', AppMediaDownload);

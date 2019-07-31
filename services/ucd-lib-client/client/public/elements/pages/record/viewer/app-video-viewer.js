@@ -42,7 +42,6 @@ export default class AppVideoViewer extends Mixin(PolymerElement)
 
   constructor() {
     super();
-    console.log("App Video Viewer");
   }
 
   /**
@@ -71,7 +70,7 @@ export default class AppVideoViewer extends Mixin(PolymerElement)
           type: media['encodingFormat']
         }
       ],
-      poster: this.poster,      
+      poster: this.poster,
       // Blank video (used to prevent errors on source change)
       blankVideo: '../../../../node_modules/plyr/dist/blank.mp4'
     }
