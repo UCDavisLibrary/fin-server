@@ -12,6 +12,7 @@ import "./app-image-download"
 import "./app-record-metadata-layout"
 import "./app-copy-cite"
 import "./viewer/app-360-image-viewer"
+import "./viewer/app-video-viewer"
 
 import AppStateInterface from "../../interfaces/AppStateInterface"
 import RecordInterface from "../../interfaces/RecordInterface"
@@ -308,6 +309,14 @@ export default class AppRecord extends Mixin(PolymerElement)
     if( record._has360ImageList ) {
       this.$.download.style.display = 'none';
       return;
+    }
+
+    if (this.record.video) {
+      this.$.download.style.display = 'none';
+      this.$.viewerStatic.style.display = 'none';
+      return;
+    } else {
+      this.$.videoPlayer.style.display = 'none';
     }
 
     this.$.download.style.display = 'block';

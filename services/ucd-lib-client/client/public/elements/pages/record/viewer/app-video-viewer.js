@@ -71,11 +71,7 @@ export default class AppVideoViewer extends Mixin(PolymerElement)
           type: media['encodingFormat']
         }
       ],
-      poster: this.poster,
-      loadSprite: true,
-      iconPrefix: 'plyr',
-      iconUrl: '../../../../images/sprite/',
-      
+      poster: this.poster,      
       // Blank video (used to prevent errors on source change)
       blankVideo: '../../../../node_modules/plyr/dist/blank.mp4'
     }
