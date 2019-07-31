@@ -102,7 +102,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     */
     this.record.video = {
       name: this.record.video['name'],
-      videoFrameSize: this.record.videoFrameSize,
+      videoFrameSize: this.record.videoFrameSize.split('x'),
       videoQuality: this.record.videoQuality
     }
 
@@ -324,7 +324,10 @@ export default class AppRecord extends Mixin(PolymerElement)
     if (this.record.video) {
       this.$.viewerStatic.style.display = 'none';
       this.$.download.render({
-        resolution: [600, 500],
+        resolution: [
+          this.record.video.videoFrameSize[0], 
+          this.record.video.videoFrameSize[1]
+        ],
         fileFormat: record.encodingFormat,
         size: record.fileSize,
         url: record['@id']
