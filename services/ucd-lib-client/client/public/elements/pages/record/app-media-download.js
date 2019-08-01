@@ -4,8 +4,8 @@ import template from "./app-media-download.html"
 import MediaModel from "../../../lib/models/MediaModel"
 
 import config from "../../../lib/config"
-// import bytes from "bytes"
-
+// import bytes from "bytes"e
+// Full Resolution - Default
 const SIZES = [
   {
     title : 'Small',
@@ -30,6 +30,30 @@ const SIZES = [
 ]
 
 const FORMATS = ['png', 'jpg', 'webp'];
+
+// 1080 - default
+const VIDEO_SIZES = [
+  {
+    quality: 144
+  },
+  {
+    quality: 240
+  },
+  {
+    quality: 360
+  },
+  {
+    quality: 480
+  },
+  {
+    quality: 720
+  },
+  {
+    quality: 1080
+  }
+]
+
+const VIDEO_FORMATS = ['webm', 'mp4', 'ogg'];
 
 export default class AppMediaDownload extends PolymerElement {
 
@@ -60,6 +84,14 @@ export default class AppMediaDownload extends PolymerElement {
       fileFormat : {
         type : String,
         value : ''
+      },
+      mediaType : {
+        type: String,
+        value: ''
+      },
+      isVideo: {
+        type: Boolean,
+        value: false
       },
       sizes : {
         type : Array,
@@ -95,28 +127,43 @@ export default class AppMediaDownload extends PolymerElement {
    * @param {String} options.url fedora image url
    */
   render(options) {
-    console.log("");
     this.options = options;
-    this.sizes = SIZES.map((format, index) => {
-      return {
-        title : format.title,
-        label : format.label,
-        width: Math.floor(options.resolution[0] * format.ratio),
-        height : Math.floor(options.resolution[1] * format.ratio),
-        selected : (this.selectedSize === index)
-      }
-    });
+    if (this.options.fileFormat.includes('video')) {
+
+      this.isVideo = true;
+      
+      this.sizes = VIDEO_SIZES.map((format, index) => {
+        return {
+          quality: format.quality,
+          //selected: (this.options.resolution[1] == format.quality)
+          selected: (this.selectedSize === index)
+        }
+      });
+
+    } else if (this.options.fileFormat.includes('image')) {
+
+      this.sizes = SIZES.map((format, index) => {        
+        return {
+          title : format.title,
+          label : format.label,
+          width: Math.floor(options.resolution[0] * format.ratio),
+          height : Math.floor(options.resolution[1] * format.ratio),
+          selected : (this.selectedSize === index)
+        }
+      });
+
+    }
 
     this.hasMultipleImages = (this.imagelist.length > 1);
     this.multipleImagesSelected = false;
 
     // this.size = bytes(options.size);    
+    this.mediaType = options.fileFormat.substring(0, options.fileFormat.lastIndexOf('/')).toLowerCase();
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();
-
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
 
-    this._renderFormats();
+    this._renderFormats(this.mediaType);
     
   }
 
@@ -128,6 +175,11 @@ export default class AppMediaDownload extends PolymerElement {
     this.hasMultipleImages = (this.imagelist.length > 0);
     this.multipleImagesSelected = false;
 
+    if (record.video) {
+      this.selectedSize = VIDEO_SIZES.length - 1;
+      return;
+    }
+
     this.selectedSize = SIZES.length - 1;
   }
 
@@ -138,8 +190,16 @@ export default class AppMediaDownload extends PolymerElement {
    * list and additional native format if not in list and size is at
    * full resolution.
    */
-  _renderFormats() {
-    let formats = FORMATS.slice(0);
+  _renderFormats(mediaType) {
+    let formats;
+
+    if (mediaType === 'video') {
+      formats = VIDEO_FORMATS.slice(0);
+    } else {
+      formats = FORMATS.slice(0);
+    }    
+
+    //let formats = FORMATS.slice(0);
     if( this.originalFormat &&
         this.selectedSize === SIZES.length - 1 &&
         formats.indexOf(this.originalFormat) === -1 ) {

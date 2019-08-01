@@ -97,13 +97,16 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.record = record;
 
     /* 
+      Leigh Mark
       Have Justin show how to move this into transforms file.
       just putting this here for now.
     */
-    this.record.video = {
-      name: this.record.video['name'],
-      videoFrameSize: this.record.videoFrameSize.split('x'),
-      videoQuality: this.record.videoQuality
+    if (this.record.video) {
+      this.record.video = {
+        name: this.record.video['name'],
+        videoFrameSize: this.record.videoFrameSize.split('x'),
+        videoQuality: this.record.videoQuality
+      }
     }
 
     this.name = this.record.name || '';
@@ -334,7 +337,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       });
       return;
     } else {
-      this.$.videoPlayer.style.display = 'none';
+      this.$.videoViewer.style.display = 'none';
     }
 
     this.$.download.style.display = 'block';

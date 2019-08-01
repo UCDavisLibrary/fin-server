@@ -66,15 +66,19 @@
   }
 </style>
 
-<!-- <div>
-  <template is="dom-repeat" items="[[sizes]]">
-    <button index$="[[index]]" selected$="[[item.selected]]" on-click="_onSizeSelected">[[item.label]]</button>
-  </template>
-</div> -->
+<!--
+  <div>
+    <template is="dom-repeat" items="[[sizes]]">
+      <button index$="[[index]]" selected$="[[item.selected]]" on-click="_onSizeSelected">[[item.label]]</button>
+    </template>
+  </div>
+-->
 
-<!-- <div class="info">
-  [[resolutionTitle]] | [[resolution]] <span hidden$="[[!defaultImage]]">| [[size]]</span>
-</div> -->
+<!--
+  <div class="info">
+    [[resolutionTitle]] | [[resolution]] <span hidden$="[[!defaultImage]]">| [[size]]</span>
+  </div>
+-->
 
 <div class="layout" hidden$="[[!hasMultipleImages]]">
   <div class="radio" style="margin-right: 40px">
@@ -90,12 +94,21 @@
 <div class="layout" style="margin-bottom: 5px">
   <select id="format" on-change="_onFormatSelected"></select>
 
-  <select on-change="_onSizeChange">
+  <select on-change="_onSizeChange" hidden$="[[!isVideo]]">
     <template is="dom-repeat" items="[[sizes]]">
-      <option value$="[[item.label]]" selected$="[[item.selected]]">
-        [[item.title]] [[item.width]] x [[item.height]] px
+      <option value$="[[item.quality]]" selected$="[[item.selected]]">
+        [[item.quality]]p
       </option>
     </template>
+  </select>
+
+  <select on-change="_onSizeChange" hidden$="[[isVideo]]">
+      <template is="dom-repeat" items="[[sizes]]">
+        <option value$="[[item.label]]" selected$="[[item.selected]]">
+          [[item.title]] [[item.width]] x [[item.height]] px
+        </option>
+      </template>
+    </dom-if>
   </select>
 
   <a href="[[href]]" on-click="_onDownloadClicked" download target="_blank" rel="noopener" hidden$="[[multipleImagesSelected]]">
