@@ -131,7 +131,7 @@ export default class AppMediaDownload extends PolymerElement {
     if (this.options.fileFormat.includes('video')) {
 
       this.isVideo = true;
-      
+
       this.sizes = VIDEO_SIZES.map((format, index) => {
         return {
           quality: format.quality,
@@ -140,7 +140,7 @@ export default class AppMediaDownload extends PolymerElement {
         }
       });
 
-    } else if (this.options.fileFormat.includes('image')) {
+    } else {
 
       this.sizes = SIZES.map((format, index) => {        
         return {
@@ -159,12 +159,11 @@ export default class AppMediaDownload extends PolymerElement {
 
     // this.size = bytes(options.size);    
     this.mediaType = options.fileFormat.substring(0, options.fileFormat.lastIndexOf('/')).toLowerCase();
-    this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();
+    this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();    
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
 
-    this._renderFormats(this.mediaType);
-    
+    this._renderFormats();    
   }
 
   setRootRecord(record, imagelist) {
@@ -190,21 +189,24 @@ export default class AppMediaDownload extends PolymerElement {
    * list and additional native format if not in list and size is at
    * full resolution.
    */
-  _renderFormats(mediaType) {
+  _renderFormats() {
     let formats;
 
-    if (mediaType === 'video') {
+    if (this.mediaType === 'video') {
       formats = VIDEO_FORMATS.slice(0);
     } else {
       formats = FORMATS.slice(0);
     }    
 
     //let formats = FORMATS.slice(0);
+    console.log("this.originalFormat: ", this.originalFormat);
+
     if( this.originalFormat &&
         this.selectedSize === SIZES.length - 1 &&
         formats.indexOf(this.originalFormat) === -1 ) {
       formats.unshift(this.originalFormat);
     }
+
     this.formats = formats;
 
     this.$.format.innerHTML = '';
@@ -212,6 +214,11 @@ export default class AppMediaDownload extends PolymerElement {
       let option = document.createElement('option');
       option.textContent = format + ((format === this.originalFormat) ? ' (native)' : '');
       option.value = format;
+
+      if (format === this.originalFormat) {
+        option.setAttribute('selected', 'selected');
+      }
+      
       this.$.format.appendChild(option);
     });
 
@@ -268,20 +275,24 @@ export default class AppMediaDownload extends PolymerElement {
     requestAnimationFrame(() => {
       // this.resolution = this.sizes[this.selectedSize].size.join(' x ')+' px';
 
-      if( !this.selectedFormat || this.formats.indexOf(this.selectedFormat) === -1 ) {
-        this.selectedFormat = this.formats[0].replace(/ .*/, '');
-        this.$.format.value = this.formats[0];
-      }
+      // Ok to keep turned off?
+      //if( !this.selectedFormat || this.formats.indexOf(this.selectedFormat) === -1 ) {
+        //this.selectedFormat = this.formats[0].replace(/ .*/, '');
+        //this.$.format.value = this.formats[0];
+      //}
+
+      /*
       if( this.$.format.value !== this.selectedFormat ) {
         this.$.format.value = this.selectedFormat;
       }
+      */
 
       this._setTarPaths();
 
       if( this.selectedFormat === this.originalFormat && 
         this.selectedSize === SIZES.length -1 ) {
         this.defaultImage = true;
-        return this.href = this.options.url;
+          return this.href = this.options.url;
       }
 
       this.defaultImage = false;
@@ -319,8 +330,7 @@ export default class AppMediaDownload extends PolymerElement {
 
     let origin = false;
 
-    if( this.selectedFormat === this.originalFormat && 
-        this.selectedSize === SIZES.length -1 ) {
+    if( this.selectedFormat === this.originalFormat && this.selectedSize === SIZES.length -1 ) {
       origin = true;
     }
 
