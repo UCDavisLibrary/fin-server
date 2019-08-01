@@ -111,16 +111,24 @@
     </dom-if>
   </select>
 
-  <a href="[[href]]" on-click="_onDownloadClicked" download target="_blank" rel="noopener" hidden$="[[multipleImagesSelected]]">
-    <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download</span>
+  <a href="[[href]]" 
+    on-click="_onDownloadClicked" 
+    download 
+    target="_blank" 
+    rel="noopener" 
+    hidden$="[[multipleImagesSelected]]">
+      <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download</span>
   </a>
 
-  <form id="downloadTar" action$="/api/tar/[[tarName]]" method="POST" target="_blank" hidden$="[[!multipleImagesSelected]]">
-    
-    <input type="text" hidden name="paths" id="tarPaths" style="display:none">
+  <form id="downloadTar" 
+    action$="/api/tar/[[tarName]]" 
+    method="POST" 
+    target="_blank" 
+    hidden$="[[!multipleImagesSelected]]">    
+      <input type="text" hidden name="paths" id="tarPaths" style="display: none;">
 
-    <button on-click="_downloadTar">
-      <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download</span>
-    </button>
+      <button on-click="_downloadTar">
+        <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download</span>
+      </button>
   </form>
 </div>

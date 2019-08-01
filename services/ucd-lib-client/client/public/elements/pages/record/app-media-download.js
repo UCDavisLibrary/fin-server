@@ -127,6 +127,7 @@ export default class AppMediaDownload extends PolymerElement {
    * @param {String} options.url fedora image url
    */
   render(options) {
+    console.log("render(options): ", options);
     this.options = options;
     if (this.options.fileFormat.includes('video')) {
 
@@ -275,17 +276,19 @@ export default class AppMediaDownload extends PolymerElement {
     requestAnimationFrame(() => {
       // this.resolution = this.sizes[this.selectedSize].size.join(' x ')+' px';
 
-      // Ok to keep turned off?
-      //if( !this.selectedFormat || this.formats.indexOf(this.selectedFormat) === -1 ) {
-        //this.selectedFormat = this.formats[0].replace(/ .*/, '');
-        //this.$.format.value = this.formats[0];
-      //}
+      if ( this.mediaType === 'video' ) {
+        this.href = this.options.url;
+        return;
+      }
 
-      /*
+      if( !this.selectedFormat || this.formats.indexOf(this.selectedFormat) === -1 ) {
+        this.selectedFormat = this.formats[0].replace(/ .*/, '');
+        this.$.format.value = this.formats[0];
+      }
+    
       if( this.$.format.value !== this.selectedFormat ) {
         this.$.format.value = this.selectedFormat;
       }
-      */
 
       this._setTarPaths();
 
