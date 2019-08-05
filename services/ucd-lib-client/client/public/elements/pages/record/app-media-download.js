@@ -85,6 +85,10 @@ export default class AppMediaDownload extends PolymerElement {
         type : String,
         value : ''
       },
+      fileSize: {
+        type: String,
+        value: ''
+      },
       mediaType : {
         type: String,
         value: ''
@@ -127,10 +131,7 @@ export default class AppMediaDownload extends PolymerElement {
    * @param {String} options.url fedora image url
    */
   render(options) {
-    console.log("render(options): ", options);
-
     // https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-    console.log("file size: ", options.size);
     function formatBytes(bytes, decimals = 2) {
       if (bytes === 0) return '0 Bytes';
   
@@ -142,7 +143,8 @@ export default class AppMediaDownload extends PolymerElement {
   
       return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
-    console.log(formatBytes(options.size));
+
+    this.fileSize = formatBytes(options.size);
 
     this.options = options;
     if (this.options.fileFormat.includes('video')) {
@@ -216,8 +218,6 @@ export default class AppMediaDownload extends PolymerElement {
     }    
 
     //let formats = FORMATS.slice(0);
-    console.log("this.originalFormat: ", this.originalFormat);
-
     if( this.originalFormat &&
         this.selectedSize === SIZES.length - 1 &&
         formats.indexOf(this.originalFormat) === -1 ) {
