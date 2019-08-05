@@ -38,7 +38,8 @@
     "leaflet": "^1.2.0",
     "markdown": "^0.5.0",
     "plyr": "^3.5.6",
-    "striptags": "^3.1.1"
+    "striptags": "^3.1.1",
+    "yarn": "^1.17.3"
   },
   "resolutions": {
     "@polymer/app-route": "3.0.1",
@@ -60,7 +61,8 @@
     "@polymer/paper-ripple": "3.0.1",
     "@polymer/iron-validatable-behavior": "3.0.1",
     "@polymer/iron-form-element-behavior": "3.0.1",
-    "@polymer/font-roboto": "3.0.2"
+    "@polymer/font-roboto": "3.0.2",
+    "core-js": "3.1.4"
   },
   "devDependencies": {}
 }
