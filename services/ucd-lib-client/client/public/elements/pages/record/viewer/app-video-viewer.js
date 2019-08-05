@@ -73,7 +73,7 @@ export default class AppVideoViewer extends Mixin(PolymerElement)
       poster: this.poster,
       // Blank video (used to prevent errors on source change)
       blankVideo: '../../../../node_modules/plyr/dist/blank.mp4'
-    }
+    };
   }
 }
 

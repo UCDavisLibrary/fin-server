@@ -160,21 +160,26 @@
   <div class="overview">
     <div>
       <h3>[[name]]</h3>
-
       
       <div hidden$="[[!alternativeHeadline]]" class="section">
         <div style="font-weight:bold">[[alternativeHeadline]]</div>
       </div>
 
       <div class="section type-date-collection">
-          <!-- TODO: add back in when we figure out consolidated resource type 
-            <div style="flex:.75">
-           <div class="label">Resource Type</div>
-           <div class="resource-type">
-            <iron-icon icon="fin:[[resourceType]]"></iron-icon>
-             <div id="resourceType"></div>
-           </div>
-         </div>  -->
+        <!-- 
+          /** 
+            TODO: add back in when we figure out consolidated resource type 
+          **/
+          
+          <div style="flex:.75">
+            <div class="label">Resource Type</div>
+            <div class="resource-type">
+              <iron-icon icon="fin:[[resourceType]]"></iron-icon>
+              <div id="resourceType"></div>
+            </div>
+          </div>
+        -->
+
          <div style="flex:.5" hidden$="[[!date]]">
            <div class="label">Date</div>
            <div>[[date]]</div>
@@ -202,14 +207,16 @@
         <app-media-download id="download"></app-media-download>
       </div>
 
-      <!-- <div class="section bordered">
-        <div class="label">Download Image Bundle</div>
+      <!--
+        <div class="section bordered">
+          <div class="label">Download Image Bundle</div>
 
-        <form action$="/api/tar/[[tarName]]" method="POST" target="_blank">
-          <input type="text" hidden name="paths" id="tarPaths" style="display:none">
-          <input type="submit" value="Download Tar">
-        </form>
-      </div> -->
+          <form action$="/api/tar/[[tarName]]" method="POST" target="_blank">
+            <input type="text" hidden name="paths" id="tarPaths" style="display:none">
+            <input type="submit" value="Download Tar">
+          </form>
+        </div>
+      -->
 
       <div hidden$="[[!rights]]">
         <a href$="[[rights.link]]" target="_block">
