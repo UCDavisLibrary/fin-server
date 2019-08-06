@@ -117,7 +117,9 @@
     target="_blank" 
     rel="noopener" 
     hidden$="[[multipleImagesSelected]]">
-      <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download - [[fileSize]]</span>
+      <iron-icon icon="file-download"></iron-icon>&nbsp;
+      <span>Download</span>
+      <span hidden$="![[fileSize]]">[[fileSize]]</span>
   </a>
 
   <form id="downloadTar" 
