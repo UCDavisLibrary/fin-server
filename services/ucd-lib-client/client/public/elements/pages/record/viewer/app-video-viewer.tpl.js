@@ -11,7 +11,10 @@ return html`
             display: block;
         }
     </style>
+    <div id="sprite-plyr" style="display: none;"></div>
 
-    <video id="player" playsinline controls crossorigin></video>
+    <video id="player" playsinline controls crossorigin>
+        <source src="${this.url}" type="${this.fileFormat}" />
+    </video>
 `
 }

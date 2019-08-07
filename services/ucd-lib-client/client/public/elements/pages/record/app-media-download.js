@@ -291,7 +291,6 @@ export default class AppMediaDownload extends PolymerElement {
   _renderDownloadHref() {
     requestAnimationFrame(() => {
       // this.resolution = this.sizes[this.selectedSize].size.join(' x ')+' px';
-
       if ( this.mediaType === 'video' ) {
         this.href = this.options.url;
         return;
@@ -310,7 +309,7 @@ export default class AppMediaDownload extends PolymerElement {
 
       if( this.selectedFormat === this.originalFormat && 
         this.selectedSize === SIZES.length -1 ) {
-        this.defaultImage = true;
+          this.defaultImage = true;
           return this.href = this.options.url;
       }
 
@@ -318,6 +317,8 @@ export default class AppMediaDownload extends PolymerElement {
 
       let size = this.sizes[this.selectedSize];
       size = size.width+','+size.height;
+
+      console.log(size);
 
       this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
     });

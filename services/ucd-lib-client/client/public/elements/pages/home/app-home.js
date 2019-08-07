@@ -59,11 +59,11 @@ class AppHome extends Mixin(PolymerElement)
         item.thumbnailUrl = '/images/logos/logo-white-512.png';
       }
 
-      // if( item.workExample ) {
-      //   item.thumbnail = '/fcrepo/rest'+item.workExample['@id']+'/svc:iiif/full/,320/0/default.jpg';
-      // } else {
-      //   item.thumbnail = '/images/logos/logo-white-512.png';
-      // }
+      if( item.workExample ) {
+        item.thumbnail = '/fcrepo/rest'+item.workExample['@id']+'/svc:iiif/full/,320/0/default.jpg';
+      } else {
+         item.thumbnail = '/images/logos/logo-white-512.png';
+      }
     });
 
     this.$.searchBox.browse = browse;

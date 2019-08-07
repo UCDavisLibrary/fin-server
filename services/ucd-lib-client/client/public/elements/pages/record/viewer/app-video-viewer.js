@@ -4,7 +4,7 @@
 // https://gist.github.com/leonderijke/c5cf7c5b2e424c0061d2
 // https://github.com/xDae/react-plyr/blob/master/src/defaultProps.js
 
-import { LitElement, html, css } from "lit-element"
+import { LitElement, html } from "lit-element"
 import render from "./app-video-viewer.tpl.js"
 
 // Sets globals Mixin and EventInterface
@@ -12,6 +12,8 @@ import "@ucd-lib/cork-app-utils"
 import config from "../../../../lib/config"
 
 import Plyr from "plyr"
+import spriteSheet from "plyr/dist/plyr.svg"
+let SPRITE_SHEET = spriteSheet;
 
 export default class AppVideoViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
@@ -19,6 +21,10 @@ export default class AppVideoViewer extends Mixin(LitElement)
   static get properties() {
     return {
       url: {
+        type: String,
+        default: ''
+      },
+      fileFormat: {
         type: String,
         default: ''
       },
@@ -32,32 +38,21 @@ export default class AppVideoViewer extends Mixin(LitElement)
   constructor() {
     super();
     this.render = render.bind(this);
-    this._injectModel('AppStateModel', 'MediaModel');
+    this._injectModel('AppStateModel');
   }
 
-  render() {
-    //console.log(this.shadowRoot); // log shadow root
-    
-    return html([template]);
+  firstUpdated() {
+    // webpack module is base64 encoded URL, check if this happened 
+    // and decode, then set svg to innerHtml inside the shadow dom.
+    if( SPRITE_SHEET.indexOf('data:image/svg+xml;base64') > -1 ) {
+      SPRITE_SHEET = atob(SPRITE_SHEET.replace('data:image/svg+xml;base64,', ''));
+    }
+    this.shadowRoot.querySelector('#sprite-plyr').innerHTML = SPRITE_SHEET;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    console.log("connected");
-
-    setTimeout(() => {
-      // hack for injecting sprite sheet
-      if( this._init ) return;
-      this._init = true;
-
-      let ele = document.querySelector('#sprite-plyr');
-      ele.parentElement.removeChild(ele);
-      this.shadowRoot.appendChild(ele);
-    }, 2000);
-
-    let media = this.AppStateModel.getSelectedRecordMedia();
-    if (media) {
-      this._onSelectedRecordMediaUpdate(media);
+  updated(props) {
+    if (props.has('url') && props.get('url') !== this.url) {
+      this.shadowRoot.querySelector('video').load();
     }
   }
 
@@ -67,38 +62,15 @@ export default class AppVideoViewer extends Mixin(LitElement)
    * 
    * @param {Object} media 
   **/
-  _onSelectedRecordMediaUpdate(media) {
-    //console.log("media: ", media);
-
-    let url = config.fcrepoBasePath+media['@id'];
-    this.url = url;
-    this.poster = media['thumbnailUrl'];
+  async _onSelectedRecordMediaUpdate(media) {
+    this.url = config.fcrepoBasePath+media['@id'];
+    this.fileFormat = media['encodingFormat'];
 
     const supported = Plyr.supported('video', 'html5', true);
     //console.log("supported: ", supported);
 
     this.$.player = this.shadowRoot.getElementById("player");
-    const player = new Plyr(this.$.player, {
-      captions: {
-        active: true,
-        update: true,
-        language: 'en'
-      }
-    });
-
-    player.source = {
-      type: 'video',
-      title: 'Example Title',
-      sources: [
-        {
-          src: this.url,
-          type: media['encodingFormat']
-        }
-      ],
-      poster: this.poster,
-      // Blank video (used to prevent errors on source change)
-      blankVideo: '../../../../node_modules/plyr/dist/blank.mp4'
-    };
+    const player = new Plyr(this.$.player);
   }
 }
 
