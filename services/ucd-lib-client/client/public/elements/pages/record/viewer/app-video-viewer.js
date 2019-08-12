@@ -10,6 +10,7 @@ import render from "./app-video-viewer.tpl.js"
 // Sets globals Mixin and EventInterface
 import "@ucd-lib/cork-app-utils"
 import config from "../../../../lib/config"
+import utils from "../../../../lib/utils"
 
 import Plyr from "plyr"
 import spriteSheet from "plyr/dist/plyr.svg"
@@ -97,6 +98,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
     */
     let _sources = [];
     let _source = {};
+    
     if (this.media.associatedMedia) {
       this.title = this.media['name'];
 
@@ -109,8 +111,8 @@ export default class AppVideoViewer extends Mixin(LitElement)
         }
         _sources.push(_source);
       });
-      console.log("_sources A: ", _sources);
-    } else {
+      //console.log("_sources A: ", _sources);
+    } else if (this.media.video) {
       this.title = this.media.alternativeHeadline;
       let videoFrameSize = this.media.videoFrameSize.split("x");
 
@@ -120,7 +122,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
         size: videoFrameSize['1']
       }
       _sources.push(_source);
-      console.log("_sources B: ", _sources);
+      //console.log("_sources B: ", _sources);
     }
 
     player.source = {

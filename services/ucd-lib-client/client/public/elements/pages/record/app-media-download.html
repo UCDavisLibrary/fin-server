@@ -94,6 +94,7 @@
 <div class="layout" style="margin-bottom: 5px">
   <select id="format" on-change="_onFormatSelected"></select>
 
+  <!--
   <select on-change="_onSizeChange" hidden$="[[!isVideo]]">
     <template is="dom-repeat" items="[[sizes]]">
       <option value$="[[item.quality]]" selected$="[[item.selected]]">
@@ -101,6 +102,7 @@
       </option>
     </template>
   </select>
+  -->
 
   <select on-change="_onSizeChange" hidden$="[[isVideo]]">
       <template is="dom-repeat" items="[[sizes]]">

@@ -4,7 +4,9 @@ import template from "./app-media-download.html"
 import MediaModel from "../../../lib/models/MediaModel"
 
 import config from "../../../lib/config"
-// import bytes from "bytes"e
+import utils from "../../../lib/utils"
+// import bytes from "bytes"
+
 // Full Resolution - Default
 const SIZES = [
   {
@@ -30,30 +32,6 @@ const SIZES = [
 ]
 
 const FORMATS = ['png', 'jpg', 'webp'];
-
-// 1080 - default
-const VIDEO_SIZES = [
-  {
-    quality: 144
-  },
-  {
-    quality: 240
-  },
-  {
-    quality: 360
-  },
-  {
-    quality: 480
-  },
-  {
-    quality: 720
-  },
-  {
-    quality: 1080
-  }
-]
-
-const VIDEO_FORMATS = ['webm', 'mp4', 'ogg'];
 
 export default class AppMediaDownload extends PolymerElement {
 
@@ -131,56 +109,24 @@ export default class AppMediaDownload extends PolymerElement {
    * @param {String} options.url fedora image url
    */
   render(options) {
-    // https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-    function formatBytes(bytes, decimals = 2) {
-      if (bytes === 0) return '0 Bytes';
-  
-      const k = 1024;
-      const dm = decimals < 0 ? 0 : decimals;
-      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-  
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '\xa0' + sizes[i];
-    }
-
-    console.log("options: ", options);
-
-    this.fileSize = formatBytes(options.size);
-
     this.options = options;
-    if (this.options.fileFormat.includes('video')) {
-
-      this.isVideo = true;
-
-      this.sizes = VIDEO_SIZES.map((format, index) => {
-        return {
-          quality: format.quality,
-          //selected: (this.options.resolution[1] == format.quality)
-          selected: (this.selectedSize === index)
-        }
-      });
-
-    } else {
-
-      this.sizes = SIZES.map((format, index) => {        
-        return {
-          title : format.title,
-          label : format.label,
-          width: Math.floor(options.resolution[0] * format.ratio),
-          height : Math.floor(options.resolution[1] * format.ratio),
-          selected : (this.selectedSize === index)
-        }
-      });
-
-    }
+    this.sizes = SIZES.map((format, index) => {
+      return {
+        title : format.title,
+        label : format.label,
+        width: Math.floor(options.resolution[0] * format.ratio),
+        height: Math.floor(options.resolution[1] * format.ratio),
+        selected : (this.selectedSize === index)
+      }
+    });
 
     this.hasMultipleImages = (this.imagelist.length > 1);
     this.multipleImagesSelected = false;
 
-    // this.size = bytes(options.size);    
+    //this.size = bytes(options.size);  
     this.mediaType = options.fileFormat.substring(0, options.fileFormat.lastIndexOf('/')).toLowerCase();
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();    
+    
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
 
@@ -195,12 +141,9 @@ export default class AppMediaDownload extends PolymerElement {
     this.hasMultipleImages = (this.imagelist.length > 0);
     this.multipleImagesSelected = false;
 
-    if (record.video) {
-      this.selectedSize = VIDEO_SIZES.length - 1;
-      return;
-    }
-
     this.selectedSize = SIZES.length - 1;
+
+    this.fileSize = utils.formatBytes(this.rootRecord.size);
   }
 
   /**
@@ -213,13 +156,7 @@ export default class AppMediaDownload extends PolymerElement {
   _renderFormats() {
     let formats;
 
-    if (this.mediaType === 'video') {
-      formats = VIDEO_FORMATS.slice(0);
-    } else {
-      formats = FORMATS.slice(0);
-    }    
-
-    //let formats = FORMATS.slice(0);
+    formats = FORMATS.slice(0);
     if( this.originalFormat &&
         this.selectedSize === SIZES.length - 1 &&
         formats.indexOf(this.originalFormat) === -1 ) {
@@ -234,9 +171,11 @@ export default class AppMediaDownload extends PolymerElement {
       option.textContent = format + ((format === this.originalFormat) ? ' (native)' : '');
       option.value = format;
 
+      /*
       if (format === this.originalFormat) {
         option.setAttribute('selected', 'selected');
       }
+      */
       
       this.$.format.appendChild(option);
     });
@@ -293,10 +232,6 @@ export default class AppMediaDownload extends PolymerElement {
   _renderDownloadHref() {
     requestAnimationFrame(() => {
       // this.resolution = this.sizes[this.selectedSize].size.join(' x ')+' px';
-      if ( this.mediaType === 'video' ) {
-        this.href = this.options.url;
-        return;
-      }
 
       if( !this.selectedFormat || this.formats.indexOf(this.selectedFormat) === -1 ) {
         this.selectedFormat = this.formats[0].replace(/ .*/, '');
@@ -319,8 +254,6 @@ export default class AppMediaDownload extends PolymerElement {
 
       let size = this.sizes[this.selectedSize];
       size = size.width+','+size.height;
-
-      console.log(size);
 
       this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
     });

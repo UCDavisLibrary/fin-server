@@ -18,13 +18,7 @@ return html`
     </style>
     <div class="container">
         <div id="sprite-plyr" style="display: none;"></div>
-        <video id="player" autoplay playsinline controls></video>
-        <!--
-        <video id="player" 
-            src="http://localhost:3000/fcrepo/rest/collection/butterflies/monarchs/monarch1/videos/mb_v_mp4/monarch_butterfly.mp4" 
-            type="video/mp4" 
-            playsinline controls crossorigin></video>
-        -->
+        <video id="player" autoplay playsinline controls crossorigin></video>
     </div>
 `
 }

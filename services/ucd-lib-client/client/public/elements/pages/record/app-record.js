@@ -310,24 +310,11 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     /* 
       TODO:
-        Have Justin show how to move this into transforms file.
-        Just putting this here for now.
+        How to proceed w/the video - needs discussion
     */
     if (this.record.type && this.record.type.includes('Video') || this.record.video) {
-      //console.log("this is a video");
       this.$.viewerStatic.style.display = 'none';
-
-      /*
-      this.$.download.render({
-        resolution: [
-          this.record.video.videoFrameSize[0], 
-          this.record.video.videoFrameSize[1]
-        ],
-        fileFormat: record.encodingFormat,
-        size: record.fileSize,
-        url: record['@id']
-      });
-      */
+      this.$.download.style.display = 'none';
 
       return;
     } else {
