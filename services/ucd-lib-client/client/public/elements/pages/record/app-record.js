@@ -96,21 +96,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.renderedRecordId = record['@id'];
     this.record = record;
 
-    /* 
-      Leigh Mark
-      Have Justin show how to move this into transforms file.
-      just putting this here for now.
-    */
-    if (this.record.video) {
-      this.record.video = {
-        name: this.record.video['name'],
-        videoFrameSize: this.record.videoFrameSize.split('x'),
-        videoQuality: this.record.videoQuality
-      }
-    }
-
-    this.name = this.record.name || '';
-
     if( this.record.description ) {
       this.$.description.style.display = 'flex';
       this.$.descriptionValue.innerHTML = markdown.toHTML(this.record.description);
@@ -122,7 +107,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.alternativeHeadline = this.record.alternativeHeadline || '';
     this.$.link.value = window.location.href;
 
-    
     this.date = utils.getYearFromDate(this.record.datePublished);
 
     // TODO: add back in when we figure out consolidated resource type 
@@ -324,8 +308,16 @@ export default class AppRecord extends Mixin(PolymerElement)
       return;
     }
 
-    if (this.record.video) {
+    /* 
+      TODO:
+        Have Justin show how to move this into transforms file.
+        Just putting this here for now.
+    */
+    if (this.record.type && this.record.type.includes('Video') || this.record.video) {
+      //console.log("this is a video");
       this.$.viewerStatic.style.display = 'none';
+
+      /*
       this.$.download.render({
         resolution: [
           this.record.video.videoFrameSize[0], 
@@ -335,10 +327,14 @@ export default class AppRecord extends Mixin(PolymerElement)
         size: record.fileSize,
         url: record['@id']
       });
+      */
+
       return;
     } else {
       this.$.videoViewer.style.display = 'none';
     }
+
+    this.name = this.record.name || '';
 
     this.$.download.style.display = 'block';
     this.$.download.render({

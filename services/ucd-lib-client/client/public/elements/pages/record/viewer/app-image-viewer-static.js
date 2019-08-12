@@ -60,13 +60,16 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
    * @param {Object} media 
    */
   _onSelectedRecordMediaUpdate(media) {
-    if( this.MediaModel.get360Media(media).length ) {
-      this.style.display = 'none';
-      return;
-    }
-    this.style.display = 'block';
-
     this.media = media;
+
+    if(this.MediaModel.get360Media(media).length ||
+        this.media.type && this.media.type.includes('Video') || 
+        this.media.video) {
+          this.style.display = 'none';
+          return;
+    }
+
+    this.style.display = 'block';
     
     this._renderImg();
   }

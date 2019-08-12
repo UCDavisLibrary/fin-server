@@ -17,6 +17,7 @@ let SPRITE_SHEET = spriteSheet;
 
 // https://github.com/google/shaka-player/
 import Shaka from "shaka-player"
+import { timingSafeEqual } from "crypto";
 
 export default class AppVideoViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
@@ -74,12 +75,10 @@ export default class AppVideoViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
-    //console.log("media: ", media);
-
-    this.$.player = this.shadowRoot.getElementById("player");
-
-    this.url = config.fcrepoBasePath+media['@id'];
-    this.fileType = media['encodingFormat'];
+    this.media = media;
+    console.log("app-video-viewer.js this.media: ", this.media);
+    
+    this.poster = this.media['thumbnailUrl'];
 
     const plyr_supported = Plyr.supported('video', 'html5', true);
     //console.log("plyr_supported: ", plyr_supported);
@@ -87,14 +86,57 @@ export default class AppVideoViewer extends Mixin(LitElement)
     const shaka_supported = Shaka.Player.isBrowserSupported();
     //console.log("shaka_supported: ", shaka_supported);
 
-    if ( shaka_supported === true ) {
+    this.$.player = this.shadowRoot.getElementById("player");
+    const player = new Plyr(this.$.player, {
+      debug: false
+    });
 
+    /* 
+      TODO:
+        Just putting this here for now.  There may be a better place to move it.
+    */
+    let _sources = [];
+    let _source = {};
+    if (this.media.associatedMedia) {
+      this.title = this.media['name'];
+
+      this.media.associatedMedia.forEach(function(element){
+        let videoFrameSize = element.videoFrameSize.split("x");    
+        _source = {
+          src: config.fcrepoBasePath+element.video['@id'],
+          type: element.encodingFormat,
+          size: videoFrameSize['1'],
+        }
+        _sources.push(_source);
+      });
+      console.log("_sources A: ", _sources);
+    } else {
+      this.title = this.media.alternativeHeadline;
+      let videoFrameSize = this.media.videoFrameSize.split("x");
+
+      _source = {
+        src: config.fcrepoBasePath+this.media.video['@id'],
+        type: this.media['encodingFormat'],
+        size: videoFrameSize['1']
+      }
+      _sources.push(_source);
+      console.log("_sources B: ", _sources);
+    }
+
+    player.source = {
+      type: 'video',
+      title: this.title,
+      poster: this.poster,
+      sources: _sources
+    };
+
+    /*
+    if ( shaka_supported === true ) {
       // Install built-in polyfills
       Shaka.polyfill.installAll();
 
-      /* These are temp values that will be replaced w/the values that come from Fedora */
+      // These are temp values that will be replaced w/the values that come from Fedora
       let manifestUri ='https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-
       this.width = "768";
       this.height = "576";
 
@@ -113,30 +155,9 @@ export default class AppVideoViewer extends Mixin(LitElement)
       }).catch(function() {
         console.error('Error code: ', error.code, 'object', error);
       });
-
-    } else {
-
-      console.log("Shaka is not supported, use the fallback player");
-
-      this.poster = media['thumbnailUrl'];
-      this.width = media.video.videoFrameSize['1'];
-      this.height = media.video.videoFrameSize['0'];
-
-      const player = new Plyr(this.$.player);
-      player.source = {
-        debug: true,
-        type: 'video',
-        title: media['alternativeHeadline'],
-        sources: [
-          {
-            src: this.url,
-            type: this.fileType,
-            size: 1080
-          }
-        ],
-      };
-
     }
+    */
+
   }
 }
 

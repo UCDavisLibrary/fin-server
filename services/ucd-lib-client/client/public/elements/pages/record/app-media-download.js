@@ -144,6 +144,8 @@ export default class AppMediaDownload extends PolymerElement {
       return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '\xa0' + sizes[i];
     }
 
+    console.log("options: ", options);
+
     this.fileSize = formatBytes(options.size);
 
     this.options = options;
