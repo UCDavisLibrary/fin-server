@@ -173,6 +173,7 @@ module.exports = async function(path, graph, utils) {
   await utils.setIndexableContent(item);
 
   utils.setYearFromDate(item);
+  console.log("here");
 
   return item;
 }
