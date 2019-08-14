@@ -15,6 +15,7 @@ services:
       - ../../server/cli:/app/cli
       - ../../server/controllers:/app/controllers
       - ../../server/lib:/app/lib
+      - ../../server/index.js:/app/index.js
       - ../../server/assets:/app/assets
       - ../../server/models:/app/models
       - ../../server/default-frames:/etc/fin/frames

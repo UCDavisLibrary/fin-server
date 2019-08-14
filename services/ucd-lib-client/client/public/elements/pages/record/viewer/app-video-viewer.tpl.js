@@ -18,7 +18,7 @@ return html`
     </style>
     <div class="container">
         <div id="sprite-plyr" style="display: none;"></div>
-        <video id="player" autoplay playsinline controls crossorigin></video>
+        <video id="player" width="${this.width}" height="${this.height}" autoplay playsinline controls crossorigin></video>
     </div>
 `
 }
