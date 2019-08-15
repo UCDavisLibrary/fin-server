@@ -312,7 +312,8 @@ class ProxyModel {
       return res.status(info.response.statusCode).send(info.response.body);
     }
 
-    // if this is a protected service, only allow admins in
+    // if this is a protected service, only allow admins or people with webac read access
+    // to service definition
     if( service.protected ) {
       let token = info.token;
       if( !token ) return res.status(401).send('Protected Service');

@@ -36,19 +36,19 @@ require('./lib/startupCheck')(() => {
   // create express instance
   const app = express();
   // Set up an Express session, which is required for CASAuthentication. 
-  const RedisStore = require('connect-redis')(session); 
-  app.use(session({
-    name : 'fin-sid',
-    store: new RedisStore({
-      host : 'redis'
-    }),
-    cookie : {
-      maxAge          : config.server.cookieMaxAge,
-    },
-    secret            : config.server.cookieSecret,
-    resave            : false,
-    saveUninitialized : true
-  }));
+  // const RedisStore = require('connect-redis')(session); 
+  // app.use(session({
+  //   name : 'fin-sid',
+  //   store: new RedisStore({
+  //     host : 'redis'
+  //   }),
+  //   cookie : {
+  //     maxAge          : config.server.cookieMaxAge,
+  //   },
+  //   secret            : config.server.cookieSecret,
+  //   resave            : false,
+  //   saveUninitialized : true
+  // }));
   app.use(cookieParser(config.server.cookieSecret)); 
 
   // setup simple http logging
