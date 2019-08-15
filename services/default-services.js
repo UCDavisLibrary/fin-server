@@ -19,7 +19,7 @@ module.exports = [
   {
     id : 'video-stream-converter',
     description : 'Uses ffmpeg to create a MPEG DASH ready bundle',
-    type : 'ProxyService',
+    type : 'GlobalService',
     protected : true,
     supportedType : 'http://www.w3.org/ns/ldp#NonRDFSource',
     urlTemplate : 'http://video-stream-converter:3333?options={{svcPath}}'

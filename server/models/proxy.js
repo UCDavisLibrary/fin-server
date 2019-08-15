@@ -70,7 +70,11 @@ class ProxyModel {
     // handle AuthenticationService requests. Do not handle Fin auth endpoints
     // of /auth/token /auth/user /auth/logout /auth/mint /auth/service, these are reserved
     app.use(/^\/auth\/(?!token|user|logout|mint|service|login-shell).*/i, this._proxyAuthenticationService.bind(this));
-    
+
+    app.use(/^\/svc:.*/, (req, res) => {
+      this._serviceProxyRequest(serviceModel.parseServiceRequest(req), req, res, true);
+    });
+
     // send all requests that are not /fcrepo, /auth or /fin to the ClientService
     // fcrepo is really handled above but reads a little better to add... :/
     app.use(/^\/(?!auth|fcrepo|fin).*/, this._proxyClientService.bind(this));
@@ -212,42 +216,6 @@ class ProxyModel {
     // store for serivce headers
     req.fcPath = path;
 
-    // JM - disabling cache
-    // see if a cache hit
-    // if( cache.isCacheableRequest(req) ) {
-    
-    //   // first preflight a head request for headers so we can check out and cache
-    //   let info = await this._getContainerAccessAndInfo(req.originalUrl, req);
-    //   if( !info.access ) {
-    //     return res.status(info.response.statusCode).send(info.response.body || '');
-    //   }
-      
-    //   // we don't cache binary resources
-    //   if( info.binary ) {
-    //     req.cacheStatus = 'ignored';
-    //   } else {
-    //     // see if there is something in the cache
-        
-    //     // we had a true fcrepo request, append appropriate fin service link headers
-    //     this._appendServiceLinkHeaders(req, info.response);
-    //     let cachedRes = await cache.get(req.originalUrl, info.response.headers, req);
-       
-    //     // cache hit, set headers, body, return.  we are done.
-    //     if( cachedRes ) {
-    //       this._setReqTime(req);
-    //       for( var key in cachedRes.headers ) {
-    //         res.set(key, cachedRes.headers[key]);
-    //       }
-    //       res.set(cache.HEADER, 'hit');
-    //       return res.send(cachedRes.body);
-
-    //     // cache miss, store status so we can set header
-    //     } else {
-    //       req.cacheStatus = 'miss';
-    //     }
-    //   }
-    // }
-
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
     logger.debug(`Fcrepo proxy request: ${url}`);
 
@@ -320,23 +288,29 @@ class ProxyModel {
    * @param {Object} expReq - Express request object
    * @param {Object} res - Express response object
    */
-  async _serviceProxyRequest(svcReq, expReq, res) {
+  async _serviceProxyRequest(svcReq, expReq, res, global=false) {
     // check this is even a valid service name
     if( !serviceModel.services[svcReq.name] ) {
       this._setReqTime(expReq);
       return res.status(400).send(`Unknown Service: `+svcReq.name);
     }
 
+    // grab the service definition
+    let service = serviceModel.services[svcReq.name];
+
+    // check for a global service name that matched the proxy service path
+    if( service.type === api.service.TYPES.GLOBAL && !global ) {
+      this._setReqTime(expReq);
+      return res.status(400).send(`Unknown Service: `+svcReq.name);
+    }
+
     // check the requesting agent has access, if so, get information about
     // this container from the fcrepo link headers
-    let info = await this._getContainerAccessAndInfo(svcReq.fcPath, expReq);
+    let info = await this._getContainerAccessAndInfo(svcReq.fcPath, expReq, global);
     if( !info.access ) {
       this._setReqTime(expReq);
       return res.status(info.response.statusCode).send(info.response.body);
     }
-
-    // grab the service definition
-    let service = serviceModel.services[svcReq.name];
 
     // if this is a protected service, only allow admins in
     if( service.protected ) {
@@ -345,7 +319,13 @@ class ProxyModel {
 
       let user = jwt.validate(token);
       if( !user ) return res.status(403).send('Protected Service');
-      if( !user.admin ) return res.status(403).send('Protected Service');
+
+      let acl = (user.acl || {}).acl || {};
+      let access = acl['/.services/'+service.id] || '';
+
+      if( !user.admin && !access.indexOf('r') > 0 ) {
+        return res.status(403).send('Protected Service');
+      }
     }
 
     // run the frame service
@@ -391,7 +371,7 @@ class ProxyModel {
       }
       
     // run the proxy service
-    } else if( service.type === api.service.TYPES.PROXY ) {
+    } else if( service.type === api.service.TYPES.PROXY || service.type === api.service.TYPES.GLOBAL ) {
       let params = {fcPath : svcReq.fcPath, svcPath: svcReq.svcPath};
 
       // if the service has multiple endpoints, the first part of the 
@@ -405,7 +385,6 @@ class ProxyModel {
       }
       
       let url = service.renderUrlTemplate(params);
-
       proxy.web(expReq, res, {
         target : url,
         headers : {
@@ -531,8 +510,12 @@ class ProxyModel {
    * 
    * @returns {Object}
    */
-  async _getContainerAccessAndInfo(path, req) {
+  async _getContainerAccessAndInfo(path, req, global) {
     var token = jwt.getJwtFromRequest(req);
+
+    if( global ) {
+      return {access: true, token};
+    }
 
     // make a head request to get fcrepo statusCode and link headers
     var {response, body} = await this._request({
