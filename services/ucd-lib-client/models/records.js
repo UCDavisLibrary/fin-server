@@ -232,13 +232,18 @@ class RecordsModel extends ElasticSearchModel {
    * 
    * @returns {Promise} resolves to elasticsearch result
    */
-  esGet(id) {
-    return es.get({
+  esGet(id, debug=false) {
+    let queryDoc = {
       index: config.elasticsearch.record.alias,
       type: '_all',
-      _sourceExclude : config.elasticsearch.fields.exclude,
       id: id
-    });
+    }
+
+    if( !debug ) {
+      queryDoc._sourceExclude = config.elasticsearch.fields.exclude;
+    }
+
+    return es.get(queryDoc);
   }
 
   /**

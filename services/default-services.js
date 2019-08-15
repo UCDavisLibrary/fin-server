@@ -17,6 +17,14 @@ module.exports = [
     urlTemplate : 'http://tesseract:3333{{fcPath}}?svcPath={{svcPath}}'
   },
   {
+    id : 'video-stream-converter',
+    description : 'Uses ffmpeg to create a MPEG DASH ready bundle',
+    type : 'ProxyService',
+    protected : true,
+    supportedType : 'http://www.w3.org/ns/ldp#NonRDFSource',
+    urlTemplate : 'http://video-stream-converter:3333?options={{svcPath}}'
+  }, 
+  {
     id : 'aws-bucket',
     description : 'access files in AWS S3',
     type : 'ProxyService',
@@ -52,20 +60,6 @@ module.exports = [
     type : 'TransformService',
     transform : '/etc/fin/transforms/es-collection.js'
   },
-  // {
-  //   id : 'es-record-frame',
-  //   title : 'Elastic Search - Collection Record Frame',
-  //   description : 'Used for updating Elastic Search indexes when fedora updates',
-  //   type : 'FrameService',
-  //   frame : require('./frames/es-record.json')
-  // },
-  // {
-  //   id : 'es-collection-frame',
-  //   title : 'Elastic Search - Collection Frame',
-  //   description : 'Used for updating Search indexes when fedora updates',
-  //   type : 'FrameService',
-  //   frame : require('./frames/es-collection.json')
-  // },
   {
     id : 'cas',
     description : 'UCD CAS authentication service',

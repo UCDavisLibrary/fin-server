@@ -1,0 +1,14 @@
+{
+  "name": "@ucd-lib/video-stream-converter",
+  "version": "0.0.1",
+  "description": "Fin service to convert video file to MPEG-DASH ready formats",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jrmerz@ucdavis.edu",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

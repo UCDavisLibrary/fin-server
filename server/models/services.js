@@ -10,6 +10,7 @@ const util = require('util');
 const redis = require('../lib/redisClient');
 const jwt = require('jsonwebtoken');
 const hdt = require('../lib/hdt');
+const auth = require('./auth');
 
 jsonld.frame = util.promisify(jsonld.frame);
 
@@ -37,8 +38,6 @@ class ServiceModel {
 
     // timer ids for sending http notifications
     this.notificationTimers = {};
-
-    this.init();
   }
 
   /**
@@ -148,7 +147,7 @@ class ServiceModel {
         let response = await api.get({path: service.path});
         service.transform = response.last.body;
       }
-      
+
       services[service.id] = new ServiceDefinition(service);
 
       if( service.type === api.service.TYPES.CLIENT ) {
@@ -372,6 +371,9 @@ class ServiceModel {
       hdt.onCollectionUpdate(id.replace('/collection/', ''));
     }
 
+    // see if we need to update in memory acl
+    auth.onContainerUpdate(event);
+
     this._sendHttpNotificationBuffered(event);
   }
 
@@ -579,6 +581,7 @@ class ServiceDefinition {
     this.frame = data.frame || '';
     this.urlTemplate = data.urlTemplate || '';
     this.multiRouteTemplate = data.multiRouteTemplate ? true : false;
+    this.protected = data.protected === true ? true : false;
     this.url = data.url || '';
     this.title = data.title || '';
     this.description = data.description || '';

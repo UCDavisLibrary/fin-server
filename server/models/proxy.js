@@ -109,15 +109,6 @@ class ProxyModel {
     this._appendServiceLinkHeaders(req, proxyRes);
 
     this._setNoCacheHeaders(proxyRes);
-
-    // JM - disabling cache
-    // set the cache
-    // if( cache.isCacheableRequest(req) ) {
-    //   cache.set(req.originalUrl, proxyRes, req);
-    // }
-
-    // finally set the cache header (either miss or ignored)
-    // proxyRes.headers[cache.HEADER] = req.cacheStatus;
   }
 
   /**
@@ -301,7 +292,9 @@ class ProxyModel {
     // mint token
     let username = res.headers['x-fin-authorized-agent'];
     let isAdmin = authModel.isAdmin(username);
-    let token = jwt.create(username, isAdmin);
+    let acl = authModel.getUserAcl(username);
+    let token = jwt.create(username, isAdmin, acl);
+
 
     // set redirect url
     logger.info('redirect debug', req.query.cliRedirectUrl, req.query.redirectUrl, '/');
@@ -344,6 +337,16 @@ class ProxyModel {
 
     // grab the service definition
     let service = serviceModel.services[svcReq.name];
+
+    // if this is a protected service, only allow admins in
+    if( service.protected ) {
+      let token = info.token;
+      if( !token ) return res.status(401).send('Protected Service');
+
+      let user = jwt.validate(token);
+      if( !user ) return res.status(403).send('Protected Service');
+      if( !user.admin ) return res.status(403).send('Protected Service');
+    }
 
     // run the frame service
     if( service.type === api.service.TYPES.FRAME ) {
@@ -556,12 +559,13 @@ class ProxyModel {
         access: true, 
         binary: true,
         links, 
+        token,
         response
       };
     }
 
     // we are not a binary container
-    return {access: true, binary: false, links, response};
+    return {access: true, binary: false, links, response, token};
   }
 
   /**

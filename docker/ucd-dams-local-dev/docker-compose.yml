@@ -15,6 +15,7 @@ services:
       - ../../server/cli:/app/cli
       - ../../server/controllers:/app/controllers
       - ../../server/lib:/app/lib
+      - ../../server/index.js:/app/index.js
       - ../../server/assets:/app/assets
       - ../../server/models:/app/models
       - ../../server/default-frames:/etc/fin/frames
@@ -26,8 +27,8 @@ services:
     ports:
       - 3000:3001
       - 9229:9229
-    # command: tail -f /dev/null
-    command: node app
+    command: tail -f /dev/null
+    # command: node app
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -242,6 +243,21 @@ services:
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
       #- FIN_ENV=prod
+    depends_on:
+      - server
+    command: node service
+    # command: bash -c 'tail -f /dev/null'
+
+  video-stream-converter:
+    build: ../../services/video-stream-converter
+    volumes:
+      - ../../services/video-stream-converter/index.js:/service/index.js
+      - ../../services/video-stream-converter/lib:/service/lib
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
     depends_on:
       - server
     command: node service
