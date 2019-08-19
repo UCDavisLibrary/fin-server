@@ -93,22 +93,19 @@ export default class AppVideoViewer extends Mixin(LitElement)
       debug: false
     });
 
-    /* 
-      TODO:
-        Just putting this here for now.  There may be a better place to move it.
-    */
+    let videoObject = utils.formatVideo(media);
+    console.log("videoObject: ", videoObject);
+    let videoUri  = videoObject['id'];
+    this.width    = videoObject['videoFrameSize'][0];
+    this.height   = videoObject['videoFrameSize'][1];
+    this.title    = videoObject['name'];
+    this.poster   = videoObject['poster'];
+
     if ( shaka_supported === true ) {
       // Install built-in polyfills
       Shaka.polyfill.installAll();
 
-      let mpd = this.media.associatedMedia.find(function(x) {
-        return x['encodingFormat'] === 'application/dash+xml';
-      });
-      let videoFrameSizeArray = mpd.videoFrameSize.split('x');
-      this.width = videoFrameSizeArray[0];
-      this.height = videoFrameSizeArray[1];
-
-      let manifestUri = config.fcrepoBasePath+mpd.video['@id'];
+      let manifestUri = config.fcrepoBasePath+videoUri;
       const shaka = new Shaka.Player(this.$.player);
 
       shaka.load(manifestUri).then(function() {
@@ -118,6 +115,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
       });
 
     } else {
+      /*
       let _sources = [];
       let _source = {};
       
@@ -153,6 +151,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
         poster: this.poster,
         sources: _sources
       };
+      */
     }
   }
 }

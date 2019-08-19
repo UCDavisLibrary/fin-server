@@ -47,6 +47,55 @@ class Utils {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '\xa0' + sizes[i];
   }
 
+  formatVideo(object) {
+    console.log("object: ", object);
+
+    let videoObj, mpdObj, vidId;
+
+    if (!object.associatedMedia) {
+      videoObj = {
+        id: object.video['@id'],
+        name: object['name'],
+        poster: object['thumbnailUrl'],
+        encodingFormat: object['encodingFormat'],
+        videoFrameSize: object['videoFrameSize'].split("x"),
+        videoQuality: object['videoQuality']
+      }
+    } else {
+
+      let hasPartObj = object.associatedMedia.find(function(element){
+        if (element['hasPart']) {
+          return element;
+        }
+      });
+
+      if (!hasPartObj) {
+        mpdObj = object.associatedMedia[0];
+        vidId = mpdObj['video']['@id'];
+      } else {
+        mpdObj = hasPartObj['hasPart'].find(function(element){
+          if (element['encodingFormat'] === "application/dash+xml") {
+            return element;
+          }
+        });
+
+        vidId = mpdObj['@id'];
+      }
+      
+      videoObj = {
+        id: vidId,
+        name: mpdObj['name'],
+        poster: mpdObj['thumbnailUrl'],
+        encodingFormat: mpdObj['encodingFormat'],
+        videoFrameSize: mpdObj['videoFrameSize'],
+        videoQuality: mpdObj['videoQuality']
+      }
+
+    }
+
+    return videoObj;
+  }
+
 }
 
 module.exports = new Utils();
