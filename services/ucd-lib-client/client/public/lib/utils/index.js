@@ -48,21 +48,14 @@ class Utils {
   }
 
   formatVideo(object) {
-    console.log("object: ", object);
+    //console.log("object: ", object);
 
     let videoObj, mpdObj, vidId;
 
     if (!object.associatedMedia) {
-      videoObj = {
-        id: object.video['@id'],
-        name: object['name'],
-        poster: object['thumbnailUrl'],
-        encodingFormat: object['encodingFormat'],
-        videoFrameSize: object['videoFrameSize'].split("x"),
-        videoQuality: object['videoQuality']
-      }
+      mpdObj = object;
+      vidId  = mpdObj.video['@id'];
     } else {
-
       let hasPartObj = object.associatedMedia.find(function(element){
         if (element['hasPart']) {
           return element;
@@ -81,16 +74,15 @@ class Utils {
 
         vidId = mpdObj['@id'];
       }
-      
-      videoObj = {
-        id: vidId,
-        name: mpdObj['name'],
-        poster: mpdObj['thumbnailUrl'],
-        encodingFormat: mpdObj['encodingFormat'],
-        videoFrameSize: mpdObj['videoFrameSize'],
-        videoQuality: mpdObj['videoQuality']
-      }
+    }
 
+    videoObj = {
+      id: vidId,
+      name: mpdObj['name'],
+      poster: mpdObj['thumbnailUrl'],
+      encodingFormat: mpdObj['encodingFormat'],
+      videoFrameSize: mpdObj['videoFrameSize'].split("x"),
+      videoQuality: mpdObj['videoQuality']
     }
 
     return videoObj;
