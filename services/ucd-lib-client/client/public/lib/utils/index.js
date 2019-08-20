@@ -83,10 +83,9 @@ class Utils {
       name: mpdObj['name'],
       poster: mpdObj['thumbnailUrl'],
       encodingFormat: mpdObj['encodingFormat'],
-      videoFrameSize: mpdObj['videoFrameSize'].split("x"),
       videoQuality: mpdObj['videoQuality']
     }
-
+    
     return videoObj;
   }
 

@@ -18,7 +18,6 @@ let SPRITE_SHEET = spriteSheet
 
 // https://github.com/google/shaka-player/
 import Shaka from "shaka-player"
-import { timingSafeEqual } from "crypto";
 
 export default class AppVideoViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
@@ -79,8 +78,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
     this.media = media;
     //console.log("app-video-viewer.js this.media: ", this.media);
 
-    console.log(utils.isVideo(this.media));
-
     if (utils.isVideo(this.media) === false) {
       return;
     }
@@ -94,14 +91,10 @@ export default class AppVideoViewer extends Mixin(LitElement)
     //console.log("shaka_supported: ", shaka_supported);
 
     this.$.player = this.shadowRoot.getElementById("player");
-    const player = new Plyr(this.$.player, {
-      debug: false
-    });
 
     let videoObject = utils.formatVideo(media);
+    console.log("videoObject: ", videoObject);
     let videoUri  = videoObject['id'];
-    this.width    = videoObject['videoFrameSize'][0];
-    this.height   = videoObject['videoFrameSize'][1];
     this.title    = videoObject['name'];
     this.poster   = videoObject['poster'];
 
@@ -119,43 +112,19 @@ export default class AppVideoViewer extends Mixin(LitElement)
       });
 
     } else {
-      /*
-      let _sources = [];
-      let _source = {};
-      
-      if (this.media.associatedMedia) {
-        this.title = this.media['name'];
-
-        this.media.associatedMedia.forEach(function(element){
-          let videoFrameSize = element.videoFrameSize.split("x");
-          _source = {
-            src: config.fcrepoBasePath+element.video['@id'],
-            type: element.encodingFormat,
-            size: videoFrameSize['1'],
-          }
-          _sources.push(_source);
-        });
-        //console.log("_sources A: ", _sources);
-      } else if (this.media.video) {
-        this.title = this.media.alternativeHeadline;
-        let videoFrameSize = this.media.videoFrameSize.split("x");
-
-        _source = {
-          src: config.fcrepoBasePath+this.media.video['@id'],
-          type: this.media['encodingFormat'],
-          size: videoFrameSize['1']
-        }
-        _sources.push(_source);
-        //console.log("_sources B: ", _sources);
-      }
+      const player = new Plyr(this.$.player);
 
       player.source = {
         type: 'video',
         title: this.title,
         poster: this.poster,
-        sources: _sources
+        sources: [
+          {
+            src: config.fcrepoBasePath+videoObject['id'],
+            type: videoObject['encodingFormat']
+          }
+        ]
       };
-      */
     }
   }
 }
