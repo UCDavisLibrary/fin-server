@@ -77,10 +77,15 @@ export default class AppVideoViewer extends Mixin(LitElement)
   **/
   async _onSelectedRecordMediaUpdate(media) {
     this.media = media;
-    console.log("app-video-viewer.js this.media: ", this.media);
+    //console.log("app-video-viewer.js this.media: ", this.media);
+
+    console.log(utils.isVideo(this.media));
+
+    if (utils.isVideo(this.media) === false) {
+      return;
+    }
     
     this.poster = this.media['thumbnailUrl'];
-
     const plyr_supported = Plyr.supported('video', 'html5', true);
     //console.log("plyr_supported: ", plyr_supported);
 
@@ -94,7 +99,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
     });
 
     let videoObject = utils.formatVideo(media);
-    console.log("videoObject: ", videoObject);
     let videoUri  = videoObject['id'];
     this.width    = videoObject['videoFrameSize'][0];
     this.height   = videoObject['videoFrameSize'][1];

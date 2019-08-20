@@ -47,9 +47,11 @@ class Utils {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '\xa0' + sizes[i];
   }
 
-  formatVideo(object) {
-    //console.log("object: ", object);
+  isVideo(object){
+    return object['type'].includes("Video");
+  }
 
+  formatVideo(object) {
     let videoObj, mpdObj, vidId;
 
     if (!object.associatedMedia) {

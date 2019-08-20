@@ -307,18 +307,11 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.$.download.style.display = 'none';
       return;
     }
-
-    /* 
-      TODO:
-        How to proceed w/the video - needs discussion
-    */
-    if (this.record.type && this.record.type.includes('Video') || this.record.video) {
-      this.$.viewerStatic.style.display = 'none';
-      this.$.download.style.display = 'none';
-
+    
+    this.$.videoViewer.style.display = 'none';
+    if (utils.isVideo(record)) {
+      this.$.videoViewer.style.display = 'block';
       return;
-    } else {
-      this.$.videoViewer.style.display = 'none';
     }
 
     this.name = this.record.name || '';
