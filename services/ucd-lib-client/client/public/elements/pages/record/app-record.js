@@ -95,6 +95,15 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     this.renderedRecordId = record['@id'];
     this.record = record;
+    this.isVideo = false;
+
+    if (utils.isVideo(record)) {
+      this.isVideo = true;
+      let videoObj = utils.formatVideo(record);
+      if (videoObj.sources[0].license) {
+        this.record.license = videoObj.sources[0].license;
+      }
+    }
 
     if( this.record.description ) {
       this.$.description.style.display = 'flex';
@@ -111,10 +120,9 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     // TODO: add back in when we figure out consolidated resource type 
     // this.$.resourceType.innerHTML = this.record.type ? '<div>'+this.record.type.join('</div><div>')+'</div>' : 'Unknown';
-
     if( this.record.license &&
-      this.record.license['@id']  && 
-      rightsDefinitions[this.record.license['@id']] ) {
+        this.record.license['@id'] && 
+        rightsDefinitions[this.record.license['@id']] ) {
 
       let def = rightsDefinitions[this.record.license['@id']];
       this.rights = {
@@ -220,7 +228,7 @@ export default class AppRecord extends Mixin(PolymerElement)
   _renderSubjects(record) {
     // filter to those w/ labels
     let subjects = utils.asArray(record, 'abouts');
-      // .filter(subject => subject.name ? true : false);
+    // .filter(subject => subject.name ? true : false);
 
     if( subjects.length === 0 ) {
       return this.$.subject.style.display = 'none';
@@ -312,7 +320,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.download.style.display = 'block';
 
     this.$.videoViewer.style.display = 'none';
-    if (utils.isVideo(record)) {
+    if (this.isVideo) {
       this.$.videoViewer.style.display = 'block';
       this.$.download.render();
       return;

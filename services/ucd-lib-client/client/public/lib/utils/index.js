@@ -61,7 +61,8 @@ class Utils {
         let obj = {
           src: element.video['@id'],
           type: element.encodingFormat,
-          size: parseInt(element.videoQuality)
+          size: parseInt(element.videoQuality),
+          license: element.license
         }
 
         return obj;
@@ -93,7 +94,7 @@ class Utils {
       name: mpdObj['name'],
       poster: mpdObj['thumbnailUrl'],
       encodingFormat: mpdObj['encodingFormat'],
-      videoQuality: mpdObj['videoQuality'],
+      videoQuality: parseInt(mpdObj['videoQuality']),
       sources: sources
     }
 
