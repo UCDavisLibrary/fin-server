@@ -9,12 +9,12 @@ import render from "./app-video-viewer.tpl.js"
 import "@ucd-lib/cork-app-utils"
 import config from "../../../../lib/config"
 import utils from "../../../../lib/utils"
+import videoLibs from "../../../../lib/utils/video-lib-loader"
 
-import Plyr from "plyr"
+//import Plyr from "plyr"
+//import Shaka from "shaka-player"
 import spriteSheet from "plyr/dist/plyr.svg"
 let SPRITE_SHEET = spriteSheet
-
-import Shaka from "shaka-player"
 
 export default class AppVideoViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
@@ -78,12 +78,21 @@ export default class AppVideoViewer extends Mixin(LitElement)
     if (utils.isVideo(this.media) === false) {
       return;
     }
+
+    try { 
+      let { plyr, shaka_player } = await videoLibs.load();
+      this.plyr = plyr;
+      this.shaka_player = shaka_player;
+      //console.log("videoLibs loaded");
+    } catch(error) {
+      console.log("videoLibs.load() error: ", error);
+    }
     
     this.poster = this.media['thumbnailUrl'];
-    const plyr_supported = Plyr.supported('video', 'html5', true);
+    const plyr_supported = this.plyr.supported('video', 'html5', true);
     //console.log("plyr_supported: ", plyr_supported);
 
-    const shaka_supported = Shaka.Player.isBrowserSupported();
+    const shaka_supported = this.shaka_player.Player.isBrowserSupported();
     //console.log("shaka_supported: ", shaka_supported);
 
     this.$.player = this.shadowRoot.getElementById("player");
@@ -94,7 +103,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
     this.poster   = videoObject['poster'];
     this.sources  = videoObject['sources'];
 
-    const player = new Plyr(this.$.player, {
+    const player = new this.plyr(this.$.player, {
       title: this.title,
       blankVideo: 'https://cdn.plyr.io/static/blank.mp4',
       debug: false
@@ -109,7 +118,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     if ( shaka_supported === true ) {
       let manifestUri = config.fcrepoBasePath+videoUri;
-      const shaka = new Shaka.Player(this.$.player);
+      const shaka = new this.shaka_player.Player(this.$.player);
 
       //console.log(shaka.getConfiguration());
 
