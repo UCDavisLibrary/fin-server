@@ -61,7 +61,7 @@ class Utils {
         let obj = {
           src: element.video['@id'],
           type: element.encodingFormat,
-          size: new Number(element.videoQuality)
+          size: parseInt(element.videoQuality)
         }
 
         return obj;
