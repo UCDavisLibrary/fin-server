@@ -1,8 +1,6 @@
 // https://github.com/sampotts/plyr
-
-// Trying to debug SVG loading error
-// https://gist.github.com/leonderijke/c5cf7c5b2e424c0061d2
-// https://github.com/xDae/react-plyr/blob/master/src/defaultProps.js
+// https://github.com/google/shaka-player/
+// https://github.com/google/shaka-player/tree/master/docs/tutorials
 
 import { LitElement, html } from "lit-element"
 import render from "./app-video-viewer.tpl.js"
@@ -16,7 +14,6 @@ import Plyr from "plyr"
 import spriteSheet from "plyr/dist/plyr.svg"
 let SPRITE_SHEET = spriteSheet
 
-// https://github.com/google/shaka-player/
 import Shaka from "shaka-player"
 
 export default class AppVideoViewer extends Mixin(LitElement)
@@ -86,45 +83,41 @@ export default class AppVideoViewer extends Mixin(LitElement)
     const plyr_supported = Plyr.supported('video', 'html5', true);
     //console.log("plyr_supported: ", plyr_supported);
 
-    // https://github.com/google/shaka-player/tree/master/docs/tutorials
     const shaka_supported = Shaka.Player.isBrowserSupported();
     //console.log("shaka_supported: ", shaka_supported);
 
     this.$.player = this.shadowRoot.getElementById("player");
-
     let videoObject = utils.formatVideo(media);
-    console.log("videoObject: ", videoObject);
     let videoUri  = videoObject['id'];
     this.title    = videoObject['name'];
     this.poster   = videoObject['poster'];
+    this.sources  = videoObject['sources'];
+
+    const player = new Plyr(this.$.player, {
+      title: this.title,
+      blankVideo: 'https://cdn.plyr.io/static/blank.mp4',
+      debug: false
+    });
+
+    player.source = {
+      type: 'video',
+      title: this.title,
+      poster: this.poster,
+      source: this.sources
+    }
 
     if ( shaka_supported === true ) {
-      // Install built-in polyfills
-      Shaka.polyfill.installAll();
-
       let manifestUri = config.fcrepoBasePath+videoUri;
       const shaka = new Shaka.Player(this.$.player);
 
+      //console.log(shaka.getConfiguration());
       shaka.load(manifestUri).then(function() {
         console.log('The video has now been loaded');
       }).catch(function() {
         console.error('Error code: ', error.code, 'object', error);
       });
-
     } else {
-      const player = new Plyr(this.$.player);
-
-      player.source = {
-        type: 'video',
-        title: this.title,
-        poster: this.poster,
-        sources: [
-          {
-            src: config.fcrepoBasePath+videoObject['id'],
-            type: videoObject['encodingFormat']
-          }
-        ]
-      };
+      console.warn("Your browser is not supported");
     }
   }
 }

@@ -52,26 +52,36 @@ class Utils {
   }
 
   formatVideo(object) {
-    let videoObj, mpdObj, vidId;
+    let videoObj, mpdObj, vidId, sources;
+
+    if (object.associatedMedia) {
+       sources = object.associatedMedia.filter((element) => {
+        if (element.video) return element;
+      }).map((element) => {
+        let obj = {
+          src: element.video['@id'],
+          type: element.encodingFormat,
+          size: new Number(element.videoQuality)
+        }
+
+        return obj;
+      });
+    }
 
     if (!object.associatedMedia) {
       mpdObj = object;
       vidId  = mpdObj.video['@id'];
     } else {
-      let hasPartObj = object.associatedMedia.find(function(element){
-        if (element['hasPart']) {
-          return element;
-        }
+      let hasPartObj = object.associatedMedia.find((element) => {
+        if (element['hasPart']) return element;
       });
 
       if (!hasPartObj) {
         mpdObj = object.associatedMedia[0];
         vidId = mpdObj['video']['@id'];
       } else {
-        mpdObj = hasPartObj['hasPart'].find(function(element){
-          if (element['encodingFormat'] === "application/dash+xml") {
-            return element;
-          }
+        mpdObj = hasPartObj['hasPart'].find((element) => {
+          if (element['encodingFormat'] === "application/dash+xml") return element;
         });
 
         vidId = mpdObj['@id'];
@@ -83,9 +93,10 @@ class Utils {
       name: mpdObj['name'],
       poster: mpdObj['thumbnailUrl'],
       encodingFormat: mpdObj['encodingFormat'],
-      videoQuality: mpdObj['videoQuality']
+      videoQuality: mpdObj['videoQuality'],
+      sources: sources
     }
-    
+
     return videoObj;
   }
 

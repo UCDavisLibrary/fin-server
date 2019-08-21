@@ -307,16 +307,18 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.$.download.style.display = 'none';
       return;
     }
-    
+
+    this.name = this.record.name || '';
+    this.$.download.style.display = 'block';
+
     this.$.videoViewer.style.display = 'none';
     if (utils.isVideo(record)) {
       this.$.videoViewer.style.display = 'block';
+      this.$.download.render();
       return;
     }
 
-    this.name = this.record.name || '';
-
-    this.$.download.style.display = 'block';
+    // Works for Images
     this.$.download.render({
       resolution : [record.image.width, record.image.height],
       fileFormat : record.image.encodingFormat,

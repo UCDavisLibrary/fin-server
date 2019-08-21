@@ -109,6 +109,10 @@ export default class AppMediaDownload extends PolymerElement {
    * @param {String} options.url fedora image url
    */
   render(options) {
+    if (options === undefined) {
+      return;
+    }
+
     this.options = options;
     this.sizes = SIZES.map((format, index) => {
       return {
@@ -123,7 +127,10 @@ export default class AppMediaDownload extends PolymerElement {
     this.hasMultipleImages = (this.imagelist.length > 1);
     this.multipleImagesSelected = false;
 
-    //this.size = bytes(options.size);  
+    this.isVideo = false;
+
+    //this.size = bytes(options.size); 
+
     this.mediaType = options.fileFormat.substring(0, options.fileFormat.lastIndexOf('/')).toLowerCase();
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();    
     
@@ -137,13 +144,20 @@ export default class AppMediaDownload extends PolymerElement {
     if( this.rootRecord === record ) return;
 
     this.rootRecord = record;
+
+    //this.fileSize = utils.formatBytes(this.rootRecord.size);
+
+    if (utils.isVideo(this.rootRecord)) {
+      let video = utils.formatVideo(this.rootRecord);
+
+      this.isVideo = true;
+      this.href = config.fcrepoBasePath+video['sources'][0]['src'];
+    }
+    
     this.imagelist = imagelist;
     this.hasMultipleImages = (this.imagelist.length > 0);
     this.multipleImagesSelected = false;
-
     this.selectedSize = SIZES.length - 1;
-
-    this.fileSize = utils.formatBytes(this.rootRecord.size);
   }
 
   /**

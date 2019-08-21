@@ -92,7 +92,7 @@
 </div>
 
 <div class="layout" style="margin-bottom: 5px">
-  <select id="format" on-change="_onFormatSelected"></select>
+  <select id="format" on-change="_onFormatSelected" hidden$="[[isVideo]]"></select>
 
   <!--
   <select on-change="_onSizeChange" hidden$="[[!isVideo]]">
@@ -120,8 +120,10 @@
     rel="noopener" 
     hidden$="[[multipleImagesSelected]]">
       <iron-icon icon="file-download"></iron-icon>&nbsp;
-      <span>Download</span>
-      <span hidden$="![[fileSize]]">[[fileSize]]</span>
+      <span>
+        Download
+      </span>
+      <!--<span hidden$="![[fileSize]]">[[fileSize]]</span>-->
   </a>
 
   <form id="downloadTar" 
