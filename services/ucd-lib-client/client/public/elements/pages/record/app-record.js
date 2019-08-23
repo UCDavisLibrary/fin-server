@@ -81,7 +81,11 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.currentRecordId = id;
 
     let result = await this._getRecord(this.currentRecordId);
-    this._setSelectedRecord(result.payload);
+    let record = await this.RecordModel.createMediaObject(result.payload);
+
+    this._onSelectedRecordUpdate(record);
+
+    //this._setSelectedRecord(result.payload);
   }
 
   /**
@@ -93,19 +97,18 @@ export default class AppRecord extends Mixin(PolymerElement)
   async _onSelectedRecordUpdate(record) {
     if( record['@id'] === this.renderedRecordId ) return;
 
-    let newRecord = await this.RecordModel.createMediaObject(this.currentRecordId);
-    console.log("newRecord: ", newRecord);
-
     this.renderedRecordId = record['@id'];
     this.record = record;
     this.isVideo = false;
 
-    if (utils.isVideo(record)) {
+    if(record.media.video) {
       this.isVideo = true;
-      let videoObj = utils.formatVideo(record);
-      if (videoObj.sources[0].license) {
+      let videoObj = utils.formatVideo(record.media.video);
+      /*
+      if (videoObj.sources && videoObj.sources[0].license) {
         this.record.license = videoObj.sources[0].license;
       }
+      */
     }
 
     if( this.record.description ) {

@@ -52,42 +52,33 @@ class Utils {
   }
 
   formatVideo(object) {
-    let videoObj, mpdObj, vidId, sources;
+    let videoObj, mpdObj, vidId, sources = {};
 
-    if (object.associatedMedia) {
-       sources = object.associatedMedia.filter((element) => {
-        if (element.video) return element;
-      }).map((element) => {
-        let obj = {
-          src: element.video['@id'],
-          type: element.encodingFormat,
-          size: parseInt(element.videoQuality),
-          license: element.license
-        }
-
-        return obj;
-      });
-    }
-
-    if (!object.associatedMedia) {
-      mpdObj = object;
-      vidId  = mpdObj.video['@id'];
-    } else {
-      let hasPartObj = object.associatedMedia.find((element) => {
-        if (element['hasPart']) return element;
-      });
-
-      if (!hasPartObj) {
-        mpdObj = object.associatedMedia[0];
-        vidId = mpdObj['video']['@id'];
-      } else {
-        mpdObj = hasPartObj['hasPart'].find((element) => {
+    object.map(element => {
+      if ( element['hasPart'] ) {
+        mpdObj = element['hasPart'].find((element) => {
           if (element['encodingFormat'] === "application/dash+xml") return element;
         });
 
         vidId = mpdObj['@id'];
+      } else {
+        mpdObj = element;
+        vidId = mpdObj['video']['@id'];
       }
-    }
+    });
+
+    sources = object.filter(element => {
+      if (element.video) return element;
+    }).map(element => {
+      let obj = {
+        src: element.video['@id'],
+        type: element.encodingFormat,
+        size: parseInt(element.videoQuality),
+        license: element.license
+      }
+
+      return obj;
+    });
 
     videoObj = {
       id: vidId,

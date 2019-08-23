@@ -52,10 +52,8 @@ class RecordModel extends ElasticSearchModel {
     return this.store.getDefaultSearch(storeId);
   }
 
-  async createMediaObject(id) {
-    let response = await this.get(id);
-    let data = response.payload;
-    let associatedMedia = response.payload['associatedMedia'];
+  async createMediaObject(record) {
+    let associatedMedia = record['associatedMedia'];
 
     let media = {};
 
@@ -90,9 +88,9 @@ class RecordModel extends ElasticSearchModel {
     }
 
     traverse(associatedMedia);
-    data.media = media;   
+    record.media = media;   
 
-    return data;
+    return record;
   }
 
   /**

@@ -96,6 +96,8 @@ export default class AppVideoViewer extends Mixin(LitElement)
     //console.log("shaka_supported: ", shaka_supported);
 
     this.$.player = this.shadowRoot.getElementById("player");
+    
+    /*
     let videoObject = utils.formatVideo(media);
     //console.log("videoObject: ", videoObject);
     let videoUri  = videoObject['id'];
@@ -129,6 +131,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
     } else {
       console.warn("Your browser is not supported");
     }
+    */
   }
 }
 

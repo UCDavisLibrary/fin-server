@@ -148,10 +148,11 @@ export default class AppMediaDownload extends PolymerElement {
     //this.fileSize = utils.formatBytes(this.rootRecord.size);
 
     if (utils.isVideo(this.rootRecord)) {
-      let video = utils.formatVideo(this.rootRecord);
+      //let video = utils.formatVideo(this.rootRecord);
 
-      this.isVideo = true;
-      this.href = config.fcrepoBasePath+video['sources'][0]['src'];
+      //this.isVideo = true;
+      //this.href = config.fcrepoBasePath+video['sources'][0]['src'];
+      this.href = '';
     }
     
     this.imagelist = imagelist;
