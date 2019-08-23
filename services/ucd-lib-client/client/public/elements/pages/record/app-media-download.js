@@ -5,7 +5,7 @@ import MediaModel from "../../../lib/models/MediaModel"
 
 import config from "../../../lib/config"
 import utils from "../../../lib/utils"
-// import bytes from "bytes"
+import bytes from "bytes"
 
 // Full Resolution - Default
 const SIZES = [
@@ -129,7 +129,7 @@ export default class AppMediaDownload extends PolymerElement {
 
     this.isVideo = false;
 
-    //this.size = bytes(options.size); 
+    this.size = bytes(options.size);
 
     this.mediaType = options.fileFormat.substring(0, options.fileFormat.lastIndexOf('/')).toLowerCase();
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();    

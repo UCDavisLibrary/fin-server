@@ -93,6 +93,9 @@ export default class AppRecord extends Mixin(PolymerElement)
   async _onSelectedRecordUpdate(record) {
     if( record['@id'] === this.renderedRecordId ) return;
 
+    let test = await this.RecordModel.testFunction(this.currentRecordId);
+    console.log("test: ", test);
+
     this.renderedRecordId = record['@id'];
     this.record = record;
     this.isVideo = false;

@@ -52,6 +52,61 @@ class RecordModel extends ElasticSearchModel {
     return this.store.getDefaultSearch(storeId);
   }
 
+  async testFunction(id) {
+    let response = await this.get(id);
+    let data = response.payload;
+    let associatedMedia = response.payload['associatedMedia'];
+    let media = {
+      video: [],
+      image: [],
+      imageList: [],
+      audio: []
+    };
+
+    // https://jrsinclair.com/articles/2019/functional-js-traversing-trees-with-recursive-reduce/
+    // https://stackoverflow.com/questions/54215984/javascript-recursive-object-manipulation
+    // https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge 
+    // https://davidwells.io/snippets/traverse-object-unknown-size-javascript
+    function traverse(item) {
+      if (isArray(item)) {
+        traverseArray(item);
+      } else if ((typeof item === 'object') && (item !== null)) {
+        traverseObject(item);
+      }
+    }
+
+    function traverseArray(array) {
+      array.forEach(item => {
+        traverse(item);
+      });
+    }
+
+    function traverseObject(obj){
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (key === '@type') {
+            traverse(searchTypes(obj[key], obj));
+          }
+        }
+      }
+    }
+
+    function isArray(o) {
+      return Object.prototype.toString.call(o) === '[object Array]';
+    }
+
+    function searchTypes(types, element) {
+      if (types.some(res => res.includes("AudioObject"))) return media['audio'].push(element);
+      if (types.some(res => res.includes("Video"))) return media['video'].push(element);
+      if (types.some(res => res.includes("ImageObject"))) return media['image'].push(element);
+      if (types.some(res => res.includes("ImageList"))) return media['imageList'].push(element);
+    }
+
+    traverse(associatedMedia);
+    data.media = media;   
+
+    return data;
+  }
 
   /**
    * @method get
@@ -91,7 +146,6 @@ class RecordModel extends ElasticSearchModel {
     let corrections = false;
     for( var key in searchDocument.filters ) {
       if( key === 'isPartOf.@id' ) continue;
-
 
       let type = config.elasticSearch.facets[key].type;
 

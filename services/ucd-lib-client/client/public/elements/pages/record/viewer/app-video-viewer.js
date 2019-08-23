@@ -119,9 +119,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
     if ( shaka_supported === true ) {
       let manifestUri = config.fcrepoBasePath+videoUri;
       const shaka = new this.shaka_player.Player(this.$.player);
-
       //console.log(shaka.getConfiguration());
-
       try { 
         await shaka.load(manifestUri); 
         console.log('The video has now been loaded');
