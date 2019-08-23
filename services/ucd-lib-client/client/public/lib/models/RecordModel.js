@@ -52,54 +52,41 @@ class RecordModel extends ElasticSearchModel {
     return this.store.getDefaultSearch(storeId);
   }
 
-  async testFunction(id) {
+  async createMediaObject(id) {
     let response = await this.get(id);
     let data = response.payload;
     let associatedMedia = response.payload['associatedMedia'];
-    let media = {
-      video: [],
-      image: [],
-      imageList: [],
-      audio: []
-    };
 
-    // https://jrsinclair.com/articles/2019/functional-js-traversing-trees-with-recursive-reduce/
-    // https://stackoverflow.com/questions/54215984/javascript-recursive-object-manipulation
-    // https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge 
-    // https://davidwells.io/snippets/traverse-object-unknown-size-javascript
+    let media = {};
+
     function traverse(item) {
-      if (isArray(item)) {
-        traverseArray(item);
+      if (Array.isArray(item)) {
+        item.forEach(element => traverse(element));
       } else if ((typeof item === 'object') && (item !== null)) {
-        traverseObject(item);
-      }
-    }
-
-    function traverseArray(array) {
-      array.forEach(item => {
-        traverse(item);
-      });
-    }
-
-    function traverseObject(obj){
-      for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          if (key === '@type') {
-            traverse(searchTypes(obj[key], obj));
-          }
+        for (let key in item) {
+          if (key !== '@type') continue;
+          traverse(searchTypes(item[key], item));
         }
       }
     }
 
-    function isArray(o) {
-      return Object.prototype.toString.call(o) === '[object Array]';
-    }
-
     function searchTypes(types, element) {
-      if (types.some(res => res.includes("AudioObject"))) return media['audio'].push(element);
-      if (types.some(res => res.includes("Video"))) return media['video'].push(element);
-      if (types.some(res => res.includes("ImageObject"))) return media['image'].push(element);
-      if (types.some(res => res.includes("ImageList"))) return media['imageList'].push(element);
+      if (types.some(res => res.includes("AudioObject"))){
+        if (!media.audio) media.audio = [];
+        return media.audio.push(element);
+      }
+      if (types.some(res => res.includes("Video"))) {
+        if (!media.video) media.video = [];
+        return media.video.push(element);
+      } 
+      if (types.some(res => res.includes("ImageObject"))) {
+        if (!media.image) media.image = [];
+        return media.image.push(element);
+      }
+      if (types.some(res => res.includes("ImageList"))) {
+        if (!media.imageList) media.imageList = [];
+        return media.imageList.push(element);
+      }
     }
 
     traverse(associatedMedia);
