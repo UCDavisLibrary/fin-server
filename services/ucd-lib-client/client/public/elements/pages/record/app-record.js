@@ -82,7 +82,6 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     let result = await this._getRecord(this.currentRecordId);
     let record = await this.RecordModel.createMediaObject(result.payload);
-
     this._onSelectedRecordUpdate(record);
 
     //this._setSelectedRecord(result.payload);
@@ -95,7 +94,7 @@ export default class AppRecord extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   async _onSelectedRecordUpdate(record) {
-    if( record['@id'] === this.renderedRecordId ) return;
+    if( record['@id'] && record['@id'] === this.renderedRecordId ) return;
 
     this.renderedRecordId = record['@id'];
     this.record = record;
@@ -124,7 +123,6 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     // TODO: add back in when we figure out consolidated resource type 
     // this.$.resourceType.innerHTML = this.record.type ? '<div>'+this.record.type.join('</div><div>')+'</div>' : 'Unknown';
-    
     if( this.record.license &&
         this.record.license['@id'] && 
         rightsDefinitions[this.record.license['@id']] ) {
@@ -172,7 +170,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.fedoraValue.innerHTML =  `<a href="${link}">${record['@id']}</a>`;
 
     this._updateMetadataRows();
-    //this._setTarHref();
+    this._setTarHref();
 
     // render citations.. this might need to load library, do it last
     this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
@@ -182,18 +180,16 @@ export default class AppRecord extends Mixin(PolymerElement)
 
   _setTarHref() {
     let urls = {};
+
     this._getImageMediaList(this.record)
       .forEach(item => {
-        urls[item.filename || item.name] = this._getImgUrl(item['@id']).replace(config.fcrepoBasePath, '')
+        urls[item.filename || item.name] = this._getImgUrl(item['@id']).replace(config.fcrepoBasePath, '');
       });
 
     this.tarName = this.record.name.replace(/[^a-zA-Z0-9]/g, '');
-    this.$.tarPaths.value = JSON.stringify(urls);
 
-    // this.tarUrl = TarService.create(
-    //   encodeURI(this.record.name.replace(/[^a-zA-Z0-9]/g, '')), 
-    //   urls
-    // )
+    //this.$.tarPaths.value = JSON.stringify(urls);
+    //this.tarUrl = TarService.create(encodeURI(this.record.name.replace(/[^a-zA-Z0-9]/g, '')), urls);
   }
 
   /**
@@ -323,10 +319,8 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     this.name = this.record.name || '';
     this.$.download.style.display = 'block';
-
-    this.$.videoViewer.style.display = 'none';
+    
     if (this.isVideo) {
-      this.$.videoViewer.style.display = 'block';
       this.$.download.render();
       return;
     }
@@ -350,7 +344,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     this._addMetadataRow(metadata, 'name', 'Item Name');
     this._addMetadataRow(metadata, 'collectionName', 'Collection');
     this._addMetadataRow(metadata, 'date', 'Date');
-
     this._addMetadataRow(metadata, 'resourceType', 'Resource Type');
 
     this.metadata = metadata;

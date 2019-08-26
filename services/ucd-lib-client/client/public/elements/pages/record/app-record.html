@@ -154,7 +154,10 @@
 
 <app-image-viewer-static id="viewerStatic"></app-image-viewer-static>
 <app-360-image-viewer id="viewer360"></app-360-image-viewer>
-<app-video-viewer id="videoViewer"></app-video-viewer>
+
+<template is="dom-if" if="[[isVideo]]">
+  <app-video-viewer id="videoViewer"></app-video-viewer>
+</template>
 
 <div class="container top">
   <div class="overview">

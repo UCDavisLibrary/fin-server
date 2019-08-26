@@ -53,9 +53,11 @@ class RecordModel extends ElasticSearchModel {
   }
 
   async createMediaObject(record) {
-    let associatedMedia = record['associatedMedia'];
-
+    if (record.isRootRecord === false) return;
+    
     let media = {};
+
+    record['associatedMedia'] ? traverse(record['associatedMedia']) : traverse(record);
 
     function traverse(item) {
       if (Array.isArray(item)) {
@@ -87,8 +89,7 @@ class RecordModel extends ElasticSearchModel {
       }
     }
 
-    traverse(associatedMedia);
-    record.media = media;   
+    record.media = media;
 
     return record;
   }

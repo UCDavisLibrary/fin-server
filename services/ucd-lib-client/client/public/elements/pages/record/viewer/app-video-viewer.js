@@ -49,8 +49,9 @@ export default class AppVideoViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
+    if (!media.media) return;
+
     this.media = media.media;
-    
     if (!this.media.video) {
       return;
     }

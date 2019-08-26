@@ -175,11 +175,9 @@ export default class AppMediaDownload extends PolymerElement {
       option.textContent = format + ((format === this.originalFormat) ? ' (native)' : '');
       option.value = format;
 
-      /*
       if (format === this.originalFormat) {
         option.setAttribute('selected', 'selected');
       }
-      */
       
       this.$.format.appendChild(option);
     });
