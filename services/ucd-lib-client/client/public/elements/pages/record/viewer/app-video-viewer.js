@@ -18,7 +18,12 @@ export default class AppVideoViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
   
   static get properties() {
-    return {}
+    return {
+      height: {
+        type: Number,
+        value: 50
+      },
+    }
   }
 
   constructor() {
@@ -73,15 +78,20 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     this.$.player = this.shadowRoot.getElementById("player");
     let videoObject = utils.formatVideo(this.media.video);
-    //console.log("videoObject: ", videoObject);
     let videoUri  = videoObject['id'];
     this.title    = videoObject['name'];
     this.poster   = videoObject['poster'];
     this.sources  = videoObject['sources'];
+    this.width    = this.sources[0].width;
+    this.height   = this.sources[0].height;
+
+    this.$.player.style.width  = this.width + "px";
+    this.$.player.style.maxWidth = "calc(" + this.height + " / " + this.width +  " * 100%)";
 
     const player = new this.plyr(this.$.player, {
       title: this.title,
       blankVideo: 'https://cdn.plyr.io/static/blank.mp4',
+      quality: videoObject['videoQuality'],
       debug: false
     });
 

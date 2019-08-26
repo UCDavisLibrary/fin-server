@@ -6,23 +6,13 @@ import shakaCss from "shaka-player/dist/controls.css"
 
 export default function render() { 
 return html`
-    <style>${plyrCss}</style>
-    <style>${shakaCss}</style>
     <style>
-        :host {
-            display: block;
-            background-color: black;
+        .plyr__video-wrapper {
             text-align: center;
         }
 
-        #player {
-            max-width: 640px;
-            max-height: 480px;
-        }
-
-        #player:focus {
-            outline: none;
-        }
+        ${plyrCss}
+        ${shakaCss}
     </style>
     <div class="container">
         <div id="sprite-plyr" style="display: none;"></div>

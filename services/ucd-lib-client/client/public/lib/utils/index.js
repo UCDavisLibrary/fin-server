@@ -78,6 +78,8 @@ class Utils {
         src: element.video['@id'],
         type: element.encodingFormat,
         size: parseInt(element.videoQuality),
+        width: parseInt(element.videoFrameSize.split("x")[0]),
+        height: parseInt(element.videoFrameSize.split("x")[1]),
         license: element.license
       }
 
@@ -90,6 +92,7 @@ class Utils {
       poster: mpdObj['thumbnailUrl'],
       encodingFormat: mpdObj['encodingFormat'],
       videoQuality: parseInt(mpdObj['videoQuality']),
+      height: parseInt(mpdObj['videoQuality']),
       sources: sources
     }
 
