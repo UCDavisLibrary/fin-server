@@ -34,7 +34,7 @@ class Utils {
    * @param {Object} bytes - a number
    * 
    * @return {String}
-   */
+  */
   // https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
   formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return '0 Bytes';
@@ -47,10 +47,14 @@ class Utils {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '\xa0' + sizes[i];
   }
 
-  isVideo(object){
-    return object['type'].includes("Video");
-  }
-
+  /**
+   * @method formatVideo
+   * @description return a properly formatted video object from the raw media object
+   * 
+   * @param {Object} object
+   * 
+   * @return {Object}
+  */
   formatVideo(object) {
     let videoObj, mpdObj, vidId, sources = {};
 
@@ -91,7 +95,6 @@ class Utils {
 
     return videoObj;
   }
-
 }
 
 module.exports = new Utils();

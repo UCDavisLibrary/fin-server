@@ -104,11 +104,9 @@ export default class AppRecord extends Mixin(PolymerElement)
     if(record.media.video) {
       this.isVideo = true;
       let videoObj = utils.formatVideo(record.media.video);
-      /*
       if (videoObj.sources && videoObj.sources[0].license) {
         this.record.license = videoObj.sources[0].license;
       }
-      */
     }
 
     if( this.record.description ) {
@@ -126,6 +124,7 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     // TODO: add back in when we figure out consolidated resource type 
     // this.$.resourceType.innerHTML = this.record.type ? '<div>'+this.record.type.join('</div><div>')+'</div>' : 'Unknown';
+    
     if( this.record.license &&
         this.record.license['@id'] && 
         rightsDefinitions[this.record.license['@id']] ) {
@@ -173,7 +172,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.fedoraValue.innerHTML =  `<a href="${link}">${record['@id']}</a>`;
 
     this._updateMetadataRows();
-    // this._setTarHref();
+    //this._setTarHref();
 
     // render citations.. this might need to load library, do it last
     this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
