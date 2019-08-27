@@ -66,9 +66,12 @@
 </style>
 
 <div class="layout">
+  <!--
   <div id="navLeft" hidden$="[[singleImage]]">
     <paper-icon-button noink tabindex="0" icon="chevron-left" disabled$="[[!showNavLeft]]" on-click="_pageLeft"></paper-icon-button>
   </div>
+  -->
+  
   <div id="thumbnails" hidden$="[[singleImage]]">
     <div id="thumbnailContainer">
       <template is="dom-repeat" items="[[thumbnails]]">
@@ -85,9 +88,12 @@
 
     </div>
   </div>
+
+  <!--
   <div id="navRight" hidden$="[[singleImage]]">
     <paper-icon-button noink tabindex="0"  icon="chevron-right" disabled$="[[!showNavRight]]" on-click="_pageRight"></paper-icon-button>
   </div>
+  -->
 
   <div style="flex:1"></div>
   
