@@ -215,10 +215,9 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
 
     if (record.media.imageList[0].hasPart) {
       this.mediaList = record.media.imageList[0].hasPart;
+    } else {
+      this.mediaList = this._getImageMediaList(record);
     }
-
-    // TODO: Remove this
-    //this.mediaList = this._getImageMediaList(record);
 
     this.thumbnails = this.mediaList.map(record => {
       let thumbnail = {
