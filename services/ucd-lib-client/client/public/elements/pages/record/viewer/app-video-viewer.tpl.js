@@ -6,7 +6,16 @@ import shakaCss from "shaka-player/dist/controls.css"
 
 export default function render() { 
 return html`
-    <style include="shared-styles">
+    <style>
+        :host {
+            display: block;
+            background: black;
+        }
+
+        .container {
+            margin: 0 auto;
+        }
+        
         .plyr__video-wrapper {
             text-align: center;
         }
@@ -22,9 +31,11 @@ return html`
         ${plyrCss}
         ${shakaCss}
     </style>
-    <div class="container">
+    <div class="container" style="width: 500px;">
         <div id="sprite-plyr" style="display: none;"></div>
         <video id="player" playsinline controls crossorigin></video>
     </div>
+    <app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
+    <app-image-viewer-nav on-zoom-in="_onZoomIn"></app-image-viewer-nav>
 `
 }

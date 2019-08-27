@@ -5,6 +5,9 @@
 import { LitElement, html } from "lit-element"
 import render from "./app-video-viewer.tpl.js"
 
+import "./app-image-viewer-nav"
+import "./app-image-viewer-lightbox"
+
 // Sets globals Mixin and EventInterface
 import "@ucd-lib/cork-app-utils"
 import config from "../../../../lib/config"
@@ -115,6 +118,16 @@ export default class AppVideoViewer extends Mixin(LitElement)
     } else {
       console.warn("Your browser is not supported");
     }
+  }
+
+  /**
+   * @method _onZoomIn
+   * @description bound to zoom event from viewer nav. 
+   * 
+   * @param {Object} e custom HTML event
+   */
+  _onZoomIn(e) {
+    this.$.lightbox.show();
   }
 }
 
