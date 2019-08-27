@@ -102,8 +102,14 @@ class SeoModel extends BaseModel {
       if( key[0] === '_' ) delete record[key];
     }
     record = transform(record);
+    //console.log("record: ", record);
+
+    // TODO: Have Justin review
+    // Nasty hack to avoid 'TypeError: Converting circular structure to JSON'
+    delete record.media;
 
     this.ele.innerHTML = JSON.stringify(record, '  ', '  ');
+    //console.log(this.ele.innerHTML);
   }
 
   _setCollectionJsonLd(selectedCollection) {

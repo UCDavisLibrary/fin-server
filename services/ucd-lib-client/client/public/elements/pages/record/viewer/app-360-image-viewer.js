@@ -1,10 +1,13 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-360-image-viewer.html"
 
+import AppStateInterface from "../../../interfaces/AppStateInterface"
+import MediaInterface from "../../../interfaces/MediaInterface"
+
 import "@ucd-lib/cork-360-image-viewer"
 
 export default class App360ImageViewer extends Mixin(PolymerElement)
-  .with(EventInterface) {
+  .with(EventInterface, AppStateInterface, MediaInterface) {
   
   static get template() {
     let tag = document.createElement('template');
@@ -20,7 +23,7 @@ export default class App360ImageViewer extends Mixin(PolymerElement)
   ready() {
     super.ready();
 
-    this.$.viewer.frameToImgPath = this._frameToImgPath.bind(this);
+    //this.$.viewer.frameToImgPath = this._frameToImgPath.bind(this);
   }
 
   async _onSelectedRecordMediaUpdate(record) {  

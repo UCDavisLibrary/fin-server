@@ -50,7 +50,7 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    
+    //console.log("app-image-viewer-static.js => _onSelectedRecordUpdate(): ", record);
   }
 
   /**
@@ -61,7 +61,6 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
    */
   _onSelectedRecordMediaUpdate(media) {
     this.media = media;
-
     if(this.MediaModel.get360Media(media).length ||
         this.media.type && this.media.type.includes('Video') || 
         this.media.video) {

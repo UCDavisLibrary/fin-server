@@ -14,14 +14,12 @@ import "./app-copy-cite"
 import "./viewer/app-360-image-viewer"
 import "./viewer/app-video-viewer"
 
-import AppStateInterface from "../../interfaces/AppStateInterface"
-import RecordInterface from "../../interfaces/RecordInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
 import { debug } from "util";
 
 export default class AppRecord extends Mixin(PolymerElement)
-      .with(EventInterface, AppStateInterface, RecordInterface, CollectionInterface, MediaInterface) {
+      .with(EventInterface, CollectionInterface, MediaInterface) {
 
   static get template() {
     let tag = document.createElement('template');
@@ -65,6 +63,8 @@ export default class AppRecord extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+    this._injectModel('AppStateModel');
+    this._injectModel('RecordModel');
   }
 
   /**
@@ -80,11 +80,11 @@ export default class AppRecord extends Mixin(PolymerElement)
     if( this.currentRecordId === id ) return;
     this.currentRecordId = id;
 
-    let result = await this._getRecord(this.currentRecordId);
+    let result = await this.RecordModel.get(this.currentRecordId);
     let record = await this.RecordModel.createMediaObject(result.payload);
     this._onSelectedRecordUpdate(record);
-
-    //this._setSelectedRecord(result.payload);
+    
+    this.AppStateModel.setSelectedRecord(record);
   }
 
   /**
@@ -149,10 +149,10 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.download.setRootRecord(record, imageList);
 
     if( record.associatedMedia ) { 
-      if( imageList.length ) this._setSelectedRecordMedia(imageList[0]);
-      else this._setSelectedRecordMedia(record);
+      if( imageList.length ) this.AppStateModel.setSelectedRecordMedia(imageList[0]);
+      else this.AppStateModel.setSelectedRecordMedia(record);
     } else {
-      this._setSelectedRecordMedia(record);
+      this.AppStateModel.setSelectedRecordMedia(record);
     }
 
     // find arks or doi
@@ -209,10 +209,10 @@ export default class AppRecord extends Mixin(PolymerElement)
     // TODO: label is under creator.name
     this.$.creatorValue.innerHTML = creators 
       .map(creator => {
-        let searchDoc = this._getEmptySearchDocument();
-        this._appendKeywordFilter(searchDoc, 'creators', creator);
-        this._appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
-        let link = this._getHost()+'search/'+this._searchDocumentToUrl(searchDoc);
+        let searchDoc = this.RecordModel.emptySearchDocument();
+        this.RecordModel.appendKeywordFilter(searchDoc, 'creators', creator);
+        this.RecordModel.appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
+        let link = this._getHost()+'search/'+this.RecordModel.searchDocumentToUrl(searchDoc);
         return `<a href="${link}">${creator}</a>`;
       })
       .join(', ');
@@ -240,10 +240,10 @@ export default class AppRecord extends Mixin(PolymerElement)
       .map(subject => {
         // debugger;
         // subject = subject.name;
-        let searchDoc = this._getEmptySearchDocument();
-        this._appendKeywordFilter(searchDoc, 'abouts.raw', subject);
-        this._appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
-        let link = this._getHost()+'search/'+this._searchDocumentToUrl(searchDoc);
+        let searchDoc = this.RecordModel.emptySearchDocument();
+        this.RecordModel.appendKeywordFilter(searchDoc, 'abouts.raw', subject);
+        this.RecordModel.appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
+        let link = this._getHost()+'search/'+this.RecordModel.searchDocumentToUrl(searchDoc);
         return `<a href="${link}">${subject}</a>`;
       })
       .join(', ');
@@ -325,7 +325,6 @@ export default class AppRecord extends Mixin(PolymerElement)
       return;
     }
 
-    // Works for Images
     this.$.download.render({
       resolution : [record.image.width, record.image.height],
       fileFormat : record.image.encodingFormat,

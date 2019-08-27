@@ -6,9 +6,17 @@ import shakaCss from "shaka-player/dist/controls.css"
 
 export default function render() { 
 return html`
-    <style>
+    <style include="shared-styles">
         .plyr__video-wrapper {
             text-align: center;
+        }
+
+        button.plyr__control.plyr__control--overlaid {
+            background: rgba(218,170,0,0.8);
+        }
+
+        button.plyr__control.plyr__control:hover {
+            background: rgba(218,170,0,1.0);
         }
 
         ${plyrCss}

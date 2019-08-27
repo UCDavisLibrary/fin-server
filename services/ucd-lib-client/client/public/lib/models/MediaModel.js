@@ -90,14 +90,12 @@ class MediaModel extends BaseModel {
       let types = rootRecord.associatedMedia[i]['@type'];
       if( types && types.indexOf(type || IMAGE_LIST) > -1 ) {
         rootRecord._imageList = rootRecord.associatedMedia[i].hasPart || [];
-        rootRecord._imageList
-          .forEach(item => item.position = parseInt(item.position));
-        rootRecord._imageList
-          .sort((a, b) => {
-            if( a.position > b.position ) return 1;
-            if( a.position < b.position ) return -1;
-            return 1;
-          });
+        rootRecord._imageList.forEach(item => item.position = parseInt(item.position));
+        rootRecord._imageList.sort((a, b) => {
+          if( a.position > b.position ) return 1;
+          if( a.position < b.position ) return -1;
+          return 1;
+        });
 
         return rootRecord._imageList;
       }

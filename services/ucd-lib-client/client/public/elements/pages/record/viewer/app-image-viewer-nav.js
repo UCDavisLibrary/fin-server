@@ -211,10 +211,16 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    this.mediaList = this._getImageMediaList(record);
+    if (!record.media.imageList) return;
+
+    if (record.media.imageList[0].hasPart) {
+      this.mediaList = record.media.imageList[0].hasPart;
+    }
+
+    // TODO: Remove this
+    //this.mediaList = this._getImageMediaList(record);
 
     this.thumbnails = this.mediaList.map(record => {
-
       let thumbnail = {
         id : record['@id'],
         position : record.position,
