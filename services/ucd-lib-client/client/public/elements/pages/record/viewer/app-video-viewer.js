@@ -116,17 +116,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
       console.warn("Your browser is not supported");
     }
   }
-
-  /**
-   * @method _onZoomIn
-   * @description bound to zoom event from viewer nav. 
-   * 
-   * @param {Object} e custom HTML event
-   */
-  _onZoomIn(e) {
-    console.log("_onZoomIn() => e: ", e);
-    this.$.lightbox.show();
-  }
 }
 
 customElements.define('app-video-viewer', AppVideoViewer);

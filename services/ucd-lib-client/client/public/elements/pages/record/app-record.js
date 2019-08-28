@@ -7,12 +7,10 @@ import citations from "../../../lib/models/CitationsModel"
 import utils from "../../../lib/utils"
 import config from "../../../lib/config"
 
-import "./viewer/app-image-viewer-static"
 import "./app-media-download"
 import "./app-record-metadata-layout"
 import "./app-copy-cite"
-import "./viewer/app-360-image-viewer"
-import "./viewer/app-video-viewer"
+import "./viewer/app-media-viewer"
 
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"

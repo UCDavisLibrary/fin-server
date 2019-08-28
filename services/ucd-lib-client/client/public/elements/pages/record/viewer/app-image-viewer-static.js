@@ -2,9 +2,6 @@ import {PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-spinner/paper-spinner-lite"
 import template from "./app-image-viewer-static.html"
 
-import "./app-image-viewer-nav"
-import "./app-image-viewer-lightbox"
-
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
 
@@ -97,16 +94,6 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
 
     this.$.img.style.maxWidth = w + 'px';
     this.$.img.src = url; 
-  }
-
-  /**
-   * @method _onZoomIn
-   * @description bound to zoom event from viewer nav. 
-   * 
-   * @param {Object} e custom HTML event
-   */
-  _onZoomIn(e) {
-    this.$.lightbox.show();
   }
 }
 
