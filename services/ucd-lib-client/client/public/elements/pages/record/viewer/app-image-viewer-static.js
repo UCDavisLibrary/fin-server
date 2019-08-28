@@ -34,7 +34,11 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
       height : {
         type : Number,
         value : 600
-      }
+      },
+      hasMultipleImages : {
+        type : Boolean,
+        value : false
+      },
     }
   }
 
@@ -69,7 +73,7 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
     }
 
     this.style.display = 'block';
-    
+
     this._renderImg();
   }
 

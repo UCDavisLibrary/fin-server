@@ -63,6 +63,10 @@ export default class AppMediaDownload extends PolymerElement {
         type : String,
         value : ''
       },
+      fileSize: {
+        type: String,
+        value: ''
+      },
       mediaType : {
         type: String,
         value: ''
@@ -123,7 +127,9 @@ export default class AppMediaDownload extends PolymerElement {
     this.hasMultipleImages = (this.imagelist.length > 1);
     this.multipleImagesSelected = false;
     this.isVideo = false;
+
     this.size = bytes(options.size);
+
     this.mediaType = options.fileFormat.substring(0, options.fileFormat.lastIndexOf('/')).toLowerCase();
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();    
     this.$.format.value = this.originalFormat;
@@ -137,11 +143,15 @@ export default class AppMediaDownload extends PolymerElement {
 
     this.rootRecord = record;
     this.href = '';
+    this.fileFormat = '';
 
     if (this.rootRecord.media.video) {
       let video = utils.formatVideo(this.rootRecord.media.video);
       this.isVideo = true;
+
+      // Always link this information the mp4
       this.href = config.fcrepoBasePath+video['sources'][0]['src'];
+      this.fileSize = video['sources'][0]['fileSize'];
     }
     
     this.imagelist = imagelist;

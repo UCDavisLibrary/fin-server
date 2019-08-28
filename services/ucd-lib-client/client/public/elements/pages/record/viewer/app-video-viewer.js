@@ -5,10 +5,6 @@
 import { LitElement, html } from "lit-element"
 import render from "./app-video-viewer.tpl.js"
 
-import "./app-image-viewer-nav"
-import "./app-image-viewer-lightbox"
-
-// Sets globals Mixin and EventInterface
 import "@ucd-lib/cork-app-utils"
 import config from "../../../../lib/config"
 import utils from "../../../../lib/utils"
@@ -25,7 +21,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
       height: {
         type: Number,
         value: 50
-      },
+      }
     }
   }
 
@@ -33,6 +29,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
     super();
     this.render = render.bind(this);
     this._injectModel('AppStateModel');
+
   }
 
   firstUpdated() {
@@ -127,6 +124,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
    * @param {Object} e custom HTML event
    */
   _onZoomIn(e) {
+    console.log("_onZoomIn() => e: ", e);
     this.$.lightbox.show();
   }
 }

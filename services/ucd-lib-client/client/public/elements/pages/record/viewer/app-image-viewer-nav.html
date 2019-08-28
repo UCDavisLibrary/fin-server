@@ -12,6 +12,7 @@
   :host(.single) paper-icon-button {
     background-color: var(--default-primary-color);
   }
+
   :host(.single) app-share-btn {
     background-color: var(--default-primary-color);
   }
@@ -66,7 +67,7 @@
 </style>
 
 <div class="layout">
-  <!--
+  <!-- TODO: Remove
   <div id="navLeft" hidden$="[[singleImage]]">
     <paper-icon-button noink tabindex="0" icon="chevron-left" disabled$="[[!showNavLeft]]" on-click="_pageLeft"></paper-icon-button>
   </div>
@@ -85,11 +86,10 @@
           on-click="_onThumbnailClicked">
         </button>
       </template>
-
     </div>
   </div>
 
-  <!--
+  <!-- TODO: Remove
   <div id="navRight" hidden$="[[singleImage]]">
     <paper-icon-button noink tabindex="0"  icon="chevron-right" disabled$="[[!showNavRight]]" on-click="_pageRight"></paper-icon-button>
   </div>

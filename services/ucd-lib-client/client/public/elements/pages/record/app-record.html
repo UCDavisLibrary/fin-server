@@ -152,12 +152,9 @@
 <app-search-header></app-search-header>
 <app-search-breadcrumb></app-search-breadcrumb>
 
-<app-image-viewer-static id="viewerStatic"></app-image-viewer-static>
-<app-360-image-viewer id="viewer360"></app-360-image-viewer>
-
-<template is="dom-if" if="[[isVideo]]">
-  <app-video-viewer id="videoViewer"></app-video-viewer>
-</template>
+<app-image-viewer-static id="viewerStatic" hidden$="[[isVideo]]"></app-image-viewer-static>
+<app-360-image-viewer id="viewer360" hidden$="[[isVideo]]"></app-360-image-viewer>
+<app-video-viewer id="videoViewer" hidden$="[[!isVideo]]"></app-video-viewer>
 
 <div class="container top">
   <div class="overview">
@@ -165,7 +162,7 @@
       <h3>[[name]]</h3>
       
       <div hidden$="[[!alternativeHeadline]]" class="section">
-        <div style="font-weight:bold">[[alternativeHeadline]]</div>
+        <div style="font-weight: bold;">[[alternativeHeadline]]</div>
       </div>
 
       <div class="section type-date-collection">

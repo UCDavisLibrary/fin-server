@@ -24,22 +24,18 @@ export default class AppImageViewer extends Mixin(PolymerElement)
         type : Array,
         value : null
       },
-
       maxImageSize : {
         type : Number,
         value : 2048
       },
-
       media : {
         type : Object,
         value : () => {}
       },
-
       visible : {
         type : Boolean,
         value : false
       },
-
       loading : {
         type : Boolean,
         value : false

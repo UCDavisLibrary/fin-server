@@ -45,6 +45,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
         type : Boolean,
         value : false
       },
+      /*
       showNavLeft : {
         type : Boolean,
         value : false
@@ -53,6 +54,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
         type : Boolean,
         value : false
       },
+      */
       isLightbox : {
         type : Boolean,
         value : false
@@ -67,6 +69,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+
     window.addEventListener('resize', () => this._resize());
     window.addEventListener('touchend', (e) => this._onTouchEnd(e));
     window.addEventListener('touchcancel', (e) => this._onTouchEnd(e));
@@ -141,7 +144,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     w -= 16; // padding
 
     this._setNavBreak(w);
-    this.showNavLeft = (this.leftMostThumbnail !== 0);
+    //this.showNavLeft = (this.leftMostThumbnail !== 0);
 
     let iconsWidth;
     if( this.breakControls ) {
@@ -154,7 +157,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     let availableThumbSpace = Math.min(w - iconsWidth, 512);
     this.thumbnailsPerFrame = Math.max(Math.floor(availableThumbSpace / this.totalThumbnailWidth), 1);
 
-    this.showNavRight = !this._showingLastThumbFrame();
+    //this.showNavRight = !this._showingLastThumbFrame();
     this._updateThumbnailContainerPos();
   }
 
@@ -211,7 +214,10 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    if (!record.media.imageList) return;
+    if (!record.media.imageList) {
+      this.singleImage = true;
+      return;
+    }
 
     if (record.media.imageList[0].hasPart) {
       this.mediaList = record.media.imageList[0].hasPart;
@@ -250,8 +256,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    * @param {Object} media 
    */
   _onSelectedRecordMediaUpdate(media) {
-    this.media = media;
-    
+    this.media = media;    
     this.thumbnails.forEach((thumbnail, index) => {
       this.set(`thumbnails.${index}.selected`, (media['@id'] === thumbnail.id));
     });

@@ -84,7 +84,7 @@
 <div class="layout" hidden$="[[!hasMultipleImages]]">
   <div class="radio" style="margin-right: 40px">
     <input id="single" type="radio" name="set-size" checked on-click="_toggleMultipleDownload" /> 
-    <label for="single" >Single</label>
+    <label for="single">Single</label>
   </div>
   <div class="radio">
     <input id="fullset" type="radio" name="set-size" on-click="_toggleMultipleDownload"/> 
@@ -114,6 +114,14 @@
     </dom-if>
   </select>
 
+  <div style="padding-right: 8px;">
+    <!--
+      Still working this out
+      <span hidden$="[[!fileFormat]]">[[fileFormat]]</span>
+    -->
+    <span hidden$="[[!fileSize]]">([[fileSize]])</span>
+  </div>
+
   <a href="[[href]]" 
     on-click="_onDownloadClicked" 
     download 
@@ -124,7 +132,6 @@
       <span>
         Download
       </span>
-      <!--<span hidden$="![[fileSize]]">[[fileSize]]</span>-->
   </a>
 
   <form id="downloadTar" 

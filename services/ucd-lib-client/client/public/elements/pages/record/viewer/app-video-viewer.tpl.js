@@ -12,12 +12,14 @@ return html`
             position: relative;
             padding-bottom: 8px;
             background: black;
+            box-sizing: border-box;
         }
 
         .container {
             position: relative;
         }
 
+        /*
         app-image-viewer-nav {
             position: absolute;
             z-index: 1;
@@ -25,6 +27,7 @@ return html`
             right: 0;
             background: none;
         }
+        */
 
         .plyr__controls {
             margin: 0 auto;
@@ -48,9 +51,6 @@ return html`
         ${shakaCss}
     </style>
     <div class="container">
-        <app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
-        <app-image-viewer-nav on-zoom-in="_onZoomIn"></app-image-viewer-nav>
-        
         <div id="sprite-plyr" style="display: none;"></div>
         <video id="player" playsinline controls crossorigin></video>
     </div>

@@ -34,16 +34,21 @@ module.exports = async function(path, graph, utils) {
     attr : 'alternativeHeadline',
     value : ['schema', 'alternativeHeadline']
   });
-  
-  await utils.add({
-    attr : 'description',
-    value : ['schema', 'description']
-  });
 
   await utils.add({
     attr : 'creator',
     value : ['schema', 'creator'],
     type : 'id'
+  });
+
+  await utils.add({
+    attr : 'contentSize',
+    value : ['schema', 'contentSize']
+  });
+  
+  await utils.add({
+    attr : 'description',
+    value : ['schema', 'description']
   });
 
   await utils.add({
