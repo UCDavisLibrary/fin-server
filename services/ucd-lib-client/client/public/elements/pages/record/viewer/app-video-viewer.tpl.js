@@ -19,17 +19,9 @@ return html`
             position: relative;
         }
 
-        app-image-viewer-nav {
-            position: absolute;
-            z-index: 1000000;
-            bottom: 0;
-            right: 0;
-            background: none;
-        }
-
         .plyr__controls {
             margin: 0 auto;
-            width: calc(100vw / 1.5);
+            width: calc(100vw / 1.8);
         }
 
         .plyr__video-wrapper {

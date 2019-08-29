@@ -111,15 +111,11 @@
           [[item.title]] [[item.width]] x [[item.height]] px
         </option>
       </template>
-    </dom-if>
   </select>
 
-  <div style="padding-right: 8px;">
-    <!--
-      Still working this out
-      <span hidden$="[[!fileFormat]]">[[fileFormat]]</span>
-    -->
-    <span hidden$="[[!fileSize]]">([[fileSize]])</span>
+  <div hidden$="[[!isVideo]]" style="padding-right: 8px;">
+    <span hidden$="[[!fileFormat]]">[[fileFormat]]</span>
+    <span hidden$="[[!size]]">([[size]])</span>
   </div>
 
   <a href="[[href]]" 

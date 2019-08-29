@@ -62,6 +62,10 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
       singleImage : {
         type : Boolean,
         value : true
+      },
+      isVideo: {
+        type: Boolean,
+        value: false
       }
     }
   }
@@ -214,6 +218,15 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
+    if (record.media.video) {
+      this.wrapper = this.shadowRoot.getElementById('wrapper');
+      this.wrapper.style.position = "absolute";
+      this.wrapper.style.zIndex   = 5;
+      this.wrapper.style.bottom   = 0;
+      this.wrapper.style.right    = 0;
+      this.wrapper.style.padding  = "15px";
+    }
+
     if (!record.media.imageList) {
       this.singleImage = true;
       return;
@@ -281,13 +294,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    * @param {Object} e HTML click event
    */
   _onZoomInClicked(e) {
-    //console.log("e: ", e);
-    //this._onZoomIn(e);
     this.dispatchEvent(new CustomEvent('zoom-in'));
-  }
-
-  methodToTrigger() {
-    console.log("Triggered");
   }
 
   /**

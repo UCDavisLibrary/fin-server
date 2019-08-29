@@ -30,12 +30,14 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
 
     firstUpdated(e) {
-      this.$.lightbox = this.shadowRoot.getElementById('lightbox');
-      let childElement = this.shadowRoot.getElementById('nav');
-      this.$.zoomButton = childElement.shadowRoot.getElementById('zoomIn1');
+      this.$.lightbox   = this.shadowRoot.getElementById('lightbox');
+      this.$.navTop     = this.shadowRoot.getElementById('nav-top');
+      this.$.navBottom  = this.shadowRoot.getElementById('nav-bottom');
+      this.$.zoomButton = this.$.navBottom.shadowRoot.getElementById('zoomIn1');
       
       this.$.video = this.shadowRoot.getElementById('videoViewer');
       this.$.video.style.display = 'none';
+      this.$.navTop.style.display = 'none';
     }
 
     updated(e) {
@@ -45,17 +47,20 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
 
     async _onSelectedRecordMediaUpdate(record) {
+
       if (record.media && record.media.video) {
         this.isVideo = true;
         this.$.video.style.display = 'block';
-        this.$.zoomButton.style.display = 'none';
+        this.$.navTop.style.display = 'block';
+        this.$.navBottom.style.display = 'none';
+        //this.$.zoomButton.style.display = 'none';
         return;
       }
     }
 
     /**
      * @method _onZoomIn
-     * @description bound to zoom event from viewer nav. 
+     * @description bound to zoom event in app-image-viewer-nav. 
      * 
      * @param {Object} e custom HTML event
      */
