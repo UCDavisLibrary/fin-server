@@ -17,6 +17,6 @@ export default function render() {
     <app-360-image-viewer id="viewer360"></app-360-image-viewer>
     <app-video-viewer id="videoViewer"></app-video-viewer>
 
-    <app-image-viewer-nav id="nav-bottom" .isVideo=${this.isVideo} on-zoom-in="_onZoomIn"></app-image-viewer-nav>
+    <app-image-viewer-nav id="nav-bottom" style="padding: 8px;" .isVideo=${this.isVideo} on-zoom-in="_onZoomIn"></app-image-viewer-nav>
   `
 }
