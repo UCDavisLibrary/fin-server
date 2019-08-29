@@ -281,7 +281,13 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    * @param {Object} e HTML click event
    */
   _onZoomInClicked(e) {
+    //console.log("e: ", e);
+    //this._onZoomIn(e);
     this.dispatchEvent(new CustomEvent('zoom-in'));
+  }
+
+  methodToTrigger() {
+    console.log("Triggered");
   }
 
   /**
@@ -318,7 +324,6 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     }
     window.scrollTo(0,0);
   }
-
 }
 
 customElements.define('app-image-viewer-nav', AppImageViewerNav);

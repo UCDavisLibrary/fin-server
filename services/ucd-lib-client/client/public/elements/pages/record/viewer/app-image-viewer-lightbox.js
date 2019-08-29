@@ -54,13 +54,15 @@ export default class AppImageViewer extends Mixin(PolymerElement)
 
   ready() {
     super.ready();
-    this.parentNode.removeChild(this);
-    document.body.appendChild(this);
+    
+    // TODO: Have Justin review these.  No longer necessary using Lit?
+    //this.parentNode.removeChild(this);
+    //document.body.appendChild(this);
 
     this.shadowRoot.removeChild(this.$.safeCover);
     document.body.appendChild(this.$.safeCover);
 
-    this.mainApp = document.querySelector('fin-app');
+    //this.mainApp = document.querySelector('fin-app');
   }
 
   /**
@@ -85,7 +87,9 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     window.scrollTo(0,0);
     this.$.safeCover.style.display = 'block';
 
-    this.mainApp.style.display = 'none';
+    // TODO: Justin Review
+    //this.mainApp.style.display = 'none';
+
     setTimeout(() => this.$.nav.setFocus(), 0);
   }
 
@@ -96,8 +100,10 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     this.style.display = 'none';
     this.$.safeCover.style.display = 'none';
     document.body.style.overflow = 'auto';
-    this.mainApp.style.display = 'block';
     this.visible = false;
+
+    // TODO: Justin Review
+    //this.mainApp.style.display = 'block';
   }
 
   /**
