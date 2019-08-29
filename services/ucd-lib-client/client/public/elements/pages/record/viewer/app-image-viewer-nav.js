@@ -219,6 +219,8 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    */
   _onSelectedRecordUpdate(record) {
     if (record.media.video) {
+      this.shadowRoot.getElementById('zoomIn3').style.display = "none";
+      
       this.wrapper = this.shadowRoot.getElementById('wrapper');
       this.wrapper.style.position = "absolute";
       this.wrapper.style.zIndex   = 5;
