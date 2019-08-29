@@ -15,8 +15,7 @@ export default function render() {
     <app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
     <app-image-viewer-nav on-zoom-in="_onZoomIn"></app-image-viewer-nav>
 
-    <!-- Rename app-image-viewer-static => app-image-viewer -->
-    <app-image-viewer-static id="viewerStatic" hidden$="[[isVideo]]"></app-image-viewer-static>
+    <app-image-viewer id="viewer" hidden$="[[isVideo]]"></app-image-viewer>
     <app-360-image-viewer id="viewer360" hidden$="[[isVideo]]"></app-360-image-viewer>
     <app-video-viewer id="videoViewer" hidden$="[[!isVideo]]"></app-video-viewer>
   `

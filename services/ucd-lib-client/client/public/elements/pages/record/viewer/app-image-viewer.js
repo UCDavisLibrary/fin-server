@@ -1,11 +1,11 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-spinner/paper-spinner-lite"
-import template from "./app-image-viewer-static.html"
+import template from "./app-image-viewer.html"
 
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
 
-export default class AppImageViewerStatic extends Mixin(PolymerElement)
+export default class AppImageViewer extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
   
   static get template() {
@@ -51,7 +51,7 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    //console.log("app-image-viewer-static.js => _onSelectedRecordUpdate(): ", record);
+    //console.log("app-image-viewer.js => _onSelectedRecordUpdate(): ", record);
   }
 
   /**
@@ -97,4 +97,4 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
   }
 }
 
-customElements.define('app-image-viewer-static', AppImageViewerStatic);
+customElements.define('app-image-viewer', AppImageViewer);

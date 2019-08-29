@@ -1,7 +1,7 @@
 import { LitElement, } from "lit-element"
 import render from "./app-media-viewer.tpl"
 
-import "./app-image-viewer-static"
+import "./app-image-viewer"
 import "./app-360-image-viewer"
 import "./app-video-viewer"
 
