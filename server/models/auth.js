@@ -40,16 +40,16 @@ class AuthModel {
     if( types.indexOf(GROUP) > -1 ) {
       return this.refreshInMemAclDebounce();
     }
-    if( type.indexOf(AUTHORIZATION_TYPE) ) {
+    if( types.indexOf(AUTHORIZATION_TYPE) ) {
       return this.refreshInMemAclDebounce();
     }
-    if( type.indexOf(WEBAC_TYPE) ) {
+    if( types.indexOf(WEBAC_TYPE) ) {
       return this.refreshInMemAclDebounce();
     }
-    if( type.indexOf(SERVICE) ) {
+    if( types.indexOf(SERVICE) ) {
       return this.refreshInMemAclDebounce();
     }
-    if( type.indexOf(COLLECTION) ) {
+    if( types.indexOf(COLLECTION) ) {
       return this.refreshInMemAclDebounce();
     }
   }

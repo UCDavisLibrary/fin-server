@@ -308,8 +308,16 @@ class ServiceModel {
     return await jsonld.frame(container, frame);
   }
 
-  renderTransform(service, path) {
-    return transform.exec(service, path)
+  /**
+   * @method renderTransform
+   * @description given a service definition and or string path to a container or
+   * a object, transform either the object or the JSON-LD representation of the container.
+   * 
+   * @param {Object} service
+   * @param {Object|String} pathOrData
+   */
+  renderTransform(service, pathOrData) {
+    return transform.exec(service, pathOrData)
   }
 
   renderLabel(fcPath, svcPath = '') {

@@ -2,6 +2,7 @@ const httpProxy = require('http-proxy');
 const {URL} = require('url');
 const request = require('request');
 const querystring = require('querystring');
+const bodyParser = require('body-parser');
 const api = require('@ucd-lib/fin-node-api');
 const {logger, config, jwt} = require('@ucd-lib/fin-node-utils');
 
@@ -356,19 +357,36 @@ class ProxyModel {
       }
 
     } else if( service.type === api.service.TYPES.TRANSFORM ) {
-      try {
-        let fcPath = svcReq.fcPath.replace(api.getConfig().basePath, '');
-        let transformed = await serviceModel.renderTransform(service.id, fcPath);
-        res.json(transformed);
-      } catch(e) {
-        res.status(500).send({
-          error : true,
-          message : 'Unable to render from transform service '+service.id,
-          details : {
-            message : e.message,
-            stack : e.stack
+      
+      async function parsed(dataOrPath) {
+        try {
+          let transformed = await serviceModel.renderTransform(service.id, dataOrPath);
+          res.json(transformed);
+        } catch(e) {
+          res.status(500).json({
+            error : true,
+            message : 'Unable to render from transform service '+service.id,
+            details : {
+              message : e.message,
+              stack : e.stack
+            }
+          });
+        }
+      }
+
+      if( global ) {
+        bodyParser.json()(expReq, res, () => {
+          let body = expReq.body || {};
+          if( (Array.isArray(body) && body.length === 0) || Object.keys(body).length === 0) {
+            return res.status(400).json({
+              error: true, 
+              message: 'No data body found. You must POST content-type: application/json'
+            });
           }
+          parsed(expReq.body);
         });
+      } else {
+        parsed((svcReq.fcPath || '').replace(api.getConfig().basePath, ''));
       }
       
     // run the proxy service
@@ -404,6 +422,7 @@ class ProxyModel {
       res.redirect(url);
 
     // run server label service 
+    // this is a hardcoded service in the service module
     } else if( service.type === LABEL_SERVICE ) {
       try {
         let fcPath = svcReq.fcPath.replace(api.getConfig().basePath, '');
