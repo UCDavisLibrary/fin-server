@@ -7,6 +7,18 @@ import config from "../../../lib/config"
 import utils from "../../../lib/utils"
 import bytes from "bytes"
 
+/* TODO
+UNLESS! There is a transcript provided. 
+Then it should maintain a dropdown (see Audio #135 for example) 
+and include the transcript file as its own file type, marked as such. 
+An example down list might be:
+
+    mp4
+    pdf (transcript only)
+
+or whatever formats the transcript and video are in.
+*/
+
 // Full Resolution - Default
 const SIZES = [
   {
@@ -55,9 +67,9 @@ export default class AppMediaDownload extends PolymerElement {
         type : String,
         value : ''
       },
-      fileFormat: {
-        type: String,
-        value: ''
+      fileFormats: {
+        type: Array,
+        value: () => []
       },
       resolutionTitle : {
         type : String,
@@ -78,6 +90,10 @@ export default class AppMediaDownload extends PolymerElement {
       formats : {
         type : Array,
         value : () => []
+      },
+      transcripts: {
+        type: Array,
+        value: () => []
       },
       defaultImage : {
         type : Boolean,
@@ -126,7 +142,9 @@ export default class AppMediaDownload extends PolymerElement {
     this.size = bytes(options.size);
     this.mediaType = options.fileFormat.substring(0, options.fileFormat.lastIndexOf('/')).toLowerCase();
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase(); 
-    this.fileFormat = this.originalFormat;
+    
+    //this.fileFormats = this.originalFormat;
+
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
 
@@ -137,21 +155,38 @@ export default class AppMediaDownload extends PolymerElement {
     if( this.rootRecord === record ) return;
 
     this.rootRecord = record;
-    this.href = '';
 
     if (this.rootRecord.media.video) {
       let video = utils.formatVideo(this.rootRecord.media.video);
       this.isVideo = true;
 
-      this.href = config.fcrepoBasePath+video['sources'][0]['src'];
-      this.size = video['sources'][0]['fileSize'];
-      this.fileFormat = video['sources'][0]['type'].replace(/.*\//, '').toLowerCase();
+      if (video.sources && video.sources.length > 0) {
+        video.sources.forEach(element => {
+          element.type = element.type.replace(/.*\//, '');
+          element.fileSize = element.fileSize.toLowerCase();
+          element.src  = config.fcrepoBasePath+element.src;
+        });
+        this.sources = video.sources;
+        this.href = this.sources[0].src;
+        console.log("this.href: ", this.href);
+      };
+
+      if (video.transcripts && video.transcripts.length > 0) {
+        this.transcripts = video.transcripts[0].map(element => {
+          return config.fcrepoBasePath+element['@id'];
+        });
+      };
     }
     
     this.imagelist = imagelist;
     this.hasMultipleImages = (this.imagelist.length > 0);
     this.multipleImagesSelected = false;
     this.selectedSize = SIZES.length - 1;
+  }
+
+  _onChangeVideoDownloadOptions(e) {
+    let selectedValue = e.currentTarget.value;
+    this.href = this.sources[selectedValue].src;
   }
 
   /**
@@ -208,6 +243,9 @@ export default class AppMediaDownload extends PolymerElement {
       
       return Object.assign({}, size);
     });
+    
+    console.log("this.sizes: ", this.sizes);
+
     // this.resolutionTitle = this.sizes[this.selectedSize].title;
 
     this._renderFormats();
@@ -236,6 +274,8 @@ export default class AppMediaDownload extends PolymerElement {
    * is probably NOT the best way to do things.
    */
   _renderDownloadHref() {
+    console.log("this.sizes: ", this.sizes);
+    
     requestAnimationFrame(() => {
       // this.resolution = this.sizes[this.selectedSize].size.join(' x ')+' px';
 

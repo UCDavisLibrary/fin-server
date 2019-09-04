@@ -67,20 +67,6 @@
   }
 </style>
 
-<!--
-  <div>
-    <template is="dom-repeat" items="[[sizes]]">
-      <button index$="[[index]]" selected$="[[item.selected]]" on-click="_onSizeSelected">[[item.label]]</button>
-    </template>
-  </div>
--->
-
-<!--
-  <div class="info">
-    [[resolutionTitle]] | [[resolution]] <span hidden$="[[!defaultImage]]">| [[size]]</span>
-  </div>
--->
-
 <div class="layout" hidden$="[[!hasMultipleImages]]">
   <div class="radio" style="margin-right: 40px">
     <input id="single" type="radio" name="set-size" checked on-click="_toggleMultipleDownload" /> 
@@ -113,17 +99,24 @@
       </template>
   </select>
 
-  <div hidden$="[[!isVideo]]" style="padding-right: 10px;">
-    <span hidden$="[[!fileFormat]]">[[fileFormat]]</span>
-    <span hidden$="[[!size]]">([[size]])</span>
-  </div>
+  <!---
+    If there's only one option strip styling so it just appears like plain text
+  -->
+  <select on-change="_onChangeVideoDownloadOptions" hidden$="[[!isVideo]]" style="width: 100%;">
+    <template is="dom-repeat" items="[[sources]]">
+      <option value$="[[index]]">
+        [[item.type]] ([[item.fileSize]])
+      </option>
+    </template>
+  </select>
 
   <a href="[[href]]" 
     on-click="_onDownloadClicked" 
     download 
     target="_blank" 
     rel="noopener" 
-    hidden$="[[multipleImagesSelected]]">
+    hidden$="[[multipleImagesSelected]]" 
+    style="white-space: nowrap;">
       <iron-icon icon="file-download"></iron-icon>&nbsp;
       <span>
         Download

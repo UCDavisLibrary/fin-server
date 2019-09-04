@@ -89,22 +89,6 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
-    attr : 'video',
-    value : ['schema', 'video'],
-    type : 'id'
-  });
-
-  await utils.add({
-    attr : 'videoFrameSize',
-    value : ['schema', 'videoFrameSize']
-  });
-
-  await utils.add({
-    attr : 'videoQuality',
-    value : ['schema', 'videoQuality']
-  });
-
-  await utils.add({
     attr : 'image',
     value : ['schema', 'image'],
     type : 'id'
@@ -178,7 +162,6 @@ module.exports = async function(path, graph, utils) {
   await utils.setIndexableContent(item);
 
   utils.setYearFromDate(item);
-  console.log("here");
 
   return item;
 }

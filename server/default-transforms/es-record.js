@@ -45,6 +45,11 @@ module.exports = async function(path, graph, utils) {
     attr : 'contentSize',
     value : ['schema', 'contentSize']
   });
+
+  await utils.add({
+    attr : 'createdBy',
+    value : ['fedora', 'createdBy']
+  });
   
   await utils.add({
     attr : 'description',
@@ -62,10 +67,6 @@ module.exports = async function(path, graph, utils) {
     value : ['schema', 'position']
   });
 
-  await utils.add({
-    attr : 'createdBy',
-    value : ['fedora', 'createdBy']
-  });
 
   await utils.add({
     attr : 'parent',
@@ -161,6 +162,12 @@ module.exports = async function(path, graph, utils) {
   await utils.add({
     attr : 'videoQuality',
     value : ['schema', 'videoQuality']
+  });
+
+  await utils.add({
+    attr: 'transcript',
+    value: ['schema', 'transcript'],
+    type: 'id'
   });
 
   await utils.add({

@@ -35,8 +35,8 @@ class Utils {
    * 
    * @return {Object}
   */
-  formatVideo(object) {
-    let videoObj, mpdObj, vidId, sources = {};
+  formatVideo(object) {    
+    let videoObj, mpdObj, vidId, sources = {}, transcripts;
 
     object.map(element => {
       if ( element['hasPart'] ) {
@@ -61,12 +61,14 @@ class Utils {
         fileSize: element.contentSize[0],
         width: parseInt(element.videoFrameSize.split("x")[0]),
         height: parseInt(element.videoFrameSize.split("x")[1]),
-        license: element.license,
+        license: element.license
       }
 
       return obj;
     });
 
+    transcripts = object.filter(element => element.transcript && element.transcript.length > 0).map(el => el.transcript);
+    
     videoObj = {
       id: vidId,
       name: mpdObj['name'],
@@ -74,7 +76,8 @@ class Utils {
       encodingFormat: mpdObj['encodingFormat'],
       videoQuality: parseInt(mpdObj['videoQuality']),
       height: parseInt(mpdObj['videoQuality']),
-      sources: sources
+      sources: sources,
+      transcripts: transcripts
     }
 
     return videoObj;
