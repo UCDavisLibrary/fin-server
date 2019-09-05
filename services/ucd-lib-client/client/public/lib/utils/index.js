@@ -36,7 +36,7 @@ class Utils {
    * @return {Object}
   */
   formatVideo(object) {    
-    let videoObj, mpdObj, vidId, sources = {}, transcripts;
+    let videoObj, mpdObj, vidId;
 
     object.map(element => {
       if ( element['hasPart'] ) {
@@ -51,14 +51,14 @@ class Utils {
       }
     });
 
-    sources = object.filter(element => {
+    let sources = object.filter(element => {
       if (element.video) return element;
     }).map(element => {
       let obj = {
         src: element.video['@id'],
         type: element.encodingFormat,
         size: parseInt(element.videoQuality),
-        fileSize: element.contentSize[0],
+        fileSize: parseInt(element.contentSize),
         width: parseInt(element.videoFrameSize.split("x")[0]),
         height: parseInt(element.videoFrameSize.split("x")[1]),
         license: element.license
@@ -67,7 +67,24 @@ class Utils {
       return obj;
     });
 
-    transcripts = object.filter(element => element.transcript && element.transcript.length > 0).map(el => el.transcript);
+    // TODO: Justin => is there a way to chain these together or make the code more efficient?
+    let transcripts = 
+      object.filter(element => element.transcript && element.transcript.length > 0)
+            .map(el => el.transcript);
+
+    let tempTranscriptsArray = [];
+    if ( transcripts.length > 0 ) {
+      transcripts[0].forEach((el, index, array) => {
+        let extension = array[index]['@id'].split('.').pop();
+        let obj = {
+          src: array[index]['@id'],
+          type: extension
+        }
+        tempTranscriptsArray.push(obj);
+      });
+    }
+
+    transcripts = tempTranscriptsArray;
     
     videoObj = {
       id: vidId,

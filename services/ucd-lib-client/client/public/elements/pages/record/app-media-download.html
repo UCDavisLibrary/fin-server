@@ -81,16 +81,6 @@
 <div class="layout" style="margin-bottom: 5px">
   <select id="format" on-change="_onFormatSelected" hidden$="[[isVideo]]"></select>
 
-  <!--
-  <select on-change="_onSizeChange" hidden$="[[!isVideo]]">
-    <template is="dom-repeat" items="[[sizes]]">
-      <option value$="[[item.quality]]" selected$="[[item.selected]]">
-        [[item.quality]]p
-      </option>
-    </template>
-  </select>
-  -->
-
   <select on-change="_onSizeChange" hidden$="[[isVideo]]">
       <template is="dom-repeat" items="[[sizes]]">
         <option value$="[[item.label]]" selected$="[[item.selected]]">
@@ -99,15 +89,18 @@
       </template>
   </select>
 
-  <!---
-    If there's only one option strip styling so it just appears like plain text
-  -->
-  <select on-change="_onChangeVideoDownloadOptions" hidden$="[[!isVideo]]" style="width: 100%;">
-    <template is="dom-repeat" items="[[sources]]">
-      <option value$="[[index]]">
-        [[item.type]] ([[item.fileSize]])
-      </option>
-    </template>
+  <select id="videoDownloadOptions" 
+    on-change="_onChangeVideoDownloadOptions" 
+    hidden$="[[!isVideo]]" 
+    style="width: 100%;">
+      <template is="dom-repeat" items="[[sources]]">
+        <option value$="[[index]]">
+          [[item.type]]
+          <span hidden$="[[!item.fileSize]]">
+            ([[item.fileSize]])
+          </span>
+        </option>
+      </template>
   </select>
 
   <a href="[[href]]" 

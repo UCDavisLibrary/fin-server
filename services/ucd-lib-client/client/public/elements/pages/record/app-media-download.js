@@ -63,14 +63,6 @@ export default class AppMediaDownload extends PolymerElement {
         type : String,
         value : ''
       },
-      size : {
-        type : String,
-        value : ''
-      },
-      fileFormats: {
-        type: Array,
-        value: () => []
-      },
       resolutionTitle : {
         type : String,
         value : 'Full Resolution'
@@ -83,6 +75,10 @@ export default class AppMediaDownload extends PolymerElement {
         type: Boolean,
         value: false
       },
+      size : {
+        type : String,
+        value : ''
+      },
       sizes : {
         type : Array,
         value : () => []
@@ -91,10 +87,6 @@ export default class AppMediaDownload extends PolymerElement {
         type : Array,
         value : () => []
       },
-      transcripts: {
-        type: Array,
-        value: () => []
-      },
       defaultImage : {
         type : Boolean,
         value : true
@@ -102,6 +94,10 @@ export default class AppMediaDownload extends PolymerElement {
       hasMultipleImages : {
         type : Boolean,
         value : false
+      },
+      hasMultipleSources: {
+        type: Boolean,
+        value: false
       },
       multipleImagesSelected : {
         type : Boolean,
@@ -135,15 +131,12 @@ export default class AppMediaDownload extends PolymerElement {
         selected : (this.selectedSize === index)
       }
     });
-
     this.hasMultipleImages = (this.imagelist.length > 1);
     this.multipleImagesSelected = false;
     this.isVideo = false;
     this.size = bytes(options.size);
     this.mediaType = options.fileFormat.substring(0, options.fileFormat.lastIndexOf('/')).toLowerCase();
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase(); 
-    
-    //this.fileFormats = this.originalFormat;
 
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
@@ -163,19 +156,23 @@ export default class AppMediaDownload extends PolymerElement {
       if (video.sources && video.sources.length > 0) {
         video.sources.forEach(element => {
           element.type = element.type.replace(/.*\//, '');
-          element.fileSize = element.fileSize.toLowerCase();
+          element.fileSize = bytes(element.fileSize);
           element.src  = config.fcrepoBasePath+element.src;
         });
         this.sources = video.sources;
         this.href = this.sources[0].src;
-        console.log("this.href: ", this.href);
       };
 
       if (video.transcripts && video.transcripts.length > 0) {
-        this.transcripts = video.transcripts[0].map(element => {
-          return config.fcrepoBasePath+element['@id'];
+        video.transcripts.forEach(el => {
+          el.src = config.fcrepoBasePath+el.src;
+          this.sources.push(el);
         });
       };
+
+      if (this.sources.length > 1) {
+        this.hasMultipleSources = true;
+      }
     }
     
     this.imagelist = imagelist;
@@ -244,8 +241,6 @@ export default class AppMediaDownload extends PolymerElement {
       return Object.assign({}, size);
     });
     
-    console.log("this.sizes: ", this.sizes);
-
     // this.resolutionTitle = this.sizes[this.selectedSize].title;
 
     this._renderFormats();
@@ -273,9 +268,7 @@ export default class AppMediaDownload extends PolymerElement {
    * requestAnimationFrame to pause to allow time for generation.  This
    * is probably NOT the best way to do things.
    */
-  _renderDownloadHref() {
-    console.log("this.sizes: ", this.sizes);
-    
+  _renderDownloadHref() {    
     requestAnimationFrame(() => {
       // this.resolution = this.sizes[this.selectedSize].size.join(' x ')+' px';
 
