@@ -16,23 +16,34 @@
   }
   
   select {
+    margin-right: 15px;
+    padding: 5px 40px 5px 10px;
+    height: 40px;
     border: none;
     border-radius: 0;
-    margin-right: 15px;
-    height: 40px;
+   
     -webkit-appearance: none;
     -moz-appearance: none;
     -ms-appearance: none;
     -o-appearance: none;
     appearance: none;
-    padding: 5px 30px 5px 10px;
+
     background-position: right 10px center;
     background-size: 10px 6px;
     background-repeat: no-repeat;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2IiB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojMDAyNjU1O308L3N0eWxlPjwvZGVmcz48Zz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMCAwIDEwIDAgNSA2IDAgMCIvPjwvZz48L3N2Zz4=');
+    /* TODO: Seems to cause problem w/width of select box being too small
     @apply --fin-search-box-select-inverse;
-    background-color: var(--medium-background-color);
+    */
+    background-color: var(--medium-background-color); 
     color: var(--default-primary-color);
+  }
+
+  select.plainText {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: black;
   }
 
   button {
@@ -78,7 +89,7 @@
   </div>
 </div>
 
-<div class="layout" style="margin-bottom: 5px">
+<div class="layout" style="margin-bottom: 5px;">
   <select id="format" on-change="_onFormatSelected" hidden$="[[isVideo]]"></select>
 
   <select on-change="_onSizeChange" hidden$="[[isVideo]]">
@@ -89,16 +100,10 @@
       </template>
   </select>
 
-  <select id="videoDownloadOptions" 
-    on-change="_onChangeVideoDownloadOptions" 
-    hidden$="[[!isVideo]]" 
-    style="width: 100%;">
+  <select id="videoDownloadOptions" on-change="_onChangeVideoDownloadOptions" hidden$="[[!isVideo]]">
       <template is="dom-repeat" items="[[sources]]">
-        <option value$="[[index]]">
-          [[item.type]]
-          <span hidden$="[[!item.fileSize]]">
-            ([[item.fileSize]])
-          </span>
+        <option data-id$="[[index]]" value$="[[index]]">
+          [[item.label]]
         </option>
       </template>
   </select>

@@ -101,7 +101,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     if(record.media.video) {
       this.isVideo = true;
       let videoObj = utils.formatVideo(record.media.video);
-      if (videoObj.sources && videoObj.sources[0].license) {
+      if (videoObj.sources && videoObj.sources[0] && videoObj.sources[0].license) {
         this.record.license = videoObj.sources[0].license;
       }
     }

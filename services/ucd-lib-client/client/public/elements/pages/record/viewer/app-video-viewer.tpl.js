@@ -8,7 +8,7 @@ export default function render() {
 return html`
     <style>
         :host {
-            display: block;
+            /* display: block; */
             position: relative;
             padding-bottom: 8px;
             background: black;

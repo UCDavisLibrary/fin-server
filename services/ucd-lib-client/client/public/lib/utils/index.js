@@ -35,15 +35,19 @@ class Utils {
    * 
    * @return {Object}
   */
-  formatVideo(object) {    
-    let videoObj, mpdObj, vidId;
+  formatVideo(object) {
+    //console.log("formatVideo(object): ", object);
+
+    let videoObj, mpdObj, vidId, sources;
 
     object.map(element => {
       if ( element['hasPart'] ) {
         mpdObj = element['hasPart'].find((element) => {
-          if (element['encodingFormat'] === "application/dash+xml") return element;
+          // Locate a streaming video
+          if (element.encodingFormat === "application/dash+xml") return element;
+          // Locate a regular video
+          else if (element.video) return element;
         });
-
         vidId = mpdObj['@id'];
       } else {
         mpdObj = element;
@@ -51,40 +55,39 @@ class Utils {
       }
     });
 
-    let sources = object.filter(element => {
-      if (element.video) return element;
-    }).map(element => {
-      let obj = {
-        src: element.video['@id'],
-        type: element.encodingFormat,
-        size: parseInt(element.videoQuality),
-        fileSize: parseInt(element.contentSize),
-        width: parseInt(element.videoFrameSize.split("x")[0]),
-        height: parseInt(element.videoFrameSize.split("x")[1]),
-        license: element.license
-      }
+    if ( object[0].hasPart ) {
+      let hasPart = object[0].hasPart.filter(element => !element.error);
 
-      return obj;
-    });
-
-    // TODO: Justin => is there a way to chain these together or make the code more efficient?
-    let transcripts = 
-      object.filter(element => element.transcript && element.transcript.length > 0)
-            .map(el => el.transcript);
-
-    let tempTranscriptsArray = [];
-    if ( transcripts.length > 0 ) {
-      transcripts[0].forEach((el, index, array) => {
-        let extension = array[index]['@id'].split('.').pop();
+      sources = hasPart.map(element => {
         let obj = {
-          src: array[index]['@id'],
-          type: extension
+          src: element['@id'],
+          type: element.encodingFormat,
+          size: (element.videoQuality ? parseInt(element.videoQuality) : element.contentSize),
+          fileSize: parseInt(element.contentSize),
+          width: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[0]) : 0 ),
+          height: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[1]) : 0 ),
+          license: (element.license ? 'license' : 'none')
+        };
+
+        return obj;
+      });
+    } else {
+      sources = object.filter(element => {
+        if ( element.video) return element;
+      }).map(element => {
+        let obj = {
+          src: element.video['@id'],
+          type: element.encodingFormat,
+          size:  (element.videoQuality ? parseInt(element.videoQuality) : element.contentSize),
+          fileSize: parseInt(element.contentSize),
+          width: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[0]) : 0),
+          height: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[1]) : 0),
+          license: (element.license ? 'license' : 'none')
         }
-        tempTranscriptsArray.push(obj);
+  
+        return obj;
       });
     }
-
-    transcripts = tempTranscriptsArray;
     
     videoObj = {
       id: vidId,
@@ -92,9 +95,9 @@ class Utils {
       poster: mpdObj['thumbnailUrl'],
       encodingFormat: mpdObj['encodingFormat'],
       videoQuality: parseInt(mpdObj['videoQuality']),
-      height: parseInt(mpdObj['videoQuality']),
-      sources: sources,
-      transcripts: transcripts
+      width: parseInt(mpdObj.videoFrameSize.split("x")[0]),
+      height: parseInt(mpdObj.videoFrameSize.split("x")[1]),
+      sources: sources
     }
 
     return videoObj;

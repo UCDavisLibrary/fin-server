@@ -29,7 +29,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
     super();
     this.render = render.bind(this);
     this._injectModel('AppStateModel');
-
   }
 
   firstUpdated() {
@@ -82,8 +81,8 @@ export default class AppVideoViewer extends Mixin(LitElement)
     this.title    = videoObject['name'];
     this.poster   = videoObject['poster'];
     this.sources  = videoObject['sources'];
-    this.width    = this.sources[0].width;
-    this.height   = this.sources[0].height;
+    this.width    = videoObject['width'];
+    this.height   = videoObject['height'];
 
     this.$.player.style.width  = this.width + "px";
     this.$.player.style.maxWidth = "calc(" + this.height + " / " + this.width +  " * 100%)";

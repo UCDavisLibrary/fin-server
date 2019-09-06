@@ -7,18 +7,6 @@ import config from "../../../lib/config"
 import utils from "../../../lib/utils"
 import bytes from "bytes"
 
-/* TODO
-UNLESS! There is a transcript provided. 
-Then it should maintain a dropdown (see Audio #135 for example) 
-and include the transcript file as its own file type, marked as such. 
-An example down list might be:
-
-    mp4
-    pdf (transcript only)
-
-or whatever formats the transcript and video are in.
-*/
-
 // Full Resolution - Default
 const SIZES = [
   {
@@ -106,6 +94,11 @@ export default class AppMediaDownload extends PolymerElement {
     }
   }
 
+  constructor() {
+    super();
+    this.active = true;
+  }
+
   /**
    * @method render
    * @description render download icon from given options
@@ -137,7 +130,6 @@ export default class AppMediaDownload extends PolymerElement {
     this.size = bytes(options.size);
     this.mediaType = options.fileFormat.substring(0, options.fileFormat.lastIndexOf('/')).toLowerCase();
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase(); 
-
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
 
@@ -152,27 +144,25 @@ export default class AppMediaDownload extends PolymerElement {
     if (this.rootRecord.media.video) {
       let video = utils.formatVideo(this.rootRecord.media.video);
       this.isVideo = true;
-
+      
       if (video.sources && video.sources.length > 0) {
         video.sources.forEach(element => {
           element.type = element.type.replace(/.*\//, '');
           element.fileSize = bytes(element.fileSize);
           element.src  = config.fcrepoBasePath+element.src;
+          element.label = element.type + (element.fileSize ? ' (' + element.fileSize + ') ' : '');
         });
         this.sources = video.sources;
         this.href = this.sources[0].src;
       };
 
-      if (video.transcripts && video.transcripts.length > 0) {
-        video.transcripts.forEach(el => {
-          el.src = config.fcrepoBasePath+el.src;
-          this.sources.push(el);
-        });
-      };
-
-      if (this.sources.length > 1) {
+      if (this.sources && this.sources.length > 1) {
         this.hasMultipleSources = true;
+      } else {
+        this.$.videoDownloadOptions.disabled  = true;
+        this.$.videoDownloadOptions.className = "plainText";
       }
+  
     }
     
     this.imagelist = imagelist;
