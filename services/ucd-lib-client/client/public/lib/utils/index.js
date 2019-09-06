@@ -36,8 +36,6 @@ class Utils {
    * @return {Object}
   */
   formatVideo(object) {
-    //console.log("formatVideo(object): ", object);
-
     let videoObj, mpdObj, vidId, sources;
 
     object.map(element => {
@@ -55,40 +53,30 @@ class Utils {
       }
     });
 
+    let rawObj;
     if ( object[0].hasPart ) {
-      let hasPart = object[0].hasPart.filter(element => !element.error);
-
-      sources = hasPart.map(element => {
-        let obj = {
-          src: element['@id'],
-          type: element.encodingFormat,
-          size: (element.videoQuality ? parseInt(element.videoQuality) : element.contentSize),
-          fileSize: parseInt(element.contentSize),
-          width: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[0]) : 0 ),
-          height: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[1]) : 0 ),
-          license: (element.license ? 'license' : 'none')
-        };
-
-        return obj;
-      });
+      rawObj = object[0].hasPart.filter(element => !element.error);
     } else {
-      sources = object.filter(element => {
-        if ( element.video) return element;
-      }).map(element => {
-        let obj = {
-          src: element.video['@id'],
-          type: element.encodingFormat,
-          size:  (element.videoQuality ? parseInt(element.videoQuality) : element.contentSize),
-          fileSize: parseInt(element.contentSize),
-          width: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[0]) : 0),
-          height: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[1]) : 0),
-          license: (element.license ? 'license' : 'none')
-        }
-  
-        return obj;
-      });
+      rawObj = object.filter(element => element.video);
     }
-    
+
+    sources = rawObj.map(element => {
+      let obj = {
+        src: ((element.video && element.video['@id']) ? element.video['@id'] : element['@id']),
+        type: element.encodingFormat,
+        size: (element.videoQuality ? parseInt(element.videoQuality) : element.contentSize),
+        fileSize: parseInt(element.contentSize),
+        width: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[0]) : 0 ),
+        height: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[1]) : 0 ),
+        license: (element.license ? 'license' : 'none'),
+        transcript: (element.video ? false : true)
+      };
+      return obj;
+    });
+
+    // Sort so the transcripts go last
+    sources.sort((a, b) => a.transcript - b.transcript);
+
     videoObj = {
       id: vidId,
       name: mpdObj['name'],
