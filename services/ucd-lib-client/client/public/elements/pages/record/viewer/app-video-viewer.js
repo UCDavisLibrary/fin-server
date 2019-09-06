@@ -94,11 +94,22 @@ export default class AppVideoViewer extends Mixin(LitElement)
       debug: false
     });
 
+    // WebVTT Validator recommended by Plyr.io
+    // https://quuz.org/webvtt/
     player.source = {
       type: 'video',
       title: this.title,
       poster: this.poster,
-      source: this.sources
+      source: this.sources,
+      tracks: [
+        {
+          kind: 'captions',
+          label: 'English',
+          srclang: 'en',
+          src: '/fcrepo/rest/collection/butterflies/monarchs/monarch1/videos/mb_v_mp4/caption.vtt',
+          default: true
+        },
+      ],
     }
 
     if ( shaka_supported === true ) {

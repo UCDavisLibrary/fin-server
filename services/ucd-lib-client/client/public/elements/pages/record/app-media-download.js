@@ -147,7 +147,7 @@ export default class AppMediaDownload extends PolymerElement {
       
       if (video.sources && video.sources.length > 0) {
         video.sources.forEach(element => {
-          element.type = element.type.replace(/.*\//, '');
+          element.type = ((element.type !== undefined) ? element.type.replace(/.*\//, '') : '');
           element.fileSize = bytes(element.fileSize);
           element.src  = config.fcrepoBasePath+element.src;
           element.label = element.type + (element.fileSize ? ' (' + element.fileSize + ') ' : '');

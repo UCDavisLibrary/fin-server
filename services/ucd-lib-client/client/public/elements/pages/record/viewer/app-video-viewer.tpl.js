@@ -8,7 +8,7 @@ export default function render() {
 return html`
     <style>
         :host {
-            /* display: block; */
+            display: block;
             position: relative;
             padding-bottom: 8px;
             background: black;
@@ -42,7 +42,13 @@ return html`
     </style>
     <div class="container">
         <div id="sprite-plyr" style="display: none;"></div>
-        <video id="player" playsinline controls crossorigin></video>
+        <video id="player" playsinline controls crossorigin>
+            <track kind="captions" 
+                label="English captions" 
+                src="/fcrepo/rest/collection/butterflies/monarchs/monarch1/videos/mb_v_mp4/caption.vtt" 
+                srclang="en" 
+                default />
+        </video>
     </div>
 `
 }
