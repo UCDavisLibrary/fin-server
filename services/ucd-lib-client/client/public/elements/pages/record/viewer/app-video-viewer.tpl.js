@@ -1,6 +1,7 @@
 // https://github.com/ucd-library/pgdm-ui/tree/master/app/elements/pages/connect
 
 import { html } from 'lit-element';
+import { repeat } from 'lit-html/directives/repeat';
 import plyrCss from "plyr/dist/plyr.css"
 import shakaCss from "shaka-player/dist/controls.css"
 
@@ -43,11 +44,8 @@ return html`
     <div class="container">
         <div id="sprite-plyr" style="display: none;"></div>
         <video id="player" playsinline controls crossorigin>
-            <track kind="captions" 
-                label="English captions" 
-                src="/fcrepo/rest/collection/butterflies/monarchs/monarch1/videos/mb_v_mp4/caption.vtt" 
-                srclang="en" 
-                default />
+            ${repeat(this.tracks, (t) => 
+                html`<track kind="${t.kind}" src="${t.src}" srclang="${t.srclang}" default="${t.default}" />`)}
         </video>
     </div>
 `

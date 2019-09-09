@@ -2,7 +2,7 @@
 // https://github.com/google/shaka-player/
 // https://github.com/google/shaka-player/tree/master/docs/tutorials
 
-import { LitElement, html } from "lit-element"
+import { LitElement } from "lit-element"
 import render from "./app-video-viewer.tpl.js"
 
 import "@ucd-lib/cork-app-utils"
@@ -21,6 +21,10 @@ export default class AppVideoViewer extends Mixin(LitElement)
       height: {
         type: Number,
         value: 50
+      },
+      tracks: {
+        type: Array,
+        value: () => []
       }
     }
   }
@@ -29,6 +33,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
     super();
     this.render = render.bind(this);
     this._injectModel('AppStateModel');
+    this.tracks = [];
   }
 
   firstUpdated() {
@@ -87,6 +92,25 @@ export default class AppVideoViewer extends Mixin(LitElement)
     this.$.player.style.width  = this.width + "px";
     this.$.player.style.maxWidth = "calc(" + this.height + " / " + this.width +  " * 100%)";
 
+    this.tracks = [
+      {
+        id: 1,
+        kind: 'captions',
+        label: 'English',
+        srclang: 'eng',
+        src: '/fcrepo/rest/collection/butterflies/monarchs/monarch1/videos/mb_v_mp4/caption.vtt',
+        default: true
+      },
+      { 
+        id: 2,
+        kind: 'captions',
+        label: 'French',
+        srclang: 'fr',
+        src: '/fcrepo/rest/collection/butterflies/monarchs/monarch1/videos/mb_v_mp4/caption.vtt',
+        default: false
+      }
+    ];
+
     const player = new this.plyr(this.$.player, {
       title: this.title,
       blankVideo: 'https://cdn.plyr.io/static/blank.mp4',
@@ -101,15 +125,8 @@ export default class AppVideoViewer extends Mixin(LitElement)
       title: this.title,
       poster: this.poster,
       source: this.sources,
-      tracks: [
-        {
-          kind: 'captions',
-          label: 'English',
-          srclang: 'en',
-          src: '/fcrepo/rest/collection/butterflies/monarchs/monarch1/videos/mb_v_mp4/caption.vtt',
-          default: true
-        },
-      ],
+      captions: { active: true },
+      tracks: this.tracks
     }
 
     if ( shaka_supported === true ) {
@@ -117,8 +134,9 @@ export default class AppVideoViewer extends Mixin(LitElement)
       const shaka = new this.shaka_player.Player(this.$.player);
       //console.log(shaka.getConfiguration());
       try { 
-        await shaka.load(manifestUri); 
-        console.log('The video has now been loaded');
+        await shaka.load(manifestUri).then(() => {
+          console.log("shaka loaded");
+        });
       } catch(error) {
         console.error('Error code: ', error.code, 'object', error);
       }
