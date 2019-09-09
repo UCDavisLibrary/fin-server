@@ -82,6 +82,8 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     this.$.player = this.shadowRoot.getElementById("player");
     let videoObject = utils.formatVideo(this.media.video);
+    console.log(videoObject);
+
     let videoUri  = videoObject['id'];
     this.title    = videoObject['name'];
     this.poster   = videoObject['poster'];
@@ -91,6 +93,12 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     this.$.player.style.width  = this.width + "px";
     this.$.player.style.maxWidth = "calc(" + this.height + " / " + this.width +  " * 100%)";
+
+    if (videoObject['transcripts']) {
+      this.transcripts = videoObject.transcripts.map(element => {
+        return config.fcrepoBasePath + element.src;
+      });
+    }
 
     this.tracks = [
       {

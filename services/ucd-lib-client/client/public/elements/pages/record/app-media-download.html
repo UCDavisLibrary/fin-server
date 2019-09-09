@@ -101,7 +101,7 @@
   </select>
 
   <select id="videoDownloadOptions" on-change="_onChangeVideoDownloadOptions" hidden$="[[!isVideo]]">
-      <template is="dom-repeat" items="[[sources]]">
+      <template is="dom-repeat" items="[[downloadOptions]]">
         <option data-id$="[[index]]" value$="[[index]]">
           [[item.label]]
         </option>

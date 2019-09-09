@@ -36,7 +36,7 @@ class Utils {
    * @return {Object}
   */
   formatVideo(object) {
-    let videoObj, mpdObj, vidId, sources;
+    let videoObj, mpdObj, vidId, sources, transcripts;
 
     object.map(element => {
       if ( element['hasPart'] ) {
@@ -55,9 +55,16 @@ class Utils {
 
     let rawObj;
     if ( object[0].hasPart ) {
-      rawObj = object[0].hasPart.filter(element => !element.error);
+      rawObj = object[0].hasPart.filter(element => !element.error && element.video);
     } else {
       rawObj = object.filter(element => element.video);
+    }
+
+    let id = mpdObj.parent['@id'];
+    if (mpdObj.transcript) {
+      transcripts = mpdObj.transcript.map(element => {
+        return { src: id + '/' + element.name };
+      });
     }
 
     sources = rawObj.map(element => {
@@ -69,13 +76,12 @@ class Utils {
         width: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[0]) : 0 ),
         height: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[1]) : 0 ),
         license: (element.license ? 'license' : 'none'),
-        transcript: (element.video ? false : true)
+        transcripts: transcripts
       };
+
       return obj;
     });
 
-    // Sort so the transcripts go last
-    sources.sort((a, b) => a.transcript - b.transcript);
 
     videoObj = {
       id: vidId,
@@ -85,7 +91,8 @@ class Utils {
       videoQuality: parseInt(mpdObj['videoQuality']),
       width: parseInt(mpdObj.videoFrameSize.split("x")[0]),
       height: parseInt(mpdObj.videoFrameSize.split("x")[1]),
-      sources: sources
+      sources: sources,
+      transcripts: transcripts
     }
 
     return videoObj;

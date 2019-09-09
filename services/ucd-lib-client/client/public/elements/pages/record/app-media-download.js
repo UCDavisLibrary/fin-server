@@ -152,17 +152,28 @@ export default class AppMediaDownload extends PolymerElement {
           element.src  = config.fcrepoBasePath+element.src;
           element.label = element.type + (element.fileSize ? ' (' + element.fileSize + ') ' : '');
         });
-        this.sources = video.sources;
-        this.href = this.sources[0].src;
+        this.downloadOptions = video.sources;
+        this.href = this.downloadOptions[0].src;
       };
 
-      if (this.sources && this.sources.length > 1) {
+      if (video.transcripts) {
+        video.transcripts.forEach(transcript => {
+          let obj = {
+            src: config.fcrepoBasePath + transcript.src,
+            type: transcript.src.split('.').pop(),
+            label: transcript.src.split('.').pop()
+          }
+          
+          this.downloadOptions.push(obj);
+        });
+      }
+
+      if (this.downloadOptions && this.downloadOptions.length > 1) {
         this.hasMultipleSources = true;
       } else {
         this.$.videoDownloadOptions.disabled  = true;
         this.$.videoDownloadOptions.className = "plainText";
       }
-  
     }
     
     this.imagelist = imagelist;
