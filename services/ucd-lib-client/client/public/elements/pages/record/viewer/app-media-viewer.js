@@ -26,6 +26,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
       super();
       this.render = render.bind(this);
       this._injectModel('AppStateModel');
+      this._injectModel('MediaModel');
       this.isVideo = false;
     }
 
@@ -38,9 +39,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.$.navBottom  = this.shadowRoot.getElementById('nav-bottom');
       this.$.zoomButton = this.$.navBottom.shadowRoot.getElementById('zoomIn1');
       
-      // TODO: Come back and wrap proper handler around viewer360 to set display
       this.$.viewer360.style.display = 'none';
-      
       this.$.video.style.display = 'none';
       this.$.navTop.style.display = 'none';
     }
@@ -52,6 +51,13 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
 
     async _onSelectedRecordMediaUpdate(record) {
+      if ( this.MediaModel.get360Media(record.media).length ) {
+        console.log("360 Media Present");
+        this.$.viewer360.style.display = 'block';
+        this.$.viewerImg.style.display = 'none';
+        return;
+      }
+
       if (record.media && record.media.video) {
         this.isVideo = true;
 

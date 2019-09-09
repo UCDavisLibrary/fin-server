@@ -63,9 +63,9 @@ class Utils {
     sources = rawObj.map(element => {
       let obj = {
         src: ((element.video && element.video['@id']) ? element.video['@id'] : element['@id']),
-        type: element.encodingFormat,
+        type: (element.encodingFormat ? element.encodingFormat : element.fileFormat),
         size: (element.videoQuality ? parseInt(element.videoQuality) : element.contentSize),
-        fileSize: parseInt(element.contentSize),
+        fileSize: parseInt(element.fileSize),
         width: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[0]) : 0 ),
         height: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[1]) : 0 ),
         license: (element.license ? 'license' : 'none'),

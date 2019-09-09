@@ -61,12 +61,17 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @param {Object} media 
    */
   _onSelectedRecordMediaUpdate(media) {
+    if ( !media.media.image ) {
+      return false;
+    };
+    
     this.media = media;
     this._renderImg();
   }
 
   _renderImg() {
     let url = this._getImgUrl(this.media.image.url, '', this.height);
+
     let r = 600 / this.media.image.height;
     let w = this.media.image.width * r;
     let eleWidth = this.offsetWidth-20;
