@@ -27,7 +27,6 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.render = render.bind(this);
       this._injectModel('AppStateModel');
       this._injectModel('MediaModel');
-      this.isVideo = false;
     }
 
     firstUpdated(e) {
@@ -41,6 +40,8 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.$.viewer360.style.display  = 'none';
       this.$.video.style.display      = 'none';
       this.$.viewerImg.style.display  = 'block';
+
+      this.isVideo = false;
     }
 
     updated(e) {
@@ -50,7 +51,11 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
 
     async _onSelectedRecordMediaUpdate(record) {
-      console.log("record: ", record);
+      if ( record.media ) {
+        this.media = record.media;
+      }
+
+      /* TODO: Justin - need to test this
       if ( this.MediaModel.get360Media(record.media).length ) {
         console.info("360 Media Present");
         
@@ -62,30 +67,20 @@ export default class AppMediaViewer extends Mixin(LitElement)
 
         return;
       }
+      */
 
-      if ( record.media && record.media.image || record.media.imageList ) {
-        console.info("Image/ImageList Present");
-        
-        this.$.viewerImg.style.display  = 'block';
-        this.$.navBottom.style.display  = 'block';
-    
-        this.$.viewer360.style.display  = 'none';
-        this.$.video.style.display      = 'none';
-
-        if ( record.media.imageList ) {
-          this.$.navBottom.style.paddingTop = "8px";
-        }
+      if ( this.media.video ) {
+        this.isVideo = true;
+      } else {
+        this.isVideo = false;
       }
 
-      if (record.media && record.media.video) {
-        console.log("Video Present");
-        this.isVideo = true;
-
+      if ( this.isVideo ) {
         this.$.video.style.display      = 'block';
-        this.$.navBottom.style.display  = 'block';
-
         this.$.viewerImg.style.display  = 'none';
-        this.$.zoomButton.style.display = 'none';
+      } else {
+        this.$.video.style.display      = 'none';
+        this.$.viewerImg.style.display  = 'block';
       }
     }
 
