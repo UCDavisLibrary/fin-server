@@ -73,6 +73,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   _onSelectedRecordMediaUpdate(media) {
     this.media = media;
+    console.log("this.medai: ", this.media);
     if( this.visible ) this.render();
   }
 
@@ -81,10 +82,15 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   async show() {
     this.style.display = 'block';
+    
     this.render();
+
     document.body.style.overflow = 'hidden';
+    
     this.visible = true;
+    
     window.scrollTo(0,0);
+    
     this.$.safeCover.style.display = 'block';
 
     // TODO: Justin Review
@@ -119,12 +125,14 @@ export default class AppImageViewer extends Mixin(PolymerElement)
 
     return new Promise((resolve, reject) => {
       var img = new Image();
+
       img.onload = () => {
         let res = [img.naturalHeight, img.naturalWidth];
         this.bounds = [[0,0], res];
         this.loading = false;
         resolve();
       };
+
       img.src = url;
     });
   }
@@ -136,16 +144,12 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   async render() {
     if( this.renderedMedia === this.media ) return;
-    this.renderedMedia = this.media;
 
-    let height = this.media.image.height;
-    let width = this.media.image.width;
+    this.renderedMedia = this.media;
 
     let url = this._getImgUrl(this.media['@id'], '', '');
 
     if( this.viewer ) this.viewer.remove();
-
-    this.$.safeCover.style.border = "10px solid red";
     
     await this._loadImage(url);
 

@@ -51,7 +51,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    console.log("app-image-viewer.js => _onSelectedRecordUpdate(): ", record);
+    //console.log("app-image-viewer.js => _onSelectedRecordUpdate(): ", record);
   }
 
   /**
