@@ -156,7 +156,7 @@ export default class AppMediaDownload extends PolymerElement {
         this.href = this.downloadOptions[0].src;
       };
 
-      if (video.transcripts) {
+      if (video.transcripts && video.transcripts.length > 0) {
         video.transcripts.forEach(transcript => {
           let obj = {
             src: config.fcrepoBasePath + transcript.src,
@@ -184,7 +184,7 @@ export default class AppMediaDownload extends PolymerElement {
 
   _onChangeVideoDownloadOptions(e) {
     let selectedValue = e.currentTarget.value;
-    this.href = this.sources[selectedValue].src;
+    this.href = this.downloadOptions[selectedValue].src;
   }
 
   /**

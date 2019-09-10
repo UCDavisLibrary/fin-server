@@ -82,7 +82,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     this.$.player = this.shadowRoot.getElementById("player");
     let videoObject = utils.formatVideo(this.media.video);
-    console.log(videoObject);
 
     let videoUri  = videoObject['id'];
     this.title    = videoObject['name'];
@@ -95,29 +94,18 @@ export default class AppVideoViewer extends Mixin(LitElement)
     this.$.player.style.maxWidth = "calc(" + this.height + " / " + this.width +  " * 100%)";
 
     if (videoObject['transcripts']) {
-      this.transcripts = videoObject.transcripts.map(element => {
+      this.transcripts = utils.asArray(videoObject, 'transcripts').map(element => {
         return config.fcrepoBasePath + element.src;
       });
     }
 
-    this.tracks = [
-      {
-        id: 1,
-        kind: 'captions',
-        label: 'English',
-        srclang: 'eng',
-        src: '/fcrepo/rest/collection/butterflies/monarchs/monarch1/videos/mb_v_mp4/caption.vtt',
-        default: true
-      },
-      { 
-        id: 2,
-        kind: 'captions',
-        label: 'French',
-        srclang: 'fr',
-        src: '/fcrepo/rest/collection/butterflies/monarchs/monarch1/videos/mb_v_mp4/caption.vtt',
-        default: false
-      }
-    ];
+    if (videoObject['captions']) {
+      this.tracks = utils.asArray(videoObject, 'captions').map(element => {
+        let temp = Object.assign({}, element);
+        temp.src = config.fcrepoBasePath + element.src;
+        return temp;
+      });
+    }
 
     const player = new this.plyr(this.$.player, {
       title: this.title,
@@ -133,7 +121,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
       title: this.title,
       poster: this.poster,
       source: this.sources,
-      captions: { active: true },
       tracks: this.tracks
     }
 

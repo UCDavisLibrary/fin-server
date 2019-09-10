@@ -28,6 +28,36 @@ class Utils {
   }
 
   /**
+   * @method findMediaFromId
+   * @description given a record object, use the id (@id) to return
+   * the entire object
+   * 
+   * @param {Array} record most likely a JSON-LD record
+   * @param {String} id @id to access in item/record
+   * 
+   * @return {Array}
+   */
+  findMediaFromId(record = [], id) {
+    if (!Array.isArray(record)) return false;
+    return record.filter(element => element['@id'] === id );
+  }
+
+  getLanguage(lng) {
+    let dict = [
+      {
+        key: 'en',
+        name: 'English',
+      },
+      {
+        key: 'fr',
+        name: 'French',
+      },
+    ];
+
+    return dict.find(element => element.key == lng);
+  }
+
+  /**
    * @method formatVideo
    * @description return a properly formatted video object from the raw media object
    * 
@@ -36,7 +66,8 @@ class Utils {
    * @return {Object}
   */
   formatVideo(object) {
-    let videoObj, mpdObj, vidId, sources, transcripts;
+    //console.log("formatVideo(object) ", object);
+    let videoObj, mpdObj, vidId, sources = [], transcripts = [], captions = [];
 
     object.map(element => {
       if ( element['hasPart'] ) {
@@ -46,6 +77,7 @@ class Utils {
           // Locate a regular video
           else if (element.video) return element;
         });
+
         vidId = mpdObj['@id'];
       } else {
         mpdObj = element;
@@ -62,8 +94,28 @@ class Utils {
 
     let id = mpdObj.parent['@id'];
     if (mpdObj.transcript) {
-      transcripts = mpdObj.transcript.map(element => {
+      transcripts = this.asArray(mpdObj, 'transcript').map(element => {
         return { src: id + '/' + element.name };
+      });
+    }
+
+    if (mpdObj.caption) {
+      this.asArray(mpdObj, 'caption').map(element => {
+        let _id = element['@id'];
+        this.findMediaFromId(object[0].hasPart, _id).forEach(caption => {
+          let lng = caption.language;
+          let setDefault = (lng === 'en' ? true : false);
+
+          let obj = {
+            kind: 'captions',
+            label: this.getLanguage(lng).name,
+            srclang: this.getLanguage(lng).key,
+            src: caption['@id'],
+            default: setDefault
+          };
+
+          captions.push(obj);
+        });
       });
     }
 
@@ -71,17 +123,15 @@ class Utils {
       let obj = {
         src: ((element.video && element.video['@id']) ? element.video['@id'] : element['@id']),
         type: (element.encodingFormat ? element.encodingFormat : element.fileFormat),
-        size: (element.videoQuality ? parseInt(element.videoQuality) : element.contentSize),
-        fileSize: parseInt(element.fileSize),
+        size: parseInt(element.videoQuality),
+        fileSize: parseInt(element.contentSize),
         width: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[0]) : 0 ),
         height: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[1]) : 0 ),
-        license: (element.license ? 'license' : 'none'),
-        transcripts: transcripts
+        license: (element.license ? 'license' : 'none')
       };
 
       return obj;
     });
-
 
     videoObj = {
       id: vidId,
@@ -92,7 +142,8 @@ class Utils {
       width: parseInt(mpdObj.videoFrameSize.split("x")[0]),
       height: parseInt(mpdObj.videoFrameSize.split("x")[1]),
       sources: sources,
-      transcripts: transcripts
+      transcripts: transcripts,
+      captions: captions
     }
 
     return videoObj;

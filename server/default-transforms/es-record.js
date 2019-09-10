@@ -31,13 +31,25 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
+    attr : 'about',
+    value : ['schema', 'about'],
+    type : 'id'
+  });
+
+  await utils.add({
     attr : 'alternativeHeadline',
     value : ['schema', 'alternativeHeadline']
   });
 
   await utils.add({
-    attr : 'creator',
-    value : ['schema', 'creator'],
+    attr : 'associatedMedia',
+    value : ['schema', 'associatedMedia'],
+    type : 'id'
+  });
+
+  await utils.add({
+    attr : 'caption',
+    value : ['schema', 'caption'],
     type : 'id'
   });
 
@@ -50,6 +62,17 @@ module.exports = async function(path, graph, utils) {
     attr : 'createdBy',
     value : ['fedora', 'createdBy']
   });
+
+  await utils.add({
+    attr : 'creator',
+    value : ['schema', 'creator'],
+    type : 'id'
+  });
+
+  await utils.add({
+    attr : 'datePublished',
+    value : ['schema', 'datePublished']
+  });
   
   await utils.add({
     attr : 'description',
@@ -57,20 +80,46 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
-    attr : 'publisher',
-    value : ['schema', 'publisher'],
+    attr : 'encodesCreativeWork',
+    value : ['schema', 'encodesCreativeWork'],
     type : 'id'
   });
 
   await utils.add({
-    attr : 'position',
-    value : ['schema', 'position']
+    attr : 'encodingFormat',
+    value : ['schema', 'encodingFormat']
   });
 
+  await utils.add({
+    attr : 'fileFormat',
+    value : ['ebucore', 'hasMimeType']
+  });
 
   await utils.add({
-    attr : 'parent',
-    value : ['fedora', 'hasParent'],
+    attr : 'filename',
+    value : ['ebucore', 'filename']
+  });
+
+  await utils.add({
+    attr : 'fileSize',
+    value : ['premis', 'hasSize'],
+    type : 'number'
+  });
+
+  await utils.add({
+    attr : 'hasPart',
+    value : ['schema', 'hasPart'],
+    type : 'id'
+  });
+
+  await utils.add({
+    attr : 'identifier',
+    value : ['schema', 'identifier']
+  });
+
+  await utils.add({
+    attr : 'image',
+    value : ['schema', 'image'],
     type : 'id'
   });
 
@@ -81,21 +130,13 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
-    attr : 'hasPart',
-    value : ['schema', 'hasPart'],
-    type : 'id'
+    attr : 'keywords',
+    value : ['schema', 'keywords']
   });
 
   await utils.add({
-    attr : 'associatedMedia',
-    value : ['schema', 'associatedMedia'],
-    type : 'id'
-  });
-
-  await utils.add({
-    attr : 'encodesCreativeWork',
-    value : ['schema', 'encodesCreativeWork'],
-    type : 'id'
+    attr : 'language',
+    value : ['schema', 'inLanguage']
   });
 
   await utils.add({
@@ -105,31 +146,42 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
-    attr : 'textIndexable',
-    value : ['ucdlib', 'textIndexable'],
-    type : 'boolean'
-  });
-
-  await utils.add({
     attr : 'lastModifiedBy',
     value : ['fedora', 'lastModifiedBy']
   });
 
   await utils.add({
-    attr : 'about',
-    value : ['schema', 'about'],
+    attr : 'license',
+    value : ['schema', 'license'],
     type : 'id'
   });
 
   await utils.add({
-    attr : 'keywords',
-    value : ['schema', 'keywords']
+    attr : 'material',
+    value : ['schema', 'material']
   });
 
   await utils.add({
-    attr : 'workExample',
-    value : ['schema', 'workExample'],
+    attr : 'parent',
+    value : ['fedora', 'hasParent'],
     type : 'id'
+  });
+
+  await utils.add({
+    attr : 'position',
+    value : ['schema', 'position']
+  });
+
+  await utils.add({
+    attr : 'publisher',
+    value : ['schema', 'publisher'],
+    type : 'id'
+  });
+
+  await utils.add({
+    attr : 'textIndexable',
+    value : ['ucdlib', 'textIndexable'],
+    type : 'boolean'
   });
 
   await utils.add({
@@ -139,13 +191,9 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
-    attr : 'datePublished',
-    value : ['schema', 'datePublished']
-  });
-
-  await utils.add({
-    attr : 'identifier',
-    value : ['schema', 'identifier']
+    attr: 'transcript',
+    value: ['schema', 'transcript'],
+    type: 'id'
   });
 
   await utils.add({
@@ -165,47 +213,9 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
-    attr: 'transcript',
-    value: ['schema', 'transcript'],
-    type: 'id'
-  });
-
-  await utils.add({
-    attr : 'image',
-    value : ['schema', 'image'],
+    attr : 'workExample',
+    value : ['schema', 'workExample'],
     type : 'id'
-  });
-
-  await utils.add({
-    attr : 'material',
-    value : ['schema', 'material']
-  });
-
-  await utils.add({
-    attr : 'license',
-    value : ['schema', 'license'],
-    type : 'id'
-  });
-
-  await utils.add({
-    attr : 'fileFormat',
-    value : ['ebucore', 'hasMimeType']
-  });
-
-  await utils.add({
-    attr : 'encodingFormat',
-    value : ['schema', 'encodingFormat']
-  });
-
-  await utils.add({
-    attr : 'fileSize',
-    value : ['premis', 'hasSize'],
-    type : 'number'
-  });
-
-  await utils.add({
-    attr : 'filename',
-    value : ['ebucore', 'filename']
   });
 
   utils.stripFinHost(item);

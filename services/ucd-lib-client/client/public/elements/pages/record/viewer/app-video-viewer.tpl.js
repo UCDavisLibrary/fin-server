@@ -45,7 +45,7 @@ return html`
         <div id="sprite-plyr" style="display: none;"></div>
         <video id="player" playsinline controls crossorigin>
             ${repeat(this.tracks, (t) => 
-                html`<track kind="${t.kind}" src="${t.src}" srclang="${t.srclang}" default="${t.default}" />`)}
+                html`<track kind="${t.kind}" label="${t.label}" src="${t.src}" srclang="${t.srclang}" default="${t.default}" />`)}
         </video>
     </div>
 `
