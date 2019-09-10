@@ -179,12 +179,14 @@ export default class AppRecord extends Mixin(PolymerElement)
   _setTarHref() {
     let urls = {};
 
+    /*
     this._getImageMediaList(this.record)
       .forEach(item => {
         urls[item.filename || item.name] = this._getImgUrl(item['@id']).replace(config.fcrepoBasePath, '');
       });
 
     this.tarName = this.record.name.replace(/[^a-zA-Z0-9]/g, '');
+    */
 
     //this.$.tarPaths.value = JSON.stringify(urls);
     //this.tarUrl = TarService.create(encodeURI(this.record.name.replace(/[^a-zA-Z0-9]/g, '')), urls);

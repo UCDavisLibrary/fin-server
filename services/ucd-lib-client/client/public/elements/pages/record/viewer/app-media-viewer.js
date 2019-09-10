@@ -35,38 +35,57 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.$.viewer360  = this.shadowRoot.getElementById('viewer360');
       this.$.video      = this.shadowRoot.getElementById('viewerVid');
       this.$.lightbox   = this.shadowRoot.getElementById('lightbox');
-      this.$.navTop     = this.shadowRoot.getElementById('nav-top');
       this.$.navBottom  = this.shadowRoot.getElementById('nav-bottom');
       this.$.zoomButton = this.$.navBottom.shadowRoot.getElementById('zoomIn1');
       
-      this.$.viewer360.style.display = 'none';
-      this.$.video.style.display = 'none';
-      this.$.navTop.style.display = 'none';
+      this.$.viewer360.style.display  = 'none';
+      this.$.video.style.display      = 'none';
+      this.$.viewerImg.style.display  = 'block';
     }
 
     updated(e) {
       this.$.zoomButton.addEventListener('click', (e) => {
-        this._onZoomIn(e)
+        this._onZoomIn(e);
       });
     }
 
     async _onSelectedRecordMediaUpdate(record) {
+      console.log("record: ", record);
       if ( this.MediaModel.get360Media(record.media).length ) {
-        console.log("360 Media Present");
-        this.$.viewer360.style.display = 'block';
-        this.$.viewerImg.style.display = 'none';
+        console.info("360 Media Present");
+        
+        this.$.viewer360.style.display  = 'block';
+
+        this.$.viewerImg.style.display  = 'none';
+        this.$.video.style.display      = 'none';
+        this.$.navBottom.style.display  = 'none';
+
         return;
       }
 
+      if ( record.media && record.media.image || record.media.imageList ) {
+        console.info("Image/ImageList Present");
+        
+        this.$.viewerImg.style.display  = 'block';
+        this.$.navBottom.style.display  = 'block';
+    
+        this.$.viewer360.style.display  = 'none';
+        this.$.video.style.display      = 'none';
+
+        if ( record.media.imageList ) {
+          this.$.navBottom.style.paddingTop = "8px";
+        }
+      }
+
       if (record.media && record.media.video) {
+        console.log("Video Present");
         this.isVideo = true;
 
-        this.$.video.style.display = 'block';
-        this.$.navTop.style.display = 'block';
-        this.$.viewerImg.style.display = 'none';
-        this.$.navBottom.style.display = 'none';
+        this.$.video.style.display      = 'block';
+        this.$.navBottom.style.display  = 'block';
 
-        return;
+        this.$.viewerImg.style.display  = 'none';
+        this.$.zoomButton.style.display = 'none';
       }
     }
 

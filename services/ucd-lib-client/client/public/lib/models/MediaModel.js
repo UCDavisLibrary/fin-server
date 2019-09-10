@@ -82,7 +82,10 @@ class MediaModel extends BaseModel {
    * @returns {Array}
    */
   getImageMediaList(rootRecord, type) {
+    if ( !rootRecord || !rootRecord._imageList ) return rootRecord;
+    
     if( rootRecord._imageList && rootRecord._imageList.length ) return rootRecord._imageList;
+    
     if( !rootRecord.associatedMedia ) return [];
 
     // see if we have an image list

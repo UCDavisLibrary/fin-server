@@ -124,7 +124,8 @@ export default class AppMediaDownload extends PolymerElement {
         selected : (this.selectedSize === index)
       }
     });
-    this.hasMultipleImages = (this.imagelist.length > 1);
+
+    this.hasMultipleImages = false;
     this.multipleImagesSelected = false;
     this.isVideo = false;
     this.size = bytes(options.size);
@@ -136,7 +137,7 @@ export default class AppMediaDownload extends PolymerElement {
     this._renderFormats();    
   }
 
-  setRootRecord(record, imagelist) {
+  setRootRecord(record) {
     if( this.rootRecord === record ) return;
 
     this.rootRecord = record;
@@ -175,9 +176,12 @@ export default class AppMediaDownload extends PolymerElement {
         this.$.videoDownloadOptions.className = "plainText";
       }
     }
-    
-    this.imagelist = imagelist;
-    this.hasMultipleImages = (this.imagelist.length > 0);
+
+    if ( this.rootRecord.media.imageList ) {
+      this.hasMultipleImages = (this.rootRecord.media.imageList[0].hasPart.length > 0);
+      this.imagelist = this.rootRecord.media.imageList[0].hasPart;
+    }
+  
     this.multipleImagesSelected = false;
     this.selectedSize = SIZES.length - 1;
   }
@@ -330,19 +334,22 @@ export default class AppMediaDownload extends PolymerElement {
     }
 
     let urls = {};
-    this.imagelist.forEach(item => {
-      let name = item.filename || item.name;
-      if( origin ) {
-        urls[name] = item['@id'];
-      } else {
-        let s = SIZES[this.selectedSize];
-        name = name.replace(/\.[a-z]*$/, `_${s.label}_.${this.selectedFormat}`);
-        let w = Math.floor(item.image.width * s.ratio);
-        let h = Math.floor(item.image.height * s.ratio);
-        urls[name] = MediaModel.getImgUrl(item['@id'], w, h, {format:this.selectedFormat}).replace(config.fcrepoBasePath, '');
-      }
-    });
 
+    if ( this.hasMultipleImages ) {
+      this.imagelist.forEach(item => {
+        let name = item.filename || item.name;
+        if( origin ) {
+          urls[name] = item['@id'];
+        } else {
+          let s = SIZES[this.selectedSize];
+          name = name.replace(/\.[a-z]*$/, `_${s.label}_.${this.selectedFormat}`);
+          let w = Math.floor(item.image.width * s.ratio);
+          let h = Math.floor(item.image.height * s.ratio);
+          urls[name] = MediaModel.getImgUrl(item['@id'], w, h, {format:this.selectedFormat}).replace(config.fcrepoBasePath, '');
+        }
+      });
+    }
+      
     this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '');
     this.$.tarPaths.value = JSON.stringify(urls);
   }

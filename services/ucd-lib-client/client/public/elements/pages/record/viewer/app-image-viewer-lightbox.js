@@ -62,7 +62,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     this.shadowRoot.removeChild(this.$.safeCover);
     document.body.appendChild(this.$.safeCover);
 
-    //this.mainApp = document.querySelector('fin-app');
+    this.mainApp = document.querySelector('fin-app');
   }
 
   /**
@@ -114,7 +114,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * 
    * @returns {Promise} resolves when image is loaded and bounds array has been set
    */
-  _loadImage(url) {
+   _loadImage(url) {
     this.loading = true;
 
     return new Promise((resolve, reject) => {
@@ -140,25 +140,13 @@ export default class AppImageViewer extends Mixin(PolymerElement)
 
     let height = this.media.image.height;
     let width = this.media.image.width;
-    // if( height > width ) {
-    //   if( height > this.maxImageSize ) {
-    //     let scale = this.maxImageSize / height;
-    //     height = Math.floor(height * scale);
-    //     width = '';
-    //   }
-    // } else {
-    //   if( width > this.maxImageSize ) {
-    //     let scale = this.maxImageSize / width;
-    //     width = Math.floor(width * scale);
-    //     height = '';
-    //   }
-    // }
 
     let url = this._getImgUrl(this.media['@id'], '', '');
-    // let url = config.fcrepoBasePath+this.media['@id'];
 
     if( this.viewer ) this.viewer.remove();
 
+    this.$.safeCover.style.border = "10px solid red";
+    
     await this._loadImage(url);
 
     this.viewer = L.map(this.$.viewer, {
