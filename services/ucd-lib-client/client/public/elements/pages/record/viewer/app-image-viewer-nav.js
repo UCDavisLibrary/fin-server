@@ -62,10 +62,6 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
       singleImage : {
         type : Boolean,
         value : true
-      },
-      isVideo: {
-        type: Boolean,
-        value: false
       }
     }
   }
@@ -222,7 +218,9 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     this.zoomButton = this.shadowRoot.getElementById('zoomIn1');
     
     if (record.media.video) {
-      //this.shadowRoot.getElementById('zoomIn3').style.display = "none";
+      this.shadowRoot.getElementById('zoomIn1').style.display = 'none';
+    } else {
+      this.shadowRoot.getElementById('zoomIn1').style.display = 'block';
     }
     
     if (!record.media.imageList) {
@@ -253,6 +251,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
       return thumbnail;
     });
 
+    // TODO: Need help with this
     this.singleImage = (this.thumbnails.length > 1) ? false : true;
     if( this.singleImage ) this.classList.add('single');
     else this.classList.remove('single');
