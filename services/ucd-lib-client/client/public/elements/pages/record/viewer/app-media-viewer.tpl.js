@@ -5,11 +5,9 @@ export default function render() {
     <style>
       :host {
         display: block;
+        /* position: relative; */
+        box-sizing: border-box;
         background: black;
-      }
-
-      #nav-bottom {
-        position: relative;
       }
     </style>
 

@@ -10,15 +10,15 @@ return html`
     <style>
         :host {
             display: block;
-            position: relative;
+            /* position: relative; */
             padding-bottom: 8px;
             background: black;
             box-sizing: border-box;
         }
 
-        .container {
+        /* .container {
             position: relative;
-        }
+        } */
 
         .plyr__controls {
             margin: 0 auto;

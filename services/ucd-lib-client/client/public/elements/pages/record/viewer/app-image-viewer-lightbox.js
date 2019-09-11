@@ -54,6 +54,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
 
   ready() {
     super.ready();
+
+    console.log("this: ", this);
     
     // TODO: Have Justin review these.  No longer necessary using Lit?
     //this.parentNode.removeChild(this);
@@ -73,7 +75,6 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   _onSelectedRecordMediaUpdate(media) {
     this.media = media;
-    console.log("this.medai: ", this.media);
     if( this.visible ) this.render();
   }
 
