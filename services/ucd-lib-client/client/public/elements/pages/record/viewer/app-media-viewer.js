@@ -34,7 +34,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.$.viewer360  = this.shadowRoot.getElementById('viewer360');
       this.$.viewerVid  = this.shadowRoot.getElementById('viewerVid');
       this.$.lightbox   = this.shadowRoot.getElementById('lightbox');
-      this.$.navBottom  = this.shadowRoot.getElementById('nav-bottom');
+      this.$.navBottom  = this.shadowRoot.querySelector('app-image-viewer-nav');
       this.$.zoomButton = this.$.navBottom.shadowRoot.getElementById('zoomIn1');
 
       this.isVideo = false;
@@ -51,7 +51,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
 
     async _onSelectedRecordMediaUpdate(record) {
-      /* TODO: Need help w/this
+      // TODO: Need help w/this
       if ( this.MediaModel.get360Media(record.media).length ) {
         console.info("360 Media Present");
         
@@ -63,7 +63,6 @@ export default class AppMediaViewer extends Mixin(LitElement)
 
         return;
       }
-      */
 
       if (record.media && record.media.video) {
         this.isVideo = true;

@@ -74,6 +74,12 @@ export default class AppImageViewer extends Mixin(PolymerElement)
   _onSelectedRecordMediaUpdate(media) {
     this.media = media;
     if( this.visible ) this.render();
+
+    if ( this.media.associatedMedia || this.media.position ) {
+      this.shadowRoot.querySelector('app-image-viewer-nav').classList.remove('single');
+    } else {
+      this.shadowRoot.querySelector('app-image-viewer-nav').classList.add('single');
+    }
   }
 
   /**
@@ -145,11 +151,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     if( this.renderedMedia === this.media ) return;
 
     this.renderedMedia = this.media;
-
     let id = this.renderedMedia['@id'];
-
     if ( this.renderedMedia.associatedMedia && this.renderedMedia.media.imageList ) {
-      console.log("this.renderedMedia");
       id = this.renderedMedia.image.url;
     }
     

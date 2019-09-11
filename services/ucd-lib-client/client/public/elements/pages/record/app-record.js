@@ -179,7 +179,7 @@ export default class AppRecord extends Mixin(PolymerElement)
   _setTarHref() {
     let urls = {};
 
-    /*
+    /* TODO: Need help with this
     this._getImageMediaList(this.record)
       .forEach(item => {
         urls[item.filename || item.name] = this._getImgUrl(item['@id']).replace(config.fcrepoBasePath, '');
