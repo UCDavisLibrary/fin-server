@@ -55,11 +55,11 @@ export default class AppMediaViewer extends Mixin(LitElement)
       if ( this.MediaModel.get360Media(record.media).length ) {
         console.info("360 Media Present");
         
-        this.$.viewer360.style.display  = 'block';
+        this.$.viewer360.style.display = 'block';
 
-        this.$.viewerImg.style.display  = 'none';
-        this.$.video.style.display      = 'none';
-        this.$.navBottom.style.display  = 'none';
+        this.$.viewerImg.style.display = 'none';
+        this.$.viewerVid.style.display = 'none';
+        this.$.navBottom.style.display = 'none';
 
         return;
       }

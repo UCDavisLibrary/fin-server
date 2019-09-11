@@ -54,8 +54,6 @@ export default class AppImageViewer extends Mixin(PolymerElement)
 
   ready() {
     super.ready();
-
-    console.log("this: ", this);
     
     // TODO: Have Justin review these.  No longer necessary using Lit?
     //this.parentNode.removeChild(this);
@@ -148,10 +146,16 @@ export default class AppImageViewer extends Mixin(PolymerElement)
 
     this.renderedMedia = this.media;
 
-    let url = this._getImgUrl(this.media['@id'], '', '');
+    let id = this.renderedMedia['@id'];
+
+    if ( this.renderedMedia.associatedMedia && this.renderedMedia.media.imageList ) {
+      console.log("this.renderedMedia");
+      id = this.renderedMedia.image.url;
+    }
+    
+    let url = this._getImgUrl(id, '', '');
 
     if( this.viewer ) this.viewer.remove();
-    
     await this._loadImage(url);
 
     this.viewer = L.map(this.$.viewer, {
