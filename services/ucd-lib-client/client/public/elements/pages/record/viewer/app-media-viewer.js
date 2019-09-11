@@ -37,6 +37,8 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.$.navBottom  = this.shadowRoot.getElementById('nav-bottom');
       this.$.zoomButton = this.$.navBottom.shadowRoot.getElementById('zoomIn1');
 
+      this.isVideo = false;
+
       this.$.viewerImg.style.display = 'block';
       this.$.viewer360.style.display = 'none';
       this.$.viewerVid.style.display = 'none';
@@ -49,7 +51,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
 
     async _onSelectedRecordMediaUpdate(record) {
-      /*
+      /* TODO: Need help w/this
       if ( this.MediaModel.get360Media(record.media).length ) {
         console.info("360 Media Present");
         
@@ -63,7 +65,6 @@ export default class AppMediaViewer extends Mixin(LitElement)
       }
       */
 
-      /*
       if (record.media && record.media.video) {
         this.isVideo = true;
       } else {
@@ -71,13 +72,12 @@ export default class AppMediaViewer extends Mixin(LitElement)
       }
 
       if ( this.isVideo ) {
-        this.$.video.style.display      = 'block';
-        this.$.viewerImg.style.display  = 'none';
+        this.$.viewerVid.style.display = 'block';
+        this.$.viewerImg.style.display = 'none';
       } else {
-        this.$.video.style.display      = 'none';
-        this.$.viewerImg.style.display  = 'block';
+        this.$.viewerVid.style.display = 'none';
+        this.$.viewerImg.style.display = 'block';
       }
-      */
     }
 
     /**
