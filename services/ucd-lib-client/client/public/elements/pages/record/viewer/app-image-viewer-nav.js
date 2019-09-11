@@ -220,7 +220,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     if (record.media.video) {
       this.shadowRoot.getElementById('zoomIn1').style.display = 'none';
     } else {
-      this.shadowRoot.getElementById('zoomIn1').style.display = 'block';
+      this.shadowRoot.getElementById('zoomIn1').style.display = 'inline-block';
     }
     
     if (!record.media.imageList) {
