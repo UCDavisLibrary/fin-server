@@ -22,6 +22,7 @@
   }
 
   .layout {
+    padding-top: 10px;
     display: flex;
     align-items: center;
   }
@@ -70,56 +71,55 @@
   }
 </style>
 
-<div id="wrapper">
-  <div class="layout">
-    <!-- TODO: Remove
-    <div id="navLeft" hidden$="[[singleImage]]">
-      <paper-icon-button noink tabindex="0" icon="chevron-left" disabled$="[[!showNavLeft]]" on-click="_pageLeft"></paper-icon-button>
-    </div>
-    -->
-    
-    <div id="thumbnails" hidden$="[[singleImage]]">
-      <div id="thumbnailContainer">
-        <template is="dom-repeat" items="[[thumbnails]]">
-          <button 
-            class="thumbnail" 
-            disabled$="[[item.disabled]]"
-            selected$="[[item.selected]]" 
-            style$="background-image:url([[item.src]])"
-            media-id$="[[item.id]]"
-            alt$="Page #[[item.position]]"
-            on-click="_onThumbnailClicked">
-          </button>
-        </template>
-      </div>
-    </div>
 
-    <!-- TODO: Remove
-    <div id="navRight" hidden$="[[singleImage]]">
-      <paper-icon-button noink tabindex="0"  icon="chevron-right" disabled$="[[!showNavRight]]" on-click="_pageRight"></paper-icon-button>
-    </div>
-    -->
-
-    <div style="flex:1"></div>
-    
-    <div hidden$="[[breakControls]]" style="white-space: nowrap">
-      <paper-icon-button id="zoomOut1" noink tabindex="0" icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
-      <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
-      <app-share-btn></app-share-btn>
-
-      <span hidden$="[[isVideo]]">
-        <paper-icon-button id="zoomIn1" noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
-        <paper-icon-button noink icon="fin:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
-      </span>
+<div class="layout">
+  <!-- TODO: Remove
+  <div id="navLeft" hidden$="[[singleImage]]">
+    <paper-icon-button noink tabindex="0" icon="chevron-left" disabled$="[[!showNavLeft]]" on-click="_pageLeft"></paper-icon-button>
+  </div>
+  -->
+  
+  <div id="thumbnails" hidden$="[[singleImage]]">
+    <div id="thumbnailContainer">
+      <template is="dom-repeat" items="[[thumbnails]]">
+        <button 
+          class="thumbnail" 
+          disabled$="[[item.disabled]]"
+          selected$="[[item.selected]]" 
+          style$="background-image:url([[item.src]])"
+          media-id$="[[item.id]]"
+          alt$="Page #[[item.position]]"
+          on-click="_onThumbnailClicked">
+        </button>
+      </template>
     </div>
   </div>
 
-  <div hidden$="[[!breakControls]]" style="text-align: right">
-    <paper-icon-button id="zoomOut2" noink tabindex="0" icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
-    <paper-icon-button id="zoomIn2" noink icon="zoom-in" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+  <!-- TODO: Remove
+  <div id="navRight" hidden$="[[singleImage]]">
+    <paper-icon-button noink tabindex="0"  icon="chevron-right" disabled$="[[!showNavRight]]" on-click="_pageRight"></paper-icon-button>
+  </div>
+  -->
+
+  <div style="flex:1"></div>
+  
+  <div hidden$="[[breakControls]]" style="white-space: nowrap">
+    <paper-icon-button id="zoomOut1" noink tabindex="0" icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
+    <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
     <app-share-btn></app-share-btn>
-    
-    <paper-icon-button id="zoomIn3" noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
-    <paper-icon-button id="zoomOut3" noink icon="fin:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
+
+    <span hidden$="[[isVideo]]">
+      <paper-icon-button id="zoomIn1" noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+      <paper-icon-button noink icon="fin:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
+    </span>
   </div>
+</div>
+
+<div hidden$="[[!breakControls]]" style="text-align: right">
+  <paper-icon-button id="zoomOut2" noink tabindex="0" icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
+  <paper-icon-button id="zoomIn2" noink icon="zoom-in" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+  <app-share-btn></app-share-btn>
+  
+  <paper-icon-button id="zoomIn3" noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+  <paper-icon-button id="zoomOut3" noink icon="fin:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
 </div>

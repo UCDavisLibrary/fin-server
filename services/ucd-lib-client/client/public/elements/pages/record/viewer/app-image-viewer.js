@@ -61,7 +61,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @param {Object} media 
    */
   _onSelectedRecordMediaUpdate(media) {
-    if ( !media.media.image ) {
+    console.log("_onSelectedRecordMediaUpdate(media): ", media);
+    if ( !media.image ) {
       return false;
     };
     
