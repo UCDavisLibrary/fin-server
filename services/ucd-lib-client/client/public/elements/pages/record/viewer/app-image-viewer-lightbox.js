@@ -54,6 +54,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
 
   ready() {
     super.ready();
+
+    console.log("this: ", this);
     
     // TODO: Have Justin review these.  No longer necessary using Lit?
     //this.parentNode.removeChild(this);
@@ -62,7 +64,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     this.shadowRoot.removeChild(this.$.safeCover);
     document.body.appendChild(this.$.safeCover);
 
-    //this.mainApp = document.querySelector('fin-app');
+    this.mainApp = document.querySelector('fin-app');
   }
 
   /**
@@ -81,10 +83,15 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   async show() {
     this.style.display = 'block';
+    
     this.render();
+
     document.body.style.overflow = 'hidden';
+    
     this.visible = true;
+    
     window.scrollTo(0,0);
+    
     this.$.safeCover.style.display = 'block';
 
     // TODO: Justin Review
@@ -114,17 +121,19 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * 
    * @returns {Promise} resolves when image is loaded and bounds array has been set
    */
-  _loadImage(url) {
+   _loadImage(url) {
     this.loading = true;
 
     return new Promise((resolve, reject) => {
       var img = new Image();
+
       img.onload = () => {
         let res = [img.naturalHeight, img.naturalWidth];
         this.bounds = [[0,0], res];
         this.loading = false;
         resolve();
       };
+
       img.src = url;
     });
   }
@@ -136,29 +145,13 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   async render() {
     if( this.renderedMedia === this.media ) return;
+
     this.renderedMedia = this.media;
 
-    let height = this.media.image.height;
-    let width = this.media.image.width;
-    // if( height > width ) {
-    //   if( height > this.maxImageSize ) {
-    //     let scale = this.maxImageSize / height;
-    //     height = Math.floor(height * scale);
-    //     width = '';
-    //   }
-    // } else {
-    //   if( width > this.maxImageSize ) {
-    //     let scale = this.maxImageSize / width;
-    //     width = Math.floor(width * scale);
-    //     height = '';
-    //   }
-    // }
-
     let url = this._getImgUrl(this.media['@id'], '', '');
-    // let url = config.fcrepoBasePath+this.media['@id'];
 
     if( this.viewer ) this.viewer.remove();
-
+    
     await this._loadImage(url);
 
     this.viewer = L.map(this.$.viewer, {

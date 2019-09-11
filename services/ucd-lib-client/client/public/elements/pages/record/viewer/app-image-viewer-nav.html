@@ -1,7 +1,6 @@
 <style include="shared-styles">
   :host {
     display: block;
-    /*background-color: rgba(0, 38, 85, 0.9);*/
     background-color: var(--default-primary-color);
   }
 
@@ -27,9 +26,13 @@
     align-items: center;
   }
 
+  #thumbnailContainer {
+    padding-top: 7px;
+  }
+
   #thumbnails {
     overflow: hidden;
-    /* (50px width + 10px margin + 4px border) * 8 thumbnails */
+    /*(50px width + 10px margin + 4px border) * 8 thumbnails*/
     max-width: 512px;
   }
 
@@ -94,6 +97,7 @@
       </template>
     </div>
   </div>
+  -->
 
   <!-- TODO: Remove
   <div id="navRight" hidden$="[[singleImage]]">

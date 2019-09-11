@@ -218,10 +218,13 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
+    //console.log("_onSelectedRecordUpdate(record) ", record);
+    this.zoomButton = this.shadowRoot.getElementById('zoomIn1');
+    
     if (record.media.video) {
       //this.shadowRoot.getElementById('zoomIn3').style.display = "none";
     }
-
+    
     if (!record.media.imageList) {
       this.singleImage = true;
       return;

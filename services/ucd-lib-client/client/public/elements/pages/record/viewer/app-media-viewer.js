@@ -27,7 +27,6 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.render = render.bind(this);
       this._injectModel('AppStateModel');
       this._injectModel('MediaModel');
-      this.isVideo = false;
     }
 
     firstUpdated(e) {
@@ -45,16 +44,21 @@ export default class AppMediaViewer extends Mixin(LitElement)
 
     updated(e) {
       this.$.zoomButton.addEventListener('click', (e) => {
-        this._onZoomIn(e)
+        this._onZoomIn(e);
       });
     }
 
     async _onSelectedRecordMediaUpdate(record) {
       /*
       if ( this.MediaModel.get360Media(record.media).length ) {
-        console.log("360 Media Present");
-        this.$.viewer360.style.display = 'block';
-        this.$.viewerImg.style.display = 'none';
+        console.info("360 Media Present");
+        
+        this.$.viewer360.style.display  = 'block';
+
+        this.$.viewerImg.style.display  = 'none';
+        this.$.video.style.display      = 'none';
+        this.$.navBottom.style.display  = 'none';
+
         return;
       }
       */
@@ -62,13 +66,16 @@ export default class AppMediaViewer extends Mixin(LitElement)
       /*
       if (record.media && record.media.video) {
         this.isVideo = true;
+      } else {
+        this.isVideo = false;
+      }
 
-        this.$.video.style.display = 'block';
-        this.$.navTop.style.display = 'block';
-        this.$.viewerImg.style.display = 'none';
-        this.$.navBottom.style.display = 'none';
-
-        return;
+      if ( this.isVideo ) {
+        this.$.video.style.display      = 'block';
+        this.$.viewerImg.style.display  = 'none';
+      } else {
+        this.$.video.style.display      = 'none';
+        this.$.viewerImg.style.display  = 'block';
       }
       */
     }

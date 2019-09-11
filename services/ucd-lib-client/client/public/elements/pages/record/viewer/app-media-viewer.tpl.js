@@ -4,6 +4,9 @@ export default function render() {
   return html`
     <style>
       :host {
+        display: block;
+        /* position: relative; */
+        box-sizing: border-box;
         background: black;
       }
     </style>
