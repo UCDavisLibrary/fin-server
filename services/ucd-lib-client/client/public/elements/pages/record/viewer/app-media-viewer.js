@@ -36,7 +36,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.mediaType  = '';
     }
 
-    firstUpdated(e) {
+    async firstUpdated(changedProperties) {
       this.$.wrapper    = this.shadowRoot.getElementById('wrapper');
       this.$.lightbox   = this.shadowRoot.getElementById('lightbox');
       this.$.mediaNav   = this.shadowRoot.querySelector('app-media-viewer-nav');
