@@ -1,11 +1,11 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
-import template from "./app-image-viewer-nav.html"
+import template from "./app-media-viewer-nav.html"
 
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
 import "../../../utils/app-share-btn"
 
-export default class AppImageViewerNav extends Mixin(PolymerElement)
+export default class AppMediaViewerNav extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
 
   static get template() {
@@ -218,9 +218,11 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     this.zoomButton = this.shadowRoot.getElementById('zoomIn1');
     
     if (record.media.video) {
-      this.shadowRoot.getElementById('zoomIn1').style.display = 'none';
+      this.zoomButton.style.display = 'none';
+      this.classList.add('video');
     } else {
-      this.shadowRoot.getElementById('zoomIn1').style.display = 'inline-block';
+      this.zoomButton.style.display = 'inline-block';
+      this.classList.remove('video');
     }
     
     if (!record.media.imageList) {
@@ -330,4 +332,4 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
   }
 }
 
-customElements.define('app-image-viewer-nav', AppImageViewerNav);
+customElements.define('app-media-viewer-nav', AppMediaViewerNav);

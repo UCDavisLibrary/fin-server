@@ -7,7 +7,7 @@ import "./app-image-viewer"
 import "./app-360-image-viewer"
 import "./app-video-viewer"
 
-import "./app-image-viewer-nav"
+import "./app-media-viewer-nav"
 import "./app-image-viewer-lightbox"
 
 import "@ucd-lib/cork-app-utils"
@@ -38,8 +38,8 @@ export default class AppMediaViewer extends Mixin(LitElement)
 
     firstUpdated(e) {
       this.$.lightbox   = this.shadowRoot.getElementById('lightbox');
-      this.$.navBottom  = this.shadowRoot.querySelector('app-image-viewer-nav');
-      this.$.zoomButton = this.$.navBottom.shadowRoot.getElementById('zoomIn1');
+      this.$.mediaNav   = this.shadowRoot.querySelector('app-media-viewer-nav');
+      this.$.zoomButton = this.$.mediaNav.shadowRoot.getElementById('zoomIn1');
     }
 
     async updated(e) {
@@ -51,22 +51,24 @@ export default class AppMediaViewer extends Mixin(LitElement)
     async _onSelectedRecordMediaUpdate(record) {
       if ( this.MediaModel.get360Media(record.media).length ) {
         this.mediaType = '360';
-        this.$.navBottom.style.display = 'none';
+        this.$.mediaNav.style.display = 'none';
         return;
       }
 
       if (record.media && record.media.video) {
         this.mediaType = "video";
         this.isVideo = true;
+        this.$.mediaNav.classList.add('video');
       } else {
         this.mediaType = "image";
         this.isVideo = false;
+        this.$.mediaNav.classList.remove('video');
       }
     }
 
     /**
      * @method _onZoomIn
-     * @description bound to zoom event in app-image-viewer-nav. 
+     * @description bound to zoom event in app-media-viewer-nav. 
      * 
      * @param {Object} e custom HTML event
      */

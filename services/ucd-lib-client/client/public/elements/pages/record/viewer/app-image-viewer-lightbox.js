@@ -76,9 +76,9 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     if( this.visible ) this.render();
 
     if ( this.media.associatedMedia || this.media.position ) {
-      this.shadowRoot.querySelector('app-image-viewer-nav').classList.remove('single');
+      this.shadowRoot.querySelector('app-media-viewer-nav').classList.remove('single');
     } else {
-      this.shadowRoot.querySelector('app-image-viewer-nav').classList.add('single');
+      this.shadowRoot.querySelector('app-media-viewer-nav').classList.add('single');
     }
   }
 

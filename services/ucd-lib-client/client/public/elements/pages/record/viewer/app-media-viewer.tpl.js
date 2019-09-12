@@ -18,6 +18,6 @@ export default function render() {
       <app-video-viewer id="video"></app-video-viewer>
     </iron-pages>
 
-    <app-image-viewer-nav on-zoom-in="_onZoomIn"></app-image-viewer-nav>
+    <app-media-viewer-nav on-zoom-in="_onZoomIn"></app-media-viewer-nav>
   `
 }
