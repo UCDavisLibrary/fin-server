@@ -18,26 +18,19 @@ export default class AppVideoViewer extends Mixin(LitElement)
   
   static get properties() {
     return {
-      height: {
-        type: Number
+      player: {
+        type: Object
       },
       tracks: {
         type: Array
-      },
-      player: {
-        type: Object
       }
     }
   }
 
   constructor() {
     super();
-
     this.render = render.bind(this);
-
     this._injectModel('AppStateModel');
-
-    this.height = 50;
     this.tracks = [];
     this.player = {};
   }
@@ -68,14 +61,12 @@ export default class AppVideoViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
-    if (!media.media) return;
+    if (!media.media || !media.media.video) return;
 
     this.media = media.media;
 
-    if (!this.media.video) return;
-
     try { 
-      var libs = await videoLibs.load();
+      const libs = await videoLibs.load();
       this.plyr = libs.plyr;
       this.shaka_player = libs.shaka_player;
 
@@ -92,19 +83,19 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     let videoObject = utils.formatVideo(this.media.video);
 
-    let videoUri  = videoObject['id'];
-    this.title    = videoObject['name'];
-    this.poster   = videoObject['poster'];
-    this.sources  = videoObject['sources'];
-    this.width    = videoObject['width'];
-    this.height   = videoObject['height'];
+    let videoUri = videoObject['id'];
+    let title    = videoObject['name'];
+    let poster   = videoObject['poster'];
+    let sources  = videoObject['sources'];
+    let width    = videoObject['width'];
+    let height   = videoObject['height'];
 
     this.$.video = this.shadowRoot.getElementById('video');
-    this.$.video.style.width  = this.width + "px";
-    this.$.video.style.maxWidth = "calc(" + this.height + " / " + this.width +  " * 100%)";
+    this.$.video.style.width  = width + "px";
+    this.$.video.style.maxWidth = "calc(" + height + " / " + width +  " * 100%)";
 
     if (videoObject['transcripts']) {
-      this.transcripts = utils.asArray(videoObject, 'transcripts').map(element => {
+      let transcripts = utils.asArray(videoObject, 'transcripts').map(element => {
         return config.fcrepoBasePath + element.src;
       });
     }
@@ -118,7 +109,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
     }
 
     this.player = new this.plyr(this.$.video, {
-      title: this.title,
+      title: title,
       blankVideo: 'https://cdn.plyr.io/static/blank.mp4',
       quality: videoObject['videoQuality'],
       debug: false
@@ -128,9 +119,9 @@ export default class AppVideoViewer extends Mixin(LitElement)
     // https://quuz.org/webvtt/
     this.player.source = {
       type: 'video',
-      title: this.title,
-      poster: this.poster,
-      source: this.sources,
+      title: title,
+      poster: poster,
+      source: sources,
       tracks: this.tracks
     }
 
@@ -156,7 +147,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
   _stop() {
     const video = this.shadowRoot.querySelector('#video');
     video.pause();
-    
+
     if (Object.entries(this.player).length != 0) {
       this.player.stop();
     };
