@@ -215,13 +215,16 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    */
   _onSelectedRecordUpdate(record) {
     //console.log("_onSelectedRecordUpdate(record) ", record);
-    this.zoomButton = this.shadowRoot.getElementById('zoomIn1');
-    
+    this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
+    this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
+
     if (record.media.video) {
-      this.zoomButton.style.display = 'none';
+      this.zoomButton1.style.display = 'none';
+      this.zoomButton3.style.display = 'none';
       this.classList.add('video');
     } else {
-      this.zoomButton.style.display = 'inline-block';
+      this.zoomButton1.style.display = 'inline-block';
+      this.zoomButton3.style.display = 'inline-block';
       this.classList.remove('video');
     }
     

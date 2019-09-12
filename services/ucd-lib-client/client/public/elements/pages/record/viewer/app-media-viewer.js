@@ -37,6 +37,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
 
     firstUpdated(e) {
+      this.$.wrapper    = this.shadowRoot.getElementById('wrapper');
       this.$.lightbox   = this.shadowRoot.getElementById('lightbox');
       this.$.mediaNav   = this.shadowRoot.querySelector('app-media-viewer-nav');
       this.$.zoomButton = this.$.mediaNav.shadowRoot.getElementById('zoomIn1');
@@ -59,10 +60,12 @@ export default class AppMediaViewer extends Mixin(LitElement)
         this.mediaType = "video";
         this.isVideo = true;
         this.$.mediaNav.classList.add('video');
+        this.$.wrapper.classList.add('positionRelative');
       } else {
         this.mediaType = "image";
         this.isVideo = false;
         this.$.mediaNav.classList.remove('video');
+        this.$.wrapper.classList.remove('positionRelative');
       }
     }
 
