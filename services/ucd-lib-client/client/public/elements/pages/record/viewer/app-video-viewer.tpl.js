@@ -10,15 +10,10 @@ return html`
     <style>
         :host {
             display: block;
-            /* position: relative; */
             padding-bottom: 8px;
             background: black;
             box-sizing: border-box;
         }
-
-        /* .container {
-            position: relative;
-        } */
 
         .plyr__controls {
             margin: 0 auto;
@@ -43,7 +38,7 @@ return html`
     </style>
     <div class="container">
         <div id="sprite-plyr" style="display: none;"></div>
-        <video id="player" playsinline controls crossorigin>
+        <video id="video" playsinline controls crossorigin>
             ${repeat(this.tracks, (t) => 
                 html`<track kind="${t.kind}" label="${t.label}" src="${t.src}" srclang="${t.srclang}" default="${t.default}" />`)}
         </video>

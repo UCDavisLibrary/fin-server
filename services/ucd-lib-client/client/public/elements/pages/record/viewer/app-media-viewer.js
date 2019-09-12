@@ -1,6 +1,8 @@
 import { LitElement } from "lit-element"
 import render from "./app-media-viewer.tpl"
 
+import '@polymer/iron-pages'
+
 import "./app-image-viewer"
 import "./app-360-image-viewer"
 import "./app-video-viewer"
@@ -16,8 +18,10 @@ export default class AppMediaViewer extends Mixin(LitElement)
     static get properties() {
       return {
         isVideo: {
-          type: Boolean,
-          value: false
+          type: Boolean
+        },
+        mediaType: {
+          type: String
         }
       }
     }
@@ -27,55 +31,36 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.render = render.bind(this);
       this._injectModel('AppStateModel');
       this._injectModel('MediaModel');
+
+      this.isVideo    = false;
+      this.mediaType  = '';
     }
 
     firstUpdated(e) {
-      this.$.viewerImg  = this.shadowRoot.getElementById('viewerImg');
-      this.$.viewer360  = this.shadowRoot.getElementById('viewer360');
-      this.$.viewerVid  = this.shadowRoot.getElementById('viewerVid');
       this.$.lightbox   = this.shadowRoot.getElementById('lightbox');
       this.$.navBottom  = this.shadowRoot.querySelector('app-image-viewer-nav');
       this.$.zoomButton = this.$.navBottom.shadowRoot.getElementById('zoomIn1');
-
-      this.isVideo = false;
-
-      this.$.viewerImg.style.display = 'block';
-      this.$.viewer360.style.display = 'none';
-      this.$.viewerVid.style.display = 'none';
     }
 
-    updated(e) {
+    async updated(e) {
       this.$.zoomButton.addEventListener('click', (e) => {
         this._onZoomIn(e);
       });
     }
-
+    
     async _onSelectedRecordMediaUpdate(record) {
-      // TODO: Need help w/this
       if ( this.MediaModel.get360Media(record.media).length ) {
-        console.info("360 Media Present");
-        
-        this.$.viewer360.style.display = 'block';
-
-        this.$.viewerImg.style.display = 'none';
-        this.$.viewerVid.style.display = 'none';
+        this.mediaType = '360';
         this.$.navBottom.style.display = 'none';
-
         return;
       }
 
       if (record.media && record.media.video) {
+        this.mediaType = "video";
         this.isVideo = true;
       } else {
+        this.mediaType = "image";
         this.isVideo = false;
-      }
-
-      if ( this.isVideo ) {
-        this.$.viewerVid.style.display = 'block';
-        this.$.viewerImg.style.display = 'none';
-      } else {
-        this.$.viewerVid.style.display = 'none';
-        this.$.viewerImg.style.display = 'block';
       }
     }
 

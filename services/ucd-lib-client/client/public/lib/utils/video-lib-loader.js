@@ -1,10 +1,10 @@
 class VideoLibLoader {
   async load() {
-    if ( this.loaded ) return;
+    if ( this.loaded ) return this.loaded;
 
     if ( this.loading ) {
       await this.loading;
-      return;
+      return this.loaded;
     }
 
     this.loading = new Promise(async (resolve, reject) => {

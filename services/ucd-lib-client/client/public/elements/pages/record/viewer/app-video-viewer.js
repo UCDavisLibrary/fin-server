@@ -19,36 +19,46 @@ export default class AppVideoViewer extends Mixin(LitElement)
   static get properties() {
     return {
       height: {
-        type: Number,
-        value: 50
+        type: Number
       },
       tracks: {
-        type: Array,
-        value: () => []
+        type: Array
+      },
+      player: {
+        type: Object
       }
     }
   }
 
   constructor() {
     super();
+
     this.render = render.bind(this);
+
     this._injectModel('AppStateModel');
+
+    this.height = 50;
     this.tracks = [];
+    this.player = {};
   }
 
-  firstUpdated() {
+  _onAppStateUpdate(e) {
+    if ( this.fullPath !== e.location.fullpath ) { 
+      this._stop();
+    }
+
+    this.fullPath = e.location.fullpath;
+  }
+
+  async firstUpdated(e) {
+    this.fullPath = (await this.AppStateModel.get()).location.fullpath;
+    
     // webpack module is base64 encoded URL, check if this happened 
     // and decode, then set svg to innerHtml inside the shadow dom.
     if( SPRITE_SHEET.indexOf('data:image/svg+xml;base64') > -1 ) {
       SPRITE_SHEET = atob(SPRITE_SHEET.replace('data:image/svg+xml;base64,', ''));
     }
     this.shadowRoot.querySelector('#sprite-plyr').innerHTML = SPRITE_SHEET;
-  }
-
-  updated(props) {
-    if (props.has('url') && props.get('url') !== this.url) {
-      this.shadowRoot.querySelector('video').load();
-    }
   }
 
   /**
@@ -61,26 +71,25 @@ export default class AppVideoViewer extends Mixin(LitElement)
     if (!media.media) return;
 
     this.media = media.media;
-    if (!this.media.video) {
-      return;
-    }
+
+    if (!this.media.video) return;
 
     try { 
-      let { plyr, shaka_player } = await videoLibs.load();
-      this.plyr = plyr;
-      this.shaka_player = shaka_player;
+      var libs = await videoLibs.load();
+      this.plyr = libs.plyr;
+      this.shaka_player = libs.shaka_player;
+
       console.log("videoLibs loaded");
     } catch(error) {
       console.log("videoLibs.load() error: ", error);
     }
-    
+
     const plyr_supported = this.plyr.supported('video', 'html5', true);
     //console.log("plyr_supported: ", plyr_supported);
 
     const shaka_supported = this.shaka_player.Player.isBrowserSupported();
     //console.log("shaka_supported: ", shaka_supported);
 
-    this.$.player = this.shadowRoot.getElementById("player");
     let videoObject = utils.formatVideo(this.media.video);
 
     let videoUri  = videoObject['id'];
@@ -90,8 +99,9 @@ export default class AppVideoViewer extends Mixin(LitElement)
     this.width    = videoObject['width'];
     this.height   = videoObject['height'];
 
-    this.$.player.style.width  = this.width + "px";
-    this.$.player.style.maxWidth = "calc(" + this.height + " / " + this.width +  " * 100%)";
+    this.$.video = this.shadowRoot.getElementById('video');
+    this.$.video.style.width  = this.width + "px";
+    this.$.video.style.maxWidth = "calc(" + this.height + " / " + this.width +  " * 100%)";
 
     if (videoObject['transcripts']) {
       this.transcripts = utils.asArray(videoObject, 'transcripts').map(element => {
@@ -107,7 +117,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
       });
     }
 
-    const player = new this.plyr(this.$.player, {
+    this.player = new this.plyr(this.$.video, {
       title: this.title,
       blankVideo: 'https://cdn.plyr.io/static/blank.mp4',
       quality: videoObject['videoQuality'],
@@ -116,7 +126,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     // WebVTT Validator recommended by Plyr.io
     // https://quuz.org/webvtt/
-    player.source = {
+    this.player.source = {
       type: 'video',
       title: this.title,
       poster: this.poster,
@@ -126,7 +136,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     if ( shaka_supported === true ) {
       let manifestUri = config.fcrepoBasePath+videoUri;
-      const shaka = new this.shaka_player.Player(this.$.player);
+      const shaka = new this.shaka_player.Player(this.$.video);
       //console.log(shaka.getConfiguration());
       try { 
         await shaka.load(manifestUri).then(() => {
@@ -138,6 +148,18 @@ export default class AppVideoViewer extends Mixin(LitElement)
     } else {
       console.warn("Your browser is not supported");
     }
+  }
+
+  /**
+   * Stop playback and reset to start
+   */
+  _stop() {
+    const video = this.shadowRoot.querySelector('#video');
+    video.pause();
+    
+    if (Object.entries(this.player).length != 0) {
+      this.player.stop();
+    };
   }
 }
 
