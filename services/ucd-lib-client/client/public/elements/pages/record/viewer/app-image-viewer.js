@@ -72,11 +72,18 @@ export default class AppImageViewer extends Mixin(PolymerElement)
   }
 
   _renderImg() {
-    let url = this._getImgUrl(this.media.image.url, '', this.height);
+    // TODO: Justin please review.  Fixes the problem w/the height being too large since 
+    //       the problem seems to originate in this.height 
+    //       being set to 600 in this component's properties.
+    if ( this.media.image.width < this.height) this.height = this.media.image.width;
 
+    let url = this._getImgUrl(this.media.image.url, '', this.height);
     let r = 600 / this.media.image.height;
     let w = this.media.image.width * r;
+
     let eleWidth = this.offsetWidth-20;
+    if ( eleWidth < 1 ) eleWidth = 1;
+
     let startHeight = Math.ceil(eleWidth > w ? this.height : ((eleWidth/w)*this.height));
 
     let img = new Image();

@@ -134,7 +134,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    */
   _resize() {
     let w = this.offsetWidth;
-
+    
     // grrrr
     if( w === 0 ) {
       setTimeout(() => this._resize(), 200);
