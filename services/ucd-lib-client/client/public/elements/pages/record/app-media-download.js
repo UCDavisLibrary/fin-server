@@ -162,7 +162,7 @@ export default class AppMediaDownload extends PolymerElement {
           let obj = {
             src: config.fcrepoBasePath + transcript.src,
             type: transcript.src.split('.').pop(),
-            label: transcript.src.split('.').pop()
+            label: transcript.src.split('.').pop() + ' (transcript only)'
           }
           
           this.downloadOptions.push(obj);

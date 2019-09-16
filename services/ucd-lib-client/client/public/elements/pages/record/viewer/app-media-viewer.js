@@ -37,14 +37,14 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
 
     async firstUpdated(changedProperties) {
-      this.$.wrapper    = this.shadowRoot.getElementById('wrapper');
-      this.$.lightbox   = this.shadowRoot.getElementById('lightbox');
-      this.$.mediaNav   = this.shadowRoot.querySelector('app-media-viewer-nav');
-      this.$.zoomButton = this.$.mediaNav.shadowRoot.getElementById('zoomIn1');
+      this.$.wrapper  = this.shadowRoot.getElementById('wrapper');
+      this.$.lightbox = this.shadowRoot.getElementById('lightbox');
+      this.$.mediaNav = this.shadowRoot.querySelector('app-media-viewer-nav');
+      this.$.zoomBtn  = this.$.mediaNav.shadowRoot.getElementById('zoomIn1');
     }
 
     async updated(e) {
-      this.$.zoomButton.addEventListener('click', (e) => {
+      this.$.zoomBtn.addEventListener('click', (e) => {
         this._onZoomIn(e);
       });
     }
