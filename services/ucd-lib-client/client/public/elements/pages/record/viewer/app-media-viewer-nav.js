@@ -16,10 +16,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
 
   static get properties() {
     return {
-      mediaList : {
-        type : Array,
-        value : () => []
-      },
       // thumbnail width w/ border and margin
       totalThumbnailWidth : {
         type : Number,
@@ -61,8 +57,12 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       },
       singleImage : {
         type : Boolean,
-        value : true
-      }
+        value : false
+      },
+      mediaList : {
+        type : Array,
+        value : () => []
+      },
     }
   }
 
@@ -218,6 +218,13 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
     this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
 
+    if (!record.media.imageList) {
+      this.singleImage = true;
+    }
+
+    // If only a single video item, display compacted nav bar
+    // Otherwise display full bar.
+
     if (record.media.video) {
       this.zoomButton1.style.display = 'none';
       this.zoomButton3.style.display = 'none';
@@ -227,41 +234,60 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       this.zoomButton3.style.display = 'inline-block';
       this.classList.remove('video');
     }
-    
-    if (!record.media.imageList) {
-      this.singleImage = true;
-      return;
-    }
 
-    if (record.media.imageList[0].hasPart) {
-      this.mediaList = record.media.imageList[0].hasPart;
-    } else {
-      this.mediaList = this._getImageMediaList(record);
-    }
-
+    this.mediaList = this._flattenMediaList(record.media);
+    this.mediaList = this._organizeMediaList(this.mediaList);
     this.thumbnails = this.mediaList.map(record => {
+      let fileFormat = (record.fileFormat ? record.fileFormat : record.encodingFormat);
       let thumbnail = {
-        id : record['@id'],
-        position : record.position,
-        selected : false,
-        disabled : true,
-        src : ''
+        id: record['@id'],
+        position: record.position,
+        selected: false,
+        disabled: true,
+        fileType: fileFormat.split('/').shift(),
+        src: record.image.url,
+        thumbnail: record.image.url
       }
-
-      if( record.width > record.height ) {
-        thumbnail.src = this._getImgUrl(record['@id'], '', 50);
-      }
-      thumbnail.src = this._getImgUrl(record['@id'], 50, '');
 
       return thumbnail;
     });
 
-    // TODO: Need help with this
-    this.singleImage = (this.thumbnails.length > 1) ? false : true;
+    this.singleImage = (this.thumbnails.length !== 0 && this.thumbnails.length > 1) ? false : true;
     if( this.singleImage ) this.classList.add('single');
     else this.classList.remove('single');
 
     this._resize();
+  }
+
+  _organizeMediaList(mediaListArray) {
+    mediaListArray.map(item => item.position = parseInt(item.position))
+      .sort((a, b) => {
+        if(a.position > b.position) return 1;
+        if(a.position < b.position) return -1;
+        return 1;
+      });
+    
+    return mediaListArray;
+  }
+
+  _flattenMediaList(mediaObj) {
+    let array = [];
+
+    Object.keys(mediaObj).forEach(key => {
+      mediaObj[key].forEach(element => {
+       if (element['@type'].includes('http://digital.ucdavis.edu/schema#StreamingVideo') === false) {
+         if (element.hasPart) {
+          element.hasPart.forEach(el => {
+            array.push(el);
+           });
+         } else {
+           array.push(element);
+         }
+       };
+     });
+    });
+
+    return array;
   }
 
   /**
@@ -271,9 +297,9 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    * @param {Object} media 
    */
   _onSelectedRecordMediaUpdate(media) {
-    this.media = media;    
+    this.media = media;
     this.thumbnails.forEach((thumbnail, index) => {
-      this.set(`thumbnails.${index}.selected`, (media['@id'] === thumbnail.id));
+      this.set(`thumbnails.${index}.selected`, (this.media['@id'] === thumbnail.id));
     });
   }
 

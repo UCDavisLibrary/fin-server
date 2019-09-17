@@ -31,6 +31,12 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
+    attr : 'audio',
+    value : ['schema', 'audio'],
+    type: 'id'
+  });
+
+  await utils.add({
     attr : 'about',
     value : ['schema', 'about'],
     type : 'id'

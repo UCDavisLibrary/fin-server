@@ -6,6 +6,7 @@ import '@polymer/iron-pages'
 import "./app-image-viewer"
 import "./app-360-image-viewer"
 import "./app-video-viewer"
+import "./app-audio-viewer"
 
 import "./app-media-viewer-nav"
 import "./app-image-viewer-lightbox"
@@ -56,15 +57,22 @@ export default class AppMediaViewer extends Mixin(LitElement)
         return;
       }
 
-      if (record.media && record.media.video) {
-        this.mediaType = "video";
-        this.isVideo = true;
+      if (record.media && record.media.video || record.video ) {
+        this.mediaType = 'video';
+        this.isVideo   = true;
         this.$.mediaNav.classList.add('video');
         this.$.wrapper.classList.add('positionRelative');
-      } else {
-        this.mediaType = "image";
-        this.isVideo = false;
+      } else if (record.media && record.media.audio || record.audio) {
+        this.mediaType = 'audio';
+        this.isVideo   = false;
+        this.$.mediaNav.classList.add('audio');
+        this.$.wrapper.classList.add('positionRelative');
         this.$.mediaNav.classList.remove('video');
+      } else {
+        this.mediaType = 'image';
+        this.isVideo   = false;
+        this.$.mediaNav.classList.remove('video');
+        this.$.mediaNav.classList.remove('audio');
         this.$.wrapper.classList.remove('positionRelative');
       }
     }

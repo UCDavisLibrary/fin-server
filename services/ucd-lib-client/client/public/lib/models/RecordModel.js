@@ -52,39 +52,14 @@ class RecordModel extends ElasticSearchModel {
     return this.store.getDefaultSearch(storeId);
   }
 
-  async _formatImageList(obj, type) {
-    console.log("RecordModel _formatImageList(): ", obj);
-
-    let _imageList = [];
-
-
-    obj.forEach((element) => {
-      if ( element.hasPart ) {
-        element.hasPart.forEach(item => {
-          item.position = parseInt(item.position);
-        });
-        element.hasPart.sort((a, b) => {
-          if ( a.position > b.position ) return 1;
-          if ( a.position < b.position ) return -1;
-          return 1;
-        });
-
-        _imageList = element.hasPart;
-        console.log("_imageList: ", _imageList);
-      } else {
-        // if no image list, return list of images
-        for( var i = 0; i < rootRecord.associatedMedia.length; i++ ) {
-          let ff = rootRecord.associatedMedia[i].fileFormat;
-          if( ff && ff.match(/^image/i) ) {
-            imageList.push(rootRecord.associatedMedia[i]);
-          }
-        }
-      }
-    });
-
-    return _imageList;
-  }
-
+  /**
+   * @method createMediaObject
+   * @description 
+   * 
+   * @param {Array of Objects} record
+   * 
+   * @returns {Array of Objects}
+   */
   async createMediaObject(record) {
     if (record.isRootRecord === false) return;
     

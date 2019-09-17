@@ -62,11 +62,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   _onSelectedRecordMediaUpdate(media) {
     //console.log("_onSelectedRecordMediaUpdate(media): ", media);
-    
-    if ( !media.image ) {
-      return false;
-    };
-    
+
     this.media = media;
     this._renderImg();
   }
@@ -78,6 +74,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     if ( this.media.image.width < this.height) this.height = this.media.image.width;
 
     let url = this._getImgUrl(this.media.image.url, '', this.height);
+
     let r = 600 / this.media.image.height;
     let w = this.media.image.width * r;
 

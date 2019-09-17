@@ -15,10 +15,12 @@
     background-color: var(--default-primary-color);
   }
 
+  /*
   :host(.video) {
     padding: 10px;
     background-color: transparent;
   }
+  */
 
   .layout {
     display: flex;
@@ -86,11 +88,13 @@
       <template is="dom-repeat" items="[[thumbnails]]">
         <button 
           class="thumbnail" 
+          alt$="Page #[[item.position]]"
+          title$="[[item.id]]"
+          media-type$="[[item.fileType]]"
+          media-id$="[[item.id]]"
           disabled$="[[item.disabled]]"
           selected$="[[item.selected]]" 
           style$="background-image:url([[item.src]])"
-          media-id$="[[item.id]]"
-          alt$="Page #[[item.position]]"
           on-click="_onThumbnailClicked">
         </button>
       </template>
