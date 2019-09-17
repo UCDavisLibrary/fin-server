@@ -42,6 +42,10 @@ export class AppSearch extends Mixin(PolymerElement)
       appState : {
         type : Object,
         value : () => ({})
+      },
+      wideFiltersPanel : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -153,6 +157,16 @@ export class AppSearch extends Mixin(PolymerElement)
    */
   _toggleDrawer() {
     this.drawerOpen = !this.drawerOpen;
+  }
+
+  _onFiltersTabUpdate(e) {
+    this.wideFiltersPanel = e.detail.value === 'info' ? true : false;
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        this.$.resultsPanel._resizeAsync();
+      });
+    }, 300);
+    
   }
 
 }
