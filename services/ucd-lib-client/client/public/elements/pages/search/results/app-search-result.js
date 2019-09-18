@@ -89,7 +89,6 @@ export default class AppSearchResult extends Mixin(PolymerElement)
    */
   async _onDataUpdate() {
     let data = Object.assign({}, this.data);
-    //console.log("_onDataUpdate: ", data);
 
     if( !data['@id'] ) return;
     

@@ -142,6 +142,7 @@ export default class AppMediaDownload extends PolymerElement {
 
     this.rootRecord = record;
 
+    /*
     if (this.rootRecord.media.video) {
       let video = utils.formatVideo(this.rootRecord.media.video);
       this.isVideo = true;
@@ -176,6 +177,7 @@ export default class AppMediaDownload extends PolymerElement {
         this.$.videoDownloadOptions.className = "plainText";
       }
     }
+    */
 
     if ( this.rootRecord.media.imageList ) {
       this.hasMultipleImages = (this.rootRecord.media.imageList[0].hasPart.length > 0);

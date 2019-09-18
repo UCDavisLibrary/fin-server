@@ -42,6 +42,20 @@ class Utils {
     return record.filter(element => element['@id'] === id );
   }
 
+  getType(record) {
+    let mediaType = '';
+
+    record['@type'].forEach(element => {
+      let el = element.toLowerCase();
+      if (el.includes('imagelist')) mediaType = 'imageList';
+      else if (el.includes('image')) mediaType = 'image';
+      else if (el.includes('video')) mediaType = 'video';
+      else if (el.includes('audio')) mediaType = 'audio';
+    });
+
+    return mediaType;
+  }
+
   getLanguage(lng) {
     let dict = [
       {
@@ -59,17 +73,37 @@ class Utils {
 
   /**
    * @method formatVideo
-   * @description return a properly formatted video object from the raw media object
+   * @description return a properly formatted video object
    * 
-   * @param {Object} object
+   * @param {Object || Array} media
    * 
    * @return {Object}
   */
-  formatVideo(object) {
-    //console.log("formatVideo(object) ", object);
+  formatVideo(media) {
+    //console.log("formatVideo(media) ", media);
     let videoObj, mpdObj, vidId, sources = [], transcripts = [], captions = [];
 
-    object.map(element => {
+    if (media instanceof Object) {
+      videoObj = {
+        id: media.video['@id'],
+        name: media['description'],
+        poster: media['thumbnailUrl'],
+        encodingFormat: media['encodingFormat'],
+        videoQuality: parseInt(media['videoQuality']),
+        width: parseInt(media.videoFrameSize.split("x")[0]),
+        height: parseInt(media.videoFrameSize.split("x")[1]),
+        sources: [
+          {
+            src: media.video['@id'],
+            type: media.video['encodingFormat'],
+            size: parseInt(media.videoQuality),
+          }
+        ],
+      }
+      return videoObj;
+    }
+
+    media.map(element => {
       if ( element['hasPart'] ) {
         mpdObj = element['hasPart'].find((element) => {
           // Locate a streaming video
@@ -86,10 +120,10 @@ class Utils {
     });
 
     let rawObj;
-    if ( object[0].hasPart ) {
-      rawObj = object[0].hasPart.filter(element => !element.error && element.video);
+    if ( media[0].hasPart ) {
+      rawObj = media[0].hasPart.filter(element => !element.error && element.video);
     } else {
-      rawObj = object.filter(element => element.video);
+      rawObj = media.filter(element => element.video);
     }
 
     let id = mpdObj.parent['@id'];
@@ -102,7 +136,7 @@ class Utils {
     if (mpdObj.caption) {
       this.asArray(mpdObj, 'caption').map(element => {
         let _id = element['@id'];
-        this.findMediaFromId(object[0].hasPart, _id).forEach(caption => {
+        this.findMediaFromId(media[0].hasPart, _id).forEach(caption => {
           let lng = caption.language;
           let setDefault = (lng === 'en' ? true : false);
 

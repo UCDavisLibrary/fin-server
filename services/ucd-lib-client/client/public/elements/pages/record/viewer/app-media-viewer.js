@@ -18,10 +18,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
 
     static get properties() {
       return {
-        isVideo: {
-          type: Boolean
-        },
-        mediaType: {
+        isMediaType: {
           type: String
         }
       }
@@ -32,9 +29,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.render = render.bind(this);
       this._injectModel('AppStateModel');
       this._injectModel('MediaModel');
-
-      this.isVideo    = false;
-      this.mediaType  = '';
+      this.isMediaType = 'image';
     }
 
     async firstUpdated(changedProperties) {
@@ -52,25 +47,22 @@ export default class AppMediaViewer extends Mixin(LitElement)
     
     async _onSelectedRecordMediaUpdate(record) {
       if ( this.MediaModel.get360Media(record.media).length ) {
-        this.mediaType = '360';
+        this.isMediaType = "360";
         this.$.mediaNav.style.display = 'none';
         return;
       }
 
       if (record.media && record.media.video || record.video ) {
-        this.mediaType = 'video';
-        this.isVideo   = true;
+        this.isMediaType = "video";
         this.$.mediaNav.classList.add('video');
         this.$.wrapper.classList.add('positionRelative');
       } else if (record.media && record.media.audio || record.audio) {
-        this.mediaType = 'audio';
-        this.isVideo   = false;
+        this.isMediaType = "audio";
         this.$.mediaNav.classList.add('audio');
         this.$.wrapper.classList.add('positionRelative');
         this.$.mediaNav.classList.remove('video');
       } else {
-        this.mediaType = 'image';
-        this.isVideo   = false;
+        this.isMediaType = "image";
         this.$.mediaNav.classList.remove('video');
         this.$.mediaNav.classList.remove('audio');
         this.$.wrapper.classList.remove('positionRelative');

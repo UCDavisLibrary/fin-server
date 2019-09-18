@@ -61,34 +61,35 @@ export default class AppVideoViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
-    if (!media.media || !media.media.video) return;
+    let getMediaType = utils.getType(media);
+    if (getMediaType === 'video') console.log("video");
+    else return;
 
-    this.media = media.media;
+    this.media = media;
+    console.log(this.media);
 
-    try { 
-      const libs = await videoLibs.load();
+    try {
+      let libs = await videoLibs.load();
       this.plyr = libs.plyr;
       this.shaka_player = libs.shaka_player;
-
       console.log("videoLibs loaded");
     } catch(error) {
       console.log("videoLibs.load() error: ", error);
     }
 
-    const plyr_supported = this.plyr.supported('video', 'html5', true);
+    let plyr_supported = this.plyr.supported('video', 'html5', true);
     //console.log("plyr_supported: ", plyr_supported);
 
-    const shaka_supported = this.shaka_player.Player.isBrowserSupported();
+    let shaka_supported = this.shaka_player.Player.isBrowserSupported();
     //console.log("shaka_supported: ", shaka_supported);
 
-    let videoObject = utils.formatVideo(this.media.video);
-
+    let videoObject = utils.formatVideo(this.media);
     let videoUri = videoObject['id'];
     let title    = videoObject['name'];
     let poster   = videoObject['poster'];
-    let sources  = videoObject['sources'];
     let width    = videoObject['width'];
     let height   = videoObject['height'];
+    let sources  = videoObject['sources'];
 
     this.$.video = this.shadowRoot.getElementById('video');
     this.$.video.style.width  = width + "px";

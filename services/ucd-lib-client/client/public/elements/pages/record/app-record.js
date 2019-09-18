@@ -6,6 +6,7 @@ import rightsDefinitions from "../../../lib/rights.json"
 import citations from "../../../lib/models/CitationsModel"
 import utils from "../../../lib/utils"
 import config from "../../../lib/config"
+import videoLibs from "../../../lib/utils/video-lib-loader"
 
 import "./app-media-download"
 import "./app-record-metadata-layout"
@@ -54,7 +55,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       metadata : {
         type : Array,
         value : () => []
-      }
+      },
     }
   }
 
@@ -96,15 +97,6 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     this.renderedRecordId = record['@id'];
     this.record = record;
-    this.isVideo = false;
-
-    if(record.media.video) {
-      this.isVideo = true;
-      let videoObj = utils.formatVideo(record.media.video);
-      if (videoObj.sources && videoObj.sources[0] && videoObj.sources[0].license) {
-        this.record.license = videoObj.sources[0].license;
-      }
-    }
 
     if( this.record.description ) {
       this.$.description.style.display = 'flex';
@@ -142,6 +134,27 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.record.collectionName = collection.name;
     }
 
+    if (this.record.media.imageList) {
+      this.AppStateModel.setSelectedRecordMedia(this.record.media.imageList[0]);
+    } else if (this.record.media.video) {
+      this.AppStateModel.setSelectedRecordMedia(this.record.media.video[0]);
+      /*
+      if(record.media.video) {
+        let videoObj = utils.formatVideo(record.media.video);
+        if (videoObj.sources && videoObj.sources[0] && videoObj.sources[0].license) {
+          this.record.license = videoObj.sources[0].license;
+        }
+      }
+      */
+    } else if (this.record.media.audio) {
+      this.AppStateModel.setSelectedRecordMedia(this.record.media.audio[0]);
+    } else if (this.record.media.image) {
+      this.AppStateModel.setSelectedRecordMedia(this.record.media.image[0]);
+    }
+
+    this.$.download.setRootRecord(record);
+    
+    /*
     // render associated media
     let imageList = this._getImageMediaList(record);
     this.$.download.setRootRecord(record, imageList);
@@ -152,6 +165,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     } else {
       this.AppStateModel.setSelectedRecordMedia(record);
     }
+    */
 
     // find arks or doi
     this._renderIdentifier(record);
@@ -319,18 +333,16 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     this.name = this.record.name || '';
     this.$.download.style.display = 'block';
+    this.$.download.render();
     
-    if (this.isVideo) {
-      this.$.download.render();
-      return;
-    }
-
+    /*
     this.$.download.render({
       resolution : [record.image.width, record.image.height],
       fileFormat : record.image.encodingFormat,
       size : record.image.contentSize ? parseInt(record.image.contentSize) : 0,
       url : record.image.url
     });
+    */
   }
 
   /**

@@ -18,8 +18,11 @@ export default class AppAudioViewer extends Mixin(LitElement)
   
   static get properties() {
     return {
-      player: {
-        type: Object
+      src: {
+        type: String
+      },
+      type: {
+        type: String
       }
     }
   }
@@ -28,8 +31,7 @@ export default class AppAudioViewer extends Mixin(LitElement)
     super();
     this.render = render.bind(this);
     this._injectModel('AppStateModel');
-    this.tracks = [];
-    this.player = {};
+    this.src = '';
   }
 
   _onAppStateUpdate(e) {
@@ -58,80 +60,42 @@ export default class AppAudioViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
-    console.log("audio media: ", media);
-    //if (!media.media || !media.media.video) return;
+    let getMediaType = utils.getType(media);
 
-    //this.media = media.media;
+    if (getMediaType === 'audio') console.log("audio");
+    else return;
 
-    try { 
-      const libs = await videoLibs.load();
-      this.plyr = libs.plyr;
-      this.shaka_player = libs.shaka_player;
+    this.media = media;
 
+    try {
+      let libs = await videoLibs.load();
+      this.audioPlyr = libs.plyr;
       console.log("videoLibs loaded");
     } catch(error) {
       console.log("videoLibs.load() error: ", error);
     }
 
-    const plyr_supported = this.plyr.supported('video', 'html5', true);
-    //console.log("plyr_supported: ", plyr_supported);
+    let plyr_supported = this.audioPlyr.supported('video', 'html5', true);
+    console.log("plyr_supported: ", plyr_supported);
 
-    const shaka_supported = this.shaka_player.Player.isBrowserSupported();
-    //console.log("shaka_supported: ", shaka_supported);
-
-    /*
-    let videoObject = utils.formatVideo(this.media.video);
-
-    let videoUri = videoObject['id'];
-    let title    = videoObject['name'];
-    let poster   = videoObject['poster'];
-    let sources  = videoObject['sources'];
-
-    this.$.video = this.shadowRoot.getElementById('video');
-
-    this.player = new this.plyr(this.$.video, {
-      title: title,
-      blankVideo: 'https://cdn.plyr.io/static/blank.mp4',
-      quality: videoObject['videoQuality'],
+    this.src  = config.fcrepoBasePath+this.media['@id'];
+    this.type = this.media.encodingFormat;
+    
+    this.$.audio = this.shadowRoot.getElementById('audio_player');
+    this.audioPlayer = new this.audioPlyr(this.$.audio, {
       debug: false
     });
-
-    // WebVTT Validator recommended by Plyr.io
-    // https://quuz.org/webvtt/
-    this.player.source = {
-      type: 'video',
-      title: title,
-      poster: poster,
-      source: sources,
-      tracks: this.tracks
-    }
-
-    if ( shaka_supported === true ) {
-      let manifestUri = config.fcrepoBasePath+videoUri;
-      const shaka = new this.shaka_player.Player(this.$.video);
-      //console.log(shaka.getConfiguration());
-      try { 
-        await shaka.load(manifestUri).then(() => {
-          console.log("shaka loaded");
-        });
-      } catch(error) {
-        console.error('Error code: ', error.code, 'object', error);
-      }
-    } else {
-      console.warn("Your browser is not supported");
-    }
-    */
   }
 
   /**
    * Stop playback and reset to start
-   */
+   **/
   _stop() {
-    const video = this.shadowRoot.querySelector('#video');
-    video.pause();
+    const audio = this.shadowRoot.getElementById('audio_player');
+    audio.pause();
 
-    if (Object.entries(this.player).length != 0) {
-      this.player.stop();
+    if (Object.entries(this.audioPlayer).length != 0) {
+      this.audioPlayer.stop();
     };
   }
 }

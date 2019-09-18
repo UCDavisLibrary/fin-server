@@ -25,11 +25,10 @@ export default function render() {
         position: relative;
       }
     </style>
-
     <div id="wrapper">
       <app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
     
-      <iron-pages selected="${this.mediaType}" attr-for-selected="id" selected-attribute="visible">
+      <iron-pages selected="${this.isMediaType}" attr-for-selected="id" selected-attribute="visible">
         <app-360-image-viewer id="360"></app-360-image-viewer>
         <app-image-viewer id="image"></app-image-viewer>
         <app-video-viewer id="video"></app-video-viewer>

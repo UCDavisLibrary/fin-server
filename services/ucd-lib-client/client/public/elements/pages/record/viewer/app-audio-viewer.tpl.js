@@ -1,13 +1,12 @@
 import { html } from 'lit-element';
 import plyrCss from "plyr/dist/plyr.css"
-import shakaCss from "shaka-player/dist/controls.css"
 
 export default function render() { 
 return html`
     <style>
         :host {
             display: block;
-            padding-bottom: 8px;
+            padding: 10px 20px;
             background: black;
             box-sizing: border-box;
         }
@@ -22,11 +21,12 @@ return html`
         }
 
         ${plyrCss}
-        ${shakaCss}
     </style>
     <div class="container">
         <div id="sprite-plyr" style="display: none;"></div>
-        <audio id="player" controls></audio>
+        <audio id="audio_player" controls>
+            <source src="${this.src}" type="${this.type}">
+        </audio>
     </div>
 `
 }

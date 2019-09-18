@@ -26,14 +26,18 @@ export default class App360ImageViewer extends Mixin(PolymerElement)
     //this.$.viewer.frameToImgPath = this._frameToImgPath.bind(this);
   }
 
-  async _onSelectedRecordMediaUpdate(record) {  
+  async _onSelectedRecordMediaUpdate(record) {
+    //console.log("360 record: ", record);
+
     this.images = this.MediaModel.get360Media(record);
+    /*
     if( !this.images.length ) {
       this.style.display = 'none';
       return;
     }
+    */
 
-    this.style.display = 'block';
+    //this.style.display = 'block';
     this.$.viewer.totalFrames = this.images.length;
     
     this.$.viewer.render();
