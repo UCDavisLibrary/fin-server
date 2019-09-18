@@ -81,6 +81,7 @@ class Utils {
   */
   formatVideo(rawMedia) {
     //console.log("formatVideo(rawMedia) ", rawMedia);
+    
     let media = [], videoObj = [], mpdObj, vidId, sources = [], transcripts = [], captions = [];
 
     if (rawMedia instanceof Object) {

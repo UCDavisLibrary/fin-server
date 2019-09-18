@@ -5,8 +5,6 @@ import template from "./app-record.html"
 import rightsDefinitions from "../../../lib/rights.json"
 import citations from "../../../lib/models/CitationsModel"
 import utils from "../../../lib/utils"
-import config from "../../../lib/config"
-import videoLibs from "../../../lib/utils/video-lib-loader"
 
 import "./app-media-download"
 import "./app-record-metadata-layout"
@@ -138,34 +136,14 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.AppStateModel.setSelectedRecordMedia(this.record.media.imageList[0]);
     } else if (this.record.media.video) {
       this.AppStateModel.setSelectedRecordMedia(this.record.media.video[0]);
-      /*
-      if(record.media.video) {
-        let videoObj = utils.formatVideo(record.media.video);
-        if (videoObj.sources && videoObj.sources[0] && videoObj.sources[0].license) {
-          this.record.license = videoObj.sources[0].license;
-        }
-      }
-      */
     } else if (this.record.media.audio) {
       this.AppStateModel.setSelectedRecordMedia(this.record.media.audio[0]);
     } else if (this.record.media.image) {
       this.AppStateModel.setSelectedRecordMedia(this.record.media.image[0]);
     }
 
+    // Attach a recod to the download options
     this.$.download.setRootRecord(record);
-    
-    /*
-    // render associated media
-    let imageList = this._getImageMediaList(record);
-    this.$.download.setRootRecord(record, imageList);
-
-    if( record.associatedMedia ) { 
-      if( imageList.length ) this.AppStateModel.setSelectedRecordMedia(imageList[0]);
-      else this.AppStateModel.setSelectedRecordMedia(record);
-    } else {
-      this.AppStateModel.setSelectedRecordMedia(record);
-    }
-    */
 
     // find arks or doi
     this._renderIdentifier(record);
@@ -193,17 +171,15 @@ export default class AppRecord extends Mixin(PolymerElement)
   _setTarHref() {
     let urls = {};
 
-    /* TODO: Need help with this
-    this._getImageMediaList(this.record)
-      .forEach(item => {
-        urls[item.filename || item.name] = this._getImgUrl(item['@id']).replace(config.fcrepoBasePath, '');
-      });
+    if ((this.record instanceof Array) === false) return;
+
+    this._getImageMediaList(this.record).forEach(item => {
+      urls[item.filename || item.name] = this._getImgUrl(item['@id']).replace(config.fcrepoBasePath, '');
+    });
 
     this.tarName = this.record.name.replace(/[^a-zA-Z0-9]/g, '');
-    */
-
-    //this.$.tarPaths.value = JSON.stringify(urls);
-    //this.tarUrl = TarService.create(encodeURI(this.record.name.replace(/[^a-zA-Z0-9]/g, '')), urls);
+    this.$.tarPaths.value = JSON.stringify(urls);
+    this.tarUrl = TarService.create(encodeURI(this.record.name.replace(/[^a-zA-Z0-9]/g, '')), urls);
   }
 
   /**
@@ -252,7 +228,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     // TODO: label is under creator.name
     this.$.subjectValue.innerHTML = subjects 
       .map(subject => {
-        // debugger;
         // subject = subject.name;
         let searchDoc = this.RecordModel.emptySearchDocument();
         this.RecordModel.appendKeywordFilter(searchDoc, 'abouts.raw', subject);
@@ -333,16 +308,15 @@ export default class AppRecord extends Mixin(PolymerElement)
 
     this.name = this.record.name || '';
     this.$.download.style.display = 'block';
-    this.$.download.render();
-    
-    /*
+
+    if (!record.image) return;
+
     this.$.download.render({
       resolution : [record.image.width, record.image.height],
       fileFormat : record.image.encodingFormat,
       size : record.image.contentSize ? parseInt(record.image.contentSize) : 0,
       url : record.image.url
     });
-    */
   }
 
   /**

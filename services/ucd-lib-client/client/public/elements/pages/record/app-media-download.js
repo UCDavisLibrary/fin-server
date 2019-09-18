@@ -55,13 +55,13 @@ export default class AppMediaDownload extends PolymerElement {
         type : String,
         value : 'Full Resolution'
       },
-      mediaType : {
-        type: String,
-        value: ''
-      },
       isVideo: {
         type: Boolean,
         value: false
+      },
+      isMediaType: {
+        type: String,
+        value: 'image'
       },
       size : {
         type : String,
@@ -127,9 +127,7 @@ export default class AppMediaDownload extends PolymerElement {
 
     this.hasMultipleImages = false;
     this.multipleImagesSelected = false;
-    this.isVideo = false;
     this.size = bytes(options.size);
-    this.mediaType = options.fileFormat.substring(0, options.fileFormat.lastIndexOf('/')).toLowerCase();
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase(); 
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
@@ -139,14 +137,13 @@ export default class AppMediaDownload extends PolymerElement {
 
   setRootRecord(record) {
     if( this.rootRecord === record ) return;
-
     this.rootRecord = record;
 
-    /*
     if (this.rootRecord.media.video) {
-      let video = utils.formatVideo(this.rootRecord.media.video);
       this.isVideo = true;
-      
+      let video = utils.formatVideo(this.rootRecord.media.video[0]);
+
+      /*
       if (video.sources && video.sources.length > 0) {
         video.sources.forEach(element => {
           element.type = ((element.type !== undefined) ? element.type.replace(/.*\//, '') : '');
@@ -176,8 +173,12 @@ export default class AppMediaDownload extends PolymerElement {
         this.$.videoDownloadOptions.disabled  = true;
         this.$.videoDownloadOptions.className = "plainText";
       }
+      */
     }
-    */
+
+    if ( this.downloadOptions && this.downloadOptions.length > 1 ) {
+      this.hasMultipleSources = true;
+    }
 
     if ( this.rootRecord.media.imageList ) {
       this.hasMultipleImages = (this.rootRecord.media.imageList[0].hasPart.length > 0);
