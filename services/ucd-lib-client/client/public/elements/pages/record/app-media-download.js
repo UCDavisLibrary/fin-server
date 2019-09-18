@@ -143,7 +143,6 @@ export default class AppMediaDownload extends PolymerElement {
       this.isVideo = true;
       let video = utils.formatVideo(this.rootRecord.media.video[0]);
 
-      /*
       if (video.sources && video.sources.length > 0) {
         video.sources.forEach(element => {
           element.type = ((element.type !== undefined) ? element.type.replace(/.*\//, '') : '');
@@ -173,7 +172,6 @@ export default class AppMediaDownload extends PolymerElement {
         this.$.videoDownloadOptions.disabled  = true;
         this.$.videoDownloadOptions.className = "plainText";
       }
-      */
     }
 
     if ( this.downloadOptions && this.downloadOptions.length > 1 ) {
