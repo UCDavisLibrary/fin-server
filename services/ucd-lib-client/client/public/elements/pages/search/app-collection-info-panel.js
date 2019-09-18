@@ -73,7 +73,7 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
       this.description = '';
       this.subject = '';
       this.coverage = '';
-      this.citation.innerHTML = '';
+      this.citation = '';
       return;
     }
 
