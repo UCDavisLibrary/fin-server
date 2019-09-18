@@ -62,8 +62,7 @@ export default class AppAudioViewer extends Mixin(LitElement)
   async _onSelectedRecordMediaUpdate(media) {
     let getMediaType = utils.getType(media);
 
-    if (getMediaType === 'audio') console.log("audio");
-    else return;
+    if (getMediaType !== 'audio') return;
 
     this.media = media;
 
@@ -80,7 +79,6 @@ export default class AppAudioViewer extends Mixin(LitElement)
 
     this.src  = config.fcrepoBasePath+this.media['@id'];
     this.type = this.media.encodingFormat;
-    
     this.$.audio = this.shadowRoot.getElementById('audio_player');
     this.audioPlayer = new this.audioPlyr(this.$.audio, {
       debug: false
@@ -94,20 +92,12 @@ export default class AppAudioViewer extends Mixin(LitElement)
     const audio = this.shadowRoot.getElementById('audio_player');
     audio.pause();
 
-    /* TODO: Fix
-      ERROR: 
-        app-audio-viewer.js:99 Uncaught TypeError: Cannot convert undefined or null to object
-        at Function.entries (<anonymous>)
-        at HTMLElement._stop (app-audio-viewer.js:99)
-        at HTMLElement._onAppStateUpdate (app-audio-viewer.js:39)
-        at EventBus._eb_handlers.<computed> (LitCorkUtils.js:142)
-        at EventBus.../node_modules/events/events.js.EventEmitter.emit (events.js:96)
-        at BaseStore.js:87
-    *
-    if (Object.entries(this.audioPlayer).length != 0) {
+    if ( this.audioPlayer === undefined || this.audioPlayer === null) return;
+
+    if (Object.entries(this.audioPlayer).length !== 0) {
       this.audioPlayer.stop();
     };
-    */
+
   }
 }
 

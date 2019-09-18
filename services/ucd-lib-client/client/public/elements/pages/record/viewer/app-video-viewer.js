@@ -62,8 +62,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
   **/
   async _onSelectedRecordMediaUpdate(media) {
     let getMediaType = utils.getType(media);
-    if (getMediaType === 'video') console.log("video");
-    else return;
+    if (getMediaType !== 'video') return;
 
     this.media = media;
 
@@ -147,6 +146,8 @@ export default class AppVideoViewer extends Mixin(LitElement)
   _stop() {
     const video = this.shadowRoot.querySelector('#video');
     video.pause();
+
+    if ( this.player === undefined || this.player === null ) return;
 
     if (Object.entries(this.player).length != 0) {
       this.player.stop();

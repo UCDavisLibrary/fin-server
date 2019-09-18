@@ -65,7 +65,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
   _onSelectedRecordMediaUpdate(media) {
     let getMediaType = utils.getType(media);
 
-    if (getMediaType === 'imageList' || getMediaType === 'image') console.log("imagelist/image")
+    if (getMediaType === 'imageList' || getMediaType === 'image') console.log("imagelist/image");
     else return;
 
     this.media = media;
