@@ -214,7 +214,8 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    //console.log("_onSelectedRecordUpdate(record) ", record);
+    //console.log("app-media-viewer-nav(record) ", record);
+    
     this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
     this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
 
@@ -224,7 +225,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
 
     // If only a single video item, display compacted nav bar
     // Otherwise display full bar.
-
     if (record.media.video) {
       this.zoomButton1.style.display = 'none';
       this.zoomButton3.style.display = 'none';
@@ -234,6 +234,8 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       this.zoomButton3.style.display = 'inline-block';
       this.classList.remove('video');
     }
+
+    if (this._countMediaItems(record.media) === 1) return;
 
     this.mediaList = this._flattenMediaList(record.media);
     this.mediaList = this._organizeMediaList(this.mediaList);
@@ -259,15 +261,12 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     this._resize();
   }
 
-  _organizeMediaList(mediaListArray) {
-    mediaListArray.map(item => item.position = parseInt(item.position))
-      .sort((a, b) => {
-        if(a.position > b.position) return 1;
-        if(a.position < b.position) return -1;
-        return 1;
-      });
-    
-    return mediaListArray;
+  _countMediaItems(mediaObj) {
+    let count = 0;
+    Object.keys(mediaObj).forEach(key => {
+      count += mediaObj[key].length;
+    });
+    return count;
   }
 
   _flattenMediaList(mediaObj) {
@@ -288,6 +287,17 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     });
 
     return array;
+  }
+
+  _organizeMediaList(mediaListArray) {
+    mediaListArray.map(item => item.position = parseInt(item.position))
+      .sort((a, b) => {
+        if(a.position > b.position) return 1;
+        if(a.position < b.position) return -1;
+        return 1;
+      });
+    
+    return mediaListArray;
   }
 
   /**

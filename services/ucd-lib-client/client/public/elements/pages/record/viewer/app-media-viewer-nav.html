@@ -56,6 +56,25 @@
     cursor: pointer;
   }
 
+  /*
+    TODO: Replace the borders w/the appropriate approved icons
+  */
+  button[data-media-type="audio"].thumbnail {
+    border: 1px solid red;
+  }
+
+  button[data-media-type="image"].thumbnail {
+    border: 1px solid pink;
+  }
+
+  button[data-media-type="video"].thumbnail {
+    border: 1px solid green;
+  }
+
+  button[data-media-type="360"].thumbnail {
+    border: 1px solid gold;
+  }
+
   .thumbnail[selected] {
     border: 2px solid var(--default-secondary-color);
   }
@@ -90,7 +109,7 @@
           class="thumbnail" 
           alt$="Page #[[item.position]]"
           title$="[[item.id]]"
-          media-type$="[[item.fileType]]"
+          data-media-type$="[[item.fileType]]"
           media-id$="[[item.id]]"
           disabled$="[[item.disabled]]"
           selected$="[[item.selected]]" 

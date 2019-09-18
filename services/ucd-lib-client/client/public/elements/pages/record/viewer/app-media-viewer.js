@@ -12,6 +12,7 @@ import "./app-media-viewer-nav"
 import "./app-image-viewer-lightbox"
 
 import "@ucd-lib/cork-app-utils"
+import utils from "../../../../lib/utils"
 
 export default class AppMediaViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
@@ -46,26 +47,9 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
     
     async _onSelectedRecordMediaUpdate(record) {
-      if ( this.MediaModel.get360Media(record.media).length ) {
-        this.isMediaType = "360";
-        this.$.mediaNav.style.display = 'none';
-        return;
-      }
-
-      if (record.media && record.media.video || record.video ) {
-        this.isMediaType = "video";
-        this.$.mediaNav.classList.add('video');
-        this.$.wrapper.classList.add('positionRelative');
-      } else if (record.media && record.media.audio || record.audio) {
-        this.isMediaType = "audio";
-        this.$.mediaNav.classList.add('audio');
-        this.$.wrapper.classList.add('positionRelative');
-        this.$.mediaNav.classList.remove('video');
-      } else {
+      this.isMediaType = utils.getType(record);
+      if ( this.isMediaType === "imageList" ) {
         this.isMediaType = "image";
-        this.$.mediaNav.classList.remove('video');
-        this.$.mediaNav.classList.remove('audio');
-        this.$.wrapper.classList.remove('positionRelative');
       }
     }
 

@@ -76,7 +76,7 @@ export default class AppAudioViewer extends Mixin(LitElement)
     }
 
     let plyr_supported = this.audioPlyr.supported('video', 'html5', true);
-    console.log("plyr_supported: ", plyr_supported);
+    //console.log("plyr_supported: ", plyr_supported);
 
     this.src  = config.fcrepoBasePath+this.media['@id'];
     this.type = this.media.encodingFormat;
@@ -94,9 +94,20 @@ export default class AppAudioViewer extends Mixin(LitElement)
     const audio = this.shadowRoot.getElementById('audio_player');
     audio.pause();
 
+    /* TODO: Fix
+      ERROR: 
+        app-audio-viewer.js:99 Uncaught TypeError: Cannot convert undefined or null to object
+        at Function.entries (<anonymous>)
+        at HTMLElement._stop (app-audio-viewer.js:99)
+        at HTMLElement._onAppStateUpdate (app-audio-viewer.js:39)
+        at EventBus._eb_handlers.<computed> (LitCorkUtils.js:142)
+        at EventBus.../node_modules/events/events.js.EventEmitter.emit (events.js:96)
+        at BaseStore.js:87
+    *
     if (Object.entries(this.audioPlayer).length != 0) {
       this.audioPlayer.stop();
     };
+    */
   }
 }
 

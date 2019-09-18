@@ -79,28 +79,12 @@ class Utils {
    * 
    * @return {Object}
   */
-  formatVideo(media) {
-    //console.log("formatVideo(media) ", media);
-    let videoObj, mpdObj, vidId, sources = [], transcripts = [], captions = [];
+  formatVideo(rawMedia) {
+    //console.log("formatVideo(rawMedia) ", rawMedia);
+    let media = [], videoObj = [], mpdObj, vidId, sources = [], transcripts = [], captions = [];
 
-    if (media instanceof Object) {
-      videoObj = {
-        id: media.video['@id'],
-        name: media['description'],
-        poster: media['thumbnailUrl'],
-        encodingFormat: media['encodingFormat'],
-        videoQuality: parseInt(media['videoQuality']),
-        width: parseInt(media.videoFrameSize.split("x")[0]),
-        height: parseInt(media.videoFrameSize.split("x")[1]),
-        sources: [
-          {
-            src: media.video['@id'],
-            type: media.video['encodingFormat'],
-            size: parseInt(media.videoQuality),
-          }
-        ],
-      }
-      return videoObj;
+    if (rawMedia instanceof Object) {
+      media.push(rawMedia);
     }
 
     media.map(element => {

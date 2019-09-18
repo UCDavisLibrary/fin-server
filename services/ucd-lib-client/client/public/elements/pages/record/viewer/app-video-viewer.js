@@ -66,7 +66,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
     else return;
 
     this.media = media;
-    console.log(this.media);
 
     try {
       let libs = await videoLibs.load();
