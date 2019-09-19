@@ -78,7 +78,7 @@
   }
 </style>
 
-<div class="layout" hidden$="[[!hasMultipleImages]]">
+<div class="layout" hidden$="[[!hasMultipleSources]]">
   <div class="radio" style="margin-right: 40px">
     <input id="single" type="radio" name="set-size" checked on-click="_toggleMultipleDownload" /> 
     <label for="single">Single</label>
@@ -89,17 +89,18 @@
   </div>
 </div>
 
-<div class="layout" style="margin-bottom: 5px;">
-  <select id="format" on-change="_onFormatSelected" hidden$="[[isVideo]]"></select>
-
-  <select on-change="_onSizeChange" hidden$="[[isVideo]]">
-      <template is="dom-repeat" items="[[sizes]]">
+<div class="layout" style="margin-bottom: 5px;" hidden$="[[isVideo]]">
+  <select id="format" on-change="_onFormatSelected"></select>
+  <select on-change="_onSizeChange">
+      <template is="dom-repeat" items="[[imageSizes]]">
         <option value$="[[item.label]]" selected$="[[item.selected]]">
           [[item.title]] [[item.width]] x [[item.height]] px
         </option>
       </template>
   </select>
+</div>
 
+<div class="layout" style="margin-bottom: 5px;">
   <select id="videoDownloadOptions" on-change="_onChangeVideoDownloadOptions" hidden$="[[!isVideo]]">
       <template is="dom-repeat" items="[[downloadOptions]]">
         <option data-id$="[[index]]" value$="[[index]]">
@@ -113,7 +114,7 @@
     download 
     target="_blank" 
     rel="noopener" 
-    hidden$="[[multipleImagesSelected]]" 
+    hidden$="[[multipleSourcesSelected]]" 
     style="white-space: nowrap;">
       <iron-icon icon="file-download"></iron-icon>&nbsp;
       <span>
@@ -125,11 +126,10 @@
     action$="/api/tar/[[tarName]]" 
     method="POST" 
     target="_blank" 
-    hidden$="[[!multipleImagesSelected]]">    
+    hidden$="[[!multipleSourcesSelected]]">    
       <input type="text" hidden name="paths" id="tarPaths" style="display: none;">
-
       <button on-click="_downloadTar">
-        <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download</span>
+        <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download Archive</span>
       </button>
   </form>
 </div>
