@@ -112,7 +112,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    */
   render(options) {
     if (options === undefined) return;
-    this.options = options.fileFormat;
+    this.options = options;
     this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();
     this.size = bytes(options.size);
 
@@ -169,7 +169,6 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     }
 
     this.downloadOptions = this.sources;
-
     if (this.downloadOptions.length === 1) {
       this.$.videoDownloadOptions.disabled  = true;
       this.$.videoDownloadOptions.classList.add("plainText");
@@ -338,6 +337,8 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
       this._setTarPaths();
 
+      if (!this.options && this.imagelist) this.options = this.imagelist[0].image;
+
       if( this.selectedFormat === this.originalFormat && this.selectedSize === IMG_SIZES.length -1 ) {
         this.defaultImage = true;
         return this.href = this.options.url;
@@ -347,8 +348,8 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
       let size = this.imageSizes[this.selectedSize];
       size = size.width + ',' + size.height;
-      
-      //this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
+
+      this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
     });
   }
 
