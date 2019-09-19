@@ -4,6 +4,7 @@ import template from "./app-media-viewer-nav.html"
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
 import "../../../utils/app-share-btn"
+import utils from "../../../../lib/utils"
 
 export default class AppMediaViewerNav extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
@@ -236,23 +237,31 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     }
 
     if (this._countMediaItems(record.media) === 1) return;
-
     this.mediaList = this._flattenMediaList(record.media);
     this.mediaList = this._organizeMediaList(this.mediaList);
     this.thumbnails = this.mediaList.map(record => {
-      let fileFormat = (record.fileFormat ? record.fileFormat : record.encodingFormat);
+      let _fileFormat = '';
+      if (record.fileFormat || record.encodingFormat) {
+        _fileFormat = (record.fileFormat ? record.fileFormat : record.encodingFormat);
+        _fileFormat = _fileFormat.split('/').shift();
+      }
+      let fileFormat = _fileFormat;
+      
+      let url = (record.image ? record.image.url : false)
       let thumbnail = {
         id: record['@id'],
         position: record.position,
         selected: false,
         disabled: true,
-        fileType: fileFormat.split('/').shift(),
-        src: record.image.url,
-        thumbnail: record.image.url
+        fileType: fileFormat,
+        src: url,
+        thumbnail: url
       }
 
       return thumbnail;
     });
+
+    console.log("this thumbnails: ", this.thumbnails);
 
     this.singleImage = (this.thumbnails.length !== 0 && this.thumbnails.length > 1) ? false : true;
     if( this.singleImage ) this.classList.add('single');
@@ -270,21 +279,29 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
   }
 
   _flattenMediaList(mediaObj) {
-    let array = [];
+    let array = [], _temp = [];
 
     Object.keys(mediaObj).forEach(key => {
       mediaObj[key].forEach(element => {
-       if (element['@type'].includes('http://digital.ucdavis.edu/schema#StreamingVideo') === false) {
-         if (element.hasPart) {
-          element.hasPart.forEach(el => {
-            array.push(el);
-           });
-         } else {
-           array.push(element);
-         }
-       };
-     });
+        if (utils.getType(element) === 'streamingVideo') {
+          _temp = element.hasPart.filter(el => {
+            if (el['@type']) {
+              return el['@type'].includes('http://digital.ucdavis.edu/schema#StreamingVideo');
+            }
+          });
+        } else {
+          if (element.hasPart) {
+            element.hasPart.forEach(el => {
+              array.push(el);
+            });
+          } else {
+            array.push(element);
+          }
+        }
+      });
     });
+
+    array = array.concat(_temp);
 
     return array;
   }

@@ -91,6 +91,8 @@ export default class AppRecord extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   async _onSelectedRecordUpdate(record) {
+    console.log("app-record(record): ", record);
+
     if( record['@id'] && record['@id'] === this.renderedRecordId ) return;
 
     this.renderedRecordId = record['@id'];

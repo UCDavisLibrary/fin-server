@@ -50,6 +50,8 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.isMediaType = utils.getType(record);
       if ( this.isMediaType === "imageList" ) {
         this.isMediaType = "image";
+      } else if ( this.isMediaType = "streamingVideo" ){
+        this.isMediaType = "video"
       }
     }
 

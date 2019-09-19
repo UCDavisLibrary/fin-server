@@ -43,14 +43,16 @@ class Utils {
   }
 
   getType(record) {
-    let mediaType = '';
+    let mediaType = 'image';
 
     record['@type'].forEach(element => {
       let el = element.toLowerCase();
+
       if (el.includes('imagelist')) mediaType = 'imageList';
-      else if (el.includes('image')) mediaType = 'image';
-      else if (el.includes('video')) mediaType = 'video';
-      else if (el.includes('audio')) mediaType = 'audio';
+      else if (el.includes('imageobject')) mediaType = 'image';
+      else if (el === 'http://schema.org/video') mediaType = 'video';
+      else if (el.includes('streamingvideo')) mediaType = 'streamingVideo';
+      else if (el.includes('audioobject')) mediaType = 'audio';
     });
 
     return mediaType;
@@ -96,8 +98,11 @@ class Utils {
           // Locate a regular video
           else if (element.video) return element;
         });
-
         vidId = mpdObj['@id'];
+      } else if ( this.getType(element) === 'streamingVideo' ) {
+        console.log("Streaming Video: ", element);
+        mpdObj = element;
+        vidId  = mpdObj['@id'];
       } else {
         mpdObj = element;
         vidId = mpdObj['video']['@id'];
@@ -158,8 +163,10 @@ class Utils {
       poster: mpdObj['thumbnailUrl'],
       encodingFormat: mpdObj['encodingFormat'],
       videoQuality: parseInt(mpdObj['videoQuality']),
-      width: parseInt(mpdObj.videoFrameSize.split("x")[0]),
-      height: parseInt(mpdObj.videoFrameSize.split("x")[1]),
+      width: 400,
+      height: 400,
+      //width: parseInt(mpdObj.videoFrameSize.split("x")[0]),
+      //height: parseInt(mpdObj.videoFrameSize.split("x")[1]),
       sources: sources,
       transcripts: transcripts,
       captions: captions

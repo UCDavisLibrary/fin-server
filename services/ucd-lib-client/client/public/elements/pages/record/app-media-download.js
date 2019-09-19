@@ -159,8 +159,8 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         return {
           title : format.title,
           label : format.label,
-          width: Math.floor(this.sources[0].image.width * format.ratio),
-          height: Math.floor(this.sources[0].image.height * format.ratio),
+          //width: Math.floor(this.sources[0].image.width * format.ratio),
+          //height: Math.floor(this.sources[0].image.height * format.ratio),
           selected : (this.selectedSize === index)
         }
       });
@@ -349,7 +349,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       let size = this.imageSizes[this.selectedSize];
       size = size.width + ',' + size.height;
 
-      this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
+      //this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
     });
   }
 

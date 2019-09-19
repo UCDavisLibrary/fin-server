@@ -61,8 +61,10 @@ export default class AppVideoViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
+    //console.log("app-video-viewer(media): ", media);
+    
     let getMediaType = utils.getType(media);
-    if (getMediaType !== 'video') return;
+    if (getMediaType !== 'video' && getMediaType !== 'streamingVideo') return;
 
     this.media = media;
 
@@ -82,6 +84,8 @@ export default class AppVideoViewer extends Mixin(LitElement)
     //console.log("shaka_supported: ", shaka_supported);
 
     let videoObject = utils.formatVideo(this.media);
+    console.log("videoObject: ", videoObject);
+
     let videoUri = videoObject['id'];
     let title    = videoObject['name'];
     let poster   = videoObject['poster'];
