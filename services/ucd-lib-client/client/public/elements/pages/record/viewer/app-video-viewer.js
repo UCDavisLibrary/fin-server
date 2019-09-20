@@ -84,8 +84,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
     //console.log("shaka_supported: ", shaka_supported);
 
     let videoObject = utils.formatVideo(this.media);
-    console.log("videoObject: ", videoObject);
-
     let videoUri = videoObject['id'];
     let title    = videoObject['name'];
     let poster   = videoObject['poster'];
@@ -130,6 +128,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     if ( shaka_supported === true ) {
       let manifestUri = config.fcrepoBasePath+videoUri;
+      //console.log("manifestUri: ", manifestUri);
       const shaka = new this.shaka_player.Player(this.$.video);
       //console.log(shaka.getConfiguration());
       try { 

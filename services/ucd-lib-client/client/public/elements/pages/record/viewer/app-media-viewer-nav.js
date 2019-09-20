@@ -246,7 +246,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         _fileFormat = _fileFormat.split('/').shift();
       }
       let fileFormat = _fileFormat;
-      
+
       let url = (record.image ? record.image.url : false)
       let thumbnail = {
         id: record['@id'],
@@ -260,8 +260,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
 
       return thumbnail;
     });
-
-    console.log("this thumbnails: ", this.thumbnails);
 
     this.singleImage = (this.thumbnails.length !== 0 && this.thumbnails.length > 1) ? false : true;
     if( this.singleImage ) this.classList.add('single');
@@ -279,17 +277,13 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
   }
 
   _flattenMediaList(mediaObj) {
-    let array = [], _temp = [];
+    let array = [];
 
     Object.keys(mediaObj).forEach(key => {
       mediaObj[key].forEach(element => {
-        if (utils.getType(element) === 'streamingVideo') {
-          _temp = element.hasPart.filter(el => {
-            if (el['@type']) {
-              return el['@type'].includes('http://digital.ucdavis.edu/schema#StreamingVideo');
-            }
-          });
-        } else {
+        // TODO: We don't really want to include the streaming video as a download option
+        // Should we still include it on the thumbnails?
+        if (utils.getType(element) !== 'streamingVideo') {
           if (element.hasPart) {
             element.hasPart.forEach(el => {
               array.push(el);
@@ -300,8 +294,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         }
       });
     });
-
-    array = array.concat(_temp);
 
     return array;
   }

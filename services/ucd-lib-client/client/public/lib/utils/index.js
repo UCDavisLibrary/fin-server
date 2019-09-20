@@ -100,7 +100,6 @@ class Utils {
         });
         vidId = mpdObj['@id'];
       } else if ( this.getType(element) === 'streamingVideo' ) {
-        console.log("Streaming Video: ", element);
         mpdObj = element;
         vidId  = mpdObj['@id'];
       } else {
@@ -163,10 +162,8 @@ class Utils {
       poster: mpdObj['thumbnailUrl'],
       encodingFormat: mpdObj['encodingFormat'],
       videoQuality: parseInt(mpdObj['videoQuality']),
-      width: 400,
-      height: 400,
-      //width: parseInt(mpdObj.videoFrameSize.split("x")[0]),
-      //height: parseInt(mpdObj.videoFrameSize.split("x")[1]),
+      width: parseInt(mpdObj.videoFrameSize.split("x")[0]),
+      height: parseInt(mpdObj.videoFrameSize.split("x")[1]),
       sources: sources,
       transcripts: transcripts,
       captions: captions
