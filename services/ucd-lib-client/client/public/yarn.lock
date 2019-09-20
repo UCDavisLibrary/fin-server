@@ -84,7 +84,7 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-icon@3.0.1", "@polymer/iron-icon@^3.0.0-pre.1", "@polymer/iron-icon@^3.0.0-pre.18", "@polymer/iron-icon@^3.0.0-pre.26":
+"@polymer/iron-icon@3.0.1", "@polymer/iron-icon@^3.0.0-pre.1", "@polymer/iron-icon@^3.0.0-pre.26", "@polymer/iron-icon@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-icon/-/iron-icon-3.0.1.tgz#93211c39d8825fe4965a68419566036c1df291eb"
   dependencies:
@@ -100,7 +100,7 @@
     "@polymer/iron-iconset-svg" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-iconset-svg@3.0.1", "@polymer/iron-iconset-svg@^3.0.0-pre.18", "@polymer/iron-iconset-svg@^3.0.0-pre.26":
+"@polymer/iron-iconset-svg@3.0.1", "@polymer/iron-iconset-svg@^3.0.0-pre.26", "@polymer/iron-iconset-svg@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-iconset-svg/-/iron-iconset-svg-3.0.1.tgz#568d6e7dbc120299dae63be3600aeba0d30ddbea"
   dependencies:
@@ -296,7 +296,7 @@
     "@polymer/iron-overlay-behavior" "^3.0.0-pre.27"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/polymer@3.1.0", "@polymer/polymer@^3.0.0", "@polymer/polymer@^3.0.0-pre.1", "@polymer/polymer@^3.1.0":
+"@polymer/polymer@3.1.0", "@polymer/polymer@^3.0.0", "@polymer/polymer@^3.0.0-pre.1", "@polymer/polymer@^3.1.0", "@polymer/polymer@^3.3.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@polymer/polymer/-/polymer-3.1.0.tgz#3e1b7447a1e350fd654e1823def655d0f0828a70"
   dependencies:
@@ -357,13 +357,14 @@
     "@polymer/iron-icons" "^3.0.0-pre.1"
     "@polymer/polymer" "^3.0.0-pre.1"
 
-"@ucd-lib/fin-icons@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-icons/-/fin-icons-0.0.5.tgz#9757c70e887bf0b54de870ef34409d08c328f4be"
+"@ucd-lib/fin-icons@0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/fin-icons/-/fin-icons-0.0.7.tgz#836de6b1f3d5e730892faadf87ae5cf70da90359"
+  integrity sha512-ppOFIJZIuZqxRC1GKDGppsSMYoSa4dez9j2cKirpP2R22SHXRLngcCX3Lu7FwFqbNNVJ8prBUoAyLYRQBKzvQw==
   dependencies:
-    "@polymer/iron-icon" "^3.0.0-pre.18"
-    "@polymer/iron-iconset-svg" "^3.0.0-pre.18"
-    "@polymer/polymer" "^3.0.0"
+    "@polymer/iron-icon" "^3.0.1"
+    "@polymer/iron-iconset-svg" "^3.0.1"
+    "@polymer/polymer" "^3.3.0"
 
 "@ucd-lib/fin-search-box@0.1.2":
   version "0.1.2"
@@ -371,7 +372,7 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@webcomponents/shadycss@1.5.2", "@webcomponents/shadycss@^1.5.2":
+"@webcomponents/shadycss@1.5.2", "@webcomponents/shadycss@^1.5.2", "@webcomponents/shadycss@^1.9.1":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@webcomponents/shadycss/-/shadycss-1.5.2.tgz#ad72f43000c39ba4ac61e625131f34f4b7cfe55f"
 
