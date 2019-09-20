@@ -215,7 +215,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    //console.log("app-media-viewer-nav(record) ", record);
+    console.log("app-media-viewer-nav(record) ", record);
     
     this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
     this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
@@ -284,8 +284,10 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         // TODO: We don't really want to include the streaming video as a download option
         // Should we still include it on the thumbnails?
         if (utils.getType(element) !== 'streamingVideo') {
-          if (element.hasPart) {
-            element.hasPart.forEach(el => {
+          // Check and make sure you're only looping hasParts that belong to imageLists
+          // We don't care about video hasParts right here, because these are just thumbnails
+          if (element.hasPart && utils.getType(element) === 'imageList') {
+            element.hasPart.forEach((el) => {
               array.push(el);
             });
           } else {

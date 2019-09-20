@@ -43,6 +43,7 @@ class Utils {
   }
 
   getType(record) {
+    if (record.error) return;
     let mediaType = 'image';
 
     record['@type'].forEach(element => {

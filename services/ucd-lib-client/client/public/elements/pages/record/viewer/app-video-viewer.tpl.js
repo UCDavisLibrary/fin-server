@@ -15,10 +15,12 @@ return html`
             box-sizing: border-box;
         }
 
+        /*
         .plyr__controls {
             margin: 0 auto;
             width: calc(100vw / 1.8);
         }
+        */
 
         .plyr__video-wrapper {
             text-align: center;

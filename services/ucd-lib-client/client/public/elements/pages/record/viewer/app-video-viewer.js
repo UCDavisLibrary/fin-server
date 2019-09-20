@@ -128,7 +128,12 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     if ( shaka_supported === true ) {
       let manifestUri = config.fcrepoBasePath+videoUri;
-      //console.log("manifestUri: ", manifestUri);
+
+      // Functional demo uri
+      //let manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/bbb-dark-truths-hls/hls.m3u8';
+      
+      console.log("manifestUri: ", manifestUri);
+
       const shaka = new this.shaka_player.Player(this.$.video);
       //console.log(shaka.getConfiguration());
       try { 
