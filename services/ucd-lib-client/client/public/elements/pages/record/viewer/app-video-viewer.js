@@ -133,9 +133,14 @@ export default class AppVideoViewer extends Mixin(LitElement)
       //let manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/bbb-dark-truths-hls/hls.m3u8';
       
       console.log("manifestUri: ", manifestUri);
-
       const shaka = new this.shaka_player.Player(this.$.video);
-      //console.log(shaka.getConfiguration());
+      shaka.configure({
+        streaming: {
+          bufferingGoal: 120,
+          forceTransmuxTS: true
+        }
+      });
+      console.log(shaka.getConfiguration());
       try { 
         await shaka.load(manifestUri).then(() => {
           console.log("shaka loaded");
