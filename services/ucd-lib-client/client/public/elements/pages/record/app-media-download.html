@@ -1,4 +1,8 @@
 <style include="shared-styles">
+  :host {
+    display: block;
+  }
+
   .info {
     margin: 10px 0;
     font-size: var(--font-size-sm);
@@ -78,58 +82,62 @@
   }
 </style>
 
-<div class="layout" hidden$="[[!hasMultipleSources]]">
-  <div class="radio" style="margin-right: 40px">
-    <input id="single" type="radio" name="set-size" checked on-click="_toggleMultipleDownload" /> 
-    <label for="single">Single</label>
+<div id="msg"></div>
+
+<div id="wrapper">
+  <div class="layout" hidden$="[[!hasMultipleSources]]">
+    <div class="radio" style="margin-right: 40px">
+      <input id="single" type="radio" name="set-size" checked on-click="_toggleMultipleDownload" /> 
+      <label for="single">Single</label>
+    </div>
+    <div class="radio">
+      <input id="fullset" type="radio" name="set-size" on-click="_toggleMultipleDownload"/> 
+      <label for="fullset">Full Set</label>
+    </div>
   </div>
-  <div class="radio">
-    <input id="fullset" type="radio" name="set-size" on-click="_toggleMultipleDownload"/> 
-    <label for="fullset">Full Set</label>
+
+  <div class="layout" style="margin-bottom: 5px;" hidden$="[[isVideo]]">
+    <select id="format" on-change="_onFormatSelected"></select>
+    <select on-change="_onSizeChange">
+        <template is="dom-repeat" items="[[imageSizes]]">
+          <option value$="[[item.label]]" selected$="[[item.selected]]">
+            [[item.title]] [[item.width]] x [[item.height]] px
+          </option>
+        </template>
+    </select>
   </div>
-</div>
 
-<div class="layout" style="margin-bottom: 5px;" hidden$="[[isVideo]]">
-  <select id="format" on-change="_onFormatSelected"></select>
-  <select on-change="_onSizeChange">
-      <template is="dom-repeat" items="[[imageSizes]]">
-        <option value$="[[item.label]]" selected$="[[item.selected]]">
-          [[item.title]] [[item.width]] x [[item.height]] px
-        </option>
-      </template>
-  </select>
-</div>
+  <div class="layout" style="margin-bottom: 5px;">
+    <select id="videoDownloadOptions" on-change="_onChangeVideoDownloadOptions" hidden$="[[!isVideo]]">
+        <template is="dom-repeat" items="[[downloadOptions]]">
+          <option data-id$="[[index]]" value$="[[index]]">
+            [[item.label]]
+          </option>
+        </template>
+    </select>
 
-<div class="layout" style="margin-bottom: 5px;">
-  <select id="videoDownloadOptions" on-change="_onChangeVideoDownloadOptions" hidden$="[[!isVideo]]">
-      <template is="dom-repeat" items="[[downloadOptions]]">
-        <option data-id$="[[index]]" value$="[[index]]">
-          [[item.label]]
-        </option>
-      </template>
-  </select>
+    <a id="downloadBtn" href="[[href]]" 
+      on-click="_onDownloadClicked" 
+      download 
+      target="_blank" 
+      rel="noopener" 
+      hidden$="[[multipleSourcesSelected]]" 
+      style="white-space: nowrap;">
+        <iron-icon icon="file-download"></iron-icon>&nbsp;
+        <span>
+          Download
+        </span>
+    </a>
 
-  <a href="[[href]]" 
-    on-click="_onDownloadClicked" 
-    download 
-    target="_blank" 
-    rel="noopener" 
-    hidden$="[[multipleSourcesSelected]]" 
-    style="white-space: nowrap;">
-      <iron-icon icon="file-download"></iron-icon>&nbsp;
-      <span>
-        Download
-      </span>
-  </a>
-
-  <form id="downloadTar" 
-    action$="/api/tar/[[tarName]]" 
-    method="POST" 
-    target="_blank" 
-    hidden$="[[!multipleSourcesSelected]]">    
-      <input type="text" hidden name="paths" id="tarPaths" style="display: none;">
-      <button on-click="_downloadTar">
-        <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download Archive</span>
-      </button>
-  </form>
+    <form id="downloadTar" 
+      action$="/api/tar/[[tarName]]" 
+      method="POST" 
+      target="_blank" 
+      hidden$="[[!multipleSourcesSelected]]">    
+        <input type="text" hidden name="paths" id="tarPaths" style="display: none;">
+        <button on-click="_downloadTar">
+          <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download Archive</span>
+        </button>
+    </form>
+  </div>
 </div>

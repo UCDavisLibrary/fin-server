@@ -92,8 +92,9 @@ export default class AppVideoViewer extends Mixin(LitElement)
     let sources  = videoObject['sources'];
 
     this.$.video = this.shadowRoot.getElementById('video');
-    this.$.video.style.width  = width + "px";
-    this.$.video.style.maxWidth = "calc(" + height + " / " + width +  " * 100%)";
+    this.$.video.style.width     = width + "px";
+    this.$.video.style.maxWidth  = "calc(" + height + " / " + width +  " * 100%)";
+    this.$.video.style.maxHeight = "calc(" + height + " / " + width +  " * 100%)";
 
     if (videoObject['transcripts']) {
       let transcripts = utils.asArray(videoObject, 'transcripts').map(element => {
@@ -131,20 +132,12 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
       // Functional demo uri
       //let manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/bbb-dark-truths-hls/hls.m3u8';
-      
-      console.log("manifestUri: ", manifestUri);
+  
       const shaka = new this.shaka_player.Player(this.$.video);
-      shaka.configure({
-        streaming: {
-          bufferingGoal: 120,
-          forceTransmuxTS: true
-        }
-      });
-      console.log(shaka.getConfiguration());
+      //console.log("shaka config: ", shaka.getConfiguration());
+
       try { 
-        await shaka.load(manifestUri).then(() => {
-          console.log("shaka loaded");
-        });
+        await shaka.load(manifestUri);
       } catch(error) {
         console.error('Error code: ', error.code, 'object', error);
       }

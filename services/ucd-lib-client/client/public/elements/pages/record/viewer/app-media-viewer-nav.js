@@ -215,7 +215,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    console.log("app-media-viewer-nav(record) ", record);
+    //console.log("app-media-viewer-nav(record) ", record);
     
     this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
     this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');

@@ -159,7 +159,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     // set fedora collection link
     let metadataPart = record['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
     let link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
-    this.$.fedoraValue.innerHTML =  `<a href="${link}">${record['@id']}</a>`;
+    this.$.fedoraValue.innerHTML = `<a href="${link}">${record['@id']}</a>`;
 
     this._updateMetadataRows();
     this._setTarHref();
@@ -309,7 +309,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     }
 
     this.name = this.record.name || '';
-    this.$.download.style.display = 'block';
 
     if (!record.image) return;
 

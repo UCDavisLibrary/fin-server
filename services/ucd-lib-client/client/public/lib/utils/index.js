@@ -48,10 +48,9 @@ class Utils {
 
     record['@type'].forEach(element => {
       let el = element.toLowerCase();
-
       if (el.includes('imagelist')) mediaType = 'imageList';
       else if (el.includes('imageobject')) mediaType = 'image';
-      else if (el === 'http://schema.org/video') mediaType = 'video';
+      else if (el === 'http://schema.org/video' || el === 'http://schema.org/videoobject') mediaType = 'video';
       else if (el.includes('streamingvideo')) mediaType = 'streamingVideo';
       else if (el.includes('audioobject')) mediaType = 'audio';
     });
@@ -94,10 +93,14 @@ class Utils {
     media.map(element => {
       if ( element['hasPart'] ) {
         mpdObj = element['hasPart'].find((element) => {
-          // Locate a streaming video
-          if (element.encodingFormat === "application/dash+xml") return element;
-          // Locate a regular video
-          else if (element.video) return element;
+          if ( !element.error ) {
+            // Locate a streaming video
+            if ( this.getType(element) === 'streamingVideo' ) return element;
+            // Locate a regular video
+            else if (element.video) return element;
+          } else {
+            console.log("Error: ", element.error);
+          }
         });
         vidId = mpdObj['@id'];
       } else if ( this.getType(element) === 'streamingVideo' ) {

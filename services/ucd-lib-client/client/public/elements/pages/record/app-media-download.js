@@ -135,7 +135,6 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   setRootRecord(record) {
     if( this.rootRecord === record ) return;
     this.rootRecord = record;
-
     this.multipleSourcesSelected = false;
     this.selectedSize = IMG_SIZES.length - 1;
   }
@@ -144,7 +143,16 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     if (utils.getType(record) === 'video') {
       this.isVideo = true;
       this.sources = this._getVideoSources(record);
-      this.href = this.sources[0].src;
+      this.href    = this.sources[0].src;
+    } else if (utils.getType(record) === 'streamingVideo') {
+      // They can't download a streaming video so offer up any available fallback
+      this.isVideo = true;
+      this.rootRecord.media.video.forEach(element => {
+        if (utils.getType(element) === 'video') {
+          this.sources = this._getVideoSources(element);
+          this.href    = this.sources[0].src;
+        }
+      });
     } else if (utils.getType(record) === 'audio') {
       this.isVideo = true;
       this.sources = this._getAudioSources(record);
@@ -159,8 +167,8 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         return {
           title : format.title,
           label : format.label,
-          //width: Math.floor(this.sources[0].image.width * format.ratio),
-          //height: Math.floor(this.sources[0].image.height * format.ratio),
+          width: Math.floor(this.sources[0].image.width * format.ratio),
+          height: Math.floor(this.sources[0].image.height * format.ratio),
           selected : (this.selectedSize === index)
         }
       });
@@ -168,7 +176,16 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       this._renderImgFormats();
     }
 
+    if ( this.sources.length === 0 ) {
+      this.$.wrapper.style.display = "none";
+      this.$.msg.innerHTML = '<em>No downloadable items available</em>';
+      return;
+    }
+
+    this.$.wrapper.style.display = 'initial';
+    this.$.msg.innerHTML = '';
     this.downloadOptions = this.sources;
+
     if (this.downloadOptions.length === 1) {
       this.$.videoDownloadOptions.disabled  = true;
       this.$.videoDownloadOptions.classList.add("plainText");
@@ -349,7 +366,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       let size = this.imageSizes[this.selectedSize];
       size = size.width + ',' + size.height;
 
-      //this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
+      this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
     });
   }
 
