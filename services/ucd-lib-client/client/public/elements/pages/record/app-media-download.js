@@ -156,6 +156,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     } else if (utils.getType(record) === 'audio') {
       this.isVideo = true;
       this.sources = this._getAudioSources(record);
+      this.href    = this.sources[0].src;
     } else {
       this.isVideo = false;
       this.sources = this._getImageSources(record);
@@ -354,8 +355,10 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
       this._setTarPaths();
 
-      if (!this.options && this.imagelist) this.options = this.imagelist[0].image;
+      if (this.isVideo) return;
 
+      if (!this.options && this.imagelist) this.options = this.imagelist[0].image;
+      
       if( this.selectedFormat === this.originalFormat && this.selectedSize === IMG_SIZES.length -1 ) {
         this.defaultImage = true;
         return this.href = this.options.url;
