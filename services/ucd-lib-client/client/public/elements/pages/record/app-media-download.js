@@ -197,6 +197,8 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
     if (this.downloadOptions && this.downloadOptions.length > 1) this.hasMultipleSources = true;
     else this.hasMultipleSources = false;
+
+    this._setTarPaths();
   }
 
   _getImageSources(imageRecord) {
@@ -395,13 +397,23 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   }
 
   _setTarPaths() {
-    if( !IMG_SIZES[this.selectedSize] ) return;
     let origin = false, urls = {};
+    this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '');
 
-    if( this.selectedFormat === this.originalFormat && this.selectedSize === IMG_SIZES.length -1 ) {
-      origin = true;
+    // TODO: Tighten this up to make it more media-agnostic
+    if ( this.isVideo ) {
+      this.sources.forEach(item => {
+        let name = item.label;
+        urls[name] = item.src;
+      });
+
+      this.$.tarPaths.value = JSON.stringify(urls);
+      
+      return;
     }
 
+    if( !IMG_SIZES[this.selectedSize] ) return;
+    if( this.selectedFormat === this.originalFormat && this.selectedSize === IMG_SIZES.length -1 ) origin = true;
     if ( this.hasMultipleSources ) {
       this.imagelist.forEach(item => {
         let name = item.filename || item.name;
@@ -416,9 +428,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         }
       });
     }
-
     this.$.tarPaths.value = JSON.stringify(urls);
-    this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '');
   }
 
   /**
