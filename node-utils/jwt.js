@@ -19,7 +19,7 @@ class JwtUtils {
     if( token ) return token;
     
     token = req.get('Authorization');
-    if( token ) return token.replace(/^Bearer /, '');
+    if( token ) return token.replace(/^Bearer /i, '');
 
     return null;
   }

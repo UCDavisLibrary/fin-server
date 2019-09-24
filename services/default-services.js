@@ -39,6 +39,14 @@ module.exports = [
     type : 'WebhookService',
     url : 'http://essync:3333'
   },
+  {
+    id : 'video-converter',
+    title : 'Video stream converter service',
+    description : 'Fin video converter',
+    type : 'ExternalService',
+    urlTemplate : 'http://localhost:8090{{svcPath}}?fcUrl={{fcUrl}}&token={{token}}&svcId={{svcId}}'
+    //urlTemplate : 'https://fin-service-video-converter-akwemh35fa-uc.a.run.app/{{svcPath}}?fcUrl={{fcUrl}}'
+  },
   // {
   //   id : 'auto-generator-demo',
   //   title : 'Auto Generator Demo',

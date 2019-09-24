@@ -391,7 +391,11 @@ class ProxyModel {
       
     // run the proxy service
     } else if( service.type === api.service.TYPES.PROXY || service.type === api.service.TYPES.GLOBAL ) {
-      let params = {fcPath : svcReq.fcPath, svcPath: svcReq.svcPath};
+      let params = {
+        fcPath : svcReq.fcPath, 
+        svcPath: svcReq.svcPath,
+        svcId: service.id
+      };
 
       // if the service has multiple endpoints, the first part of the 
       // service is the route
@@ -417,9 +421,16 @@ class ProxyModel {
       this._setReqTime(expReq);
 
       let token = jwt.getJwtFromRequest(expReq);
-      let url = service.renderUrlTemplate({fcUrl: querystring.escape(svcReq.fcUrl), token});
-      res.set(serviceModel.SIGNATURE_HEADER, serviceModel.createServiceSignature(service.id));
-      res.redirect(url);
+      let url = service.renderUrlTemplate({
+        fcUrl: querystring.escape(svcReq.fcUrl),
+        svcPath: svcReq.svcPath,
+        svcId: service.id,
+        token
+      });
+      let serviceToken = serviceModel.createServiceSignature(service.id);
+      res.set(serviceModel.SIGNATURE_HEADER, serviceToken);
+      res.cookie('service-jwt', serviceToken);
+      res.redirect(307, url);
 
     // run server label service 
     // this is a hardcoded service in the service module

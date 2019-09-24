@@ -348,7 +348,7 @@ class ServiceModel {
    */
   getRootDomain(url) {
     if( !url.match(/^http/) ) url = 'http://'+url;
-    url = new URL(url);
+    url = new URL(url.replace(/{{.*/, ''));
     let parts = url.hostname.replace(/\.$/, '').split('.');
     // let parts = url.host.replace(/\.$/, '').split('.');
     if( parts.length === 1) return parts[0];

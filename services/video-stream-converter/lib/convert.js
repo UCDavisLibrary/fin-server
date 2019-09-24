@@ -3,6 +3,8 @@ const fs = require('fs-extra');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
+// Good docs https://docs.peer5.com/guides/production-ready-hls-vod/
+
 const BASE_FFMPEG_VIDEO_PARAMS = "-preset slow -tune film -vsync passthrough -write_tmcd 0 -an -c:v libx264 -x264opts 'keyint=25:min-keyint=25:no-scenecut' -crf 22";
 const MP4BOX = '/gpac/gpac-0.8.0/bin/gcc/MP4Box';
 
