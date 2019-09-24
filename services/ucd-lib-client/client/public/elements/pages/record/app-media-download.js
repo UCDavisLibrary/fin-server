@@ -47,23 +47,23 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
   static get properties() {
     return {
-      href : {
-        type : String,
-        value : ''
+      defaultImage: {
+        type : Boolean,
+        value : true
       },
-      resolution : {
-        type : String,
-        value : ''
+      formats : {
+        type : Array,
+        value : () => []
       },
-      isVideo: {
+      fullMediaSet: {
+        type: Array,
+        value: () => []
+      },
+      hasMultipleSources: {
         type: Boolean,
         value: false
       },
-      isMediaType: {
-        type: String,
-        value: 'image'
-      },
-      size : {
+      href : {
         type : String,
         value : ''
       },
@@ -71,25 +71,29 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         type : Array,
         value : () => []
       },
-      sources: {
-        type: Array,
-        value: () => []
+      isMediaType: {
+        type: String,
+        value: 'image'
       },
-      formats : {
-        type : Array,
-        value : () => []
-      },
-      defaultImage: {
-        type : Boolean,
-        value : true
-      },
-      hasMultipleSources: {
+      isVideo: {
         type: Boolean,
         value: false
       },
       multipleSourcesSelected: {
         type : Boolean,
         value : false
+      },
+      resolution : {
+        type : String,
+        value : ''
+      },
+      size : {
+        type : String,
+        value : ''
+      },
+      sources: {
+        type: Array,
+        value: () => []
       }
     }
   }
@@ -118,6 +122,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
+    this.fullMediaSet = [];
 
     this.imageSizes = IMG_SIZES.map((format, index) => {
       return {
@@ -135,11 +140,17 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   setRootRecord(record) {
     if( this.rootRecord === record ) return;
     this.rootRecord = record;
-    this.multipleSourcesSelected = false;
+
+    if ( utils.countMediaItems(this.rootRecord.media) > 1 ) {
+      this.fullMediaSet = utils.flattenMediaList(this.rootRecord.media);
+    }
     this.selectedSize = IMG_SIZES.length - 1;
   }
 
   _onSelectedRecordMediaUpdate(record) {
+    this.$.single.checked = true;
+    this.$.fullset.checked = false;
+
     if (utils.getType(record) === 'video') {
       this.isVideo = true;
       this.sources = this._getVideoSources(record);
@@ -198,7 +209,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     if (this.downloadOptions && this.downloadOptions.length > 1) this.hasMultipleSources = true;
     else this.hasMultipleSources = false;
 
-    this._setTarPaths();
+    //this._setTarPaths();
   }
 
   _getImageSources(imageRecord) {
@@ -234,6 +245,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
     if (video.sources && video.sources.length > 0) {
       video.sources.forEach(element => {
+        element.name = element.name;
         element.type = ((element.type !== undefined) ? element.type.replace(/.*\//, '') : '');
         element.fileSize = bytes(element.fileSize);
         element.src  = config.fcrepoBasePath+element.src;
@@ -244,7 +256,9 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
       if (video.transcripts && video.transcripts.length > 0) {
         video.transcripts.forEach(transcript => {
+          let name = (transcript.name ? transcript.name : '');
           let obj = {
+            name: name,
             src: config.fcrepoBasePath + transcript.src,
             type: transcript.src.split('.').pop(),
             label: transcript.src.split('.').pop() + ' (transcript only)'
@@ -355,7 +369,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         this.$.format.value = this.selectedFormat;
       }
 
-      this._setTarPaths();
+      //this._setTarPaths();
 
       if (this.isVideo) return;
 
@@ -394,41 +408,34 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    */
   _toggleMultipleDownload() {
     this.multipleSourcesSelected = this.$.fullset.checked ? true : false;
+    this._setTarPaths();
   }
 
   _setTarPaths() {
     let origin = false, urls = {};
     this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '');
 
-    // TODO: Tighten this up to make it more media-agnostic
-    if ( this.isVideo ) {
-      this.sources.forEach(item => {
-        let name = item.label;
-        urls[name] = item.src;
+    if ( this.fullMediaSet.length > 0 ) {
+      this.fullMediaSet.forEach(item => {
+        let name = item.filename || item.name;
+        if ( utils.getType(item).toLowerCase().includes('image') ) {
+          if( origin ) {
+            urls[name] = item['@id'];
+          } else {
+            let s = IMG_SIZES[this.selectedSize];
+            name = name.replace(/\.[a-z]*$/, `_${s.label}_.${this.selectedFormat}`);
+            let w = Math.floor(item.image.width * s.ratio);
+            let h = Math.floor(item.image.height * s.ratio);
+            urls[name] = MediaModel.getImgUrl(item['@id'], w, h, {format:this.selectedFormat}).replace(config.fcrepoBasePath, '');
+          }
+        } else {
+          let src  = config.fcrepoBasePath + item['@id'];
+          urls[name] = src;
+        }
       });
 
       this.$.tarPaths.value = JSON.stringify(urls);
-      
-      return;
     }
-
-    if( !IMG_SIZES[this.selectedSize] ) return;
-    if( this.selectedFormat === this.originalFormat && this.selectedSize === IMG_SIZES.length -1 ) origin = true;
-    if ( this.hasMultipleSources ) {
-      this.imagelist.forEach(item => {
-        let name = item.filename || item.name;
-        if( origin ) {
-          urls[name] = item['@id'];
-        } else {
-          let s = IMG_SIZES[this.selectedSize];
-          name = name.replace(/\.[a-z]*$/, `_${s.label}_.${this.selectedFormat}`);
-          let w = Math.floor(item.image.width * s.ratio);
-          let h = Math.floor(item.image.height * s.ratio);
-          urls[name] = MediaModel.getImgUrl(item['@id'], w, h, {format:this.selectedFormat}).replace(config.fcrepoBasePath, '');
-        }
-      });
-    }
-    this.$.tarPaths.value = JSON.stringify(urls);
   }
 
   /**

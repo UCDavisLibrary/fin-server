@@ -236,9 +236,9 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       this.classList.remove('video');
     }
 
-    if (this._countMediaItems(record.media) === 1) return;
-    this.mediaList = this._flattenMediaList(record.media);
-    this.mediaList = this._organizeMediaList(this.mediaList);
+    if (utils.countMediaItems(record.media) === 1) return;
+    this.mediaList = utils.flattenMediaList(record.media);
+    this.mediaList = utils.organizeMediaList(this.mediaList);
     this.thumbnails = this.mediaList.map(record => {
       let _fileFormat = '';
       if (record.fileFormat || record.encodingFormat) {
@@ -266,49 +266,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     else this.classList.remove('single');
 
     this._resize();
-  }
-
-  _countMediaItems(mediaObj) {
-    let count = 0;
-    Object.keys(mediaObj).forEach(key => {
-      count += mediaObj[key].length;
-    });
-    return count;
-  }
-
-  _flattenMediaList(mediaObj) {
-    let array = [];
-
-    Object.keys(mediaObj).forEach(key => {
-      mediaObj[key].forEach(element => {
-        // TODO: We don't really want to include the streaming video as a download option
-        // Should we still include it on the thumbnails?
-        if (utils.getType(element) !== 'streamingVideo') {
-          // Check and make sure you're only looping hasParts that belong to imageLists
-          // We don't care about video hasParts right here, because these are just thumbnails
-          if (element.hasPart && utils.getType(element) === 'imageList') {
-            element.hasPart.forEach((el) => {
-              array.push(el);
-            });
-          } else {
-            array.push(element);
-          }
-        }
-      });
-    });
-
-    return array;
-  }
-
-  _organizeMediaList(mediaListArray) {
-    mediaListArray.map(item => item.position = parseInt(item.position))
-      .sort((a, b) => {
-        if(a.position > b.position) return 1;
-        if(a.position < b.position) return -1;
-        return 1;
-      });
-    
-    return mediaListArray;
   }
 
   /**

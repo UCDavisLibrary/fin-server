@@ -60,6 +60,18 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
+    attr: 'clientMedia',
+    value: ['ucdlib', 'clientMedia'],
+    type: 'id'
+  });
+
+  await utils.add({
+    attr: 'clientMediaDownload',
+    value: ['ucdlib', 'clientMediaDownload'],
+    type: 'id'
+  });
+
+  await utils.add({
     attr : 'contentSize',
     value : ['schema', 'contentSize']
   });

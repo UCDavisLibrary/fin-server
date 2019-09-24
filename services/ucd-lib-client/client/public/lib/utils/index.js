@@ -73,6 +73,50 @@ class Utils {
     return dict.find(element => element.key == lng);
   }
 
+  countMediaItems(mediaObj) {
+    if ( !mediaObj ) return false;
+    let count = 0;
+    Object.keys(mediaObj).forEach(key => {
+      count += mediaObj[key].length;
+    });
+    return count;
+  }
+
+  flattenMediaList(mediaObj) {
+    let array = [];
+
+    Object.keys(mediaObj).forEach(key => {
+      mediaObj[key].forEach(element => {
+        // TODO: We don't really want to include the streaming video as a download option
+        // Should we still include it on the thumbnails?
+        if (this.getType(element) !== 'streamingVideo') {
+          // Check and make sure you're only looping hasParts that belong to imageLists
+          // We don't care about video hasParts right here, because these are just thumbnails
+          if (element.hasPart && this.getType(element) === 'imageList') {
+            element.hasPart.forEach((el) => {
+              array.push(el);
+            });
+          } else {
+            array.push(element);
+          }
+        }
+      });
+    });
+
+    return array;
+  }
+
+  organizeMediaList(mediaListArray) {
+    mediaListArray.map(item => item.position = parseInt(item.position))
+      .sort((a, b) => {
+        if(a.position > b.position) return 1;
+        if(a.position < b.position) return -1;
+        return 1;
+      });
+    
+    return mediaListArray;
+  }
+
   /**
    * @method formatVideo
    * @description return a properly formatted video object
@@ -108,7 +152,7 @@ class Utils {
         vidId  = mpdObj['@id'];
       } else {
         mpdObj = element;
-        vidId = mpdObj['video']['@id'];
+        vidId  = (mpdObj['clientMedia'] ? mpdObj['clientMedia']['@id'] : mpdObj['video']['@id']);
       }
     });
 
@@ -122,7 +166,7 @@ class Utils {
     let id = mpdObj.parent['@id'];
     if (mpdObj.transcript) {
       transcripts = this.asArray(mpdObj, 'transcript').map(element => {
-        return { src: id + '/' + element.name };
+        return { src: id + '/' + element.name, name: element.name };
       });
     }
 
@@ -147,7 +191,9 @@ class Utils {
     }
 
     sources = rawObj.map(element => {
+      let name = (element.video.name ? element.video.name : '');
       let obj = {
+        name: name,
         src: ((element.video && element.video['@id']) ? element.video['@id'] : element['@id']),
         type: (element.encodingFormat ? element.encodingFormat : element.fileFormat),
         size: parseInt(element.videoQuality),
