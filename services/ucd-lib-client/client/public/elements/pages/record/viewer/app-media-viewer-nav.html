@@ -27,13 +27,12 @@
     align-items: center;
   }
 
-  #thumbnailContainer {
+  #thumbnailInnerContainer {
     padding-top: 7px;
   }
 
-  /* TODO: Come back to this, figure it out
+  /* 
   #thumbnails {
-    overflow: hidden;
     (50px width + 10px margin + 4px border) * 8 thumbnails
     max-width: 512px;
   }
@@ -105,7 +104,7 @@
   -->
   
   <div id="thumbnails" hidden$="[[singleImage]]">
-    <div id="thumbnailContainer">
+    <div id="thumbnailInnerContainer">
       <template is="dom-repeat" items="[[thumbnails]]">
         <button 
           class="thumbnail" 
@@ -130,7 +129,7 @@
 
   <div style="flex:1"></div>
   
-  <div hidden$="[[breakControls]]" style="white-space: nowrap">
+  <div id="buttonWrapper" hidden$="[[breakControls]]" style="white-space: nowrap">
     <paper-icon-button id="zoomOut1" noink tabindex="0" icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
     <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
     

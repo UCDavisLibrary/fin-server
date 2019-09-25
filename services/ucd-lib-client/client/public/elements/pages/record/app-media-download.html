@@ -98,7 +98,7 @@
 
   <div class="layout" style="margin-bottom: 5px;" hidden$="[[isVideo]]">
     <select id="format" on-change="_onFormatSelected"></select>
-    <select on-change="_onSizeChange">
+    <select id="requestedResolution" on-change="_onSizeChange">
         <template is="dom-repeat" items="[[imageSizes]]">
           <option value$="[[item.label]]" selected$="[[item.selected]]">
             [[item.title]] [[item.width]] x [[item.height]] px

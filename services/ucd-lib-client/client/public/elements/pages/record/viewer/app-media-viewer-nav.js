@@ -32,7 +32,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       },
       thumbnailsPerFrame : {
         type : Number,
-        value : 8
+        value : 10
       },
       leftMostThumbnail : {
         type : Number,
@@ -145,7 +145,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     w -= 16; // padding
 
     this._setNavBreak(w);
-    //this.showNavLeft = (this.leftMostThumbnail !== 0);
 
     let iconsWidth;
     if( this.breakControls ) {
@@ -155,10 +154,12 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       if( this.isLightbox ) iconsWidth += this.iconWidth * 2;
     }
 
-    let availableThumbSpace = Math.min(w - iconsWidth, 512);
-    this.thumbnailsPerFrame = Math.max(Math.floor(availableThumbSpace / this.totalThumbnailWidth), 1);
-
+    //let availableThumbSpace = Math.min(w - iconsWidth, 512);
+    //this.thumbnailsPerFrame = Math.max(Math.floor(availableThumbSpace / this.totalThumbnailWidth), 1);
+   
+    //this.showNavLeft = (this.leftMostThumbnail !== 0);
     //this.showNavRight = !this._showingLastThumbFrame();
+
     this._updateThumbnailContainerPos();
   }
 
@@ -200,7 +201,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
 
   _updateThumbnailContainerPos() {
     // that +1 is a hack, what am I missing !?
-    this.$.thumbnailContainer.style.marginLeft = (-1 * this.leftMostThumbnail * (this.totalThumbnailWidth + 1)) + 'px';
+    this.$.thumbnailInnerContainer.style.marginLeft = (-1 * this.leftMostThumbnail * (this.totalThumbnailWidth + 1)) + 'px';
 
     let lastThumb = this.leftMostThumbnail + this.thumbnailsPerFrame;
     this.thumbnails.forEach((thumbnail, index) => {
@@ -216,7 +217,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    */
   _onSelectedRecordUpdate(record) {
     //console.log("app-media-viewer-nav(record) ", record);
-    
     this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
     this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
 

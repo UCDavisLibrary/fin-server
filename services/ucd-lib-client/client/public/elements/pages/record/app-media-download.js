@@ -123,6 +123,9 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
     this.fullMediaSet = [];
+    this.multipleSourcesSelected = false;
+    this.$.format.style.display = "inline-block";
+    this.$.requestedResolution.style.display = "inline-block";
 
     this.imageSizes = IMG_SIZES.map((format, index) => {
       return {
@@ -140,16 +143,19 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   setRootRecord(record) {
     if( this.rootRecord === record ) return;
     this.rootRecord = record;
-
-    if ( utils.countMediaItems(this.rootRecord.media) > 1 ) {
-      this.fullMediaSet = utils.flattenMediaList(this.rootRecord.media);
-    }
     this.selectedSize = IMG_SIZES.length - 1;
   }
 
   _onSelectedRecordMediaUpdate(record) {
     this.$.single.checked = true;
     this.$.fullset.checked = false;
+    
+    if ( utils.countMediaItems(this.rootRecord.media) > 1 ) {
+      this.fullMediaSet = utils.flattenMediaList(this.rootRecord.media);
+    }
+
+    if ( this.fullMediaSet.length > 1 ) this.hasMultipleSources = true;
+    else this.hasMultipleSources = false;
 
     if (utils.getType(record) === 'video') {
       this.isVideo = true;
@@ -205,11 +211,6 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       this.$.videoDownloadOptions.disabled = false;
       this.$.videoDownloadOptions.classList.remove("plainText");
     }
-
-    if (this.downloadOptions && this.downloadOptions.length > 1) this.hasMultipleSources = true;
-    else this.hasMultipleSources = false;
-
-    //this._setTarPaths();
   }
 
   _getImageSources(imageRecord) {
@@ -369,8 +370,6 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         this.$.format.value = this.selectedFormat;
       }
 
-      //this._setTarPaths();
-
       if (this.isVideo) return;
 
       if (!this.options && this.imagelist) this.options = this.imagelist[0].image;
@@ -395,6 +394,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    */
   _onDownloadClicked() {
     let path = this.href.replace(config.fcrepoBasePath, '');
+    
     gtag('event', 'download', {
       'event_category': 'image',
       'event_label': path,
@@ -408,6 +408,15 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    */
   _toggleMultipleDownload() {
     this.multipleSourcesSelected = this.$.fullset.checked ? true : false;
+
+    if ( this.$.fullset.checked ) {
+      this.$.format.style.display = "none";
+      this.$.requestedResolution.style.display = "none";
+    } else {
+      this.$.format.style.display = "initial";
+      this.$.requestedResolution.style.display = "initial";
+    }
+    
     this._setTarPaths();
   }
 
