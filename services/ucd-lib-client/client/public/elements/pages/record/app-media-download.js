@@ -174,7 +174,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       this.isVideo = true;
       this.sources = this._getAudioSources(record);
       this.href    = this.sources[0].src;
-    } else {
+    } else if (utils.getType(record).toLowerCase().includes('image')) {
       this.isVideo = false;
       this.sources = this._getImageSources(record);
       if (this.sources.length > 1){

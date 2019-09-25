@@ -44,7 +44,7 @@ class Utils {
 
   getType(record) {
     if (record.error) return;
-    let mediaType = 'image';
+    let mediaType = 'text';
 
     record['@type'].forEach(element => {
       let el = element.toLowerCase();

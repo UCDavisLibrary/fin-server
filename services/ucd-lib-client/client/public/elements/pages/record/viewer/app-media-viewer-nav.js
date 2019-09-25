@@ -240,12 +240,15 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     this.mediaList = utils.flattenMediaList(record.media);
     this.mediaList = utils.organizeMediaList(this.mediaList);
     this.thumbnails = this.mediaList.map(record => {
-      let _fileFormat = '';
+      let _file = '';
+      let fileType   = _file;
+      let fileFormat = _file;
+      
       if (record.fileFormat || record.encodingFormat) {
-        _fileFormat = (record.fileFormat ? record.fileFormat : record.encodingFormat);
-        _fileFormat = _fileFormat.split('/').shift();
+        _file = (record.fileFormat ? record.fileFormat : record.encodingFormat);
+        fileType   = _file.split('/').shift();
+        fileFormat = _file.split('/').pop();
       }
-      let fileFormat = _fileFormat;
 
       let url = (record.image ? record.image.url : false)
       let thumbnail = {
@@ -253,7 +256,8 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         position: record.position,
         selected: false,
         disabled: true,
-        fileType: fileFormat,
+        fileType: fileType,
+        fileFormat: fileFormat,
         src: url,
         thumbnail: url
       }

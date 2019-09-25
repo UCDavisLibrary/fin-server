@@ -95,6 +95,10 @@ class RecordModel extends ElasticSearchModel {
         if (!media.imageList) media.imageList = [];
         return media.imageList.push(element);
       }
+      if (types.some(res => res.includes("Binary"))) {
+        if (!media.binaryFiles) media.binaryFiles = [];
+        return media.binaryFiles.push(element);
+      }
     }
 
     record.media = media;

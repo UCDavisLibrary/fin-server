@@ -62,10 +62,12 @@
   */
   button[data-media-type="audio"].thumbnail {
     border: 1px solid red;
+    content: 'audio';
   }
 
   button[data-media-type="image"].thumbnail {
     border: 1px solid pink;
+    content: 'image';
   }
 
   button[data-media-type="video"].thumbnail {
@@ -74,6 +76,14 @@
 
   button[data-media-type="360"].thumbnail {
     border: 1px solid gold;
+  }
+
+  button[data-media-type="text"].thumbnail {
+    border: 1px solid rebeccapurple;
+  }
+
+  button[data-media-type="application"][data-media-format="pdf"].thumbnail {
+    border: 1px solid lightseagreen;
   }
 
   .thumbnail[selected] {
@@ -111,6 +121,7 @@
           alt$="Page #[[item.position]]"
           title$="[[item.id]]"
           data-media-type$="[[item.fileType]]"
+          data-media-format$="[[item.fileFormat]]"
           media-id$="[[item.id]]"
           disabled$="[[item.disabled]]"
           selected$="[[item.selected]]" 
