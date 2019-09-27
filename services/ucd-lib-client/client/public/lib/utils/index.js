@@ -87,6 +87,7 @@ class Utils {
 
     Object.keys(mediaObj).forEach(key => {
       mediaObj[key].forEach(element => {
+        // Check for a 
         // TODO: We don't really want to include the streaming video as a download option
         // Should we still include it on the thumbnails?
         if (this.getType(element) !== 'streamingVideo') {
@@ -127,7 +128,6 @@ class Utils {
   */
   formatVideo(rawMedia) {
     //console.log("formatVideo(rawMedia) ", rawMedia);
-    
     let media = [], videoObj = [], mpdObj, vidId, sources = [], transcripts = [], captions = [];
 
     if (rawMedia instanceof Object) {

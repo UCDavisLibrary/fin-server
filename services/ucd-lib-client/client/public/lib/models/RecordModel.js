@@ -61,6 +61,7 @@ class RecordModel extends ElasticSearchModel {
    * @returns {Array of Objects}
    */
   async createMediaObject(record) {
+    //console.log("createMediaObject(record): ", record);
     if (record.isRootRecord === false) return;
     
     let media = {};

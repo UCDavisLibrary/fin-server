@@ -59,15 +59,24 @@
 
   /*
     TODO: Replace the borders w/the appropriate approved icons
+
+    https://github.com/UCDavisLibrary/fin-server/issues/134
+    
+    Instructions:
+      (360 - image - video - sound - pdf )
+
+      Round icons are used in the item display ui to mark items in the thumbnail browser 
+      that are not images: 360, video, audio, and PDFs. 
+
+      They have a white outline and icon and are on a 70% opacity black base. 
+      Used at size 28x28 px centered on the 50x50px thumbnail.
   */
   button[data-media-type="audio"].thumbnail {
     border: 1px solid red;
-    content: 'audio';
   }
 
   button[data-media-type="image"].thumbnail {
     border: 1px solid pink;
-    content: 'image';
   }
 
   button[data-media-type="video"].thumbnail {

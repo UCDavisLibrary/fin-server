@@ -44,7 +44,7 @@ export default class AppTextViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
-    console.log("app-text-viewer(media): ", media); 
+    //console.log("app-text-viewer(media): ", media); 
   }
 }
 

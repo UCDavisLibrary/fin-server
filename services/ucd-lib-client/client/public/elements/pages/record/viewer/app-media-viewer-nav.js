@@ -3,6 +3,7 @@ import template from "./app-media-viewer-nav.html"
 
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
+
 import "../../../utils/app-share-btn"
 import utils from "../../../../lib/utils"
 
@@ -235,15 +236,26 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       this.zoomButton3.style.display = 'inline-block';
       this.classList.remove('video');
     }
-
+    
     if (utils.countMediaItems(record.media) === 1) return;
     this.mediaList = utils.flattenMediaList(record.media);
     this.mediaList = utils.organizeMediaList(this.mediaList);
+
+    let _id = this.mediaList
+                .filter(element => element.clientMediaDownload)
+                .map(el => el.clientMediaDownload['@id'].split('.').shift());
+
+    this.mediaList = this.mediaList.filter(element => {
+      if ( _id[0] !== element['@id'].split('.').shift() || element.clientMediaDownload ) {
+        return element;
+      }
+    });
+
     this.thumbnails = this.mediaList.map(record => {
       let _file = '';
       let fileType   = _file;
       let fileFormat = _file;
-      
+
       if (record.fileFormat || record.encodingFormat) {
         _file = (record.fileFormat ? record.fileFormat : record.encodingFormat);
         fileType   = _file.split('/').shift();
@@ -266,10 +278,10 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     });
 
     this.singleImage = (this.thumbnails.length !== 0 && this.thumbnails.length > 1) ? false : true;
+    this._resize();
+
     if( this.singleImage ) this.classList.add('single');
     else this.classList.remove('single');
-
-    this._resize();
   }
 
   /**
