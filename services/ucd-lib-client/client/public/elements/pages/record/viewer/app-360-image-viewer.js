@@ -22,14 +22,12 @@ export default class App360ImageViewer extends Mixin(PolymerElement)
 
   ready() {
     super.ready();
-
-    //this.$.viewer.frameToImgPath = this._frameToImgPath.bind(this);
+    this.$.viewer.frameToImgPath = this._frameToImgPath.bind(this);
   }
 
   async _onSelectedRecordMediaUpdate(record) {
-    //console.log("360 record: ", record);
-
     this.images = this.MediaModel.get360Media(record);
+    
     /*
     if( !this.images.length ) {
       this.style.display = 'none';
@@ -38,6 +36,7 @@ export default class App360ImageViewer extends Mixin(PolymerElement)
     */
 
     //this.style.display = 'block';
+    
     this.$.viewer.totalFrames = this.images.length;
     
     this.$.viewer.render();
