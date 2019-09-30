@@ -63,22 +63,27 @@ class RecordModel extends ElasticSearchModel {
   async createMediaObject(record) {
     //console.log("createMediaObject(record): ", record);
     if (record.isRootRecord === false) return;
-    
+       
     let media = {};
 
-    record['associatedMedia'] ? traverse(record['associatedMedia']) : traverse(record);
+    if ( record.clientMedia ) {
+      searchTypes(record['@type'], record);
+    } else {
+      record.associatedMedia ? traverse(record.associatedMedia) : traverse(record);
 
-    function traverse(item) {
-      if (Array.isArray(item)) {
-        item.forEach(element => traverse(element));
-      } else if ((typeof item === 'object') && (item !== null)) {
-        for (let key in item) {
-          if (key !== '@type') continue;
-          traverse(searchTypes(item[key], item));
+      function traverse(item) {
+        if (Array.isArray(item)) {
+          item.forEach(element => traverse(element));
+        } else if ((typeof item === 'object') && (item !== null)) {
+          for (let key in item) {
+            if (key !== '@type') continue;
+            traverse(searchTypes(item[key], item));
+          }
         }
       }
-    }
 
+    }
+    
     function searchTypes(types, element) {
       if (types.some(res => res.includes("AudioObject"))){
         if (!media.audio) media.audio = [];
