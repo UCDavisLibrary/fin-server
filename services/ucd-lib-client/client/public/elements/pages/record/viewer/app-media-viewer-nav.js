@@ -23,6 +23,10 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         type : Number,
         value : 64,
       },
+      icon: {
+        type: String,
+        value: ''
+      },
       iconWidth : {
         type : Number,
         value : 40
@@ -245,21 +249,27 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       let _file = '';
       let fileType   = _file;
       let fileFormat = _file;
+      let iconType   = '';
 
       if (record.fileFormat || record.encodingFormat) {
         _file = (record.fileFormat ? record.fileFormat : record.encodingFormat);
         fileType   = _file.split('/').shift();
         fileFormat = _file.split('/').pop();
-      }
 
+        if (fileType === 'audio') iconType = 'sound-round';
+        if (fileType === 'video') iconType = 'video-round';
+        if (fileFormat === 'pdf') iconType = 'blank-round';
+        // TODO: Get back to this
+        if (fileType === '360')   iconType = '360-round';
+      }
+      
       let url = (record.image ? record.image.url : false)
       let thumbnail = {
         id: record['@id'],
+        icon: iconType,
         position: record.position,
         selected: false,
         disabled: true,
-        fileType: fileType,
-        fileFormat: fileFormat,
         src: url,
         thumbnail: url
       }

@@ -46,57 +46,33 @@
   }
 
   .thumbnail {
+    margin: 0 5px 5px 6px;
     display: inline-block;
     width: 50px;
     height: 50px;
+    cursor: pointer;
+    color: white;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    margin: 0 5px;
+    background-color: black;    
     border: 2px solid transparent;
-    cursor: pointer;
   }
 
-  /*
-    TODO: Replace the borders w/the appropriate approved icons
-
-    https://github.com/UCDavisLibrary/fin-server/issues/134
-    
-    Instructions:
-      (360 - image - video - sound - pdf )
-
-      Round icons are used in the item display ui to mark items in the thumbnail browser 
-      that are not images: 360, video, audio, and PDFs. 
-
-      They have a white outline and icon and are on a 70% opacity black base. 
-      Used at size 28x28 px centered on the 50x50px thumbnail.
-  */
-  button[data-media-type="audio"].thumbnail {
-    border: 1px solid red;
+  .thumbnail:focus,
+  .thumbnail:active {
+    border: 1px solid var(--default-secondary-color);
+    outline: var(--default-outline);
   }
-
-  button[data-media-type="image"].thumbnail {
-    border: 1px solid pink;
-  }
-
-  button[data-media-type="video"].thumbnail {
-    border: 1px solid green;
-  }
-
-  button[data-media-type="360"].thumbnail {
-    border: 1px solid gold;
-  }
-
-  button[data-media-type="text"].thumbnail {
-    border: 1px solid rebeccapurple;
-  }
-
-  button[data-media-type="application"][data-media-format="pdf"].thumbnail {
-    border: 1px solid lightseagreen;
-  }
-
+  
   .thumbnail[selected] {
     border: 2px solid var(--default-secondary-color);
+  }
+
+  iron-icon {
+    shape-rendering: geometricPrecision !important;
+    width: 28px !important;
+    height: 28px !important;
   }
 
   paper-icon-button {
@@ -126,16 +102,15 @@
     <div id="thumbnailInnerContainer">
       <template is="dom-repeat" items="[[thumbnails]]">
         <button 
-          class="thumbnail" 
+          class="thumbnail"
           alt$="Page #[[item.position]]"
           title$="[[item.id]]"
-          data-media-type$="[[item.fileType]]"
-          data-media-format$="[[item.fileFormat]]"
           media-id$="[[item.id]]"
           disabled$="[[item.disabled]]"
           selected$="[[item.selected]]" 
           style$="background-image:url([[item.src]])"
           on-click="_onThumbnailClicked">
+            <iron-icon icon="fin-icons:[[item.icon]]"></iron-icon>
         </button>
       </template>
     </div>
