@@ -241,18 +241,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     this.mediaList = utils.flattenMediaList(record.media);
     this.mediaList = utils.organizeMediaList(this.mediaList);
 
-    /* TODO: May be able to remove
-    let _id = this.mediaList
-                .filter(element => element.clientMediaDownload)
-                .map(el => el.clientMediaDownload['@id'].split('.').shift());
-
-    this.mediaList = this.mediaList.filter(element => {
-      if ( _id[0] !== element['@id'].split('.').shift() || element.clientMediaDownload ) {
-        return element;
-      }
-    });
-    */
-
     this.thumbnails = this.mediaList.map(record => {
       let _file = '';
       let fileType   = _file;
