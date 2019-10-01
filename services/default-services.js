@@ -16,14 +16,14 @@ module.exports = [
     supportedType : 'http://www.w3.org/ns/ldp#NonRDFSource',
     urlTemplate : 'http://tesseract:3333{{fcPath}}?svcPath={{svcPath}}'
   },
-  {
-    id : 'video-stream-converter',
-    description : 'Uses ffmpeg to create a MPEG DASH ready bundle',
-    type : 'GlobalService',
-    protected : true,
-    supportedType : 'http://www.w3.org/ns/ldp#NonRDFSource',
-    urlTemplate : 'http://video-stream-converter:3333?options={{svcPath}}'
-  }, 
+  // {
+  //   id : 'video-stream-converter',
+  //   description : 'Uses ffmpeg to create a MPEG DASH ready bundle',
+  //   type : 'GlobalService',
+  //   protected : true,
+  //   supportedType : 'http://www.w3.org/ns/ldp#NonRDFSource',
+  //   urlTemplate : 'http://video-stream-converter:3333?options={{svcPath}}'
+  // }, 
   {
     id : 'aws-bucket',
     description : 'access files in AWS S3',
@@ -43,8 +43,9 @@ module.exports = [
     id : 'video-converter',
     title : 'Video stream converter service',
     description : 'Fin video converter',
+    workflow: true,
     type : 'ExternalService',
-    urlTemplate : 'http://localhost:8090{{svcPath}}?fcUrl={{fcUrl}}&token={{token}}&svcId={{svcId}}'
+    urlTemplate : 'http://localhost:8090{{svcPath}}?fcUrl={{fcUrl}}&token={{token}}&svcId={{svcId}}&workflowId={{workflowId}}'
     //urlTemplate : 'https://fin-service-video-converter-akwemh35fa-uc.a.run.app/{{svcPath}}?fcUrl={{fcUrl}}'
   },
   // {

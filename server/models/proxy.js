@@ -421,12 +421,23 @@ class ProxyModel {
       this._setReqTime(expReq);
 
       let token = jwt.getJwtFromRequest(expReq);
-      let url = service.renderUrlTemplate({
+      let user = jwt.validate(token);
+      if( !user ) user = {};
+
+      let args = {
         fcUrl: querystring.escape(svcReq.fcUrl),
         svcPath: svcReq.svcPath,
         svcId: service.id,
-        token
-      });
+        token: jwt.getJwtFromRequest(expReq)
+      };
+
+      if( service.workflow === true && expReq.method === 'POST' ) {
+        // create a workflow
+        args.workflowId = await serviceModel.createWorkflowContainer(service.id, user.username || 'anonymous');
+        args.workflowId = encodeURIComponent(args.workflowId);
+      }
+
+      let url = service.renderUrlTemplate(args);
       let serviceToken = serviceModel.createServiceSignature(service.id);
       res.set(serviceModel.SIGNATURE_HEADER, serviceToken);
       res.cookie('service-jwt', serviceToken);

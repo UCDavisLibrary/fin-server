@@ -248,16 +248,17 @@ services:
     command: node service
     # command: bash -c 'tail -f /dev/null'
 
-  video-stream-converter:
-    build: ../../services/video-stream-converter
+  gc-workflow:
+    build: ../../services/gc-workflow
     volumes:
-      - ../../services/video-stream-converter/index.js:/service/index.js
-      - ../../services/video-stream-converter/lib:/service/lib
+      - ../../services/gc-workflow/index.js:/service/index.js
+      - ../../services/gc-workflow/lib:/service/lib
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
+      - GC_WORKFLOW_TOPICS=video-service-dev
     depends_on:
       - server
     # command: node service

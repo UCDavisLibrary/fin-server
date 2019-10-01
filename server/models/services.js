@@ -325,6 +325,58 @@ class ServiceModel {
     let uri = decodeURIComponent(svcPath.replace(/^\//, ''));
     return hdt.getSubjects(collection, uri);
   }
+
+  /**
+   * @method createWorkflowContainer
+   * @description create a new container for a workflow, return the pair tree id
+   * 
+   * @return {Promise} resolves to id
+   */
+  async createWorkflowContainer(serviceId, username) {
+    if( !config.workflow ) {
+      config.workflow = {root: '/.workflow'}
+    }
+
+    let response = await api.head({path: config.workflow.root});
+    if( response.checkStatus(404) ) {
+      response = await api.postEnsureSlug({
+        path : '/',
+        slug: config.workflow.root.replace(/^\//, '')
+      });
+
+      // TODO: check status code
+    }
+
+    let jsonld = [{
+      "@id" : '',
+      "@type": [
+        "http://digital.ucdavis.edu/schema#Workflow"
+      ],
+      "http://digital.ucdavis.edu/schema#workflowServiceId": [{
+        "@value" : serviceId,
+      }],
+      "http://schema.org/status": [{
+        "@value": "init"
+      }],
+      "http://schema.org/creator": [{
+        "@value": username
+      }]
+    }]
+
+    response = await api.post({
+      path : config.workflow.root,
+      headers : {
+        'content-type': 'application/ld+json'
+      },
+      content : JSON.stringify(jsonld)
+    });
+
+    if( !response.checkStatus(201) ) {
+      throw new Error(`Unable to create LDP workflow.  HTTP ${response.last.statusCode}: ${response.last.body}`);
+    }
+
+    return response.last.body.replace(/.*fcrepo\/rest/, '');
+  }
   
   /**
    * @method getForwardedHeader
@@ -596,6 +648,7 @@ class ServiceDefinition {
     this.transform = data.transform || '';
     this.supportedTypes = data.supportedTypes || [];
     this.id = data.id || '';
+    this.workflow = data.workflow || false;
   }
 
   init(model) {

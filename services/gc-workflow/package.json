@@ -1,0 +1,16 @@
+{
+  "name": "@ucd-lib/fin-gc-workflow",
+  "version": "0.0.1",
+  "description": "Google Cloud Pub/Sub connector for running cloud tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jrmerz@ucdavis.edu",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/pubsub": "^1.1.0",
+    "@ucd-lib/fin-node-api": "^0.11.9",
+    "@ucd-lib/fin-node-utils": "^0.2.18"
+  }
+}
