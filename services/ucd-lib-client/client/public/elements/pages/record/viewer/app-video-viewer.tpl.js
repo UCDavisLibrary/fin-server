@@ -34,10 +34,10 @@ return html`
         button.plyr__control.plyr__control:hover {
             background: rgba(218,170,0,1.0);
         }
-
         ${plyrCss}
         ${shakaCss}
     </style>
+    
     <div class="container">
         <div id="sprite-plyr" style="display: none;"></div>
         <video id="video" playsinline controls crossorigin>

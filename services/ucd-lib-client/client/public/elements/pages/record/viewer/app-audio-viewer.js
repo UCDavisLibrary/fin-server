@@ -65,7 +65,6 @@ export default class AppAudioViewer extends Mixin(LitElement)
     if (getMediaType !== 'audio') return;
 
     this.media = media;
-
     try {
       let libs = await videoLibs.load();
       this.audioPlyr = libs.plyr;
@@ -77,12 +76,20 @@ export default class AppAudioViewer extends Mixin(LitElement)
     let plyr_supported = this.audioPlyr.supported('video', 'html5', true);
     //console.log("plyr_supported: ", plyr_supported);
 
-    this.src  = config.fcrepoBasePath+this.media['@id'];
-    this.type = this.media.encodingFormat;
-    this.$.audio = this.shadowRoot.getElementById('audio_player');
+    this.src      = config.fcrepoBasePath+this.media['@id'];
+    this.type     = this.media.encodingFormat;
+    this.poster   = this.media.thumbnailUrl;
+    this.$.audio  = this.shadowRoot.getElementById('audio_player');
+    this.$.poster = this.shadowRoot.getElementById('audio_poster');
+
+    this.$.poster.style.display = 'none';
+    if ( this.poster ) {
+      this.$.poster.style.display = 'block';
+      this.$.poster.style.backgroundImage = "url(" + this.poster + ")";
+    }
     this.audioPlayer = new this.audioPlyr(this.$.audio, {
       debug: false
-    });
+    });    
   }
 
   /**

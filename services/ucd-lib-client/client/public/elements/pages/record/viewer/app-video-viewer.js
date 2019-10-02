@@ -6,6 +6,7 @@ import { LitElement } from "lit-element"
 import render from "./app-video-viewer.tpl.js"
 
 import "@ucd-lib/cork-app-utils"
+
 import config from "../../../../lib/config"
 import utils from "../../../../lib/utils"
 import videoLibs from "../../../../lib/utils/video-lib-loader"
@@ -72,6 +73,10 @@ export default class AppVideoViewer extends Mixin(LitElement)
       let libs = await videoLibs.load();
       this.plyr = libs.plyr;
       this.shaka_player = libs.shaka_player;
+
+      // Install the polyfills before doing anything with the library
+      await this.shaka_player.polyfill.installAll();
+
       console.log("videoLibs loaded");
     } catch(error) {
       console.log("videoLibs.load() error: ", error);
@@ -130,13 +135,11 @@ export default class AppVideoViewer extends Mixin(LitElement)
     if ( shaka_supported === true ) {
       let manifestUri = config.fcrepoBasePath+videoUri;
 
-      // Functional demo uri
-      //let manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/bbb-dark-truths-hls/hls.m3u8';
-  
+      // Construct a Player to wrap around the <video> tag.
       const shaka = new this.shaka_player.Player(this.$.video);
       //console.log("shaka config: ", shaka.getConfiguration());
 
-      try { 
+      try {
         await shaka.load(manifestUri);
       } catch(error) {
         console.error('Error code: ', error.code, 'object', error);

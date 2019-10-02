@@ -131,8 +131,8 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       return {
         title : format.title,
         label : format.label,
-        width: Math.floor(options.resolution[0] * format.ratio),
-        height: Math.floor(options.resolution[1] * format.ratio),
+        width : Math.floor(options.resolution[0] * format.ratio),
+        height : Math.floor(options.resolution[1] * format.ratio),
         selected : (this.selectedSize === index)
       }
     });
@@ -142,13 +142,13 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
   setRootRecord(record) {
     if( this.rootRecord === record ) return;
-    this.rootRecord = record;
+    this.rootRecord   = record;
     this.selectedSize = IMG_SIZES.length - 1;
   }
 
   _onSelectedRecordMediaUpdate(record) {
-    this.$.single.checked = true;
-    this.$.fullset.checked = false;
+    this.$.single.checked   = true;
+    this.$.fullset.checked  = false;
     
     if ( utils.countMediaItems(this.rootRecord.media) > 1 ) {
       this.fullMediaSet = utils.flattenMediaList(this.rootRecord.media);
@@ -177,7 +177,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     } else if (utils.getType(record).toLowerCase().includes('image')) {
       this.isVideo = false;
       this.sources = this._getImageSources(record);
-      if (this.sources.length > 1){
+      if (this.sources.length > 1) {
         this.imagelist = this.sources;
       };
 
@@ -185,8 +185,8 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         return {
           title : format.title,
           label : format.label,
-          width: Math.floor(this.sources[0].image.width * format.ratio),
-          height: Math.floor(this.sources[0].image.height * format.ratio),
+          width : Math.floor(this.sources[0].image.width * format.ratio),
+          height : Math.floor(this.sources[0].image.height * format.ratio),
           selected : (this.selectedSize === index)
         }
       });

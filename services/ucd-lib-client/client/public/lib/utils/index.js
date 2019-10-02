@@ -42,6 +42,16 @@ class Utils {
     return record.filter(element => element['@id'] === id );
   }
 
+  /**
+   * @method getType
+   * @description given a record object, return that record's Type
+   * (eg) =>
+   *  imagelist, imageobject, streamingvideo, etc.
+   * 
+   * @param {Array} record most likely a JSON-LD record
+   * 
+   * @return {String}
+   */
   getType(record) {
     if (record.error) return;
     let mediaType = 'text';
