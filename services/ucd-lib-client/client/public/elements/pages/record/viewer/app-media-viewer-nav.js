@@ -277,6 +277,9 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       return thumbnail;
     });
 
+    // TODO: Filtering out the text based files for now until we get the PDF/text viewer set up correctly
+    this.thumbnails = this.thumbnails.filter(element => element.icon !== 'blank-round');
+
     this.singleImage = (this.thumbnails.length !== 0 && this.thumbnails.length > 1) ? false : true;
     this._resize();
 

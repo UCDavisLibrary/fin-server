@@ -32,7 +32,6 @@ export default function render() {
         <app-image-viewer id="image"></app-image-viewer>
         <app-video-viewer id="video"></app-video-viewer>
         <app-audio-viewer id="audio"></app-audio-viewer>
-        <app-text-viewer id="text"></app-text-viewer>
       </iron-pages>
 
       <app-media-viewer-nav on-zoom-in="_onZoomIn"></app-media-viewer-nav>

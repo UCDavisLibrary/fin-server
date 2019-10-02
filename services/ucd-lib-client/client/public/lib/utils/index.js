@@ -87,10 +87,9 @@ class Utils {
 
     Object.keys(mediaObj).forEach(key => {
       mediaObj[key].forEach(element => {
-        // Check for a 
         // TODO: We don't really want to include the streaming video as a download option
         // Should we still include it on the thumbnails?
-        if (this.getType(element) !== 'streamingVideo') {
+        if ( this.getType(element) !== 'streamingVideo' ) {
           // Check and make sure you're only looping hasParts that belong to imageLists
           // We don't care about video hasParts right here, because these are just thumbnails
           if (element.hasPart && this.getType(element) === 'imageList') {
