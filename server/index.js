@@ -60,8 +60,7 @@ require('./lib/startupCheck')(() => {
 
     res.on('finish',() => {
       let fcrepoProxyTime = req.fcrepoProxyTime ? 'fcrepo:'+req.fcrepoProxyTime+'ms' : '';
-      let cache = 'cache:' + (res.get('x-fin-cache') || 'no-cache');
-      logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}, ${fcrepoProxyTime} ${cache}`);
+      logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}, ${fcrepoProxyTime}`);
     });
     next();
   });

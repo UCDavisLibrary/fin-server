@@ -43,10 +43,12 @@ module.exports = [
     id : 'video-converter',
     title : 'Video stream converter service',
     description : 'Fin video converter',
-    workflow: true,
+    workflow: {
+      gcsFilePost : true
+    },
     type : 'ExternalService',
-    urlTemplate : 'http://localhost:8090{{svcPath}}?fcUrl={{fcUrl}}&token={{token}}&svcId={{svcId}}&workflowId={{workflowId}}'
-    //urlTemplate : 'https://fin-service-video-converter-akwemh35fa-uc.a.run.app/{{svcPath}}?fcUrl={{fcUrl}}'
+    //urlTemplate : 'http://localhost:8090{{svcPath}}?fcUrl={{fcUrl}}&token={{token}}&svcId={{svcId}}&workflowId={{workflowId}}'
+    urlTemplate : 'https://fin-service-video-converter-akwemh35fa-uc.a.run.app/{{svcPath}}?fcUrl={{fcUrl}}'
   },
   // {
   //   id : 'auto-generator-demo',
