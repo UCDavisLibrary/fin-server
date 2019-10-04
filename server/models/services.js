@@ -332,7 +332,7 @@ class ServiceModel {
    * 
    * @return {Promise} resolves to id
    */
-  async createWorkflowContainer(serviceId, username) {
+  async createWorkflowContainer(service, username) {
     if( !config.workflow ) {
       config.workflow = {root: '/.workflow'}
     }
@@ -353,7 +353,10 @@ class ServiceModel {
         "http://digital.ucdavis.edu/schema#Workflow"
       ],
       "http://digital.ucdavis.edu/schema#workflowServiceId": [{
-        "@value" : serviceId,
+        "@value" : service.id,
+      }],
+      "http://digital.ucdavis.edu/schema#workflowServiceType": [{
+        "@value" : service.type,
       }],
       "http://schema.org/status": [{
         "@value": "init"
@@ -580,7 +583,7 @@ class ServiceModel {
    * 
    * @returns {String} jwt token for signature
    */
-  createServiceSignature(id, req) {
+  createServiceSignature(id, additionParams={}, req) {
     let service = this.services[id];
     if( !service ) {
       throw new Error('Unable to create signature for unknown service: '+id);
@@ -588,11 +591,11 @@ class ServiceModel {
 
     let secret = this.secrets[id];
 
-    let signature = jwt.sign({
+    let signature = jwt.sign(Object.assign(additionParams, {
         service : id,
         type: service.type,
         signer : secret ? id : 'fin'
-      }, 
+      }), 
       secret || config.jwt.secret,
       {
         issuer: config.jwt.issuer,
@@ -648,7 +651,7 @@ class ServiceDefinition {
     this.transform = data.transform || '';
     this.supportedTypes = data.supportedTypes || [];
     this.id = data.id || '';
-    this.workflow = data.workflow || false;
+    this.workflow = data.workflow ? JSON.parse(data.workflow) : false;
   }
 
   init(model) {

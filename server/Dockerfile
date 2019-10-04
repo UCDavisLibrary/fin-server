@@ -11,7 +11,6 @@ ADD package.json /app/
 ADD package-lock.json /app/
 RUN cd /app && npm install --production
 
-ADD cli /app/cli
 ADD controllers /app/controllers
 ADD lib /app/lib
 ADD models /app/models

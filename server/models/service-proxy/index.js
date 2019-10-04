@@ -1,20 +1,30 @@
 const serviceModel = require('../services');
 const api = require('@ucd-lib/fin-node-api');
 const request = require('request');
-const {logger, config, jwt} = require('@ucd-lib/fin-node-utils');
+const path = require('path');
+const {config, jwt} = require('@ucd-lib/fin-node-utils');
+const {URL} = require('url');
+
 const frameService = require('./frame-service');
 const transformService = require('./transform-service');
 const proxyService = require('./proxy-service');
-const labelService = require('./label-service')
+const labelService = require('./label-service');
+const externalService = require('./external-service');
 
 const LABEL_SERVICE = 'label';
+const SERVICE_CHAR = '/svc:';
 
 class ServiceProxy {
 
-  middleware(req, res) {
+  async middleware(req, res) {
     // user does not have access (container or service), service does not exist or
     // container service is working on does exist
-    if( !this.validateRequest(req) ) return;
+    try {
+      if( !(await this.validateRequest(req, res)) ) return;
+    } catch(e) {
+      logger.error('error validating proxy request', e);
+      return;
+    }
 
     switch(req.finService.type) {
 
@@ -65,7 +75,8 @@ class ServiceProxy {
    * 
    * @return {Boolean}
    */
-  validateRequest(req, res) {
+  async validateRequest(req, res) {
+    
     // parse the url path
     this.parseServiceRequestUrl(req);
 
@@ -88,7 +99,7 @@ class ServiceProxy {
     // check the requesting agent has access, if so, get information about
     // this container from the fcrepo link headers
     await this.setContainerInfo(req);
-    if( !fin.finContainer.access ) {
+    if( !req.finContainer.access ) {
       res.status(info.response.statusCode).send(info.response.body);
       return false;
     }
@@ -141,8 +152,8 @@ class ServiceProxy {
     // make a head request to get fcrepo statusCode and link headers
     var {response} = await _request({
       method : 'HEAD',
-      uri : path
-    }, token);
+      uri : req.finServiceInfo.fcPath
+    }, req.token);
 
     // if we don't get a 200 range status code from fcrepo, 
     // requesting agent does not have access to this container
@@ -164,14 +175,14 @@ class ServiceProxy {
         access: true, 
         binary: true,
         links, 
-        token,
+        token: req.token,
         response
       };
       return;
     }
 
     // we are not a binary container
-    fin.finContainer = {access: true, binary: false, links, response, token};
+    fin.finContainer = {access: true, binary: false, links, response, token: req.token};
   }
 
   /**

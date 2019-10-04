@@ -1,6 +1,6 @@
 const querystring = require('querystring');
 const serviceModel = require('../services');
-const workflow = require('./workflow');
+const workflow = require('./workflows');
 
 module.exports = async (req, res) => {
   if( !req.user ) req.user = {};
@@ -13,13 +13,13 @@ module.exports = async (req, res) => {
   };
 
   // will return null if conditions are not met
-  args.workflowId = await workflow.runTasks(req);
-  if( args.workflowId ) {
-    args.workflowId = encodeURIComponent(args.workflowId);
+  let workflowData = await workflow.runTasks(req);
+  if( workflowData ) {
+    args.workflowId = encodeURIComponent(workflowData.workflowId);
   }
 
   let url = req.finService.renderUrlTemplate(args);
-  let serviceToken = serviceModel.createServiceSignature(service.id);
+  let serviceToken = serviceModel.createServiceSignature(req.finService.id, req.user);
   res.set(serviceModel.SIGNATURE_HEADER, serviceToken);
   res.cookie('service-jwt', serviceToken);
   res.redirect(307, url);

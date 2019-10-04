@@ -1,10 +1,20 @@
 const proxy = require('../../lib/http-proxy');
 const serviceModel = require('../services');
+const {config} = require('@ucd-lib/fin-node-utils');
+const {URL} = require('url');
 const forwardedHeader = require('../../lib/forwarded-header');
-const workflow = require('./workflow');
+const workflow = require('./workflows');
+// const streamify = require('stream-array');
+const stream = require('stream');
+
+let HOST = new URL(config.server.url);
+HOST = HOST.protocol+'//'+HOST.host;
 
 module.exports = async (req, res) => {
+
+
   let params = {
+    host: encodeURIComponent(HOST),
     fcPath : req.finServiceInfo.fcPath, 
     svcPath: req.finServiceInfo.svcPath,
     svcId: req.finService.id
@@ -20,18 +30,33 @@ module.exports = async (req, res) => {
     }
   }
 
+  
+  let proxyOpts = {
+    headers : {
+      [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(req.finService.id, req.user),
+      'Forwarded' : forwardedHeader()
+    }
+  }
+
   // will return null if conditions are not met
-  args.workflowId = await workflow.runTasks(req);
-  if( args.workflowId ) {
-    args.workflowId = encodeURIComponent(args.workflowId);
+  let workflowData = await workflow.runTasks(req);
+  if( workflowData ) {
+    params.workflowId = encodeURIComponent(workflowData.workflowId);
+    if( workflowData.postBody ) {
+      proxyOpts.headers['content-type'] = 'application/json';
+
+      let body = Buffer.from(JSON.stringify(workflowData.postBody));
+      // REQUIRED! otherwise proxy never closes request
+      proxyOpts.headers['content-length'] = body.length;
+      proxyOpts.buffer = new stream.PassThrough();
+      proxyOpts.buffer.end(body);
+    }
   }
   
   let url = req.finService.renderUrlTemplate(params);
-  proxy.web(req, res, {
-    target : url,
-    headers : {
-      [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(service.id),
-      'Forwarded' : forwardedHeader()
-    }
-  });
+  proxyOpts.target = url;
+  proxyOpts.headers.host = new URL(url).hostname;
+  console.log(proxyOpts.target, proxyOpts.headers);
+
+  proxy.web(req, res, proxyOpts);
 }

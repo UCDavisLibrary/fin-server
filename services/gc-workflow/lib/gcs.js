@@ -12,9 +12,9 @@ class GCSStorage {
 
   constructor() {
     let opts = {};
-    if( fs.existsSync('/etc/fin/service-account.json') ) {
-      opts.projectId = require('/etc/fin/service-account.json').project_id,
-      opts.keyFilename = '/etc/fin/service-account.json'
+    if( fs.existsSync('/etc/fin/webapp-service-account.json') ) {
+      opts.projectId = require('/etc/fin/webapp-service-account.json').project_id,
+      opts.keyFilename = '/etc/fin/webapp-service-account.json'
     }
 
     this.storage = new Storage(opts);

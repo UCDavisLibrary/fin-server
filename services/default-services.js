@@ -44,11 +44,12 @@ module.exports = [
     title : 'Video stream converter service',
     description : 'Fin video converter',
     workflow: {
-      gcsFilePost : true
+      gcsFilePost : true,
+      topic : 'video-service-local'
     },
-    type : 'ExternalService',
-    //urlTemplate : 'http://localhost:8090{{svcPath}}?fcUrl={{fcUrl}}&token={{token}}&svcId={{svcId}}&workflowId={{workflowId}}'
-    urlTemplate : 'https://fin-service-video-converter-akwemh35fa-uc.a.run.app/{{svcPath}}?fcUrl={{fcUrl}}'
+    type : 'ProxyService',
+    //urlTemplate : 'http://169.237.102.58:8090{{svcPath}}?host={{host}}&fcPath={{fcPath}}&token={{token}}&svcId={{svcId}}&workflowId={{workflowId}}'
+    urlTemplate : 'https://fin-service-video-converter-akwemh35fa-uc.a.run.app/{{svcPath}}?host={{host}}&fcPath={{fcPath}}&token={{token}}&svcId={{svcId}}&workflowId={{workflowId}}'
   },
   // {
   //   id : 'auto-generator-demo',
