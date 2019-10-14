@@ -42,15 +42,6 @@ module.exports = async (req, res) => {
   let workflowData = await workflow.runTasks(req);
   if( workflowData ) {
     params.workflowId = encodeURIComponent(workflowData.workflowId);
-    if( workflowData.postBody ) {
-      proxyOpts.headers['content-type'] = 'application/json';
-
-      let body = Buffer.from(JSON.stringify(workflowData.postBody));
-      // REQUIRED! otherwise proxy never closes request
-      proxyOpts.headers['content-length'] = body.length;
-      proxyOpts.buffer = new stream.PassThrough();
-      proxyOpts.buffer.end(body);
-    }
   }
   
   let url = req.finService.renderUrlTemplate(params);
