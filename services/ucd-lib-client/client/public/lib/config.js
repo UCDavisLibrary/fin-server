@@ -22,6 +22,9 @@ module.exports = {
         label : 'File Format',
         type : 'facet',
         valueMap : (value) => {
+          if ( value.match(/^video\/(.*)/i) ) {
+            return 'Video ('+value.match(/^video\/(.*)/)[1]+')';
+          }
           if( value.match(/^image\/(.*)/i) ) {
             return 'Image ('+value.match(/^image\/(.*)/)[1]+')';
           }

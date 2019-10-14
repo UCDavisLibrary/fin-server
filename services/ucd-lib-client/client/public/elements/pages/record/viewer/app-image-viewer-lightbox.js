@@ -24,22 +24,18 @@ export default class AppImageViewer extends Mixin(PolymerElement)
         type : Array,
         value : null
       },
-
       maxImageSize : {
         type : Number,
         value : 2048
       },
-
       media : {
         type : Object,
         value : () => {}
       },
-
       visible : {
         type : Boolean,
         value : false
       },
-
       loading : {
         type : Boolean,
         value : false
@@ -58,8 +54,10 @@ export default class AppImageViewer extends Mixin(PolymerElement)
 
   ready() {
     super.ready();
-    this.parentNode.removeChild(this);
-    document.body.appendChild(this);
+    
+    // TODO: Have Justin review these.  No longer necessary using Lit?
+    //this.parentNode.removeChild(this);
+    //document.body.appendChild(this);
 
     this.shadowRoot.removeChild(this.$.safeCover);
     document.body.appendChild(this.$.safeCover);
@@ -76,6 +74,12 @@ export default class AppImageViewer extends Mixin(PolymerElement)
   _onSelectedRecordMediaUpdate(media) {
     this.media = media;
     if( this.visible ) this.render();
+
+    if ( this.media.associatedMedia || this.media.position ) {
+      this.shadowRoot.querySelector('app-media-viewer-nav').classList.remove('single');
+    } else {
+      this.shadowRoot.querySelector('app-media-viewer-nav').classList.add('single');
+    }
   }
 
   /**
@@ -83,13 +87,20 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   async show() {
     this.style.display = 'block';
+    
     this.render();
+
     document.body.style.overflow = 'hidden';
+    
     this.visible = true;
+    
     window.scrollTo(0,0);
+    
     this.$.safeCover.style.display = 'block';
 
-    this.mainApp.style.display = 'none';
+    // TODO: Justin Review
+    //this.mainApp.style.display = 'none';
+
     setTimeout(() => this.$.nav.setFocus(), 0);
   }
 
@@ -100,8 +111,10 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     this.style.display = 'none';
     this.$.safeCover.style.display = 'none';
     document.body.style.overflow = 'auto';
-    this.mainApp.style.display = 'block';
     this.visible = false;
+
+    // TODO: Justin Review
+    //this.mainApp.style.display = 'block';
   }
 
   /**
@@ -112,17 +125,19 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * 
    * @returns {Promise} resolves when image is loaded and bounds array has been set
    */
-  _loadImage(url) {
+   _loadImage(url) {
     this.loading = true;
 
     return new Promise((resolve, reject) => {
       var img = new Image();
+
       img.onload = () => {
         let res = [img.naturalHeight, img.naturalWidth];
         this.bounds = [[0,0], res];
         this.loading = false;
         resolve();
       };
+
       img.src = url;
     });
   }
@@ -134,29 +149,16 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   async render() {
     if( this.renderedMedia === this.media ) return;
+
     this.renderedMedia = this.media;
-
-    let height = this.media.image.height;
-    let width = this.media.image.width;
-    // if( height > width ) {
-    //   if( height > this.maxImageSize ) {
-    //     let scale = this.maxImageSize / height;
-    //     height = Math.floor(height * scale);
-    //     width = '';
-    //   }
-    // } else {
-    //   if( width > this.maxImageSize ) {
-    //     let scale = this.maxImageSize / width;
-    //     width = Math.floor(width * scale);
-    //     height = '';
-    //   }
-    // }
-
-    let url = this._getImgUrl(this.media['@id'], '', '');
-    // let url = config.fcrepoBasePath+this.media['@id'];
+    let id = this.renderedMedia['@id'];
+    if ( this.renderedMedia.associatedMedia && this.renderedMedia.media.imageList ) {
+      id = this.renderedMedia.image.url;
+    }
+    
+    let url = this._getImgUrl(id, '', '');
 
     if( this.viewer ) this.viewer.remove();
-
     await this._loadImage(url);
 
     this.viewer = L.map(this.$.viewer, {

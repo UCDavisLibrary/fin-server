@@ -1,15 +1,19 @@
 <style include="shared-styles">
-
   :host {
     display: none;
     position: absolute;
     z-index: 1000;
-    right : 0;
-    bottom : 0;
-    top : 0;
-    left : 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    left: 0;
     background-color: black;    
     animation: show 350ms ease-out;
+  }
+
+  :host #nav.single {
+    padding: 10px;
+    background-color: transparent;
   }
 
   @keyframes show {
@@ -26,11 +30,11 @@
   }
 
   #viewer { 
-    top : 0;
-    right : 0;
-    bottom : 0;
-    left : 0;
     position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background-color: black;
   }
 
@@ -40,16 +44,16 @@
   
   .spinner-layout {
     position: absolute;
-    top : 0;
-    right : 0;
-    left : 0;
+    top: 0;
+    right: 0;
+    left: 0;
     bottom: 0;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  app-image-viewer-nav {
+  #nav {
     z-index: 2000;
     position: absolute;
     left: 0;
@@ -59,7 +63,7 @@
 </style>
 
 <!-- make sure background is blacked out... iOS hack -->
-<div id="safeCover" style="display:none;position: absolute;z-index:999;top:0;left:0;width:100vw;height:100vh;background-color:black;"></div>
+<div id="safeCover" style="display:none;position:absolute;z-index:999;top:0;left:0;width:100vw;height:100vh;background-color:black;"></div>
 
 <div id="viewer">
   <div class="spinner-layout" hidden$="[[!loading]]">
@@ -67,10 +71,10 @@
   </div>
 </div>
 
-<app-image-viewer-nav 
+<app-media-viewer-nav 
   id="nav"
   is-lightbox
   on-zoom-in="_onZoomInClicked"
   on-zoom-out="_onZoomOutClicked"
   on-close="_onCloseClicked">
-</app-image-viewer-nav>
+</app-media-viewer-nav>

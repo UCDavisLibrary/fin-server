@@ -53,10 +53,6 @@
       "@id" : "schema:encodesCreativeWork",
       "@type": "@id"
     },
-    "workExample" : {
-      "@id" : "schema:workExample",
-      "@type": "@id"
-    },
     "lastModified" : {
       "@type" : "http://www.w3.org/2001/XMLSchema#dateTime",
       "@id" : "fedora:lastModified"

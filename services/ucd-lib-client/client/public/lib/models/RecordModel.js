@@ -52,6 +52,65 @@ class RecordModel extends ElasticSearchModel {
     return this.store.getDefaultSearch(storeId);
   }
 
+  /**
+   * @method createMediaObject
+   * @description 
+   * 
+   * @param {Array of Objects} record
+   * 
+   * @returns {Array of Objects}
+   */
+  async createMediaObject(record) {
+    //console.log("createMediaObject(record): ", record);
+    if (record.isRootRecord === false) return;
+       
+    let media = {};
+
+    if ( record.clientMedia ) {
+      searchTypes(record['@type'], record);
+    } else {
+      record.associatedMedia ? traverse(record.associatedMedia) : traverse(record);
+
+      function traverse(item) {
+        if (Array.isArray(item)) {
+          item.forEach(element => traverse(element));
+        } else if ((typeof item === 'object') && (item !== null)) {
+          for (let key in item) {
+            if (key !== '@type') continue;
+            traverse(searchTypes(item[key], item));
+          }
+        }
+      }
+
+    }
+    
+    function searchTypes(types, element) {
+      if (types.some(res => res.includes("AudioObject"))){
+        if (!media.audio) media.audio = [];
+        return media.audio.push(element);
+      }
+      if (types.some(res => res.includes("Video"))) {
+        if (!media.video) media.video = [];
+        return media.video.push(element);
+      } 
+      if (types.some(res => res.includes("ImageObject"))) {
+        if (!media.image) media.image = [];
+        return media.image.push(element);
+      }
+      if (types.some(res => res.includes("ImageList"))) {
+        if (!media.imageList) media.imageList = [];
+        return media.imageList.push(element);
+      }
+      if (types.some(res => res.includes("Binary"))) {
+        if (!media.binaryFiles) media.binaryFiles = [];
+        return media.binaryFiles.push(element);
+      }
+    }
+
+    record.media = media;
+    
+    return record;
+  }
 
   /**
    * @method get
@@ -98,7 +157,6 @@ class RecordModel extends ElasticSearchModel {
     let corrections = false;
     for( var key in searchDocument.filters ) {
       if( key === 'isPartOf.@id' ) continue;
-
 
       let type = config.elasticSearch.facets[key].type;
 

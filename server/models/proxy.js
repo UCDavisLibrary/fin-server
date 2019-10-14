@@ -18,7 +18,7 @@ const FIN_URL = new URL(config.server.url);
 const CORS_HEADERS = {
   ['Access-Control-Allow-Methods'] : 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
   ['Access-Control-Expose-Headers'] : 'content-type, link, content-disposition, content-length, pragma, expires, cache-control',
-  ['Access-Control-Allow-Headers'] : 'authorization, cookie, content-type, prefer, slug, cache-control, accept',
+  ['Access-Control-Allow-Headers'] : 'authorization, range, cookie, content-type, prefer, slug, cache-control, accept',
   ['Access-Control-Allow-Credentials'] : 'true'
 }
 

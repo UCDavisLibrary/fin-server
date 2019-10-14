@@ -5,7 +5,7 @@ import "@polymer/iron-pages/iron-pages"
 import "@polymer/iron-icons/iron-icons"
 import "@polymer/iron-icons/social-icons"
 import "@polymer/iron-iconset-svg/iron-iconset-svg"
-import "@ucd-lib/fin-icons/fin-icons"
+import "@ucd-lib/fin-icons"
 
 // sets globals Mixin and EventInterface
 import "@ucd-lib/cork-app-utils";

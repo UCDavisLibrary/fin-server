@@ -1,11 +1,13 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
-import template from "./app-image-viewer-nav.html"
+import template from "./app-media-viewer-nav.html"
 
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
-import "../../../utils/app-share-btn"
 
-export default class AppImageViewerNav extends Mixin(PolymerElement)
+import "../../../utils/app-share-btn"
+import utils from "../../../../lib/utils"
+
+export default class AppMediaViewerNav extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
 
   static get template() {
@@ -16,14 +18,14 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
 
   static get properties() {
     return {
-      mediaList : {
-        type : Array,
-        value : () => []
-      },
       // thumbnail width w/ border and margin
       totalThumbnailWidth : {
         type : Number,
         value : 64,
+      },
+      icon: {
+        type: String,
+        value: ''
       },
       iconWidth : {
         type : Number,
@@ -35,7 +37,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
       },
       thumbnailsPerFrame : {
         type : Number,
-        value : 8
+        value : 10
       },
       leftMostThumbnail : {
         type : Number,
@@ -45,6 +47,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
         type : Boolean,
         value : false
       },
+      /*
       showNavLeft : {
         type : Boolean,
         value : false
@@ -53,20 +56,26 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
         type : Boolean,
         value : false
       },
+      */
       isLightbox : {
         type : Boolean,
         value : false
       },
       singleImage : {
         type : Boolean,
-        value : true
-      }
+        value : false
+      },
+      mediaList : {
+        type : Array,
+        value : () => []
+      },
     }
   }
 
   constructor() {
     super();
     this.active = true;
+
     window.addEventListener('resize', () => this._resize());
     window.addEventListener('touchend', (e) => this._onTouchEnd(e));
     window.addEventListener('touchcancel', (e) => this._onTouchEnd(e));
@@ -131,7 +140,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    */
   _resize() {
     let w = this.offsetWidth;
-
+    
     // grrrr
     if( w === 0 ) {
       setTimeout(() => this._resize(), 200);
@@ -141,7 +150,6 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     w -= 16; // padding
 
     this._setNavBreak(w);
-    this.showNavLeft = (this.leftMostThumbnail !== 0);
 
     let iconsWidth;
     if( this.breakControls ) {
@@ -151,10 +159,12 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
       if( this.isLightbox ) iconsWidth += this.iconWidth * 2;
     }
 
-    let availableThumbSpace = Math.min(w - iconsWidth, 512);
-    this.thumbnailsPerFrame = Math.max(Math.floor(availableThumbSpace / this.totalThumbnailWidth), 1);
+    //let availableThumbSpace = Math.min(w - iconsWidth, 512);
+    //this.thumbnailsPerFrame = Math.max(Math.floor(availableThumbSpace / this.totalThumbnailWidth), 1);
+   
+    //this.showNavLeft = (this.leftMostThumbnail !== 0);
+    //this.showNavRight = !this._showingLastThumbFrame();
 
-    this.showNavRight = !this._showingLastThumbFrame();
     this._updateThumbnailContainerPos();
   }
 
@@ -196,7 +206,7 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
 
   _updateThumbnailContainerPos() {
     // that +1 is a hack, what am I missing !?
-    this.$.thumbnailContainer.style.marginLeft = (-1 * this.leftMostThumbnail * (this.totalThumbnailWidth + 1)) + 'px';
+    this.$.thumbnailInnerContainer.style.marginLeft = (-1 * this.leftMostThumbnail * (this.totalThumbnailWidth + 1)) + 'px';
 
     let lastThumb = this.leftMostThumbnail + this.thumbnailsPerFrame;
     this.thumbnails.forEach((thumbnail, index) => {
@@ -211,33 +221,70 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    if( this.selectedRecordId === record['@id'] ) return;
-    this.selectedRecordId = record['@id'];
-    this.mediaList = this._getImageMediaList(record);
+    //console.log("app-media-viewer-nav(record) ", record);
+    this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
+    this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
+
+    if (!record.media.imageList) {
+      this.singleImage = true;
+    }
+
+    // If only a single video item, display compacted nav bar
+    // Otherwise display full bar.
+    if (record.media.video) {
+      this.zoomButton1.style.display = 'none';
+      this.zoomButton3.style.display = 'none';
+      this.classList.add('video');
+    } else {
+      this.zoomButton1.style.display = 'inline-block';
+      this.zoomButton3.style.display = 'inline-block';
+      this.classList.remove('video');
+    }
+    
+    if (utils.countMediaItems(record.media) === 1) return;
+    this.mediaList = utils.flattenMediaList(record.media);
+    this.mediaList = utils.organizeMediaList(this.mediaList);
 
     this.thumbnails = this.mediaList.map(record => {
+      let _file = '';
+      let fileType   = _file;
+      let fileFormat = _file;
+      let iconType   = '';
 
+      if (record.fileFormat || record.encodingFormat) {
+        _file = (record.fileFormat ? record.fileFormat : record.encodingFormat);
+        fileType   = _file.split('/').shift();
+        fileFormat = _file.split('/').pop();
+
+        if (fileType === 'audio') iconType = 'sound-round';
+        if (fileType === 'video') iconType = 'video-round';
+        if (fileFormat === 'pdf') iconType = 'blank-round';
+        // TODO: Get back to this
+        if (fileType === '360')   iconType = '360-round';
+      }
+      
+      let url = (record.image ? record.image.url : false)
       let thumbnail = {
-        id : record['@id'],
-        position : record.position,
-        selected : false,
-        disabled : true,
-        src : ''
+        id: record['@id'],
+        icon: iconType,
+        position: record.position,
+        selected: false,
+        disabled: true,
+        src: url,
+        thumbnail: url
       }
-
-      if( record.width > record.height ) {
-        thumbnail.src = this._getImgUrl(record['@id'], '', 50);
-      }
-      thumbnail.src = this._getImgUrl(record['@id'], 50, '');
 
       return thumbnail;
     });
 
-    this.singleImage = (this.thumbnails.length > 1) ? false : true;
+    // TODO: Filtering out the text based files for now until we get the PDF/text viewer set up correctly
+    this.thumbnails = this.thumbnails.filter(element => element.icon !== 'blank-round');
+
+    this.singleImage = (this.thumbnails.length !== 0 && this.thumbnails.length > 1) ? false : true;
+    this._resize();
+
     if( this.singleImage ) this.classList.add('single');
     else this.classList.remove('single');
-
-    this._resize();
   }
 
   /**
@@ -248,9 +295,8 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
    */
   _onSelectedRecordMediaUpdate(media) {
     this.media = media;
-    
     this.thumbnails.forEach((thumbnail, index) => {
-      this.set(`thumbnails.${index}.selected`, (media['@id'] === thumbnail.id));
+      this.set(`thumbnails.${index}.selected`, (this.media['@id'] === thumbnail.id));
     });
   }
 
@@ -311,7 +357,6 @@ export default class AppImageViewerNav extends Mixin(PolymerElement)
     }
     window.scrollTo(0,0);
   }
-
 }
 
-customElements.define('app-image-viewer-nav', AppImageViewerNav);
+customElements.define('app-media-viewer-nav', AppMediaViewerNav);

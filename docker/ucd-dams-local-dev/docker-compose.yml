@@ -164,7 +164,11 @@ services:
     depends_on:
       - server
     command: node service
+<<<<<<< HEAD
     # command: bash -c 'tail -f /dev/null'
+=======
+    #command: bash -c 'tail -f /dev/null'
+>>>>>>> video-component
 
   tesseract:
     build: ../../services/tesseract
@@ -221,7 +225,11 @@ services:
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
       - CAS_URL=https://ssodev.ucdavis.edu/cas
+<<<<<<< HEAD
       # - CAS_URL=https://ssodev1.ucdavis.edu/cas
+=======
+      #- CAS_URL=https://ssodev1.ucdavis.edu/cas
+>>>>>>> video-component
     depends_on:
       - server
     command: node service

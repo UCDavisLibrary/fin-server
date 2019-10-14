@@ -3,7 +3,7 @@
     display: block;
     background: black;
     padding: 20px 0 0 0;
-    position: relative;
+    /* position: relative; */
     box-sizing: border-box;
   }
 
@@ -19,10 +19,6 @@
 
   img {
     width: 100%;
-  }
-  
-  app-image-viewer-nav {
-    margin-top: 20px;
   }
 
   .layout {
@@ -41,7 +37,3 @@
 <div class="layout" hidden$="[[loading]]" style="line-height: 0">
   <img id="img" />
 </div>
-
-
-<app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
-<app-image-viewer-nav on-zoom-in="_onZoomIn"></app-image-viewer-nav>

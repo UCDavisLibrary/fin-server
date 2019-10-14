@@ -80,6 +80,7 @@ export default class AppShareBtn extends Mixin(PolymerElement)
   _onBtnClicked(e) {
     this.visible = !this.visible;
     this.$.popup.style.display = this.visible ? 'block' : 'none';
+    
     setTimeout(() => this.$.facebook.focus(), 100);
     e.preventDefault();
     e.stopPropagation();

@@ -1,14 +1,13 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-spinner/paper-spinner-lite"
-import template from "./app-image-viewer-static.html"
+import template from "./app-image-viewer.html"
 
-import "./app-image-viewer-nav"
-import "./app-image-viewer-lightbox"
+import utils from "../../../../lib/utils"
 
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
 
-export default class AppImageViewerStatic extends Mixin(PolymerElement)
+export default class AppImageViewer extends Mixin(PolymerElement)
   .with(EventInterface, AppStateInterface, MediaInterface) {
   
   static get template() {
@@ -34,7 +33,11 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
       height : {
         type : Number,
         value : 600
-      }
+      },
+      hasMultipleImages : {
+        type : Boolean,
+        value : false
+      },
     }
   }
 
@@ -50,7 +53,7 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    
+    //console.log("app-image-viewer.js => _onSelectedRecordUpdate(): ", record);
   }
 
   /**
@@ -60,21 +63,31 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
    * @param {Object} media 
    */
   _onSelectedRecordMediaUpdate(media) {
-    if( this.MediaModel.get360Media(media).length ) {
-      this.style.display = 'none';
-      return;
-    }
-    this.style.display = 'block';
+    let getMediaType = utils.getType(media);
+
+    if (getMediaType === 'imageList' || getMediaType === 'image') console.log("imagelist/image");
+    else return;
 
     this.media = media;
     this._renderImg();
   }
 
   _renderImg() {
+    if ( this.media.hasPart && this.media.hasPart.length > 0 ) {
+      this.media.image = this.media.hasPart[0].image;
+    }
+
+    // TODO: Justin please review.  Fixes the problem w/the height being too large since 
+    //       the problem seems to originate in this.height 
+    //       being set to 600 in this component's properties.
+    if ( this.media.image.width < this.height) this.height = this.media.image.width;
     let url = this._getImgUrl(this.media.image.url, '', this.height);
     let r = 600 / this.media.image.height;
     let w = this.media.image.width * r;
+
     let eleWidth = this.offsetWidth-20;
+    if ( eleWidth < 1 ) eleWidth = 1;
+
     let startHeight = Math.ceil(eleWidth > w ? this.height : ((eleWidth/w)*this.height));
 
     let img = new Image();
@@ -89,18 +102,8 @@ export default class AppImageViewerStatic extends Mixin(PolymerElement)
     img.src = url;
 
     this.$.img.style.maxWidth = w + 'px';
-    this.$.img.src = url; 
-  }
-
-  /**
-   * @method _onZoomIn
-   * @description bound to zoom event from viewer nav. 
-   * 
-   * @param {Object} e custom HTML event
-   */
-  _onZoomIn(e) {
-    this.$.lightbox.show();
+    this.$.img.src = url;
   }
 }
 
-customElements.define('app-image-viewer-static', AppImageViewerStatic);
+customElements.define('app-image-viewer', AppImageViewer);
