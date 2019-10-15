@@ -10,6 +10,7 @@ const transformService = require('./transform-service');
 const proxyService = require('./proxy-service');
 const labelService = require('./label-service');
 const externalService = require('./external-service');
+const {logger} = require('@ucd-lib/fin-node-utils');
 
 const LABEL_SERVICE = 'label';
 const SERVICE_CHAR = '/svc:';
@@ -23,6 +24,7 @@ class ServiceProxy {
       if( !(await this.validateRequest(req, res)) ) return;
     } catch(e) {
       logger.error('error validating proxy request', e);
+      res.status(400).send('Service Error');
       return;
     }
 
@@ -182,7 +184,7 @@ class ServiceProxy {
     }
 
     // we are not a binary container
-    fin.finContainer = {access: true, binary: false, links, response, token: req.token};
+    req.finContainer = {access: true, binary: false, links, response, token: req.token};
   }
 
   /**

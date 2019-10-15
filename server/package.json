@@ -11,7 +11,7 @@
   "dependencies": {
     "@ucd-lib/fin-node-api": "^0.11.9",
     "@ucd-lib/fin-node-utils": "^0.2.18",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.2",
     "cas-authentication": "0.0.8",
     "connect-redis": "^3.3.2",

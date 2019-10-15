@@ -203,8 +203,7 @@ class RecordsModel extends ElasticSearchModel {
   esSearch(body = {}, options={}) {
     options.index = config.elasticsearch.record.alias;
     options.body = body;
-
-    options._sourceExclude = config.elasticsearch.fields.exclude;
+    options._source_exclude = config.elasticsearch.fields.exclude;
 
     return es.search(options);
   }
@@ -240,7 +239,7 @@ class RecordsModel extends ElasticSearchModel {
     }
 
     if( !debug ) {
-      queryDoc._sourceExclude = config.elasticsearch.fields.exclude;
+      queryDoc._source_exclude = config.elasticsearch.fields.exclude;
     }
 
     return es.get(queryDoc);
@@ -258,7 +257,7 @@ class RecordsModel extends ElasticSearchModel {
     return es.mget({
       index: config.elasticsearch.record.alias,
       type: '_all',
-      _sourceExclude : config.elasticsearch.fields.exclude,
+      _source_exclude : config.elasticsearch.fields.exclude,
       body: {ids}
     });
   }
