@@ -55,11 +55,11 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         type : Array,
         value : () => []
       },
-      fullMediaSet: {
+      images: {
         type: Array,
         value: () => []
       },
-      hasMultipleSources: {
+      hasMultipleImages: {
         type: Boolean,
         value: false
       },
@@ -122,7 +122,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
     this.$.format.value = this.originalFormat;
     this.defaultImage = true;
-    this.fullMediaSet = [];
+    this.imageList = [];
     this.multipleSourcesSelected = false;
     this.$.format.style.display = "inline-block";
     this.$.requestedResolution.style.display = "inline-block";
@@ -149,13 +149,10 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   _onSelectedRecordMediaUpdate(record) {
     this.$.single.checked   = true;
     this.$.fullset.checked  = false;
-    
-    if ( utils.countMediaItems(this.rootRecord.media) > 1 ) {
-      this.fullMediaSet = utils.flattenMediaList(this.rootRecord.media);
-    }
 
-    if ( this.fullMediaSet.length > 1 ) this.hasMultipleSources = true;
-    else this.hasMultipleSources = false;
+    let isImage = (utils.getType(record) === 'image');
+    this.images = utils.getImages(this.rootRecord.media);
+    this.hasMultipleImages = (isImage && this.images.length > 1);
 
     if (utils.getType(record) === 'video') {
       this.isVideo = true;
@@ -421,11 +418,11 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   }
 
   _setTarPaths() {
-    let origin = false, urls = {};
-    this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '');
+    let origin = true, urls = {};
+    this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
 
-    if ( this.fullMediaSet.length > 0 ) {
-      this.fullMediaSet.forEach(item => {
+    if ( this.images.length > 0 ) {
+      this.images.forEach(item => {
         let name = item.filename || item.name;
         if ( utils.getType(item).toLowerCase().includes('image') ) {
           if( origin ) {

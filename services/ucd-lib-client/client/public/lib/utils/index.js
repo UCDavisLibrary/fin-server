@@ -116,6 +116,26 @@ class Utils {
     return array;
   }
 
+  /**
+   * @method getImages
+   * @description given a record media object, get the media object images
+   * 
+   * @return {Array}
+   */
+  getImages(mediaObj) {
+    let array = [];
+
+    for( let type in mediaObj ) {
+      if( type === 'image' ) {
+        array = array.concat(mediaObj[type]);
+      } else if( type === 'imageList' ) {
+        array = array.concat(... mediaObj[type].map(item => item.hasPart));
+      }
+    }
+
+    return array;
+  }
+
   organizeMediaList(mediaListArray) {
     mediaListArray.map(item => item.position = parseInt(item.position))
       .sort((a, b) => {
