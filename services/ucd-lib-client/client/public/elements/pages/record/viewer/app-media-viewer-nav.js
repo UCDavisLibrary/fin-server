@@ -69,6 +69,10 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         type : Array,
         value : () => []
       },
+      showOpenLightbox : {
+        type: Boolean,
+        value : false
+      }
     }
   }
 
@@ -221,8 +225,8 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
-    this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
+    // this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
+    // this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
 
     if (!record.media.imageList) {
       this.singleImage = true;
@@ -230,36 +234,25 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
 
     // If only a single video item, display compacted nav bar
     // Otherwise display full bar.
-    if (record.media.video) {
-      this.zoomButton1.style.display = 'none';
-      this.zoomButton3.style.display = 'none';
-      this.classList.add('video');
-    } else {
-      this.zoomButton1.style.display = 'inline-block';
-      this.zoomButton3.style.display = 'inline-block';
-      this.classList.remove('video');
-    }
+    // if (record.media.video) {
+    //   this.zoomButton1.style.display = 'none';
+    //   this.zoomButton3.style.display = 'none';
+    //   this.classList.add('video');
+    // } else {
+    //   this.zoomButton1.style.display = 'inline-block';
+    //   this.zoomButton3.style.display = 'inline-block';
+    //   this.classList.remove('video');
+    // }
     
     if (utils.countMediaItems(record.media) === 1) return;
     this.mediaList = utils.flattenMediaList(record.media);
     this.mediaList = utils.organizeMediaList(this.mediaList);
 
     this.thumbnails = this.mediaList.map(record => {
-      let _file = '';
-      let fileType   = _file;
-      let fileFormat = _file;
-      let iconType   = '';
+      let {fileType, iconType} = this._getFileAndIconType(record);
 
-      if (record.fileFormat || record.encodingFormat) {
-        _file = (record.fileFormat ? record.fileFormat : record.encodingFormat);
-        fileType   = _file.split('/').shift();
-        fileFormat = _file.split('/').pop();
-
-        if (fileType === 'audio') iconType = 'sound-round';
-        if (fileType === 'video') iconType = 'video-round';
-        if (fileFormat === 'pdf') iconType = 'blank-round';
-        // TODO: Get back to this
-        if (fileType === '360')   iconType = '360-round';
+      if( this.isLightbox && fileType !== 'image' ) {
+        return null;
       }
       
       let url = (record.image ? record.image.url : false)
@@ -274,10 +267,10 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       }
 
       return thumbnail;
-    });
-
+    })
+    .filter(item => item ? true : false)
     // TODO: Filtering out the text based files for now until we get the PDF/text viewer set up correctly
-    this.thumbnails = this.thumbnails.filter(element => element.icon !== 'blank-round');
+    .filter(element => element.icon !== 'blank-round');
 
     this.singleImage = (this.thumbnails.length !== 0 && this.thumbnails.length > 1) ? false : true;
     this._resize();
@@ -297,6 +290,30 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     this.thumbnails.forEach((thumbnail, index) => {
       this.set(`thumbnails.${index}.selected`, (this.media['@id'] === thumbnail.id));
     });
+
+    let {fileType, iconType} = this._getFileAndIconType(media);
+    this.showOpenLightbox = (fileType === 'image') ? true : false;
+  }
+
+  _getFileAndIconType(media) {
+    let _file = '';
+    let fileType   = _file;
+    let fileFormat = _file;
+    let iconType   = '';
+
+    if (media.fileFormat || media.encodingFormat) {
+      _file = (media.fileFormat ? media.fileFormat : media.encodingFormat);
+      fileType   = _file.split('/').shift();
+      fileFormat = _file.split('/').pop();
+
+      if (fileType === 'audio') iconType = 'sound-round';
+      if (fileType === 'video') iconType = 'video-round';
+      if (fileFormat === 'pdf') iconType = 'blank-round';
+      // TODO: Get back to this
+      if (fileType === '360')   iconType = '360-round';
+    }
+
+    return {fileType, iconType};
   }
 
   /**

@@ -19,7 +19,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
 
     static get properties() {
       return {
-        isMediaType: {
+        mediaType: {
           type: String
         }
       }
@@ -30,12 +30,12 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.render = render.bind(this);
       this._injectModel('AppStateModel');
       this._injectModel('MediaModel');
-      this.isMediaType = 'image';
+      this.mediaType = 'image';
     }
 
     async firstUpdated(changedProperties) {
-      this.$.wrapper  = this.shadowRoot.getElementById('wrapper');
       this.$.lightbox = this.shadowRoot.getElementById('lightbox');
+      if( !this.$.lightbox ) this.$.lightbox = document.getElementById('lightbox');
       this.$.mediaNav = this.shadowRoot.querySelector('app-media-viewer-nav');
       this.$.zoomBtn  = this.$.mediaNav.shadowRoot.getElementById('zoomIn1');
     }
@@ -47,14 +47,13 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
     
     async _onSelectedRecordMediaUpdate(record) {
-      this.isMediaType = utils.getType(record);
-      if ( this.isMediaType === "imageList" ) {
-        this.isMediaType = "image";
+      let mediaType = utils.getType(record);
+      if ( mediaType === "imageList" ) {
+        mediaType = "image";
+      } else if ( mediaType === "streamingVideo" ){
+        mediaType = "video";
       }
-
-      if ( this.isMediaType === "streamingVideo" ){
-        this.isMediaType = "video";
-      }
+      this.mediaType = mediaType;
     }
 
     /**

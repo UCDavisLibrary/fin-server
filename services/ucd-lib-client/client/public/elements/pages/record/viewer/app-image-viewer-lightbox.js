@@ -56,8 +56,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     super.ready();
     
     // TODO: Have Justin review these.  No longer necessary using Lit?
-    //this.parentNode.removeChild(this);
-    //document.body.appendChild(this);
+    this.parentNode.removeChild(this);
+    document.body.appendChild(this);
 
     this.shadowRoot.removeChild(this.$.safeCover);
     document.body.appendChild(this.$.safeCover);

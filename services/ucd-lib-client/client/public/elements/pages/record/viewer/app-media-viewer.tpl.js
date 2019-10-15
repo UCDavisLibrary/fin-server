@@ -10,13 +10,22 @@ export default function render() {
         min-height: 250px;
       }
 
-      .positionRelative {
+      .wrapper {
         position: relative;
+        min-height: 250px;
+        padding-bottom: 62px;
+      }
+
+      app-media-viewer-nav {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
       }
     </style>
-    <div id="wrapper">
+    <div class="wrapper">
       <app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
-      <iron-pages selected="${this.isMediaType}" attr-for-selected="id" selected-attribute="visible">
+      <iron-pages selected="${this.mediaType}" attr-for-selected="id" selected-attribute="visible">
         <!-- <app-360-image-viewer id="360"></app-360-image-viewer> -->
         <app-image-viewer id="image"></app-image-viewer>
         <app-video-viewer id="video"></app-video-viewer>
