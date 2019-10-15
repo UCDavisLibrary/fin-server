@@ -11,12 +11,16 @@ class RecordService extends BaseService {
     this.baseUrl = '/api/records'
   }
 
+  setModel(model) {
+    this.model = model;
+  }
+
   get(id) {
     return this.request({
       url : `${this.baseUrl}${id}?root=true`,
       checkCached : () => this.store.getRecord(id),
       onLoading : request => this.store.setRecordLoading(id, request),
-      onLoad : result => this.store.setRecordLoaded(id, result.body),
+      onLoad : result => this.store.setRecordLoaded(id, this.model.createMediaObject(result.body)),
       onError : e => this.store.setRecordError(id, e)
     });
   }

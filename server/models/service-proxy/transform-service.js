@@ -3,7 +3,6 @@ const serviceModel = require('../services');
 const api = require('@ucd-lib/fin-node-api');
 
 module.exports = (req, res) => {
-  console.log('here!');
   if( req.finServiceInfo.global ) {
     bodyParser.json()(req, res, () => {
       let body = req.body || {};

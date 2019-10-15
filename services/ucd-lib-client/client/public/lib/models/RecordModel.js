@@ -15,7 +15,64 @@ class RecordModel extends ElasticSearchModel {
 
     this.MAX_WINDOW = 10000;
 
+    this.EventBus.on('app-state-update', e => this._onAppStateUpdate(e));
+    this.service.setModel(this);
+
     this.register('RecordModel');
+  }
+
+  /**
+   * @method _onAppStateUpdate
+   * @description listen for app state update events, load a record
+   * if we are on a record page
+   * 
+   * @param {Object} e 
+   */
+  async _onAppStateUpdate(e) {
+    if( e.location.page !== 'record' ) return;
+    let id = '/'+e.location.path.join('/');
+
+    let result = await this.get(id);
+
+    // only trigger a change if the root record changed.
+    if( result.rootId !== this.currentRecordId ) {
+      this.currentRecordId = result.rootId;
+      AppStateModel.setSelectedRecord(result.payload);
+    }
+
+    // selected media can be any child
+    if( this.currentMediaId === id ) return;
+    this.currentMediaId = id;
+
+    // select the current media based on url id
+    for( let type in result.payload.media ) {
+      let mediaGroup = result.payload.media[type];
+      for( let media of mediaGroup ) {
+        if( type === 'imageList' ) {
+          for( let image of media.hasPart ) {
+            if( image['@id'] === id ) {
+              AppStateModel.setSelectedRecordMedia(image);
+              return;
+            }
+          }
+        } else if( media['@id'] === id ) {
+          AppStateModel.setSelectedRecordMedia(media);
+          return;
+        }
+      }
+    }
+
+    // default, nothing currently selected
+    if (result.payload.media.imageList) {
+      AppStateModel.setSelectedRecordMedia(result.payload.media.imageList[0]);
+    } else if (result.payload.media.video) {
+      AppStateModel.setSelectedRecordMedia(result.payload.media.video[0]);
+    } else if (result.payload.media.audio) {
+      AppStateModel.setSelectedRecordMedia(result.payload.media.audio[0]);
+    } else if (result.payload.media.image) {
+      AppStateModel.setSelectedRecordMedia(result.payload.media.image[0]);
+    }
+
   }
 
   /**
@@ -54,14 +111,13 @@ class RecordModel extends ElasticSearchModel {
 
   /**
    * @method createMediaObject
-   * @description 
+   * @description attach the media object to a root record
    * 
    * @param {Array of Objects} record
    * 
    * @returns {Array of Objects}
    */
-  async createMediaObject(record) {
-    //console.log("createMediaObject(record): ", record);
+  createMediaObject(record) {
     if (record.isRootRecord === false) return;
        
     let media = {};
@@ -125,6 +181,10 @@ class RecordModel extends ElasticSearchModel {
 
     if( state && state.request ) {
       await state.request;
+    } else if( state && state.state === 'loaded' ) {
+      if( state.id !== id ) {
+        this.store.setRecordLoaded(id, state.payload)
+      }
     } else {
       await this.service.get(id);
     }

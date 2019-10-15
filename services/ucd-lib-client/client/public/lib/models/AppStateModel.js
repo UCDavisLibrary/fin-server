@@ -8,7 +8,6 @@ class AppStateModelImpl extends AppStateModel {
     super();
     this.store = AppStateStore;
 
-    this.EventBus.on(this.store.events.APP_STATE_UPDATE, () => this._sendGA());
     this._sendGA();
   }
 
@@ -30,6 +29,7 @@ class AppStateModelImpl extends AppStateModel {
       update.location.page = page;
     }
 
+    this._sendGA();
     return super.set(update);
   }
 

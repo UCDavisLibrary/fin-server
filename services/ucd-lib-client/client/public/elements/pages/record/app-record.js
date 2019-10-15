@@ -70,19 +70,19 @@ export default class AppRecord extends Mixin(PolymerElement)
    * 
    * @param {*} e 
    */
-  async _onAppStateUpdate(e) {
-    if( e.location.page !== 'record' ) return;
+  // async _onAppStateUpdate(e) {
+  //   if( e.location.page !== 'record' ) return;
 
-    let id = '/'+e.location.path.join('/');
-    if( this.currentRecordId === id ) return;
-    this.currentRecordId = id;
+  //   let id = '/'+e.location.path.join('/');
+  //   if( this.currentRecordId === id ) return;
+  //   this.currentRecordId = id;
 
-    let result = await this.RecordModel.get(this.currentRecordId);
-    let record = await this.RecordModel.createMediaObject(result.payload);
-    this._onSelectedRecordUpdate(record);
+  //   let result = await this.RecordModel.get(this.currentRecordId);
+  //   let record = await this.RecordModel.createMediaObject(result.payload);
+
     
-    this.AppStateModel.setSelectedRecord(record);
-  }
+  //   this.AppStateModel.setSelectedRecord(record);
+  // }
 
   /**
    * @method _onSelectedRecordUpdate
@@ -130,16 +130,6 @@ export default class AppRecord extends Mixin(PolymerElement)
       let collection = await this._getCollection(this.collectionName);
       this.collectionName = collection.name;
       this.record.collectionName = collection.name;
-    }
-
-    if (this.record.media.imageList) {
-      this.AppStateModel.setSelectedRecordMedia(this.record.media.imageList[0]);
-    } else if (this.record.media.video) {
-      this.AppStateModel.setSelectedRecordMedia(this.record.media.video[0]);
-    } else if (this.record.media.audio) {
-      this.AppStateModel.setSelectedRecordMedia(this.record.media.audio[0]);
-    } else if (this.record.media.image) {
-      this.AppStateModel.setSelectedRecordMedia(this.record.media.image[0]);
     }
 
     // Attach a recod to the download options

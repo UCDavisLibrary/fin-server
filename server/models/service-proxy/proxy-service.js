@@ -47,7 +47,6 @@ module.exports = async (req, res) => {
   let url = req.finService.renderUrlTemplate(params);
   proxyOpts.target = url;
   proxyOpts.headers.host = new URL(url).hostname;
-  console.log(proxyOpts.target, proxyOpts.headers);
-
+  
   proxy.web(req, res, proxyOpts);
 }

@@ -4,7 +4,7 @@ import render from "./app-media-viewer.tpl"
 import '@polymer/iron-pages'
 
 import "./app-image-viewer"
-import "./app-360-image-viewer"
+// import "./app-360-image-viewer"
 import "./app-video-viewer"
 import "./app-audio-viewer"
 

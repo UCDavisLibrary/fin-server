@@ -221,7 +221,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    //console.log("app-media-viewer-nav(record) ", record);
     this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
     this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
 
@@ -309,8 +308,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
   _onThumbnailClicked(e) {
     let id = e.currentTarget.getAttribute('media-id');
     this.AppStateModel.setLocation(id);
-    // let media = this.mediaList.find(item => item['@id'] === id);
-    // this._setSelectedRecordMedia(media);
   }
 
   /**
