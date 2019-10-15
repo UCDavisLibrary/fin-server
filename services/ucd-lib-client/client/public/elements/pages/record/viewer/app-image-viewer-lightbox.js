@@ -66,6 +66,14 @@ export default class AppImageViewer extends Mixin(PolymerElement)
   }
 
   /**
+   * @method _onAppStateUpdate
+   * @description bound to AppStateModel app-state-update event
+   */
+  _onAppStateUpdate() {
+    if( this.visible ) this.hide();
+  }
+
+  /**
    * @method _onSelectedRecordMediaUpdate
    * @description from AppStateInterface, called when a records media is selected
    * 
