@@ -3,11 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const spaMiddleware = require('@ucd-lib/spa-router-middleware');
 const config = require('../config');
-const authUtils = require('./auth');
+const authUtils = require('../lib/auth');
 const records = require('../models/records');
 const collections = require('../models/collections');
-const transform = require('./seo-transform');
-const collectionTransform = require('./seo-collection-transform');
+const transform = require('../lib/seo-transform');
+const collectionTransform = require('../lib/seo-collection-transform');
 
 const bundle = `
   <script>

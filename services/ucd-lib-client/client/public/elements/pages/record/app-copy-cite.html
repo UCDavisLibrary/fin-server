@@ -38,12 +38,21 @@
     padding-bottom: 10px;
     overflow: auto;
   }
+
+  .buttons {
+    display: flex;
+  }
 </style>
 
 <div hidden$="[[copying]]" id="citeText"></div>
 <textarea hidden$="[[!copying]]" id="copyArea"></textarea>
 
-<button active$="[[copying]]" on-click="_onCopyClicked" class="copyButton">
-  <iron-icon icon="content-copy" id="icon"></iron-icon>
-  <span>Copy</span>
-</button>
+<div class="buttons">
+  <div>
+    <slot></slot>
+  </div>
+  <button active$="[[copying]]" on-click="_onCopyClicked" class="copyButton">
+    <iron-icon icon="content-copy" id="icon"></iron-icon>
+    <span>Copy</span>
+  </button>
+</div>

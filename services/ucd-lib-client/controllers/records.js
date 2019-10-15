@@ -3,6 +3,7 @@ const model = require('../models/records');
 const utils = require('./utils');
 const cors = require('cors');
 
+let idRegExp = /(ark|doi):\/?[a-zA-Z0-9\.]+\/[a-zA-Z0-9\.]+/;
 router.use(cors());
 
 router.post('/search', async (req, res) => {
@@ -57,6 +58,39 @@ router.get('/*', async (req, res) => {
   }
 
   try {
+    if( id.match(/^\/(ark|doi):*/) ) {
+      let info = id.split(idRegExp);
+      info = {
+        id : req.url.match(idRegExp)[0],
+        type : info[1],
+        suffix : info[2]
+      }
+
+      let result = await model.getByArk(info.id);
+      if( !result ) {
+        return res.status(404).json({error: true, message: 'unknown ark/doi: '+id})
+      }
+      res.redirect('/api/records'+result['@id']+info.suffix);
+      return;
+    }
+
+    // find the root record for this id
+    if( req.query.root ) {
+      let parts = id.split('/').filter(p => p !== '');
+      for( let i = parts.length-1; i >= 0; i-- ) {
+        try {
+          let result = await model.esGet('/'+parts.join('/'));
+          if( result && result.found ) result = result._source;
+          if( result.isRootRecord ) {
+            id = '/'+parts.join('/');
+            break;
+          }
+        } catch(e) {}
+        
+        parts.splice(i, 1);
+      }
+    }
+
     let result = await model.get(id, (req.query.seo || req.query.schema));
     res.json(result);
   } catch(e) {

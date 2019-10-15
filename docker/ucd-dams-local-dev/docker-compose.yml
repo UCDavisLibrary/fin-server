@@ -54,6 +54,13 @@ services:
       - JWT_VERBOSE=${JWT_VERBOSE}
       - FIN_URL=${FIN_URL}
 
+  postgres:
+    image: postgres:10.5
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
   ###
   # Search
   ###
@@ -155,8 +162,8 @@ services:
       - FIN_URL=${FIN_URL}
     depends_on:
       - server
-    # command: node service
-    command: bash -c 'tail -f /dev/null'
+    command: node service
+    # command: bash -c 'tail -f /dev/null'
 
   tesseract:
     build: ../../services/tesseract
@@ -212,8 +219,8 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
-      # - CAS_URL=https://ssodev.ucdavis.edu/cas
-      - CAS_URL=https://ssodev1.ucdavis.edu/cas
+      - CAS_URL=https://ssodev.ucdavis.edu/cas
+      # - CAS_URL=https://ssodev1.ucdavis.edu/cas
     depends_on:
       - server
     command: node service

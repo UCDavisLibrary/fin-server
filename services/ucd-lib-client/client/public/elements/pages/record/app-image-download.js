@@ -80,6 +80,10 @@ export default class AppImageDownload extends PolymerElement {
       multipleImagesSelected : {
         type : Boolean,
         value : false
+      },
+      imageCount : {
+        type : Number,
+        value : 0
       }
     }
   }
@@ -125,6 +129,7 @@ export default class AppImageDownload extends PolymerElement {
     this.rootRecord = record;
     this.imagelist = imagelist;
     this.hasMultipleImages = (this.imagelist.length > 0);
+    this.imageCount = this.imagelist.length;
     this.multipleImagesSelected = false;
 
     this.selectedSize = SIZES.length - 1;

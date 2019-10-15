@@ -4,6 +4,7 @@ class CitationsModel {
     // citeproc as a round about way of rendering data can only pass id,
     // so you have to store object somewhere
     this.data = {};
+    this.engineList = ['apa', 'mla', 'chicago'];
   }
 
   /**

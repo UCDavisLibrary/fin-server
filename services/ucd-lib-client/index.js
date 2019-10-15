@@ -43,7 +43,7 @@ app.use('/_version', require('./controllers/version'));
 /**
  * setup ark/doi proxy
  */
-require('./lib/identifier')(app);
+require('./controllers/identifier')(app);
 
 /**
  * setup sitemap
@@ -53,7 +53,7 @@ require('./models/sitemap').middleware(app);
 /**
  * setup static routes
  */
-require('./lib/static')(app);
+require('./controllers/static')(app);
  
 app.listen(8000, () => {
   logger.info('server ready on port 8000, using: '+config.server.assets);

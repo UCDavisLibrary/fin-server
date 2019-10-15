@@ -5,7 +5,7 @@ class AppAuthHeader extends Mixin(PolymerElement)
       .with(EventInterface, AuthInterface) {
 
   static get template() {
-    return html`<iron-icon icon="fin:account" style="width: 40px; height:40px"></iron-icon>`;
+    return html`<iron-icon icon="fin-icons:account" style="width: 40px; height:40px"></iron-icon>`;
   }
 
   constructor() {

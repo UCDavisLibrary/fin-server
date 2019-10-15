@@ -62,8 +62,15 @@ class RecordModel extends ElasticSearchModel {
    * @returns {Promise} resolves to record
    */
   async get(id) {
-    await this.service.get(id);
-    return this.store.data.byId[id];
+    let state = this.store.getRecord(id);
+
+    if( state && state.request ) {
+      await state.request;
+    } else {
+      await this.service.get(id);
+    }
+
+    return this.store.getRecord(id);
   }
 
   setSearchLocation(searchDocument) {

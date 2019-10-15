@@ -43,7 +43,8 @@ class AppFiltersPanel extends Mixin(PolymerElement)
       },
       selectedTab : {
         type : String,
-        value : ''
+        value : '',
+        notify: true
       },
 
       selectedCollection : {

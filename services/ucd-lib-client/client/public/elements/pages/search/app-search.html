@@ -11,11 +11,19 @@
     flex: 1;
     padding-bottom: 35px;
   }
+
   app-filters-panel {
     width: 350px;
+    transition: width 300ms linear;
+  }
+  app-filters-panel[wide] {
+    width: 475px;
   }
 
   #drawer app-filters-panel {
+    width: 300px;
+  }
+  #drawer app-filters-panel[wide] {
     width: 300px;
   }
   
@@ -65,6 +73,12 @@
     display: none;
   }
 
+  @media( max-width: 1025px ) {
+    app-filters-panel[wide] {
+      width: 415px;
+    }
+  }
+
   @media( min-width: 975px ) {
     #outerDrawer {
       display: none;
@@ -90,7 +104,7 @@
   </div>
 
   <div class="search-container">
-    <app-filters-panel id="desktop-filter-panel"></app-filters-panel>
+    <app-filters-panel id="desktop-filter-panel" wide$="[[wideFiltersPanel]]" on-selected-tab-changed="_onFiltersTabUpdate"></app-filters-panel>
     <div class="search-content">
       <app-search-results-panel 
         id="resultsPanel" 

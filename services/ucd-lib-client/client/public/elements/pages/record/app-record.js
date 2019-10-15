@@ -17,7 +17,6 @@ import AppStateInterface from "../../interfaces/AppStateInterface"
 import RecordInterface from "../../interfaces/RecordInterface"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
-import { debug } from "util";
 
 export default class AppRecord extends Mixin(PolymerElement)
       .with(EventInterface, AppStateInterface, RecordInterface, CollectionInterface, MediaInterface) {
@@ -90,7 +89,9 @@ export default class AppRecord extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   async _onSelectedRecordUpdate(record) {
-    if( record['@id'] === this.renderedRecordId ) return;
+    if( record['@id'] === this.renderedRecordId ) {
+      return this._renderSelectedMedia();
+    }
 
     this.renderedRecordId = record['@id'];
     this.record = record;
@@ -135,16 +136,11 @@ export default class AppRecord extends Mixin(PolymerElement)
       this.record.collectionName = collection.name;
     }
 
+    this._renderSelectedMedia();
+
     // render associated media
     let imageList = this._getImageMediaList(record);
     this.$.download.setRootRecord(record, imageList);
-
-    if( record.associatedMedia ) { 
-      if( imageList.length ) this._setSelectedRecordMedia(imageList[0]);
-      else this._setSelectedRecordMedia(record);
-    } else {
-      this._setSelectedRecordMedia(record);
-    }
 
     // find arks or doi
     this._renderIdentifier(record);
@@ -156,9 +152,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.collectionValue.innerHTML = `<a href="${record.collectionId}">${this.collectionName}</a>`;
 
     // set fedora collection link
-    let metadataPart = record['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
-    let link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
-    this.$.fedoraValue.innerHTML =  `<a href="${link}">${record['@id']}</a>`;
+    this._renderFcLink(record);
 
     this._updateMetadataRows();
     // this._setTarHref();
@@ -167,6 +161,42 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
     this.$.apa.text = await citations.renderEsRecord(this.record, 'apa');
     this.$.chicago.text = await citations.renderEsRecord(this.record, 'chicago');
+  }
+
+  _renderFcLink(record, media) {
+    let metadataPart = record['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
+    let link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
+    let html = `<a href="${link}">${record['@id']}</a>`;
+
+    if( media ) {
+      metadataPart = media['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
+      link = this._getHost()+'fcrepo/rest'+media['@id']+metadataPart;
+      html += `<br /><a href="${link}">${media['@id']}</a>`;
+    }
+
+    this.$.fedoraValue.innerHTML = html;
+  }
+
+  _renderSelectedMedia() {
+    let imageList = this._getImageMediaList(this.record);
+    if( this.record.associatedMedia ) { 
+      if( imageList.length ) {
+
+        // see if url has selected an image
+        let selected = imageList[0];
+        for( let img of imageList ) {
+          if( img['@id'] === window.location.pathname ) {
+            selected = img;
+          }
+        }
+
+        this._setSelectedRecordMedia(selected);
+      } else {
+        this._setSelectedRecordMedia(this.record);
+      }
+    } else {
+      this._setSelectedRecordMedia(this.record);
+    }
   }
 
   _setTarHref() {
@@ -272,7 +302,7 @@ export default class AppRecord extends Mixin(PolymerElement)
    * 
    * @param {Object} record 
    */
-  _renderIdentifier(record) {
+  _renderIdentifier(record, media) {
     if( !record.identifier ) {
       return this.$.identifier.style.display = 'none';
     }
@@ -281,6 +311,16 @@ export default class AppRecord extends Mixin(PolymerElement)
     ids = ids.filter(id => id.match(/^(ark|doi)/) ? true : false);
 
     if( ids.length ) {
+
+      // if we are passed a selected media, append identifiers as well
+      if( media && media.identifier ) {
+        let mediaIds = Array.isArray(media.identifier) ? media.identifier : [media.identifier];
+        mediaIds = mediaIds.filter(id => id.match(/^(ark|doi)/) ? true : false);
+        for( let id of mediaIds ) {
+          if( ids.indexOf(id) === -1 ) ids.push(id);
+        }
+      }
+
       this.$.identifier.style.display = 'flex';
       this.$.identifierValue.innerHTML = ids.map(id => `<div><a href="${this._getHost()}${id}">${id}</a></div>`).join('')
     } else {
@@ -317,6 +357,9 @@ export default class AppRecord extends Mixin(PolymerElement)
       size : record.image.contentSize ? parseInt(record.image.contentSize) : 0,
       url : record.image.url
     });
+
+    this._renderIdentifier(this.record, record);
+    this._renderFcLink(this.record, record);
   }
 
   /**

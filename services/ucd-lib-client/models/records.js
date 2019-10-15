@@ -27,6 +27,52 @@ class RecordsModel extends ElasticSearchModel {
   }
 
   /**
+   * @function getByArk
+   * @description request record from elasticsearch with given
+   * identifier (doi or ark)
+   * 
+   * @param {String} id doi or ark
+   * 
+   * @returns {Object|null}
+   */
+  async getByArk(id) {
+    let result = await es.search({
+      index: config.elasticsearch.record.alias,
+      body : {
+        query : {
+          bool : {
+            filter : [
+              {term : {'identifier.raw' : id}},
+              {term : {isRootRecord : true}}
+            ]
+          }
+        }
+      },
+      _source_exclude : config.elasticsearch.fields.exclude,
+    });
+
+    // see if its a collection
+    if( result.hits.total === 0 )  {
+      result = await es.search({
+        index : config.elasticsearch.collection.alias,
+        body : {
+          query : {
+            bool : {
+              filter : [
+                {term : {'identifier.raw' : id}},
+              ]
+            }
+          }
+        },
+        _source_exclude : config.elasticsearch.fields.exclude
+      });
+    }
+
+    if( result.hits.total === 0 ) return null;
+    return result.hits.hits[0]._source;
+  }
+
+  /**
    * @method _fillRecord
    * @description helper 'get' method for walking 'fill' attributes
    * 

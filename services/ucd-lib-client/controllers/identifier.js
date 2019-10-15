@@ -1,8 +1,7 @@
-const express = require('express');
-const path = require('http-proxy');
-const es = require('./esClient');
 const config = require('../config');
-const {logger} = require('@ucd-lib/fin-node-utils')
+const {logger} = require('@ucd-lib/fin-node-utils');
+const cors = require('cors');
+const model = require('../models/records');
 
 let idRegExp = /(ark|doi):\/?[a-zA-Z0-9\.]+\/[a-zA-Z0-9\.]+/;
 
@@ -10,7 +9,7 @@ module.exports = (app) => {
   /**
    * listen for /ark: or /doi:
    */
-  app.get(/^\/(ark|doi):*/, handleRequest);
+  app.get(/^\/(ark|doi):*/, cors(), handleRequest);
 };
 
 /**
@@ -32,7 +31,7 @@ async function handleRequest(req, resp) {
   // request record from identifier field in elasticsearch
   let record;
   try {
-    record = await get(info.id);
+    record = await model.getByArk(info.id);
   } catch(e) {
     logger.error('error looking up ark: ', info, e);
     return resp.status(500).json({error: true, message: e.message, stack: e.stack});
@@ -46,57 +45,14 @@ async function handleRequest(req, resp) {
   // if the Accept header contains text/html and there is no
   // suffix in the url, ie just the ark or doi is provided
   // redirect to ucd dams UI.  otherwise send to fcrepo UI
-  if( (req.get('accept') || '').match(/text\/html/) && !info.suffix ) {
+  if( (req.get('accept') || '').match(/text\/html/) ) {
     if( record['@type'].indexOf('http://schema.org/Collection') > -1 ) {
       resp.redirect(record['@id']);
     } else {
-      resp.redirect(record['@id']);
+      resp.redirect(record['@id']+info.suffix);
     }
   } else {
     resp.redirect(config.fcrepo.root+record['@id']+info.suffix);
   }
 };
 
-/**
- * @function get
- * @description request record from elasticsearch with given
- * identifier (doi or ark)
- * 
- * @param {String} id doi or ark
- * 
- * @returns {Object|null}
- */
-async function get(id) {
-  let result = await es.search({
-    index: config.elasticsearch.record.alias,
-    body : {
-      query : {
-        bool : {
-          filter : [
-            {term : {'identifier.raw' : id}},
-            {term : {isRootRecord : true}}
-          ]
-        }
-      }
-    }
-  });
-
-  // see if its a collection
-  if( result.hits.total === 0 )  {
-    result = await es.search({
-      index : config.elasticsearch.collection.alias,
-      body : {
-        query : {
-          bool : {
-            filter : [
-              {term : {'identifier.raw' : id}},
-            ]
-          }
-        }
-      }
-    });
-  }
-
-  if( result.hits.total === 0 ) return null;
-  return result.hits.hits[0]._source;
-}
