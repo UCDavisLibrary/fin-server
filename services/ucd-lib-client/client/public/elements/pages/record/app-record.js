@@ -1,5 +1,5 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
-import {markdown} from "markdown";
+import {markdown} from "markdown"
 
 import template from "./app-record.html"
 import rightsDefinitions from "../../../lib/rights.json"

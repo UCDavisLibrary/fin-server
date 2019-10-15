@@ -68,12 +68,11 @@ export default class AppAudioViewer extends Mixin(LitElement)
     try {
       let libs = await videoLibs.load();
       this.audioPlyr = libs.plyr;
-      console.log("videoLibs loaded");
     } catch(error) {
       console.log("videoLibs.load() error: ", error);
     }
 
-    let plyr_supported = this.audioPlyr.supported('video', 'html5', true);
+    // let plyr_supported = this.audioPlyr.supported('video', 'html5', true);
     //console.log("plyr_supported: ", plyr_supported);
 
     this.src      = config.fcrepoBasePath+this.media['@id'];

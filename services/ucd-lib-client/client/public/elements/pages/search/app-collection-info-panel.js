@@ -1,5 +1,6 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import CollectionInterface from '../../interfaces/CollectionInterface'
+import {markdown} from "markdown"
 
 import template from "./app-collection-info-panel.html"
 
@@ -14,10 +15,6 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
 
   static get properties() {
     return {
-      description : {
-        type : String,
-        value : ''
-      },
       coverage : {
         type : String,
         value : ''
@@ -43,13 +40,13 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
    */
   _onSelectedCollectionUpdate(selected) {
     if( !selected ) {
-      this.description = '';
+      this.$.description.innerHTML = '';
       this.subject = '';
       this.coverage = '';
       return;
     }
 
-    this.description = selected.description || '';
+    this.$.description.innerHTML = markdown.toHTML(selected.description || '');
 
     if( selected.subject ) {
       this.subject = selected.subject.join(', ');
