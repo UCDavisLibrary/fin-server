@@ -15,6 +15,9 @@ export default function render() {
         min-height: 250px;
         padding-bottom: 62px;
       }
+      .wrapper[tall-controls] {
+        padding-bottom: 102px;
+      }
 
       app-media-viewer-nav {
         position: absolute;
@@ -23,7 +26,7 @@ export default function render() {
         bottom: 0;
       }
     </style>
-    <div class="wrapper">
+    <div class="wrapper" ?tall-controls="${this.tallControls}">
       <app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
       <iron-pages selected="${this.mediaType}" attr-for-selected="id" selected-attribute="visible">
         <!-- <app-360-image-viewer id="360"></app-360-image-viewer> -->
@@ -32,7 +35,7 @@ export default function render() {
         <app-audio-viewer id="audio"></app-audio-viewer>
       </iron-pages>
 
-      <app-media-viewer-nav on-zoom-in="_onZoomIn"></app-media-viewer-nav>
+      <app-media-viewer-nav on-zoom-in="_onZoomIn" @break-controls-changed="${this._onControlLayoutChange}"></app-media-viewer-nav>
     </div>
   `
 }

@@ -45,7 +45,9 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       },
       breakControls : {
         type : Boolean,
-        value : false
+        value : false,
+        reflect: true,
+        notify : true
       },
       /*
       showNavLeft : {

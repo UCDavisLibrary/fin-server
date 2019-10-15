@@ -21,7 +21,8 @@ export default class AppMediaViewer extends Mixin(LitElement)
       return {
         mediaType: {
           type: String
-        }
+        },
+        tallControls : {type: Boolean}
       }
     }
 
@@ -64,6 +65,10 @@ export default class AppMediaViewer extends Mixin(LitElement)
      */
     _onZoomIn(e) {
       this.$.lightbox.show();
+    }
+
+    _onControlLayoutChange(e) {
+      this.tallControls = e.detail.value;
     }
   }
 
