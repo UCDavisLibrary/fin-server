@@ -2,7 +2,8 @@ const es = require('../lib/esClient');
 const config = require('../config');
 const ElasticSearchModel = require('./elasticsearch');
 const clone = require('clone');
-const transform = require('../lib/seo-transform');
+const transform = require('../lib/seo/record-transform');
+const graphConcat = require('../lib/seo/graph-concat');
 
 const FILL_ATTRIBUTES = config.elasticsearch.fields.fill;
 
@@ -21,9 +22,19 @@ class RecordsModel extends ElasticSearchModel {
    */
   async get(id, seo=false) {
     let result = await this.esGet(id);
-    await this._fillRecord(result._source, seo);
-    if( seo ) transform(result._source);
-    return result._source;
+    let graph = {[id]: result._source};
+    console.log(Object.keys(graph));
+    await this._fillGraphRecord(graph, result._source, seo);
+
+    graph = Object.values(graph);
+
+    if( seo ) {
+      let record = graphConcat(id, graph)
+      transform(record);
+      return record;
+    }
+    
+    return graph;
   }
 
   /**
@@ -73,53 +84,64 @@ class RecordsModel extends ElasticSearchModel {
   }
 
   /**
-   * @method _fillRecord
+   * @method _fillGraphRecord
    * @description helper 'get' method for walking 'fill' attributes
    * 
+   * @param {Object} graph
    * @param {Object} record 
    * @param {Boolean} seo
    */
-  async _fillRecord(record, seo) {
+  async _fillGraphRecord(graph, record, seo) {
     for( var i = 0; i < FILL_ATTRIBUTES.length; i++ ) {
       if( !record[FILL_ATTRIBUTES[i]] ) continue;
-      await this._fillAttribute(record, FILL_ATTRIBUTES[i], seo);
+      await this._fillGraphAttribute(graph, record, FILL_ATTRIBUTES[i], seo);
     }
   }
   
   /**
-   * @method _fillAttribute
+   * @method _fillGraphAttribute
    * @description helper 'get' method for walking 'fill' attributes
    * 
+   * @param {Object} graph
    * @param {Object} record
    * @param {String} attribute
    * @param {Boolean} seo
    */
-  async _fillAttribute(record, attribute, seo) {
+  async _fillGraphAttribute(graph, record, attribute, seo) {
     let values = record[attribute];
     if( !Array.isArray(values) ) values = [values];
-    
-    values = values.map(v => {
-      if( typeof v === 'object' ) return v['@id'];
-      return v;
-    })
 
-    // record['_'+attribute] = [];
+    values = values
+      .map(v => {
+        if( typeof v === 'object' ) return v['@id'];
+        return v;
+      })
+      .filter(v => !v || graph[v] ? false : true);
 
+    let newDocs = [];
     try {
       let resp = await this.esMget(values);
-      record[attribute] = await resp.docs.map(doc => seo ? transform(doc._source) : doc._source);
+      resp.docs.forEach(doc => {
+        if( !doc.found ) {
+          doc = {error:true, message:'record not found', '@id' : doc._id};
+        } else {
+          doc = doc._source;
+          newDocs.push(doc);
+        }
+
+        if( !doc['@id'] ) console.log('HERE', doc['@id']);
+        graph[doc['@id']] = doc;
+      });
     } catch(e) {
-      // hummmm....
-      record[attribute] = e.message;
+      values.forEach(v => graph[v] = e.message);
     }
-  
-    for( var i = 0; i < record[attribute].length; i++ ) {
-      let childRecord = record[attribute][i];
-      if( !childRecord ) {
-        record[attribute][i] = {error:true, message:'record not found'}
+
+    for( var i = 0; i < newDocs.length; i++ ) {
+      let childRecord = newDocs[i] || {};
+      if( Object.keys(childRecord).length === 0 || childRecord.error ) {
         continue;
       }
-      await this._fillRecord(childRecord, seo);
+      await this._fillGraphRecord(graph, childRecord, seo);
     }
   }
 

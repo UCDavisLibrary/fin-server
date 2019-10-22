@@ -2,7 +2,8 @@ const ElasticSearchModel = require('./ElasticSearchModel');
 const RecordStore = require('../stores/RecordStore');
 const RecordService = require('../services/RecordService');
 const AppStateModel = require('./AppStateModel');
-var config = require('../config');
+const config = require('../config');
+const utils = require('../utils')
 
 class RecordModel extends ElasticSearchModel {
 
@@ -123,7 +124,18 @@ class RecordModel extends ElasticSearchModel {
     let media = {};
 
     if ( record.clientMedia ) {
-      searchTypes(record['@type'], record);
+      let clientMediaIds = utils.asArray(record, 'clientMedia').map(item => item['@id']);
+      let clientMedia = this.findRecords(clientMediaIds, record);
+
+      clientMedia.forEach(record => {
+        if( record.clientMediaDownload ) {
+          let clientMediaDownloadIds = utils.asArray(record, 'clientMediaDownload').map(item => item['@id']);
+          record.clientMediaDownload = this.findRecords(clientMediaDownloadIds, record);
+        }
+        appendMediaTypes(record['@type'], record);
+      });
+
+      // TODO: now fill client media download
     } else {
       record.associatedMedia ? traverse(record.associatedMedia) : traverse(record);
 
@@ -133,19 +145,18 @@ class RecordModel extends ElasticSearchModel {
         } else if ((typeof item === 'object') && (item !== null)) {
           for (let key in item) {
             if (key !== '@type') continue;
-            traverse(searchTypes(item[key], item));
+            traverse(appendMediaTypes(item[key], item));
           }
         }
       }
-
     }
-    
-    function searchTypes(types, element) {
+
+    function appendMediaTypes(types=[], element) {
       if (types.some(res => res.includes("AudioObject"))){
         if (!media.audio) media.audio = [];
         return media.audio.push(element);
       }
-      if (types.some(res => res.includes("Video"))) {
+      if (types.some(res => res.includes("VideoObject"))) {
         if (!media.video) media.video = [];
         return media.video.push(element);
       } 
@@ -164,8 +175,34 @@ class RecordModel extends ElasticSearchModel {
     }
 
     record.media = media;
-    
+ 
     return record;
+  }
+
+  /**
+   * @method findRecords
+   * @description given a list of ids and record, find all child records
+   * from list of ids
+   * 
+   * @param {Array} ids array of strings
+   * @param {Object} record root record to search
+   * @param {Array} records current array of found records
+   */
+  findRecords(ids, record, records=[]) {
+    if (Array.isArray(record)) {
+      record.forEach(item => this.findRecords(ids, item, records));
+    } else if ((typeof record === 'object') && (record !== null)) {
+      if( Object.keys(record).length > 1 && ids.indexOf(record['@id']) > -1 ) {
+        records.push(record);
+      }
+
+      for (let key in record) {
+        if ( typeof record[key] !== 'object' ) continue;
+        this.findRecords(ids, record[key], records);
+      }
+    }
+
+    return records;
   }
 
   /**

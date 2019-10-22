@@ -6,8 +6,8 @@ const config = require('../config');
 const authUtils = require('../lib/auth');
 const records = require('../models/records');
 const collections = require('../models/collections');
-const transform = require('../lib/seo-transform');
-const collectionTransform = require('../lib/seo-collection-transform');
+const transform = require('../lib/seo/record-transform');
+const collectionTransform = require('../lib/seo/collection-transform');
 
 const bundle = `
   <script>

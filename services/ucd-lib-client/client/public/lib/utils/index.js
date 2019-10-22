@@ -1,3 +1,8 @@
+// TODO: find external library
+const LANG_MAP = {
+  en : 'English',
+  fr : 'French'
+}
 
 class Utils {
 
@@ -43,8 +48,8 @@ class Utils {
   }
 
   /**
-   * @method getType
-   * @description given a record object, return that record's Type
+   * @method getMediaType
+   * @description given a record object, return that record's media Type
    * (eg) =>
    *  imagelist, imageobject, streamingvideo, etc.
    * 
@@ -52,35 +57,35 @@ class Utils {
    * 
    * @return {String}
    */
-  getType(record) {
-    if (record.error) return;
-    let mediaType = 'text';
+  getMediaType(record) {
+    if ( record.error ) return null;
+    let types = record['@type'] || [];
 
-    record['@type'].forEach(element => {
-      let el = element.toLowerCase();
-      if (el.includes('imagelist')) mediaType = 'imageList';
-      else if (el.includes('imageobject')) mediaType = 'image';
-      else if (el === 'http://schema.org/video' || el === 'http://schema.org/videoobject') mediaType = 'video';
-      else if (el.includes('streamingvideo')) mediaType = 'streamingVideo';
-      else if (el.includes('audioobject')) mediaType = 'audio';
-    });
+    if( types.includes('http://digital.ucdavis.edu/schema#ImageList') ) {
+      return 'ImageList';
+    } else if( types.includes('http://schema.org/ImageObject') ) {
+      return 'ImageObject';
+    } else if( types.includes('http://schema.org/VideoObject') ) {
+      return 'VideoObject';
+    } else if( types.includes('http://digital.ucdavis.edu/schema#StreamingVideo') ) {
+      return 'StreamingVideo';
+    } else if( types.includes('http://schema.org/AudioObject') ) {
+      return 'AudioObject';
+    }
 
-    return mediaType;
+    return null;
   }
 
+  /**
+   * @method getLanguage
+   * @description given a language short char code, return nice label
+   * 
+   * @param {String} lng language shot code
+   * 
+   * @returns {String}
+   */
   getLanguage(lng) {
-    let dict = [
-      {
-        key: 'en',
-        name: 'English',
-      },
-      {
-        key: 'fr',
-        name: 'French',
-      },
-    ];
-
-    return dict.find(element => element.key == lng);
+    return LANG_MAP[lng];
   }
 
   countMediaItems(mediaObj) {
@@ -99,10 +104,10 @@ class Utils {
       mediaObj[key].forEach(element => {
         // TODO: We don't really want to include the streaming video as a download option
         // Should we still include it on the thumbnails?
-        if ( this.getType(element) !== 'streamingVideo' ) {
+        if ( this.getMediaType(element) !== 'StreamingVideo' ) {
           // Check and make sure you're only looping hasParts that belong to imageLists
           // We don't care about video hasParts right here, because these are just thumbnails
-          if (element.hasPart && this.getType(element) === 'imageList') {
+          if (element.hasPart && this.getMediaType(element) === 'ImageList') {
             element.hasPart.forEach((el) => {
               array.push(el);
             });
@@ -147,109 +152,6 @@ class Utils {
     return mediaListArray;
   }
 
-  /**
-   * @method formatVideo
-   * @description return a properly formatted video object
-   * 
-   * @param {Object || Array} media
-   * 
-   * @return {Object}
-  */
-  formatVideo(rawMedia) {
-    //console.log("formatVideo(rawMedia) ", rawMedia);
-    let media = [], videoObj = [], mpdObj, vidId, sources = [], transcripts = [], captions = [];
-
-    if (rawMedia instanceof Object) {
-      media.push(rawMedia);
-    }
-
-    media.map(element => {
-      if ( element['hasPart'] ) {
-        mpdObj = element['hasPart'].find((element) => {
-          if ( !element.error ) {
-            // Locate a streaming video
-            if ( this.getType(element) === 'streamingVideo' ) return element;
-            // Locate a regular video
-            else if (element.video) return element;
-          } else {
-            console.log("Error: ", element.error);
-          }
-        });
-        vidId = mpdObj['@id'];
-      } else if ( this.getType(element) === 'streamingVideo' ) {
-        mpdObj = element;
-        vidId  = mpdObj['@id'];
-      } else {
-        mpdObj = element;
-        vidId  = (mpdObj['clientMedia'] ? mpdObj['clientMedia']['@id'] : mpdObj['video']['@id']);
-      }
-    });
-
-    let rawObj;
-    if ( media[0].hasPart ) {
-      rawObj = media[0].hasPart.filter(element => !element.error && element.video);
-    } else {
-      rawObj = media.filter(element => element.video);
-    }
-
-    let id = mpdObj.parent['@id'];
-    if (mpdObj.transcript) {
-      transcripts = this.asArray(mpdObj, 'transcript').map(element => {
-        return { src: id + '/' + element.name, name: element.name };
-      });
-    }
-
-    if (mpdObj.caption) {
-      this.asArray(mpdObj, 'caption').map(element => {
-        let _id = element['@id'];
-        this.findMediaFromId(media[0].hasPart, _id).forEach(caption => {
-          let lng = caption.language;
-          let setDefault = (lng === 'en' ? true : false);
-
-          let obj = {
-            kind: 'captions',
-            label: this.getLanguage(lng).name,
-            srclang: this.getLanguage(lng).key,
-            src: caption['@id'],
-            default: setDefault
-          };
-
-          captions.push(obj);
-        });
-      });
-    }
-
-    sources = rawObj.map(element => {
-      let name = (element.video.name ? element.video.name : '');
-      let obj = {
-        name: name,
-        src: ((element.video && element.video['@id']) ? element.video['@id'] : element['@id']),
-        type: (element.encodingFormat ? element.encodingFormat : element.fileFormat),
-        size: parseInt(element.videoQuality),
-        fileSize: parseInt(element.contentSize),
-        width: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[0]) : 0 ),
-        height: (element.videoFrameSize ? parseInt(element.videoFrameSize.split("x")[1]) : 0 ),
-        license: (element.license ? 'license' : 'none')
-      };
-
-      return obj;
-    });
-
-    videoObj = {
-      id: vidId,
-      name: mpdObj['name'],
-      poster: mpdObj['thumbnailUrl'],
-      encodingFormat: mpdObj['encodingFormat'],
-      videoQuality: parseInt(mpdObj['videoQuality']),
-      width: parseInt(mpdObj.videoFrameSize.split("x")[0]),
-      height: parseInt(mpdObj.videoFrameSize.split("x")[1]),
-      sources: sources,
-      transcripts: transcripts,
-      captions: captions
-    }
-
-    return videoObj;
-  }
 }
 
 module.exports = new Utils();

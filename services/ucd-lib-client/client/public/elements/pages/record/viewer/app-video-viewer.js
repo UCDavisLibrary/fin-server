@@ -31,7 +31,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
   constructor() {
     super();
     this.render = render.bind(this);
-    this._injectModel('AppStateModel');
+    this._injectModel('AppStateModel', 'MediaModel');
     this.tracks = [];
     this.player = {};
   }
@@ -64,8 +64,8 @@ export default class AppVideoViewer extends Mixin(LitElement)
   async _onSelectedRecordMediaUpdate(media) {
     //console.log("app-video-viewer(media): ", media);
     
-    let getMediaType = utils.getType(media);
-    if (getMediaType !== 'video' && getMediaType !== 'streamingVideo') return;
+    let getMediaType = utils.getMediaType(media);
+    if (getMediaType !== 'VideoObject' && getMediaType !== 'StreamingVideo') return;
 
     this.media = media;
 
@@ -88,7 +88,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
     let shaka_supported = this.shaka_player.Player.isBrowserSupported();
     //console.log("shaka_supported: ", shaka_supported);
 
-    let videoObject = utils.formatVideo(this.media);
+    let videoObject = this.MediaModel.formatVideoForPlyr(this.media);
     let videoUri = videoObject['id'];
     let title    = videoObject['name'];
     let poster   = videoObject['poster'];

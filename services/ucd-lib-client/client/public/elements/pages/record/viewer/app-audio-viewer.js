@@ -60,9 +60,7 @@ export default class AppAudioViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
-    let getMediaType = utils.getType(media);
-
-    if (getMediaType !== 'audio') return;
+    if ( utils.getMediaType(media) !== 'AudioObject' ) return;
 
     this.media = media;
     try {

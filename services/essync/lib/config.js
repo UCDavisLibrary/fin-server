@@ -24,7 +24,7 @@ config.essync = {
   parentConnections : ['isPartOf','encodesCreativeWork'],
 
   // attributes to traverse when walking down the record tree
-  childConnections : ['hasPart', 'associatedMedia'],
+  childConnections : ['hasPart', 'associatedMedia', 'caption', 'transcript'],
 
   // svc: names for frame services 
   frameServices : {

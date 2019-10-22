@@ -12,6 +12,15 @@ function transform(jsonld) {
     "@vocab" : "http://schema.org/"
   }
 
+  if( jsonld.error === true ) {
+    jsonld.error = {
+      description : jsonld.message
+    }
+    delete jsonld.message;
+    return jsonld;
+  } 
+
+
   let types = jsonld['@type'];
   if( types ) {
     for( let i = types.length-1; i >= 0; i-- ) {
@@ -32,6 +41,9 @@ function transform(jsonld) {
     }
   }
 
+  if( jsonld.media ) {
+    delete jsonld.media;
+  }
 
   if( jsonld.image ) {
     jsonld.image['@type'] = 'ImageObject';

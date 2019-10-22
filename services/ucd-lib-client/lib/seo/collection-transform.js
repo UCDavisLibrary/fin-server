@@ -1,4 +1,4 @@
-const recordTransform = require('./seo-transform');
+const recordTransform = require('./record-transform');
 
 const DATASET = 'http://schema.org/Dataset';
 

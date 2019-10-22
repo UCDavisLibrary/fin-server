@@ -14,7 +14,8 @@ class ControllerUtils {
   errorToDetails(e) {
     return {
       message : e.message,
-      details : e.details
+      details : e.details,
+      stack : e.stack
     }
   }
 

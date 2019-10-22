@@ -101,7 +101,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
-    this._injectModel('AppStateModel');
+    this._injectModel('AppStateModel', 'MediaModel');
   }
 
   /**
@@ -150,28 +150,28 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     this.$.single.checked   = true;
     this.$.fullset.checked  = false;
 
-    let isImage = (utils.getType(record) === 'image');
+    let isImage = (utils.getMediaType(record) === 'ImageObject');
     this.images = utils.getImages(this.rootRecord.media);
     this.hasMultipleImages = (isImage && this.images.length > 1);
 
-    if (utils.getType(record) === 'video') {
+    if (utils.getMediaType(record) === 'VideoObject') {
       this.isVideo = true;
       this.sources = this._getVideoSources(record);
       this.href    = this.sources[0].src;
-    } else if (utils.getType(record) === 'streamingVideo') {
+    } else if (utils.getMediaType(record) === 'StreamingVideo') {
       // They can't download a streaming video so offer up any available fallback
       this.isVideo = true;
       this.rootRecord.media.video.forEach(element => {
-        if (utils.getType(element) === 'video') {
+        if (utils.getMediaType(element) === 'VideoObject') {
           this.sources = this._getVideoSources(element);
           this.href    = this.sources[0].src;
         }
       });
-    } else if (utils.getType(record) === 'audio') {
+    } else if (getMediaType.getType(record) === 'AudioObject') {
       this.isVideo = true;
       this.sources = this._getAudioSources(record);
       this.href    = this.sources[0].src;
-    } else if (utils.getType(record).toLowerCase().includes('image')) {
+    } else if (getMediaType.getType(record).toLowerCase().includes('ImageObject')) {
       this.isVideo = false;
       this.sources = this._getImageSources(record);
       if (this.sources.length > 1) {
@@ -213,7 +213,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   _getImageSources(imageRecord) {
     let sources = [], image = imageRecord;
 
-    if (utils.getType(image) === 'imageList') {
+    if (utils.getMediaType(image) === 'ImageList') {
       sources = image.hasPart;
     } else {
       sources.push(image);
@@ -239,7 +239,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   _getVideoSources(videoRecord) {
     let sources = [];
 
-    let video = utils.formatVideo(videoRecord);
+    let video = this.MediaModel.formatVideoForPlyr(videoRecord, this.rootRecord);
 
     if (video.sources && video.sources.length > 0) {
       video.sources.forEach(element => {
@@ -424,7 +424,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     if ( this.images.length > 0 ) {
       this.images.forEach(item => {
         let name = item.filename || item.name;
-        if ( utils.getType(item).toLowerCase().includes('image') ) {
+        if ( utils.getMediaType(item).toLowerCase().includes('image') ) {
           if( origin ) {
             urls[name] = item['@id'];
           } else {

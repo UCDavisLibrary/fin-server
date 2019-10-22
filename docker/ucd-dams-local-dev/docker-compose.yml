@@ -245,8 +245,8 @@ services:
       #- FIN_ENV=prod
     depends_on:
       - server
-    command: node service
-    # command: bash -c 'tail -f /dev/null'
+    # command: node service
+    command: bash -c 'tail -f /dev/null'
 
   gc-workflow:
     build: ../../services/gc-workflow

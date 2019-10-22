@@ -48,10 +48,10 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
     
     async _onSelectedRecordMediaUpdate(record) {
-      let mediaType = utils.getType(record);
-      if ( mediaType === "imageList" ) {
+      let mediaType = utils.getMediaType(record).toLowerCase().replace(/Object/, '');
+      if ( mediaType === "imagelist" ) {
         mediaType = "image";
-      } else if ( mediaType === "streamingVideo" ){
+      } else if ( mediaType === "streamingvideo" ){
         mediaType = "video";
       }
       this.mediaType = mediaType;

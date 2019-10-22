@@ -2,6 +2,7 @@ const {BaseService} = require('@ucd-lib/cork-app-utils');
 const RecordStore = require('../stores/RecordStore');
 const deepEqual = require('deep-equal');
 const config = require('../config');
+const graphConcat = require('../../../../lib/seo/graph-concat');
 
 class RecordService extends BaseService {
 
@@ -20,7 +21,7 @@ class RecordService extends BaseService {
       url : `${this.baseUrl}${id}?root=true`,
       checkCached : () => this.store.getRecord(id),
       onLoading : request => this.store.setRecordLoading(id, request),
-      onLoad : result => this.store.setRecordLoaded(id, this.model.createMediaObject(result.body)),
+      onLoad : result => this.store.setRecordLoaded(id, this.model.createMediaObject(graphConcat(id, result.body))),
       onError : e => this.store.setRecordError(id, e)
     });
   }
