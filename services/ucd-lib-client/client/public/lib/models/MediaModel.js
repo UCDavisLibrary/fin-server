@@ -132,6 +132,8 @@ class MediaModel extends BaseModel {
 
     if( mediaRecord.caption ) {
       utils.asArray(mediaRecord, 'caption').forEach(caption => {
+        if( !caption['@id'] ) return;
+
         let lng = caption.language;
         let setDefault = (lng === 'en' ? true : false);
 
@@ -149,7 +151,7 @@ class MediaModel extends BaseModel {
 
     let sources = [{
       name: mediaRecord.name || rootRecord.name || '',
-      src: mediaRecord['@id'],
+      src: config.fcrepoBasePath+mediaRecord['@id'],
       type: mediaRecord.encodingFormat || mediaRecord.fileFormat || '',
       size: mediaRecord.videoQuality ? parseInt(mediaRecord.videoQuality) : null,
       fileSize: mediaRecord ? parseInt(mediaRecord.contentSize) : null,

@@ -21,7 +21,7 @@ class RecordService extends BaseService {
       url : `${this.baseUrl}${id}?root=true`,
       checkCached : () => this.store.getRecord(id),
       onLoading : request => this.store.setRecordLoading(id, request),
-      onLoad : result => this.store.setRecordLoaded(id, this.model.createMediaObject(graphConcat(id, result.body))),
+      onLoad : result => this.store.setRecordLoaded(id, this.model.createMediaObject(graphConcat(null, result.body))),
       onError : e => this.store.setRecordError(id, e)
     });
   }

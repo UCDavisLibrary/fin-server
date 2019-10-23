@@ -120,7 +120,7 @@ class RecordModel extends ElasticSearchModel {
    */
   createMediaObject(record) {
     if (record.isRootRecord === false) return;
-       
+    
     let media = {};
 
     if ( record.clientMedia ) {
@@ -132,50 +132,75 @@ class RecordModel extends ElasticSearchModel {
           let clientMediaDownloadIds = utils.asArray(record, 'clientMediaDownload').map(item => item['@id']);
           record.clientMediaDownload = this.findRecords(clientMediaDownloadIds, record);
         }
-        appendMediaTypes(record['@type'], record);
+        appendMediaTypes(record);
       });
 
       // TODO: now fill client media download
     } else {
-      record.associatedMedia ? traverse(record.associatedMedia) : traverse(record);
+      traverse(record);
 
       function traverse(item) {
         if (Array.isArray(item)) {
           item.forEach(element => traverse(element));
         } else if ((typeof item === 'object') && (item !== null)) {
+          if( item['@type'] ) appendMediaTypes(item);
+
           for (let key in item) {
-            if (key !== '@type') continue;
-            traverse(appendMediaTypes(item[key], item));
+            if (typeof item[key] !== 'object') continue;
+            traverse(item[key]);
           }
         }
       }
     }
 
-    function appendMediaTypes(types=[], element) {
-      if (types.some(res => res.includes("AudioObject"))){
+    function appendMediaTypes(element) {
+      let type = utils.getMediaType(element);
+      if( !type ) return;
+
+      if ( type === "AudioObject" ){
         if (!media.audio) media.audio = [];
         return media.audio.push(element);
       }
-      if (types.some(res => res.includes("VideoObject"))) {
+      if (type === "VideoObject" || type === "StreamingVideo" ) {
         if (!media.video) media.video = [];
         return media.video.push(element);
       } 
-      if (types.some(res => res.includes("ImageObject"))) {
+      if (type === "ImageObject" ) {
         if (!media.image) media.image = [];
         return media.image.push(element);
       }
-      if (types.some(res => res.includes("ImageList"))) {
+      if ( type === "ImageList" ) {
         if (!media.imageList) media.imageList = [];
         return media.imageList.push(element);
       }
-      if (types.some(res => res.includes("Binary"))) {
+      if (type === "Binary" ) {
         if (!media.binaryFiles) media.binaryFiles = [];
         return media.binaryFiles.push(element);
       }
     }
 
-    record.media = media;
- 
+    for( let type in media ) {
+      media[type].forEach(item => {
+        if( item.thumbnailUrl && typeof item.thumbnailUrl === 'string' ) return;
+        if( item.thumbnailUrl && typeof item.thumbnailUrl === 'object' ) {
+          item.thumbnailUrl = '/fcrepo/rest'+item.thumbnailUrl['@id'];
+          return;
+        }
+        if( item.thumbnail && typeof item.thumbnail === 'object' ) {
+          item.thumbnailUrl = '/fcrepo/rest'+item.thumbnail['@id'];
+          return;
+        }
+        if( item.image && item.image.url ) {
+          item.thumbnailUrl = item.image.url;
+          return;
+        }
+        if( type === 'video' || type === 'audio' ) {
+          item.thumbnailUrl = record.image ? record.image.url : false;
+        }
+      });
+    }
+
+    record.media = media; 
     return record;
   }
 

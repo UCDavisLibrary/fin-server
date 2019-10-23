@@ -65,10 +65,10 @@ class Utils {
       return 'ImageList';
     } else if( types.includes('http://schema.org/ImageObject') ) {
       return 'ImageObject';
-    } else if( types.includes('http://schema.org/VideoObject') ) {
-      return 'VideoObject';
     } else if( types.includes('http://digital.ucdavis.edu/schema#StreamingVideo') ) {
       return 'StreamingVideo';
+    } else if( types.includes('http://schema.org/VideoObject') ) {
+      return 'VideoObject';
     } else if( types.includes('http://schema.org/AudioObject') ) {
       return 'AudioObject';
     }
@@ -104,7 +104,7 @@ class Utils {
       mediaObj[key].forEach(element => {
         // TODO: We don't really want to include the streaming video as a download option
         // Should we still include it on the thumbnails?
-        if ( this.getMediaType(element) !== 'StreamingVideo' ) {
+        //if ( this.getMediaType(element) !== 'StreamingVideo' ) {
           // Check and make sure you're only looping hasParts that belong to imageLists
           // We don't care about video hasParts right here, because these are just thumbnails
           if (element.hasPart && this.getMediaType(element) === 'ImageList') {
@@ -114,7 +114,7 @@ class Utils {
           } else {
             array.push(element);
           }
-        }
+        //}
       });
     });
 
@@ -142,7 +142,7 @@ class Utils {
   }
 
   organizeMediaList(mediaListArray) {
-    mediaListArray.map(item => item.position = parseInt(item.position))
+    mediaListArray.map(item => item.position = item.position ? parseInt(item.position) : 0)
       .sort((a, b) => {
         if(a.position > b.position) return 1;
         if(a.position < b.position) return -1;

@@ -245,27 +245,27 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     //   this.zoomButton3.style.display = 'inline-block';
     //   this.classList.remove('video');
     // }
-    
+
     if (utils.countMediaItems(record.media) === 1) return;
     this.mediaList = utils.flattenMediaList(record.media);
     this.mediaList = utils.organizeMediaList(this.mediaList);
+    
 
-    this.thumbnails = this.mediaList.map(record => {
-      let {fileType, iconType} = this._getFileAndIconType(record);
+    this.thumbnails = this.mediaList.map(media => {
+      let {fileType, iconType} = this._getFileAndIconType(media);
 
       if( this.isLightbox && fileType !== 'image' ) {
         return null;
       }
-      
-      let url = (record.image ? record.image.url : false)
+
       let thumbnail = {
-        id: record['@id'],
+        id: media['@id'],
         icon: iconType,
-        position: record.position,
+        position: media.position,
         selected: false,
         disabled: true,
-        src: url,
-        thumbnail: url
+        src: media.thumbnailUrl
+        // thumbnail: url
       }
 
       return thumbnail;
@@ -305,15 +305,18 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
 
     if (media.fileFormat || media.encodingFormat) {
       _file = (media.fileFormat ? media.fileFormat : media.encodingFormat);
+
+      
       fileType   = _file.split('/').shift();
       fileFormat = _file.split('/').pop();
-
-      if (fileType === 'audio') iconType = 'sound-round';
-      if (fileType === 'video') iconType = 'video-round';
-      if (fileFormat === 'pdf') iconType = 'blank-round';
-      // TODO: Get back to this
-      if (fileType === '360')   iconType = '360-round';
     }
+
+    let type = utils.getMediaType(media);
+    if (type === 'AudioObject' || fileType === 'audio') iconType = 'sound-round';
+    else if (type === 'VideoObject' || type === 'StreamingVideo' || fileType === 'video') iconType = 'video-round';
+    else if (fileFormat === 'pdf') iconType = 'blank-round';
+    // TODO: Get back to this
+    else if (fileType === '360')   iconType = '360-round';
 
     return {fileType, iconType};
   }

@@ -62,11 +62,10 @@ export default class AppVideoViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
-    //console.log("app-video-viewer(media): ", media);
-    
-    let getMediaType = utils.getMediaType(media);
-    if (getMediaType !== 'VideoObject' && getMediaType !== 'StreamingVideo') return;
+    let mediaType = utils.getMediaType(media);
+    if (mediaType !== 'VideoObject' && mediaType !== 'StreamingVideo') return;
 
+    console.log(media);
     this.media = media;
 
     try {
@@ -97,9 +96,10 @@ export default class AppVideoViewer extends Mixin(LitElement)
     let sources  = videoObject['sources'];
 
     this.$.video = this.shadowRoot.getElementById('video');
-    this.$.video.style.width     = width + "px";
-    this.$.video.style.maxWidth  = "calc(" + height + " / " + width +  " * 100%)";
-    this.$.video.style.maxHeight = "calc(" + height + " / " + width +  " * 100%)";
+    // this.$.video.style.width     = width + "px";
+    // this.$.video.style.maxWidth  = "calc(" + height + " / " + width +  " * 100%)";
+    // this.$.video.style.maxHeight = "calc(" + height + " / " + width +  " * 100%)";
+    this.$.video.style.height = '350px';
 
     if (videoObject['transcripts']) {
       let transcripts = utils.asArray(videoObject, 'transcripts').map(element => {
@@ -134,6 +134,9 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     if ( shaka_supported === true ) {
       let manifestUri = config.fcrepoBasePath+videoUri;
+      if( mediaType === 'StreamingVideo' ) {
+        manifestUri += '/playlist.m3u8'
+      }
 
       // Construct a Player to wrap around the <video> tag.
       const shaka = new this.shaka_player.Player(this.$.video);

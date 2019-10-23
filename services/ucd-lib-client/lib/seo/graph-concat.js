@@ -6,8 +6,13 @@ module.exports = (id, graph, walkAttributes) => {
   }
 
   let tmp = {};
-  graph.forEach(item => tmp[item['@id']] = item);
+  graph.forEach(item => {
+    tmp[item['@id']] = item;
+    if( !id && item.isRootRecord ) id = item['@id'];
+  });
   graph = tmp;
+
+  if( !id ) throw new Error('No id provided and no root record found in graph');
 
   let record = graph[id];
   if( !record ) return {};

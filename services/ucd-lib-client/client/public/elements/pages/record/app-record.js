@@ -13,7 +13,6 @@ import "./viewer/app-media-viewer"
 
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
-import { debug } from "util";
 
 export default class AppRecord extends Mixin(PolymerElement)
       .with(EventInterface, CollectionInterface, MediaInterface) {
