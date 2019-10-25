@@ -22,7 +22,6 @@ class RecordsModel extends ElasticSearchModel {
    */
   async get(id, seo=false) {
     let result = await this.esGet(id);
-    console.log(result);
     let graph = {[id]: result._source};
 
     await this._fillGraphRecord(graph, result._source, seo);

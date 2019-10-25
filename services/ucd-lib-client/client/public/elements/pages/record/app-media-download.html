@@ -77,12 +77,15 @@
     align-items: center;
   }
 
+  .layout.btns > * {
+    width: 33%
+  }
+
   .radio {
     margin-bottom: 10px;
   }
 </style>
 
-<div id="msg"></div>
 
 <div id="wrapper">
   <div class="layout" hidden$="[[!hasMultipleDownloadMedia]]">
@@ -95,38 +98,44 @@
       <label for="fullset">Full Set</label>
     </div>
   </div>
+</div>
 
+<div class="layout btns" style="margin-bottom: 5px;" hidden$="[[!selectedMediaHasSources]]">
+  <select id="downloadOptions" on-change="_onChangeDownloadOptions">
+    <template is="dom-repeat" items="[[downloadOptions]]">
+      <option value$="[[index]]">[[item.label]]</option>
+    </template>
+  </select>
+  <select id="format" on-change="_onFormatSelected" hidden$="[[!showImageFormats]]"></select>
 
-  <div class="layout" style="margin-bottom: 5px;">
-    <select id="downloadOptions" on-change="_onChangeDownloadOptions">
-        <template is="dom-repeat" items="[[downloadOptions]]">
-          <option value$="[[index]]">[[item.label]]</option>
-        </template>
-    </select>
-    <select id="format" on-change="_onFormatSelected" hidden$="[[!showImageFormats]]"></select>
+  <a id="downloadBtn" href="[[href]]" 
+    on-click="_onDownloadClicked" 
+    download 
+    target="_blank" 
+    rel="noopener" 
+    hidden$="[[fullSetSelected]]" 
+    style="white-space: nowrap;">
+      <iron-icon icon="file-download"></iron-icon>&nbsp;
+      <span>
+        Download
+      </span>
+  </a>
+</div>
 
-    <a id="downloadBtn" href="[[href]]" 
-      on-click="_onDownloadClicked" 
-      download 
-      target="_blank" 
-      rel="noopener" 
-      hidden$="[[fullSetSelected]]" 
-      style="white-space: nowrap;">
-        <iron-icon icon="file-download"></iron-icon>&nbsp;
-        <span>
-          Download
-        </span>
-    </a>
-
-    <form id="downloadTar" 
-      action$="/api/tar/[[tarName]]" 
-      method="POST" 
-      target="_blank" 
-      hidden$="[[!fullSetSelected]]">    
-        <input type="text" hidden name="paths" id="tarPaths" style="display: none;">
-        <button on-click="_onDownloadFullSetClicked">
-          <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download Archive</span>
-        </button>
-    </form>
+<div hidden$="[[fullSetSelected]]">
+  <div hidden$="[[selectedMediaHasSources]]" >
+    <em>No downloadable items available</em>
   </div>
 </div>
+
+
+<form id="downloadTar" 
+action$="/api/tar/[[tarName]]" 
+method="POST" 
+target="_blank" 
+hidden$="[[!fullSetSelected]]">    
+  <input type="text" hidden name="paths" id="tarPaths" style="display: none;">
+  <button on-click="_onDownloadFullSetClicked">
+    <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download Archive</span>
+  </button>
+</form>

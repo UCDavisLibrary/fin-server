@@ -160,7 +160,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     let link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
     let html = `<a href="${link}">${record['@id']}</a>`;
 
-    if( media ) {
+    if( media && record['@id'] !== media['@id'] ) {
       metadataPart = media['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
       link = this._getHost()+'fcrepo/rest'+media['@id']+metadataPart;
       html += `<br /><a href="${link}">${media['@id']}</a>`;

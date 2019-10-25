@@ -231,7 +231,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     // this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
 
     // if (!record.media.imageList) {
-    //   this.singleImage = true;
+    //   
     // }
 
     // If only a single video item, display compacted nav bar
@@ -246,7 +246,13 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     //   this.classList.remove('video');
     // }
 
-    if (utils.countMediaItems(record.media) === 1) return;
+
+    if (utils.countMediaItems(record.media) === 1) {
+      this.singleImage = true;
+      this.classList.add('single');
+      return;
+    }
+
     this.mediaList = utils.flattenMediaList(record.media);
     this.mediaList = utils.organizeMediaList(this.mediaList);
     
@@ -277,8 +283,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     this.singleImage = (this.thumbnails.length !== 0 && this.thumbnails.length > 1) ? false : true;
     this._resize();
 
-    if( this.singleImage ) this.classList.add('single');
-    else this.classList.remove('single');
+    this.classList.remove('single');
   }
 
   /**

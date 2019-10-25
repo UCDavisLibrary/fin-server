@@ -40,6 +40,10 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         type: Boolean,
         value: false
       },
+      selectedMediaHasSources : {
+        type : Boolean,
+        value : false
+      },
       fullSetSelected: {
         type : Boolean,
         value : false
@@ -87,24 +91,24 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       this.$.single.checked = true;
       this.$.fullset.checked = false;
     }
+
     this.fullSetSelected = false;
+    this.$.format.style.display = "initial";
+    this.$.downloadOptions.style.display = "initial";
   }
 
   _onSelectedRecordMediaUpdate(media) {
-    console.log(media);
     this.showImageFormats = false;
     this.fullSetSelected = false;
 
     let sources = this._getDownloadSources(media);
 
     if ( sources.length === 0 ) {
-      this.$.wrapper.style.display = "none";
-      this.$.msg.innerHTML = '<em>No downloadable items available</em>';
+      this.selectedMediaHasSources = false;
       return;
     }
 
-    this.$.wrapper.style.display = 'initial';
-    this.$.msg.innerHTML = '';
+    this.selectedMediaHasSources = true;
 
     this.allSources = sources;
     this.downloadOptions = sources;
@@ -141,7 +145,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         href += source.service+format;
       }
     }
-    console.log(href, source);
+
     this.sourceType = source.type; // stored for analytics
     this.href = href;
   }
@@ -163,7 +167,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       return [{
         record : imageRecord,
         type : 'image',
-        src :  imageRecord['@id'],
+        src :  config.fcrepoBasePath+imageRecord['@id'],
         originalFormat : format,
         filename : imageRecord.filename || imageRecord.name,
         label : imageRecord.filename || imageRecord.name
@@ -178,11 +182,11 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       sources.push({
         record : imageRecord,
         type : 'image',
-        src :  imageRecord['@id'],
+        src :  config.fcrepoBasePath+imageRecord['@id'],
         service : `/svc:iiif/full/${iiifSize}/0/default.`,
         originalFormat : format,
         imageType : size.imageType,
-        filename : imageRecord.filename || imageRecord.name,
+        filename : imageRecord.filename || imageRecord['@id'].split('/').pop(),
         label : size.label+' '+width+' x '+height+' px',
         width, height
       });
@@ -196,7 +200,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       record: audioRecord,
       src: config.fcrepoBasePath + audioRecord['@id'],
       type: 'audio',
-      filename : audioRecord.filename || audioRecord.name,
+      filename : audioRecord.filename || audioRecord['@id'].split('/').pop(),
       label: this._getTypeLabel(audioRecord) + (audioRecord.fileSize ? ' (' + bytes(audioRecord.fileSize) + ') ' : '')
     }];
   }
@@ -206,7 +210,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       record : videoRecord,
       type : 'video',
       src : config.fcrepoBasePath + videoRecord['@id'],
-      filename : videoRecord.filename || videoRecord.name,
+      filename : videoRecord.filename || videoRecord['@id'].split('/').pop(),
       label : this._getTypeLabel(videoRecord) + (videoRecord.fileSize ? ' (' + bytes(videoRecord.fileSize) + ') ' : '')
     }];
 
@@ -220,7 +224,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
           record: transcript,
           src: config.fcrepoBasePath + transcript['@id'],
           type: 'transcript',
-          filename : transcript.filename || transcript.name,
+          filename : transcript.filename || transcript['@id'].split('/').pop(),
           label: this._getTypeLabel(transcript) + ' (video transcript only)'
         });
       });
@@ -345,15 +349,16 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
 
     let sources = [];
-    for( let type in record.media ) {
-      for( let media of record.media[type] ) {
-        sources = sources.append(this._getDownloadSources(media, true));
+    for( let type in this.rootRecord.media ) {
+      for( let media of this.rootRecord.media[type] ) {
+        sources = sources.concat(this._getDownloadSources(media, true));
       }
     }
 
     for( let source of sources ) {
       urls[source.filename] = source.src;
     } 
+    console.log(urls)
 
     this.$.tarPaths.value = JSON.stringify(urls);
   }
