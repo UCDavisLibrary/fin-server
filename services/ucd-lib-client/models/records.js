@@ -22,8 +22,9 @@ class RecordsModel extends ElasticSearchModel {
    */
   async get(id, seo=false) {
     let result = await this.esGet(id);
+    console.log(result);
     let graph = {[id]: result._source};
-    console.log(Object.keys(graph));
+
     await this._fillGraphRecord(graph, result._source, seo);
 
     graph = Object.values(graph);
@@ -128,8 +129,6 @@ class RecordsModel extends ElasticSearchModel {
           doc = doc._source;
           newDocs.push(doc);
         }
-
-        if( !doc['@id'] ) console.log('HERE', doc['@id']);
         graph[doc['@id']] = doc;
       });
     } catch(e) {

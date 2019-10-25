@@ -15,6 +15,34 @@ module.exports = {
 
   gaCode : 'UA-65988958-10',
 
+  // used by image download selector
+  // options for iiif service
+  imageDownload : {
+    sizes : [
+      {
+        label : 'Full Resolution',
+        imageType : 'FR',
+        ratio : 1
+      },
+      {
+        label : 'Large',
+        imageType : 'L',
+        ratio : 0.75
+      },
+      {
+        label : 'Medium',
+        imageType : 'M',
+        ratio : 0.5
+      },
+      {
+        label : 'Small',
+        imageType : 'S',
+        ratio : 0.25
+      }
+    ],
+    formats : ['png', 'jpg', 'webp']
+  },
+
   // facets to show on left side
   elasticSearch : {
     facets : {

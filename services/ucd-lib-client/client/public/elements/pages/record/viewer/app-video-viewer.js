@@ -65,7 +65,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
     let mediaType = utils.getMediaType(media);
     if (mediaType !== 'VideoObject' && mediaType !== 'StreamingVideo') return;
 
-    console.log(media);
     this.media = media;
 
     try {

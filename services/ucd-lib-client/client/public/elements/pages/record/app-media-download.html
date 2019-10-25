@@ -85,7 +85,7 @@
 <div id="msg"></div>
 
 <div id="wrapper">
-  <div class="layout" hidden$="[[!hasMultipleImages]]">
+  <div class="layout" hidden$="[[!hasMultipleDownloadMedia]]">
     <div class="radio" style="margin-right: 40px">
       <input id="single" type="radio" name="set-size" checked on-click="_toggleMultipleDownload" /> 
       <label for="single">Single</label>
@@ -96,32 +96,21 @@
     </div>
   </div>
 
-  <div class="layout" style="margin-bottom: 5px;" hidden$="[[isVideo]]">
-    <select id="format" on-change="_onFormatSelected"></select>
-    <select id="requestedResolution" on-change="_onSizeChange">
-        <template is="dom-repeat" items="[[imageSizes]]">
-          <option value$="[[item.label]]" selected$="[[item.selected]]">
-            [[item.title]] [[item.width]] x [[item.height]] px
-          </option>
-        </template>
-    </select>
-  </div>
 
   <div class="layout" style="margin-bottom: 5px;">
-    <select id="videoDownloadOptions" on-change="_onChangeVideoDownloadOptions" hidden$="[[!isVideo]]">
+    <select id="downloadOptions" on-change="_onChangeDownloadOptions">
         <template is="dom-repeat" items="[[downloadOptions]]">
-          <option data-id$="[[index]]" value$="[[index]]">
-            [[item.label]]
-          </option>
+          <option value$="[[index]]">[[item.label]]</option>
         </template>
     </select>
+    <select id="format" on-change="_onFormatSelected" hidden$="[[!showImageFormats]]"></select>
 
     <a id="downloadBtn" href="[[href]]" 
       on-click="_onDownloadClicked" 
       download 
       target="_blank" 
       rel="noopener" 
-      hidden$="[[multipleSourcesSelected]]" 
+      hidden$="[[fullSetSelected]]" 
       style="white-space: nowrap;">
         <iron-icon icon="file-download"></iron-icon>&nbsp;
         <span>
@@ -133,9 +122,9 @@
       action$="/api/tar/[[tarName]]" 
       method="POST" 
       target="_blank" 
-      hidden$="[[!multipleSourcesSelected]]">    
+      hidden$="[[!fullSetSelected]]">    
         <input type="text" hidden name="paths" id="tarPaths" style="display: none;">
-        <button on-click="_downloadTar">
+        <button on-click="_onDownloadFullSetClicked">
           <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download Archive</span>
         </button>
     </form>

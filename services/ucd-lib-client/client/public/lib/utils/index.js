@@ -91,9 +91,13 @@ class Utils {
   countMediaItems(mediaObj) {
     if ( !mediaObj ) return false;
     let count = 0;
-    Object.keys(mediaObj).forEach(key => {
-      count += mediaObj[key].length;
-    });
+    for( let type in mediaObj ) {
+      if( type === 'imageList' ) {
+        mediaObj.imageList.forEach(item => count += item.hasPart.length);
+      } else {
+        count += mediaObj[type].length;
+      }
+    }
     return count;
   }
 

@@ -1,6 +1,7 @@
 const remove = ['createdBy', 'lastModifiedBy', 'yearPublished', 
 'collectionId', 'isRootRecord', 'parent', 'creators', 'abouts', 'identifiers',
-'fileFormats', 'indexableContents', 'indexableContent', 'type', 'textIndexable'];
+'fileFormats', 'indexableContents', 'indexableContent', 'type', 'textIndexable',
+'media', 'clientMedia', 'clientMediaDownload'];
 const nested = ['associatedMedia', 'hasPart'];
 
 const map = {
@@ -39,10 +40,6 @@ function transform(jsonld) {
       if( !jsonld[map[key]] ) jsonld[map[key]] = jsonld[key];
       delete jsonld[key];
     }
-  }
-
-  if( jsonld.media ) {
-    delete jsonld.media;
   }
 
   if( jsonld.image ) {

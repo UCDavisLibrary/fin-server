@@ -4,37 +4,10 @@ import template from "./app-media-download.html"
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
 
-import MediaModel from "../../../lib/models/MediaModel"
-
 import config from "../../../lib/config"
 import utils from "../../../lib/utils"
 import bytes from "bytes"
 
-// Full Resolution - Default
-const IMG_SIZES = [
-  {
-    title : 'Small',
-    label : 'S',
-    ratio : 0.25
-  },
-  {
-    title : 'Medium',
-    label : 'M',
-    ratio : 0.5
-  },
-  {
-    title : 'Large',
-    label : 'L',
-    ratio : 0.75
-  },
-  {
-    title : 'Full Resolution',
-    label : 'FR',
-    ratio : 1
-  }
-]
-
-const IMG_FORMATS = ['png', 'jpg', 'webp'];
 
 export default class AppMediaDownload extends Mixin(PolymerElement)
       .with(EventInterface, CollectionInterface, MediaInterface) {
@@ -55,14 +28,6 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         type : Array,
         value : () => []
       },
-      images: {
-        type: Array,
-        value: () => []
-      },
-      hasMultipleImages: {
-        type: Boolean,
-        value: false
-      },
       href : {
         type : String,
         value : ''
@@ -71,29 +36,21 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         type : Array,
         value : () => []
       },
-      isMediaType: {
-        type: String,
-        value: 'image'
-      },
-      isVideo: {
+      hasMultipleDownloadMedia: {
         type: Boolean,
         value: false
       },
-      multipleSourcesSelected: {
+      fullSetSelected: {
         type : Boolean,
         value : false
       },
-      resolution : {
-        type : String,
-        value : ''
-      },
-      size : {
-        type : String,
-        value : ''
-      },
-      sources: {
+      downloadOptions: {
         type: Array,
         value: () => []
+      },
+      showImageFormats : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -104,94 +61,43 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     this._injectModel('AppStateModel', 'MediaModel');
   }
 
-  /**
-   * @method render
-   * @description render download icon from given options
-   * 
-   * @param {Object} options render options
-   * @param {Array} options.resolution image resolution
-   * @param {String} options.size full resolution image size
-   * @param {String} options.fileFormat default mime type
-   * @param {String} options.url fedora image url
-   */
-  render(options) {
-    if (options === undefined) return;
-    this.options = options;
-    this.originalFormat = options.fileFormat.replace(/.*\//, '').toLowerCase();
-    this.size = bytes(options.size);
 
-    this.$.format.value = this.originalFormat;
-    this.defaultImage = true;
-    this.imageList = [];
-    this.multipleSourcesSelected = false;
-    this.$.format.style.display = "inline-block";
-    this.$.requestedResolution.style.display = "inline-block";
+  _onSelectedRecordUpdate(record) {
+    this.rootRecord = record;
 
-    this.imageSizes = IMG_SIZES.map((format, index) => {
-      return {
-        title : format.title,
-        label : format.label,
-        width : Math.floor(options.resolution[0] * format.ratio),
-        height : Math.floor(options.resolution[1] * format.ratio),
-        selected : (this.selectedSize === index)
+    // find out if the number of download options is greater than 1
+    let sourceCount = 0;
+    for( let type in record.media ) {
+      for( let media of record.media[type] ) {
+        if( type === 'imageList' ) {
+          record.media.imageList.forEach(list => {
+            sourceCount += list.hasPart.length;
+          });
+        } else {
+          sourceCount += this._getDownloadSources(media, true).length;
+        }
+        
+        if( sourceCount > 1 ) break;
       }
-    });
-
-    this._renderImgFormats();
-  }
-
-  setRootRecord(record) {
-    if( this.rootRecord === record ) return;
-    this.rootRecord   = record;
-    this.selectedSize = IMG_SIZES.length - 1;
-  }
-
-  _onSelectedRecordMediaUpdate(record) {
-    this.$.single.checked   = true;
-    this.$.fullset.checked  = false;
-
-    let isImage = (utils.getMediaType(record) === 'ImageObject');
-    this.images = utils.getImages(this.rootRecord.media);
-    this.hasMultipleImages = (isImage && this.images.length > 1);
-
-    if (utils.getMediaType(record) === 'VideoObject') {
-      this.isVideo = true;
-      this.sources = this._getVideoSources(record);
-      this.href    = this.sources[0].src;
-    } else if (utils.getMediaType(record) === 'StreamingVideo') {
-      // They can't download a streaming video so offer up any available fallback
-      this.isVideo = true;
-      this.rootRecord.media.video.forEach(element => {
-        if (utils.getMediaType(element) === 'VideoObject') {
-          this.sources = this._getVideoSources(element);
-          this.href    = this.sources[0].src;
-        }
-      });
-    } else if (getMediaType.getType(record) === 'AudioObject') {
-      this.isVideo = true;
-      this.sources = this._getAudioSources(record);
-      this.href    = this.sources[0].src;
-    } else if (getMediaType.getType(record).toLowerCase().includes('ImageObject')) {
-      this.isVideo = false;
-      this.sources = this._getImageSources(record);
-      if (this.sources.length > 1) {
-        this.imagelist = this.sources;
-      };
-
-      this.imageSizes = IMG_SIZES.map((format, index) => {
-        return {
-          title : format.title,
-          label : format.label,
-          width : Math.floor(this.sources[0].image.width * format.ratio),
-          height : Math.floor(this.sources[0].image.height * format.ratio),
-          selected : (this.selectedSize === index)
-        }
-      });
-
-      this._renderImgFormats();
+      if( sourceCount > 1 ) break;
     }
 
-    if ( this.sources.length === 0 ) {
+    this.hasMultipleDownloadMedia = (sourceCount > 1);
+    if( this.hasMultipleDownloadMedia ) {
+      this.$.single.checked = true;
+      this.$.fullset.checked = false;
+    }
+    this.fullSetSelected = false;
+  }
+
+  _onSelectedRecordMediaUpdate(media) {
+    console.log(media);
+    this.showImageFormats = false;
+    this.fullSetSelected = false;
+
+    let sources = this._getDownloadSources(media);
+
+    if ( sources.length === 0 ) {
       this.$.wrapper.style.display = "none";
       this.$.msg.innerHTML = '<em>No downloadable items available</em>';
       return;
@@ -199,80 +105,159 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
     this.$.wrapper.style.display = 'initial';
     this.$.msg.innerHTML = '';
-    this.downloadOptions = this.sources;
 
-    if (this.downloadOptions.length === 1) {
-      this.$.videoDownloadOptions.disabled  = true;
-      this.$.videoDownloadOptions.classList.add("plainText");
-    } else {
-      this.$.videoDownloadOptions.disabled = false;
-      this.$.videoDownloadOptions.classList.remove("plainText");
-    }
+    this.allSources = sources;
+    this.downloadOptions = sources;
+
+    this._setDownloadHref(sources[0]);
   }
 
-  _getImageSources(imageRecord) {
-    let sources = [], image = imageRecord;
+  _getDownloadSources(record, nativeImageOnly=false) {
+    let sources = [];
 
-    if (utils.getMediaType(image) === 'ImageList') {
-      sources = image.hasPart;
-    } else {
-      sources.push(image);
-    };
+    if( record.clientMediaDownload ) {
+      record = record.clientMediaDownload;
+      if( Array.isArray(record) ) record = record[0];
+    }
+
+    if (utils.getMediaType(record) === 'VideoObject') {
+      sources = sources.concat(this._getVideoSources(record));
+    } else if (utils.getMediaType(record) === 'AudioObject') {
+      sources = sources.concat(this._getAudioSources(record));
+    } else if (utils.getMediaType(record) === 'ImageObject' ) {
+      this.showImageFormats = true;
+      sources = sources.concat(this._getImageSources(record, nativeImageOnly));
+      this._renderImgFormats(record, null, 'FR');
+    }
+
+    return sources;
+  }
+
+  _setDownloadHref(source) {
+    let href = source.src;
+    if( source.type === 'image' ) {
+      let format = this.$.format.value;
+      if( source.originalFormat !== format || source.imageType !== 'FR' ) {
+        href += source.service+format;
+      }
+    }
+    console.log(href, source);
+    this.sourceType = source.type; // stored for analytics
+    this.href = href;
+  }
+
+  /**
+   * @method _getImageSources
+   * @description the download sources list for image media
+   * 
+   * @param {Object} imageRecord the image media
+   * @param {Boolean} nativeImageOnly In the sources list, should only the native 
+   * image be returned or all available size options?
+   * 
+   * @returns {Array} 
+   */
+  _getImageSources(imageRecord, nativeImageOnly=false) {
+    let format = this._getImageFormat(imageRecord);
+
+    if( nativeImageOnly ) {
+      return [{
+        record : imageRecord,
+        type : 'image',
+        src :  imageRecord['@id'],
+        originalFormat : format,
+        filename : imageRecord.filename || imageRecord.name,
+        label : imageRecord.filename || imageRecord.name
+      }]
+    }
+
+    let sources = [];
+    for( let size of config.imageDownload.sizes ) {
+      let width = Math.floor(imageRecord.image.width * size.ratio);
+      let height = Math.floor(imageRecord.image.height * size.ratio);
+      let iiifSize = width+','+height;
+      sources.push({
+        record : imageRecord,
+        type : 'image',
+        src :  imageRecord['@id'],
+        service : `/svc:iiif/full/${iiifSize}/0/default.`,
+        originalFormat : format,
+        imageType : size.imageType,
+        filename : imageRecord.filename || imageRecord.name,
+        label : size.label+' '+width+' x '+height+' px',
+        width, height
+      });
+    }
 
     return sources;
   }
 
   _getAudioSources(audioRecord) {
-    let sources = [], obj = {}, audio = audioRecord;
-    
-    obj = {
-      src: config.fcrepoBasePath + audio['@id'],
-      type: audio.encodingFormat.split('/').pop(),
-      label: audio.encodingFormat.split('/').pop() + (bytes(audio.fileSize) ? ' (' + bytes(audio.fileSize) + ') ' : '')
-    };
-
-    sources.push(obj);
-
-    return sources;
+    return [{
+      record: audioRecord,
+      src: config.fcrepoBasePath + audioRecord['@id'],
+      type: 'audio',
+      filename : audioRecord.filename || audioRecord.name,
+      label: this._getTypeLabel(audioRecord) + (audioRecord.fileSize ? ' (' + bytes(audioRecord.fileSize) + ') ' : '')
+    }];
   }
 
   _getVideoSources(videoRecord) {
-    let sources = [];
+    let sources = [{
+      record : videoRecord,
+      type : 'video',
+      src : config.fcrepoBasePath + videoRecord['@id'],
+      filename : videoRecord.filename || videoRecord.name,
+      label : this._getTypeLabel(videoRecord) + (videoRecord.fileSize ? ' (' + bytes(videoRecord.fileSize) + ') ' : '')
+    }];
 
-    let video = this.MediaModel.formatVideoForPlyr(videoRecord, this.rootRecord);
+    let transcripts = videoRecord.transcript || [];
+    if( !Array.isArray(transcripts) ) transcripts = [transcripts];
 
-    if (video.sources && video.sources.length > 0) {
-      video.sources.forEach(element => {
-        element.name = element.name;
-        element.type = ((element.type !== undefined) ? element.type.replace(/.*\//, '') : '');
-        element.fileSize = bytes(element.fileSize);
-        element.src  = config.fcrepoBasePath+element.src;
-        element.label = element.type + (element.fileSize ? ' (' + element.fileSize + ') ' : '');
-      });
-
-      sources = video.sources;
-
-      if (video.transcripts && video.transcripts.length > 0) {
-        video.transcripts.forEach(transcript => {
-          let name = (transcript.name ? transcript.name : '');
-          let obj = {
-            name: name,
-            src: config.fcrepoBasePath + transcript.src,
-            type: transcript.src.split('.').pop(),
-            label: transcript.src.split('.').pop() + ' (transcript only)'
-          }
-
-          sources.push(obj);
+    transcripts
+      .filter(transcript => transcript.error !== true)
+      .forEach(transcript => {
+        sources.push({
+          record: transcript,
+          src: config.fcrepoBasePath + transcript['@id'],
+          type: 'transcript',
+          filename : transcript.filename || transcript.name,
+          label: this._getTypeLabel(transcript) + ' (video transcript only)'
         });
-      }
-    }
+      });
 
     return sources;
   }
 
-  _onChangeVideoDownloadOptions(e) {
-    let selectedValue = e.currentTarget.value;
-    this.href = this.downloadOptions[selectedValue].src;
+  /**
+   * @method _getTypeLabel
+   * @description get a nice label for a media type.  Uses the encodingFormat or fileFormat, splits apart
+   * mime type and takes second arg (part after slash).  Falls back on file extension if not encodingFormat
+   * or fileFormat is provided.
+   * 
+   * @param {Object} record file media record
+   * 
+   * @returns {String}
+   */
+  _getTypeLabel(record) {
+    let type = record.encodingFormat || record.fileFormat;
+    if( type ) return type.split('/').pop();
+    return record['@id'].split('/').split('.').pop();
+  }
+
+  /**
+   * @method _onChangeDownloadOptions
+   * @description bound to download options select element on-change event
+   * 
+   * @param {Object} e 
+   */
+  _onChangeDownloadOptions(e) {
+    let source = this.downloadOptions[parseInt(e.currentTarget.value)];
+
+    if( source.type === 'image' ) {
+      this._renderImgFormats(source.record, this.$.format.value, source.imageType);
+    }
+
+    this._setDownloadHref(source);
   }
 
   /**
@@ -282,54 +267,43 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    * list and additional native format if not in list and size is at
    * full resolution.
    */
-  _renderImgFormats() {
-    let formats;
+  _renderImgFormats(imageRecord, selectedFormat, selectedSize) {
+    let originalFormat = this._getImageFormat(imageRecord);
+    if( !selectedFormat ) selectedFormat = originalFormat;
 
-    formats = IMG_FORMATS.slice(0);
-    if( this.originalFormat &&
-        this.selectedSize === IMG_SIZES.length - 1 &&
-        formats.indexOf(this.originalFormat) === -1 ) {
-      formats.unshift(this.originalFormat);
+    let formats = config.imageDownload.formats.slice(0);
+    if( formats.indexOf(originalFormat) === -1 && selectedSize === 'FR' ) {
+      formats.push(originalFormat);
     }
 
     this.formats = formats;
     this.$.format.innerHTML = '';
+
     this.formats.forEach(format => {
       let option = document.createElement('option');
-      option.textContent = format + ((format === this.originalFormat) ? ' (native)' : '');
+      option.innerHTML = format + ((format === originalFormat && selectedSize === 'FR') ? ' (native)' : '');
       option.value = format;
 
-      if (format === this.originalFormat) {
+      if (format === selectedFormat) {
         option.setAttribute('selected', 'selected');
       }
       
       this.$.format.appendChild(option);
     });
-    
-    this._renderDownloadHref();
   }
 
   /**
-   * @method _onSizeSelected
-   * @private
-   * @description called when user selects a size button.  Toggle over buttons
-   * to off state and updates formats based on current size.
-  */
-  _onSizeChange(e) {
-    let selected = e.currentTarget.value;
-
-    this.imageSizes = this.imageSizes.map((size, index) => {
-      if( selected === size.label ) {
-        size.selected = true;
-        this.selectedSize = index;
-      } else {
-        size.selected = false;
-      }
-      
-      return Object.assign({}, size);
-    });
-    
-    this._renderImgFormats();
+   * @method _getImageFormat
+   * @description get the image format. Looks at the schema.org fileFormat parameter or falls back to the url
+   * 
+   * @returns {String}
+   */
+  _getImageFormat(imageRecord) {
+    let originalFormat = (imageRecord.fileFormat || imageRecord['@id'].split('.').pop() || '')
+      .replace(/.*\//, '').toLowerCase();
+    // hack
+    if( originalFormat === 'jpeg' ) originalFormat = 'jpg';
+    return originalFormat;
   }
 
   /**
@@ -338,50 +312,64 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    * @description when a format is selected, render the download button.
    */
   _onFormatSelected() {
-    this.selectedFormat = this.$.format.value.replace(/ .*/, '');
-    this._renderDownloadHref();
+    let selectedFormat = this.$.format.value.replace(/ .*/, '');
+    let source = this.downloadOptions[parseInt(this.$.downloadOptions.value)];
+    this._renderImgFormats(source.record, selectedFormat, source.imageType);
+    this._setDownloadHref(source);
   }
 
   /**
-   * @method _renderDownloadHref
-   * @private
-   * @description render the href of the download button based
-   * and selected size and format.
-   * 
-   * This method will make sure the format select element is correct.
-   * Because the select element options are generated by a template repeat
-   * tag, we need to make sure then options have rendered.  So we call 
-   * requestAnimationFrame to pause to allow time for generation.  This
-   * is probably NOT the best way to do things.
-  */
-  _renderDownloadHref() {
-    requestAnimationFrame(() => {
-      // this.resolution = this.imageSizes[this.selectedSize].size.join(' x ')+' px';
-      
-      if( !this.selectedFormat || this.formats.indexOf(this.selectedFormat) === -1 ) {
-        this.selectedFormat = this.formats[0].replace(/ .*/, '');
-        this.$.format.value = this.formats[0];
+   * @method _toggleMultipleDownload
+   * @description bound to radio buttons click event
+   */
+  _toggleMultipleDownload() {
+    this.fullSetSelected = this.$.fullset.checked ? true : false;
+
+    if ( this.fullSetSelected ) {
+      this.$.format.style.display = "none";
+      this.$.downloadOptions.style.display = "none";
+    } else {
+      this.$.format.style.display = "initial";
+      this.$.downloadOptions.style.display = "initial";
+    }
+    
+    this._setTarPaths();
+  }
+
+  /**
+   * @method _setTarPaths
+   * @description set the fullset/tar form elements.
+   */
+  _setTarPaths() {
+    let urls = {};
+    this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+
+    let sources = [];
+    for( let type in record.media ) {
+      for( let media of record.media[type] ) {
+        sources = sources.append(this._getDownloadSources(media, true));
       }
+    }
 
-      if( this.$.format.value !== this.selectedFormat ) {
-        this.$.format.value = this.selectedFormat;
-      }
+    for( let source of sources ) {
+      urls[source.filename] = source.src;
+    } 
 
-      if (this.isVideo) return;
+    this.$.tarPaths.value = JSON.stringify(urls);
+  }
 
-      if (!this.options && this.imagelist) this.options = this.imagelist[0].image;
-      
-      if( this.selectedFormat === this.originalFormat && this.selectedSize === IMG_SIZES.length -1 ) {
-        this.defaultImage = true;
-        return this.href = this.options.url;
-      }
+  /**
+   * @method _downloadTar
+   * @description bound to download set button click event
+   */
+  _onDownloadFullSetClicked() {
+    this.$.downloadTar.submit();
 
-      this.defaultImage = false;
-
-      let size = this.imageSizes[this.selectedSize];
-      size = size.width + ',' + size.height;
-
-      this.href = this.options.url + `/svc:iiif/full/${size}/0/default.${this.selectedFormat}`;
+    let path = this.rootRecord['@id'].replace(config.fcrepoBasePath, '');
+    gtag('event', 'download', {
+      'event_category': 'fullset',
+      'event_label': path,
+      'value': 1
     });
   }
 
@@ -391,65 +379,12 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    */
   _onDownloadClicked() {
     let path = this.href.replace(config.fcrepoBasePath, '');
-    
+
     gtag('event', 'download', {
-      'event_category': 'image',
+      'event_category': this.sourceType,
       'event_label': path,
       'value': 1
     });
-  }
-
-  /**
-   * @method _toggleMultipleDownload
-   * @description bound to radio buttons click event
-   */
-  _toggleMultipleDownload() {
-    this.multipleSourcesSelected = this.$.fullset.checked ? true : false;
-
-    if ( this.$.fullset.checked ) {
-      this.$.format.style.display = "none";
-      this.$.requestedResolution.style.display = "none";
-    } else {
-      this.$.format.style.display = "initial";
-      this.$.requestedResolution.style.display = "initial";
-    }
-    
-    this._setTarPaths();
-  }
-
-  _setTarPaths() {
-    let origin = true, urls = {};
-    this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
-
-    if ( this.images.length > 0 ) {
-      this.images.forEach(item => {
-        let name = item.filename || item.name;
-        if ( utils.getMediaType(item).toLowerCase().includes('image') ) {
-          if( origin ) {
-            urls[name] = item['@id'];
-          } else {
-            let s = IMG_SIZES[this.selectedSize];
-            name = name.replace(/\.[a-z]*$/, `_${s.label}_.${this.selectedFormat}`);
-            let w = Math.floor(item.image.width * s.ratio);
-            let h = Math.floor(item.image.height * s.ratio);
-            urls[name] = MediaModel.getImgUrl(item['@id'], w, h, {format:this.selectedFormat}).replace(config.fcrepoBasePath, '');
-          }
-        } else {
-          let src  = config.fcrepoBasePath + item['@id'];
-          urls[name] = src;
-        }
-      });
-
-      this.$.tarPaths.value = JSON.stringify(urls);
-    }
-  }
-
-  /**
-   * @method _downloadTar
-   * @description bound to download set button click event
-   */
-  _downloadTar() {
-    this.$.downloadTar.submit();
   }
 
 }

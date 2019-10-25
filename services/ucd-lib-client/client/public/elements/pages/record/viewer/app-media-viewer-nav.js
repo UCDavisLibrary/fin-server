@@ -230,9 +230,9 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     // this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
     // this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
 
-    if (!record.media.imageList) {
-      this.singleImage = true;
-    }
+    // if (!record.media.imageList) {
+    //   this.singleImage = true;
+    // }
 
     // If only a single video item, display compacted nav bar
     // Otherwise display full bar.

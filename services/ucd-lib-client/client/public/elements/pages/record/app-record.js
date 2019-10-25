@@ -132,7 +132,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     }
 
     // Attach a recod to the download options
-    this.$.download.setRootRecord(record);
+    // this.$.download.setRootRecord(record);
 
     // find arks or doi
     this._renderIdentifier(record);
@@ -334,21 +334,21 @@ export default class AppRecord extends Mixin(PolymerElement)
    * @param {Object} record 
    */
   _onSelectedRecordMediaUpdate(record) {
-    if( record._has360ImageList ) {
-      this.$.download.style.display = 'none';
-      return;
-    }
+    // if( record._has360ImageList ) {
+    //   this.$.download.style.display = 'none';
+    //   return;
+    // }
 
     this.name = this.record.name || '';
 
-    if (!record.image) return;
+    // if (!record.image) return;
 
-    this.$.download.render({
-      resolution : [record.image.width, record.image.height],
-      fileFormat : record.image.encodingFormat,
-      size : record.image.contentSize ? parseInt(record.image.contentSize) : 0,
-      url : record.image.url
-    });
+    // this.$.download.render({
+    //   resolution : [record.image.width, record.image.height],
+    //   fileFormat : record.image.encodingFormat,
+    //   size : record.image.contentSize ? parseInt(record.image.contentSize) : 0,
+    //   url : record.image.url
+    // });
 
     this._renderIdentifier(this.record, record);
     this._renderFcLink(this.record, record);

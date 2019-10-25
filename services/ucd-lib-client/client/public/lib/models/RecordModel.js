@@ -64,8 +64,8 @@ class RecordModel extends ElasticSearchModel {
     }
 
     // default, nothing currently selected
-    if (result.payload.media.imageList) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.imageList[0]);
+    if (result.payload.media.imageList && result.payload.media.imageList[0].hasPart.length ) {
+      AppStateModel.setSelectedRecordMedia(result.payload.media.imageList[0].hasPart[0]);
     } else if (result.payload.media.video) {
       AppStateModel.setSelectedRecordMedia(result.payload.media.video[0]);
     } else if (result.payload.media.audio) {
@@ -121,66 +121,27 @@ class RecordModel extends ElasticSearchModel {
   createMediaObject(record) {
     if (record.isRootRecord === false) return;
     
-    let media = {};
+    record.media = {};
 
     if ( record.clientMedia ) {
       let clientMediaIds = utils.asArray(record, 'clientMedia').map(item => item['@id']);
-      let clientMedia = this.findRecords(clientMediaIds, record);
+      record.clientMedia = this.findRecords(clientMediaIds, record);
 
-      clientMedia.forEach(record => {
-        if( record.clientMediaDownload ) {
-          let clientMediaDownloadIds = utils.asArray(record, 'clientMediaDownload').map(item => item['@id']);
-          record.clientMediaDownload = this.findRecords(clientMediaDownloadIds, record);
+      record.clientMedia.forEach(media => {
+        if( media.clientMediaDownload ) {
+          let clientMediaDownloadIds = utils.asArray(media, 'clientMediaDownload').map(item => item['@id']);
+          media.clientMediaDownload = this.findRecords(clientMediaDownloadIds, record);
         }
-        appendMediaTypes(record);
+
+        this._appendMediaTypes(media, record.media);
       });
-
-      // TODO: now fill client media download
     } else {
-      traverse(record);
-
-      function traverse(item) {
-        if (Array.isArray(item)) {
-          item.forEach(element => traverse(element));
-        } else if ((typeof item === 'object') && (item !== null)) {
-          if( item['@type'] ) appendMediaTypes(item);
-
-          for (let key in item) {
-            if (typeof item[key] !== 'object') continue;
-            traverse(item[key]);
-          }
-        }
-      }
+      this._walkMedia(record, record.media);
     }
 
-    function appendMediaTypes(element) {
-      let type = utils.getMediaType(element);
-      if( !type ) return;
-
-      if ( type === "AudioObject" ){
-        if (!media.audio) media.audio = [];
-        return media.audio.push(element);
-      }
-      if (type === "VideoObject" || type === "StreamingVideo" ) {
-        if (!media.video) media.video = [];
-        return media.video.push(element);
-      } 
-      if (type === "ImageObject" ) {
-        if (!media.image) media.image = [];
-        return media.image.push(element);
-      }
-      if ( type === "ImageList" ) {
-        if (!media.imageList) media.imageList = [];
-        return media.imageList.push(element);
-      }
-      if (type === "Binary" ) {
-        if (!media.binaryFiles) media.binaryFiles = [];
-        return media.binaryFiles.push(element);
-      }
-    }
-
-    for( let type in media ) {
-      media[type].forEach(item => {
+    // set thumbnails for all media
+    for( let type in record.media ) {
+      record.media[type].forEach(item => {
         if( item.thumbnailUrl && typeof item.thumbnailUrl === 'string' ) return;
         if( item.thumbnailUrl && typeof item.thumbnailUrl === 'object' ) {
           item.thumbnailUrl = '/fcrepo/rest'+item.thumbnailUrl['@id'];
@@ -200,8 +161,73 @@ class RecordModel extends ElasticSearchModel {
       });
     }
 
-    record.media = media; 
     return record;
+  }
+
+  _walkMedia(item, media, walked=[]) {
+    if (Array.isArray(item)) {
+      item.forEach(element => this._walkMedia(element, media, walked));
+    } else if ((typeof item === 'object') && (item !== null)) {
+      if( walked.indexOf(item) > -1 ) return;
+      walked.push(item);
+
+      if( item['@type'] ) this._appendMediaTypes(item, media);
+
+      for (let key in item) {
+        if (typeof item[key] !== 'object') continue;
+        this._walkMedia(item[key], media, walked);
+      }
+    }
+  }
+
+  _appendMediaTypes(element, media) {
+    let type = utils.getMediaType(element);
+    if( !type ) return;
+
+    if ( type === "AudioObject" ){
+      if (!media.audio) media.audio = [];
+      return media.audio.push(element);
+    }
+    if (type === "VideoObject" || type === "StreamingVideo" ) {
+      if (!media.video) media.video = [];
+      return media.video.push(element);
+    } 
+    if (type === "ImageObject" && 
+      !element['@type'].includes('http://digital.ucdavis.edu/schema#ImageListItem') ) {
+      if (!media.image) media.image = [];
+      return media.image.push(element);
+    }
+    if ( type === "ImageList" ) {
+      if (!media.imageList) media.imageList = [];
+      this._cleanupImageList(element);
+      return media.imageList.push(element);
+    }
+    if (type === "Binary" ) {
+      if (!media.binaryFiles) media.binaryFiles = [];
+      return media.binaryFiles.push(element);
+    }
+  }
+
+  _cleanupImageList(media) {
+    if( !media.hasPart ) media.hasPart = [];
+
+    media.hasPart.forEach(item => {
+      if( !item['@type'] ) item['@type'] = [];
+
+      // infered because its a part of ImageList
+      if( item['@type'].indexOf('http://schema.org/ImageObject') === -1 ) {
+        item['@type'].push('http://schema.org/ImageObject');
+      }
+      item['@type'].push('http://digital.ucdavis.edu/schema#ImageListItem');
+      item.isPartOf = {'@id': media['@id']};
+      item.position = parseInt(item.position);
+    });
+
+    media.hasPart.sort((a, b) => {
+      if( a.position < b.position ) return -1;
+      if( a.position > b.position ) return 1;
+      return 0;
+    });
   }
 
   /**

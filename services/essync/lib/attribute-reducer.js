@@ -237,10 +237,9 @@ class AttributeReducer {
       
       for( let j = 0; j < values.length; j++ ) {
         if( !values[j] ) continue;
-        if( values[j]['@id'] ) {
-          values[j] = values[j]['@id'];
-        }
-        await this.walkRecord(images, record, values[j], reduced, visited, identifier, alias);
+        let id = values[j];
+        if( id['@id'] ) id = id['@id'];
+        await this.walkRecord(images, record, id, reduced, visited, identifier, alias);
       }
     }
   }
