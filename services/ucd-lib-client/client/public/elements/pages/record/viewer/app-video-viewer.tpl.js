@@ -22,6 +22,16 @@ return html`
         }
         */
 
+        .container {
+            padding-top: 20px;
+        }
+
+        video {
+            max-width: 100%;
+            height: auto;
+            max-height: 600px;
+        }
+
         .plyr__video-wrapper {
             text-align: center;
         }
@@ -40,10 +50,13 @@ return html`
     
     <div class="container">
         <div id="sprite-plyr" style="display: none;"></div>
-        <video id="video" playsinline controls crossorigin>
+        <video ?hidden="${!this.libsLoaded}" id="video" playsinline controls crossorigin>
             ${repeat(this.tracks, (t) => 
                 html`<track kind="${t.kind}" label="${t.label}" src="${t.src}" srclang="${t.srclang}" default="${t.default}" />`)}
         </video>
+        <div id="loading" ?hidden="${!this.libsLoaded}">
+            <paper-spinner-lite active$="[[loading]]"></paper-spinner-lite>
+        </div>
     </div>
 `
 }

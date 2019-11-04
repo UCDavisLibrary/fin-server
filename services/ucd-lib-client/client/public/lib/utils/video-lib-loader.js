@@ -8,13 +8,10 @@ class VideoLibLoader {
     }
 
     this.loading = new Promise(async (resolve, reject) => {
-      const plyr         = ( await import(/* webpackChunkName: "video-libs" */ 'plyr') ).default;
-      const shaka_player = await import(/* webpackChunkName: "video-libs" */ 'shaka-player');
+      const plyr = ( await import(/* webpackChunkName: "video-libs" */ 'plyr') ).default;
+      const shaka = await import(/* webpackChunkName: "video-libs" */ 'shaka-player');
       
-      this.loaded = {
-        plyr,
-        shaka_player
-      }
+      this.loaded = {plyr, shaka}
 
       resolve(this.loaded);
     });

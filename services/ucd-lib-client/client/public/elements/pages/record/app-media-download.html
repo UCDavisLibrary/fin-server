@@ -9,7 +9,7 @@
   }
   
   a {
-    display: inline-block;
+    display: block;
     padding: 8px;
     color : var(--default-primary-color);
     background-color : var(--default-secondary-color);
@@ -17,6 +17,8 @@
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-heavy);
     text-decoration: none;
+    white-space: nowrap;
+    height: 24px;
   }
   
   select {
@@ -107,19 +109,20 @@
     </template>
   </select>
   <select id="format" on-change="_onFormatSelected" hidden$="[[!showImageFormats]]"></select>
-
-  <a id="downloadBtn" href="[[href]]" 
-    on-click="_onDownloadClicked" 
-    download 
-    target="_blank" 
-    rel="noopener" 
-    hidden$="[[fullSetSelected]]" 
-    style="white-space: nowrap;">
-      <iron-icon icon="file-download"></iron-icon>&nbsp;
-      <span>
-        Download
-      </span>
-  </a>
+  <div>
+    <a id="downloadBtn" href="[[href]]" 
+      on-click="_onDownloadClicked" 
+      download 
+      target="_blank" 
+      rel="noopener" 
+      hidden$="[[fullSetSelected]]" 
+      style="white-space: nowrap;">
+        <iron-icon icon="file-download"></iron-icon>
+        <span>
+          Download
+        </span>
+    </a>
+  </div>
 </div>
 
 <div hidden$="[[fullSetSelected]]">

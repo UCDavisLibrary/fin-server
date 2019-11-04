@@ -28,6 +28,7 @@
     "express": "^4.16.2",
     "http-proxy": "^1.17.0",
     "request": "^2.87.0",
+    "shaka-player": "^2.5.5",
     "tar-stream": "^1.6.1"
   },
   "devDependencies": {

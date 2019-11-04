@@ -1,6 +1,6 @@
 {
   "name": "fin-search-ui",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "flat": true,
   "main": "index.js",
   "license": "MIT",
@@ -40,7 +40,7 @@
     "lit-element": "^2.2.1",
     "markdown": "^0.5.0",
     "plyr": "^3.5.6",
-    "shaka-player": "^2.5.4",
+    "shaka-player": "^2.5.5",
     "striptags": "^3.1.1",
     "yarn": "^1.17.3"
   },

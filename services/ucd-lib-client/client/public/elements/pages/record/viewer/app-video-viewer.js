@@ -24,7 +24,8 @@ export default class AppVideoViewer extends Mixin(LitElement)
       },
       tracks: {
         type: Array
-      }
+      },
+      libsLoaded : {type: Boolean}
     }
   }
 
@@ -34,6 +35,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
     this._injectModel('AppStateModel', 'MediaModel');
     this.tracks = [];
     this.player = {};
+    this.libsLoaded = false;
   }
 
   _onAppStateUpdate(e) {
@@ -67,87 +69,74 @@ export default class AppVideoViewer extends Mixin(LitElement)
 
     this.media = media;
 
+    // find associated captions and prep to tracks array
+    this.tracks = utils.asArray(media, 'caption')
+      .filter(caption => caption['@id'] !== undefined )
+      .map(caption => {
+        let lng = caption.language;
+        let setDefault = (lng === 'en' ? true : false);
+
+        return {
+          kind: 'captions',
+          label: utils.getLanguage(lng),
+          srclang: lng,
+          src: caption['@id'],
+          default: setDefault
+        };
+      });
+
+    // if we have already loaded the player and shaka libraries
+    // then we can go ahead and load the video
+    if( this.libsLoaded ) {
+      console.log('here')
+      this._loadVideo();
+      return;
+    }
+
+    // dynamically load plyr and shaka libs
+    let {plyr, shaka} = await videoLibs.load();
+
+    // Install the polyfills before doing anything with the library
+    await shaka.polyfill.installAll();
+
+    // alert user if video playback is not supported
+    let plyr_supported = plyr.supported('video', 'html5', true);
+    let shaka_supported = shaka.Player.isBrowserSupported();
+    if( !plyr_supported || !shaka_supported ) {
+      return alert('Your browser does not support video playback');
+    }
+
+    let videoEle = this.shadowRoot.getElementById('video');
+
+
+    this.plyr = new plyr(videoEle, {debug: false});
+
+    // Construct a Player to wrap around the <video> tag.
+    this.shaka = new shaka.Player(videoEle);
+    this.shaka.addEventListener('error', e => console.error('shaka error', e));
+    
+    this.libsLoaded = true;
+    await this._loadVideo();
+  }
+
+  /**
+   * @method _loadVideo
+   * @description load url into shaka for current media
+   */
+  async _loadVideo() {
+    if( !this.media ) return;
+
+    let mediaType = utils.getMediaType(this.media);
+    let manifestUri = config.fcrepoBasePath+this.media['@id'];
+
+    if( mediaType === 'StreamingVideo' ) {
+      manifestUri += '/playlist.m3u8'
+    }
+
     try {
-      let libs = await videoLibs.load();
-      this.plyr = libs.plyr;
-      this.shaka_player = libs.shaka_player;
-
-      // Install the polyfills before doing anything with the library
-      await this.shaka_player.polyfill.installAll();
-
-      console.log("videoLibs loaded");
+      await this.shaka.load(manifestUri);
     } catch(error) {
-      console.log("videoLibs.load() error: ", error);
-    }
-
-    let plyr_supported = this.plyr.supported('video', 'html5', true);
-    //console.log("plyr_supported: ", plyr_supported);
-
-    let shaka_supported = this.shaka_player.Player.isBrowserSupported();
-    //console.log("shaka_supported: ", shaka_supported);
-
-    let videoObject = this.MediaModel.formatVideoForPlyr(this.media);
-    let videoUri = videoObject['id'];
-    let title    = videoObject['name'];
-    let poster   = videoObject['poster'];
-    let width    = videoObject['width'];
-    let height   = videoObject['height'];
-    let sources  = videoObject['sources'];
-
-    this.$.video = this.shadowRoot.getElementById('video');
-    // this.$.video.style.width     = width + "px";
-    // this.$.video.style.maxWidth  = "calc(" + height + " / " + width +  " * 100%)";
-    // this.$.video.style.maxHeight = "calc(" + height + " / " + width +  " * 100%)";
-    this.$.video.style.height = '350px';
-
-    if (videoObject['transcripts']) {
-      let transcripts = utils.asArray(videoObject, 'transcripts').map(element => {
-        return config.fcrepoBasePath + element.src;
-      });
-    }
-
-    if (videoObject['captions']) {
-      this.tracks = utils.asArray(videoObject, 'captions').map(element => {
-        let temp = Object.assign({}, element);
-        temp.src = config.fcrepoBasePath + element.src;
-        return temp;
-      });
-    }
-
-    this.player = new this.plyr(this.$.video, {
-      title: title,
-      blankVideo: 'https://cdn.plyr.io/static/blank.mp4',
-      quality: videoObject['videoQuality'],
-      debug: false
-    });
-
-    // WebVTT Validator recommended by Plyr.io
-    // https://quuz.org/webvtt/
-    this.player.source = {
-      type: 'video',
-      title: title,
-      poster: poster,
-      source: sources,
-      tracks: this.tracks
-    }
-
-    if ( shaka_supported === true ) {
-      let manifestUri = config.fcrepoBasePath+videoUri;
-      if( mediaType === 'StreamingVideo' ) {
-        manifestUri += '/playlist.m3u8'
-      }
-
-      // Construct a Player to wrap around the <video> tag.
-      const shaka = new this.shaka_player.Player(this.$.video);
-      //console.log("shaka config: ", shaka.getConfiguration());
-
-      try {
-        await shaka.load(manifestUri);
-      } catch(error) {
-        console.error('Error code: ', error.code, 'object', error);
-      }
-    } else {
-      console.warn("Your browser is not supported");
+      console.error('Error code: ', error.code, 'object', error);
     }
   }
 
@@ -158,10 +147,10 @@ export default class AppVideoViewer extends Mixin(LitElement)
     const video = this.shadowRoot.querySelector('#video');
     video.pause();
 
-    if ( this.player === undefined || this.player === null ) return;
+    if ( this.plyr === undefined || this.plyr === null ) return;
 
-    if (Object.entries(this.player).length != 0) {
-      this.player.stop();
+    if (Object.entries(this.plyr).length != 0) {
+      this.plyr.stop();
     };
   }
 }

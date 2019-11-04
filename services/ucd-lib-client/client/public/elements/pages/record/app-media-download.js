@@ -120,8 +120,13 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     let sources = [];
 
     if( record.clientMediaDownload ) {
-      record = record.clientMediaDownload;
-      if( Array.isArray(record) ) record = record[0];
+      if( Array.isArray(record.clientMediaDownload) ) {
+        if( record.clientMediaDownload.length ) {
+          record = record.clientMediaDownload[0];
+        }
+      } else {
+        record = record.clientMediaDownload;
+      }
     }
 
     if (utils.getMediaType(record) === 'VideoObject') {
@@ -245,7 +250,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   _getTypeLabel(record) {
     let type = record.encodingFormat || record.fileFormat;
     if( type ) return type.split('/').pop();
-    return record['@id'].split('/').split('.').pop();
+    return record['@id'].split('/').pop().split('.').pop();
   }
 
   /**
