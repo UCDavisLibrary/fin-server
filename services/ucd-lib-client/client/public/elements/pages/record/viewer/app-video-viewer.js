@@ -88,7 +88,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
     // if we have already loaded the player and shaka libraries
     // then we can go ahead and load the video
     if( this.libsLoaded ) {
-      console.log('here')
       this._loadVideo();
       return;
     }
