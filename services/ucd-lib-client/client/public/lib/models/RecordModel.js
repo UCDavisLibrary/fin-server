@@ -210,6 +210,7 @@ class RecordModel extends ElasticSearchModel {
 
   _cleanupImageList(media) {
     if( !media.hasPart ) media.hasPart = [];
+    if( !Array.isArray(media.hasPart) ) media.hasPart = [media.hasPart];
 
     media.hasPart.forEach(item => {
       if( !item['@type'] ) item['@type'] = [];
@@ -239,17 +240,22 @@ class RecordModel extends ElasticSearchModel {
    * @param {Object} record root record to search
    * @param {Array} records current array of found records
    */
-  findRecords(ids, record, records=[]) {
+  findRecords(ids, record, records=[], crawled={}) {
     if (Array.isArray(record)) {
-      record.forEach(item => this.findRecords(ids, item, records));
+      record.forEach(item => this.findRecords(ids, item, records, crawled));
     } else if ((typeof record === 'object') && (record !== null)) {
+      
+      // check for loops
+      if( crawled[record['@id']]) return records;
+      crawled[record['@id']] = true;
+
       if( Object.keys(record).length > 1 && ids.indexOf(record['@id']) > -1 ) {
         records.push(record);
       }
 
       for (let key in record) {
         if ( typeof record[key] !== 'object' ) continue;
-        this.findRecords(ids, record[key], records);
+        this.findRecords(ids, record[key], records, crawled);
       }
     }
 

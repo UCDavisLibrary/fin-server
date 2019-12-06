@@ -149,7 +149,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     
     // grrrr
     if( w === 0 ) {
-      console.log('Ignoreing resize')
+      // console.log('Ignoreing resize')
       // setTimeout(() => this._resize(), 200);
       return;
     }
