@@ -21,6 +21,7 @@ import '../lib'
 import "./pages/home/app-home"
 import "./pages/search/app-search"
 import "./pages/record/app-record"
+import "./pages/about/app-about"
 import "./app-footer"
 import "./utils/app-header-colorbar"
 
