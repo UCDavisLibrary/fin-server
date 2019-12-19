@@ -2,6 +2,8 @@ import {PolymerElement} from "@polymer/polymer/polymer-element"
 import "@ucd-lib/fin-search-box"
 import "../../utils/app-collection-card"
 
+import "@polymer/iron-icons"
+
 import template from "./app-home.html"
 import RecordInterface from "../../interfaces/RecordInterface"
 import AppStateInterface from "../../interfaces/AppStateInterface"

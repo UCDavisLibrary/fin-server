@@ -10,6 +10,7 @@
   a, a:visited {
     cursor: pointer;
     color: var(--inverse-text-color);
+    text-decoration: none;
   }
 
   .lib-logo  {
@@ -25,6 +26,14 @@
     padding: 15px;
   }
 
+  .menu a {
+    cursor: pointer;
+  }
+
+  .menu.vertical li {
+    padding: 5px 0px;
+  }
+
   .menu.horizontal li {
     padding: 0 10px;
     border-right: 1px solid white;
@@ -32,8 +41,16 @@
   .menu.horizontal li:last-child {
     border-right: none;
   }
-  .menu a {
-    cursor: pointer;
+
+  .donate {
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid white;    
+  }
+
+  .donate a {
+    padding: 8px;
   }
 
   @media( max-width: 768px ) {
@@ -81,16 +98,15 @@
 </style>
 
 <footer role="contentinfo">
-
   <div class="row">
     <div> <!-- col start -->
       <div>
           <a href="https://library.ucdavis.edu" target="_blank" rel="noopener">
-              <img class="lib-logo" src="/images/ucd-lib-logo-white.png">
+            <img class="lib-logo" src="/images/ucd-lib-logo-white.png">
           </a>
       </div>
-      <div>UC Davis Library</div>
       <p>
+        UC Davis Library<br />
         100 NW Quad<br />
         University of California, Davis<br />
         Davis, CA 95616<br />
@@ -100,20 +116,31 @@
     </div><!-- col end -->
 
     <div role="navigation"><!-- col start -->
+      <h2>Digital Collections</h2>
+      <ul class="menu vertical">
+        <li><a href="/search">Collections</a></li>
+        <li><a href="">Items</a></li>        
+        <li><a href="/about">About Digital Collections</a></li>
+      </ul>
+    </div><!-- col end -->
+
+    <div role="navigation"><!-- col start -->
       <h2>Library Info</h2>
-      <ul class="menu">
+      <ul class="menu vertical">
         <li><a href="https://library.ucdavis.edu/special-collections/" target="_blank" rel="noopener">Special Collections</a></li>
         <li><a href="https://library.ucdavis.edu/news/" target="_blank" rel="noopener">News</a></li>
-        <li><a href="https://library.ucdavis.edu/about/" target="_blank" rel="noopener">About</a></li>
+        <li><a href="https://library.ucdavis.edu/about/" target="_blank" rel="noopener">About the Library</a></li>
         <li><a href="https://library.ucdavis.edu/library/" target="_blank" rel="noopener">Visit</a></li>
         <li><a href="https://library.ucdavis.edu/service/careers/" target="_blank" rel="noopener">Careers</a></li>
+        <li class="donate">
+          <a href="http://give.ucdavis.edu/ULIB" target="_blank" rel="noopener">Give to the UC Davis Library</a>
+        </li>
       </ul>
-      <div class="donate"><a href="http://give.ucdavis.edu/ULIB" target="_blank" rel="noopener">Give to the UC Davis Library</a></div>
     </div><!-- col end -->
 
     <div role="navigation"><!-- col start -->
       <h2>Account</h2>
-      <ul class="menu">
+      <ul class="menu vertical">
         <li>
           <app-auth-footer></app-auth-footer>
         </li>
@@ -136,10 +163,11 @@
         <li><a href="/general-support/">Questions or comments?</a></li>
         <li><a href="https://www.ucdavis.edu/help/privacy-accessibility/" target="_blank" rel="noopener">Privacy &amp; Accessibility</a></li>
         <li><a href="https://occr.ucdavis.edu/poc/" target="_blank" rel="noopener">Principles of Community</a></li>
-        <li><a href="https://www.ucdavis.edu/" target="_blank" rel="noopener">UC Davis</a></li>
         <li><a href="https://www.universityofcalifornia.edu/" target="_blank" rel="noopener">University of California</a></li>
+        <li><a href="" target="_blank" rel="noopener"></a>Sitemap</li>
+        <li>Last Updated: September 5, 2017</li>
       </ul>
-      <p>Copyright &copy; 2017 The Regents of the University of California, Davis campus. All rights reserved.</p>
+      <p>Copyright &copy; The Regents of the University of California, Davis campus. All rights reserved.</p>
     </div>
   </div>
 

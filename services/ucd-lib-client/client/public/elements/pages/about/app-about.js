@@ -15,13 +15,14 @@ class AppAbout extends Mixin(PolymerElement)
 
   static get properties() {
     return {
-      
+    
     }
   }
 
   constructor() {
     super();
     this.active = true;
+    this._injectModel('AppStateModel');
   }
   
 }
