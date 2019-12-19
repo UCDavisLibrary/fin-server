@@ -88,39 +88,19 @@
   }
 
   .collections {
-    max-width: var(--max-width);
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    padding: 50px 20px;
+    padding: 50px 0;
+    max-width: var(--max-width);    
     border-bottom: 1px solid var(--light-background-color);
-  }
-
-  .collections > div {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    height: 320px;
-    width: 320px;
-    margin: 15px;
-    position: relative;
   }
 
   .collections > div:hover {
     cursor: pointer;
     margin: 13px;
     border: 2px solid var(--default-primary-color);
-  }
-
-  .collections > div > div {
-    position: absolute;
-    padding: 15px;
-    color: var(--default-secondary-color);
-    background-color: rgba(0, 38, 85, .7);
-    left : 0;
-    bottom : 25px;
-    font-weight: var(--font-weight-heavy);
   }
 
   iron-icon.search-icon {

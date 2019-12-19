@@ -12,23 +12,26 @@
   }
 
   .root {
-    background-color: #eee;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
     height: 320px;
     width: 320px;
     position: relative;
+    background-color: #eee;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;    
   }
 
   .root > div  {
-    position: absolute;
     padding: 15px;
+    position: absolute;
+    left: 0;
+    right: 25px;
+    bottom: 25px;
+    
     color: var(--default-secondary-color);
-    background-color: rgba(0, 38, 85, .7);
-    left : 0;
-    bottom : 25px;
     font-weight: var(--font-weight-heavy);
+
+    background-color: rgba(0, 38, 85, .7);      
   }
 </style>
 
