@@ -41,29 +41,29 @@
     background-position: center;
   }
 
-  .gradient {
-    opacity: .7;
+  .gradient {    
     position: absolute;
-    top : 0;
-    left : 0;
-    right : 0;
+    top: 0;
+    left: 0;
+    right: 0;
     bottom: 0;
+    opacity: .7;
     background-image: url('/images/home-gradient.png');
     background-size: cover;
     background-position: center;
   }
 
   img {
-    height: 50px;
-    top: 25px;
-    left: 25px;
     position: absolute;
     z-index: 5;
+    height: 50px;
+    top: 25px;
+    left: 25px;    
   }
 
-  .container {
-    background: white;
+  .container {    
     padding: 25px 10px;
+    background: white;
   }
 
   .search-box {
@@ -77,9 +77,16 @@
     padding: 15px;
   }
 
-  .search-box .footer {
-    background-color: rgba(51, 83, 121, .7);
+  .search-box .footer {  
     padding: 15px;
+    color: white;
+    font-style: italic;
+    font-weight: normal;
+    background-color: rgba(51, 83, 121, .7);
+  }
+
+  .search-box .footer a {
+    color: var(--default-secondary-color);
   }
 
   .collection-outer {
@@ -135,10 +142,13 @@
         <iron-icon icon="fin-icons:search" class="search-icon" slot="button-content"></iron-icon>
       </fin-search-box>
     </div>
-    <div class="footer" style="color: white; font-style: italic; font-weight: normal;">
+
+    <div class="footer">
+      <!--
       Featured image: 
-      <a href="" style="color: gold;">Title of the Item</a>, 
-      <a href="" style="color: gold;">Name of Collection</a> 
+      <a href="">Title of the Item</a>, 
+      <a href="">Name of Collection</a>
+      -->
     </div>
   </div>
 
