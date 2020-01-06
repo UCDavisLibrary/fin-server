@@ -6,29 +6,54 @@
   }
 
   .text-container {
-    padding: 10px;
+    padding: 10px 10px 50px 10px;
+  }
+
+  h1, h2 {
+    color: var(--default-primary-color);
   }
 
   h2 {
     margin: 15px 0 0 0px;
   }
+
+  .yellow-line {
+    margin: 0 auto 0 0;
+    text-align: left;
+    width: 50px;
+    height: 4px;
+
+    border-color: var(--default-secondary-color);
+    background-color: var(--default-secondary-color);
+  }
 </style>
 
 <app-search-header></app-search-header>
 
-<div class="text-container">  
-  <h1>About Digital Collections</h1>
+<app-header-colorbar height="15" flipped></app-header-colorbar>
 
-  <p>The UC Davis Digital Collections is a locally developed digital repository that 
+<div class="text-container">  
+  <div>
+    <h1>About Digital Collections</h1>
+    <div class="yellow-line">&nbsp;</div>
+  </div>
+  
+  <p>
+    The UC Davis Digital Collections is a locally developed digital repository that 
     was designed to store and manage the digital assets of UC Davis. These Digital 
     Collections are intended to increase access to previously undiscoverable digital 
-    assets held by the University Library.</p>
+    assets held by the University Library.
+  </p>
   
-  <p>Initially launched in 2018, the repository currently stores <span>[[count]]</span> digital assets. Assests will be added continually as they are ready.</p>
+  <p>
+    Initially launched in 2018, the repository currently stores <span>[[count]]</span> digital assets. 
+    Assests will be added continually as they are ready.
+  </p>
   
   <h2>Platform</h2>
   
-  <p>The Digital Asset Management System is built on the Fedora Linked Data Platform. 
+  <p>
+    The Digital Asset Management System is built on the Fedora Linked Data Platform. 
     Custom microservices are implemented using a Fedora (API-X) extension method as a general 
     methodology. The User Interface was built with web-components anticipating a need for 
     UI flexibility as the digital collection grows. For a more detailed explanation of 
@@ -69,7 +94,8 @@
   </div>
   
   <p>
-    The UC Davis Library DAMS was a project of the Library's <a href="https://www.library.ucdavis.edu/service/online-strategy-2/">Online Strategy team.</a>
+    The UC Davis Library DAMS was a project of the Library's 
+    <a href="https://www.library.ucdavis.edu/service/online-strategy-2/">Online Strategy team.</a>
   </p>
 </div>
 <app-header-colorbar height="15" flipped></app-header-colorbar>
