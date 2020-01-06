@@ -79,10 +79,12 @@ class RecordsModel extends ElasticSearchModel {
    * @param {Object} record 
    * @param {Boolean} seo
    */
-  async _fillRecord(record, seo) {
+  async _fillRecord(record, seo, crawled={}) {
+    crawled[record['@id']] = true;
+
     for( var i = 0; i < FILL_ATTRIBUTES.length; i++ ) {
       if( !record[FILL_ATTRIBUTES[i]] ) continue;
-      await this._fillAttribute(record, FILL_ATTRIBUTES[i], seo);
+      await this._fillAttribute(record, FILL_ATTRIBUTES[i], seo, crawled);
     }
   }
   
@@ -94,14 +96,14 @@ class RecordsModel extends ElasticSearchModel {
    * @param {String} attribute
    * @param {Boolean} seo
    */
-  async _fillAttribute(record, attribute, seo) {
+  async _fillAttribute(record, attribute, seo, crawled) {
     let values = record[attribute];
     if( !Array.isArray(values) ) values = [values];
     
     values = values.map(v => {
       if( typeof v === 'object' ) return v['@id'];
       return v;
-    })
+    });
 
     // record['_'+attribute] = [];
 
@@ -119,7 +121,12 @@ class RecordsModel extends ElasticSearchModel {
         record[attribute][i] = {error:true, message:'record not found'}
         continue;
       }
-      await this._fillRecord(childRecord, seo);
+
+      if( crawled[childRecord['@id']] ) {
+        continue;
+      }
+
+      await this._fillRecord(childRecord, seo, crawled);
     }
   }
 
