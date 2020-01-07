@@ -1,15 +1,17 @@
-<style include="shared-styles">
+<style>
   :host {
     display: block;
-    background: var(--secondary-background-color);
-    color: var(--inverse-text-color);
+    margin: 0;
+    padding: 0;    
+    width: 100%;
     max-width: var(--max-width);
-    padding: 20px 0;
+
+    color: white;
+    background: var(--secondary-background-color);
   }
 
-  footer {   
-    padding: 35px 0 0;
-    color: white;
+  footer {
+    padding: 70px 35px 20px;
   }
 
   a,
@@ -19,8 +21,13 @@
     text-decoration: none;
   }  
 
-  .lib-logo  {
+  .lib-logo  {    
+    margin-bottom: 30px;
+  }
+
+  .lib-logo img {
     height: 45px;
+    max-width: 200px;
   }
 
   .lib-email:hover {
@@ -29,11 +36,8 @@
 
   .row {
     display: flex;
-    justify-content: center;
-  }
-
-  .row div {
-    padding: 0 15px;
+    flex-direction: row;
+    justify-content: space-around;
   }
 
   ul,
@@ -47,9 +51,9 @@
     display: block;
     padding: 4px;
   }
+  
   .menu.vertical a:hover {
     background-color: #1a3e68;
-    /*transition: background-color .2s ease-in-out;*/
     webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out;
@@ -80,27 +84,31 @@
     margin-top: 15px;
   }
   .donate a {
-    display: block;
-    padding: 10px 5px !important;
+    display: inline-block !important;
+    padding: 8px !important;
     font-weight: 700;
     border: 1px solid white;
+    white-space: normal !important;
   }
   .donate a:hover {
     background: rgba(21,118,240,.32) !important;
   }
 
+  /*
+    Big UCD horse logo
+  */
   .logo {
     display: inline-block;
+    margin: 70px 30px;
     width: 100%;
-    position: relative;
-    margin: 70px 0 30px;
+    position: relative;  
   }
   .logo hr {
-    position: absolute;
-    top: 50%;
-    width: 100%;
     margin-top: 0;
     margin-bottom: 0;
+    top: 50%;
+    width: 100%;
+    position: absolute;
     border-top: 1px solid rgba(255,255,255,.25);
     border-bottom: none;
     border-right: none;
@@ -110,16 +118,25 @@
     display: inline-block;
     position: relative;
   }
-  .logo img {
-    height: 100px;
+  .logo img {    
     padding: 0 25px;
+    height: 100px;
     background: var(--default-primary-color);
   }
 
   @media( max-width: 768px ) {
     .row {
-      display: block;
+      flex-direction: column;
       text-align: left;
+    }
+
+    h2 {
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+
+    .menu.vertical li a {
+      padding: 0;
     }
   }
 </style>
@@ -127,9 +144,9 @@
 <footer role="contentinfo">
   <div class="row">
     <div class="col"> <!-- col start -->
-      <div>
+      <div class="lib-logo">
           <a href="https://library.ucdavis.edu" target="_blank" rel="noopener">
-            <img class="lib-logo" src="/images/ucd-lib-logo-white.png">
+            <img src="/images/ucd-lib-logo-white.png">
           </a>
       </div>
       <p>
@@ -175,7 +192,7 @@
     </div><!-- col end -->
   </div><!-- row end -->
 
-  <div style="padding: 0 10px; text-align: center;">
+  <div class="bottom-links" style="text-align: center;">
     <div class="logo"><!-- logo -->
       <hr />
       <div class="logo-img">
@@ -195,5 +212,4 @@
       <p>Copyright &copy; 2020 The Regents of the University of California, Davis campus. All rights reserved.</p>
     </div>
   </div>
-
 </footer>
