@@ -11,7 +11,7 @@
   }
 
   footer {
-    padding: 70px 35px 20px;
+    padding: 70px 35px 20px 20px;
   }
 
   a,
@@ -53,8 +53,8 @@
   }
   
   .menu.vertical a:hover {
-    background-color: #1a3e68;
-    webkit-transition: all .2s ease-in-out;
+    background-color: var(--default-primary-color);
+    -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out;
   }
@@ -94,16 +94,14 @@
     background: rgba(21,118,240,.32) !important;
   }
 
-  /*
-    Big UCD horse logo
-  */
-  .logo {
+  .ucd-logo {
     display: inline-block;
-    margin: 70px 30px;
+    margin-top: 70px;
+    margin-bottom: 30px;
     width: 100%;
     position: relative;  
   }
-  .logo hr {
+  .ucd-logo hr {
     margin-top: 0;
     margin-bottom: 0;
     top: 50%;
@@ -114,11 +112,11 @@
     border-right: none;
     border-left: none;
   }
-  .logo .logo-img {
+  .ucd-logo .logo-img {
     display: inline-block;
     position: relative;
   }
-  .logo img {    
+  .ucd-logo img {    
     padding: 0 25px;
     height: 100px;
     background: var(--default-primary-color);
@@ -193,7 +191,7 @@
   </div><!-- row end -->
 
   <div class="bottom-links" style="text-align: center;">
-    <div class="logo"><!-- logo -->
+    <div class="ucd-logo"><!-- ucd-logo -->
       <hr />
       <div class="logo-img">
         <img src="/images/ucd-logo.svg" alt="UC Davis Logo">
