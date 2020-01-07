@@ -83,14 +83,14 @@
   .donate {
     margin-top: 15px;
   }
-  .donate a {
+  .donate > a {
     display: inline-block !important;
     padding: 8px !important;
     font-weight: 700;
     border: 1px solid white;
     white-space: normal !important;
   }
-  .donate a:hover {
+  .donate > a:hover {
     background: rgba(21,118,240,.32) !important;
   }
 
@@ -101,7 +101,7 @@
     width: 100%;
     position: relative;  
   }
-  .ucd-logo hr {
+  .ucd-logo > hr {
     margin-top: 0;
     margin-bottom: 0;
     top: 50%;
@@ -112,11 +112,11 @@
     border-right: none;
     border-left: none;
   }
-  .ucd-logo .logo-img {
+  .ucd-logo > div {
     display: inline-block;
     position: relative;
   }
-  .ucd-logo img {    
+  .ucd-logo > div > img {    
     padding: 0 25px;
     height: 100px;
     background: var(--default-primary-color);
@@ -193,7 +193,7 @@
   <div class="bottom-links" style="text-align: center;">
     <div class="ucd-logo"><!-- ucd-logo -->
       <hr />
-      <div class="logo-img">
+      <div>
         <img src="/images/ucd-logo.svg" alt="UC Davis Logo">
       </div>
     </div>
