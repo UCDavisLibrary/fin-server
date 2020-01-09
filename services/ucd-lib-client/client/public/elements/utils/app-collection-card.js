@@ -19,10 +19,25 @@ export default class AppCollectionCard extends PolymerElement {
         type : Number,
         value : 0,
         reflectToAttribute : true
-      }
+      },
     }
   }
 
+  constructor() {
+    super();
+    this.active = true;
+  }
+
+  ready() {
+    super.ready();
+  }
+
+  connectedCallback() {    
+    if ( this.collection.thumbnailUrl === '/images/logos/logo-white-512.png' ) {
+      let cards = this.shadowRoot.querySelectorAll('.root')[0];
+      cards.className += ' defaultImage';
+    }    
+  }
 }
 
 customElements.define('app-collection-card', AppCollectionCard);
