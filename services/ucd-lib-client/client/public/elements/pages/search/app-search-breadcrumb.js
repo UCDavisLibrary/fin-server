@@ -73,7 +73,6 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * @description bound to search anchor tag click event.  nav to search
    */
   _onSearchClicked(e) {
-    console.log("_onSearchClicked(e): ", e);
     if( e.type === 'keyup' && e.which !== 13 ) return;
     this._setWindowLocation(this.lastSearch || '/search');
   }
