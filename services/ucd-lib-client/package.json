@@ -17,7 +17,6 @@
   "license": "MIT",
   "dependencies": {
     "@ucd-lib/cork-app-elastic-search": "^0.2.1",
-    "@ucd-lib/fin-node-utils": "^0.2.18",
     "@ucd-lib/spa-router-middleware": "0.0.2",
     "body-parser": "^1.18.2",
     "clone": "^2.1.1",

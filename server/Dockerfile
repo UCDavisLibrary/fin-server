@@ -1,22 +1,31 @@
+ARG NODE_UTILS_VERSION
+FROM ucd-lib/fin-node-utils:${NODE_UTILS_VERSION} as fin-node-utils
 FROM node:12
 
 RUN apt-get update
 RUN apt-get install -y git jq zip unzip
 RUN apt-get clean
 
+COPY --from=fin-node-utils /fin-node-utils /fin-node-utils
+RUN cd /fin-node-utils && npm install -g
+ENV NODE_PATH /usr/local/lib/node_modules
+
 RUN mkdir app
+WORKDIR /app
 
-ADD package.json /app/
-ADD package-lock.json /app/
-RUN cd /app && npm install --production
+ADD package.json .
+ADD package-lock.json .
+RUN npm install --production
 
-ADD controllers /app/controllers
-ADD lib /app/lib
-ADD models /app/models
-ADD assets /app/assets
-ADD index.js /app/
-ADD gitinfo.json /app/
+COPY controllers controllers
+COPY lib lib
+COPY models models
+COPY assets assets
+COPY index.js .
 
-COPY default-frames /etc/fin/frames
+ARG REPO_HASH
+ARG REPO_TAG
+ENV REPO_HASH ${REPO_HASH}
+ENV REPO_TAG ${REPO_TAG}
 
-CMD cd /app && node index.js
+CMD node index.js

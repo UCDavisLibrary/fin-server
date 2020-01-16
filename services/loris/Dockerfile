@@ -14,6 +14,7 @@ RUN apt-get install -y python-dev python-setuptools python-pip libffi-dev libssl
 RUN pip install --upgrade pip
 RUN pip2.7 install Werkzeug
 RUN pip2.7 install configobj
+RUN apt-get clean
 
 # Install kakadu
 WORKDIR /usr/local/lib
@@ -66,7 +67,10 @@ RUN mkdir -p /tmp/loris2/tmp
 #RUN sed -i -- 's/localhost/0.0.0.0/g' webapp.py
 #RUN sed -i 's/app = create_app(debug=True)/app = create_app(debug=False, config_file_path=conf_fp)/g' webapp.py
 
-RUN apt-get clean
+ARG REPO_HASH
+ARG REPO_TAG
+ENV REPO_HASH ${REPO_HASH}
+ENV REPO_TAG ${REPO_TAG}
 
 EXPOSE 5004
 CMD ["python", "start.py"]

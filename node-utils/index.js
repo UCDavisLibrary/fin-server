@@ -1,10 +1,9 @@
 module.exports = {
   config : require('./config'),
-  jsonld : require('./jsonld'),
-  jwt : require('./jwt'),
-  logger : require('./logger'),
-  MessageServer : require('./MessageServer'),
-  utils : require('./utils'),
-  AutoGenerator : require('./AutoGenerator'),
-  waitUntil : require('./wait-until')
+  jsonld : require('./lib/jsonld'),
+  jwt : require('./lib/jwt'),
+  logger : require('./lib/logger'),
+  MessageServer : require('./lib/message-server'),
+  utils : require('./lib/utils'),
+  waitUntil : require('./lib/wait-until')
 }

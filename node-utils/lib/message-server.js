@@ -5,7 +5,7 @@ const http = require('http');
 const body = require('body/json');
 const request = require('request');
 const jwt = require('./jwt');
-const config = require('./config');
+const config = require('../config');
 const logger = require('./logger');
 
 const WEBHOOK_EVENT_TYPES = {

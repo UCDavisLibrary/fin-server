@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ucd-lib/fin-node-utils": "^0.2.7",
     "request": "^2.87.0",
     "uuid": "^3.3.2"
   }

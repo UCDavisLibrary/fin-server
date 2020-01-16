@@ -1,11 +1,23 @@
+ARG NODE_UTILS_VERSION
+FROM ucd-lib/fin-node-utils:${NODE_UTILS_VERSION} as fin-node-utils
 FROM node:12
 
+COPY --from=fin-node-utils /fin-node-utils /fin-node-utils
+RUN cd /fin-node-utils && npm install -g
+ENV NODE_PATH /usr/local/lib/node_modules
+
 RUN mkdir /service
+WORKDIR /service
 
-COPY package.json /service/package.json
-COPY package-lock.json /service/package-lock.json
-RUN cd /service && npm install --production
+COPY package.json .
+COPY package-lock.json .
+RUN npm install --production
 
-COPY index.js /service/index.js
+COPY index.js .
 
-CMD node /service
+ARG REPO_HASH
+ARG REPO_TAG
+ENV REPO_HASH ${REPO_HASH}
+ENV REPO_TAG ${REPO_TAG}
+
+CMD node index.js

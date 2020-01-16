@@ -1,6 +1,6 @@
 var jsonld = require('jsonld');
 var util = require('util');
-var config = require('./config');
+var config = require('../config');
 
 jsonld.compact = util.promisify(jsonld.compact);
 

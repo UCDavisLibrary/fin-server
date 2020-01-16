@@ -1,8 +1,19 @@
 const fs = require('fs');
+const path = require('path');
 
 let defaultServices = [];
-if( fs.existsSync('/etc/fin/default-services.js') ) {
-  defaultServices = require('/etc/fin/default-services.js');
+if( fs.existsSync('/etc/fin') ) {
+  fs.readdirSync('/etc/fin')
+    .forEach(file => {
+      if( file.match(/.*-services.js$/) ) {
+        let serviceDef = require(path.join('/etc/fin', file));
+        if( Array.isArray(serviceDef) ) {
+          defaultServices = defaultServices.concat(serviceDef);
+        } else {
+          defaultServices.push(serviceDef);
+        }
+      }
+    });
 }
 
 var fcrepoHostname = process.env.FCREPO_HOST || 'fcrepo';

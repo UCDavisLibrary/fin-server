@@ -63,5 +63,10 @@ ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
   -Dfcrepo.auth.webac.authorization=${FCREPO_AUTH_WEBAC_AUTHORIZATION} \
   -Dfcrepo.streaming.parallel=true"
 
+ARG REPO_HASH
+ARG REPO_TAG
+ENV REPO_HASH ${REPO_HASH}
+ENV REPO_TAG ${REPO_TAG}
+
 CMD chmod a+rw ${FCREPO_HOME} && \
     java $JAVA_OPTS -jar "$JETTY_HOME/start.jar"

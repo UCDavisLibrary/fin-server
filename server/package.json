@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "@ucd-lib/fin-node-api": "^0.11.11",
-    "@ucd-lib/fin-node-utils": "^0.2.18",
     "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "cas-authentication": "0.0.8",
