@@ -1,7 +1,5 @@
 #! /bin/bash
 
-UCD_LIB_DOCKER_ORG=ucd-lib
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
 
