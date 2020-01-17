@@ -1,18 +1,14 @@
 #! /bin/bash
 
-VERSION=1.0.0
-UCD_LIB_DOCKER_ORG=ucd-lib
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
 
-FIN_SERVER_VERSION=$(cat ../server/package.json | jq --raw-output .version)
-REPO_HASH=$(git log -1 --pretty=%h .)
-REPO_TAG=$(git describe $REPO_HASH)
+UCD_CORE_REPO_HASH=$(git log -1 --pretty=%h .)
+UCD_CORE_REPO_TAG=$(git describe $REPO_HASH)
 
 docker build \
-  --build-arg FIN_SERVER_VERSION=${FIN_SERVER_VERSION} \
-  --build-arg REPO_HASH=${REPO_HASH} \
-  --build-arg REPO_TAG=${REPO_TAG} \
-  -t UCD_LIB_DOCKER_ORG/fin-ucd-core-server:$VERSION \
+  --build-arg FIN_SERVER_VERSION=${SERVER_VERSION} \
+  --build-arg REPO_HASH=${UCD_CORE_REPO_HASH} \
+  --build-arg REPO_TAG=${UCD_CORE_REPO_TAG} \
+  -t $UCD_LIB_DOCKER_ORG/$UCD_CORE_SERVER_NAME:$UCD_CORE_SERVER_VERSION \
   .

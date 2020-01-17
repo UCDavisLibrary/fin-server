@@ -1,5 +1,5 @@
 # from https://github.com/loris-imageserver/loris-docker/blob/development/Dockerfile
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 MAINTAINER eliotj@princeton.edu
 

@@ -1,16 +1,13 @@
 #! /bin/bash
 
-VERSION=1.0.0
-UCD_LIB_DOCKER_ORG=ucd-lib
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
 
-REPO_HASH=$(git log -1 --pretty=%h .)
-REPO_TAG=$(git describe $REPO_HASH)
+POSTGRES_REPO_HASH=$(git log -1 --pretty=%h .)
+POSTGRES_REPO_TAG=$(git describe $POSTGRES_REPO_HASH)
 
 docker build \
-  --build-arg REPO_HASH=${REPO_HASH} \
-  --build-arg REPO_TAG=${REPO_TAG} \
-  -t UCD_LIB_DOCKER_ORG/fin-postgres:$VERSION \
+  --build-arg REPO_HASH=${POSTGRES_REPO_HASH} \
+  --build-arg REPO_TAG=${POSTGRES_REPO_TAG} \
+  -t $UCD_LIB_DOCKER_ORG/$POSTGRES_NAME:$POSTGRES_VERSION \
   .
