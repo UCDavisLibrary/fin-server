@@ -7,6 +7,7 @@ TESSERACT_REPO_HASH=$(git log -1 --pretty=%h .)
 TESSERACT_REPO_TAG=$(git describe $TESSERACT_REPO_HASH)
 
 docker build \
+  --cache-from $UCD_LIB_DOCKER_ORG/$TESSERACT_NAME:$TESSERACT_VERSION \
   --build-arg NODE_UTILS_VERSION=${NODE_UTILS_VERSION} \
   --build-arg REPO_HASH=${TESSERACT_REPO_HASH} \
   --build-arg REPO_TAG=${TESSERACT_REPO_TAG} \
