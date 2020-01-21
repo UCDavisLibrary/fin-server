@@ -55,7 +55,7 @@ class ProxyModel {
   bind(app) {
     // handle ALL /fcrepo requests
     app.use('/fcrepo', this._fcRepoPathResolver.bind(this));
-    
+
     // handle AuthenticationService requests. Do not handle Fin auth endpoints
     // of /auth/token /auth/user /auth/logout /auth/mint /auth/service, these are reserved
     app.use(/^\/auth\/(?!token|user|logout|mint|service|login-shell).*/i, authenticationServiceProxy);

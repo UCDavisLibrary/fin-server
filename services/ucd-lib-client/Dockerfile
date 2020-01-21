@@ -1,5 +1,5 @@
 ARG NODE_UTILS_VERSION
-FROM ucd-lib/fin-node-utils:${NODE_UTILS_VERSION} as fin-node-utils
+FROM ucdlib/fin-node-utils:${NODE_UTILS_VERSION} as fin-node-utils
 FROM node:12
 
 COPY --from=fin-node-utils /fin-node-utils /fin-node-utils
@@ -25,4 +25,4 @@ ARG REPO_TAG
 ENV REPO_HASH ${REPO_HASH}
 ENV REPO_TAG ${REPO_TAG}
 
-CMD node service
+CMD node index.js

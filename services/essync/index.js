@@ -5,7 +5,6 @@ const indexer = require('./lib/indexer');
 const reindexer = require('./lib/reindexer');
 const buffer = require('./lib/buffer');
 const JobQueue = require('./lib/queue');
-const gitinfo = require('./gitinfo.json');
 
 /**
  * Log promise errors, uncaught exceptions
@@ -112,7 +111,7 @@ class EsSyncMessageServer extends MessageServer {
   }
 
   version() {
-    return gitinfo;
+    return '';
   }
 }
 

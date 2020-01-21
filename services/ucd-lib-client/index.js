@@ -38,7 +38,6 @@ app.use(bodyParser.json());
  * Register Controllers
  */
 app.use('/api', require('./controllers'));
-app.use('/_version', require('./controllers/version'));
 
 /**
  * setup ark/doi proxy

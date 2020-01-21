@@ -1,7 +1,7 @@
 const bunyan = require('bunyan');
 const path = require('path');
 const fs = require('fs');
-const config = require('./config');
+const config = require('../config');
 const {URL} = require('url');
 
 // hack, see below

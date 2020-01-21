@@ -1,14 +1,14 @@
 ARG NODE_UTILS_VERSION
-FROM ucd-lib/fin-node-utils:${NODE_UTILS_VERSION} as fin-node-utils
+FROM ucdlib/fin-node-utils:${NODE_UTILS_VERSION} as fin-node-utils
 FROM tesseractshadow/tesseract4re
 
 RUN apt-get update && apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get install -y nodejs
 
 COPY --from=fin-node-utils /fin-node-utils /fin-node-utils
 RUN cd /fin-node-utils && npm install -g
-ENV NODE_PATH /usr/local/lib/node_modules
+ENV NODE_PATH /usr/lib/node_modules
 
 RUN mkdir /service
 WORKDIR /service
