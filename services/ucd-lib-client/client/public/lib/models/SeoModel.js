@@ -77,9 +77,9 @@ class SeoModel extends BaseModel {
    * @param {String} metadata.keywords
    */
   _setMetaTags(metadata) {
-    document.title = metadata.title;
-    this._setMetaTag('description', metadata.description);
-    this._setMetaTag('keywords', metadata.keywords);
+    document.title = metadata.title || '';
+    this._setMetaTag('description', metadata.description || '');
+    this._setMetaTag('keywords', metadata.keywords || '');
   }
 
   /**
