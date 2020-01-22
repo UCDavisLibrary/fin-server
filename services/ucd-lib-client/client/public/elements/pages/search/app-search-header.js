@@ -1,7 +1,9 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
+import template from "./app-search-header.html"
 
 import "../../auth/app-auth-header";
-import template from "./app-search-header.html"
+import "@ucd-lib/fin-search-box"
+
 import RecordInterface from '../../interfaces/RecordInterface'
 import CollectionInterface from '../../interfaces/CollectionInterface'
 import AppStateInterface from '../../interfaces/AppStateInterface'
@@ -29,14 +31,19 @@ class AppSearchHeader extends Mixin(PolymerElement)
     this.active = true;
   }
 
+  async ready() {
+    super.ready();
+    this._setCollections(await this.CollectionModel.overview());
+  }
+
   /**
-   * @method _onCollectionOverviewUpdate
-   * @description from CollectionInferface, called when overview collection loads
+   * @method _setCollections
+   * @description when the element is ready, the collection model is called 
+   * for the collection list.  this renders is.
    * 
    * @param {Object} e 
    */
-  _onCollectionOverviewUpdate(e) {
-    if( e.state !== 'loaded' ) return;
+  _setCollections(e) {
     let overview = e.payload;
 
     let browse = {};

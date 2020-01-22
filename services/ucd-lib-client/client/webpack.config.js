@@ -1,6 +1,3 @@
-const path = require('path');
-const clone = require('clone');
-
 const BUILD_IE = false;
 
 let configs = require('@ucd-lib/cork-app-build').watch({

@@ -10,6 +10,8 @@ import "./app-media-download"
 import "./app-record-metadata-layout"
 import "./app-copy-cite"
 import "./viewer/app-media-viewer"
+import "../search/app-search-header"
+import "../search/app-search-breadcrumb"
 
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
@@ -61,6 +63,15 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.active = true;
     this._injectModel('AppStateModel');
     this._injectModel('RecordModel');
+  }
+
+  async ready() {
+    super.ready();
+    let selectedRecord = await this.AppStateModel.getSelectedRecord();
+    if( selectedRecord ) this._onSelectedRecordUpdate(selectedRecord);
+
+    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
   }
 
   /**

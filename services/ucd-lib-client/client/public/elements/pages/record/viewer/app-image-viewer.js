@@ -46,14 +46,11 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     this.active = true;
   }
 
-  /**
-   * @method _onSelectedRecordUpdate
-   * @description from AppStateInterface, called when a record is selected
-   * 
-   * @param {Object} record selected record
-   */
-  _onSelectedRecordUpdate(record) {
-    //console.log("app-image-viewer.js => _onSelectedRecordUpdate(): ", record);
+  async ready() {
+    super.ready();
+
+    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
   }
 
   /**

@@ -94,6 +94,15 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     this._resize();
   }
 
+  async ready() {
+    super.ready();
+    let selectedRecord = await this.AppStateModel.getSelectedRecord();
+    if( selectedRecord ) this._onSelectedRecordUpdate(selectedRecord);
+
+    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+  }
+
   /**
    * @method _onTouchEnd
    * @description bound to window touch end/cancel events. if we are
@@ -270,7 +279,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         icon: iconType,
         position: media.position,
         selected: false,
-        disabled: true,
+        disabled: false,
         src: media.thumbnailUrl
         // thumbnail: url
       }

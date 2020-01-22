@@ -35,7 +35,10 @@ export default function render() {
         <app-audio-viewer id="audio"></app-audio-viewer>
       </iron-pages>
 
-      <app-media-viewer-nav on-zoom-in="_onZoomIn" @break-controls-changed="${this._onControlLayoutChange}"></app-media-viewer-nav>
+      <app-media-viewer-nav 
+        @zoom-in="${this._onZoomIn}" 
+        @break-controls-changed="${this._onControlLayoutChange}">
+      </app-media-viewer-nav>
     </div>
   `
 }

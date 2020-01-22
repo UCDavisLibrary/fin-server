@@ -52,25 +52,29 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     });
   }
 
-  ready() {
+  async ready() {
     super.ready();
     
-    // TODO: Have Justin review these.  No longer necessary using Lit?
-    this.parentNode.removeChild(this);
+    this.parentElement.removeChild(this);
     document.body.appendChild(this);
 
     this.shadowRoot.removeChild(this.$.safeCover);
     document.body.appendChild(this.$.safeCover);
 
-    this.mainApp = document.querySelector('fin-app');
+    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
   }
 
   /**
    * @method _onAppStateUpdate
    * @description bound to AppStateModel app-state-update event
    */
-  _onAppStateUpdate() {
-    if( this.visible ) this.hide();
+  _onAppStateUpdate(e) {
+    if( e.showLightbox && !this.visible ) {
+      this.show();
+    } else if( !e.showLightbox && this.visible ) {
+      this.hide();
+    }
   }
 
   /**
@@ -106,9 +110,6 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     
     this.$.safeCover.style.display = 'block';
 
-    // TODO: Justin Review
-    //this.mainApp.style.display = 'none';
-
     setTimeout(() => this.$.nav.setFocus(), 0);
   }
 
@@ -120,9 +121,6 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     this.$.safeCover.style.display = 'none';
     document.body.style.overflow = 'auto';
     this.visible = false;
-
-    // TODO: Justin Review
-    //this.mainApp.style.display = 'block';
   }
 
   /**
@@ -189,7 +187,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @description bound to view nav close event
    */
   _onCloseClicked() {
-    this.hide();
+    this.AppStateModel.set({showLightbox: false});
   }
 
   /**

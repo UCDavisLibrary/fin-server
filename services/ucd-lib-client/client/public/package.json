@@ -20,7 +20,7 @@
     "@polymer/paper-styles": "3.0.1",
     "@polymer/paper-tabs": "3.0.1",
     "@polymer/paper-toast": "3.0.1",
-    "@polymer/polymer": "^3.1.0",
+    "@polymer/polymer": "^3.3.1",
     "@ucd-lib/cork-360-image-viewer": "0.0.3",
     "@ucd-lib/cork-app-elastic-search": "0.2.1",
     "@ucd-lib/cork-app-load": "^0.1.3",

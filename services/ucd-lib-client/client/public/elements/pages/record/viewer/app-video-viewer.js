@@ -47,6 +47,9 @@ export default class AppVideoViewer extends Mixin(LitElement)
   }
 
   async firstUpdated(e) {
+    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+
     this.fullPath = (await this.AppStateModel.get()).location.fullpath;
     
     // webpack module is base64 encoded URL, check if this happened 

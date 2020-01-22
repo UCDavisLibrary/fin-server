@@ -34,19 +34,14 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.mediaType = 'image';
     }
 
-    async firstUpdated(changedProperties) {
+    async firstUpdated() {
       this.$.lightbox = this.shadowRoot.getElementById('lightbox');
       if( !this.$.lightbox ) this.$.lightbox = document.getElementById('lightbox');
-      this.$.mediaNav = this.shadowRoot.querySelector('app-media-viewer-nav');
-      this.$.zoomBtn  = this.$.mediaNav.shadowRoot.getElementById('zoomIn1');
+
+      let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+      if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
     }
 
-    async updated(e) {
-      this.$.zoomBtn.addEventListener('click', (e) => {
-        this._onZoomIn(e);
-      });
-    }
-    
     async _onSelectedRecordMediaUpdate(record) {
       let mediaType = utils.getMediaType(record).toLowerCase().replace(/object/i, '');
       if ( mediaType === "imagelist" ) {
@@ -64,6 +59,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
      * @param {Object} e custom HTML event
      */
     _onZoomIn(e) {
+      this.AppStateModel.set({showLightbox: true});
       this.$.lightbox.show();
     }
 

@@ -1,5 +1,6 @@
 import {PolymerElement, html} from "@polymer/polymer"
-import "@polymer/paper-material/paper-material"
+
+// import "@polymer/paper-material/paper-material"
 import "@polymer/paper-button/paper-button"
 import "@polymer/iron-pages/iron-pages"
 import "@polymer/iron-icons/iron-icons"
@@ -18,10 +19,10 @@ import "./styles/shared-styles"
 import '../lib'
 
 // app elements
-import "./pages/home/app-home"
-import "./pages/search/app-search"
-import "./pages/record/app-record"
-import "./pages/about/app-about"
+// import "./pages/home/app-home"
+// import "./pages/search/app-search"
+// import "./pages/record/app-record"
+// import "./pages/about/app-about"
 import "./app-footer"
 import "./utils/app-header-colorbar"
 
@@ -44,7 +45,7 @@ export class FinApp extends Mixin(PolymerElement)
     return {
       page : {
         type : String,
-        value : 'home'
+        value : 'loading'
       },
       appRoutes : {
         type : Array,
@@ -56,6 +57,8 @@ export class FinApp extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+
+    this.loadedPages = {};
   }
 
   ready() {
@@ -66,20 +69,44 @@ export class FinApp extends Mixin(PolymerElement)
 
     // set initial user state
     this.AuthModel.store.setUser(APP_CONFIG.user);
-
-    this._getCollectionOverview(); // from CollectionInterface
   }
 
   /**
    * @method _onAppStateUpdate
    * @description AppStateInterface
    */
-  _onAppStateUpdate(e) {
+  async _onAppStateUpdate(e) {
     if( e.location.page === this.page ) return;
 
     this.appState = e;
     window.scrollTo(0, 0);
-    this.page = e.location.page;
+    
+    let page = e.location.page;
+    if( !this.loadedPages[page] ) {
+      this.page = 'loading';
+      this.loadedPages[page] = this.loadPage(page);
+    }
+    await this.loadedPages[page];
+
+    this.page = page;
+  }
+
+  /**
+   * @method loadPage
+   * @description code splitting done here.  dynamic import a page based on route
+   * 
+   * @param {String} page page to load
+   */
+  loadPage(page) {
+    if( page === 'home' ) {
+      return import(/* webpackChunkName: "page-home" */ "./pages/home/app-home")
+    } else if( page === 'search' ) {
+      return import(/* webpackChunkName: "page-search" */ "./pages/search/app-search")
+    } else if( page === 'record' ) {
+      return import(/* webpackChunkName: "page-record" */ "./pages/record/app-record")
+    } else if( page === 'about' ) {
+      return import(/* webpackChunkName: "page-about" */ "./pages/about/app-about")
+    }
   }
 
   /**

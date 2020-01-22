@@ -357,6 +357,13 @@ class RecordModel extends ElasticSearchModel {
       return this.store.getSearch();
     }
 
+    // make sure we don't repeat work
+    let searchDocumentStr = JSON.stringify(searchDocument, '  ', '  ');
+    if( searchDocumentStr === this.searchCache ) {
+      return this.store.getSearch();
+    }
+    this.searchCache = searchDocumentStr;
+
     try {
       await this.service.search(searchDocument);
     } catch(e) {}
