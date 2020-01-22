@@ -11,12 +11,17 @@
     border: 2px solid var(--default-secondary-color);
   }
 
+  .root.defaultImage {
+    background-size: 65%;
+  }
+
   .root {
     height: 320px;
     width: 320px;
     position: relative;
-    background-color: #eee;
-    background-size: cover;
+    background-image: url('/images/logos/logo-white-512.png'); /* fallback */
+    background-color: var(--light-background-color);
+    background-size: cover; /* needs to be 65% */
     background-repeat: no-repeat;
     background-position: center center;    
   }
