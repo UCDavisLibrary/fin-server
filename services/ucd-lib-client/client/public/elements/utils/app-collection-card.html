@@ -1,8 +1,10 @@
 <style>
   :host {
-    display: inline-block;
+    display: block;
     margin: 15px;
     outline : 0;
+    height: 320px;
+    width: 320px;
   }
 
   :host(:hover), :host(:focus)  {
@@ -11,11 +13,11 @@
     border: 2px solid var(--default-secondary-color);
   }
 
-  .root.defaultImage {
+  .img.defaultImage {
     background-size: 65%;
   }
 
-  .root {
+  .img {
     height: 320px;
     width: 320px;
     position: relative;
@@ -26,7 +28,7 @@
     background-position: center center;    
   }
 
-  .root > div  {
+  .img > div  {
     padding: 15px;
     position: absolute;
     left: 0;
@@ -40,6 +42,6 @@
   }
 </style>
 
-<div class="root" style$="background-image:url('[[collection.thumbnailUrl]]')">
+<div class="img" style$="background-image:url('[[collection.thumbnailUrl]]');">
   <div>[[collection.name]]</div>
 </div>

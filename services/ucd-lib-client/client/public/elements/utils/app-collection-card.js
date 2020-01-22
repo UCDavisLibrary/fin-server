@@ -33,8 +33,9 @@ export default class AppCollectionCard extends PolymerElement {
   }
 
   connectedCallback() {    
+    super.connectedCallback();
     if ( this.collection.thumbnailUrl === '/images/logos/logo-white-512.png' ) {
-      let cards = this.shadowRoot.querySelectorAll('.root')[0];
+      let cards = this.shadowRoot.querySelectorAll('.img')[0];
       cards.className += ' defaultImage';
     }    
   }

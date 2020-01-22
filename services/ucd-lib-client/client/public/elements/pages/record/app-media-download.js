@@ -65,6 +65,14 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     this._injectModel('AppStateModel', 'MediaModel');
   }
 
+  async ready() {
+    super.ready();
+    let selectedRecord = await this.AppStateModel.getSelectedRecord();
+    if( selectedRecord ) this._onSelectedRecordUpdate(selectedRecord);
+
+    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+  }
 
   _onSelectedRecordUpdate(record) {
     this.rootRecord = record;
@@ -93,8 +101,6 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     }
 
     this.fullSetSelected = false;
-    this.$.format.style.display = "initial";
-    this.$.downloadOptions.style.display = "initial";
   }
 
   _onSelectedRecordMediaUpdate(media) {
@@ -112,6 +118,10 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
     this.allSources = sources;
     this.downloadOptions = sources;
+    this.$.downloadOptions.innerHTML = sources
+      .map((item, index) => `<option value="${index}" ${index === 0 ? 'selected' : ''}>${item.label}</option>`)
+      .join()
+    this.$.downloadOptions.value = '0';
 
     this._setDownloadHref(sources[0]);
   }
@@ -137,6 +147,10 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       this.showImageFormats = true;
       sources = sources.concat(this._getImageSources(record, nativeImageOnly));
       this._renderImgFormats(record, null, 'FR');
+    } else if (utils.getMediaType(record) === 'ImageList' ) {
+      (record.hasPart || []).forEach(img => {
+        sources = sources.concat(this._getImageSources(img));
+      });
     }
 
     return sources;
@@ -333,15 +347,6 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    */
   _toggleMultipleDownload() {
     this.fullSetSelected = this.$.fullset.checked ? true : false;
-
-    if ( this.fullSetSelected ) {
-      this.$.format.style.display = "none";
-      this.$.downloadOptions.style.display = "none";
-    } else {
-      this.$.format.style.display = "initial";
-      this.$.downloadOptions.style.display = "initial";
-    }
-    
     this._setTarPaths();
   }
 
@@ -362,8 +367,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
     for( let source of sources ) {
       urls[source.filename] = source.src;
-    } 
-    console.log(urls)
+    }
 
     this.$.tarPaths.value = JSON.stringify(urls);
   }
