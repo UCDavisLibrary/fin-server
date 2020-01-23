@@ -131,10 +131,24 @@
     flex: 0.75;
   }
 
+  .hidden {
+    display: none !important;
+  }
+
+  .fc-break {
+    height: 10px;
+  }
+
   img[rights] {
     height: 22px;
     width: 22px;
     vertical-align: sub;
+  }
+
+  @media( max-width: 550px ) {
+    .metadata-row {
+      display: block;
+    }
   }
 
   @media( max-width: 768px ) {

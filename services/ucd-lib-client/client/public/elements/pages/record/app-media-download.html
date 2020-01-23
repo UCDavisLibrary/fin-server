@@ -102,12 +102,10 @@
   </div>
 </div>
 
-<div class="layout btns" style="margin-bottom: 5px;" hidden$="[[!selectedMediaHasSources]]">
-  <select id="downloadOptions" on-change="_onChangeDownloadOptions" hidden$="[[fullSetSelected]]"></select>
-  <div hidden$="[[fullSetSelected]]">
-    <select id="format" on-change="_onFormatSelected" hidden$="[[!showImageFormats]]"></select>
-  </div>
-  <div hidden$="[[fullSetSelected]]" >
+<div hidden$="[[fullSetSelected]]">
+  <div class="layout btns" style="margin-bottom: 5px;" hidden$="[[!selectedMediaHasSources]]">
+    <select id="downloadOptions" on-change="_onChangeDownloadOptions" ></select>
+    <select id="format" on-change="_onFormatSelected"></select>
     <a id="downloadBtn" href="[[href]]" 
       on-click="_onDownloadClicked" 
       download 
