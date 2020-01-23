@@ -25,7 +25,7 @@ for( var key in config.elasticSearch.facets ) {
 
 
 class AppFiltersPanel extends Mixin(PolymerElement)
-      .with(EventInterface, RecordInterface, CollectionInterface) {
+      .with(EventInterface, RecordInterface) {
   
   static get template() {
     let tag = document.createElement('template');
@@ -69,6 +69,7 @@ class AppFiltersPanel extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+    this._injectModel('AppStateModel');
   }
 
   ready() {

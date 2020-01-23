@@ -97,10 +97,11 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
   async ready() {
     super.ready();
     let selectedRecord = await this.AppStateModel.getSelectedRecord();
-    if( selectedRecord ) this._onSelectedRecordUpdate(selectedRecord);
-
-    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
-    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+    if( selectedRecord ) {
+      this._onSelectedRecordUpdate(selectedRecord);
+      let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+      if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+    }
   }
 
   /**

@@ -1,11 +1,10 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
-import CollectionInterface from '../../interfaces/CollectionInterface'
 import {markdown} from "markdown"
 
 import template from "./app-collection-info-panel.html"
 
 class AppCollectionInfoPanel extends Mixin(PolymerElement)
-      .with(EventInterface, CollectionInterface) {
+      .with(EventInterface) {
   
   static get template() {
     let tag = document.createElement('template');
@@ -29,6 +28,7 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+    this._injectModel('AppStateModel');
   }
 
   /**

@@ -53,6 +53,7 @@ export default class AppRangeFilter extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+    this._injectModel('AppStateModel');
   }
 
   connectedCallback() {

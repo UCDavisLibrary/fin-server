@@ -67,11 +67,43 @@ export default class AppRecord extends Mixin(PolymerElement)
 
   async ready() {
     super.ready();
-    let selectedRecord = await this.AppStateModel.getSelectedRecord();
-    if( selectedRecord ) this._onSelectedRecordUpdate(selectedRecord);
 
-    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
-    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+    let selectedRecord = await this.AppStateModel.getSelectedRecord();
+    if( selectedRecord ) {
+      this._onSelectedRecordUpdate(selectedRecord);
+      let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+      if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+    }
+  }
+
+  /**
+   * @method _onRecordUpdate
+   * @description from RecordModel, listen for loading events and reset UI.
+   * 
+   * @param {Object} e state event 
+   */
+  _onRecordUpdate(e) {
+    if( e.state !== 'loading' ) return;
+
+    this.renderedRecordId = null;
+    this.record = null;
+    this.$.description.style.display = 'none';
+    this.description = '';
+    this.alternativeHeadline = '';
+    this.$.link.value = '';
+    this.date = '';
+    this.collectionName = '';
+    this.rights = null;
+    this.$.collectionValue.innerHTML = '';
+    this.$.mla.text = '';
+    this.$.apa.text = '';
+    this.$.chicago.text = '';
+    this.$.identifier.style.display = 'none';
+    this.$.creator.style.display = 'none';
+    this.$.subject.style.display = 'none';
+    this.$.publisher.style.display = 'none';
+    this.$.fedoraValue.innerHTML = '';
+    this.metadata = [];
   }
 
   /**
@@ -138,7 +170,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this._renderFcLink(record);
 
     this._updateMetadataRows();
-    this._setTarHref();
+    // this._setTarHref();
 
     // render citations.. this might need to load library, do it last
     this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
@@ -180,20 +212,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     } else {
       this._setSelectedRecordMedia(this.record);
     }
-  }
-
-  _setTarHref() {
-    let urls = {};
-
-    if ((this.record instanceof Array) === false) return;
-
-    this._getImageMediaList(this.record).forEach(item => {
-      urls[item.filename || item.name] = this._getImgUrl(item['@id']).replace(config.fcrepoBasePath, '');
-    });
-
-    this.tarName = this.record.name.replace(/[^a-zA-Z0-9]/g, '');
-    this.$.tarPaths.value = JSON.stringify(urls);
-    this.tarUrl = TarService.create(encodeURI(this.record.name.replace(/[^a-zA-Z0-9]/g, '')), urls);
   }
 
   /**

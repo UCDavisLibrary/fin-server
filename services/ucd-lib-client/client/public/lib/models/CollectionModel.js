@@ -3,6 +3,7 @@ const CollectionStore = require('../stores/CollectionStore');
 const CollectionService = require('../services/CollectionService');
 // it's ok to import other stores & services, just not models
 const RecordStore = require('../stores/RecordStore');
+const AppStateModel = require('./AppStateModel');
 
 class CollectionModel extends BaseModel {
   
@@ -92,7 +93,8 @@ class CollectionModel extends BaseModel {
         this.emit('show-collection-search-results', false);
       }
 
-      this.store.setSelectedCollection(selected);
+      // this.store.setSelectedCollection(selected);
+      AppStateModel.setSelectedCollection(selected);
     }
 }
 

@@ -30,7 +30,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
       super();
       this.render = render.bind(this);
       this._injectModel('AppStateModel');
-      this._injectModel('MediaModel');
+      this._injectModel('RecordModel');
       this.mediaType = 'image';
     }
 
@@ -40,6 +40,17 @@ export default class AppMediaViewer extends Mixin(LitElement)
 
       let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
       if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+    }
+
+    /**
+     * @method _onRecordUpdate
+     * @description from RecordModel, listen for loading events and reset UI.
+     * 
+     * @param {Object} e state event 
+     */
+    _onRecordUpdate(e) {
+      if( e.state !== 'loading' ) return;
+      this.mediaType = '';
     }
 
     async _onSelectedRecordMediaUpdate(record) {
