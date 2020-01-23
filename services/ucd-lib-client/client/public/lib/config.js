@@ -40,7 +40,9 @@ module.exports = {
         ratio : 0.25
       }
     ],
-    formats : ['png', 'jpg', 'webp']
+    // pulling webp option due to loris issues
+    // formats : ['png', 'jpg', 'webp']
+    formats : ['png', 'jpg']
   },
 
   // facets to show on left side
