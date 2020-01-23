@@ -165,7 +165,7 @@
 </style>
 
 <div class="header">
-  <div class="total">[[total]] results found</div>
+  <div class="total" hidden$="[[showLoading]]">[[total]] results found</div>
   
   <div class="filler"></div>
   
@@ -207,7 +207,7 @@
   </div>
 
   <div class="row2">
-    <div class="total">[[total]] results</div>
+    <div class="total" hidden$="[[showLoading]]">[[total]] results</div>
 
     <div class="filler"></div>
     
@@ -276,7 +276,7 @@
   <paper-spinner-lite active$="[[showLoading]]"></paper-spinner-lite>
 </div>
 
-<div style="text-align:center">
+<div style="text-align:center" hidden$="[[showLoading]]">
   <cork-pagination 
     total-results="[[paginationTotal]]" 
     items-per-page="[[numPerPage]]"
