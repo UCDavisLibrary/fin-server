@@ -2,8 +2,6 @@
 
 import { html } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
-import plyrCss from "plyr/dist/plyr.css"
-import shakaCss from "shaka-player/dist/controls.css"
 
 export default function render() { 
 return html`
@@ -42,14 +40,12 @@ return html`
 
         button.plyr__control.plyr__control--overlaid,
         button.plyr__control.plyr__control:hover {
-            background: rgba(218,170,0,1.0);
+            background: rgba(218,170,0,1.0) !important;
         }
-        ${plyrCss}
-        ${shakaCss}
     </style>
     
     <div class="container">
-        <div id="sprite-plyr" style="display: none;"></div>
+        <div id="sprite-plyr" style="display: none;"></div> 
         <video ?hidden="${!this.libsLoaded}" id="video" playsinline controls crossorigin>
             ${repeat(this.tracks, (t) => 
                 html`<track kind="${t.kind}" label="${t.label}" src="${t.src}" srclang="${t.srclang}" default="${t.default}" />`)}

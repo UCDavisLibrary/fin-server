@@ -11,8 +11,13 @@ import config from "../../../../lib/config"
 import utils from "../../../../lib/utils"
 import videoLibs from "../../../../lib/utils/video-lib-loader"
 
+import plyrCss from "plyr/dist/plyr.css"
+import shakaCss from "shaka-player/dist/controls.css"
+let VIDEO_STYLES = plyrCss+shakaCss;
+
 import spriteSheet from "plyr/dist/plyr.svg"
 let SPRITE_SHEET = spriteSheet
+
 
 export default class AppVideoViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
@@ -58,6 +63,19 @@ export default class AppVideoViewer extends Mixin(LitElement)
       SPRITE_SHEET = atob(SPRITE_SHEET.replace('data:image/svg+xml;base64,', ''));
     }
     this.shadowRoot.querySelector('#sprite-plyr').innerHTML = SPRITE_SHEET;
+  
+    // decide where to put css
+    // The PLYR library isn't aware of shadydom so we need to manually
+    // place our styles in document.head w/o shadydom touching them.
+    let plyrStyles = document.createElement('style');
+    plyrStyles.innerHTML = VIDEO_STYLES;
+    if( window.ShadyDOM && window.ShadyDOM.inUse ) {
+      document.head.appendChild(plyrStyles);
+      this.hideControls = false;
+    } else {
+      this.shadowRoot.appendChild(plyrStyles);
+      this.hideControls = true;
+    }
   }
 
   /**
@@ -111,7 +129,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
     let videoEle = this.shadowRoot.getElementById('video');
 
 
-    this.plyr = new plyr(videoEle, {debug: false});
+    this.plyr = new plyr(videoEle, {hideControls: this.hideControls});
 
     // Construct a Player to wrap around the <video> tag.
     this.shaka = new shaka.Player(videoEle);
