@@ -44,6 +44,7 @@ module.exports = (app) => {
       }
 
       return {
+        collections : await collections.all(),
         user : user,
         appRoutes : config.server.appRoutes,
         recordCount: (await records.rootCount()).count

@@ -90,10 +90,10 @@ export class AppSearch extends Mixin(PolymerElement)
       ])),'', '10']);
       this._searchRecords(query, false);
       return;
-     } else if( searchUrlParts[0] === 'search' && searchUrlParts.length > 1 ) {
+    } else if( searchUrlParts[0] === 'search' && searchUrlParts.length > 1 ) {
       query = this._urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
     } else {
-      query = this._getCurrentSearchDocument();
+      query = this.RecordModel.emptySearchDocument();
     }
     
     this._searchRecords(query);

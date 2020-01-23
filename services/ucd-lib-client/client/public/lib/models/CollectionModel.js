@@ -19,6 +19,11 @@ class CollectionModel extends BaseModel {
         this._onSearchDocumentUpdate.bind(this)
       );
 
+      // if we pre-loaded collections, set them
+      if( APP_CONFIG.collections ) {
+        this.store.setCollectionOverviewLoaded(APP_CONFIG.collections);
+      }
+
       this.register('CollectionModel');
     }
 

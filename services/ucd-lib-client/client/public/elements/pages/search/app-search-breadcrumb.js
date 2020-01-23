@@ -35,12 +35,14 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
     this.active = true;
   }
 
-  ready() {
+  async ready() {
     super.ready();
     this.$.layout.style.width = (window.innerWidth-55)+'px';
     window.addEventListener('resize', () => {
       this.$.layout.style.width = (window.innerWidth-55)+'px';
     });
+
+    this._onAppStateUpdate(await this.AppStateModel.get());
   }
 
   /**
@@ -49,10 +51,10 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * as the current collection
    */
   async _onAppStateUpdate(e) {
-    if( e.location.page === 'search' ) {
-      this.lastSearch = e.location.pathname;
-      this.record = null;
-      return;
+    if( e.lastLocation && e.lastLocation.page === 'search' ) {
+      this.lastSearch = e.lastLocation.pathname;
+    } else {
+      this.lastSearch = null;
     }
 
     if( e.location.page !== 'record' ) return;
@@ -72,10 +74,10 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * @method _onSearchClicked
    * @description bound to search anchor tag click event.  nav to search
    */
-  _onSearchClicked(e) {
-    if( e.type === 'keyup' && e.which !== 13 ) return;
-    this._setWindowLocation(this.lastSearch || '/search');
-  }
+  // _onSearchClicked(e) {
+  //   if( e.type === 'keyup' && e.which !== 13 ) return;
+  //   this._setWindowLocation(this.lastSearch || '/search');
+  // }
 
   /**
    * @method _onCollectionClicked
@@ -83,7 +85,7 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    */
   _onCollectionClicked(e) {
     if( e.type === 'keyup' && e.which !== 13 ) return;
-    this._setWindowLocation(this.collection['@id']);
+    this._setWindowLocation(this.lastSearch || (this.collection ? this.collection['@id'] : '/search'));
   }
 
   /**

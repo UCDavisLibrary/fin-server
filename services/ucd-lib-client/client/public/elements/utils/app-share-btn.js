@@ -6,7 +6,6 @@ import MediaInterface from "../interfaces/MediaInterface"
 
 const BASE_SHARE_LINKS = {
   facebook : 'https://www.facebook.com/sharer/sharer.php',
-  google : 'https://plus.google.com/share',
   twitter : 'https://twitter.com/home',
   // pinterest can also add ?media and ?description
   pinterest : 'https://pinterest.com/pin/create/button/'
@@ -118,8 +117,6 @@ export default class AppShareBtn extends Mixin(PolymerElement)
       qso.url = window.location.href;
     } else if ( id === 'facebook' ) {
       qso.u = window.location.href;
-    } else if ( id === 'google' ) {
-      qso.url = window.location.href;
     } else if( id === 'twitter' ) {
       qso.status = this.record.name+' - '+window.location.href;
     } else {
