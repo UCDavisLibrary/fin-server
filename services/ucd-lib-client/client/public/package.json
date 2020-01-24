@@ -1,6 +1,6 @@
 {
   "name": "fin-search-ui",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "flat": true,
   "main": "index.js",
   "license": "MIT",
