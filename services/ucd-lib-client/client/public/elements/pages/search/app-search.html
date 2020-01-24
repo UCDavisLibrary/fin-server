@@ -20,25 +20,6 @@
     width: 475px;
   }
 
-  #drawer app-filters-panel {
-    width: 300px;
-  }
-  #drawer app-filters-panel[wide] {
-    width: 300px;
-  }
-  
-  #drawer {
-    position: absolute;
-    top: 0;
-    left: -335px;
-    bottom: 0;
-    background: white;
-    width: 300px;
-    z-index: 10;
-    transition: left 300ms ease-out;
-    background-color: var(--light-background-color);
-  }
-
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -46,27 +27,6 @@
     to {
       opacity: .7;
     }
-  }
-
-  #drawer-background {
-    opacity: .7;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: black;
-    z-index: 5;
-    display: none;
-    animation: fadeIn 300ms;
-  }
-
-  #drawer[open] {
-    left: 0;
-  }
-
-  #drawer-background[open] {
-    display: block;
   }
 
   #desktop-filter-panel {
@@ -80,9 +40,6 @@
   }
 
   @media( min-width: 975px ) {
-    #outerDrawer {
-      display: none;
-    }
     #desktop-filter-panel {
       display: block;
     }
@@ -92,26 +49,14 @@
   }
 </style>
 
-<app-search-header></app-search-header>
-<app-search-breadcrumb></app-search-breadcrumb>
-
-<div style="position: relative">
-  <div id="outerDrawer">
-    <div id="drawer" open$="[[drawerOpen]]">
-      <app-filters-panel on-toggle-drawer="_toggleDrawer"></app-filters-panel>
-    </div>
-    <div id="drawer-background" open$="[[drawerOpen]]" on-click="_toggleDrawer"></div>
-  </div>
-
-  <div class="search-container">
-    <app-filters-panel id="desktop-filter-panel" wide$="[[wideFiltersPanel]]" on-selected-tab-changed="_onFiltersTabUpdate"></app-filters-panel>
-    <div class="search-content">
-      <app-search-results-panel 
-        id="resultsPanel" 
-        on-toggle-drawer="_toggleDrawer" 
-        on-page-size-change="_onPageSizeChange"
-        on-page-change="_onPaginationChange">
-      </app-search-results-panel>
-    </div>
+<div class="search-container">
+  <app-filters-panel id="desktop-filter-panel" wide$="[[wideFiltersPanel]]" on-selected-tab-changed="_onFiltersTabUpdate"></app-filters-panel>
+  <div class="search-content">
+    <app-search-results-panel 
+      id="resultsPanel" 
+      on-toggle-drawer="_toggleDrawer" 
+      on-page-size-change="_onPageSizeChange"
+      on-page-change="_onPaginationChange">
+    </app-search-results-panel>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<style>
+<style include="shared-styles">
   :host {
     display: block;
     background: var(--default-primary-color);
@@ -13,6 +13,19 @@
     justify-content: center; 
     align-items: center;
     background-color: white;
+  }
+
+  .footer {
+    display: flex; 
+    justify-content: center;
+  }
+
+  .mobile-filters-layout {
+    display: flex;
+  }
+
+  .main-content {
+    flex: 1;
   }
 
   .loading-dots {
@@ -41,23 +54,85 @@
     60% { opacity: 1; }
     100% { opacity: 0; }
   }
+
+  #drawer-background {
+    opacity: .7;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    background: black;
+    z-index: 5;
+    display: none;
+    animation: fadeIn 300ms;
+  }
+
+  #drawer {
+    position: absolute;
+    top: 0;
+    left: -335px;
+    bottom: 0;
+    background: white;
+    width: 300px;
+    z-index: 10;
+    transition: left 300ms ease-out;
+    background-color: var(--light-background-color);
+  }
+
+  #drawer[open] {
+    left: 0;
+  }
+
+  #outerDrawer {
+    position: relative;
+  }
+
+  #drawer-background[open] {
+    display: block;
+  }
+
+  #drawer app-filters-panel {
+    width: 300px;
+  }
+
+  @media( min-width: 975px ) {
+    #outerDrawer {
+      display: none;
+    }
+  }
 </style>
 
 <app-route app-routes="[[appRoutes]]"></app-route>
 
-<iron-pages selected="[[page]]" attr-for-selected="id" selected-attribute="visible">
-  <div id="loading">
-    <img src="/images/logos/logo-icon.svg" style="max-width: 128px" />
-    <div class="loading-dots">
-      <h1 class="dot one">.</h1><h1 class="dot two">.</h1><h1 class="dot three">.</h1>
+<app-search-header hidden$="[[!showSearchHeader]]"></app-search-header>
+<app-search-breadcrumb hidden$="[[!showBreadcrumb]]"></app-search-breadcrumb>
+
+<div class="mobile-filters-layout">
+  <div id="outerDrawer">
+    <div id="drawer" open$="[[drawerOpen]]">
+      <app-filters-panel on-toggle-drawer="_toggleDrawer"></app-filters-panel>
+    </div>
+    <div id="drawer-background" open$="[[drawerOpen]]" on-click="_toggleDrawer"></div>
+  </div>
+
+  <div class="main-content">
+    <iron-pages selected="[[page]]" attr-for-selected="id" selected-attribute="visible">
+      <div id="loading">
+        <img src="/images/logos/logo-icon.svg" style="max-width: 128px" />
+        <div class="loading-dots">
+          <h1 class="dot one">.</h1><h1 class="dot two">.</h1><h1 class="dot three">.</h1>
+        </div>
+      </div>
+      <app-home id="home"></app-home>
+      <app-search id="search"></app-search>
+      <app-record id="record"></app-record>
+      <app-about id="about"></app-about>
+    </iron-pages>
+    
+    <div class="footer">
+      <app-footer></app-footer>
     </div>
   </div>
-  <app-home id="home"></app-home>
-  <app-search id="search"></app-search>
-  <app-record id="record"></app-record>
-  <app-about id="about"></app-about>
-</iron-pages>
-
-<div style="display:flex; justify-content:center">
-  <app-footer></app-footer>
 </div>
+

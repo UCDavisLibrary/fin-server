@@ -10,8 +10,6 @@ import "./app-media-download"
 import "./app-record-metadata-layout"
 import "./app-copy-cite"
 import "./viewer/app-media-viewer"
-import "../search/app-search-header"
-import "../search/app-search-breadcrumb"
 
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"

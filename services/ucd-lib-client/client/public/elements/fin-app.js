@@ -19,10 +19,8 @@ import "./styles/shared-styles"
 import '../lib'
 
 // app elements
-// import "./pages/home/app-home"
-// import "./pages/search/app-search"
-// import "./pages/record/app-record"
-// import "./pages/about/app-about"
+import "./pages/search/app-search-header"
+import "./pages/search/app-search-breadcrumb"
 import "./app-footer"
 import "./utils/app-header-colorbar"
 
@@ -50,6 +48,18 @@ export class FinApp extends Mixin(PolymerElement)
       appRoutes : {
         type : Array,
         value : () => APP_CONFIG.appRoutes
+      },
+      showSearchHeader : {
+        type : Boolean,
+        value : false
+      },
+      showBreadcrumb : {
+        type : Boolean,
+        value : false
+      },
+      drawerOpen : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -57,6 +67,9 @@ export class FinApp extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+
+    this.SEARCH_HEADER_PAGES = ['about', 'record', 'search'];
+    this.BREADCRUMB_PAGES = ['record', 'search']
 
     this.loadedPages = {};
   }
@@ -76,7 +89,12 @@ export class FinApp extends Mixin(PolymerElement)
    * @description AppStateInterface
    */
   async _onAppStateUpdate(e) {
+    this.drawerOpen = e.filtersDrawerOpen ? true : false;
+
     if( e.location.page === this.page ) return;
+
+    this.showBreadcrumb = this.BREADCRUMB_PAGES.includes(e.location.page);
+    this.showSearchHeader = this.SEARCH_HEADER_PAGES.includes(e.location.page);
 
     this.appState = e;
     window.scrollTo(0, 0);
@@ -108,6 +126,16 @@ export class FinApp extends Mixin(PolymerElement)
       return import(/* webpackChunkName: "page-about" */ "./pages/about/app-about")
     }
   }
+
+  /**
+   * @method _toggleDrawer
+   * @description toggles the drawer state.  Listens to 
+   * toggle-drawer event from app-search-results-panel
+   */
+  _toggleDrawer() {
+    this.AppStateModel.set({filtersDrawerOpen: !this.drawerOpen});
+  }
+
 
   /**
    * @method _onRecordSearchUpdate
