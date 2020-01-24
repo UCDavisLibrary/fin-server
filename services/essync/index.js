@@ -71,6 +71,8 @@ class EsSyncMessageServer extends MessageServer {
 
     // either doesn't exist or we don't have access
     if( !container ) {
+      logger.info('Container '+path+' either doesn\'t exist in LDP or is not publicly accessible.  Removing from index');
+
       // remove from elastic search
       return indexer.remove(path);
     }
@@ -85,6 +87,7 @@ class EsSyncMessageServer extends MessageServer {
     // we only want collection and record types
     if( !indexer.isCollection(type) && 
         !indexer.isRecord(type) ) {
+      logger.info('Ignoring container '+path+'.  Not of type record or collection');
       return;
     }
 

@@ -19,6 +19,7 @@ class ImplAppStateStore extends AppStateStore {
   }
 
   setSelectedRecord(record) {
+    if( this.data.selectedRecord === record ) return;
     this.set({selectedRecord: record});
     this.emit(this.events.SELECTED_RECORD_UPDATE, record);
   }
@@ -28,6 +29,7 @@ class ImplAppStateStore extends AppStateStore {
   }
 
   setSelectedRecordMedia(record) {
+    if( this.data.selectedRecordMedia === record ) return;
     this.set({selectedRecordMedia: record});
     this.emit(this.events.SELECTED_RECORD_MEDIA_UPDATE, record);
   }
@@ -37,6 +39,7 @@ class ImplAppStateStore extends AppStateStore {
   }
 
   setSelectedCollection(collection) {
+    if( this.data.selectedCollection === collection ) return;
     this.set({selectedCollection: collection});
     this.emit(this.events.SELECTED_COLLECTION_UPDATE, collection);
   }
