@@ -8,7 +8,7 @@ return html`
     <style>
         :host {
             display: block;
-            padding-bottom: 8px;
+            /* padding-bottom: 8px; */
             background: black;
             box-sizing: border-box;
         }
@@ -21,7 +21,7 @@ return html`
         */
 
         .container {
-            padding-top: 20px;
+            padding: 10px;
         }
 
         video {
@@ -42,6 +42,14 @@ return html`
         button.plyr__control.plyr__control:hover {
             background: rgba(218,170,0,1.0) !important;
         }
+
+        paper-spinner-lite {
+            --paper-spinner-color: var(--default-secondary-color);
+        }
+
+        #loading {
+            text-align: center;
+        }
     </style>
     
     <div class="container">
@@ -50,8 +58,8 @@ return html`
             ${repeat(this.tracks, (t) => 
                 html`<track kind="${t.kind}" label="${t.label}" src="${t.src}" srclang="${t.srclang}" default="${t.default}" />`)}
         </video>
-        <div id="loading" ?hidden="${!this.libsLoaded}">
-            <paper-spinner-lite active$="[[loading]]"></paper-spinner-lite>
+        <div id="loading" ?hidden="${this.libsLoaded}">
+            <paper-spinner-lite ?active="${!this.libsLoaded}"></paper-spinner-lite>
         </div>
     </div>
 `

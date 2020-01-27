@@ -24,12 +24,8 @@ export default class AppVideoViewer extends Mixin(LitElement)
   
   static get properties() {
     return {
-      player: {
-        type: Object
-      },
-      tracks: {
-        type: Array
-      },
+      player: {type: Object},
+      tracks: {type: Array},
       libsLoaded : {type: Boolean}
     }
   }

@@ -73,10 +73,6 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.AppStateModel.set({showLightbox: true});
       this.$.lightbox.show();
     }
-
-    _onControlLayoutChange(e) {
-      this.tallControls = e.detail.value;
-    }
   }
 
   customElements.define('app-media-viewer', AppMediaViewer);

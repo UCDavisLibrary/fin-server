@@ -107,7 +107,7 @@ module.exports = (app) => {
     
           return {
             jsonld, bundle,
-            title : record.name + ' - '+ config.server.title,
+            title : record.title + ' - '+ config.server.title,
             description : record.description || '',
             keywords : keywords.join(', ')
           }

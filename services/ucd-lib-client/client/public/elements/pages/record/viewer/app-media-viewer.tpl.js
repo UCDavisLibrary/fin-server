@@ -5,29 +5,25 @@ export default function render() {
     <style>
       :host {
         display: block;
+        position: relative;
         box-sizing: border-box;
         background: black;
-        min-height: 250px;
       }
 
       .wrapper {
-        position: relative;
-        min-height: 250px;
-        padding-bottom: 62px;
-      }
-      .wrapper[tall-controls] {
-        padding-bottom: 102px;
+        display: flex;
+        flex-direction: column;
+        min-height:250px;
       }
 
-      app-media-viewer-nav {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
+      iron-pages {
+        flex: 1;
       }
     </style>
-    <div class="wrapper" ?tall-controls="${this.tallControls}">
+
+    <div class="wrapper">
       <app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
+
       <iron-pages selected="${this.mediaType}" attr-for-selected="id" selected-attribute="visible">
         <!-- <app-360-image-viewer id="360"></app-360-image-viewer> -->
         <app-image-viewer id="image"></app-image-viewer>
@@ -35,10 +31,7 @@ export default function render() {
         <app-audio-viewer id="audio"></app-audio-viewer>
       </iron-pages>
 
-      <app-media-viewer-nav 
-        @zoom-in="${this._onZoomIn}" 
-        @break-controls-changed="${this._onControlLayoutChange}">
-      </app-media-viewer-nav>
+      <app-media-viewer-nav @zoom-in="${this._onZoomIn}"></app-media-viewer-nav>
     </div>
   `
 }

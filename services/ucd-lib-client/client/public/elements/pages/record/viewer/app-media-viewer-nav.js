@@ -4,6 +4,7 @@ import template from "./app-media-viewer-nav.html"
 import AppStateInterface from "../../../interfaces/AppStateInterface"
 import MediaInterface from "../../../interfaces/MediaInterface"
 
+import "@polymer/paper-icon-button"
 import "../../../utils/app-share-btn"
 import utils from "../../../../lib/utils"
 
@@ -49,7 +50,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         reflect: true,
         notify : true
       },
-      /*
       showNavLeft : {
         type : Boolean,
         value : false
@@ -58,14 +58,20 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         type : Boolean,
         value : false
       },
-      */
+      // if both flags
+      hideNaveButtons : {
+        type : Boolean,
+        value : false,
+        computed : '_computeHideNavButtons(showNavLeft, showNavRight)'
+      },
       isLightbox : {
         type : Boolean,
         value : false
       },
       singleImage : {
         type : Boolean,
-        value : false
+        value : false,
+        reflectToAttribute: true
       },
       mediaList : {
         type : Array,
@@ -102,6 +108,10 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
       if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
     }
+  }
+
+  _computeHideNavButtons() {
+    return (!this.showNavLeft && !this.showNavRight);
   }
 
   /**
@@ -155,7 +165,8 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    * 
    */
   _resize() {
-    let w = this.offsetWidth;
+    // let w = this.offsetWidth;
+    let w = window.innerWidth;
     
     // grrrr
     if( w === 0 ) {
@@ -176,11 +187,12 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       if( this.isLightbox ) iconsWidth += this.iconWidth * 2;
     }
 
-    //let availableThumbSpace = Math.min(w - iconsWidth, 512);
-    //this.thumbnailsPerFrame = Math.max(Math.floor(availableThumbSpace / this.totalThumbnailWidth), 1);
-   
-    //this.showNavLeft = (this.leftMostThumbnail !== 0);
-    //this.showNavRight = !this._showingLastThumbFrame();
+    let availableThumbSpace = Math.min(w - iconsWidth, 512);
+    this.thumbnailsPerFrame = Math.max(Math.floor(availableThumbSpace / this.totalThumbnailWidth), 1);
+    this.$.thumbnails.style.width = (this.thumbnailsPerFrame*this.totalThumbnailWidth)+'px';
+
+    this.showNavLeft = (this.leftMostThumbnail !== 0);
+    this.showNavRight = !this._showingLastThumbFrame();
 
     this._updateThumbnailContainerPos();
   }
@@ -238,29 +250,8 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
-    // this.zoomButton1 = this.shadowRoot.getElementById('zoomIn1');
-    // this.zoomButton3 = this.shadowRoot.getElementById('zoomIn3');
-
-    // if (!record.media.imageList) {
-    //   
-    // }
-
-    // If only a single video item, display compacted nav bar
-    // Otherwise display full bar.
-    // if (record.media.video) {
-    //   this.zoomButton1.style.display = 'none';
-    //   this.zoomButton3.style.display = 'none';
-    //   this.classList.add('video');
-    // } else {
-    //   this.zoomButton1.style.display = 'inline-block';
-    //   this.zoomButton3.style.display = 'inline-block';
-    //   this.classList.remove('video');
-    // }
-
-
     if (utils.countMediaItems(record.media) === 1) {
       this.singleImage = true;
-      this.classList.add('single');
       return;
     }
 
@@ -293,8 +284,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
 
     this.singleImage = (this.thumbnails.length !== 0 && this.thumbnails.length > 1) ? false : true;
     this._resize();
-
-    this.classList.remove('single');
   }
 
   /**
@@ -310,6 +299,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     });
 
     let {fileType, iconType} = this._getFileAndIconType(media);
+    
     this.showOpenLightbox = (fileType === 'image') ? true : false;
   }
 

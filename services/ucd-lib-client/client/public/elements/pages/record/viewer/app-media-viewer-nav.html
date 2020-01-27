@@ -4,13 +4,13 @@
     background-color: var(--default-primary-color);
   }
 
-  :host(.single) {
+  :host([single-image]) {
     background-color: transparent;
     padding: 8px;
   }
 
-  :host(.single) paper-icon-button,
-  :host(.single) app-share-btn,
+  :host([single-image]) paper-icon-button,
+  :host([single-image]) app-share-btn,
   :host app-share-btn,
   :host paper-icon-button {
     background-color: var(--default-primary-color);
@@ -26,15 +26,15 @@
     padding-top: 7px;
   }
 
-  /* 
+ 
   #thumbnails {
-    (50px width + 10px margin + 4px border) * 8 thumbnails
+    /* (50px width + 10px margin + 4px border) * 8 thumbnails */
     max-width: 512px;
   }
-  */
+
 
   #thumbnails {
-    overflow-y: auto;
+    overflow: hidden;
   }
 
   #thumbnails > div {
@@ -90,6 +90,10 @@
     min-width: 40px;
   }
 
+  paper-icon-button[invisible] {
+    visibility: hidden;
+  }
+
   app-share-btn[pad] {
     margin-right: 30px;
   }
@@ -97,12 +101,18 @@
 
 
 <div class="layout">
-  <!-- TODO: Remove
+
   <div id="navLeft" hidden$="[[singleImage]]">
-    <paper-icon-button noink tabindex="0" icon="chevron-left" disabled$="[[!showNavLeft]]" on-click="_pageLeft"></paper-icon-button>
+    <paper-icon-button noink 
+      tabindex="0" 
+      icon="chevron-left" 
+      alt="Page thumbnails left"
+      disabled$="[[!showNavLeft]]"
+      invisible$="[[hideNaveButtons]]"
+      on-click="_pageLeft">
+    </paper-icon-button>
   </div>
-  -->
-  
+
   <div id="thumbnails" hidden$="[[singleImage]]">
     <div id="thumbnailInnerContainer">
       <template is="dom-repeat" items="[[thumbnails]]">
@@ -121,11 +131,16 @@
     </div>
   </div>
 
-  <!-- TODO: Remove
   <div id="navRight" hidden$="[[singleImage]]">
-    <paper-icon-button noink tabindex="0"  icon="chevron-right" disabled$="[[!showNavRight]]" on-click="_pageRight"></paper-icon-button>
+    <paper-icon-button noink 
+      tabindex="0" 
+      icon="chevron-right" 
+      alt="Page thumbnails right"
+      invisible$="[[hideNaveButtons]]"
+      disabled$="[[!showNavRight]]"
+      on-click="_pageRight">
+    </paper-icon-button>
   </div>
-  -->
 
   <div style="flex:1"></div>
   
@@ -136,7 +151,7 @@
     <app-share-btn id="shareBtn" role="button" pad$="[[!showOpenLightbox]]"></app-share-btn>
 
     <span hidden$="[[!showOpenLightbox]]">
-      <paper-icon-button id="zoomIn1" noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+      <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
       <paper-icon-button noink icon="fin-icons:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
     </span>
   </div>
@@ -144,10 +159,12 @@
 
 <div hidden$="[[!breakControls]]" style="text-align: right">
   <paper-icon-button id="zoomOut2" noink tabindex="0" icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
-  <paper-icon-button id="zoomIn2" noink icon="zoom-in" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+  <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
   
   <app-share-btn></app-share-btn>
   
-  <paper-icon-button id="zoomIn3" noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
-  <paper-icon-button id="zoomOut3" noink icon="fin-icons:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
+  <span hidden$="[[!showOpenLightbox]]">
+    <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+    <paper-icon-button noink icon="fin-icons:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
+  </span>
 </div>
