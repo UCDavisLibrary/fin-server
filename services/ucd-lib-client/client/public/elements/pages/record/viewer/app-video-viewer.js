@@ -125,7 +125,11 @@ export default class AppVideoViewer extends Mixin(LitElement)
     let videoEle = this.shadowRoot.getElementById('video');
 
 
-    this.plyr = new plyr(videoEle, {hideControls: this.hideControls});
+    this.plyr = new plyr(videoEle, {
+      hideControls: this.hideControls,
+      fullscreen : {enabled: false},
+      controls : ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings']
+    });
 
     // Construct a Player to wrap around the <video> tag.
     this.shaka = new shaka.Player(videoEle);
