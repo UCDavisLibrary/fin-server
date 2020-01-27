@@ -44,6 +44,10 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         type : Boolean,
         value : false
       },
+      fullSetCount : {
+        type : Boolean,
+        value : 0
+      },
       fullSetSelected: {
         type : Boolean,
         value : false
@@ -116,6 +120,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     }
 
     this.selectedMediaHasSources = true;
+    this.fullSetCount = sources.length;
 
     this.allSources = sources;
     this.downloadOptions = sources;
