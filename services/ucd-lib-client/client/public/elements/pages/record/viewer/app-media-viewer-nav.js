@@ -250,6 +250,8 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   _onSelectedRecordUpdate(record) {
+    this.leftMostThumbnail = 0;
+
     if (utils.countMediaItems(record.media) === 1) {
       this.singleImage = true;
       return;
