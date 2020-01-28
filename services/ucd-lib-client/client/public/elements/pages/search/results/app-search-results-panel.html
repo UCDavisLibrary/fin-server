@@ -3,6 +3,7 @@
     display: block;
     max-width: 1150px;
     position: relative;
+    margin: 0 5px
   }
 
   .header {
@@ -242,13 +243,15 @@
 <div class="collections" hidden$="[[!showCollectionResults]]">
   <div hidden$="[[!collectionResults.length]]">
     <h3>Collections</h3>
-    <template is="dom-repeat" items="[[collectionResults]]">
-      <app-collection-card 
-        collection="[[item]]" 
-        on-keyup="_onCollectionClicked"
-        on-click="_onCollectionClicked">
-      </app-collection-card>
-    </template>
+    <div style="text-align:center">
+      <template is="dom-repeat" items="[[collectionResults]]">
+        <app-collection-card 
+          collection="[[item]]" 
+          on-keyup="_onCollectionClicked"
+          on-click="_onCollectionClicked">
+        </app-collection-card>
+      </template>
+    </div>
     <h3 hidden$="[[!results.length]]">Items</h3>
   </div>
 </div>

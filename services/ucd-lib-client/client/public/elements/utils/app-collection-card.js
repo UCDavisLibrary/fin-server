@@ -13,7 +13,8 @@ export default class AppCollectionCard extends PolymerElement {
     return {
       collection : {
         type : Object,
-        value : () => ({})
+        value : () => ({}),
+        observer : '_onCollectionChange'
       },
       tabindex : {
         type : Number,
@@ -25,11 +26,20 @@ export default class AppCollectionCard extends PolymerElement {
 
   constructor() {
     super();
+    this.shownInViewport = false;
     this.active = true;
   }
 
   ready() {
     super.ready();
+
+    this.observer = new IntersectionObserver(
+      e => this._onViewportIntersection(e), 
+      {
+        rootMargin: '10px', 
+        threshold: 0
+      }
+    );
   }
 
   connectedCallback() {    
@@ -37,7 +47,34 @@ export default class AppCollectionCard extends PolymerElement {
     if ( this.collection.thumbnailUrl === '/images/logos/logo-white-512.png' ) {
       let cards = this.shadowRoot.querySelectorAll('.img')[0];
       cards.className += ' defaultImage';
-    }    
+    }
+
+    this.imageLoaded = false;
+    this.observer.observe(this);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.observer.disconnect();
+  }
+
+  _onCollectionChange() {
+    if( !this.shownInViewport ) return;
+    this._setBackgroundImage();
+  }
+
+  _onViewportIntersection(e) {
+    if( e.length === 0 ) return;
+    e = e[0];
+    
+    if( this.shownInViewport || !e.isIntersecting ) return;
+    this.shownInViewport = true;
+
+    this._setBackgroundImage();
+  }
+
+  _setBackgroundImage() {
+    this.$.img.style.backgroundImage = `url('${this.collection.thumbnailUrl}')`;
   }
 }
 

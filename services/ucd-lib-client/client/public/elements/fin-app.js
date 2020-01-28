@@ -1,6 +1,9 @@
 import {PolymerElement, html} from "@polymer/polymer"
 
-// import "@polymer/paper-material/paper-material"
+// polyfills
+import "intersection-observer"
+
+// polymer elements
 import "@polymer/paper-button/paper-button"
 import "@polymer/iron-pages/iron-pages"
 import "@polymer/iron-icons/iron-icons"

@@ -1,6 +1,6 @@
 {
   "name": "fin-search-ui",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "flat": true,
   "main": "index.js",
   "license": "MIT",
@@ -34,6 +34,7 @@
     "citeproc": "^2.1.200",
     "clone": "^2.1.1",
     "deep-equal": "^1.0.1",
+    "intersection-observer": "^0.7.0",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.4.1",
     "leaflet": "^1.2.0",
