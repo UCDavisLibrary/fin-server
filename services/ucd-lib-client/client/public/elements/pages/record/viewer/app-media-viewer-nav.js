@@ -157,6 +157,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
   _onTouchStart(e) {
     this.touchAction = true;
     this.touchStartX = e.touches[0].clientX;
+    this.touchCurrentX = e.touches[0].clientX;
   }
 
   /**
