@@ -92,17 +92,15 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @method show
    */
   async show() {
-    this.style.display = 'block';
-    
-    this.render();
-
-    document.body.style.overflow = 'hidden';
-    
     this.visible = true;
-    
-    window.scrollTo(0,0);
-    
+    this.style.display = 'block';
     this.$.safeCover.style.display = 'block';
+
+    document.querySelector('fin-app').style.display = 'none';
+    document.body.style.overflow = 'hidden';
+    window.scrollTo(0,0);
+
+    this.render();
 
     setTimeout(() => {
       this.$.nav._resize();
@@ -114,10 +112,11 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @method hide
    */
   async hide() {
+    this.visible = false;
     this.style.display = 'none';
     this.$.safeCover.style.display = 'none';
     document.body.style.overflow = 'auto';
-    this.visible = false;
+    document.querySelector('fin-app').style.display = 'block';
   }
 
   /**
@@ -129,15 +128,12 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @returns {Promise} resolves when image is loaded and bounds array has been set
    */
    _loadImage(url) {
-    this.loading = true;
-
     return new Promise((resolve, reject) => {
       var img = new Image();
 
       img.onload = () => {
         let res = [img.naturalHeight, img.naturalWidth];
         this.bounds = [[0,0], res];
-        this.loading = false;
         resolve();
       };
 
@@ -161,19 +157,37 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     
     let url = this._getImgUrl(id, '', '');
 
-    if( this.viewer ) this.viewer.remove();
+    // used to check state below
+    this.loadingUrl = url;
+
+    this.loading = true;
+    if( this.imageOverlay ) {
+      this.renderedUrl = '';
+      this.viewer.removeLayer(this.imageOverlay);
+      this.imageOverlay = null;
+    }
+
     await this._loadImage(url);
 
-    this.viewer = L.map(this.$.viewer, {
-      crs: L.CRS.Simple,
-      minZoom: -4,
-      // dragging :  !L.Browser.mobile,
-      // scrollWheelZoom : false,
-      // touchZoom : true,
-      zoomControl : false
-    });
+    // check that we 
+    //  - didn't have a new request that took longer than an old request
+    //  - that we didn't already render this url
+    if( url !== this.loadingUrl ) return;
+    if( url === this.renderedUrl ) return;
 
-    L.imageOverlay(url, this.bounds).addTo(this.viewer);
+    this.renderedUrl = url;
+
+    this.loading = false;
+
+    if( !this.viewer ) {
+      this.viewer = L.map(this.$.viewer, {
+        crs: L.CRS.Simple,
+        minZoom: -4,
+        zoomControl : false
+      });
+    }
+
+    this.imageOverlay = L.imageOverlay(url, this.bounds).addTo(this.viewer);
     this.viewer.fitBounds(this.bounds);
 
     this.shadowRoot.querySelector('.leaflet-control-attribution').style.display = 'none';
