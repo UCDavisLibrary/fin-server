@@ -15,6 +15,15 @@
     background-color: white;
   }
 
+  #loading img {
+    animation: showLoading 400ms ease-in;
+  }
+
+  @keyframes showLoading {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
   .footer {
     display: flex; 
     justify-content: center;

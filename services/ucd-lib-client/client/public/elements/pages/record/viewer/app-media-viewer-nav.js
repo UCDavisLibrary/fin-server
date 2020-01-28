@@ -58,12 +58,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         type : Boolean,
         value : false
       },
-      // if both flags
-      hideNaveButtons : {
-        type : Boolean,
-        value : false,
-        computed : '_computeHideNavButtons(showNavLeft, showNavRight)'
-      },
       isLightbox : {
         type : Boolean,
         value : false
@@ -108,10 +102,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
       if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
     }
-  }
-
-  _computeHideNavButtons() {
-    return (!this.showNavLeft && !this.showNavRight);
   }
 
   /**

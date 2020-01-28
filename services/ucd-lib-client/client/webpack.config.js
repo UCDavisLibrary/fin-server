@@ -1,4 +1,4 @@
-const BUILD_IE = true;
+const BUILD_IE = false;
 
 let configs = require('@ucd-lib/cork-app-build').watch({
   // root directory, all paths below will be relative to root

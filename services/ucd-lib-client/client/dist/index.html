@@ -48,6 +48,13 @@
         align-items: center;
         flex-direction: column;
       }
+      #loading img {
+        animation: showLoading 400ms ease-in;
+      }
+      @keyframes showLoading {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+      }
       .loading-dots {
         text-align: center;
         z-index: 5;

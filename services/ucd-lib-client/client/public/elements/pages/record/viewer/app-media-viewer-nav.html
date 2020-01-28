@@ -108,7 +108,7 @@
       icon="chevron-left" 
       alt="Page thumbnails left"
       disabled$="[[!showNavLeft]]"
-      invisible$="[[hideNaveButtons]]"
+      invisible$="[[!showNavLeft]]"
       on-click="_pageLeft">
     </paper-icon-button>
   </div>
@@ -136,8 +136,8 @@
       tabindex="0" 
       icon="chevron-right" 
       alt="Page thumbnails right"
-      invisible$="[[hideNaveButtons]]"
       disabled$="[[!showNavRight]]"
+      invisible$="[[!showNavRight]]"
       on-click="_pageRight">
     </paper-icon-button>
   </div>
