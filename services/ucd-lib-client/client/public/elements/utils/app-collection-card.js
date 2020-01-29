@@ -1,5 +1,6 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-collection-card.html"
+import ioLoader from "../../lib/utils/intersection-observer-loader"
 
 export default class AppCollectionCard extends PolymerElement {
 
@@ -30,23 +31,22 @@ export default class AppCollectionCard extends PolymerElement {
     this.active = true;
   }
 
-  ready() {
-    super.ready();
-
-    this.observer = new IntersectionObserver(
-      e => this._onViewportIntersection(e), 
-      {
-        rootMargin: '10px', 
-        threshold: 0
-      }
-    );
-  }
-
-  connectedCallback() {    
+  async connectedCallback() {    
     super.connectedCallback();
     if ( this.collection.thumbnailUrl === '/images/logos/logo-white-512.png' ) {
       let cards = this.shadowRoot.querySelectorAll('.img')[0];
       cards.className += ' defaultImage';
+    }
+
+    if( !this.observer ) {
+      await ioLoader.load();
+      this.observer = new IntersectionObserver(
+        e => this._onViewportIntersection(e), 
+        {
+          rootMargin: '10px', 
+          threshold: 0
+        }
+      );
     }
 
     this.imageLoaded = false;
