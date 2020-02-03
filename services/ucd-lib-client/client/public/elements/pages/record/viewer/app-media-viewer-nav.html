@@ -94,7 +94,7 @@
     visibility: hidden;
   }
 
-  app-share-btn[pad] {
+  .zoom-btns[pad] {
     margin-right: 30px;
   }
 </style>
@@ -148,9 +148,9 @@
     <paper-icon-button id="zoomOut1" noink tabindex="0" icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
     <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
     
-    <app-share-btn id="shareBtn" role="button" pad$="[[!showOpenLightbox]]"></app-share-btn>
+    <app-share-btn id="shareBtn" role="button"></app-share-btn>
 
-    <span hidden$="[[!showOpenLightbox]]">
+    <span hidden$="[[!showOpenLightbox]]" class="zoom-btns" pad$="[[!showOpenLightbox]]">
       <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
       <paper-icon-button noink icon="fin-icons:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
     </span>
@@ -163,7 +163,7 @@
   
   <app-share-btn></app-share-btn>
   
-  <span hidden$="[[!showOpenLightbox]]">
+  <span hidden$="[[!showOpenLightbox]]" class="zoom-btns">
     <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
     <paper-icon-button noink icon="fin-icons:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
   </span>
