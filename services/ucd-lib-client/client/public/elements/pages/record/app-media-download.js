@@ -120,7 +120,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     }
 
     this.selectedMediaHasSources = true;
-    this.fullSetCount = sources.length;
+    this.fullSetCount = this._getAllNativeDownloadSources().length;
 
     this.allSources = sources;
     this.downloadOptions = sources;
@@ -155,7 +155,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       this._renderImgFormats(record, null, 'FR');
     } else if (utils.getMediaType(record) === 'ImageList' ) {
       (record.hasPart || []).forEach(img => {
-        sources = sources.concat(this._getImageSources(img));
+        sources = sources.concat(this._getImageSources(img, nativeImageOnly));
       });
     }
 
@@ -364,18 +364,31 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     let urls = {};
     this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
 
-    let sources = [];
-    for( let type in this.rootRecord.media ) {
-      for( let media of this.rootRecord.media[type] ) {
-        sources = sources.concat(this._getDownloadSources(media, true));
-      }
-    }
+    let sources = this._getAllNativeDownloadSources();
 
     for( let source of sources ) {
       urls[source.filename] = source.src;
     }
 
     this.$.tarPaths.value = JSON.stringify(urls);
+  }
+
+  /**
+   * @method _getAllNativeDownloadSources
+   * @description for the current root record, return all media records that are
+   * available for download.  Note, for images, there is only only record per image,
+   * the native format.
+   * 
+   * @return {Array}
+   */
+  _getAllNativeDownloadSources() {
+    let sources = [];
+    for( let type in this.rootRecord.media ) {
+      for( let media of this.rootRecord.media[type] ) {
+        sources = sources.concat(this._getDownloadSources(media, true));
+      }
+    }
+    return sources;
   }
 
   /**

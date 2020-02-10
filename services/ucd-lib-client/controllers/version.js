@@ -1,4 +1,4 @@
-const info = require('../gitinfo.json');
+// const info = require('../gitinfo.json');
 module.exports = (req, res) => {
-  res.json(info);
+  res.json({});
 }
