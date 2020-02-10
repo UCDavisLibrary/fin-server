@@ -112,9 +112,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
     // dynamically load plyr and shaka libs
     let {plyr, shaka} = await videoLibs.load();
 
-    // Install the polyfills before doing anything with the library
-    await shaka.polyfill.installAll();
-
     // alert user if video playback is not supported
     let plyr_supported = plyr.supported('video', 'html5', true);
     let shaka_supported = shaka.Player.isBrowserSupported();

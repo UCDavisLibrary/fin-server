@@ -29,8 +29,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
     constructor() {
       super();
       this.render = render.bind(this);
-      this._injectModel('AppStateModel');
-      this._injectModel('RecordModel');
+      this._injectModel('AppStateModel', 'RecordModel');
       this.mediaType = 'image';
     }
 
@@ -38,8 +37,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.$.lightbox = this.shadowRoot.getElementById('lightbox');
       if( !this.$.lightbox ) this.$.lightbox = document.getElementById('lightbox');
 
-      let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
-      if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+      this._onAppStateUpdate(await this.AppStateModel.get());
     }
 
     /**
@@ -49,19 +47,32 @@ export default class AppMediaViewer extends Mixin(LitElement)
      * @param {Object} e state event 
      */
     _onRecordUpdate(e) {
-      if( e.state !== 'loading' ) return;
-      this.mediaType = '';
+      // if( e.state !== 'loading' ) return;
+      // this.mediaType = '';
     }
 
-    async _onSelectedRecordMediaUpdate(record) {
-      let mediaType = utils.getMediaType(record).toLowerCase().replace(/object/i, '');
+    _onAppStateUpdate(e) {
+      if( !e.selectedRecordMedia ) {
+        this.selectedRecordMediaId = '';
+        return this.mediaType = '';
+      }
+      if( e.selectedRecordMedia['@id'] === this.selectedRecordMediaId ) {
+        this.selectedRecordMediaId = '';
+        return this.mediaType = '';
+      }
+
+      this.selectedRecordMediaId = e.selectedRecordMedia['@id'];
+
+      let mediaType = utils.getMediaType(e.selectedRecordMedia).toLowerCase().replace(/object/i, '');
       if ( mediaType === "imagelist" ) {
         mediaType = "image";
       } else if ( mediaType === "streamingvideo" ){
         mediaType = "video";
       }
+
       this.mediaType = mediaType;
     }
+
 
     /**
      * @method _onZoomIn

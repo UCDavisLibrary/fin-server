@@ -11,7 +11,10 @@ class VideoLibLoader {
       const plyr = ( await import(/* webpackChunkName: "video-libs" */ 'plyr') ).default;
       const shaka = await import(/* webpackChunkName: "video-libs" */ 'shaka-player');
       
-      this.loaded = {plyr, shaka}
+      // Install the polyfills before doing anything with the library
+      await shaka.polyfill.installAll();
+
+      this.loaded = {plyr, shaka};
 
       resolve(this.loaded);
     });

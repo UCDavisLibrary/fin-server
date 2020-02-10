@@ -18,6 +18,9 @@ export default function render() {
 
       iron-pages {
         flex: 1;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
       }
     </style>
 
