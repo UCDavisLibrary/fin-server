@@ -114,13 +114,14 @@
       }
 
       .wrapper {
-        display: flex;
-        flex-direction: column;
-        min-height:250px;
+        /* display: flex; */
+        /* flex-direction: column; */
+        /* min-height:250px; */
       }
 
       iron-pages {
-        flex: 1;
+        /* flex: 1; */
+        min-height: 250px;
         display: flex;
         justify-content: center;
         flex-direction: column;
