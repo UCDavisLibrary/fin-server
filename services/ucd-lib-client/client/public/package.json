@@ -26,7 +26,7 @@
     "@ucd-lib/cork-app-load": "^0.1.3",
     "@ucd-lib/cork-app-state": "1.0.0",
     "@ucd-lib/cork-app-utils": "^4.3.2",
-    "@ucd-lib/cork-pagination": "2.1.1",
+    "@ucd-lib/cork-pagination": "^2.2.0",
     "@ucd-lib/cork-toggle-panel": "2.1.1",
     "@ucd-lib/fin-icons": "0.0.7",
     "@ucd-lib/fin-search-box": "0.1.2",
