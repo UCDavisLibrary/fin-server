@@ -82,7 +82,9 @@ export class AppSearch extends Mixin(PolymerElement)
    * or if state update event is from popup state (forward, back button hit)
    */
   _searchFromAppState() {
-    window.scrollTo(0, 0);
+    if( !this.drawerOpen || window.innerWidth > 975 ) {
+      window.scrollTo(0, 0);
+    }
 
     this.firstLoad = false;
 
