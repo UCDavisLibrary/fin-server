@@ -57,8 +57,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
         return this.mediaType = '';
       }
       if( e.selectedRecordMedia['@id'] === this.selectedRecordMediaId ) {
-        this.selectedRecordMediaId = '';
-        return this.mediaType = '';
+        return;
       }
 
       this.selectedRecordMediaId = e.selectedRecordMedia['@id'];
