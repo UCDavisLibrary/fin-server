@@ -10,6 +10,7 @@ import "@ucd-lib/cork-app-utils"
 import config from "../../../../lib/config"
 import utils from "../../../../lib/utils"
 import videoLibs from "../../../../lib/utils/video-lib-loader"
+import plyrShadowdomHack from "./plyr-shadowdom-hack"
 
 import plyrCss from "plyr/dist/plyr.css"
 import shakaCss from "shaka-player/dist/controls.css"
@@ -134,6 +135,10 @@ export default class AppVideoViewer extends Mixin(LitElement)
     
     this.libsLoaded = true;
     await this._loadVideo();
+
+    /* HACK */
+    // need to make element toggle work in shadowdom
+    plyrShadowdomHack(this);
   }
 
   /**

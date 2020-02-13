@@ -40,10 +40,9 @@
     "leaflet": "^1.2.0",
     "lit-element": "^2.2.1",
     "markdown": "^0.5.0",
-    "plyr": "^3.5.6",
+    "plyr": "^3.5.8",
     "shaka-player": "^2.5.5",
-    "striptags": "^3.1.1",
-    "yarn": "^1.17.3"
+    "striptags": "^3.1.1"
   },
   "resolutions": {
     "@polymer/app-route": "3.0.1",
