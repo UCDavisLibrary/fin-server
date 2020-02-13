@@ -104,6 +104,13 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     }
   }
 
+  _onAppStateUpdate(e) {
+    if( e.mediaViewerNavLeftMostThumbnail === undefined ) return;
+    if( e.mediaViewerNavLeftMostThumbnail === this.leftMostThumbnail ) return;
+    this.leftMostThumbnail = e.mediaViewerNavLeftMostThumbnail;
+    this._resize();
+  }
+
   /**
    * @method _onTouchEnd
    * @description bound to window touch end/cancel events. if we are
@@ -209,12 +216,14 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     this.leftMostThumbnail = this.leftMostThumbnail - this.thumbnailsPerFrame;
     if( this.leftMostThumbnail < 0 ) this.leftMostThumbnail = 0;
     this._resize();
+    this.AppStateModel.set({mediaViewerNavLeftMostThumbnail: this.leftMostThumbnail});
   }
 
   _pageRight() {
     if( this._showingLastThumbFrame() ) return;
     this.leftMostThumbnail = this.leftMostThumbnail + this.thumbnailsPerFrame;
     this._resize();
+    this.AppStateModel.set({mediaViewerNavLeftMostThumbnail: this.leftMostThumbnail});
   }
 
   _showingLastThumbFrame() {
@@ -250,7 +259,6 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
 
     this.mediaList = utils.flattenMediaList(record.media);
     this.mediaList = utils.organizeMediaList(this.mediaList);
-    
 
     this.thumbnails = this.mediaList.map(media => {
       let {fileType, iconType} = this._getFileAndIconType(media);
@@ -277,6 +285,8 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
 
     this.singleImage = (this.thumbnails.length !== 0 && this.thumbnails.length > 1) ? false : true;
     this._resize();
+
+    this.AppStateModel.set({mediaViewerNavLeftMostThumbnail: 0});
   }
 
   /**
