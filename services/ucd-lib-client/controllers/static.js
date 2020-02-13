@@ -104,10 +104,10 @@ module.exports = (app) => {
             if( !Array.isArray(record.keywords) ) keywords = [record.keywords];
             else keywords = record.keywords;
           }
-    
+
           return {
             jsonld, bundle,
-            title : record.title + ' - '+ config.server.title,
+            title : (record.name || record.title) + ' - '+ config.server.title,
             description : record.description || '',
             keywords : keywords.join(', ')
           }
