@@ -56,22 +56,35 @@ class ServiceModel {
     // ensure all default services
     for( var i = 0; i < config.defaultServices.length; i++ ) {
       let service = config.defaultServices[i];
-      var response = await api.head({
-        path : '/'+api.service.ROOT+'/'+service.id
-      });
 
-      if( response.checkStatus(200) ) {
+      // switching to a force attempt delete strategy in case system is in bad state
+ 
+      // var response = await api.head({
+      //   path : '/'+api.service.ROOT+'/'+service.id
+      // });
+
+      // if( response.checkStatus(200) ) {
+      //   response = await api.delete({
+      //     path: '/'+api.service.ROOT+'/'+service.id,
+      //     permanent: true
+      //   })
+      // }
+
+      try {
         await api.delete({
           path: '/'+api.service.ROOT+'/'+service.id,
           permanent: true
-        })
-      }
+        });
+      } catch(e) {};
 
       if( service.type === api.service.TYPES.TRANSFORM ) {
         service.transform = fs.readFileSync(service.transform, 'utf-8');
       }
 
-      response = await api.service.create(service);
+      let response = await api.service.create(service);
+      if( !response.checkStatus(204) ) {
+        logger.warn(`Service ${service.id} may not have initialized correctly.  Returned status code: ${response.last.statusCode}`);
+      }
 
       if( service.secret ) {
         await this.setServiceSecret(service.id, service.secret);

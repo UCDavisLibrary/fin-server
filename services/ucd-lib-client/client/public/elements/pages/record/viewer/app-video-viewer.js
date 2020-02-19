@@ -10,7 +10,6 @@ import "@ucd-lib/cork-app-utils"
 import config from "../../../../lib/config"
 import utils from "../../../../lib/utils"
 import videoLibs from "../../../../lib/utils/video-lib-loader"
-import plyrShadowdomHack from "./plyr-shadowdom-hack"
 
 import plyrCss from "plyr/dist/plyr.css"
 import shakaCss from "shaka-player/dist/controls.css"
@@ -19,6 +18,16 @@ let VIDEO_STYLES = plyrCss+shakaCss;
 import spriteSheet from "plyr/dist/plyr.svg"
 let SPRITE_SHEET = spriteSheet
 
+// Very dump.  To remove the 'Shaka Player TextTrack'
+// you have to override this...
+class SimpleTextDisplayer {
+  constructor(video) {}
+  remove() {return true}
+  destroy() {}
+  append(cues) {}
+  setTextVisibility(on) {}
+  isTextVisible() {return false}
+}
 
 export default class AppVideoViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
@@ -82,6 +91,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
+    if( !media ) return;
     let mediaType = utils.getMediaType(media);
     if (mediaType !== 'VideoObject' && mediaType !== 'StreamingVideo') return;
 
@@ -126,19 +136,21 @@ export default class AppVideoViewer extends Mixin(LitElement)
     this.plyr = new plyr(videoEle, {
       hideControls: this.hideControls,
       fullscreen : {enabled: false},
-      controls : ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings']
+      captions: {update: false},
+      // keyboard: {global: true},
+      controls : ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume']
     });
 
     // Construct a Player to wrap around the <video> tag.
-    this.shaka = new shaka.Player(videoEle);
+    this.shaka = new shaka.Player(videoEle, );
+    this.shaka.configure({
+      textDisplayFactory : SimpleTextDisplayer
+    });
+
     this.shaka.addEventListener('error', e => console.error('shaka error', e));
     
     this.libsLoaded = true;
     await this._loadVideo();
-
-    /* HACK */
-    // need to make element toggle work in shadowdom
-    plyrShadowdomHack(this);
   }
 
   /**

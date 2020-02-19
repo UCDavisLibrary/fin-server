@@ -21,21 +21,13 @@ export default class AppAudioViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
   
   static get properties() {
-    return {
-      src: {
-        type: String
-      },
-      type: {
-        type: String
-      }
-    }
+    return {}
   }
 
   constructor() {
     super();
     this.render = render.bind(this);
     this._injectModel('AppStateModel', 'MediaModel');
-    this.src = '';
     this.libsLoaded = false;
   }
 
@@ -84,6 +76,7 @@ export default class AppAudioViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
+    if( !media ) return;
     if ( utils.getMediaType(media) !== 'AudioObject' ) return;
 
     this.media = media;
@@ -96,9 +89,6 @@ export default class AppAudioViewer extends Mixin(LitElement)
     // dynamically load plyr and shaka libs
     let {plyr} = await videoLibs.load();
 
-    // let libs = await videoLibs.load();
-    // this.audioPlyr = libs.plyr;
-
     this.audioPlayer = new plyr(this.$.audio, {
       debug: false
     });
@@ -109,13 +99,15 @@ export default class AppAudioViewer extends Mixin(LitElement)
   }
 
   _loadAudio() {
-    this.src      = config.fcrepoBasePath+this.media['@id'];
-    this.type     = this.media.encodingFormat;
-    this.poster   = this.media.thumbnailUrl;
+    let sourceEle = this.shadowRoot.querySelector('#audio_player source');
+    sourceEle.src = config.fcrepoBasePath+this.media['@id'];
+    sourceEle.type = this.media.fileFormat || this.media.hasMimeType || this.media.encodingFormat || '';
+    this.shadowRoot.querySelector('#audio_player').load();
 
-    if ( this.poster ) {
+    let poster = this.media.thumbnailUrl  ? this.media.thumbnailUrl+'/svc:iiif/full/,400/0/default.jpg' : '';
+    if ( poster ) {
       this.$.poster.style.display = 'block';
-      this.$.poster.style.backgroundImage = "url(" + this.poster + ")";
+      this.$.poster.style.backgroundImage = "url(" + poster + ")";
     } else {
       this.$.poster.style.display = 'none';
     }
@@ -125,15 +117,8 @@ export default class AppAudioViewer extends Mixin(LitElement)
    * Stop playback and reset to start
    **/
   _stop() {
-    const audio = this.shadowRoot.getElementById('audio_player');
-    audio.pause();
-
-    if ( this.audioPlayer === undefined || this.audioPlayer === null) return;
-
-    if (Object.entries(this.audioPlayer).length !== 0) {
-      this.audioPlayer.stop();
-    };
-
+    if( !this.audioPlayer ) return;
+    this.audioPlayer.stop();
   }
 }
 

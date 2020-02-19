@@ -60,6 +60,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @param {Object} media 
    */
   _onSelectedRecordMediaUpdate(media) {
+    if( !media ) return;
     let getMediaType = utils.getMediaType(media);
     if (getMediaType !== 'ImageList' && getMediaType !== 'ImageObject') return;
 

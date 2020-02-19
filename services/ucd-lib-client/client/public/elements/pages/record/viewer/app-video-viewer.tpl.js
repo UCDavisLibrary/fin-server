@@ -43,6 +43,21 @@ return html`
             background: rgba(218,170,0,1.0) !important;
         }
 
+        .plyr__control:focus {
+            background: rgba(218,170,0,1.0) !important;
+        }
+        .plyr--full-ui input[type=range] {
+            padding: 2px !important;
+            border: 1px solid transparent !important;
+        }
+        .plyr--full-ui input[type=range]:focus {
+            border: 1px dashed rgba(218,170,0,1.0) !important;
+        }
+        .plyr__tab-focus {
+            outline: 0 !important;
+            background: transparent !important;
+        }
+
         paper-spinner-lite {
             --paper-spinner-color: var(--default-secondary-color);
         }

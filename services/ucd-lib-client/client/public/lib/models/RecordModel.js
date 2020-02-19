@@ -30,7 +30,13 @@ class RecordModel extends ElasticSearchModel {
    * @param {Object} e 
    */
   async _onAppStateUpdate(e) {
-    if( e.location.page !== 'record' ) return;
+    if( e.location.page !== 'record' ) {
+      this.currentRecordId = null;
+      this.currentMediaId = null;
+      AppStateModel.setSelectedRecord(null);
+      AppStateModel.setSelectedRecordMedia(null);
+      return;
+    }
     let id = '/'+e.location.path.join('/');
 
     let result = await this.get(id);
@@ -72,6 +78,8 @@ class RecordModel extends ElasticSearchModel {
       AppStateModel.setSelectedRecordMedia(result.payload.media.audio[0]);
     } else if (result.payload.media.image) {
       AppStateModel.setSelectedRecordMedia(result.payload.media.image[0]);
+    } else {
+      AppStateModel.setSelectedRecordMedia(null);
     }
 
   }
@@ -120,7 +128,7 @@ class RecordModel extends ElasticSearchModel {
    */
   createMediaObject(record) {
     if (record.isRootRecord === false) return;
-    
+
     record.media = {};
 
     if ( record.clientMedia ) {

@@ -81,6 +81,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
   _onSelectedRecordUpdate(record) {
     this.rootRecord = record;
+    if( !record ) return;
 
     // find out if the number of download options is greater than 1
     let sourceCount = 0;
@@ -134,6 +135,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
   _getDownloadSources(record, nativeImageOnly=false) {
     let sources = [];
+    if( !record ) return sources;
 
     if( record.clientMediaDownload ) {
       if( Array.isArray(record.clientMediaDownload) ) {

@@ -252,6 +252,11 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
   _onSelectedRecordUpdate(record) {
     this.leftMostThumbnail = 0;
 
+    if( !record ) {
+      this.singleImage = true;
+      return;
+    }
+    
     if (utils.countMediaItems(record.media) === 1) {
       this.singleImage = true;
       return;
@@ -267,13 +272,18 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
         return null;
       }
 
+      let thumbnailUrl = media.thumbnailUrl;
+      if( thumbnailUrl && !thumbnailUrl.match(/\/svc:iiif\//) ) {
+        thumbnailUrl += '/svc:iiif/full/,50/0/default.jpg';
+      }
+
       let thumbnail = {
         id: media['@id'],
         icon: iconType,
         position: media.position,
         selected: false,
         disabled: false,
-        src: media.thumbnailUrl
+        src: thumbnailUrl 
         // thumbnail: url
       }
 
@@ -297,6 +307,8 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    */
   _onSelectedRecordMediaUpdate(media) {
     this.media = media;
+    if( !media ) return;
+
     this.thumbnails.forEach((thumbnail, index) => {
       this.set(`thumbnails.${index}.selected`, (this.media['@id'] === thumbnail.id));
     });

@@ -17,6 +17,7 @@ return html`
   }
 
   #audio_poster {
+    display: none;
     margin: 0 auto;
     margin-bottom: 10px;
     width: 400px;
@@ -48,7 +49,7 @@ return html`
   <div id="sprite-plyr" style="display: none;"></div>
   <div id="audio_poster"></div>
   <audio id="audio_player" controls>
-    <source src="${this.src}" type="${this.type}">
+    <source>
   </audio>
 </div>
 `
