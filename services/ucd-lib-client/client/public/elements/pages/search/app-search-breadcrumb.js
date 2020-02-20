@@ -1,5 +1,6 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-search-breadcrumb.html"
+import { isRegExp } from "util";
 
 class AppSearchBreadcrumb extends Mixin(PolymerElement)
         .with(EventInterface) {
@@ -30,6 +31,9 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+    
+    this.lastSearchForCollection = {};
+
     this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel');
   }
 
@@ -58,8 +62,11 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
     this.record = null;
     this.collection =  null;
 
-    if( e.location.page === 'search' && e.selectedCollection ) {
-      this.collection = e.selectedCollection;
+    if( e.location.page === 'search' && e.searchCollection ) {
+      this.searchCollection = e.searchCollection;
+      this.lastSearchForCollection[e.searchCollection['@id']] = e.location.pathname; 
+    } else if( e.location.page === 'search' ) {
+      this.searchCollection = null;
     }
 
     if( e.location.page === 'record' ) {
@@ -80,10 +87,10 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    * @method _onSearchClicked
    * @description bound to search anchor tag click event.  nav to search
    */
-  // _onSearchClicked(e) {
-  //   if( e.type === 'keyup' && e.which !== 13 ) return;
-  //   this._setWindowLocation(this.lastSearch || '/search');
-  // }
+  _onSearchClicked(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
+    this.AppStateModel.setLocation(this.lastSearch || '/search');
+  }
 
   /**
    * @method _onCollectionClicked
@@ -91,7 +98,15 @@ class AppSearchBreadcrumb extends Mixin(PolymerElement)
    */
   _onCollectionClicked(e) {
     if( e.type === 'keyup' && e.which !== 13 ) return;
-    this.AppStateModel.setLocation(this.lastSearch || (this.collection ? this.collection['@id'] : '/search'));
+
+    let lastSearch = this.lastSearch || '/search';
+    if( this.searchCollection && this.lastSearchForCollection[this.searchCollection['@id']] ) {
+      lastSearch = this.lastSearchForCollection[this.searchCollection['@id']];
+    } else if( this.collection && this.collection['@id'] ) {
+      lastSearch = this.collection['@id'];
+    }
+
+    this.AppStateModel.setLocation(lastSearch);
   }
 
   /**

@@ -93,8 +93,8 @@ class CollectionModel extends BaseModel {
         this.emit('show-collection-search-results', false);
       }
 
-      // this.store.setSelectedCollection(selected);
       AppStateModel.setSelectedCollection(selected);
+      AppStateModel.set({searchCollection: selected});
     }
 }
 

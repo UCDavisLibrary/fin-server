@@ -90,7 +90,9 @@ export default class AppAudioViewer extends Mixin(LitElement)
     let {plyr} = await videoLibs.load();
 
     this.audioPlayer = new plyr(this.$.audio, {
-      debug: false
+      fullscreen : {enabled: false},
+      captions: {update: false},
+      controls : ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume']
     });
 
     this.style.display = 'block';

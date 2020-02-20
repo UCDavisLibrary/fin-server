@@ -26,7 +26,7 @@
 </style>
 
 <div class="layout" hidden$="[[!selected]]" id="layout">
-  <a href="/search" tabindex="0">Search</a>
+  <a on-click="_onSearchClicked" tabindex="0">Search</a>
   
   <span hidden$="[[!collection]]">&gt;</span>
   <span hidden$="[[!collection]]"><a on-click="_onCollectionClicked" tabindex="0">[[collection.name]]</a></span>
