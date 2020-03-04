@@ -6,7 +6,7 @@ import MediaInterface from "../interfaces/MediaInterface"
 
 const BASE_SHARE_LINKS = {
   facebook : 'https://www.facebook.com/sharer/sharer.php',
-  twitter : 'https://twitter.com/home',
+  twitter : 'https://twitter.com/intent/tweet',
   // pinterest can also add ?media and ?description
   pinterest : 'https://pinterest.com/pin/create/button/'
 }
@@ -91,9 +91,10 @@ export default class AppShareBtn extends Mixin(PolymerElement)
    * 
    * @param {Object} record selected record
    */
-  _onSelectedRecordUpdate(record) {
-    this.record = record;
-  }
+  // _onSelectedRecordMediaUpdate(record) {
+  //   console.log(record);
+  //   this.record = record;
+  // }
 
   /**
    * @method _onSocialIconClick
@@ -102,6 +103,8 @@ export default class AppShareBtn extends Mixin(PolymerElement)
    * @param {Object} e HTML click event 
    */
   _onSocialIconClick(e) {
+    this.record = this.AppStateModel.getSelectedRecordMedia();
+
     if( e.type === 'keyup' && e.which !== 13 ) return;
     let id = e.currentTarget['id'];
 
@@ -118,7 +121,15 @@ export default class AppShareBtn extends Mixin(PolymerElement)
     } else if ( id === 'facebook' ) {
       qso.u = window.location.href;
     } else if( id === 'twitter' ) {
-      qso.status = this.record.name+' - '+window.location.href;
+      let name = (this.record.name || this.record.title );
+      let text = name+' - '+window.location.href+' #UCDavisLibrary #DigitalCollections';
+      if( text.length > 280) {
+        let diff = (text.length + 3) - 280;
+        name = name.substr(0, name.length-diff)+'...';
+        text = name+' - '+window.location.href+' #UCDavisLibrary #DigitalCollections';
+      }
+
+      qso.text = text;
     } else {
       throw new Error('Unknown social media type: '+id);
     }
