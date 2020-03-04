@@ -104,6 +104,14 @@ export default class AppAudioViewer extends Mixin(LitElement)
     let sourceEle = this.shadowRoot.querySelector('#audio_player source');
     sourceEle.src = config.fcrepoBasePath+this.media['@id'];
     sourceEle.type = this.media.fileFormat || this.media.hasMimeType || this.media.encodingFormat || '';
+    
+    // FF Hack.  Range slider not going back to 0 on stop
+    try {
+      this.audioPlayer.stop();
+      let ele = this.shadowRoot.querySelector('input[type="range"][data-plyr="seek"]');
+      if( ele ) ele.value = 0;
+    } catch(e) {}
+
     this.shadowRoot.querySelector('#audio_player').load();
 
     let poster = this.media.thumbnailUrl  ? this.media.thumbnailUrl+'/svc:iiif/full/,400/0/default.jpg' : '';

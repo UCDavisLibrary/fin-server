@@ -43,6 +43,15 @@ class AppHome extends Mixin(PolymerElement)
     this._setCollections(await this.CollectionModel.overview());
   }
 
+  _onAppStateUpdate(e) {
+    if( e.location.hash === 'collections' ) {
+      setTimeout(() => {
+        let ele = this.shadowRoot.querySelector('#collections-home');
+        if( ele ) ele.scrollIntoView();
+      }, 25);
+    }
+  }
+
   /**
    * @method _setCollections
    * @description when the element is ready, the collection model is called 

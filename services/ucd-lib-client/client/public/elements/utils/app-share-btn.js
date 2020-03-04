@@ -103,25 +103,26 @@ export default class AppShareBtn extends Mixin(PolymerElement)
    * @param {Object} e HTML click event 
    */
   _onSocialIconClick(e) {
-    this.record = this.AppStateModel.getSelectedRecordMedia();
+    let record = this.AppStateModel.getSelectedRecord();
+    let media = this.AppStateModel.getSelectedRecordMedia();
 
     if( e.type === 'keyup' && e.which !== 13 ) return;
     let id = e.currentTarget['id'];
 
     let url = BASE_SHARE_LINKS[id];
     let qso = {};
+    let name = (media.name || media.title || record.name || record.title);
 
     if( id === 'pinterest' ) {  
-      let path = this._getImgPath(this.record);
+      let path = this._getImgPath(media);
       if( path ) {
         qso.media = window.location.protocol+'//'+window.location.host+this._getImgUrl(path);
       }
-      qso.description = this.record.name;
+      qso.description = name;
       qso.url = window.location.href;
     } else if ( id === 'facebook' ) {
       qso.u = window.location.href;
     } else if( id === 'twitter' ) {
-      let name = (this.record.name || this.record.title );
       let text = name+' - '+window.location.href+' #UCDavisLibrary #DigitalCollections';
       if( text.length > 280) {
         let diff = (text.length + 3) - 280;

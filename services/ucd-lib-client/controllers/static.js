@@ -43,8 +43,16 @@ module.exports = (app) => {
         user = {loggedIn: false}
       }
 
+      let allCollections = await collections.all();
+      if( allCollections.results ) {
+        allCollections.results = allCollections.results.map(c => {
+          if( c.hasPart ) delete c.hasPart;
+          return c;
+        });
+      }
+
       return {
-        collections : await collections.all(),
+        collections : allCollections,
         user : user,
         appRoutes : config.server.appRoutes,
         recordCount: (await records.rootCount()).count
