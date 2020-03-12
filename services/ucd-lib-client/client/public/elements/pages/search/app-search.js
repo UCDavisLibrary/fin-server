@@ -2,8 +2,6 @@ import {PolymerElement} from "@polymer/polymer/polymer-element"
 import "@polymer/paper-input/paper-input"
 import template from "./app-search.html";
 
-import "./app-search-header";
-import "./app-search-breadcrumb";
 import "./results/app-search-results-panel"
 import "./filtering/app-filters-panel"
 
@@ -69,6 +67,7 @@ export class AppSearch extends Mixin(PolymerElement)
    * @param {*} e 
    */
   _onAppStateUpdate(e) {
+    this.drawerOpen = e.filtersDrawerOpen ? true : false;
     this.appState = e;
     if( 
       e.location.path[0] !== 'search' &&
@@ -83,6 +82,10 @@ export class AppSearch extends Mixin(PolymerElement)
    * or if state update event is from popup state (forward, back button hit)
    */
   _searchFromAppState() {
+    if( !this.drawerOpen || window.innerWidth > 975 ) {
+      window.scrollTo(0, 0);
+    }
+
     this.firstLoad = false;
 
     let searchUrlParts = this.appState.location.path;
@@ -92,14 +95,21 @@ export class AppSearch extends Mixin(PolymerElement)
       query = this._urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
         ["isPartOf.@id","or",`/collection/${searchUrlParts[1]}`]
       ])),'', '10']);
+
+      if( this.lastQuery === query ) return;
+      this.lastQuery = query;
+
       this._searchRecords(query, false);
       return;
-     } else if( searchUrlParts[0] === 'search' && searchUrlParts.length > 1 ) {
+    } else if( searchUrlParts[0] === 'search' && searchUrlParts.length > 1 ) {
       query = this._urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
     } else {
-      query = this._getCurrentSearchDocument();
+      query = this.RecordModel.emptySearchDocument();
     }
     
+    if( this.lastQuery === query ) return;
+    this.lastQuery = query;
+
     this._searchRecords(query);
   }
 
@@ -156,7 +166,7 @@ export class AppSearch extends Mixin(PolymerElement)
    * toggle-drawer event from app-search-results-panel
    */
   _toggleDrawer() {
-    this.drawerOpen = !this.drawerOpen;
+    this.AppStateModel.set({filtersDrawerOpen: !this.drawerOpen});
   }
 
   _onFiltersTabUpdate(e) {

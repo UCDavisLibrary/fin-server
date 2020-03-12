@@ -19,7 +19,7 @@ class JwtUtils {
     if( token ) return token;
     
     token = req.get('Authorization');
-    if( token ) return token.replace(/^Bearer /, '');
+    if( token ) return token.replace(/^Bearer /i, '');
 
     return null;
   }
@@ -45,15 +45,17 @@ class JwtUtils {
    * 
    * @param {String} username username to create token for
    * @param {Boolean} admin admin flag, set true for admin privileges 
+   * @param {Object} acl 
    * 
    * @return {String} new jwt token
    */
-  create(username, admin) {
+  create(username, admin, acl) {
     var user = { username }
 
     if( admin === true ) {
        user.admin = true;
     }
+    user.acl = acl || {};
 
     return jwt.sign(
       user, 

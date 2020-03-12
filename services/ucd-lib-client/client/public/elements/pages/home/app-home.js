@@ -2,6 +2,8 @@ import {PolymerElement} from "@polymer/polymer/polymer-element"
 import "@ucd-lib/fin-search-box"
 import "../../utils/app-collection-card"
 
+import "@polymer/iron-icons"
+
 import template from "./app-home.html"
 import RecordInterface from "../../interfaces/RecordInterface"
 import AppStateInterface from "../../interfaces/AppStateInterface"
@@ -36,13 +38,28 @@ class AppHome extends Mixin(PolymerElement)
     this.active = true;
   }
 
+  async ready() {
+    super.ready();
+    this._setCollections(await this.CollectionModel.overview());
+  }
+
+  _onAppStateUpdate(e) {
+    if( e.location.hash === 'collections' ) {
+      setTimeout(() => {
+        let ele = this.shadowRoot.querySelector('#collections-home');
+        if( ele ) ele.scrollIntoView();
+      }, 25);
+    }
+  }
+
   /**
-   * @method _onCollectionOverviewUpdate
-   * @description from CollectionInterface, called when the collection overview is loaded
+   * @method _setCollections
+   * @description when the element is ready, the collection model is called 
+   * for the collection list.  this renders is.
    * 
    * @param {Object} e 
    */
-  _onCollectionOverviewUpdate(e) {
+  _setCollections(e) {
     if( e.state !== 'loaded' ) return;
     let overview = e.payload;
     let browse = {};
@@ -59,11 +76,11 @@ class AppHome extends Mixin(PolymerElement)
         item.thumbnailUrl = '/images/logos/logo-white-512.png';
       }
 
-      // if( item.workExample ) {
-      //   item.thumbnail = '/fcrepo/rest'+item.workExample['@id']+'/svc:iiif/full/,320/0/default.jpg';
-      // } else {
-      //   item.thumbnail = '/images/logos/logo-white-512.png';
-      // }
+      if( item.workExample ) {
+        item.thumbnail = '/fcrepo/rest'+item.workExample['@id']+'/svc:iiif/full/,320/0/default.jpg';
+      } else {
+         item.thumbnail = '/images/logos/logo-white-512.png';
+      }
     });
 
     this.$.searchBox.browse = browse;

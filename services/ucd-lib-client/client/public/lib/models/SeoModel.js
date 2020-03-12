@@ -3,8 +3,8 @@ const AppStateModel = require('./AppStateModel');
 const CollectionModel = require('./CollectionModel');
 const config = require('../config');
 const clone = require('clone');
-const transform = require('../../../../lib/seo-transform');
-const collectionTransform = require('../../../../lib/seo-collection-transform');
+const transform = require('../../../../lib/seo/record-transform');
+const collectionTransform = require('../../../../lib/seo/collection-transform');
 
 
 // keep the JSON-LD script tag up to date
@@ -77,9 +77,9 @@ class SeoModel extends BaseModel {
    * @param {String} metadata.keywords
    */
   _setMetaTags(metadata) {
-    document.title = metadata.title;
-    this._setMetaTag('description', metadata.description);
-    this._setMetaTag('keywords', metadata.keywords);
+    document.title = metadata.title || '';
+    this._setMetaTag('description', metadata.description || '');
+    this._setMetaTag('keywords', metadata.keywords || '');
   }
 
   /**

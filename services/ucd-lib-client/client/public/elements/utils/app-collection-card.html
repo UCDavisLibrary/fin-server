@@ -3,6 +3,8 @@
     display: inline-block;
     margin: 15px;
     outline : 0;
+    height: 320px;
+    width: 320px;
   }
 
   :host(:hover), :host(:focus)  {
@@ -11,27 +13,39 @@
     border: 2px solid var(--default-secondary-color);
   }
 
-  .root {
-    background-color: #eee;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+  .img.defaultImage {
+    background-size: 65%;
+  }
+
+  .img {
     height: 320px;
     width: 320px;
     position: relative;
+    background-image: url('/images/logos/logo-white-512.png'); /* fallback */
+    background-color: var(--light-background-color);
+    background-size: cover; /* needs to be 65% */
+    background-repeat: no-repeat;
+    background-position: center center;    
   }
 
-  .root > div  {
-    position: absolute;
+  .img > div  {
     padding: 15px;
+    position: absolute;
+    left: 0;
+    right: 25px;
+    bottom: 25px;
+    
     color: var(--default-secondary-color);
-    background-color: rgba(0, 38, 85, .7);
-    left : 0;
-    bottom : 25px;
     font-weight: var(--font-weight-heavy);
+
+    background-color: rgba(0, 38, 85, .8);      
   }
 </style>
 
-<div class="root" style$="background-image:url('[[collection.thumbnailUrl]]')">
+<div 
+  id="img"
+  class="img" 
+  role="img" 
+  aria-label="[[collection.name]]">
   <div>[[collection.name]]</div>
 </div>

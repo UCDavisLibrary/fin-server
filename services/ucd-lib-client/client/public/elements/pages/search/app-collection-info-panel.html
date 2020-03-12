@@ -56,15 +56,13 @@
 
 <div class="section" hidden$="[[!description]]">
   <div class="header">Description</div>
-  <div>[[description]]</div>
+  <div id="description"></div>
 </div>
-
 
 <div class="section" hidden$="[[!coverage]]">
   <div class="header">Coverage</div>
   <div>[[coverage]]</div>
 </div>
-
 
 <div class="break"></div>
 
@@ -73,7 +71,7 @@
   <app-copy-cite id="copyCite" text="[[citation]]">
     <select id="citeFormatInput" value$="[[citationFormat]]" on-change="_onCiteFormatChange">
       <template is="dom-repeat" items="[[engines]]">
-        <option value="[[item]]">[[item]]</option>
+        <option value="[[item.engine]]">[[item.label]]</option>
       </template>
     </select>
   </app-copy-cite>

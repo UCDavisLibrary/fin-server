@@ -3,6 +3,7 @@ const CollectionStore = require('../stores/CollectionStore');
 const CollectionService = require('../services/CollectionService');
 // it's ok to import other stores & services, just not models
 const RecordStore = require('../stores/RecordStore');
+const AppStateModel = require('./AppStateModel');
 
 class CollectionModel extends BaseModel {
   
@@ -19,6 +20,11 @@ class CollectionModel extends BaseModel {
         this._onSearchDocumentUpdate.bind(this)
       );
 
+      // if we pre-loaded collections, set them
+      if( APP_CONFIG.collections ) {
+        this.store.setCollectionOverviewLoaded(APP_CONFIG.collections);
+      }
+
       this.register('CollectionModel');
     }
 
@@ -29,10 +35,12 @@ class CollectionModel extends BaseModel {
      * @returns {Promise} resolves to array of collections
      */
     async overview() {
-      if( this.store.data.overview.state === 'loading' ) {
-        await this.store.data.overview.request;
-      } else {
+      let state = this.store.data.overview;
+
+      if( state.state === 'init' ) {
         await this.service.overview();
+      } else if( state.state === 'loading' ) {
+        await state.request;
       }
 
       return this.store.data.overview;
@@ -45,8 +53,8 @@ class CollectionModel extends BaseModel {
      * @param {String} id id of the collection
      */
     async get(id) {
-      if( this.store.data.overview.state === 'loading' ) {
-        await this.store.data.overview.request;
+      if( this.store.data.overview.state !== 'loaded' ) {
+        await this.overview();
       }
 
       return this.store.data.byId[id];
@@ -85,7 +93,8 @@ class CollectionModel extends BaseModel {
         this.emit('show-collection-search-results', false);
       }
 
-      this.store.setSelectedCollection(selected);
+      AppStateModel.setSelectedCollection(selected);
+      AppStateModel.set({searchCollection: selected});
     }
 }
 

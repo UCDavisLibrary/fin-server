@@ -79,6 +79,10 @@ module.exports = {
 
   google : {
     serviceAccountFile : process.env.GOOGLE_SERVICE_ACCOUNT_FILE || '/etc/fin/webapp-service-account.json'
+  },
+
+  workflow : {
+    root : '/.workflow'
   }
 
 }

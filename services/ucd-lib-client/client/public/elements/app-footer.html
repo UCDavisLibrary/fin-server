@@ -1,128 +1,188 @@
-<style include="shared-styles">
+<style>
   :host {
     display: block;
-    background: var(--secondary-background-color);
-    color: var(--inverse-text-color);
+    margin: 0;
+    padding: 0;    
+    width: 100%;
     max-width: var(--max-width);
-    padding: 20px 0;
+
+    color: white;
+    background: var(--secondary-background-color);
   }
 
-  a, a:visited {
+  footer {
+    padding: 70px 35px 20px 20px;
+  }
+
+  a,
+  a:visited {
     cursor: pointer;
     color: var(--inverse-text-color);
+    text-decoration: none;
+  }  
+
+  .lib-logo  {    
+    margin-bottom: 30px;
   }
 
-  .lib-logo  {
+  .lib-logo img {
     height: 45px;
+    max-width: 200px;
+  }
+
+  .lib-email:hover {
+    text-decoration: underline;
   }
 
   .row {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-around;
   }
 
-  .row > div {
-    padding: 15px;
+  ul,
+  ul li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
+  .menu.vertical a {
+    display: block;
+    padding: 4px;
+  }
+  
+  .menu.vertical a:hover {
+    background-color: var(--default-primary-color);
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+  }
+
+  .menu.horizontal {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
   .menu.horizontal li {
-    padding: 0 10px;
-    border-right: 1px solid white;
-  }
-  .menu.horizontal li:last-child {
-    border-right: none;
-  }
-  .menu a {
-    cursor: pointer;
-  }
-
-  @media( max-width: 768px ) {
-    ul.menu.horizontal {
-      display: block;
-      text-align: left;
-    }
-  }
-
-  .logo {
     display: inline-block;
-    width: 100%;
-    position: relative;
-    margin: 70px 0 30px;
+    white-space: nowrap;
   }
-  .logo hr {
-    position: absolute;
-    top: 50%;
+  .menu.horizontal li a {
+    display: block;
+  }
+  .menu.horizontal li a::after {
+    content: "|";
+    padding: 0 10px;
+  }
+  .menu.horizontal li:last-child a::after {
+    content: " ";
+  }
+
+  .donate {
+    margin-top: 15px;
+  }
+  .donate > a {
+    display: inline-block !important;
+    padding: 8px !important;
+    font-weight: 700;
+    border: 1px solid white;
+    white-space: normal !important;
+  }
+  .donate > a:hover {
+    background: rgba(21,118,240,.32) !important;
+  }
+
+  .ucd-logo {
+    display: inline-block;
+    margin-top: 70px;
+    margin-bottom: 30px;
     width: 100%;
+    position: relative;  
+  }
+  .ucd-logo > hr {
     margin-top: 0;
     margin-bottom: 0;
+    top: 50%;
+    width: 100%;
+    position: absolute;
     border-top: 1px solid rgba(255,255,255,.25);
     border-bottom: none;
     border-right: none;
     border-left: none;
   }
-  .logo .logo-img {
+  .ucd-logo > div {
     display: inline-block;
     position: relative;
   }
-  .logo img {
-    height: 100px;
+  .ucd-logo > div > img {    
     padding: 0 25px;
+    height: 100px;
     background: var(--default-primary-color);
   }
 
-  @media(max-width: 768px) {
+  @media( max-width: 768px ) {
     .row {
-      display: block;
+      flex-direction: column;
+      text-align: left;
     }
-    .menu.horizontal li {
-      border-right: none;
+
+    h2 {
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+
+    .menu.vertical li a {
+      padding: 0;
     }
   }
 </style>
 
 <footer role="contentinfo">
-
   <div class="row">
-    <div> <!-- col start -->
-      <div>
+    <div class="col"> <!-- col start -->
+      <div class="lib-logo">
           <a href="https://library.ucdavis.edu" target="_blank" rel="noopener">
-              <img class="lib-logo" src="/images/ucd-lib-logo-white.png">
+            <img src="/images/ucd-lib-logo-white.png" alt="UC Davis Library Logo">
           </a>
       </div>
-      <div>UC Davis Library</div>
       <p>
+        UC Davis Library<br />
         100 NW Quad<br />
         University of California, Davis<br />
         Davis, CA 95616<br />
         (530) 752-8792<br /><br />
-        <a href="mailto:library@ucdavis.edu">library@ucdavis.edu</a>
+        <a href="mailto:library@ucdavis.edu" class="lib-email">library@ucdavis.edu</a>
       </p>
     </div><!-- col end -->
 
-    <div role="navigation"><!-- col start -->
+    <div class="col" role="navigation"><!-- col start -->
       <h2>Digital Collections</h2>
-      <ul class="menu">
-        <template is="dom-repeat" items="[[collections]]">
-          <li><a on-click="_onBrowseCollection" data-id$="[[item.id]]">[[item.name]]</a></li>
-        </template>
+      <ul class="menu vertical">
+        <li><a href="/#collections">Collections</a></li>
+        <li><a href="/search">Items</a></li>        
+        <li><a href="/about">About Digital Collections</a></li>
       </ul>
     </div><!-- col end -->
 
-    <div role="navigation"><!-- col start -->
+    <div class="col" role="navigation"><!-- col start -->
       <h2>Library Info</h2>
-      <ul class="menu">
+      <ul class="menu vertical">
         <li><a href="https://library.ucdavis.edu/special-collections/" target="_blank" rel="noopener">Special Collections</a></li>
         <li><a href="https://library.ucdavis.edu/news/" target="_blank" rel="noopener">News</a></li>
-        <li><a href="https://library.ucdavis.edu/about/" target="_blank" rel="noopener">About</a></li>
+        <li><a href="https://library.ucdavis.edu/about/" target="_blank" rel="noopener">About the Library</a></li>
         <li><a href="https://library.ucdavis.edu/library/" target="_blank" rel="noopener">Visit</a></li>
         <li><a href="https://library.ucdavis.edu/service/careers/" target="_blank" rel="noopener">Careers</a></li>
+        <li class="donate">
+          <a href="http://give.ucdavis.edu/ULIB" target="_blank" rel="noopener">Give to the UC Davis Library</a>
+        </li>
       </ul>
-      <div class="donate"><a href="http://give.ucdavis.edu/ULIB" target="_blank" rel="noopener">Give to the UC Davis Library</a></div>
     </div><!-- col end -->
 
-    <div role="navigation"><!-- col start -->
+    <div class="col" role="navigation"><!-- col start -->
       <h2>Account</h2>
-      <ul class="menu">
+      <ul class="menu vertical">
         <li>
           <app-auth-footer></app-auth-footer>
         </li>
@@ -130,12 +190,12 @@
     </div><!-- col end -->
   </div><!-- row end -->
 
-  <div style="text-align:center">
-    <div class="logo"><!-- logo -->
-        <hr>
-        <div class="logo-img">
-            <img src="/images/ucd-logo.svg" alt="UC Davis Logo">
-        </div>
+  <div class="bottom-links" style="text-align: center;">
+    <div class="ucd-logo"><!-- ucd-logo -->
+      <hr />
+      <div>
+        <img src="/images/ucd-logo.svg" alt="UC Davis Logo">
+      </div>
     </div>
 
     <div>
@@ -148,8 +208,7 @@
         <li><a href="https://www.ucdavis.edu/" target="_blank" rel="noopener">UC Davis</a></li>
         <li><a href="https://www.universityofcalifornia.edu/" target="_blank" rel="noopener">University of California</a></li>
       </ul>
-      <p>Copyright &copy; 2017 The Regents of the University of California, Davis campus. All rights reserved.</p>
+      <p>Copyright &copy; 2020 The Regents of the University of California, Davis campus. All rights reserved.</p>
     </div>
   </div>
-
 </footer>

@@ -1,6 +1,7 @@
 const {AppStateModel} = require('@ucd-lib/cork-app-state');
 const AppStateStore = require('../stores/AppStateStore');
 const config = require('../config');
+const clone = require('clone');
 
 class AppStateModelImpl extends AppStateModel {
 
@@ -8,12 +9,13 @@ class AppStateModelImpl extends AppStateModel {
     super();
     this.store = AppStateStore;
 
-    this.EventBus.on(this.store.events.APP_STATE_UPDATE, () => this._sendGA());
     this._sendGA();
   }
 
   set(update) {
     if( update.location ) {
+      update.lastLocation = clone(this.store.data.location);
+
       // /collection/* is an alias for a base collection search
 
       let page = update.location.path ? update.location.path[0] : 'home';
@@ -30,6 +32,7 @@ class AppStateModelImpl extends AppStateModel {
       update.location.page = page;
     }
 
+    this._sendGA();
     return super.set(update);
   }
 
@@ -61,6 +64,14 @@ class AppStateModelImpl extends AppStateModel {
 
   getSelectedRecordMedia() {
     return this.store.getSelectedRecordMedia();
+  }
+
+  setSelectedCollection(collection) {
+    this.store.setSelectedCollection(collection);
+  }
+
+  getSelectedCollection() {
+    return this.store.getSelectedCollection();
   }
 
 }

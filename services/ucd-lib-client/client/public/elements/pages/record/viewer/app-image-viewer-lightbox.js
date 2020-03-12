@@ -24,22 +24,18 @@ export default class AppImageViewer extends Mixin(PolymerElement)
         type : Array,
         value : null
       },
-
       maxImageSize : {
         type : Number,
         value : 2048
       },
-
       media : {
         type : Object,
         value : () => {}
       },
-
       visible : {
         type : Boolean,
         value : false
       },
-
       loading : {
         type : Boolean,
         value : false
@@ -56,15 +52,29 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     });
   }
 
-  ready() {
+  async ready() {
     super.ready();
-    this.parentNode.removeChild(this);
+    
+    this.parentElement.removeChild(this);
     document.body.appendChild(this);
 
     this.shadowRoot.removeChild(this.$.safeCover);
     document.body.appendChild(this.$.safeCover);
 
-    this.mainApp = document.querySelector('fin-app');
+    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+  }
+
+  /**
+   * @method _onAppStateUpdate
+   * @description bound to AppStateModel app-state-update event
+   */
+  _onAppStateUpdate(e) {
+    if( e.showLightbox && !this.visible ) {
+      this.show();
+    } else if( !e.showLightbox && this.visible ) {
+      this.hide();
+    }
   }
 
   /**
@@ -82,26 +92,31 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @method show
    */
   async show() {
-    this.style.display = 'block';
-    this.render();
-    document.body.style.overflow = 'hidden';
     this.visible = true;
-    window.scrollTo(0,0);
+    this.style.display = 'block';
     this.$.safeCover.style.display = 'block';
 
-    this.mainApp.style.display = 'none';
-    setTimeout(() => this.$.nav.setFocus(), 0);
+    document.querySelector('fin-app').style.display = 'none';
+    document.body.style.overflow = 'hidden';
+    window.scrollTo(0,0);
+
+    this.render();
+
+    setTimeout(() => {
+      this.$.nav._resize();
+      this.$.nav.setFocus();
+    }, 25);
   }
 
   /**
    * @method hide
    */
   async hide() {
+    this.visible = false;
     this.style.display = 'none';
     this.$.safeCover.style.display = 'none';
     document.body.style.overflow = 'auto';
-    this.mainApp.style.display = 'block';
-    this.visible = false;
+    document.querySelector('fin-app').style.display = 'block';
   }
 
   /**
@@ -112,17 +127,16 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * 
    * @returns {Promise} resolves when image is loaded and bounds array has been set
    */
-  _loadImage(url) {
-    this.loading = true;
-
+   _loadImage(url) {
     return new Promise((resolve, reject) => {
       var img = new Image();
+
       img.onload = () => {
         let res = [img.naturalHeight, img.naturalWidth];
         this.bounds = [[0,0], res];
-        this.loading = false;
         resolve();
       };
+
       img.src = url;
     });
   }
@@ -134,41 +148,46 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   async render() {
     if( this.renderedMedia === this.media ) return;
+
     this.renderedMedia = this.media;
+    let id = this.renderedMedia['@id'];
+    if ( this.renderedMedia.associatedMedia && this.renderedMedia.media.imageList ) {
+      id = this.renderedMedia.image.url;
+    }
+    
+    let url = this._getImgUrl(id, '', '');
 
-    let height = this.media.image.height;
-    let width = this.media.image.width;
-    // if( height > width ) {
-    //   if( height > this.maxImageSize ) {
-    //     let scale = this.maxImageSize / height;
-    //     height = Math.floor(height * scale);
-    //     width = '';
-    //   }
-    // } else {
-    //   if( width > this.maxImageSize ) {
-    //     let scale = this.maxImageSize / width;
-    //     width = Math.floor(width * scale);
-    //     height = '';
-    //   }
-    // }
+    // used to check state below
+    this.loadingUrl = url;
 
-    let url = this._getImgUrl(this.media['@id'], '', '');
-    // let url = config.fcrepoBasePath+this.media['@id'];
-
-    if( this.viewer ) this.viewer.remove();
+    this.loading = true;
+    if( this.imageOverlay ) {
+      this.renderedUrl = '';
+      this.viewer.removeLayer(this.imageOverlay);
+      this.imageOverlay = null;
+    }
 
     await this._loadImage(url);
 
-    this.viewer = L.map(this.$.viewer, {
-      crs: L.CRS.Simple,
-      minZoom: -4,
-      // dragging :  !L.Browser.mobile,
-      // scrollWheelZoom : false,
-      // touchZoom : true,
-      zoomControl : false
-    });
+    // check that we 
+    //  - didn't have a new request that took longer than an old request
+    //  - that we didn't already render this url
+    if( url !== this.loadingUrl ) return;
+    if( url === this.renderedUrl ) return;
 
-    L.imageOverlay(url, this.bounds).addTo(this.viewer);
+    this.renderedUrl = url;
+
+    this.loading = false;
+
+    if( !this.viewer ) {
+      this.viewer = L.map(this.$.viewer, {
+        crs: L.CRS.Simple,
+        minZoom: -4,
+        zoomControl : false
+      });
+    }
+
+    this.imageOverlay = L.imageOverlay(url, this.bounds).addTo(this.viewer);
     this.viewer.fitBounds(this.bounds);
 
     this.shadowRoot.querySelector('.leaflet-control-attribution').style.display = 'none';
@@ -179,7 +198,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @description bound to view nav close event
    */
   _onCloseClicked() {
-    this.hide();
+    this.AppStateModel.set({showLightbox: false});
   }
 
   /**

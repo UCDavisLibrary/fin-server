@@ -1,8 +1,9 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import template from "./app-record-metadata-layout.html"
 
-import "@polymer/paper-tabs/paper-tabs"
-import "@polymer/paper-tabs/paper-tab"
+// import "@polymer/paper-tabs/paper-tabs"
+// import "@polymer/paper-tabs/paper-tab"
+import "../../utils/app-tabs"
 import "@polymer/iron-pages/iron-pages"
 import "@polymer/iron-media-query/iron-media-query"
 

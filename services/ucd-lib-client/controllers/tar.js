@@ -39,7 +39,7 @@ async function _createTar(body, req, res) {
   }
 
   for( var key in body ) {
-    body[key] = config.fin.host+config.fcrepo.root+body[key];
+    body[key] = config.fin.host+body[key];
   }
 
   try {

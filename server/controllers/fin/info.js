@@ -1,4 +1,4 @@
-const gitinfo = require('../../gitinfo.json');
+// const gitinfo = require('../../gitinfo.json');
 const services = require('../../models/services');
 const request = require('request');
 module.exports = async (req, res) => {
@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
   }
 
   res.json({
-    version: gitinfo,
+    version: {},
     services : arr
   });
 }

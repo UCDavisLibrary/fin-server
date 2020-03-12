@@ -11,3 +11,5 @@ services/ucd-lib-client/client/public/js/*ie-bundle*.js
 loaded-transforms
 gitinfo.json
 fcrepo-webapp-*-SNAPSHOT*
+tests
+temp/

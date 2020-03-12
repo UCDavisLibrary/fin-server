@@ -1,12 +1,12 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
-import CollectionInterface from '../../interfaces/CollectionInterface'
+import {markdown} from "markdown"
 
 import "../record/app-copy-cite"
 import template from "./app-collection-info-panel.html"
 import CitationsModel from "../../../lib/models/CitationsModel"
 
 class AppCollectionInfoPanel extends Mixin(PolymerElement)
-      .with(EventInterface, CollectionInterface) {
+      .with(EventInterface) {
   
   static get template() {
     let tag = document.createElement('template');
@@ -22,10 +22,6 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
         observer : '_onShowingUpdate'
       },
       title : {
-        type : String,
-        value : ''
-      },
-      description : {
         type : String,
         value : ''
       },
@@ -57,7 +53,12 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
     this.active = true;
     this.firstShow = true;
 
-    this._injectModel('RecordModel');
+    this._injectModel('RecordModel', 'AppStateModel');
+  }
+
+  async ready() {
+    super.ready();
+    this._onSelectedCollectionUpdate(this.AppStateModel.getSelectedCollection());
   }
 
   /**
@@ -70,7 +71,7 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
   async _onSelectedCollectionUpdate(selected) {
     if( !selected ) {
       this.title = '';
-      this.description = '';
+      this.$.description.innerHTML = '';
       this.subject = '';
       this.coverage = '';
       this.citation = '';
@@ -79,7 +80,7 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
 
     this.collection = selected;
     this.title = selected.name || '';
-    this.description = selected.description || '';
+    this.$.description.innerHTML = markdown.toHTML(selected.description || '');
 
     if( selected.subject ) {
       this.subject = selected.subject.join(', ');
@@ -113,7 +114,9 @@ class AppCollectionInfoPanel extends Mixin(PolymerElement)
     if( !this.firstShow ) return;
     this.firstShow = false;
 
-    this.engines = CitationsModel.engineList;
+    this.engines = CitationsModel.engineList.map((engine, index) => {
+      return {engine, label: CitationsModel.engineListLabels[index]}
+    });
     await CitationsModel._loadEngines();
     await this._onCiteFormatChange();
   }

@@ -1,5 +1,6 @@
 const {BaseModel} = require('@ucd-lib/cork-app-utils');
 const config = require('../config');
+const utils = require('../utils/index');
 
 const IMAGE_LIST = 'http://digital.ucdavis.edu/schema#ImageList';
 const IMAGE_LIST_360 = 'http://digital.ucdavis.edu/schema#ImageList360';
@@ -82,7 +83,10 @@ class MediaModel extends BaseModel {
    * @returns {Array}
    */
   getImageMediaList(rootRecord, type) {
+    if ( !rootRecord || !rootRecord._imageList ) return rootRecord;
+    
     if( rootRecord._imageList && rootRecord._imageList.length ) return rootRecord._imageList;
+    
     if( !rootRecord.associatedMedia ) return [];
 
     // see if we have an image list
@@ -90,14 +94,12 @@ class MediaModel extends BaseModel {
       let types = rootRecord.associatedMedia[i]['@type'];
       if( types && types.indexOf(type || IMAGE_LIST) > -1 ) {
         rootRecord._imageList = rootRecord.associatedMedia[i].hasPart || [];
-        rootRecord._imageList
-          .forEach(item => item.position = parseInt(item.position));
-        rootRecord._imageList
-          .sort((a, b) => {
-            if( a.position > b.position ) return 1;
-            if( a.position < b.position ) return -1;
-            return 1;
-          });
+        rootRecord._imageList.forEach(item => item.position = parseInt(item.position));
+        rootRecord._imageList.sort((a, b) => {
+          if( a.position > b.position ) return 1;
+          if( a.position < b.position ) return -1;
+          return 1;
+        });
 
         return rootRecord._imageList;
       }
@@ -115,6 +117,62 @@ class MediaModel extends BaseModel {
 
     return imageRecords;
   }
+
+  /**
+   * @method formatVideoForPlyr
+   * @description return a config object ready to be plugged into plyr
+   * 
+   * @param {Object} mediaRecord video container
+   * @param {Object} rootRecord root container for media
+   * 
+   * @return {Object}
+   */
+  // formatVideoForPlyr(mediaRecord, rootRecord={}) {
+  //   let transcripts = [], captions = [];
+
+  //   if( mediaRecord.caption ) {
+  //     utils.asArray(mediaRecord, 'caption').forEach(caption => {
+  //       if( !caption['@id'] ) return;
+
+  //       let lng = caption.language;
+  //       let setDefault = (lng === 'en' ? true : false);
+
+  //       let obj = {
+  //         kind: 'captions',
+  //         label: utils.getLanguage(lng),
+  //         srclang: lng,
+  //         src: caption['@id'],
+  //         default: setDefault
+  //       };
+
+  //       captions.push(obj);
+  //     });
+  //   }
+
+  //   let sources = [{
+  //     name: mediaRecord.name || rootRecord.name || '',
+  //     src: config.fcrepoBasePath+mediaRecord['@id'],
+  //     type: mediaRecord.encodingFormat || mediaRecord.fileFormat || '',
+  //     size: mediaRecord.videoQuality ? parseInt(mediaRecord.videoQuality) : null,
+  //     fileSize: mediaRecord ? parseInt(mediaRecord.contentSize) : null,
+  //     width: mediaRecord.videoFrameSize ? parseInt(mediaRecord.videoFrameSize.split("x")[0]) : 0,
+  //     height: mediaRecord.videoFrameSize ? parseInt(mediaRecord.videoFrameSize.split("x")[1]) : 0,
+  //     license: mediaRecord.license ? 'license' : 'none'
+  //   }];
+
+  //   return {
+  //     id: mediaRecord['@id'],
+  //     name: mediaRecord.name || rootRecord.name || '',
+  //     poster: mediaRecord.thumbnailUrl || mediaRecord.image || rootRecord.image,
+  //     encodingFormat: mediaRecord.encodingFormat,
+  //     videoQuality: mediaRecord.videoQuality ? parseInt(mediaRecord.videoQuality) : null,
+  //     width: mediaRecord.videoFrameSize ? parseInt(mediaRecord.videoFrameSize.split("x")[0]) : 0,
+  //     height: mediaRecord.videoFrameSize ? parseInt(mediaRecord.videoFrameSize.split("x")[1]) : 0,
+  //     sources: sources,
+  //     transcripts: transcripts,
+  //     captions: captions
+  //   }
+  // }
 
 }
 

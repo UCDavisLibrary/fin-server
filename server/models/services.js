@@ -10,6 +10,7 @@ const util = require('util');
 const redis = require('../lib/redisClient');
 const jwt = require('jsonwebtoken');
 const hdt = require('../lib/hdt');
+const auth = require('./auth');
 
 jsonld.frame = util.promisify(jsonld.frame);
 
@@ -37,8 +38,6 @@ class ServiceModel {
 
     // timer ids for sending http notifications
     this.notificationTimers = {};
-
-    this.init();
   }
 
   /**
@@ -57,22 +56,35 @@ class ServiceModel {
     // ensure all default services
     for( var i = 0; i < config.defaultServices.length; i++ ) {
       let service = config.defaultServices[i];
-      var response = await api.head({
-        path : '/'+api.service.ROOT+'/'+service.id
-      });
 
-      if( response.checkStatus(200) ) {
+      // switching to a force attempt delete strategy in case system is in bad state
+ 
+      // var response = await api.head({
+      //   path : '/'+api.service.ROOT+'/'+service.id
+      // });
+
+      // if( response.checkStatus(200) ) {
+      //   response = await api.delete({
+      //     path: '/'+api.service.ROOT+'/'+service.id,
+      //     permanent: true
+      //   })
+      // }
+
+      try {
         await api.delete({
           path: '/'+api.service.ROOT+'/'+service.id,
           permanent: true
-        })
-      }
+        });
+      } catch(e) {};
 
       if( service.type === api.service.TYPES.TRANSFORM ) {
         service.transform = fs.readFileSync(service.transform, 'utf-8');
       }
 
-      response = await api.service.create(service);
+      let response = await api.service.create(service);
+      if( !response.checkStatus(204) ) {
+        logger.warn(`Service ${service.id} may not have initialized correctly.  Returned status code: ${response.last.statusCode}`);
+      }
 
       if( service.secret ) {
         await this.setServiceSecret(service.id, service.secret);
@@ -148,7 +160,7 @@ class ServiceModel {
         let response = await api.get({path: service.path});
         service.transform = response.last.body;
       }
-      
+
       services[service.id] = new ServiceDefinition(service);
 
       if( service.type === api.service.TYPES.CLIENT ) {
@@ -309,14 +321,77 @@ class ServiceModel {
     return await jsonld.frame(container, frame);
   }
 
-  renderTransform(service, path) {
-    return transform.exec(service, path)
+  /**
+   * @method renderTransform
+   * @description given a service definition and or string path to a container or
+   * a object, transform either the object or the JSON-LD representation of the container.
+   * 
+   * @param {Object} service
+   * @param {Object|String} pathOrData
+   */
+  renderTransform(service, pathOrData) {
+    return transform.exec(service, pathOrData)
   }
 
   renderLabel(fcPath, svcPath = '') {
     let collection = fcPath.split('/')[2];
     let uri = decodeURIComponent(svcPath.replace(/^\//, ''));
     return hdt.getSubjects(collection, uri);
+  }
+
+  /**
+   * @method createWorkflowContainer
+   * @description create a new container for a workflow, return the pair tree id
+   * 
+   * @return {Promise} resolves to id
+   */
+  async createWorkflowContainer(service, username) {
+    if( !config.workflow ) {
+      config.workflow = {root: '/.workflow'}
+    }
+
+    let response = await api.head({path: config.workflow.root});
+    if( response.checkStatus(404) ) {
+      response = await api.postEnsureSlug({
+        path : '/',
+        slug: config.workflow.root.replace(/^\//, '')
+      });
+
+      // TODO: check status code
+    }
+
+    let jsonld = [{
+      "@id" : '',
+      "@type": [
+        "http://digital.ucdavis.edu/schema#Workflow"
+      ],
+      "http://digital.ucdavis.edu/schema#workflowServiceId": [{
+        "@value" : service.id,
+      }],
+      "http://digital.ucdavis.edu/schema#workflowServiceType": [{
+        "@value" : service.type,
+      }],
+      "http://schema.org/status": [{
+        "@value": "init"
+      }],
+      "http://schema.org/creator": [{
+        "@value": username
+      }]
+    }]
+
+    response = await api.post({
+      path : config.workflow.root,
+      headers : {
+        'content-type': 'application/ld+json'
+      },
+      content : JSON.stringify(jsonld)
+    });
+
+    if( !response.checkStatus(201) ) {
+      throw new Error(`Unable to create LDP workflow.  HTTP ${response.last.statusCode}: ${response.last.body}`);
+    }
+
+    return response.last.body.replace(/.*fcrepo\/rest/, '');
   }
   
   /**
@@ -341,7 +416,7 @@ class ServiceModel {
    */
   getRootDomain(url) {
     if( !url.match(/^http/) ) url = 'http://'+url;
-    url = new URL(url);
+    url = new URL(url.replace(/{{.*/, ''));
     let parts = url.hostname.replace(/\.$/, '').split('.');
     // let parts = url.host.replace(/\.$/, '').split('.');
     if( parts.length === 1) return parts[0];
@@ -371,6 +446,9 @@ class ServiceModel {
     if( id.match(/^\/collection\/[\w-_]+$/) ) {
       hdt.onCollectionUpdate(id.replace('/collection/', ''));
     }
+
+    // see if we need to update in memory acl
+    auth.onContainerUpdate(event);
 
     this._sendHttpNotificationBuffered(event);
   }
@@ -518,7 +596,7 @@ class ServiceModel {
    * 
    * @returns {String} jwt token for signature
    */
-  createServiceSignature(id, req) {
+  createServiceSignature(id, additionParams={}, req) {
     let service = this.services[id];
     if( !service ) {
       throw new Error('Unable to create signature for unknown service: '+id);
@@ -526,11 +604,11 @@ class ServiceModel {
 
     let secret = this.secrets[id];
 
-    let signature = jwt.sign({
+    let signature = jwt.sign(Object.assign(additionParams, {
         service : id,
         type: service.type,
         signer : secret ? id : 'fin'
-      }, 
+      }), 
       secret || config.jwt.secret,
       {
         issuer: config.jwt.issuer,
@@ -579,12 +657,14 @@ class ServiceDefinition {
     this.frame = data.frame || '';
     this.urlTemplate = data.urlTemplate || '';
     this.multiRouteTemplate = data.multiRouteTemplate ? true : false;
+    this.protected = data.protected === true ? true : false;
     this.url = data.url || '';
     this.title = data.title || '';
     this.description = data.description || '';
     this.transform = data.transform || '';
     this.supportedTypes = data.supportedTypes || [];
     this.id = data.id || '';
+    this.workflow = data.workflow ? JSON.parse(data.workflow) : false;
   }
 
   init(model) {

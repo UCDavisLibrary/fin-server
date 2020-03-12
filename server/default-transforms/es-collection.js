@@ -39,6 +39,11 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
+    attr : 'contentSize',
+    value : ['schema', 'contentSize']
+  });
+
+  await utils.add({
     attr : 'description',
     value : ['schema', 'description']
   });
@@ -160,4 +165,3 @@ module.exports = async function(path, graph, utils) {
 
   return item;
 }
-

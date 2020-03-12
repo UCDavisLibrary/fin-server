@@ -6,16 +6,19 @@
 
   #popup {
     display: none;
+    z-index: 5;
     background: white;
     padding: 10px;
     position: absolute;
     bottom: 70px;
     right: -20px;
+    min-width: 200px;
   }
 
   .layout {
     display: flex;
     margin-bottom: 5px;
+    justify-content: center;
   }
 
   input {
@@ -60,6 +63,7 @@
     border-radius: 0;
     border: none;
     cursor: pointer;
+    padding: 0 5px;
   }
   .copyButton[active] {
     text-align: center;
@@ -90,7 +94,6 @@
   }
 </style>
 
-
 <div id="popup">
   <div class="layout">
     <img id="facebook" 
@@ -104,13 +107,6 @@
       role="button" 
       tabindex="0" 
       src="/images/social-icons/icon-twitter.svg" 
-      class="social" 
-      on-click="_onSocialIconClick"
-      on-keyup="_onSocialIconClick" />
-    <img id="google" 
-      role="button" 
-      tabindex="0" 
-      src="/images/social-icons/icon-googleplus.svg" 
       class="social" 
       on-click="_onSocialIconClick"
       on-keyup="_onSocialIconClick" />

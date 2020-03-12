@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:12
 
 ADD index.js /service/index.js
 ADD package-lock.json /service/package-lock.json

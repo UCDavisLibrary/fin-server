@@ -179,6 +179,7 @@ class TransformUtils {
     json.image = {
       url : config.fcrepo.root+imgPath
     };
+
     await this._setImageMetadata(json);
     await this._setThumbnailUrl(json);
     await this._setColorPalette(json);
@@ -439,6 +440,11 @@ class TransformUtils {
    * @returns {Object}
    */
   get(path, container) {
+    if( !path ) {
+      if( Array.isArray(container) ) return container[0];
+      return container;
+    }
+
     if( Array.isArray(container) ) {
       for( var i = 0; i < container.length; i++ ) {
         if( container[i]['@id'].endsWith(path) ) {
@@ -575,28 +581,40 @@ class TransformService {
     this.count++;
   }
 
-  async exec(name, path) {
+  /**
+   * @method exec run transform
+   */
+  async exec(name, pathOrData) {
     if( !this.transforms[name] ) throw new Error('Unknown transform: '+name);
 
-    let options = {
-      path : path,
-      headers : {
-        Accept : api.RDF_FORMATS.JSON_LD,
-        Forwarded : this.getForwardedHeader()
+    let container = pathOrData;
+    let path = pathOrData;
+
+    if( typeof container === 'string' ) {
+      path = pathOrData;
+      let options = {
+        path : pathOrData,
+        headers : {
+          Accept : api.RDF_FORMATS.JSON_LD,
+          Forwarded : this.getForwardedHeader()
+        }
       }
-    }
 
-    let response = await api.head(options);
-    if( !api.isRdfContainer(response.last) ) {
-      options.path += '/fcr:metadata';
-    }
+      let response = await api.head(options);
+      if( !api.isRdfContainer(response.last) ) {
+        options.path += '/fcr:metadata';
+      }
 
-    response = await api.get(options);
-    if( !response.checkStatus(200) ) {
-      throw new Error(response.last.statusCode+' '+response.last.body);
-    }
+      response = await api.get(options);
+      if( !response.checkStatus(200) ) {
+        throw new Error(response.last.statusCode+' '+response.last.body);
+      }
 
-    let container = JSON.parse(response.last.body);
+      container = JSON.parse(response.last.body);
+    } else {
+      path = null;
+    } 
+
     return this.transforms[name](path, container, new TransformUtils());
   }
 

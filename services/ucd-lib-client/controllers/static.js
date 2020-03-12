@@ -6,8 +6,8 @@ const config = require('../config');
 const authUtils = require('../lib/auth');
 const records = require('../models/records');
 const collections = require('../models/collections');
-const transform = require('../lib/seo-transform');
-const collectionTransform = require('../lib/seo-collection-transform');
+const transform = require('../lib/seo/record-transform');
+const collectionTransform = require('../lib/seo/collection-transform');
 
 const bundle = `
   <script>
@@ -43,7 +43,16 @@ module.exports = (app) => {
         user = {loggedIn: false}
       }
 
+      let allCollections = await collections.all();
+      if( allCollections.results ) {
+        allCollections.results = allCollections.results.map(c => {
+          if( c.hasPart ) delete c.hasPart;
+          return c;
+        });
+      }
+
       return {
+        collections : allCollections,
         user : user,
         appRoutes : config.server.appRoutes,
         recordCount: (await records.rootCount()).count
@@ -103,10 +112,10 @@ module.exports = (app) => {
             if( !Array.isArray(record.keywords) ) keywords = [record.keywords];
             else keywords = record.keywords;
           }
-    
+
           return {
             jsonld, bundle,
-            title : record.name + ' - '+ config.server.title,
+            title : (record.name || record.title) + ' - '+ config.server.title,
             description : record.description || '',
             keywords : keywords.join(', ')
           }

@@ -17,7 +17,7 @@ $(foreach d,${service_dirs},$(eval ${d}/image:=fin-$(notdir $d)-service))
 # Snowflake for the client service
 ../../services/ucd-lib-client/image:=fin-ucd-lib-client
 
-other_dirs:= ../../fcrepo ../../server \
+other_dirs:= ../../fcrepo ../../postgres ../../server \
  ../../services/auto-generator-demo ../../services/trusted-proxy
 
 $(foreach d,${other_dirs},$(eval ${d}/image:=fin-$(notdir $d)))
@@ -32,29 +32,29 @@ dirs:=${service_dirs} ${other_dirs} ${extra_dirs}
 
 INFO::
 	@echo "Build and Push Images"; \
-  echo "  build all images: 'make build'";\
-  echo "  build and push all images: 'make build push'";\
-  echo "  just push all images: 'make push'";\
+	echo "  build all images: 'make build'";\
+	echo "  build and push all images: 'make build push'";\
+	echo "  just push all images: 'make push'";\
 	echo "  make one image: 'make dirs=../../server build'"; \
 	echo "  alternatively make one image: 'make fin-auto-generator-demo'"; \
-#	echo "  include tag with current package.json version: 'make package-version=1 build'"
-#	echo "  include tag with current git branch: 'make tag=branch build'";\
-#	echo "  only tag with current git commit: 'make tag=hash build'";\
+#  echo "  include tag with current package.json version: 'make package-version=1 build'"
+#  echo "  include tag with current git branch: 'make tag=branch build'";\
+#  echo "  only tag with current git commit: 'make tag=hash build'";\
 
 
 # Tagging from module packages has been removed
 # ifdef package-version
 # define package-version-tag
-# 	if [[ -f package.json ]]; then  \
-# 	  docker tag ${org}/$2:${branch} ${org}/$2:`jq -r .version < package.json`; \
-# 	fi; \
-# 	if [[ -f version ]]; then \
-# 	  docker tag ${org}/$2:${branch} ${org}/$2:`cat version`; \
-# 	fi
+#   if [[ -f package.json ]]; then  \
+#     docker tag ${org}/$2:${branch} ${org}/$2:`jq -r .version < package.json`; \
+#   fi; \
+#   if [[ -f version ]]; then \
+#     docker tag ${org}/$2:${branch} ${org}/$2:`cat version`; \
+#   fi
 # endef
 # else
 # define package-version-tag
-# 	echo "No tags from package.json";
+#   echo "No tags from package.json";
 # endef
 # endif
 
@@ -63,27 +63,27 @@ images::$2
 INFO::
 	@echo $2: $1
 
-#	docker tag ${org}/$2:${branch} ${org}/$2:${hash};
+#  docker tag ${org}/$2:${branch} ${org}/$2:${hash};
 
 .PHONY::$2
 build::$2
 $2:$1/Dockerfile
 	@cd $1;\
 	echo "{\"tag\":\"${currenttag}\",\"branch\":\"${branch}\",\"commit\":\"${hash}\"}" > gitinfo.json;\
-  docker build -t ${org}/$2:${branch} .; \
+	docker build -t ${org}/$2:${branch} .; \
 	if [[ -n "${tags}" ]]; then \
-	 for t in ${tags}; do \
-		  docker tag ${org}/$2:${branch} ${org}/$2:$$$$t; \
-   done; \
-  fi;\
-#	$(call package-version-tag,$1,$2)
+		for t in ${tags}; do \
+			docker tag ${org}/$2:${branch} ${org}/$2:$$$$t; \
+		done; \
+	fi;\
+#  $(call package-version-tag,$1,$2)
 
 push::
 	docker push ${org}/$2:${branch};\
-  if [[ -n "${tags}" ]]; then \
-  for t in ${tags}; do \
-	  docker push ${org}/$2:$$$$t;\
-  done;\
+	if [[ -n "${tags}" ]]; then \
+	for t in ${tags}; do \
+		docker push ${org}/$2:$$$$t;\
+	done;\
 	fi;
 
 endef

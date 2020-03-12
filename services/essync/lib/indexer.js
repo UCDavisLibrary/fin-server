@@ -413,7 +413,7 @@ class EsIndexer {
     if( !options.uri.match(/^http/i) ) {
       options.uri = this.getFcRepoBaseUrl() + options.uri;
     }
-    options.timeout = 2*60*1000;
+    options.timeout = 3*60*1000;
 
     if( !options.headers ) options.headers = {};
     if( !options.headers.Authorization ) {

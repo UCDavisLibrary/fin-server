@@ -15,12 +15,12 @@ services:
       - ../../server/cli:/app/cli
       - ../../server/controllers:/app/controllers
       - ../../server/lib:/app/lib
+      - ../../server/index.js:/app/index.js
       - ../../server/assets:/app/assets
       - ../../server/models:/app/models
       - ../../server/default-frames:/etc/fin/frames
       - ../../server/default-transforms:/etc/fin/transforms
       - ../../services/default-services.js:/etc/fin/default-services.js
-      - ../../server/gitinfo.json:/app/gitinfo.json
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
       - ../../server/backups:/fcrepo-backups
     ports:
@@ -55,7 +55,7 @@ services:
       - FIN_URL=${FIN_URL}
 
   postgres:
-    image: postgres:10.5
+    build: ../../postgres
     volumes:
       - pg-data:/var/lib/postgresql/data
     ports:
@@ -154,7 +154,6 @@ services:
       - ../../services/essync/schemas:/service/schemas
       - ../../services/essync/index.js:/service/index.js
       - ../../services/essync/reindex.js:/service/reindex.js
-      - ../../services/essync/gitinfo.json:/service/gitinfo.json
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
     environment:
       - JWT_SECRET=${JWT_SECRET}
@@ -230,7 +229,6 @@ services:
     build: ../../services/ucd-lib-client
     volumes:
       - ../../services/ucd-lib-client/index.js:/service/index.js
-      - ../../services/ucd-lib-client/gitinfo.json:/service/gitinfo.json
       - ../../services/ucd-lib-client/config.js:/service/config.js
       - ../../services/ucd-lib-client/client:/service/client
       - ../../services/ucd-lib-client/controllers:/service/controllers
@@ -241,11 +239,27 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
       - FIN_URL=${FIN_URL}
-      #- FIN_ENV=prod
+      - FIN_ENV=dev
     depends_on:
       - server
     command: node service
     # command: bash -c 'tail -f /dev/null'
+
+  gc-workflow:
+    build: ../../services/gc-workflow
+    volumes:
+      - ../../services/gc-workflow/index.js:/service/index.js
+      - ../../services/gc-workflow/lib:/service/lib
+      - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - FIN_URL=${FIN_URL}
+      - GC_WORKFLOW_TOPICS=video-service-dev
+    depends_on:
+      - server
+    # command: node service
+    command: bash -c 'tail -f /dev/null'
 
   basic-auth:
     build: ../../services/basic-auth

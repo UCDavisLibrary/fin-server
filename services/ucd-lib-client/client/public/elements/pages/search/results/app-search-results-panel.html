@@ -3,6 +3,7 @@
     display: block;
     max-width: 1150px;
     position: relative;
+    margin: 0 5px
   }
 
   .header {
@@ -75,6 +76,7 @@
   .total {
     font-style: italic; 
     padding-left: 10px;
+    flex: 1;
   }
 
   .mobile-total {
@@ -150,8 +152,23 @@
     margin-right: 10px;
   }
 
+  .mobile-header .row2-right {
+    display: flex;
+    align-items: center;
+  }
+
   .collections {
     text-align: center;
+  }
+
+  @media( max-width: 400px ) {
+    .mobile-header .row2 {
+      flex-direction: column;
+      justify-content: center;
+    }
+    .mobile-header .row2 .total {
+      padding: 8px 0 5px 0;
+    }
   }
 
   @media( min-width: 975px ) {
@@ -165,7 +182,7 @@
 </style>
 
 <div class="header">
-  <div class="total">[[total]] results found</div>
+  <div class="total" hidden$="[[showLoading]]">[[total]] results found</div>
   
   <div class="filler"></div>
   
@@ -207,48 +224,52 @@
   </div>
 
   <div class="row2">
-    <div class="total">[[total]] results</div>
+    <div class="total" hidden$="[[showLoading]]">[[total]] results</div>
 
-    <div class="filler"></div>
+    <div class="row2-right">
+      <div class="filler"></div>
     
-    <paper-icon-button 
-      noink
-      icon="fin-icons:grid" 
-      disabled$="[[!isListLayout]]"
-      on-click="_onLayoutToggle" 
-      type="masonry">
-    </paper-icon-button>
-    <div class="spacer"></div>
-    <paper-icon-button
-      noink
-      icon="fin-icons:list" 
-      disabled$="[[isListLayout]]"
-      on-click="_onLayoutToggle" 
-      type="list">
-    </paper-icon-button>
-    <div class="spacer"></div>
-    
-    <div>
-      <select id="numPerPageM" on-change="_onPageSizeChange">
-        <option>50</option>
-        <option>20</option>
-        <option>10</option>
-      </select>
+      <paper-icon-button 
+        noink
+        icon="fin-icons:grid" 
+        disabled$="[[!isListLayout]]"
+        on-click="_onLayoutToggle" 
+        type="masonry">
+      </paper-icon-button>
+      <div class="spacer"></div>
+      <paper-icon-button
+        noink
+        icon="fin-icons:list" 
+        disabled$="[[isListLayout]]"
+        on-click="_onLayoutToggle" 
+        type="list">
+      </paper-icon-button>
+      <div class="spacer"></div>
+      
+      <div>
+        <select id="numPerPageM" on-change="_onPageSizeChange">
+          <option>50</option>
+          <option>20</option>
+          <option>10</option>
+        </select>
+      </div>
+      <div style="margin: 0 10px; font-style:italic">per page</div>
     </div>
-    <div style="margin: 0 10px; font-style:italic">per page</div>
   </div>
 </div>
 
 <div class="collections" hidden$="[[!showCollectionResults]]">
   <div hidden$="[[!collectionResults.length]]">
     <h3>Collections</h3>
-    <template is="dom-repeat" items="[[collectionResults]]">
-      <app-collection-card 
-        collection="[[item]]" 
-        on-keyup="_onCollectionClicked"
-        on-click="_onCollectionClicked">
-      </app-collection-card>
-    </template>
+    <div style="text-align:center">
+      <template is="dom-repeat" items="[[collectionResults]]">
+        <app-collection-card 
+          collection="[[item]]" 
+          on-keyup="_onCollectionClicked"
+          on-click="_onCollectionClicked">
+        </app-collection-card>
+      </template>
+    </div>
     <h3 hidden$="[[!results.length]]">Items</h3>
   </div>
 </div>
@@ -276,7 +297,7 @@
   <paper-spinner-lite active$="[[showLoading]]"></paper-spinner-lite>
 </div>
 
-<div style="text-align:center">
+<div style="text-align:center" hidden$="[[showLoading]]">
   <cork-pagination 
     total-results="[[paginationTotal]]" 
     items-per-page="[[numPerPage]]"

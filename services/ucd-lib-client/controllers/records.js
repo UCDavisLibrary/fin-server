@@ -47,11 +47,27 @@ router.get('/es-search', async (req, res) => {
 });
 
 
-router.get('/*', async (req, res) => {
+router.get('/es-get/*', async (req, res) => {
   let id = req.query.id;
   if( !id ) {
-    id = req.path.replace(/\/api\/record/);
+    id = req.path.replace(/\/es-get/, '');
   }
+
+  if( !id ) {
+    return res.json({error: true, message: 'no id sent'});
+  }
+
+  try {
+    let result = await model.esGet(id, req.query.debug);
+    res.json(result);
+  } catch(e) {
+    res.json(utils.errorResponse(e, 'Error retrieving record: '+id));
+  }
+});
+
+router.get('/*', async (req, res) => {
+  let id = req.query.id;
+  if( !id ) id = req.path;
 
   if( !id ) {
     return res.json({error: true, message: 'no id sent'});

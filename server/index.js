@@ -1,10 +1,8 @@
 global.LOGGER_NAME = 'fin-server';
 
 const express = require('express');
-const path = require('path');
 const {logger, jwt, config} = require('@ucd-lib/fin-node-utils');
-const session = require('express-session');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const api = require('@ucd-lib/fin-node-api');
 
@@ -23,27 +21,33 @@ api.setConfig({
   jwt : jwt.create(SERVER_USERNAME, true)
 });
 
+// models like the service model and auth model require access
+// to fcrepo, init these models here
+async function initFromFcRepo() {
+  await require('./models/services').init();
+  await require('./models/auth').init();
+}
+
 logger.info('waiting for fcrepo connection');
 require('./lib/startupCheck')(() => {
   logger.info('fcrepo connection established');
 
   // create express instance
   const app = express();
-
   // Set up an Express session, which is required for CASAuthentication. 
-  const RedisStore = require('connect-redis')(session); 
-  app.use(session({
-    name : 'fin-sid',
-    store: new RedisStore({
-      host : 'redis'
-    }),
-    cookie : {
-      maxAge          : config.server.cookieMaxAge,
-    },
-    secret            : config.server.cookieSecret,
-    resave            : false,
-    saveUninitialized : true
-  }));
+  // const RedisStore = require('connect-redis')(session); 
+  // app.use(session({
+  //   name : 'fin-sid',
+  //   store: new RedisStore({
+  //     host : 'redis'
+  //   }),
+  //   cookie : {
+  //     maxAge          : config.server.cookieMaxAge,
+  //   },
+  //   secret            : config.server.cookieSecret,
+  //   resave            : false,
+  //   saveUninitialized : true
+  // }));
   app.use(cookieParser(config.server.cookieSecret)); 
 
   // setup simple http logging
@@ -56,8 +60,7 @@ require('./lib/startupCheck')(() => {
 
     res.on('finish',() => {
       let fcrepoProxyTime = req.fcrepoProxyTime ? 'fcrepo:'+req.fcrepoProxyTime+'ms' : '';
-      let cache = 'cache:' + (res.get('x-fin-cache') || 'no-cache');
-      logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}, ${fcrepoProxyTime} ${cache}`);
+      logger.info(`${res.statusCode} ${req.method} ${req.protocol}/${req.httpVersion} ${url} ${userAgent}, ${fcrepoProxyTime}`);
     });
     next();
   });
@@ -72,6 +75,11 @@ require('./lib/startupCheck')(() => {
    */
   const proxy = require('./models/proxy');
   proxy.bind(app);
+
+  /**
+   * Load data from fcrepo
+   */
+  initFromFcRepo();
 
   /**
    * Register Auth Controller

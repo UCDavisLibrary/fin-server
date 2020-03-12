@@ -2,7 +2,34 @@
   :host {
     display: block;
     position: relative;
-    background: white;
+    background: var(--super-light-background-color);
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  h2 {
+    margin: 0px;
+  }
+
+  input {
+    padding: 15px;
+    display: block;
+    width: 90%;
+    border: 0;
+  }
+
+  .about-link-icon {
+    position: absolute;
+    z-index: 5;    
+    top: 25px;
+    right: 25px;
+  }
+
+  .about-link-icon > iron-icon {
+    height: 30px;
+    width: 30px;
   }
 
   #hero {
@@ -17,56 +44,58 @@
     background-position: center;
   }
 
-  h2 {
-    margin: 0px;
-  }
-
-  input {
-    border: none;
-    padding: 15px;
-    display: block;
-    width: 90%;
-  }
-
-  .gradient {
-    opacity: .7;
+  .gradient {    
     position: absolute;
-    top : 0;
-    left : 0;
-    right : 0;
+    top: 0;
+    left: 0;
+    right: 0;
     bottom: 0;
+    opacity: .7;
     background-image: url('/images/home-gradient.png');
     background-size: cover;
     background-position: center;
   }
 
   img {
-    height: 50px;
-    top: 25px;
-    left: 25px;
     position: absolute;
     z-index: 5;
+    height: 50px;
+    top: 25px;
+    left: 25px;    
   }
 
-  .container {
-    background: white;
+  .container {    
     padding: 25px 10px;
+    background: white;
   }
 
   .search-box {
-    padding: 0 10px;
-    color: var(--inverse-text-color);
     z-index: 5;
+    color: var(--inverse-text-color);    
   }
 
   .search-box .main {
-    background-color: rgba(0, 38, 85, .7);
-    padding: 15px;
+    padding: 20px;
+    background-color: rgba(0, 38, 85, .8);    
   }
 
-  .search-box .footer {
-    background-color: rgba(51, 83, 121, .7);
-    padding: 15px;
+  .search-box .main h1 {
+    margin: 5px 0;
+    line-height: 2.0rem;
+  }
+
+  .search-box .footer {  
+    padding: 10px 20px;
+    color: white;
+    font-size: 0.8rem;
+    font-style: italic;
+    font-weight: normal;
+    line-height: 1.0rem;
+    background-color: rgba(51, 83, 121, .8);
+  }
+
+  .search-box .footer a {
+    color: var(--default-secondary-color);
   }
 
   .collection-outer {
@@ -75,23 +104,13 @@
   }
 
   .collections {
-    max-width: var(--max-width);
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    padding: 75px 20px;
+    padding: 50px 0;
+    max-width: var(--max-width);    
     border-bottom: 1px solid var(--light-background-color);
-  }
-
-  .collections > div {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    height: 320px;
-    width: 320px;
-    margin: 15px;
-    position: relative;
   }
 
   .collections > div:hover {
@@ -100,28 +119,30 @@
     border: 2px solid var(--default-primary-color);
   }
 
-  .collections > div > div {
-    position: absolute;
-    padding: 15px;
-    color: var(--default-secondary-color);
-    background-color: rgba(0, 38, 85, .7);
-    left : 0;
-    bottom : 25px;
-    font-weight: var(--font-weight-heavy);
-  }
-
   iron-icon.search-icon {
     color: var(--default-secondary-color);
   }
+
+  iron-icon.info {
+    fill: white;
+  }
 </style>
 
-<img src="/images/ucd-lib-logo-white.png" />
+<a href="/about/" class="about-link-icon">
+  <iron-icon icon="info" class="info" role="img" aria-label="About Link"></iron-icon>
+</a>
+
 <div id="hero">
+  <div class="logo">
+    <a href="https://www.library.ucdavis.edu/" target="_blank" rel="noopener">
+      <img src="/images/ucd-lib-logo-white.png" alt="UC Davis Library Logo" />
+    </a>
+  </div>
   <div class="gradient"></div>
   <div class="search-box">
     <div class="main">
-      <h2>UC Davis Library Digital Collections</h2>
-      <div style="margin-bottom: 15px">
+      <h1>UC Davis Digital Collections</h1>
+      <div style="margin: 5px 0 15px 0;">
         Explore digitized items from the 
         <a class="gold" href="https://library.ucdavis.edu" target="_blank" rel="noopener">UC Davis Library</a> 
         collections.
@@ -135,16 +156,18 @@
         <iron-icon icon="fin-icons:search" class="search-icon" slot="button-content"></iron-icon>
       </fin-search-box>
     </div>
+
     <div class="footer">
-      <!-- Featured Image: <a class="italic">foo bar</a>, <a class="italic">baz</a> -->
+      Featured image: 
+      <a href="/collection/eastman/D-051/B-4/B-4709">Agricultural College, Davis</a> |
+      <a href="/collection/eastman">Eastman Collection</a>
     </div>
   </div>
 
 </div>
-<app-header-colorbar height="15"></app-header-colorbar>
-
+<app-header-colorbar height="8"></app-header-colorbar>
 <div class="collection-outer">
-  <div class="collections">
+  <div class="collections" id="collections-home">
     <template is="dom-repeat" items="[[highlightedCollections]]">
       <app-collection-card 
         data-id$="[[item._id]]" 
@@ -155,62 +178,4 @@
     </template>
   </div>
 </div>
-
-<div class="text-container" style="padding: 10px">
-  
-  <h1>About Digital Collections</h1>
-
-  <p>The UC Davis Digital Collections is a locally developed digital repository that 
-    was designed to store and manage the digital assets of UC Davis. These Digital 
-    Collections are intended to increase access to previously undiscoverable digital 
-    assets held by the University Library.</p>
-  
-  <p>Initially launched in 2018, the repository currently stores <span>[[count]]</span> digital assets. Assests will be added continually as they are ready.</p>
-  
-  <h2>Platform</h2>
-  
-  <p>The Digital Asset Management System is built on the Fedora Linked Data Platform. 
-    Custom microservices are implemented using a Fedora (API-X) extension method as a general 
-    methodology. The User Interface was built with web-components anticipating a need for 
-    UI flexibility as the digital collection grows. For a more detailed explanation of 
-    the development, see our 
-    <a href="https://github.com/UCDavisLibrary/fin-server/wiki/Fin-Server-Overview">Fin Server Overview</a> or
-    <a href="https://github.com/UCDavisLibrary/fin-server/blob/master/docs/README.md">Developer Documentation.</a>
-  </p>
-  
-  <h2>Contact</h2>
-  <div>
-    <ul>
-      <li><a href="mailto:eanebeker@ucdavis.edu">Eric A Nebeker - Digital Assets Specialist</a></li>
-    </ul>
-  </div>
-  
-  <h2>Implementation Team</h2>
-  <div>
-    <ul>
-      <li><a href="https://www.library.ucdavis.edu/author/quinn-hart">Quinn Hart - Team Lead</a></li>
-      <li><a href="https://www.library.ucdavis.edu/author/justin-merz">Justin Merz - Lead Developer</a></li>
-      <li><a href="https://www.library.ucdavis.edu/author/kimmy-hescock">Kimmy Hescock - User Experience Designer</a></li>
-    </ul>
-  </div>
-  
-  <h2>Members of the DAMS Steering Committee</h2>
-  <div>
-    <ul>
-      <li><a href="https://www.library.ucdavis.edu/author/peter-brantley">Peter Brantley</a></li>
-      <li><a href="https://www.library.ucdavis.edu/author/vessela-ensberg">Vessela Ensberg</a></li>
-      <li><a href="https://www.library.ucdavis.edu/author/bob-heyer-gray">Robert Heyer-Gray</a></li>
-      <li><a href="https://www.library.ucdavis.edu/author/xiaoli-li">Xiaoli Li</a></li>
-      <li><a href="https://www.library.ucdavis.edu/author/kevin-miller">Kevin Miller</a></li>
-      <li><a href="https://www.library.ucdavis.edu/author/eric-nebeker">Eric Nebeker</a></li>
-      <li><a href="https://www.library.ucdavis.edu/author/dale-snapp">Dale Snapp</a></li>
-      <li><a href="https://www.library.ucdavis.edu/author/carl-stahmer">Carl Stahmer</a></li>
-      <li><a href="https://www.library.ucdavis.edu/author/neil-weingarten">Neil Weingarten</a></li>
-    </ul>
-  </div>
-  
-  <p>The UC Davis Library DAMS was a project of the Library's <a href="https://www.library.ucdavis.edu/service/online-strategy-2/">Online Strategy team.</a>
-  </p>
-
-</div>
-<app-header-colorbar height="15" flipped></app-header-colorbar>
+<app-header-colorbar height="8" flipped></app-header-colorbar>

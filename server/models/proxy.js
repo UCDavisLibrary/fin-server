@@ -1,37 +1,26 @@
-const httpProxy = require('http-proxy');
 const {URL} = require('url');
-const request = require('request');
-const querystring = require('querystring');
 const api = require('@ucd-lib/fin-node-api');
 const {logger, config, jwt} = require('@ucd-lib/fin-node-utils');
-
 const authModel = require('./auth');
 const serviceModel = require('./services');
-// const cache = require('./cache');
-
-var proxy = httpProxy.createProxyServer({
-    ignorePath : true
-});
+const proxy = require('../lib/http-proxy');
+const serviceProxy = require('./service-proxy');
+const forwardedHeader = require('../lib/forwarded-header');
+const authenticationServiceProxy = require('./service-proxy/authentication-service');
+const clientServiceProxy = require('./service-proxy/client-service');
 
 const FIN_URL = new URL(config.server.url);
 
-// Proxy|Frame|External service delimiter
-const SERVICE_CHAR = '/svc:'
-// AuthenticationService path
-const AUTHENTICATION_SERVICE_CHAR = '/auth'
-// regex for above
-const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
-const IS_AUTHENTICATION_SERVICE_URL = new RegExp('^'+AUTHENTICATION_SERVICE_CHAR, 'i');
+
+
 
 // cors headers we attach to registered origins
 const CORS_HEADERS = {
   ['Access-Control-Allow-Methods'] : 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
   ['Access-Control-Expose-Headers'] : 'content-type, link, content-disposition, content-length, pragma, expires, cache-control',
-  ['Access-Control-Allow-Headers'] : 'authorization, cookie, content-type, prefer, slug, cache-control, accept',
+  ['Access-Control-Allow-Headers'] : 'authorization, range, cookie, content-type, prefer, slug, cache-control, accept',
   ['Access-Control-Allow-Credentials'] : 'true'
 }
-
-const LABEL_SERVICE = 'label';
 
 const ROOT_DOMAIN = serviceModel.getRootDomain(config.server.url);
 
@@ -69,11 +58,14 @@ class ProxyModel {
     
     // handle AuthenticationService requests. Do not handle Fin auth endpoints
     // of /auth/token /auth/user /auth/logout /auth/mint /auth/service, these are reserved
-    app.use(/^\/auth\/(?!token|user|logout|mint|service|login-shell).*/i, this._proxyAuthenticationService.bind(this));
-    
+    app.use(/^\/auth\/(?!token|user|logout|mint|service|login-shell).*/i, authenticationServiceProxy);
+
+    // handle global services
+    app.use(/^\/svc:.*/, (req, res) => serviceProxy.middleware(req, res));
+
     // send all requests that are not /fcrepo, /auth or /fin to the ClientService
     // fcrepo is really handled above but reads a little better to add... :/
-    app.use(/^\/(?!auth|fcrepo|fin).*/, this._proxyClientService.bind(this));
+    app.use(/^\/(?!auth|fcrepo|fin).*/, clientServiceProxy);
   }
 
   /**
@@ -108,16 +100,8 @@ class ProxyModel {
     // we had a true fcrepo request, append appropriate fin service link headers
     this._appendServiceLinkHeaders(req, proxyRes);
 
+    // this is a hack for browser caching, see method details
     this._setNoCacheHeaders(proxyRes);
-
-    // JM - disabling cache
-    // set the cache
-    // if( cache.isCacheableRequest(req) ) {
-    //   cache.set(req.originalUrl, proxyRes, req);
-    // }
-
-    // finally set the cache header (either miss or ignored)
-    // proxyRes.headers[cache.HEADER] = req.cacheStatus;
   }
 
   /**
@@ -188,7 +172,7 @@ class ProxyModel {
 
     // set forwarded header to our base server url
     if( config.server.url ) {
-      req.headers['Forwarded'] = this._getForwardedHeader();
+      req.headers['Forwarded'] = forwardedHeader();
     }
 
     // if this is not a service request, preform basic fcrepo proxy request
@@ -198,11 +182,7 @@ class ProxyModel {
 
     // otherwise we have a service request
     // parse the incoming request path
-    this._serviceProxyRequest(serviceModel.parseServiceRequest(req), req, res);
-  }
-
-  _getForwardedHeader() {
-    return `host=${FIN_URL.host}; proto=${FIN_URL.protocol.replace(/:$/,'')}`
+    serviceProxy.middleware(req, res);
   }
 
   /**
@@ -220,42 +200,6 @@ class ProxyModel {
 
     // store for serivce headers
     req.fcPath = path;
-
-    // JM - disabling cache
-    // see if a cache hit
-    // if( cache.isCacheableRequest(req) ) {
-    
-    //   // first preflight a head request for headers so we can check out and cache
-    //   let info = await this._getContainerAccessAndInfo(req.originalUrl, req);
-    //   if( !info.access ) {
-    //     return res.status(info.response.statusCode).send(info.response.body || '');
-    //   }
-      
-    //   // we don't cache binary resources
-    //   if( info.binary ) {
-    //     req.cacheStatus = 'ignored';
-    //   } else {
-    //     // see if there is something in the cache
-        
-    //     // we had a true fcrepo request, append appropriate fin service link headers
-    //     this._appendServiceLinkHeaders(req, info.response);
-    //     let cachedRes = await cache.get(req.originalUrl, info.response.headers, req);
-       
-    //     // cache hit, set headers, body, return.  we are done.
-    //     if( cachedRes ) {
-    //       this._setReqTime(req);
-    //       for( var key in cachedRes.headers ) {
-    //         res.set(key, cachedRes.headers[key]);
-    //       }
-    //       res.set(cache.HEADER, 'hit');
-    //       return res.send(cachedRes.body);
-
-    //     // cache miss, store status so we can set header
-    //     } else {
-    //       req.cacheStatus = 'miss';
-    //     }
-    //   }
-    // }
 
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
     logger.debug(`Fcrepo proxy request: ${url}`);
@@ -301,7 +245,9 @@ class ProxyModel {
     // mint token
     let username = res.headers['x-fin-authorized-agent'];
     let isAdmin = authModel.isAdmin(username);
-    let token = jwt.create(username, isAdmin);
+    let acl = authModel.getUserAcl(username);
+    let token = jwt.create(username, isAdmin, acl);
+
 
     // set redirect url
     logger.info('redirect debug', req.query.cliRedirectUrl, req.query.redirectUrl, '/');
@@ -316,274 +262,6 @@ class ProxyModel {
     res.statusCode = 302;
     res.headers['location'] = url;
     res.headers['set-cookie'] = config.jwt.cookieName+'='+token+'; Path=/; HttpOnly';
-  }
-
-  /**
-   * @method _serviceProxyRequest
-   * @description handles proxy requests for FrameService, ProxyService and ExternalSerivce
-   * requests. First checks requesting agent has access via a head request.
-   * 
-   * @param {Object} svcReq - Service request object, parsed above
-   * @param {Object} expReq - Express request object
-   * @param {Object} res - Express response object
-   */
-  async _serviceProxyRequest(svcReq, expReq, res) {
-    // check this is even a valid service name
-    if( !serviceModel.services[svcReq.name] ) {
-      this._setReqTime(expReq);
-      return res.status(400).send(`Unknown Service: `+svcReq.name);
-    }
-
-    // check the requesting agent has access, if so, get information about
-    // this container from the fcrepo link headers
-    let info = await this._getContainerAccessAndInfo(svcReq.fcPath, expReq);
-    if( !info.access ) {
-      this._setReqTime(expReq);
-      return res.status(info.response.statusCode).send(info.response.body);
-    }
-
-    // grab the service definition
-    let service = serviceModel.services[svcReq.name];
-
-    // run the frame service
-    if( service.type === api.service.TYPES.FRAME ) {
-      try {
-        // if this is a binary resource w/ describedBy, make the call to described by
-        let describedBy = info.links.describedby || [];
-        if( describedBy.length ) {
-          svcReq.fcPath = new URL(describedBy[0].url).pathname;
-        }
-
-        let fcPath = svcReq.fcPath.replace(api.getConfig().basePath, '');
-        let framed = await serviceModel.renderFrame(service.id, fcPath);
-        this._setReqTime(expReq);
-        res.json(framed);
-      } catch(e) {
-        this._setReqTime(expReq);
-        res.status(500).send({
-          error : true,
-          message : 'Unable to render from frame service '+service.id,
-          details : {
-            message : e.message,
-            stack : e.stack
-          },
-          frame : service.frame
-        });
-      }
-
-    } else if( service.type === api.service.TYPES.TRANSFORM ) {
-      try {
-        let fcPath = svcReq.fcPath.replace(api.getConfig().basePath, '');
-        let transformed = await serviceModel.renderTransform(service.id, fcPath);
-        res.json(transformed);
-      } catch(e) {
-        res.status(500).send({
-          error : true,
-          message : 'Unable to render from transform service '+service.id,
-          details : {
-            message : e.message,
-            stack : e.stack
-          }
-        });
-      }
-      
-    // run the proxy service
-    } else if( service.type === api.service.TYPES.PROXY ) {
-      let params = {fcPath : svcReq.fcPath, svcPath: svcReq.svcPath};
-
-      // if the service has multiple endpoints, the first part of the 
-      // service is the route
-      if( service.multiRouteTemplate ) {
-        let parts = (svcReq.svcPath || '').replace(/^\//, '').split('/');
-        if( parts.length > 0 ) {
-          params.route = parts.splice(0, 1)[0];
-          params.svcPath = parts.join('/');
-        }
-      }
-      
-      let url = service.renderUrlTemplate(params);
-
-      proxy.web(expReq, res, {
-        target : url,
-        headers : {
-          [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(service.id),
-          'Forwarded' : this._getForwardedHeader()
-        }
-      });
-
-    // run the external service
-    } else if( service.type === api.service.TYPES.EXTERNAL ) {
-      this._setReqTime(expReq);
-
-      let token = jwt.getJwtFromRequest(expReq);
-      let url = service.renderUrlTemplate({fcUrl: querystring.escape(svcReq.fcUrl), token});
-      res.set(serviceModel.SIGNATURE_HEADER, serviceModel.createServiceSignature(service.id));
-      res.redirect(url);
-
-    // run server label service 
-    } else if( service.type === LABEL_SERVICE ) {
-      try {
-        let fcPath = svcReq.fcPath.replace(api.getConfig().basePath, '');
-        let resp = await serviceModel.renderLabel(fcPath, svcReq.svcPath);
-        res.json(resp);
-      } catch(e) {
-        res.status(500).send({
-          error : true,
-          message : 'Unable to render from label service',
-          details : {
-            message : e.message,
-            stack : e.stack
-          }
-        });
-      }
-      
-    // unknown service type
-    } else {
-      this._setReqTime(expReq);
-      res.status(500).json({
-        error : true,
-        message : 'Unsupported service type for request: '+service.type
-      })
-    }
-  }
-
-  /**
-   * @method _proxyAuthenticationService
-   * @description handle a AuthenticationService request.  Find the service from the service
-   * model, create the X-FIN-ORIGINAL-PATH and X-FIN-SERVICE-PATH headers, proxy request
-   * with new headers
-   * 
-   * @param {Object} req Express request
-   * @param {Object} res http-proxy response
-   */
-  _proxyAuthenticationService(req, res) {
-    // find the service name and lookup service in service model
-    let parts = req.originalUrl.replace(AUTHENTICATION_SERVICE_CHAR+'/', '').split('/');
-    let serviceName = parts.shift();
-    let service = serviceModel.services[serviceName];
-
-    // no service found
-    if( !service ) {
-      return res.status(404).send();
-    }
-
-    // strip /auth/[service-name] from request path.  This new path is where we will
-    // send proxy request
-    let path = req.originalUrl;
-    if( path.match(/^http/i) ) {
-      let urlInfo = new URL(path);
-      path = urlInfo.pathname;
-    }
-    path = path.replace(AUTHENTICATION_SERVICE_CHAR+'/'+service.id, '');
-
-    logger.info(`AuthenticationService proxy request: ${req.originalUrl} -> ${service.url+path}`);
-
-    // send proxy request to new path, including reference headers to original request path
-    proxy.web(req, res, {
-      target : service.url+path,
-      headers : {
-        'X-FIN-ORIGINAL-PATH' : req.originalUrl,
-        'X-FIN-SERVICE-PATH' : AUTHENTICATION_SERVICE_CHAR+'/'+service.id,
-        [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(service.id)
-      },
-      ignorePath : true
-    });
-  }
-
-  /**
-   * @method _proxyClientService
-   * @description Handle request to the client service.  this is basically any request
-   * that is not to /auth/* or /fcrepo/*.  This is a strait forward passthrough proxy.
-   * 
-   * @param {Object} req Express request
-   * @param {Object} res http-proxy response
-   */
-  _proxyClientService(req, res) {
-    if( !serviceModel.clientService ) {
-      return res.status(400).send('No ClientService registered');
-    }
-
-    try {
-      proxy.web(
-        req, res, 
-        {
-          target : serviceModel.clientService.url+req.originalUrl,
-          headers : {
-            [serviceModel.SIGNATURE_HEADER] : serviceModel.createServiceSignature(serviceModel.clientService.id)
-          }
-        }
-      );
-    } catch(e) {
-      logger.error('Failed to proxy to ClientService: '+serviceModel.clientService.id, e);
-      res.status(400);
-    }
-  }
-
-  /**
-   * @method _getContainerAccessAndInfo
-   * @description Get container info including; agent access information, container type
-   * 
-   * @param {String} path path to container
-   * @param {Object} req express request
-   * 
-   * @returns {Object}
-   */
-  async _getContainerAccessAndInfo(path, req) {
-    var token = jwt.getJwtFromRequest(req);
-
-    // make a head request to get fcrepo statusCode and link headers
-    var {response, body} = await this._request({
-      method : 'HEAD',
-      uri : path
-    }, token);
-
-    // if we don't get a 200 range status code from fcrepo, 
-    // requesting agent does not have access to this container
-    if( !api.isSuccess(response) ) {
-      return {access : false, response}
-    }
-
-    // parse the link headers, used by following operations
-    let links = {};
-    if( response.headers.link ) {
-      links = api.parseLinkHeader(response.headers.link);
-    }
-
-    // if we have a content-disposition header, we are a binary
-    // TODO: should we check the couple standard type headers fcrepo includes in the links?
-    if( response.headers['content-disposition'] ) {
-      return {
-        access: true, 
-        binary: true,
-        links, 
-        response
-      };
-    }
-
-    // we are not a binary container
-    return {access: true, binary: false, links, response};
-  }
-
-  /**
-   * @method _request
-   * @private
-   * @description Request promise wrapper and authorization wrapper
-   */
-  _request(options, token) {
-    if( token ) {
-      if( !options.headers ) options.headers = {};
-      options.headers.Authorization = `Bearer ${token}`;
-      options.headers.host = new URL(config.server.url).host;
-    }
-
-    options.uri = `http://${config.fcrepo.hostname}:8080${options.uri}`;
-
-    return new Promise((resolve, reject) => {
-      request(options, (error, response, body) => {
-        if( error ) reject(error);
-        else resolve({response, body});
-      });
-    });
   }
 
   /**

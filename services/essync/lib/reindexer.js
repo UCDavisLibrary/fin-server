@@ -10,7 +10,7 @@ api.setConfig({
   fcBasePath: config.fcrepo.root
 });
 
-const DEFAULT_TIMEOUT = 2*60*1000;
+const DEFAULT_TIMEOUT = 3*60*1000;
 
 class EsReindexer {
 
