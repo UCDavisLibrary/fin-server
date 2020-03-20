@@ -2,8 +2,6 @@ const {logger} = require('@ucd-lib/fin-node-utils');
 const buffer = require('./buffer');
 const config = require('./config');
 
-const WEB_FRIENDLY = 'ucdlib:WebFriendlyMediaObject';
-
 class AttributeReducer {
   
   constructor(esClient) {
@@ -34,6 +32,10 @@ class AttributeReducer {
       }
       e.record = record;
     }
+
+    // don't reduce bag of file attributes
+    let isBagOfFiles = record['@type'].includes(config.bagOfFiles.type);
+    if( isBagOfFiles ) return;
 
     if( e.record.isRootRecord ) {
       return buffer.add('attributes', e.record['@id'], {'@id': e.record['@id'], alias: e.alias});
@@ -99,6 +101,10 @@ class AttributeReducer {
     if( !record ) return;
     if( !record.isRootRecord ) return;
 
+    // don't reduce bag of file attributes
+    let isBagOfFiles = record['@type'].includes(config.bagOfFiles.type);
+    if( isBagOfFiles ) return;
+
     let reduced = {};
     let images = [];
     let visited = {};
@@ -146,12 +152,6 @@ class AttributeReducer {
     // does the record have an image?
     if( record.image ) {
       return;
-    }
-
-    // find a web friendly image 
-    for( var i = 0; i < images.length; i++ ) {
-      if( !images[i].isWebFriendly ) continue;
-      return record.image = images[i];
     }
 
     // set any image
@@ -219,7 +219,6 @@ class AttributeReducer {
     if( record.fileFormat && record.fileFormat.match(/^image/i) ) {
       images.push({
         inheritedFrom : record['@id'],
-        isWebFriendly : this.isWebFriendly(parent),
         url : record.image.url,
         height : record.image.height,
         width : record.image.width,
@@ -242,18 +241,6 @@ class AttributeReducer {
         await this.walkRecord(images, record, id, reduced, visited, identifier, alias);
       }
     }
-  }
-
-  /**
-   * @method isWebFriendly
-   * @description is the record a web-friendly image list
-   * 
-   * @param {Object} record 
-   * 
-   * @returns {Boolean}
-   */
-  isWebFriendly(record) {
-    return (record['@type'].indexOf(WEB_FRIENDLY) > -1);
   }
 
   /**

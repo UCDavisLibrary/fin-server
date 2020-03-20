@@ -82,11 +82,11 @@ module.exports = async function(path, graph, utils) {
     type : 'id'
   });
 
-  await utils.add({
-    attr : 'hasPart',
-    value : ['schema', 'hasPart'],
-    type : 'id'
-  });
+  // await utils.add({
+  //   attr : 'hasPart',
+  //   value : ['schema', 'hasPart'],
+  //   type : 'id'
+  // });
 
   await utils.add({
     attr : 'image',

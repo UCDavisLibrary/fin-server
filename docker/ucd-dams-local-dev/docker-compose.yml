@@ -26,8 +26,8 @@ services:
     ports:
       - 3000:3001
       - 9229:9229
-    # command: tail -f /dev/null
-    command: node app
+    command: tail -f /dev/null
+    # command: node app
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_ISSUER=${JWT_ISSUER}
@@ -242,8 +242,8 @@ services:
       - FIN_ENV=dev
     depends_on:
       - server
-    # command: node service
-    command: bash -c 'tail -f /dev/null'
+    command: node service
+    # command: bash -c 'tail -f /dev/null'
 
   gc-workflow:
     build: ../../services/gc-workflow

@@ -12,7 +12,7 @@ router.post('/search', async (req, res) => {
   }
 
   try {
-    res.json(await model.search(req.body, req.query.debug));
+    res.json(await model.search(req.body, req.query.all, req.query.debug));
   } catch(e) {
     res.json(utils.errorResponse(e, 'Error with search query'));
   }
@@ -20,7 +20,7 @@ router.post('/search', async (req, res) => {
 router.get('/search', async (req, res) => {
   try {
     var q = JSON.parse(req.query.q || '{}');
-    res.json(await model.search(q, req.query.debug));
+    res.json(await model.search(q, req.query.all, req.query.debug));
   } catch(e) {
     res.json(utils.errorResponse(e, 'Error with search query'));
   }

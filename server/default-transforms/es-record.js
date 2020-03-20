@@ -15,6 +15,7 @@ module.exports = async function(path, graph, utils) {
   }
   
   utils.ns({
+    "ldp" : "http://www.w3.org/ns/ldp#",
     "fedora" : "http://fedora.info/definitions/v4/repository#",
     "fast": "http://id.worldcat.org/fast/",
     "lcna": "http://id.loc.gov/authorities/names/",
@@ -182,6 +183,12 @@ module.exports = async function(path, graph, utils) {
   await utils.add({
     attr : 'parent',
     value : ['fedora', 'hasParent'],
+    type : 'id'
+  });
+
+  await utils.add({
+    attr : 'contains',
+    value : ['ldp', 'contains'],
     type : 'id'
   });
 

@@ -150,20 +150,23 @@ class RecordsModel extends ElasticSearchModel {
    * with isRootRecord).
    * 
    * @param {Object} SearchDocument
+   * @param {Boolean} allRecords search all records, not just root records.  defaults to false
    * @param {Boolean} debug will return searchDocument and esBody in result
    * 
    * @returns {Promise} resolves to search result
    */
-  async search(searchDocument = {}, debug = false) {
+  async search(searchDocument = {}, allRecords = false, debug = false) {
     // right now, only allow search on root records
     if( !searchDocument.filters ) {
       searchDocument.filters = {};
     }
 
-    searchDocument.filters.isRootRecord = {
-      type : 'keyword',
-      op : 'and',
-      value : [true]
+    if( !allRecords ) {
+      searchDocument.filters.isRootRecord = {
+        type : 'keyword',
+        op : 'and',
+        value : [true]
+      }
     }
 
     let esBody = this.searchDocumentToEsBody(searchDocument);

@@ -21,10 +21,15 @@ config.essync = {
   },
 
   // attributes to traverse when walking up the record tree
-  parentConnections : ['isPartOf','encodesCreativeWork'],
+  parentConnections : ['isPartOf','encodesCreativeWork','hasParent'],
 
   // attributes to traverse when walking down the record tree
   childConnections : ['hasPart', 'associatedMedia', 'caption', 'transcript'],
+
+  bagOfFiles : {
+    type : 'http://digital.ucdavis.edu/schema#bagOfFiles',
+    childConnection : 'contains'
+  },
 
   // svc: names for frame services 
   frameServices : {
