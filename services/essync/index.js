@@ -85,7 +85,7 @@ class EsSyncMessageServer extends MessageServer {
 
     // we only want collection and record types
     if( !indexer.isCollection(type) && 
-        !indexer.isRecord(type) ) {
+        !indexer.isRecord(path, type) ) {
       logger.info('Ignoring container '+path+'.  Not of type record or collection');
       return;
     }

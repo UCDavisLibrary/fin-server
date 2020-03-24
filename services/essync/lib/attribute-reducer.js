@@ -34,7 +34,7 @@ class AttributeReducer {
     }
 
     // don't reduce bag of file attributes
-    let isBagOfFiles = record['@type'].includes(config.bagOfFiles.type);
+    let isBagOfFiles = e.record['@type'].includes(config.essync.bagOfFiles.type);
     if( isBagOfFiles ) return;
 
     if( e.record.isRootRecord ) {
@@ -102,7 +102,7 @@ class AttributeReducer {
     if( !record.isRootRecord ) return;
 
     // don't reduce bag of file attributes
-    let isBagOfFiles = record['@type'].includes(config.bagOfFiles.type);
+    let isBagOfFiles = record['@type'].includes(config.essync.bagOfFiles.type);
     if( isBagOfFiles ) return;
 
     let reduced = {};

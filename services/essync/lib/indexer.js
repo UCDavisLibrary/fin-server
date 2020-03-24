@@ -111,6 +111,32 @@ class EsIndexer {
       await this.esClient.indices.create({
         index: newIndexName,
         body : {
+          settings : {
+            analysis : {
+              analyzer: {
+                autocomplete: { 
+                  tokenizer: 'autocomplete',
+                  filter: [
+                    'lowercase'
+                  ]
+                },
+                autocomplete_search : {
+                  tokenizer: "lowercase"
+                }
+              },
+              tokenizer: {
+                autocomplete: {
+                  type: 'edge_ngram',
+                  min_gram: 1,
+                  max_gram: 20,
+                  token_chars: [
+                    "letter",
+                    "digit"
+                  ]
+                }
+              }
+            }
+          },
           mappings : {
             [schemaName] : schema
           }
@@ -147,7 +173,7 @@ class EsIndexer {
         body: jsonld
       });
 
-    } else if( this.isRecord(jsonld['@id']) ) {
+    } else if( this.isRecord(jsonld['@id'], jsonld['@type']) ) {
       logger.info(`ES Indexer updating record container: ${jsonld['@id']}`);
 
       await this.esClient.index({
@@ -273,7 +299,7 @@ class EsIndexer {
 
     let svc = '';
     if( this.isCollection(types) ) svc = config.essync.transformServices.collection;
-    else if( this.isRecord(path) ) svc = config.essync.transformServices.record;
+    else if( this.isRecord(path, types) ) svc = config.essync.transformServices.record;
 
     // we don't have a frame service for this
     if( !svc ) return null;
@@ -487,7 +513,8 @@ class EsIndexer {
   //     types.indexOf(SHORT_MEDIA_OBJECT) > -1
   //   );
   // }
-  isRecord(path) {
+  isRecord(path, types=[]) {
+    if( types.includes('http://fedora.info/definitions/v4/repository#Pairtree') ) return false;
     return path.match(/^\/collection\/.*\/.*/);
   }
 

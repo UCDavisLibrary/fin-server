@@ -71,6 +71,16 @@
       "type" : "keyword"
     },
 
+    "directParent" : {
+      "type" : "keyword"
+    },
+
+    "filename": {
+      "type": "text",
+      "analyzer": "autocomplete", 
+      "search_analyzer": "autocomplete_search" 
+    },
+
     "fileFormats" : {
       "type" : "keyword"
     },

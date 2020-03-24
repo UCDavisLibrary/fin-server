@@ -146,7 +146,6 @@ class ProxyModel {
     // not fin server domain, external service domain or allowed origin domain
     let headers = CORS_HEADERS;
     if( ROOT_DOMAIN !== rootDomain && !serviceModel.authServiceDomains[rootDomain] && !this.allowOrigins[rootDomain] ) {
-      logger.info('Request with referer set to unknown domain: '+rootDomain+' / \''+referer+'\'');
       headers = UNKNOWN_ORIGIN_CORS_HEADERS;
     }
 

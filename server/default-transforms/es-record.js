@@ -249,8 +249,14 @@ module.exports = async function(path, graph, utils) {
 
   utils.setYearFromDate(item);
 
+  item.collectionId = item['@id'].split('/').splice(0, 3).join('/');
+
+  // set direct parent
+  item.directParent = item['@id'].split('/');
+  item.directParent.pop();
+  item.directParent = item.directParent.join('/');
+
   if( utils.isRecord(item['@type']) ) {
-    item.collectionId = item['@id'].split('/').splice(0, 3).join('/');
     utils.setRootRecord(item);
   }
 
