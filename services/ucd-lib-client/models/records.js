@@ -143,6 +143,36 @@ class RecordsModel extends ElasticSearchModel {
     }
   }
 
+  async getFiles(id, files=[]) {
+    let searchDocument = {
+      "filters":{
+        "directParent":{
+            type:"keyword",
+            value:[id],
+            "op":"or"
+        }
+      }
+    }
+    let resp = await this.search(searchDocument, {allRecords: true, noLimit: true});
+
+    let types;
+    for( let result of resp.results ) {
+      types = result['@type'] || [];
+      if( types.includes('http://fedora.info/definitions/v4/repository#Resource') ) {
+        files.push({
+          filename: result.filename, 
+          path: result['@id'],
+          fileFormat : result.fileFormat,
+          fileSize : result.fileSize
+        });
+      } else if( types.includes('http://www.w3.org/ns/ldp#BasicContainer') ) {
+        await this.getFiles(result['@id'], files);
+      }
+    }
+
+    return files;
+  }
+
   /**
    * @method search
    * @description search the elasticsearch records using the ucd dams
@@ -150,18 +180,19 @@ class RecordsModel extends ElasticSearchModel {
    * with isRootRecord).
    * 
    * @param {Object} SearchDocument
-   * @param {Boolean} allRecords search all records, not just root records.  defaults to false
-   * @param {Boolean} debug will return searchDocument and esBody in result
+   * @param {Boolean} options.allRecords search all records, not just root records.  defaults to false
+   * @param {Boolean} options.noLimit no limit on returned search filters.  defaults to false
+   * @param {Boolean} options.debug will return searchDocument and esBody in result
    * 
    * @returns {Promise} resolves to search result
    */
-  async search(searchDocument = {}, allRecords = false, debug = false) {
+  async search(searchDocument = {}, options = {allRecords: false, noLimit: false, debug: false}) {
     // right now, only allow search on root records
     if( !searchDocument.filters ) {
       searchDocument.filters = {};
     }
 
-    if( !allRecords ) {
+    if( !options.allRecords ) {
       searchDocument.filters.isRootRecord = {
         type : 'keyword',
         op : 'and',
@@ -169,7 +200,7 @@ class RecordsModel extends ElasticSearchModel {
       }
     }
 
-    let esBody = this.searchDocumentToEsBody(searchDocument);
+    let esBody = this.searchDocumentToEsBody(searchDocument, options.noLimit);
     let esResult = await this.esSearch(esBody);
     let result = this.esResultToDamsResult(esResult, searchDocument);
 
@@ -205,7 +236,7 @@ class RecordsModel extends ElasticSearchModel {
       result.aggregations.facets[filter] = tmpResult.aggregations.facets[filter];
     }
 
-    if( debug ) {
+    if( options.debug ) {
       result.searchDocument = searchDocument;
       result.esBody = esBody;
     }

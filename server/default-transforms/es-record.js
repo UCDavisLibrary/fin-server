@@ -10,9 +10,9 @@ module.exports = async function(path, graph, utils) {
   
   utils.init(item, container);  
 
-  if( !utils.isType(container, 'http://fedora.info/definitions/v4/repository#Resource') ) {
-    throw new Error('invalid type');
-  }
+  // if( !utils.isType(container, 'http://fedora.info/definitions/v4/repository#Resource') ) {
+  //   throw new Error('invalid type');
+  // }
   
   utils.ns({
     "ldp" : "http://www.w3.org/ns/ldp#",
@@ -186,11 +186,11 @@ module.exports = async function(path, graph, utils) {
     type : 'id'
   });
 
-  await utils.add({
-    attr : 'contains',
-    value : ['ldp', 'contains'],
-    type : 'id'
-  });
+  // await utils.add({
+  //   attr : 'contains',
+  //   value : ['ldp', 'contains'],
+  //   type : 'id'
+  // });
 
   await utils.add({
     attr : 'position',

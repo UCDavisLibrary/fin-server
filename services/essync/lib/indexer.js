@@ -514,7 +514,6 @@ class EsIndexer {
   //   );
   // }
   isRecord(path, types=[]) {
-    if( types.includes('http://fedora.info/definitions/v4/repository#Pairtree') ) return false;
     return path.match(/^\/collection\/.*\/.*/);
   }
 

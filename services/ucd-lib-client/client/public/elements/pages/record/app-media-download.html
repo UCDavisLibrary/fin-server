@@ -126,12 +126,12 @@
 </div>
 
 
-<form id="downloadTar" 
-action$="/api/tar/[[tarName]]" 
+<form id="downloadZip" 
+action$="/api/zip/[[zipName]]" 
 method="POST" 
 target="_blank" 
 hidden$="[[!fullSetSelected]]">    
-  <input type="text" hidden name="paths" id="tarPaths" style="display: none;">
+  <input type="text" hidden name="paths" id="zipPaths" style="display: none;">
   <button on-click="_onDownloadFullSetClicked">
     <iron-icon icon="file-download"></iron-icon>&nbsp;<span>Download Archive</span>
   </button>

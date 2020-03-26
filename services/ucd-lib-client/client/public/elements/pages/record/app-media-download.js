@@ -355,16 +355,16 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    */
   _toggleMultipleDownload() {
     this.fullSetSelected = this.$.fullset.checked ? true : false;
-    this._setTarPaths();
+    this._setZipPaths();
   }
 
   /**
-   * @method _setTarPaths
-   * @description set the fullset/tar form elements.
+   * @method _setZipPaths
+   * @description set the fullset/zip form elements.
    */
-  _setTarPaths() {
+  _setZipPaths() {
     let urls = {};
-    this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+    this.zipName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
 
     let sources = this._getAllNativeDownloadSources();
 
@@ -372,7 +372,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       urls[source.filename] = source.src;
     }
 
-    this.$.tarPaths.value = JSON.stringify(urls);
+    this.$.zipPaths.value = JSON.stringify(urls);
   }
 
   /**
@@ -394,11 +394,11 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   }
 
   /**
-   * @method _downloadTar
+   * @method _downloadZip
    * @description bound to download set button click event
    */
   _onDownloadFullSetClicked() {
-    this.$.downloadTar.submit();
+    this.$.downloadZip.submit();
 
     let path = this.rootRecord['@id'].replace(config.fcrepoBasePath, '');
     gtag('event', 'download', {

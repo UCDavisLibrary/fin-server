@@ -91,11 +91,15 @@ class ElasticSearchModel {
    * @param {Number} query.offset
    * @param {Number} query.limit
    * @param {Object} query.sort 
+   * @param {Boolean} noLimit defaults to false
    */
-  searchDocumentToEsBody(query) {
+  searchDocumentToEsBody(query, noLimit=false) {
     let esBody = {
       from : query.offset !== undefined ? query.offset : 0,
       size : query.limit !== undefined ? query.limit : 10
+    }
+    if( !query.limit && noLimit === true ) {
+      esBody.size = 10000 - esBody.from;
     }
 
     let aggs = this._getEsAggs(query.facets);

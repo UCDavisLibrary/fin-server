@@ -41,6 +41,11 @@ class RecordModel extends ElasticSearchModel {
 
     let result = await this.get(id);
 
+    // check for bag of files and prefetch
+    if( result.payload && (result.payload['@type'] || []).includes('http://digital.ucdavis.edu/schema#bagOfFiles') ) {
+      this.getFiles(result.rootId);
+    } 
+
     // only trigger a change if the root record changed.
     if( result.rootId !== this.currentRecordId ) {
       this.currentRecordId = result.rootId;
@@ -294,6 +299,22 @@ class RecordModel extends ElasticSearchModel {
     return this.store.getRecord(id);
   }
 
+  async getFiles(id) {
+    let state = this.store.getRecordFiles(id);
+
+    if( state && state.request ) {
+      await state.request;
+    } else if( state && state.state === 'loaded' ) {
+      if( state.id !== id ) {
+        this.store.setRecordFilesLoaded(id, state.payload)
+      }
+    } else {
+      await this.service.getFiles(id);
+    }
+
+    return this.store.getRecordFiles(id);
+  }
+
   setSearchLocation(searchDocument) {
     AppStateModel.setLocation('/search/'+this.searchDocumentToUrl(searchDocument));
   }
@@ -390,6 +411,30 @@ class RecordModel extends ElasticSearchModel {
       return this.store.getSearch().searchDocument;
     }
     return this.emptySearchDocument();
+  }
+
+  /**
+   * @method prepareFiles
+   * @description given an array of files, prep them for storage.
+   * This includes creating dir structure and properties
+   * 
+   * @param {Array} files 
+   */
+  prepareFiles(files) {
+    let dirs = {};
+    files.forEach(file => {
+      let dir = file.path.split('/');
+      dir.pop();
+      file.dir = dir.join('/');
+      
+      let obj = dirs;
+      for( let d of dir ) {
+        if( !obj[d] ) obj[d] = {};
+        obj = obj[d];
+      }
+    });
+    console.log({dirs, files});
+    return {dirs, files}
   }
 
 }
