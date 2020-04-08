@@ -7,6 +7,7 @@ import "./app-image-viewer"
 // import "./app-360-image-viewer"
 import "./app-video-viewer"
 import "./app-audio-viewer"
+import "./app-fs-viewer"
 
 import "./app-media-viewer-nav"
 import "./app-image-viewer-lightbox"

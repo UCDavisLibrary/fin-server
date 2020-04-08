@@ -1,41 +1,44 @@
 import { html } from 'lit-element';
 
 export default function render() {
-  return html`
-    <style>
-      :host {
-        display: block;
-        position: relative;
-        box-sizing: border-box;
-        background: black;
-      }
+return html`
 
-      .wrapper {
-        /* display: flex; */
-        /* flex-direction: column; */
-        /* min-height:250px; */
-      }
+<style>
+  :host {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    background: black;
+  }
 
-      iron-pages {
-        /* flex: 1; */
-        min-height: 250px;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-      }
-    </style>
+  .wrapper {
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* min-height:250px; */
+  }
 
-    <div class="wrapper">
-      <app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
+  iron-pages {
+    /* flex: 1; */
+    min-height: 250px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+</style>
 
-      <iron-pages selected="${this.mediaType}" attr-for-selected="id" selected-attribute="visible">
-        <!-- <app-360-image-viewer id="360"></app-360-image-viewer> -->
-        <app-image-viewer id="image"></app-image-viewer>
-        <app-video-viewer id="video"></app-video-viewer>
-        <app-audio-viewer id="audio"></app-audio-viewer>
-      </iron-pages>
+<div class="wrapper">
+  <app-image-viewer-lightbox id="lightbox"></app-image-viewer-lightbox>
 
-      <app-media-viewer-nav @zoom-in="${this._onZoomIn}"></app-media-viewer-nav>
-    </div>
-  `
-}
+  <iron-pages selected="${this.mediaType}" attr-for-selected="id" selected-attribute="visible">
+    <!-- <app-360-image-viewer id="360"></app-360-image-viewer> -->
+    <app-image-viewer id="image"></app-image-viewer>
+    <app-video-viewer id="video"></app-video-viewer>
+    <app-audio-viewer id="audio"></app-audio-viewer>
+  </iron-pages>
+
+  <app-media-viewer-nav @zoom-in="${this._onZoomIn}"></app-media-viewer-nav>
+</div>
+
+<app-fs-viewer></app-fs-viewer>
+
+`;}
