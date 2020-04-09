@@ -413,6 +413,14 @@ class RecordModel extends ElasticSearchModel {
     return this.emptySearchDocument();
   }
 
+  typeaheadSearch(searchDocument, opts={}) {
+    try {
+      return this.service.typeaheadSearch(searchDocument, opts);
+    } catch(e) {
+      return {searchDocument, error: e, state: 'error'};
+    }
+  }
+
   /**
    * @method prepareFiles
    * @description given an array of files, prep them for storage.

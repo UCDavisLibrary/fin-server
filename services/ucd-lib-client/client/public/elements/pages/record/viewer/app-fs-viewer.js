@@ -31,8 +31,10 @@ export default class AppFsViewer extends Mixin(LitElement)
     this.scrollPanel = this.shadowRoot.querySelector('app-virtual-scroller');
     this.scrollPanel.renderItem = this.renderRow;
 
-    this.parentElement.removeChild(this);
+    this.parentNode.removeChild(this);
     document.body.appendChild(this);
+
+    this.show();
   }
 
   // connectedCallback() {
@@ -47,18 +49,32 @@ export default class AppFsViewer extends Mixin(LitElement)
     if( !e.selectedRecord ) {
       return this.reset();
     }
+
     if( this.selectedRecord === e.selectedRecord ) return;
+
     this.selectedRecord = e.selectedRecord;
-    this.load(e.selectedRecord.id);
+    this.selectedRecordMedia = e.selectedRecordMedia;
+
+    this.files = [];
+    this.currentDir = '';
+
+    if( this.selectedRecord && this.selectedRecord['@type'].includes('http://digital.ucdavis.edu/schema#bagOfFiles') ) {
+      this._browseDirectory();
+    }
   }
 
   show() {
     this.style.display = 'block';
-    // this.background.style.style = 'block';
+    document.body.style.overflow = 'hidden';
+
+    if( this.selectedRecord ) {
+      this._browseDirectory();
+    }
   }
 
   hide() {
     this.style.display = 'none'
+    document.body.style.overflow = 'auto';
   }
 
   reset() {
@@ -68,12 +84,6 @@ export default class AppFsViewer extends Mixin(LitElement)
     this.isSearch = false;
     this.isBrowse = true;
     this.files = [];
-  }
-
-  async load(id) {
-    // this.loadingFiles = true;
-    // let result = await this.RecordModel.getFiles(id);
-    // if( this.selectedRecord['@id'] !== id ) return;
   }
 
   _renderBreadcrumbs() {
@@ -93,6 +103,86 @@ export default class AppFsViewer extends Mixin(LitElement)
 
   renderRow(index) {
     return html`<div>${index}</div>`
+  }
+
+  _onInputKeyup(e) {
+    let text = e.currentTarget.value;
+
+    if( this._autocompleteTimer ) {
+      clearTimeout(this._autocompleteTimer);
+    }
+    this._autocompleteTimer = setTimeout(() => {
+      this._autocompleteTimer = null;
+      this._typeaheadSearch(text);
+    }, 200);
+  }
+
+  async _typeaheadSearch(text) {
+    this.typeaheadSearchText = text;
+    if( text === '' ) {
+      this.browseDir();
+      this.files = [];
+      return;
+    }
+
+    let searchDoc = {
+      text,
+      filters : {
+        'collectionId' : {
+          type: 'keyword',
+          value: [this.selectedRecord.collectionId],
+          op: 'or'
+        },
+        '@id' : {
+          type : 'prefix',
+          value : this.selectedRecord['@id']
+        }
+      },
+      sort : null,
+      limit: 9999,
+      offset: 0,
+      facets: {},
+      textFields : ['filename']
+    }
+
+    let resp = await this.RecordModel.typeaheadSearch(searchDoc, {allRecords: true});
+    if( this.typeaheadSearchText !== text ) return;
+
+    this.files = resp.payload.results;
+  }
+
+  async _browseDirectory(dir) {
+    if( !dir ) {
+      if( this.currentDir ) dir = this.currentDir;
+      else dir = '/';
+    }
+
+    this.currentDir = dir;
+
+    let searchDoc = {
+      filters : {
+        'collectionId' : {
+          type: 'keyword',
+          value: [this.selectedRecord.collectionId],
+          op: 'or'
+        },
+        'directParent' : {
+          type : 'keyword',
+          value : [this.selectedRecord['@id']+this.currentDir],
+          op : 'or'
+        }
+      },
+      sort : null,
+      limit: 9999,
+      offset: 0,
+      facets: {}
+    }
+
+    let resp = await this.RecordModel.typeaheadSearch(searchDoc, {debug: true, allRecords: true});
+    console.log(resp.payload);
+    this.files = resp.payload.results;
+    console.log(this.files);
+
   }
 
 }

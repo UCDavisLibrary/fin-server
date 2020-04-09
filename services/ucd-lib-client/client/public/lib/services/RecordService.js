@@ -44,8 +44,10 @@ class RecordService extends BaseService {
    * 
    * @returns {Promise}
    */
-  search(searchDocument = {}) {
-    searchDocument.textFields = config.elasticSearch.textFields.record;
+  search(searchDocument = {}, debug=true) {
+    if( !searchDocument.textFields ) {
+      searchDocument.textFields = config.elasticSearch.textFields.record;
+    }
 
     // make sure we aren't sending the same query twice
     let currentSearchDocument = this.store.data.search.searchDocument || {};
@@ -54,7 +56,7 @@ class RecordService extends BaseService {
     }
 
     return this.request({
-      url : `${this.baseUrl}/search?debug=true`,
+      url : `${this.baseUrl}/search${debug ? '?debug=true' : ''}`,
       fetchOptions : {
         method : 'POST',
         headers : {
@@ -65,6 +67,40 @@ class RecordService extends BaseService {
       onLoading : promise => this.store.setSearchLoading(searchDocument,  promise),
       onLoad : result => this.store.setSearchLoaded(searchDocument, result.body),
       onError : e => this.store.setSearchError(searchDocument, e)
+    });
+  }
+
+    /**
+   * @method typeaheadSearch
+   * @description Search the records
+   * 
+   * @param {Object} searchDocument 
+   * 
+   * @returns {Promise}
+   */
+  typeaheadSearch(searchDocument = {}, opts={}) {
+    if( !searchDocument.textFields ) {
+      searchDocument.textFields = config.elasticSearch.textFields.record;
+    }
+
+    let qs = {};
+    if( opts.debug ) qs.debug = true;
+    if( opts.allRecords ) qs.all = true;
+
+    return new Promise((resolve, reject) => {
+      this.request({
+        url : `${this.baseUrl}/search`,
+        fetchOptions : {
+          method : 'POST',
+          headers : {
+            'Content-Type' : 'application/json'
+          },
+          body : JSON.stringify(searchDocument)
+        },
+        qs,
+        onLoad : result => resolve({searchDocument, payload: result.body, state: 'loaded'}),
+        onError : e => reject({searchDocument, error: e, state: 'error'})
+      });
     });
   }
 

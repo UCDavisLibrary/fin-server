@@ -14,8 +14,8 @@ router.post('/search', async (req, res) => {
   try {
     res.json(await model.search(req.body, {
       allRecords: req.query.all, 
-      debug: req.query.debug}
-    ));
+      debug: req.query.debug
+    }));
   } catch(e) {
     res.json(utils.errorResponse(e, 'Error with search query'));
   }

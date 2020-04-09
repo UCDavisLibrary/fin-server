@@ -5,7 +5,7 @@ return html`
 
 <style>
   :host {
-    display: block;
+    display: none;
     position: absolute;
     z-index: 10000;
     top: 0;
@@ -91,7 +91,7 @@ return html`
       <h2>${this.title}</h2>
       <div>${this.fileCount} files</div>
       <div style="display: flex">
-        <input type="text" placeholder="Search Files" />
+        <input type="text" placeholder="Search Files" @keyup="${this._onInputKeyup}" />
         <button class="search"><iron-icon icon="fin-icons:search"></iron-icon></button>
         <iron-icon icon="close"></iron-icon>
       </div>
@@ -111,6 +111,12 @@ return html`
   </div>
 
   <div>
+  ${this.files.map(file => html`
+  <div>
+    <div>${file.filename}</div>
+    <div>${file.directParent}</div>
+  </div>
+  `)}
     <app-virtual-scroller item-height="25" count="${this.files.length}"></app-virtual-scroller>
   </div>
 

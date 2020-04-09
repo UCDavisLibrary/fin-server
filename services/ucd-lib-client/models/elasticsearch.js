@@ -136,6 +136,7 @@ class ElasticSearchModel {
     let range = {};
     let rangeWithNull = [];
     let keywords = [];
+    let prefix = {};
 
     // loop all provided filters, splitting into keyword
     // and range filters
@@ -181,6 +182,10 @@ class ElasticSearchModel {
           }
           range[attr] = attrProps.value;
         }
+      } else if( attrProps.type === 'prefix' ) {
+
+        prefix[attr] = attrProps.value;
+
       }
     }
 
@@ -207,6 +212,13 @@ class ElasticSearchModel {
       }
 
       esBody.query.bool.must = esBody.query.bool.must.concat(rangeWithNull);
+    }
+
+    if( Object.keys(prefix).length > 0 ) {
+      if( !esBody.query.bool.must ) {
+        esBody.query.bool.must = [];
+      }
+      esBody.query.bool.must.push({prefix});
     }
 
     return esBody;
