@@ -12,13 +12,11 @@ class RecordStore extends BaseStore {
       defaultSearch : {},
       search : {
         state : this.STATE.INIT
-      },
-      files : {}
+      }
     }
 
     this.events = {
       RECORD_UPDATE : 'record-update',
-      RECORD_FILES_UPDATE : 'record-files-update',
       RECORD_SEARCH_UPDATE : 'record-search-update',
       DEFAULT_RECORD_SEARCH_UPDATE : 'default-record-search-update'
     }
@@ -66,40 +64,6 @@ class RecordStore extends BaseStore {
       this.data.byId[state.rootId] = state;
     }
     this.emit(this.events.RECORD_UPDATE, state);
-  }
-
-  /**
-   * Files
-   */
-  getRecordFiles(id) {
-    return this.data.files[id];
-  }
-
-  setRecordFilesLoading(id, promise) {
-    this._setRecordFilesState({
-      state: this.STATE.LOADING, 
-      id,
-      request : promise
-    });
-  }
-
-  setRecordFilesLoaded(id, payload) {
-    this._setRecordFilesState({
-      state: this.STATE.LOADED,
-      payload, id
-    });
-  }
-
-  setRecordFilesError(id, error) {
-    this._setRecordFilesState({
-      state: this.STATE.ERROR,   
-      error, id
-    });
-  }
-
-  _setRecordFilesState(state) {
-    this.data.files[state.id] = state;
-    this.emit(this.events.RECORD_FILES_UPDATE, state);
   }
 
   /**

@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement, html } from 'lit-element';
 import render from "./app-virtual-scroller.tpl.js"
 
 
@@ -10,8 +10,8 @@ export default class AppVirtualScroller extends LitElement {
         type: Number,
         attribute: 'item-height'
       },
-      renderedItems : {type: Array},
-      count : {type: Number}
+      items : {type: Array},
+      renderedItems : {type: Array}
     }
   }
 
@@ -21,16 +21,20 @@ export default class AppVirtualScroller extends LitElement {
 
     this.itemHeight = 20;
     this.renderedItems = [];
-    this.count = 0;
-    this.height = 0;
+    this.items = [];
+    this.height = -1;
 
     this._cacheHeight = this._cacheHeight.bind(this);
+
+    this.addEventListener('scroll', () => this._onViewportUpdate());
+  }
+
+  firstUpdated() {
+    this.positionEle = this.querySelector('.app-virtual-scroller-scroll-panel');
   }
 
   connectedCallback() {
     super.connectedCallback();
-
-    this.scrollEle = this.shadowRoot.querySelector('.outer');
 
     window.addEventListener('resize', this._cacheHeight);
     this._cacheHeight();
@@ -41,16 +45,39 @@ export default class AppVirtualScroller extends LitElement {
     window.removeEventListener('resize', this._cacheHeight);
   }
 
-  _cacheHeight() {
-    this.height = this.offsetHeight;
+  createRenderRoot() {
+    return this;
   }
 
-  _onViewportUpdate() {
-    let firstItem = Math.floor(this.scrollEle.scrollTop / this.itemHeight);
-    let lastItem = firstItem + Math.ceil(this.height / this.itemHeight);
-    if( lastItem >= this.count ) lastItem = this.count-1;
+  _cacheHeight(callViewportUpdate=true) {
+    this.height = this.offsetHeight;
+    if( callViewportUpdate === true ) this._onViewportUpdate();
+  }
 
-    if( this.firstItem === firstItem && this.lastItem === lastItem ) return;
+  setItemRenderer(renderer, scope) {
+    this.renderItem = renderer;
+    this.renderItemScope = scope || this;
+  }
+
+  updated(props) {
+    if( props.has('itemHeight') || props.has('items') ) {
+      this._onViewportUpdate(true);
+    }
+    if( props.has('items') ) {
+      this.positionEle.style.height = (this.itemHeight*(this.items.length-1))+'px';
+    }
+  }
+
+  _onViewportUpdate(force=false) {
+    if( this.height <= 0 ) this._cacheHeight(false);
+
+    let firstItem = Math.floor(this.scrollTop / this.itemHeight) - 1;
+    if( firstItem < 0 ) firstItem = 0;
+
+    let lastItem = firstItem + Math.ceil(this.height / this.itemHeight) + 1;
+    if( lastItem >= this.items.length ) lastItem = this.items.length;
+
+    if( this.firstItem === firstItem && this.lastItem === lastItem && force === false ) return;
     this.firstItem = firstItem;
     this.lastItem = lastItem;
 
@@ -62,9 +89,15 @@ export default class AppVirtualScroller extends LitElement {
   }
 
   renderItems() {
+    // update triggered from nested object
+    if( this.renderedItems.length > this.items.length ) {
+      // console.log('ignoring out of date render');
+      return html``;
+    }
+
     return this.renderedItems.map(item => html`
-      <div class="virtual-scroller-row" style="top: ${item.top}px;">
-        ${this.renderItem(item.index)}
+      <div style="position: absolute; left: 0; right: 0; top: ${item.top}px; height: ${this.itemHeight}px">
+        ${this.renderItem.apply(this.renderItemScope, [item.index])}
       </div>
     `);
   }

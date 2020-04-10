@@ -26,16 +26,6 @@ class RecordService extends BaseService {
     });
   }
 
-  getFiles(id) {
-    return this.request({
-      url : `${this.baseUrl}/files${id}`,
-      checkCached : () => this.store.getRecordFiles(id),
-      onLoading : request => this.store.setRecordFilesLoading(id, request),
-      onLoad : result => this.store.setRecordFilesLoaded(id, this.model.prepareFiles(result.body)),
-      onError : e => this.store.setRecordFilesError(id, e)
-    });
-  }
-
   /**
    * @method search
    * @description Search the records

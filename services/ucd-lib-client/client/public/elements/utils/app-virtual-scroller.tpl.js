@@ -4,29 +4,18 @@ export default function render() {
 return html`
 
 <style>
-  :host {
+  app-virtual-scroller {
     display: block;
-  }
-
-  .container {
     overflow-y: auto;
-    height: 100%;
   }
 
-  .scroll-panel {
+  app-virtual-scroller .app-virtual-scroller-scroll-panel {
     position: relative;
-  }
-
-  .virtual-scroller-row {
-    position: absolute;
   }
 </style>  
 
-<div class="container">
-  <div class="scroll-panel">
-    ${this.renderItems()}
-  </div>
+<div class="app-virtual-scroller-scroll-panel">
+  ${this.renderItems()}
 </div>
-
 
 `;}
