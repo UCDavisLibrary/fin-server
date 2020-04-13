@@ -12,6 +12,18 @@ return html`
     bottom: 0;
     right: 0;
     left: 0;
+    /* animation: 300ms linear fs-viewer-animate-in; */
+  }
+
+  @keyframes fs-viewer-animate-in {
+    0% {
+      transform: scale(1.2);
+      opacity: 0.5
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1
+    }
   }
 
   .layout {
@@ -44,6 +56,7 @@ return html`
   }
 
   .header-layout {
+    color: var(--default-primary-color);
     background-color: var(--light-background-color);
     padding: 20px;
     display: flex;
@@ -53,12 +66,13 @@ return html`
     margin-right: 20px;
   }
 
-  .header-image img {
+  .header-image img, .header-image iron-icon[icon="fin-icons:various-outline-stacked"] {
     height: 100px;
     width: 100px;
   }
 
-  input[type="text"] {
+  #searchInput {
+    font-size: 16px;
     flex: 1;
     width: 100%;
     box-sizing: border-box;
@@ -71,14 +85,24 @@ return html`
   }
 
   .row {
+    /* height: 100%; */
+  }
+
+  .row:hover {
+    cursor: pointer;
+    background-color: var(--color-light-yellow);
+  }
+
+  .row > div {
     display: flex;
     align-items: center;
-    margin: 0 5px;
+    height: 100%;
+    margin: 0 8px;
     border-bottom: 1px solid var(--medium-background-color);
   }
 
-  .row[directory] {
-    cursor: pointer;
+  .row[selected] {
+    background-color: var(--color-light-yellow);
   }
 
   .row .directory {
@@ -93,15 +117,26 @@ return html`
   }
 
   .row .filesize {
-    flex: 0.2;
+    width: 75px;
   }
 
   .row .icon, .row .filesize {
     padding: 6px 0;
   }
 
-  .row .file {
+  /* .row .file {
     flex: 1;
+  } */
+
+  .row .directory, .row .filename {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .row .selected-file {
+    width: 25px;
   }
 
   button.search {
@@ -120,6 +155,49 @@ return html`
 
   iron-icon[icon="chevron-right"] {
     color: var(--medium-background-color);
+  }
+
+  iron-icon[icon="folder"] {
+    color: var(--color-aggie-blue);
+  }
+  iron-icon[icon="fin-icons:image-solid"] {
+    color: var(--color-aggie-gold);
+  }
+  iron-icon[icon="fin-icons:video-solid"] {
+    color: var(--color-pinot);
+  }
+  iron-icon[icon="fin-icons:sound-solid"] {
+    color: var(--color-redbud);
+  }
+  iron-icon[icon="fin-icons:text-solid"] {
+    color: var(--color-putah-creek);
+  }
+  iron-icon[icon="fin-icons:spreadsheet-solid"] {
+    color: var(--color-quad);
+  }
+  iron-icon[icon="fin-icons:pdf-solid"] {
+    color: var(--double-decker);
+  }
+  iron-icon[icon="fin-icons:compressed-solid"] {
+    color: var(--color-poppy);
+  }
+  iron-icon[icon="fin-icons:file-solid"] {
+    color: var(--color-grey);
+  }
+  iron-icon[icon="check"] {
+    color: var(--default-secondary-color);
+  }
+
+  .table-header {
+    display: flex;
+    font-size: var(--font-size);
+    color: var(--color-grey);
+    font-style: italic;
+    padding: 10px 0;
+  }
+
+  .table-header > div {
+    padding-left: 5px;
   }
 
   .breadcrumbs {
@@ -141,11 +219,50 @@ return html`
     border-bottom: 1px dashed var(--medium-background-color);
   }
 
+  .footer {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .cancel-btn {
+    border: 1px solid var(--default-secondary-color);
+    color: var(--default-primary-color);
+    padding: 6px 10px;
+    margin: 0 15px 0 0;
+    background-color: transparent;
+    border-radius: 0;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 20px;
+    cursor: pointer;
+  }
+
+  .download-btn {
+    border: 1px solid var(--default-secondary-color);
+    background-color: var(--default-secondary-color);
+    color: var(--default-primary-color);
+    padding: 6px 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .download-button:visited {
+    color: var(--default-primary-color);
+  }
+
+  a[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   @media (max-width: 700px) {
     .content {
       margin: 0;
       flex: 1;
       width: 100%;
+      height: calc(100vh);
     }
   }
 </style>
@@ -156,7 +273,8 @@ return html`
   
     <div class="header-layout">
       <div class="header-image">
-        <img src="" />
+        <iron-icon icon="fin-icons:various-outline-stacked" ?hidden="${this.thumbnail}"></iron-icon>
+        <div style="background-image: url(${this.thumbnail}); background-size: cover; background-position: center center;" ?hidden="${!this.thumbnail}" ></div>
       </div>
       <div style="flex:1">
         <h2>${this.title}</h2>
@@ -178,9 +296,21 @@ return html`
 
       <div class="break"></div>
 
+      <div class="table-header">
+        <div style="flex:1">Name</div> 
+        <div style="width: 115px">Size</div>
+      </div>
       <app-virtual-scroller item-height="${this.lineHeight}" .items="${this.files}"></app-virtual-scroller>
 
-      <div></div> <!-- footer -->
+      <div class="footer">
+        <div style="flex: 1"></div>
+        <div>
+          <button class="cancel-btn" @click="${this.hide}">Cancel</button>
+        </div>
+        <div>
+          <a class="download-btn" ?disabled="${!this.selectedFile}" href="${this.selectedFile}" target="_blank">Download</a>
+        </div>
+      </div> <!-- footer -->
     </div>
 
 

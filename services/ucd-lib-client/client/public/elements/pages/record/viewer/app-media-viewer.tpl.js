@@ -17,6 +17,18 @@ return html`
     /* min-height:250px; */
   }
 
+  #bagoffiles {
+    text-align: center;
+  }
+
+  #bagoffiles iron-icon {
+    width: 100%;
+    height: 100%;
+    max-width: 150px;
+    max-height: 150px;
+    color: var(--color-grey);
+  }
+
   iron-pages {
     /* flex: 1; */
     min-height: 250px;
@@ -31,6 +43,9 @@ return html`
 
   <iron-pages selected="${this.mediaType}" attr-for-selected="id" selected-attribute="visible">
     <!-- <app-360-image-viewer id="360"></app-360-image-viewer> -->
+    <div id="bagoffiles">
+      <iron-icon icon="fin-icons:various-outline-stacked"></iron-icon>
+    </div>
     <app-image-viewer id="image"></app-image-viewer>
     <app-video-viewer id="video"></app-video-viewer>
     <app-audio-viewer id="audio"></app-audio-viewer>
@@ -38,7 +53,5 @@ return html`
 
   <app-media-viewer-nav @zoom-in="${this._onZoomIn}"></app-media-viewer-nav>
 </div>
-
-<app-fs-viewer></app-fs-viewer>
 
 `;}

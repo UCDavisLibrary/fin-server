@@ -7,7 +7,6 @@ import "./app-image-viewer"
 // import "./app-360-image-viewer"
 import "./app-video-viewer"
 import "./app-audio-viewer"
-import "./app-fs-viewer"
 
 import "./app-media-viewer-nav"
 import "./app-image-viewer-lightbox"
@@ -68,6 +67,10 @@ export default class AppMediaViewer extends Mixin(LitElement)
         mediaType = "image";
       } else if ( mediaType === "streamingvideo" ){
         mediaType = "video";
+      }
+
+      if( mediaType === 'bagoffiles' && e.selectedRecordMedia.image ) {
+        mediaType = "image";
       }
 
       this.mediaType = mediaType;

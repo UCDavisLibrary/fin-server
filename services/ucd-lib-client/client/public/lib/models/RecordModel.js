@@ -78,6 +78,8 @@ class RecordModel extends ElasticSearchModel {
       AppStateModel.setSelectedRecordMedia(result.payload.media.audio[0]);
     } else if (result.payload.media.image) {
       AppStateModel.setSelectedRecordMedia(result.payload.media.image[0]);
+    } else if (result.payload.media.bagOfFiles ) {
+      AppStateModel.setSelectedRecordMedia(result.payload.media.bagOfFiles[0]);
     } else {
       AppStateModel.setSelectedRecordMedia(null);
     }
@@ -213,6 +215,10 @@ class RecordModel extends ElasticSearchModel {
     if (type === "Binary" ) {
       if (!media.binaryFiles) media.binaryFiles = [];
       return media.binaryFiles.push(element);
+    }
+    if (type === "BagOfFiles" ) {
+      if (!media.bagOfFiles) media.bagOfFiles = [];
+      return media.bagOfFiles.push(element);
     }
   }
 

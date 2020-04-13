@@ -7,6 +7,7 @@ import citations from "../../../lib/models/CitationsModel"
 import utils from "../../../lib/utils"
 
 import "./app-media-download"
+import "./app-fs-media-download"
 import "./app-record-metadata-layout"
 import "./app-copy-cite"
 import "./viewer/app-media-viewer"
@@ -53,6 +54,10 @@ export default class AppRecord extends Mixin(PolymerElement)
         type : Array,
         value : () => []
       },
+      isBagOfFiles : {
+        type : Boolean,
+        value : false
+      }
     }
   }
 
@@ -102,6 +107,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.publisher.classList.add('hidden');
     this.$.fedoraValue.innerHTML = '';
     this.metadata = [];
+    this.isBagOfFiles = false;
   }
 
   /**
@@ -175,6 +181,8 @@ export default class AppRecord extends Mixin(PolymerElement)
     this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
     this.$.apa.text = await citations.renderEsRecord(this.record, 'apa');
     this.$.chicago.text = await citations.renderEsRecord(this.record, 'chicago');
+
+    this.isBagOfFiles = this.record['@type'].includes('http://digital.ucdavis.edu/schema#bagOfFiles');
   }
 
   _renderFcLink(record, media) {

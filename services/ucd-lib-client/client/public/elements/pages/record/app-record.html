@@ -220,7 +220,8 @@
 
       <div class="section bordered">
         <div class="label">Download Options</div>
-        <app-media-download id="download"></app-media-download>
+        <app-media-download id="download" hidden$="[[isBagOfFiles]]"></app-media-download>
+        <app-fs-media-download id="download" hidden$="[[!isBagOfFiles]]"></app-fs-media-download>
       </div>
 
       <!--

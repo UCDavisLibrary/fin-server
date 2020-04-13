@@ -2,7 +2,20 @@ import { LitElement, html } from 'lit-element';
 import render from "./app-fs-viewer.tpl.js"
 import "../../../utils/app-virtual-scroller"
 import "@polymer/iron-icons/editor-icons"
+import "@ucd-lib/fin-icons"
 import bytes from "bytes"
+
+const ICONS = {
+  'folder' : ['folder'],
+  'fin-icons:image-solid' : ['tif', 'tiff', 'gif', 'jpg', 'jp2', 'jpeg', 'webp', 'bmp', 'png'],
+  'fin-icons:video-solid' : ['avi', 'mp4', 'flv', 'wmv', 'mov'],
+  'fin-icons:sound-solid' : ['wav', 'mp3', 'mid', 'aif'],
+  'fin-icons:text-solid' : ['doc', 'docx', 'txt', 'rtf', '.odt'],
+  'fin-icons:spreadsheet-solid' : ['ods', 'csv', 'tsv', 'xsl', 'xslx'],
+  'fin-icons:pdf-solid' : ['pdf'],
+  'fin-icons:compressed-solid' : ['zip', 'rar', 'arj', 'gz', 'tgz']
+}
+const UNKNOWN_ICON = 'fin-icons:file-solid';
 
 export default class AppFsViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
@@ -14,7 +27,9 @@ export default class AppFsViewer extends Mixin(LitElement)
       loadingSearch : {type: Boolean},
       currentDir : {type: String},
       files : {type: Array},
+      selectedFile : {type: String},
       mode : {type: String},
+      thumbnail : {type: String},
       lineHeight : {type: Number},
     }
   }
@@ -27,6 +42,13 @@ export default class AppFsViewer extends Mixin(LitElement)
 
     this._injectModel('AppStateModel', 'RecordModel');
 
+    this.iconMap = {};
+    for( let icon in ICONS ) {
+      for( let ext of ICONS[icon] ) {
+        this.iconMap[ext] = icon;
+      }
+    }
+
     window.addEventListener('resize', () => this._onResize());
   }
 
@@ -38,7 +60,21 @@ export default class AppFsViewer extends Mixin(LitElement)
     this.parentNode.removeChild(this);
     document.body.appendChild(this);
 
-    this.show();
+    this.filenameWidth = '30px';
+
+    // setTimeout(() => {
+    //   this.show();
+    // }, 1000)
+    
+  }
+
+  updated(props) {
+    if( props.has('selectedFile') ) {
+      for( let file of this.files ) {
+        file.selected = (file.fullUrl === this.selectedFile);
+      }
+      this.scrollPanel.requestUpdate();
+    }
   }
 
   // connectedCallback() {
@@ -51,7 +87,18 @@ export default class AppFsViewer extends Mixin(LitElement)
 
   _onResize() {
     if( !this.contentBody ) return;
-    this.scrollPanel.style.height = (this.contentBody.offsetHeight - 175)+'px';
+    // this.scrollPanel.style.height = (this.contentBody.offsetHeight - 175)+'px';
+
+    let baseHeight = 335;
+    if( window.innerWidth > 700 ) {
+      this.scrollPanel.style.height = (window.innerHeight - baseHeight - 100)+'px';
+    } else {
+      this.scrollPanel.style.height = (window.innerHeight - baseHeight)+'px';
+    }
+
+    
+    this.filenameWidth = ( this.scrollPanel.offsetWidth - 155 )+'px';
+    this.scrollPanel.requestUpdate();
   }
 
   _onAppStateUpdate(e) {
@@ -60,6 +107,7 @@ export default class AppFsViewer extends Mixin(LitElement)
     }
 
     if( this.selectedRecord === e.selectedRecord ) return;
+    this.reset();
 
     this.selectedRecord = e.selectedRecord;
     this.selectedRecordMedia = e.selectedRecordMedia;
@@ -70,18 +118,20 @@ export default class AppFsViewer extends Mixin(LitElement)
     if( this.selectedRecord && this.selectedRecord['@type'].includes('http://digital.ucdavis.edu/schema#bagOfFiles') ) {
       this._browseDirectory();
       this.title = this.selectedRecord.name || this.selectedRecord.title;
+      this.thumbnail = this.selectedRecord.thumbnailUrl || '';
     }
   }
 
-  show() {
+  async show() {
     this.style.display = 'block';
     document.body.style.overflow = 'hidden';
 
     this._onResize();
+    setTimeout(() => {
+      this._onResize();
+    }, 50);
 
-    if( this.selectedRecord ) {
-      this._browseDirectory();
-    }
+    this._onAppStateUpdate(await this.AppStateModel.get());
   }
 
   hide() {
@@ -94,7 +144,8 @@ export default class AppFsViewer extends Mixin(LitElement)
     this.loadingSearch = false;
     this.currentDir = '/';
     this.files = [];
-    this.lineHeight = 25;
+    this.lineHeight = 41;
+    this.selectedFile = '';
   }
 
   _renderBreadcrumbs() {
@@ -119,18 +170,32 @@ export default class AppFsViewer extends Mixin(LitElement)
 
   renderRow(index) {
     let file = this.files[index];
-    let icon = file.isDirectory ? 'folder' : 'editor:insert-drive-file';
+    let icon = this._getIcon(file);
 
-    return html`<div class="row" ?directory="${file.isDirectory}" index="${index}" @click="${this._onItemClicked}" .context="${this}">
-      <div class="icon">
-        <iron-icon icon="${icon}"></iron-icon>
+    return html`
+      <div class="row" style="height: ${this.lineHeight-1}px" ?directory="${file.isDirectory}" ?selected="${file.selected}" index="${index}" @click="${this._onItemClicked}" .context="${this}">
+        <div>
+          <div class="icon">
+            <iron-icon icon="${icon}"></iron-icon>
+          </div>
+          <div class="file" style="width: ${this.filenameWidth}">
+            <div class="filename">${file.filename}</div>
+            <div class="directory" ?hidden="${this.mode === 'browse'}">${file.directory || '/'}</div>
+          </div>
+          <div class="filesize">${file.fileSize !== undefined ? bytes(file.fileSize) : '-'}</div>
+          <div class="selected-file">
+            <iron-icon icon="check" ?hidden="${!file.selected}"></iron-icon>
+          </div>
+        </div>
       </div>
-      <div class="file">
-        <div class="filename">${file.filename}</div>
-        <div class="directory" ?hidden="${this.mode === 'browse'}">${file.directory || '/'}</div>
-      </div>
-      <div class="filesize">${file.fileSize !== undefined ? bytes(file.fileSize) : ''}</div>
-    </div>`
+    `
+  }
+
+  _getIcon(file) {
+    let ext = file.isDirectory ? 'folder' : (file.filename || '').split('.').pop();
+    let icon = this.iconMap[ext];
+    if( icon ) return icon;
+    return UNKNOWN_ICON;
   }
 
   _onItemClicked(e) {
@@ -142,6 +207,8 @@ export default class AppFsViewer extends Mixin(LitElement)
 
     if( file.isDirectory ) {
       $this._browseDirectory(file['@id'].replace($this.selectedRecord['@id'], ''));
+    } else {
+      $this.selectedFile = file.fullUrl;
     }
   }
 
@@ -166,7 +233,8 @@ export default class AppFsViewer extends Mixin(LitElement)
     }
 
     this.mode = 'search';
-    this.lineHeight = 45;
+    this.lineHeight = 52;
+    this.selectedFile = '';
 
     let searchDoc = {
       text,
@@ -198,8 +266,9 @@ export default class AppFsViewer extends Mixin(LitElement)
     if( this.mode === 'browse' && this.currentDir === dir ) return;
 
     this.mode = 'browse';
-    this.lineHeight = 39;
+    this.lineHeight = 45;
     this.shadowRoot.querySelector('#searchInput').value = '';
+    this.selectedFile = '';
 
     if( !dir ) {
       if( this.currentDir ) dir = this.currentDir;
@@ -241,6 +310,8 @@ export default class AppFsViewer extends Mixin(LitElement)
         file.isDirectory = true;
         file.filename = file['@id'].split('/').pop();
       }
+      file.fullUrl = this._getFullFileUrl(file);
+      file.selected = (file.fullUrl === this.selectedFile);
       return file;
     })
 
@@ -249,6 +320,10 @@ export default class AppFsViewer extends Mixin(LitElement)
     }
 
     this.files = files;
+  }
+
+  _getFullFileUrl(file) {
+    return window.location.protocol + '//' + window.location.host + '/fcrepo/rest' + file['@id'];
   }
 
   _onClearSearchClicked() {
