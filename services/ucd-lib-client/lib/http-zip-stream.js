@@ -21,7 +21,7 @@ class HttpZipStream {
     return new Promise(async (resolve, reject) => {
       
       res.setHeader('content-type', 'application/zip');
-      res.setHeader('content-disposition', `attachment; filename="${zipName}.tar.gz"`)
+      res.setHeader('content-disposition', `attachment; filename="${zipName}"`)
 
       let archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
@@ -45,12 +45,32 @@ class HttpZipStream {
 
       archive.pipe(res);
 
+      // only make one request at a time
       for( let filename in urls ) {
-        archive.append(request(urls[filename]), {name: filename});
+        if( typeof urls[filename] === 'object' ) {
+          let {promise, stream} = this.request(urls[filename].url);
+          archive.append(stream, {
+            name: filename,
+            prefix: urls[filename].dir
+          });
+          await promise;
+        } else {
+          let {promise, stream} = this.request(urls[filename]);
+          archive.append(request(stream), {name: filename});
+          await promise;
+        }
       }
 
       archive.finalize();
     });
+  }
+
+  request(url) {
+    let stream = request(url);
+    let promise = new Promise((resolve, reject) => {
+      stream.on('close', () => resolve());
+    });
+    return {promise, stream}
   }
 
 }

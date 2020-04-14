@@ -2,16 +2,38 @@ const router = require('express').Router();
 const config = require('../config');
 const HttpZipStream = require('../lib/http-zip-stream');
 const cors = require('cors');
+const model = require('../models/records');
+const path = require('path');
 
 router.use(cors());
 
-router.post('/bag-of-files/:filename', async (req, res) => {
+router.get(/^\/bag-of-files\/.*/, async (req, res) => {
+  let id = req.originalUrl.replace(/\/api\/zip\/bag-of-files/, '');
 
   try {
+    let record = await model.get(id);
     
-  } catch(e) {}
+    let name = record.name || id.split('/').pop();
+    name = name.replace(/ /g, '-').toLowerCase()+'.zip';
 
-  _createZip(body, req, res);
+    let files = {};
+    (await model.getFiles(id)).forEach(file => {
+      files[file.filename] = {
+        url : config.fin.host+'/fcrepo/rest'+file.path,
+        dir : path.parse(file.path.replace(id, '')).dir
+      }
+    });
+    
+    let stream = new HttpZipStream();
+    await stream.zip(res, name, files);
+  } catch(e) {
+    res.status(500).json({
+      error: true,
+      message : 'Failed to generate archive for container',
+      details : e.message,
+      stack : e.stack
+    });
+  }
 });
 
 router.get('/:filename', async (req, res) => {

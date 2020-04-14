@@ -3,7 +3,8 @@ import render from "./app-fs-media-download.tpl.js"
 
 import "./viewer/app-fs-viewer"
 
-export default class AppFsMediaDownload extends LitElement {
+export default class AppFsMediaDownload extends Mixin(LitElement)
+  .with(LitCorkUtils) {
 
   static get properties() {
     return {
@@ -15,10 +16,18 @@ export default class AppFsMediaDownload extends LitElement {
     super();
     this.render = render.bind(this);
     this.mode = 'single'
+
+    this._injectModel('AppStateModel');
   }
 
-  firstUpdated() {
+  async firstUpdated() {
     this.fsViewer = this.shadowRoot.querySelector('app-fs-viewer');
+    this._onAppStateUpdate(await this.AppStateModel.get());
+  }
+
+  _onAppStateUpdate(e) {
+    this.selectedRecord = e.selectedRecord;
+    this.selectedRecordMedia = e.selectedRecordMedia;
   }
 
   _toggleMultipleDownload(e) {
@@ -30,6 +39,19 @@ export default class AppFsMediaDownload extends LitElement {
 
     if( this.mode === 'single' ) {
       this.fsViewer.show();
+    } else {
+      if( this.selectedRecordMedia.clientMediaDownload ) {
+        let url = this.selectedRecordMedia.clientMediaDownload;
+        if( Array.isArray(url) ) url = url[0];
+        if( typeof url === 'object' ) url = url['@id'];
+        url = '/fcrepo/rest/'+url;
+        console.log('downloading archive using: '+url);
+        open(url, '_blank');
+      } else {
+        let url = '/api/zip/bag-of-files'+this.selectedRecordMedia['@id'];
+        open(url, '_blank');
+        console.log('downloading archive using: '+url);
+      }
     }
   }
 
@@ -37,7 +59,7 @@ export default class AppFsMediaDownload extends LitElement {
     if( this.mode === 'single' ) {
       return html`<iron-icon icon='file-download'></iron-icon> Browse for file`;
     } else {
-      return html`Download`;
+      return html`<iron-icon icon='file-download'></iron-icon> Download Archive`;
     }
   }
 }

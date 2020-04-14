@@ -22,7 +22,8 @@ export default class AppMediaViewer extends Mixin(LitElement)
         mediaType: {
           type: String
         },
-        tallControls : {type: Boolean}
+        tallControls : {type: Boolean},
+        bagOfFilesImage : {type: String}
       }
     }
 
@@ -31,6 +32,7 @@ export default class AppMediaViewer extends Mixin(LitElement)
       this.render = render.bind(this);
       this._injectModel('AppStateModel', 'RecordModel');
       this.mediaType = 'image';
+      this.bagOfFilesImage = '';
     }
 
     async firstUpdated() {
@@ -69,8 +71,10 @@ export default class AppMediaViewer extends Mixin(LitElement)
         mediaType = "video";
       }
 
-      if( mediaType === 'bagoffiles' && e.selectedRecordMedia.image ) {
-        mediaType = "image";
+      if( mediaType === 'bagoffiles' && e.selectedRecordMedia.thumbnailUrl ) {
+        this.bagOfFilesImage = e.selectedRecordMedia.thumbnailUrl;
+      } else {
+        this.bagOfFilesImage = '';
       }
 
       this.mediaType = mediaType;
