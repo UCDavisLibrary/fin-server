@@ -120,7 +120,7 @@
     margin-right: 20px;
   }
 
-  .header-image img, .header-image iron-icon[icon="fin-icons:various-outline-stacked"] {
+  .header-image .img, .header-image iron-icon[icon="fin-icons:various-outline-stacked"] {
     height: 100px;
     width: 100px;
   }
@@ -328,7 +328,7 @@
     <div class="header-layout">
       <div class="header-image">
         <iron-icon icon="fin-icons:various-outline-stacked" ?hidden="${this.thumbnail}"></iron-icon>
-        <div style="background-image: url(${this.thumbnail}); background-size: cover; background-position: center center;" ?hidden="${!this.thumbnail}" ></div>
+        <div class="img" style="background-image: url(${this.thumbnail}); background-size: cover; background-position: center center;" ?hidden="${!this.thumbnail}" ></div>
       </div>
       <div style="flex:1">
         <h2>${this.title}</h2>

@@ -143,7 +143,7 @@ class MessageServer {
    * @returns {Boolean}
    */
   isDotPath(path) {
-    if( path.match(/http/) ) {
+    if( path.match(/^http/) ) {
       let urlInfo = new URL(path);
       path = urlInfo.pathname;
     }
