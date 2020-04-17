@@ -82,15 +82,20 @@ return html`
     height: 45px;
     outline: none;
     background-color: white;
+    border-radius: 0;
   }
 
   .row {
     /* height: 100%; */
   }
 
-  .row:hover {
-    cursor: pointer;
+  .vs-row[hover] {
     background-color: var(--color-light-yellow);
+  }
+
+  .row {
+    cursor: pointer;
+    /* background-color: var(--color-light-yellow); */
   }
 
   .row > div {

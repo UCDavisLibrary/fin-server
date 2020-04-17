@@ -314,7 +314,7 @@ export default class AppFsViewer extends Mixin(LitElement)
       file.fullUrl = this._getFullFileUrl(file);
       file.selected = (file.fullUrl === this.selectedFile);
       return file;
-    })
+    });
 
     if( sort ) {
       files.sort((a,b) => a.filename.toLowerCase() > b.filename.toLowerCase() ? 1 : -1);
