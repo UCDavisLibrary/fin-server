@@ -49,7 +49,7 @@ export default class AppVirtualScroller extends LitElement {
   }
 
   _onResize(e) {
-    this._cacheHeight(true)
+    this._cacheHeight(true);
   }
 
   _cacheHeight(callViewportUpdate=true) {

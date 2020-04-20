@@ -102,18 +102,15 @@ export default class AppFsViewer extends Mixin(LitElement)
   }
 
   _onAppStateUpdate(e) {
+    if( this.selectedRecord === e.selectedRecord ) return;
     if( !e.selectedRecord ) {
       return this.reset();
     }
 
-    if( this.selectedRecord === e.selectedRecord ) return;
     this.reset();
 
     this.selectedRecord = e.selectedRecord;
     this.selectedRecordMedia = e.selectedRecordMedia;
-
-    this.files = [];
-    this.currentDir = '';
 
     if( this.selectedRecord && this.selectedRecord['@type'].includes('http://digital.ucdavis.edu/schema#bagOfFiles') ) {
       this._browseDirectory();
@@ -128,11 +125,13 @@ export default class AppFsViewer extends Mixin(LitElement)
     window.scrollTo(0, 0);
 
     this._onResize();
-    setTimeout(() => {
-      this._onResize();
-    }, 50);
 
     this._onAppStateUpdate(await this.AppStateModel.get());
+
+    setTimeout(() => {
+      this._onResize();
+      this.scrollPanel._onResize();
+    }, 50);
   }
 
   hide() {
@@ -141,6 +140,7 @@ export default class AppFsViewer extends Mixin(LitElement)
   }
 
   reset() {
+    this.selectedRecord = null;
     this.loadingFiles = false;
     this.loadingSearch = false;
     this.currentDir = '/';
@@ -222,14 +222,14 @@ export default class AppFsViewer extends Mixin(LitElement)
     this._autocompleteTimer = setTimeout(() => {
       this._autocompleteTimer = null;
       this._typeaheadSearch(text);
-    }, 200);
+    }, 300);
   }
 
   async _typeaheadSearch(text) {
     this.typeaheadSearchText = text;
     if( text === '' ) {
-      this._browseDirectory();
       this.files = [];
+      this._browseDirectory();
       return;
     }
 
