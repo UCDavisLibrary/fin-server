@@ -15,9 +15,32 @@ steps:
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'ucdlib/fin-server:$BRANCH_NAME', './server']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'ucdlib/fin-ucd-lib-client:$BRANCH_NAME', './services/ucd-lib-client']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'ucdlib/fin-trusted-proxy:$BRANCH_NAME', './services/trusted-proxy']
   
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'ucdlib/fin-loris-service:$BRANCH_NAME', './services/loris']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'ucdlib/fin-tesseract-service:$BRANCH_NAME', './services/tesseract']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'ucdlib/fin-essync-service:$BRANCH_NAME', './services/essync']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'ucdlib/fin-cas-service:$BRANCH_NAME', './services/cas']
+
 images: [
   'ucdlib/fin-fcrepo:$BRANCH_NAME',
   'ucdlib/fin-postgres:$BRANCH_NAME',
-  'ucdlib/fin-server:$BRANCH_NAME'
+  'ucdlib/fin-server:$BRANCH_NAME',
+  'ucdlib/fin-trusted-proxy:$BRANCH_NAME',
+  'ucdlib/fin-loris-service:$BRANCH_NAME',
+  'ucdlib/fin-tesseract-service:$BRANCH_NAME',
+  'ucdlib/fin-essync-service:$BRANCH_NAME',
+  'ucdlib/fin-cas-service:$BRANCH_NAME'
 ]
