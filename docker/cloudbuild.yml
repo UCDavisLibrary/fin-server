@@ -16,8 +16,8 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'ucdlib/fin-server:$BRANCH_NAME', './server']
   
-  images: [
-    'ucdlib/fin-fcrepo:$BRANCH_NAME',
-    'ucdlib/fin-postgres:$BRANCH_NAME',
-    'ucdlib/fin-server:$BRANCH_NAME'
-  ]
+images: [
+  'ucdlib/fin-fcrepo:$BRANCH_NAME',
+  'ucdlib/fin-postgres:$BRANCH_NAME',
+  'ucdlib/fin-server:$BRANCH_NAME'
+]
