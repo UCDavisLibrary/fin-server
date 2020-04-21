@@ -8,12 +8,18 @@ steps:
     args: ["-c", "docker login --username=libosdev --password-stdin < pass.txt"]
   
   - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull ucdlib/fin-fcrepo:$BRANCH_NAME || exit 0']
+  - name: 'gcr.io/cloud-builders/docker'
     args: ['build', 
       '-t', 'ucdlib/fin-fcrepo:$BRANCH_NAME', 
       '--cache-from', 'ucdlib/fin-fcrepo:$BRANCH_NAME', 
       './fcrepo'
     ]
 
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull ucdlib/fin-postgres:$BRANCH_NAME || exit 0']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', 
       '-t', 'ucdlib/fin-postgres:$BRANCH_NAME', 
@@ -22,12 +28,18 @@ steps:
     ]
 
   - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull ucdlib/fin-server:$BRANCH_NAME || exit 0']
+  - name: 'gcr.io/cloud-builders/docker'
     args: ['build', 
       '-t', 'ucdlib/fin-server:$BRANCH_NAME', 
       '--cache-from', 'ucdlib/fin-server:$BRANCH_NAME', 
       './server'
     ]
 
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull ucdlib/fin-ucd-lib-client:$BRANCH_NAME || exit 0']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', 
       '-t', 'ucdlib/fin-ucd-lib-client:$BRANCH_NAME',
@@ -36,12 +48,18 @@ steps:
     ]
 
   - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull ucdlib/fin-trusted-proxy:$BRANCH_NAME || exit 0']
+  - name: 'gcr.io/cloud-builders/docker'
     args: ['build', 
       '-t', 'ucdlib/fin-trusted-proxy:$BRANCH_NAME', 
       '--cache-from', 'ucdlib/fin-trusted-proxy:$BRANCH_NAME', 
       './services/trusted-proxy'
     ]
-  
+
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull ucdlib/fin-loris-service:$BRANCH_NAME || exit 0']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', 
       '-t', 'ucdlib/fin-loris-service:$BRANCH_NAME', 
@@ -50,6 +68,9 @@ steps:
     ]
 
   - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull ucdlib/fin-tesseract-service:$BRANCH_NAME || exit 0']
+  - name: 'gcr.io/cloud-builders/docker'
     args: ['build', 
       '-t', 'ucdlib/fin-tesseract-service:$BRANCH_NAME', 
       '--cache-from', 'ucdlib/fin-tesseract-service:$BRANCH_NAME', 
@@ -57,12 +78,18 @@ steps:
     ]
 
   - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull ucdlib/fin-essync-service:$BRANCH_NAME || exit 0']
+  - name: 'gcr.io/cloud-builders/docker'
     args: ['build', 
       '-t', 'ucdlib/fin-essync-service:$BRANCH_NAME',
       '--cache-from', 'ucdlib/fin-essync-service:$BRANCH_NAME', 
       './services/essync'
     ]
 
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull ucdlib/fin-cas-service:$BRANCH_NAME || exit 0']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', 
       '-t', 'ucdlib/fin-cas-service:$BRANCH_NAME', 
