@@ -15,7 +15,6 @@ ADD lib /app/lib
 ADD models /app/models
 ADD assets /app/assets
 ADD index.js /app/
-ADD gitinfo.json /app/
 
 COPY default-frames /etc/fin/frames
 

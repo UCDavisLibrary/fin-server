@@ -11,6 +11,5 @@ ADD client /service/client
 ADD controllers /service/controllers
 ADD lib /service/lib
 ADD models /service/models
-ADD gitinfo.json /service/
 
 CMD node service

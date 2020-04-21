@@ -1,0 +1,23 @@
+steps:
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args: [ '-c', 'gcloud secrets versions access latest --secret=libosdev-dockerhub-secret > pass.txt' ]
+  
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "bash"
+    args: ["-c", "docker login --username=libosdev --password-stdin < pass.txt"]
+  
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'ucdlib/fin-fcrepo:$BRANCH_NAME', './fcrepo']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'ucdlib/fin-postgres:$BRANCH_NAME', './postgres']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'ucdlib/fin-server:$BRANCH_NAME', './server']
+  
+  images: [
+    'ucdlib/fin-fcrepo:$BRANCH_NAME',
+    'ucdlib/fin-postgres:$BRANCH_NAME',
+    'ucdlib/fin-server:$BRANCH_NAME'
+  ]
