@@ -105,7 +105,8 @@ images: [
   'ucdlib/fin-loris-service:$BRANCH_NAME',
   'ucdlib/fin-tesseract-service:$BRANCH_NAME',
   'ucdlib/fin-essync-service:$BRANCH_NAME',
-  'ucdlib/fin-cas-service:$BRANCH_NAME'
+  'ucdlib/fin-cas-service:$BRANCH_NAME',
+  'ucdlib/fin-ucd-lib-client:$BRANCH_NAME'
 ]
 
 timeout: 1200s
