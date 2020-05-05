@@ -5,6 +5,7 @@ import RecordInterface from '../../../interfaces/RecordInterface'
 
 import template from './app-facet-filter.html'
 
+import clone from "clone"
 import "./app-facet-checkbox"
 import "@polymer/iron-list"
 
@@ -44,6 +45,14 @@ class AppFacetFilter extends Mixin(PolymerElement)
       notified : {
         type : Object,
         value : () => ({})
+      },
+      includeTypeahead : {
+        type : Boolean,
+        value : false
+      },
+      typeaheadField : {
+        type : String,
+        value : ''
       }
     };
   }
@@ -159,6 +168,12 @@ class AppFacetFilter extends Mixin(PolymerElement)
     let item = buckets[parseInt(e.currentTarget.getAttribute('index'))];
     if( item.empty ) return;
 
+    // reset typeahead incase it was active
+    this.$.typeahead.value = '';
+    if( this.originalBuckets ) {
+      this.originalBuckets = null;
+    }
+
     let searchDoc = this._getCurrentSearchDocument();
     this._setPaging(searchDoc, 0);
     this._appendKeywordFilter(searchDoc, this.filter, item.key);
@@ -177,6 +192,34 @@ class AppFacetFilter extends Mixin(PolymerElement)
     this.RecordModel.setSearchLocation(searchDoc);
 
     this._notifySelected(false, item.key);
+  }
+
+  /**
+   * @method _onTypeaheadKeyup
+   * @description bound to typeahead text input keyup event
+   * 
+   * @param {Object} e 
+   */
+  _onTypeaheadKeyup() {
+    this._updateTypeahead();
+  }
+
+  _updateTypeahead() {
+    let text = this.$.typeahead.value;
+    if( !text ) {
+      if( this.originalBuckets ) {
+        this.buckets = this.originalBuckets;
+        this.originalBuckets = null;
+      }
+      return;
+    }
+
+    if( !this.originalBuckets ) {
+      this.originalBuckets = [...this.buckets];
+    }
+
+    let re = new RegExp('.*'+text.toLowerCase()+'.*', 'i');
+    this.buckets = this.originalBuckets.filter(item => item.sortKey.match(re) ? true : false);
   }
 
 }

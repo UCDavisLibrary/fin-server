@@ -81,15 +81,17 @@ module.exports = {
         type : 'facet',
         valueMap : rightsMap
       },
-      type : {
+      'type.raw' : {
         label : 'Type',
         type : 'facet',
+        typeahead: 'type',
         ignore : ['CreativeWork', 'MediaObject'],
         valueMap : value => value.replace(/(.)([A-Z])/g, '$1 $2')
       },
       'abouts.raw' : {
         label : 'Subject',
-        type : 'facet'
+        type : 'facet',
+        typeahead: 'abouts'
       }
     },
 
