@@ -13,19 +13,22 @@ import template from "./app-filters-panel.html"
 import config from "../../../../lib/config"
 const facetFilters = [];
 for( var key in config.elasticSearch.facets ) {
+  let c = config.elasticSearch.facets[key];
   facetFilters.push({
-    label : config.elasticSearch.facets[key].label,
-    type : config.elasticSearch.facets[key].type,
-    ignore : config.elasticSearch.facets[key].ignore,
-    valueMap : config.elasticSearch.facets[key].valueMap,
-    isDollar : config.elasticSearch.facets[key].isDollar,
+    label : c.label,
+    type : c.type,
+    ignore : c.ignore,
+    valueMap : c.valueMap,
+    isDollar : c.isDollar,
+    includeTypeahead : c.typeahead ? true : false,
+    typeaheadField : c.typeahead,
     filter : key
   });
 }
 
 
 class AppFiltersPanel extends Mixin(PolymerElement)
-      .with(EventInterface, RecordInterface, CollectionInterface) {
+      .with(EventInterface, RecordInterface) {
   
   static get template() {
     let tag = document.createElement('template');
@@ -43,7 +46,8 @@ class AppFiltersPanel extends Mixin(PolymerElement)
       },
       selectedTab : {
         type : String,
-        value : ''
+        value : '',
+        notify: true
       },
 
       selectedCollection : {
@@ -69,6 +73,7 @@ class AppFiltersPanel extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+    this._injectModel('AppStateModel');
   }
 
   ready() {

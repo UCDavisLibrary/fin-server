@@ -24,6 +24,7 @@ class TransformUtils {
     this.FILE_FORMAT = 'http://schema.org/fileFormat';
     this.HAS_MIME_TYPE = 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#hasMimeType';
     this.IMAGE_LIST = 'http://digital.ucdavis.edu/schema#ImageList';
+    this.BAG_OF_FILES = 'http://digital.ucdavis.edu/schema#bagOfFiles';
     this.HAS_PART = 'http://schema.org/hasPart';
     this.ENCODING_FORMAT = 'http://schema.org/encodingFormat';
     this.HAS_SIZE = 'http://www.loc.gov/premis/rdf/v1#hasSize';
@@ -472,7 +473,8 @@ class TransformUtils {
       types.indexOf(this.CREATIVE_WORK) > -1 || 
       types.indexOf(this.MEDIA_OBJECT) > -1 ||
       types.indexOf(this.SHORT_CREATIVE_WORK) > -1 || 
-      types.indexOf(this.SHORT_MEDIA_OBJECT) > -1
+      types.indexOf(this.SHORT_MEDIA_OBJECT) > -1 ||
+      types.includes(this.BAG_OF_FILES)
     );
   }
 

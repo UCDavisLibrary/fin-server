@@ -23,6 +23,19 @@
     color: var(--default-primary-color);
   }
 
+  .typehead-panel {
+    margin: 0 28px 10px 5px;
+  }
+  #typeahead {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 5px;
+    background: var( --super-light-background-color);
+    border: none;
+    height: 40px;
+    outline: none;
+  }
+
   .active-filter {
     cursor: pointer;
     display: flex;
@@ -73,6 +86,14 @@
     font-style: italic;
   }
 </style>
+
+<!-- typeahead search -->
+<div class="typehead-panel" hidden$="[[!includeTypeahead]]">
+  <input id="typeahead" 
+    type="text" 
+    placeholder="Search [[label]]s" 
+    on-keyup="_onTypeaheadKeyup" />
+</div>
 
 <!-- used for large lists -->
 <iron-list id="list" items="[[bucketsIronList]]" as="item">

@@ -91,11 +91,15 @@ class ElasticSearchModel {
    * @param {Number} query.offset
    * @param {Number} query.limit
    * @param {Object} query.sort 
+   * @param {Boolean} noLimit defaults to false
    */
-  searchDocumentToEsBody(query) {
+  searchDocumentToEsBody(query, noLimit=false) {
     let esBody = {
       from : query.offset !== undefined ? query.offset : 0,
       size : query.limit !== undefined ? query.limit : 10
+    }
+    if( !query.limit && noLimit === true ) {
+      esBody.size = 10000 - esBody.from;
     }
 
     let aggs = this._getEsAggs(query.facets);
@@ -132,6 +136,7 @@ class ElasticSearchModel {
     let range = {};
     let rangeWithNull = [];
     let keywords = [];
+    let prefix = {};
 
     // loop all provided filters, splitting into keyword
     // and range filters
@@ -177,6 +182,10 @@ class ElasticSearchModel {
           }
           range[attr] = attrProps.value;
         }
+      } else if( attrProps.type === 'prefix' ) {
+
+        prefix[attr] = attrProps.value;
+
       }
     }
 
@@ -203,6 +212,13 @@ class ElasticSearchModel {
       }
 
       esBody.query.bool.must = esBody.query.bool.must.concat(rangeWithNull);
+    }
+
+    if( Object.keys(prefix).length > 0 ) {
+      if( !esBody.query.bool.must ) {
+        esBody.query.bool.must = [];
+      }
+      esBody.query.bool.must.push({prefix});
     }
 
     return esBody;

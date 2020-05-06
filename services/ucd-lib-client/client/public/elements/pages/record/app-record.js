@@ -7,6 +7,7 @@ import citations from "../../../lib/models/CitationsModel"
 import utils from "../../../lib/utils"
 
 import "./app-media-download"
+import "./app-fs-media-download"
 import "./app-record-metadata-layout"
 import "./app-copy-cite"
 import "./viewer/app-media-viewer"
@@ -53,6 +54,10 @@ export default class AppRecord extends Mixin(PolymerElement)
         type : Array,
         value : () => []
       },
+      isBagOfFiles : {
+        type : Boolean,
+        value : false
+      }
     }
   }
 
@@ -63,25 +68,47 @@ export default class AppRecord extends Mixin(PolymerElement)
     this._injectModel('RecordModel');
   }
 
+  async ready() {
+    super.ready();
+
+    let selectedRecord = await this.AppStateModel.getSelectedRecord();
+    if( selectedRecord ) {
+      await this._onSelectedRecordUpdate(selectedRecord);
+      let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+      if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+    }
+  }
+
   /**
-   * @method _onAppStateUpdate
-   * @description from AppStateInterface, called when happ state updates
+   * @method _onRecordUpdate
+   * @description from RecordModel, listen for loading events and reset UI.
    * 
-   * @param {*} e 
+   * @param {Object} e state event 
    */
-  // async _onAppStateUpdate(e) {
-  //   if( e.location.page !== 'record' ) return;
+  _onRecordUpdate(e) {
+    if( e.state !== 'loading' ) return;
 
-  //   let id = '/'+e.location.path.join('/');
-  //   if( this.currentRecordId === id ) return;
-  //   this.currentRecordId = id;
-
-  //   let result = await this.RecordModel.get(this.currentRecordId);
-  //   let record = await this.RecordModel.createMediaObject(result.payload);
-
-    
-  //   this.AppStateModel.setSelectedRecord(record);
-  // }
+    this.renderedRecordId = null;
+    this.record = null;
+    this.$.description.classList.add('hidden');
+    this.description = '';
+    this.alternativeHeadline = '';
+    this.$.link.value = '';
+    this.date = '';
+    this.collectionName = '';
+    this.rights = null;
+    this.$.collectionValue.innerHTML = '';
+    this.$.mla.text = '';
+    this.$.apa.text = '';
+    this.$.chicago.text = '';
+    this.$.identifier.classList.add('hidden');
+    this.$.creator.classList.add('hidden');
+    this.$.subject.classList.add('hidden');
+    this.$.publisher.classList.add('hidden');
+    this.$.fedoraValue.innerHTML = '';
+    this.metadata = [];
+    this.isBagOfFiles = false;
+  }
 
   /**
    * @method _onSelectedRecordUpdate
@@ -90,16 +117,17 @@ export default class AppRecord extends Mixin(PolymerElement)
    * @param {Object} record selected record
    */
   async _onSelectedRecordUpdate(record) {
+    if( !record ) return;
     if( record['@id'] && record['@id'] === this.renderedRecordId ) return;
 
     this.renderedRecordId = record['@id'];
     this.record = record;
 
     if( this.record.description ) {
-      this.$.description.style.display = 'flex';
+      this.$.description.classList.remove('hidden');
       this.$.descriptionValue.innerHTML = markdown.toHTML(this.record.description);
     } else {
-      this.$.description.style.display = 'none';
+      this.$.description.classList.add('hidden');
     }
 
     this.description = this.record.description || '';
@@ -147,12 +175,14 @@ export default class AppRecord extends Mixin(PolymerElement)
     this._renderFcLink(record);
 
     this._updateMetadataRows();
-    this._setTarHref();
+    // this._setTarHref();
 
     // render citations.. this might need to load library, do it last
     this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
     this.$.apa.text = await citations.renderEsRecord(this.record, 'apa');
     this.$.chicago.text = await citations.renderEsRecord(this.record, 'chicago');
+
+    this.isBagOfFiles = this.record['@type'].includes('http://digital.ucdavis.edu/schema#bagOfFiles');
   }
 
   _renderFcLink(record, media) {
@@ -163,7 +193,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     if( media && record['@id'] !== media['@id'] ) {
       metadataPart = media['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
       link = this._getHost()+'fcrepo/rest'+media['@id']+metadataPart;
-      html += `<br /><a href="${link}">${media['@id']}</a>`;
+      html += `<div class="fc-break"></div><div><a href="${link}">${media['@id']}</a></div>`;
     }
 
     this.$.fedoraValue.innerHTML = html;
@@ -191,20 +221,6 @@ export default class AppRecord extends Mixin(PolymerElement)
     }
   }
 
-  _setTarHref() {
-    let urls = {};
-
-    if ((this.record instanceof Array) === false) return;
-
-    this._getImageMediaList(this.record).forEach(item => {
-      urls[item.filename || item.name] = this._getImgUrl(item['@id']).replace(config.fcrepoBasePath, '');
-    });
-
-    this.tarName = this.record.name.replace(/[^a-zA-Z0-9]/g, '');
-    this.$.tarPaths.value = JSON.stringify(urls);
-    this.tarUrl = TarService.create(encodeURI(this.record.name.replace(/[^a-zA-Z0-9]/g, '')), urls);
-  }
-
   /**
    * @method _renderCreators
    * @description render creator field
@@ -216,7 +232,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     let creators = utils.asArray(record, 'creators');
 
     if( creators.length === 0 ) {
-      return this.$.creator.style.display = 'none';
+      return this.$.creator.classList.add('hidden');
     }
 
     // TODO: label is under creator.name
@@ -230,7 +246,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       })
       .join(', ');
 
-    this.$.creator.style.display = 'flex';
+    this.$.creator.classList.remove('hidden');
   }
 
   /**
@@ -245,7 +261,7 @@ export default class AppRecord extends Mixin(PolymerElement)
     // .filter(subject => subject.name ? true : false);
 
     if( subjects.length === 0 ) {
-      return this.$.subject.style.display = 'none';
+      return this.$.subject.classList.add('hidden');
     }
 
     // TODO: label is under creator.name
@@ -260,7 +276,7 @@ export default class AppRecord extends Mixin(PolymerElement)
       })
       .join(', ');
 
-    this.$.subject.style.display = 'flex';
+    this.$.subject.classList.remove('hidden');
   }
 
   /**
@@ -275,14 +291,14 @@ export default class AppRecord extends Mixin(PolymerElement)
       .filter(publisher => publisher.name ? true : false);
 
     if( publishers.length === 0 ) {
-      return this.$.publisher.style.display = 'none';
+      return this.$.publisher.classList.add('hidden');
     }
 
     this.$.publisherValue.innerHTML = publishers 
       .map(publisher => publisher.name)
       .join(', ');
 
-    this.$.publisher.style.display = 'flex';
+    this.$.publisher.classList.remove('hidden');
   }
 
   /**
@@ -293,7 +309,7 @@ export default class AppRecord extends Mixin(PolymerElement)
    */
   _renderIdentifier(record, media) {
     if( !record.identifier ) {
-      return this.$.identifier.style.display = 'none';
+      return this.$.identifier.classList.add('hidden');
     }
 
     let ids = Array.isArray(record.identifier) ? record.identifier : [record.identifier];
@@ -310,10 +326,10 @@ export default class AppRecord extends Mixin(PolymerElement)
         }
       }
 
-      this.$.identifier.style.display = 'flex';
+      this.$.identifier.classList.remove('hidden');
       this.$.identifierValue.innerHTML = ids.map(id => `<div><a href="${this._getHost()}${id}">${id}</a></div>`).join('')
     } else {
-      this.$.identifier.style.display = 'none';
+      this.$.identifier.classList.add('hidden');
     }      
   }
 

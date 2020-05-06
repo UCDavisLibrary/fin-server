@@ -40,7 +40,9 @@ module.exports = {
         ratio : 0.25
       }
     ],
-    formats : ['png', 'jpg', 'webp']
+    // pulling webp option due to loris issues
+    // formats : ['png', 'jpg', 'webp']
+    formats : ['png', 'jpg']
   },
 
   // facets to show on left side
@@ -79,15 +81,17 @@ module.exports = {
         type : 'facet',
         valueMap : rightsMap
       },
-      type : {
+      'type.raw' : {
         label : 'Type',
         type : 'facet',
+        typeahead: 'type',
         ignore : ['CreativeWork', 'MediaObject'],
         valueMap : value => value.replace(/(.)([A-Z])/g, '$1 $2')
       },
       'abouts.raw' : {
         label : 'Subject',
-        type : 'facet'
+        type : 'facet',
+        typeahead: 'abouts'
       }
     },
 

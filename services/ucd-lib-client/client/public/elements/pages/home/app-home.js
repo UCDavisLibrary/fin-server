@@ -38,13 +38,28 @@ class AppHome extends Mixin(PolymerElement)
     this.active = true;
   }
 
+  async ready() {
+    super.ready();
+    this._setCollections(await this.CollectionModel.overview());
+  }
+
+  _onAppStateUpdate(e) {
+    if( e.location.hash === 'collections' ) {
+      setTimeout(() => {
+        let ele = this.shadowRoot.querySelector('#collections-home');
+        if( ele ) ele.scrollIntoView();
+      }, 25);
+    }
+  }
+
   /**
-   * @method _onCollectionOverviewUpdate
-   * @description from CollectionInterface, called when the collection overview is loaded
+   * @method _setCollections
+   * @description when the element is ready, the collection model is called 
+   * for the collection list.  this renders is.
    * 
    * @param {Object} e 
    */
-  _onCollectionOverviewUpdate(e) {
+  _setCollections(e) {
     if( e.state !== 'loaded' ) return;
     let overview = e.payload;
     let browse = {};

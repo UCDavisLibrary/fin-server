@@ -1,6 +1,7 @@
 const {AppStateModel} = require('@ucd-lib/cork-app-state');
 const AppStateStore = require('../stores/AppStateStore');
 const config = require('../config');
+const clone = require('clone');
 
 class AppStateModelImpl extends AppStateModel {
 
@@ -13,6 +14,8 @@ class AppStateModelImpl extends AppStateModel {
 
   set(update) {
     if( update.location ) {
+      update.lastLocation = clone(this.store.data.location);
+
       // /collection/* is an alias for a base collection search
 
       let page = update.location.path ? update.location.path[0] : 'home';
@@ -38,7 +41,7 @@ class AppStateModelImpl extends AppStateModel {
    * @description send a google analytics event if pathname has changed
    */
   _sendGA() {
-    if( !gtag ) console.warn('No global gtag variable set for analytics events');
+    if( !window.gtag ) return console.warn('No global gtag variable set for analytics events');
     if( this.lastGaLocation === window.location.pathname ) return;
     this.lastGaLocation = window.location.pathname;
 
@@ -61,6 +64,14 @@ class AppStateModelImpl extends AppStateModel {
 
   getSelectedRecordMedia() {
     return this.store.getSelectedRecordMedia();
+  }
+
+  setSelectedCollection(collection) {
+    this.store.setSelectedCollection(collection);
+  }
+
+  getSelectedCollection() {
+    return this.store.getSelectedCollection();
   }
 
 }

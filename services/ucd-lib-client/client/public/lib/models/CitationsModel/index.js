@@ -4,6 +4,8 @@ class CitationsModel {
     // citeproc as a round about way of rendering data can only pass id,
     // so you have to store object somewhere
     this.data = {};
+    this.engineList = ['apa', 'mla', 'chicago'];
+    this.engineListLabels = ['APA', 'MLA', 'Chicago'];
   }
 
   /**
@@ -96,7 +98,7 @@ class CitationsModel {
 
     let cslJson = {
       id : record['@id'],
-      URL : window.location.href,
+      URL : record['@type'].includes('http://schema.org/Collection') ? window.location.origin + record['@id'] : window.location.href,
       title : this._getRecordValue(record, 'name', true),
       type : 'webpage',
       publisher,

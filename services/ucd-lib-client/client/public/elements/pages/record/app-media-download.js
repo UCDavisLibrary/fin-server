@@ -44,6 +44,10 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         type : Boolean,
         value : false
       },
+      fullSetCount : {
+        type : Boolean,
+        value : 0
+      },
       fullSetSelected: {
         type : Boolean,
         value : false
@@ -65,9 +69,19 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     this._injectModel('AppStateModel', 'MediaModel');
   }
 
+  async ready() {
+    super.ready();
+    let selectedRecord = await this.AppStateModel.getSelectedRecord();
+    if( selectedRecord ) {
+      this._onSelectedRecordUpdate(selectedRecord);
+      let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+      if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+    }
+  }
 
   _onSelectedRecordUpdate(record) {
     this.rootRecord = record;
+    if( !record ) return;
 
     // find out if the number of download options is greater than 1
     let sourceCount = 0;
@@ -93,8 +107,6 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     }
 
     this.fullSetSelected = false;
-    this.$.format.style.display = "initial";
-    this.$.downloadOptions.style.display = "initial";
   }
 
   _onSelectedRecordMediaUpdate(media) {
@@ -109,15 +121,21 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     }
 
     this.selectedMediaHasSources = true;
+    this.fullSetCount = this._getAllNativeDownloadSources().length;
 
     this.allSources = sources;
     this.downloadOptions = sources;
+    this.$.downloadOptions.innerHTML = sources
+      .map((item, index) => `<option value="${index}" ${index === 0 ? 'selected' : ''}>${item.label}</option>`)
+      .join()
+    this.$.downloadOptions.value = '0';
 
     this._setDownloadHref(sources[0]);
   }
 
   _getDownloadSources(record, nativeImageOnly=false) {
     let sources = [];
+    if( !record ) return sources;
 
     if( record.clientMediaDownload ) {
       if( Array.isArray(record.clientMediaDownload) ) {
@@ -137,6 +155,10 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       this.showImageFormats = true;
       sources = sources.concat(this._getImageSources(record, nativeImageOnly));
       this._renderImgFormats(record, null, 'FR');
+    } else if (utils.getMediaType(record) === 'ImageList' ) {
+      (record.hasPart || []).forEach(img => {
+        sources = sources.concat(this._getImageSources(img, nativeImageOnly));
+      });
     }
 
     return sources;
@@ -333,47 +355,50 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    */
   _toggleMultipleDownload() {
     this.fullSetSelected = this.$.fullset.checked ? true : false;
-
-    if ( this.fullSetSelected ) {
-      this.$.format.style.display = "none";
-      this.$.downloadOptions.style.display = "none";
-    } else {
-      this.$.format.style.display = "initial";
-      this.$.downloadOptions.style.display = "initial";
-    }
-    
-    this._setTarPaths();
+    this._setZipPaths();
   }
 
   /**
-   * @method _setTarPaths
-   * @description set the fullset/tar form elements.
+   * @method _setZipPaths
+   * @description set the fullset/zip form elements.
    */
-  _setTarPaths() {
+  _setZipPaths() {
     let urls = {};
-    this.tarName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+    this.zipName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
 
+    let sources = this._getAllNativeDownloadSources();
+
+    for( let source of sources ) {
+      urls[source.filename] = source.src;
+    }
+
+    this.$.zipPaths.value = JSON.stringify(urls);
+  }
+
+  /**
+   * @method _getAllNativeDownloadSources
+   * @description for the current root record, return all media records that are
+   * available for download.  Note, for images, there is only only record per image,
+   * the native format.
+   * 
+   * @return {Array}
+   */
+  _getAllNativeDownloadSources() {
     let sources = [];
     for( let type in this.rootRecord.media ) {
       for( let media of this.rootRecord.media[type] ) {
         sources = sources.concat(this._getDownloadSources(media, true));
       }
     }
-
-    for( let source of sources ) {
-      urls[source.filename] = source.src;
-    } 
-    console.log(urls)
-
-    this.$.tarPaths.value = JSON.stringify(urls);
+    return sources;
   }
 
   /**
-   * @method _downloadTar
+   * @method _downloadZip
    * @description bound to download set button click event
    */
   _onDownloadFullSetClicked() {
-    this.$.downloadTar.submit();
+    this.$.downloadZip.submit();
 
     let path = this.rootRecord['@id'].replace(config.fcrepoBasePath, '');
     gtag('event', 'download', {

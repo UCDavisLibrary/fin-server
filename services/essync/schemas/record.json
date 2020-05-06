@@ -8,7 +8,14 @@
     },
 
     "type" : {
-      "type" : "keyword" 
+      "type" : "text",
+      "analyzer": "autocomplete", 
+      "search_analyzer": "autocomplete_search",
+      "fields" : {
+        "raw" : {
+          "type" : "keyword"
+        }
+      }
     },
 
     "identifier" : {
@@ -35,6 +42,8 @@
 
     "abouts" : {
       "type" : "text",
+      "analyzer": "autocomplete", 
+      "search_analyzer": "autocomplete_search",
       "fields": {
         "raw": { 
           "type":  "keyword"
@@ -69,6 +78,16 @@
 
     "parent.@id" : {
       "type" : "keyword"
+    },
+
+    "directParent" : {
+      "type" : "keyword"
+    },
+
+    "filename": {
+      "type": "text",
+      "analyzer": "autocomplete", 
+      "search_analyzer": "autocomplete_search" 
     },
 
     "fileFormats" : {

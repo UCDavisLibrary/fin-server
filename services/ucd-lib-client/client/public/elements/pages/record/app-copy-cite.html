@@ -13,7 +13,7 @@
   .copyButton {
     white-space: nowrap;
     height: 38px;
-    width: 85px;
+    /* width: 85px; */
     text-transform: uppercase;
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-heavy);
@@ -37,13 +37,23 @@
   #citeText {
     padding-bottom: 10px;
     overflow: auto;
+    word-break: break-word;
+  }
+
+  .buttons {
+    display: flex;
   }
 </style>
 
 <div hidden$="[[copying]]" id="citeText"></div>
 <textarea hidden$="[[!copying]]" id="copyArea"></textarea>
 
-<button active$="[[copying]]" on-click="_onCopyClicked" class="copyButton">
-  <iron-icon icon="content-copy" id="icon"></iron-icon>
-  <span>Copy</span>
-</button>
+<div class="buttons">
+  <div>
+    <slot></slot>
+  </div>
+  <button active$="[[copying]]" on-click="_onCopyClicked" class="copyButton">
+    <iron-icon icon="content-copy" id="icon"></iron-icon>
+    <span>Copy</span>
+  </button>
+</div>

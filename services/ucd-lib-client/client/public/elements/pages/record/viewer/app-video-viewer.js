@@ -11,20 +11,31 @@ import config from "../../../../lib/config"
 import utils from "../../../../lib/utils"
 import videoLibs from "../../../../lib/utils/video-lib-loader"
 
+import plyrCss from "plyr/dist/plyr.css"
+import shakaCss from "shaka-player/dist/controls.css"
+let VIDEO_STYLES = plyrCss+shakaCss;
+
 import spriteSheet from "plyr/dist/plyr.svg"
 let SPRITE_SHEET = spriteSheet
+
+// Very dump.  To remove the 'Shaka Player TextTrack'
+// you have to override this...
+class SimpleTextDisplayer {
+  constructor(video) {}
+  remove() {return true}
+  destroy() {}
+  append(cues) {}
+  setTextVisibility(on) {}
+  isTextVisible() {return false}
+}
 
 export default class AppVideoViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
   
   static get properties() {
     return {
-      player: {
-        type: Object
-      },
-      tracks: {
-        type: Array
-      },
+      player: {type: Object},
+      tracks: {type: Array},
       libsLoaded : {type: Boolean}
     }
   }
@@ -47,6 +58,9 @@ export default class AppVideoViewer extends Mixin(LitElement)
   }
 
   async firstUpdated(e) {
+    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+
     this.fullPath = (await this.AppStateModel.get()).location.fullpath;
     
     // webpack module is base64 encoded URL, check if this happened 
@@ -55,6 +69,19 @@ export default class AppVideoViewer extends Mixin(LitElement)
       SPRITE_SHEET = atob(SPRITE_SHEET.replace('data:image/svg+xml;base64,', ''));
     }
     this.shadowRoot.querySelector('#sprite-plyr').innerHTML = SPRITE_SHEET;
+  
+    // decide where to put css
+    // The PLYR library isn't aware of shadydom so we need to manually
+    // place our styles in document.head w/o shadydom touching them.
+    let plyrStyles = document.createElement('style');
+    plyrStyles.innerHTML = VIDEO_STYLES;
+    if( window.ShadyDOM && window.ShadyDOM.inUse ) {
+      document.head.appendChild(plyrStyles);
+      this.hideControls = false;
+    } else {
+      this.shadowRoot.appendChild(plyrStyles);
+      this.hideControls = true;
+    }
   }
 
   /**
@@ -64,6 +91,7 @@ export default class AppVideoViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
+    if( !media ) return;
     let mediaType = utils.getMediaType(media);
     if (mediaType !== 'VideoObject' && mediaType !== 'StreamingVideo') return;
 
@@ -95,9 +123,6 @@ export default class AppVideoViewer extends Mixin(LitElement)
     // dynamically load plyr and shaka libs
     let {plyr, shaka} = await videoLibs.load();
 
-    // Install the polyfills before doing anything with the library
-    await shaka.polyfill.installAll();
-
     // alert user if video playback is not supported
     let plyr_supported = plyr.supported('video', 'html5', true);
     let shaka_supported = shaka.Player.isBrowserSupported();
@@ -108,10 +133,20 @@ export default class AppVideoViewer extends Mixin(LitElement)
     let videoEle = this.shadowRoot.getElementById('video');
 
 
-    this.plyr = new plyr(videoEle, {debug: false});
+    this.plyr = new plyr(videoEle, {
+      hideControls: this.hideControls,
+      fullscreen : {enabled: false},
+      captions: {update: false},
+      // keyboard: {global: true},
+      controls : ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume']
+    });
 
     // Construct a Player to wrap around the <video> tag.
-    this.shaka = new shaka.Player(videoEle);
+    this.shaka = new shaka.Player(videoEle, );
+    this.shaka.configure({
+      textDisplayFactory : SimpleTextDisplayer
+    });
+
     this.shaka.addEventListener('error', e => console.error('shaka error', e));
     
     this.libsLoaded = true;

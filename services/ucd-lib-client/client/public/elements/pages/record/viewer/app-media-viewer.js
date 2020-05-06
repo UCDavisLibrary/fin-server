@@ -22,40 +22,64 @@ export default class AppMediaViewer extends Mixin(LitElement)
         mediaType: {
           type: String
         },
-        tallControls : {type: Boolean}
+        tallControls : {type: Boolean},
+        bagOfFilesImage : {type: String}
       }
     }
 
     constructor() {
       super();
       this.render = render.bind(this);
-      this._injectModel('AppStateModel');
-      this._injectModel('MediaModel');
+      this._injectModel('AppStateModel', 'RecordModel');
       this.mediaType = 'image';
+      this.bagOfFilesImage = '';
     }
 
-    async firstUpdated(changedProperties) {
+    async firstUpdated() {
       this.$.lightbox = this.shadowRoot.getElementById('lightbox');
       if( !this.$.lightbox ) this.$.lightbox = document.getElementById('lightbox');
-      this.$.mediaNav = this.shadowRoot.querySelector('app-media-viewer-nav');
-      this.$.zoomBtn  = this.$.mediaNav.shadowRoot.getElementById('zoomIn1');
+
+      this._onAppStateUpdate(await this.AppStateModel.get());
     }
 
-    async updated(e) {
-      this.$.zoomBtn.addEventListener('click', (e) => {
-        this._onZoomIn(e);
-      });
+    /**
+     * @method _onRecordUpdate
+     * @description from RecordModel, listen for loading events and reset UI.
+     * 
+     * @param {Object} e state event 
+     */
+    _onRecordUpdate(e) {
+      // if( e.state !== 'loading' ) return;
+      // this.mediaType = '';
     }
-    
-    async _onSelectedRecordMediaUpdate(record) {
-      let mediaType = utils.getMediaType(record).toLowerCase().replace(/object/i, '');
+
+    _onAppStateUpdate(e) {
+      if( !e.selectedRecordMedia ) {
+        this.selectedRecordMediaId = '';
+        return this.mediaType = '';
+      }
+      if( e.selectedRecordMedia['@id'] === this.selectedRecordMediaId ) {
+        return;
+      }
+
+      this.selectedRecordMediaId = e.selectedRecordMedia['@id'];
+
+      let mediaType = utils.getMediaType(e.selectedRecordMedia).toLowerCase().replace(/object/i, '');
       if ( mediaType === "imagelist" ) {
         mediaType = "image";
       } else if ( mediaType === "streamingvideo" ){
         mediaType = "video";
       }
+
+      if( mediaType === 'bagoffiles' && e.selectedRecordMedia.thumbnailUrl ) {
+        this.bagOfFilesImage = e.selectedRecordMedia.thumbnailUrl;
+      } else {
+        this.bagOfFilesImage = '';
+      }
+
       this.mediaType = mediaType;
     }
+
 
     /**
      * @method _onZoomIn
@@ -64,11 +88,8 @@ export default class AppMediaViewer extends Mixin(LitElement)
      * @param {Object} e custom HTML event
      */
     _onZoomIn(e) {
+      this.AppStateModel.set({showLightbox: true});
       this.$.lightbox.show();
-    }
-
-    _onControlLayoutChange(e) {
-      this.tallControls = e.detail.value;
     }
   }
 

@@ -2,7 +2,7 @@
   :host {
     display: block;
     position: relative;
-    background: white;
+    background: var(--super-light-background-color);
   }
 
   a {
@@ -14,19 +14,22 @@
   }
 
   input {
-    border: none;
     padding: 15px;
     display: block;
     width: 90%;
+    border: 0;
   }
 
   .about-link-icon {
-    height: 30px;
-    width: 30px;
     position: absolute;
     z-index: 5;    
     top: 25px;
     right: 25px;
+  }
+
+  .about-link-icon > iron-icon {
+    height: 30px;
+    width: 30px;
   }
 
   #hero {
@@ -67,22 +70,28 @@
   }
 
   .search-box {
-    padding: 0 10px;
-    color: var(--inverse-text-color);
     z-index: 5;
+    color: var(--inverse-text-color);    
   }
 
   .search-box .main {
-    background-color: rgba(0, 38, 85, .7);
-    padding: 15px;
+    padding: 20px;
+    background-color: rgba(0, 38, 85, .8);    
+  }
+
+  .search-box .main h1 {
+    margin: 5px 0;
+    line-height: 2.0rem;
   }
 
   .search-box .footer {  
-    padding: 15px;
+    padding: 10px 20px;
     color: white;
+    font-size: 0.8rem;
     font-style: italic;
     font-weight: normal;
-    background-color: rgba(51, 83, 121, .7);
+    line-height: 1.0rem;
+    background-color: rgba(51, 83, 121, .8);
   }
 
   .search-box .footer a {
@@ -120,20 +129,25 @@
 </style>
 
 <a href="/about/" class="about-link-icon">
-  <iron-icon icon="info" class="info"></iron-icon>
+  <iron-icon icon="info" class="info" role="img" aria-label="About Link"></iron-icon>
 </a>
 
-<img src="/images/ucd-lib-logo-white.png" />
 <div id="hero">
+  <div class="logo">
+    <a href="https://www.library.ucdavis.edu/" target="_blank" rel="noopener">
+      <img src="/images/ucd-lib-logo-white.png" alt="UC Davis Library Logo" />
+    </a>
+  </div>
   <div class="gradient"></div>
   <div class="search-box">
     <div class="main">
-      <h2>UC Davis Digital Collections</h2>
-      <div style="margin: 5px 0 15px 0">
+      <h1>UC Davis Digital Collections</h1>
+      <div style="margin: 5px 0 15px 0;">
         Explore digitized items from the 
         <a class="gold" href="https://library.ucdavis.edu" target="_blank" rel="noopener">UC Davis Library</a> 
         collections.
       </div>
+      
       <fin-search-box 
         id="searchBox" 
         on-search="_onSearch" 
@@ -144,19 +158,16 @@
     </div>
 
     <div class="footer">
-      <!--
       Featured image: 
-      <a href="">Title of the Item</a>, 
-      <a href="">Name of Collection</a>
-      -->
+      <a href="/collection/eastman/D-051/B-4/B-4709">Agricultural College, Davis</a> |
+      <a href="/collection/eastman">Eastman Collection</a>
     </div>
   </div>
 
 </div>
-<app-header-colorbar height="15"></app-header-colorbar>
-
+<app-header-colorbar height="8"></app-header-colorbar>
 <div class="collection-outer">
-  <div class="collections">
+  <div class="collections" id="collections-home">
     <template is="dom-repeat" items="[[highlightedCollections]]">
       <app-collection-card 
         data-id$="[[item._id]]" 
@@ -167,4 +178,4 @@
     </template>
   </div>
 </div>
-<app-header-colorbar height="15" flipped></app-header-colorbar>
+<app-header-colorbar height="8" flipped></app-header-colorbar>

@@ -1,6 +1,7 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 
 import template from "./app-about.html"
+import "../../utils/app-header-colorbar"
 
 import AppStateInterface from "../../interfaces/AppStateInterface"
 

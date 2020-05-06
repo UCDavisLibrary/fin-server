@@ -1,5 +1,6 @@
 import {PolymerElement} from "@polymer/polymer/polymer-element"
 import "@ucd-lib/cork-pagination"
+import "@polymer/paper-spinner/paper-spinner-lite"
 
 import "./app-search-grid-result"
 import "./app-search-list-result"

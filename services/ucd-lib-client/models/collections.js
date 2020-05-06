@@ -9,16 +9,16 @@ class CollectionsModel extends ElasticSearchModel {
    * search document.
    * 
    * @param {Object} SearchDocument
-   * @param {Boolean} debug will return searchDocument and esBody in result
+   * @param {Boolean} options.debug will return searchDocument and esBody in result
    * 
    * @returns {Promise} resolves to search result
    */
-  async search(searchDocument, debug) {
+  async search(searchDocument, options={debug:false}) {
     let esBody = this.searchDocumentToEsBody(searchDocument);
     let esResult = await this.esSearch(esBody);
     let result = this.esResultToDamsResult(esResult);
     
-    if( debug ) {
+    if( options.debug ) {
       result.searchDocument = searchDocument;
       result.esBody = esBody;
     }

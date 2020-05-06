@@ -21,6 +21,11 @@ const CORS_HEADERS = {
   ['Access-Control-Allow-Headers'] : 'authorization, range, cookie, content-type, prefer, slug, cache-control, accept',
   ['Access-Control-Allow-Credentials'] : 'true'
 }
+const UNKNOWN_ORIGIN_CORS_HEADERS = {
+  ['Access-Control-Allow-Methods'] : 'GET, OPTIONS',
+  ['Access-Control-Expose-Headers'] : 'content-type, link, content-disposition, content-length, pragma, expires, cache-control',
+  ['Access-Control-Allow-Headers'] : 'range, cookie, content-type, prefer, slug, cache-control, accept'
+}
 
 const ROOT_DOMAIN = serviceModel.getRootDomain(config.server.url);
 
@@ -126,26 +131,32 @@ class ProxyModel {
    * @param {Object} res express response
    */
   _setCors(req, res) {
-    if( !req.headers.referer ) return;
+    // if( !req.headers.referer ) return;
+    let referer = req.headers.referer || '';
+    let origin = '', rootDomain;
 
-    // first check if request is registered domain
-    let rootDomain = serviceModel.getRootDomain(req.headers.referer);
 
-    // not fin server domain, external service domain or allowed origin domain
-    if( ROOT_DOMAIN !== rootDomain && !serviceModel.authServiceDomains[rootDomain] && !this.allowOrigins[rootDomain] ) {
-      logger.warn('Request with referer set to unknown domain: '+rootDomain+' / '+req.headers.referer);
-      return;
+    if( referer ) {
+      origin = new URL(req.headers.referer).origin;
+
+      // first check if request is registered domain
+      rootDomain = serviceModel.getRootDomain(referer);
     }
 
-    let origin = new URL(req.headers.referer).origin;
+    // not fin server domain, external service domain or allowed origin domain
+    let headers = CORS_HEADERS;
+    if( ROOT_DOMAIN !== rootDomain && !serviceModel.authServiceDomains[rootDomain] && !this.allowOrigins[rootDomain] ) {
+      headers = UNKNOWN_ORIGIN_CORS_HEADERS;
+    }
+
     if( res.set ) {
-      for( var key in CORS_HEADERS ) {
-        res.set(key, CORS_HEADERS[key]);
+      for( var key in headers ) {
+        res.set(key, headers[key]);
       }
       res.set('Access-Control-Allow-Origin', origin);
     } else {
-      for( var key in CORS_HEADERS ) {
-        res.headers[key] = CORS_HEADERS[key];
+      for( var key in headers ) {
+        res.headers[key] = headers[key];
       }
       res.headers['Access-Control-Allow-Origin'] = origin;
     }

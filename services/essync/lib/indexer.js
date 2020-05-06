@@ -111,6 +111,32 @@ class EsIndexer {
       await this.esClient.indices.create({
         index: newIndexName,
         body : {
+          settings : {
+            analysis : {
+              analyzer: {
+                autocomplete: { 
+                  tokenizer: 'autocomplete',
+                  filter: [
+                    'lowercase'
+                  ]
+                },
+                autocomplete_search : {
+                  tokenizer: "lowercase"
+                }
+              },
+              tokenizer: {
+                autocomplete: {
+                  type: 'edge_ngram',
+                  min_gram: 1,
+                  max_gram: 20,
+                  token_chars: [
+                    "letter",
+                    "digit"
+                  ]
+                }
+              }
+            }
+          },
           mappings : {
             [schemaName] : schema
           }
@@ -147,7 +173,7 @@ class EsIndexer {
         body: jsonld
       });
 
-    } else if( this.isRecord(jsonld['@type']) ) {
+    } else if( this.isRecord(jsonld['@id'], jsonld['@type']) ) {
       logger.info(`ES Indexer updating record container: ${jsonld['@id']}`);
 
       await this.esClient.index({
@@ -273,7 +299,7 @@ class EsIndexer {
 
     let svc = '';
     if( this.isCollection(types) ) svc = config.essync.transformServices.collection;
-    else if( this.isRecord(types) ) svc = config.essync.transformServices.record;
+    else if( this.isRecord(path, types) ) svc = config.essync.transformServices.record;
 
     // we don't have a frame service for this
     if( !svc ) return null;
@@ -345,7 +371,7 @@ class EsIndexer {
     return response;
   }
 
-    /**
+  /**
    * @method _requestContainer
    * @description request a container, if a non-200 status code that is not
    * a 403 is returned, will automatically try request again
@@ -413,7 +439,7 @@ class EsIndexer {
     if( !options.uri.match(/^http/i) ) {
       options.uri = this.getFcRepoBaseUrl() + options.uri;
     }
-    options.timeout = 2*60*1000;
+    options.timeout = 3*60*1000;
 
     if( !options.headers ) options.headers = {};
     if( !options.headers.Authorization ) {
@@ -479,13 +505,16 @@ class EsIndexer {
    * 
    * @returns {Boolean}
    */ 
-  isRecord(types = []) {
-    return (
-      types.indexOf(CREATIVE_WORK) > -1 || 
-      types.indexOf(MEDIA_OBJECT) > -1 ||
-      types.indexOf(SHORT_CREATIVE_WORK) > -1 || 
-      types.indexOf(SHORT_MEDIA_OBJECT) > -1
-    );
+  // isRecord(types = []) {
+  //   return (
+  //     types.indexOf(CREATIVE_WORK) > -1 || 
+  //     types.indexOf(MEDIA_OBJECT) > -1 ||
+  //     types.indexOf(SHORT_CREATIVE_WORK) > -1 || 
+  //     types.indexOf(SHORT_MEDIA_OBJECT) > -1
+  //   );
+  // }
+  isRecord(path, types=[]) {
+    return path.match(/^\/collection\/.*\/.*/);
   }
 
   /**

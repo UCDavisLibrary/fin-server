@@ -30,7 +30,13 @@ class RecordModel extends ElasticSearchModel {
    * @param {Object} e 
    */
   async _onAppStateUpdate(e) {
-    if( e.location.page !== 'record' ) return;
+    if( e.location.page !== 'record' ) {
+      this.currentRecordId = null;
+      this.currentMediaId = null;
+      AppStateModel.setSelectedRecord(null);
+      AppStateModel.setSelectedRecordMedia(null);
+      return;
+    }
     let id = '/'+e.location.path.join('/');
 
     let result = await this.get(id);
@@ -72,6 +78,10 @@ class RecordModel extends ElasticSearchModel {
       AppStateModel.setSelectedRecordMedia(result.payload.media.audio[0]);
     } else if (result.payload.media.image) {
       AppStateModel.setSelectedRecordMedia(result.payload.media.image[0]);
+    } else if (result.payload.media.bagOfFiles ) {
+      AppStateModel.setSelectedRecordMedia(result.payload.media.bagOfFiles[0]);
+    } else {
+      AppStateModel.setSelectedRecordMedia(null);
     }
 
   }
@@ -120,7 +130,7 @@ class RecordModel extends ElasticSearchModel {
    */
   createMediaObject(record) {
     if (record.isRootRecord === false) return;
-    
+
     record.media = {};
 
     if ( record.clientMedia ) {
@@ -205,6 +215,10 @@ class RecordModel extends ElasticSearchModel {
     if (type === "Binary" ) {
       if (!media.binaryFiles) media.binaryFiles = [];
       return media.binaryFiles.push(element);
+    }
+    if (type === "BagOfFiles" ) {
+      if (!media.bagOfFiles) media.bagOfFiles = [];
+      return media.bagOfFiles.push(element);
     }
   }
 
@@ -357,6 +371,13 @@ class RecordModel extends ElasticSearchModel {
       return this.store.getSearch();
     }
 
+    // make sure we don't repeat work
+    let searchDocumentStr = JSON.stringify(searchDocument, '  ', '  ');
+    if( searchDocumentStr === this.searchCache ) {
+      return this.store.getSearch();
+    }
+    this.searchCache = searchDocumentStr;
+
     try {
       await this.service.search(searchDocument);
     } catch(e) {}
@@ -375,6 +396,14 @@ class RecordModel extends ElasticSearchModel {
       return this.store.getSearch().searchDocument;
     }
     return this.emptySearchDocument();
+  }
+
+  typeaheadSearch(searchDocument, opts={}) {
+    try {
+      return this.service.typeaheadSearch(searchDocument, opts);
+    } catch(e) {
+      return {searchDocument, error: e, state: 'error'};
+    }
   }
 
 }

@@ -52,25 +52,29 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     });
   }
 
-  ready() {
+  async ready() {
     super.ready();
     
-    // TODO: Have Justin review these.  No longer necessary using Lit?
-    this.parentNode.removeChild(this);
+    this.parentElement.removeChild(this);
     document.body.appendChild(this);
 
     this.shadowRoot.removeChild(this.$.safeCover);
     document.body.appendChild(this.$.safeCover);
 
-    this.mainApp = document.querySelector('fin-app');
+    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
   }
 
   /**
    * @method _onAppStateUpdate
    * @description bound to AppStateModel app-state-update event
    */
-  _onAppStateUpdate() {
-    if( this.visible ) this.hide();
+  _onAppStateUpdate(e) {
+    if( e.showLightbox && !this.visible ) {
+      this.show();
+    } else if( !e.showLightbox && this.visible ) {
+      this.hide();
+    }
   }
 
   /**
@@ -82,47 +86,37 @@ export default class AppImageViewer extends Mixin(PolymerElement)
   _onSelectedRecordMediaUpdate(media) {
     this.media = media;
     if( this.visible ) this.render();
-
-    if ( this.media.associatedMedia || this.media.position ) {
-      this.shadowRoot.querySelector('app-media-viewer-nav').classList.remove('single');
-    } else {
-      this.shadowRoot.querySelector('app-media-viewer-nav').classList.add('single');
-    }
   }
 
   /**
    * @method show
    */
   async show() {
-    this.style.display = 'block';
-    
-    this.render();
-
-    document.body.style.overflow = 'hidden';
-    
     this.visible = true;
-    
-    window.scrollTo(0,0);
-    
+    this.style.display = 'block';
     this.$.safeCover.style.display = 'block';
 
-    // TODO: Justin Review
-    //this.mainApp.style.display = 'none';
+    document.querySelector('fin-app').style.display = 'none';
+    document.body.style.overflow = 'hidden';
+    window.scrollTo(0,0);
 
-    setTimeout(() => this.$.nav.setFocus(), 0);
+    this.render();
+
+    setTimeout(() => {
+      this.$.nav._resize();
+      this.$.nav.setFocus();
+    }, 25);
   }
 
   /**
    * @method hide
    */
   async hide() {
+    this.visible = false;
     this.style.display = 'none';
     this.$.safeCover.style.display = 'none';
     document.body.style.overflow = 'auto';
-    this.visible = false;
-
-    // TODO: Justin Review
-    //this.mainApp.style.display = 'block';
+    document.querySelector('fin-app').style.display = 'block';
   }
 
   /**
@@ -134,15 +128,12 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @returns {Promise} resolves when image is loaded and bounds array has been set
    */
    _loadImage(url) {
-    this.loading = true;
-
     return new Promise((resolve, reject) => {
       var img = new Image();
 
       img.onload = () => {
         let res = [img.naturalHeight, img.naturalWidth];
         this.bounds = [[0,0], res];
-        this.loading = false;
         resolve();
       };
 
@@ -166,19 +157,37 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     
     let url = this._getImgUrl(id, '', '');
 
-    if( this.viewer ) this.viewer.remove();
+    // used to check state below
+    this.loadingUrl = url;
+
+    this.loading = true;
+    if( this.imageOverlay ) {
+      this.renderedUrl = '';
+      this.viewer.removeLayer(this.imageOverlay);
+      this.imageOverlay = null;
+    }
+
     await this._loadImage(url);
 
-    this.viewer = L.map(this.$.viewer, {
-      crs: L.CRS.Simple,
-      minZoom: -4,
-      // dragging :  !L.Browser.mobile,
-      // scrollWheelZoom : false,
-      // touchZoom : true,
-      zoomControl : false
-    });
+    // check that we 
+    //  - didn't have a new request that took longer than an old request
+    //  - that we didn't already render this url
+    if( url !== this.loadingUrl ) return;
+    if( url === this.renderedUrl ) return;
 
-    L.imageOverlay(url, this.bounds).addTo(this.viewer);
+    this.renderedUrl = url;
+
+    this.loading = false;
+
+    if( !this.viewer ) {
+      this.viewer = L.map(this.$.viewer, {
+        crs: L.CRS.Simple,
+        minZoom: -4,
+        zoomControl : false
+      });
+    }
+
+    this.imageOverlay = L.imageOverlay(url, this.bounds).addTo(this.viewer);
     this.viewer.fitBounds(this.bounds);
 
     this.shadowRoot.querySelector('.leaflet-control-attribution').style.display = 'none';
@@ -189,7 +198,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @description bound to view nav close event
    */
   _onCloseClicked() {
-    this.hide();
+    this.AppStateModel.set({showLightbox: false});
   }
 
   /**

@@ -113,6 +113,7 @@
   }
   .metadata-row .value {
     flex: 0.75;
+    word-break: break-word;
   }
 
   .cite-container {
@@ -131,10 +132,24 @@
     flex: 0.75;
   }
 
+  .hidden {
+    display: none !important;
+  }
+
+  .fc-break {
+    height: 10px;
+  }
+
   img[rights] {
     height: 22px;
     width: 22px;
     vertical-align: sub;
+  }
+
+  @media( max-width: 550px ) {
+    .metadata-row {
+      display: block;
+    }
   }
 
   @media( max-width: 768px ) {
@@ -155,8 +170,6 @@
   }
 </style>
 
-<app-search-header></app-search-header>
-<app-search-breadcrumb></app-search-breadcrumb>
 <app-media-viewer></app-media-viewer>
 
 <div class="container top">
@@ -183,7 +196,7 @@
           </div>
         -->
 
-         <div style="flex:.5" hidden$="[[!date]]">
+         <div style="flex:.5;padding-right:30px" hidden$="[[!date]]">
            <div class="label">Date</div>
            <div>[[date]]</div>
          </div>
@@ -207,7 +220,8 @@
 
       <div class="section bordered">
         <div class="label">Download Options</div>
-        <app-media-download id="download"></app-media-download>
+        <app-media-download id="download" hidden$="[[isBagOfFiles]]"></app-media-download>
+        <app-fs-media-download id="download" hidden$="[[!isBagOfFiles]]"></app-fs-media-download>
       </div>
 
       <!--

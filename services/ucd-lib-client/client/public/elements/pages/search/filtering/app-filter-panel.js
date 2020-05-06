@@ -43,6 +43,8 @@ export class AppFilterPanel extends PolymerElement {
     ele.ignore = this.filter.ignore;
     ele.valueMap = this.filter.valueMap || {};
     ele.isDollar = this.filter.isDollar;
+    ele.includeTypeahead = this.filter.includeTypeahead || false;
+    ele.typeaheadField = this.filter.typeaheadField;
 
     ele.addEventListener('update-visibility', (e) => {
       this.style.display = e.detail.show ? 'block' : 'none';

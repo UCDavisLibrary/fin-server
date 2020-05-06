@@ -6,7 +6,6 @@ class CollectionStore extends BaseStore {
     super();
 
     this.data = {
-      selected : null,
       byId : {},
       overview : {
         state : this.STATE.INIT
@@ -17,24 +16,11 @@ class CollectionStore extends BaseStore {
     }
 
     this.events = {
-      SELECTED_COLLECTION_UPDATE : 'selected-collection-update',
       COLLECTION_OVERVIEW_UPDATE : 'collection-overview-update',
       COLLECTION_SEARCH_UPDATE : 'collection-search-update'
     }
   }
 
-  /**
-   * Selected
-   */
-  setSelectedCollection(selected) {
-    if( this.data.selected === selected ) return;
-    this.data.selected = selected;
-    this.emit(this.events.SELECTED_COLLECTION_UPDATE, this.data.selected);
-  }
-
-  getSelectedCollection() {
-    return this.data.selected;
-  }
 
   /**
    * Search

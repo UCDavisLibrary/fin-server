@@ -10,6 +10,10 @@ import config from "../../../../lib/config"
 import utils from "../../../../lib/utils"
 import videoLibs from "../../../../lib/utils/video-lib-loader"
 
+import plyrCss from "plyr/dist/plyr.css"
+import shakaCss from "shaka-player/dist/controls.css"
+let AUDIO_STYLES = plyrCss+shakaCss;
+
 import spriteSheet from "plyr/dist/plyr.svg"
 let SPRITE_SHEET = spriteSheet
 
@@ -17,21 +21,14 @@ export default class AppAudioViewer extends Mixin(LitElement)
   .with(LitCorkUtils) {
   
   static get properties() {
-    return {
-      src: {
-        type: String
-      },
-      type: {
-        type: String
-      }
-    }
+    return {}
   }
 
   constructor() {
     super();
     this.render = render.bind(this);
-    this._injectModel('AppStateModel');
-    this.src = '';
+    this._injectModel('AppStateModel', 'MediaModel');
+    this.libsLoaded = false;
   }
 
   _onAppStateUpdate(e) {
@@ -43,6 +40,12 @@ export default class AppAudioViewer extends Mixin(LitElement)
   }
 
   async firstUpdated(e) {
+    this.$.audio  = this.shadowRoot.getElementById('audio_player');
+    this.$.poster = this.shadowRoot.getElementById('audio_poster');
+
+    let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
+    if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+
     this.fullPath = (await this.AppStateModel.get()).location.fullpath;
     
     // webpack module is base64 encoded URL, check if this happened 
@@ -51,6 +54,19 @@ export default class AppAudioViewer extends Mixin(LitElement)
       SPRITE_SHEET = atob(SPRITE_SHEET.replace('data:image/svg+xml;base64,', ''));
     }
     this.shadowRoot.querySelector('#sprite-plyr').innerHTML = SPRITE_SHEET;
+
+    // decide where to put css
+    // The PLYR library isn't aware of shadydom so we need to manually
+    // place our styles in document.head w/o shadydom touching them.
+    let plyrStyles = document.createElement('style');
+    plyrStyles.innerHTML = AUDIO_STYLES;
+    if( window.ShadyDOM && window.ShadyDOM.inUse ) {
+      document.head.appendChild(plyrStyles);
+      this.hideControls = false;
+    } else {
+      this.shadowRoot.appendChild(plyrStyles);
+      this.hideControls = true;
+    }
   }
 
   /**
@@ -60,48 +76,59 @@ export default class AppAudioViewer extends Mixin(LitElement)
    * @param {Object} media 
   **/
   async _onSelectedRecordMediaUpdate(media) {
+    if( !media ) return;
     if ( utils.getMediaType(media) !== 'AudioObject' ) return;
 
     this.media = media;
+
+    if( this.libsLoaded ) {
+      this._loadAudio();
+      return;
+    }
+
+    // dynamically load plyr and shaka libs
+    let {plyr} = await videoLibs.load();
+
+    this.audioPlayer = new plyr(this.$.audio, {
+      fullscreen : {enabled: false},
+      captions: {update: false},
+      controls : ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume']
+    });
+
+    this.style.display = 'block';
+    this.libsLoaded = true;
+    this._loadAudio();
+  }
+
+  _loadAudio() {
+    let sourceEle = this.shadowRoot.querySelector('#audio_player source');
+    sourceEle.src = config.fcrepoBasePath+this.media['@id'];
+    sourceEle.type = this.media.fileFormat || this.media.hasMimeType || this.media.encodingFormat || '';
+    
+    // FF Hack.  Range slider not going back to 0 on stop
     try {
-      let libs = await videoLibs.load();
-      this.audioPlyr = libs.plyr;
-    } catch(error) {
-      console.log("videoLibs.load() error: ", error);
-    }
+      this.audioPlayer.stop();
+      let ele = this.shadowRoot.querySelector('input[type="range"][data-plyr="seek"]');
+      if( ele ) ele.value = 0;
+    } catch(e) {}
 
-    // let plyr_supported = this.audioPlyr.supported('video', 'html5', true);
-    //console.log("plyr_supported: ", plyr_supported);
+    this.shadowRoot.querySelector('#audio_player').load();
 
-    this.src      = config.fcrepoBasePath+this.media['@id'];
-    this.type     = this.media.encodingFormat;
-    this.poster   = this.media.thumbnailUrl;
-    this.$.audio  = this.shadowRoot.getElementById('audio_player');
-    this.$.poster = this.shadowRoot.getElementById('audio_poster');
-
-    this.$.poster.style.display = 'none';
-    if ( this.poster ) {
+    let poster = this.media.thumbnailUrl  ? this.media.thumbnailUrl+'/svc:iiif/full/,400/0/default.jpg' : '';
+    if ( poster ) {
       this.$.poster.style.display = 'block';
-      this.$.poster.style.backgroundImage = "url(" + this.poster + ")";
+      this.$.poster.style.backgroundImage = "url(" + poster + ")";
+    } else {
+      this.$.poster.style.display = 'none';
     }
-    this.audioPlayer = new this.audioPlyr(this.$.audio, {
-      debug: false
-    });    
   }
 
   /**
    * Stop playback and reset to start
    **/
   _stop() {
-    const audio = this.shadowRoot.getElementById('audio_player');
-    audio.pause();
-
-    if ( this.audioPlayer === undefined || this.audioPlayer === null) return;
-
-    if (Object.entries(this.audioPlayer).length !== 0) {
-      this.audioPlayer.stop();
-    };
-
+    if( !this.audioPlayer ) return;
+    this.audioPlayer.stop();
   }
 }
 

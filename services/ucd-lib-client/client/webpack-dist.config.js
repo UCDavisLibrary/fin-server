@@ -18,7 +18,7 @@ configs.forEach(config => {
   });
 
   config.output.publicPath = '/js/'
-  config.output.chunkFilename = '[name].'+config.output.filename;
+  config.output.chunkFilename = '[name]-[hash].'+config.output.filename;
 });
 
 // add dynamic loader plugin for ie
