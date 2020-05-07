@@ -3,7 +3,7 @@ const request = require('request');
 
 let VERSION_ARGS={};
 for( let key in process.env ) {
-  if( key.match(/^FIN_.*_VERSION$/) ) {
+  if( key.match(/^FIN_.*_(VERSION|HASH|TAG)$/) ) {
     VERSION_ARGS[key] = process.env[key];
   }
 }
