@@ -307,6 +307,9 @@ export default class AppFsViewer extends Mixin(LitElement)
       file.directory = file.directParent.replace(this.selectedRecord['@id'], '');
       if( file['@type'].includes('http://fedora.info/definitions/v4/repository#Binary') ) {
         file.isFile = true;
+        if( !file.filename ) {
+          file.filename = file['@id'].split('/').pop();
+        }
       } else {
         file.isDirectory = true;
         file.filename = file['@id'].split('/').pop();
