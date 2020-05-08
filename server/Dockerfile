@@ -7,7 +7,7 @@ RUN apt-get install -y git jq zip unzip
 RUN apt-get clean
 
 COPY --from=fin-node-utils /fin-node-utils /fin-node-utils
-RUN cd /fin-node-utils && npm install -g
+RUN cd /fin-node-utils && npm link
 ENV NODE_PATH /usr/local/lib/node_modules
 
 RUN mkdir app

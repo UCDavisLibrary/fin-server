@@ -20,6 +20,9 @@ var fcrepoHostname = process.env.FCREPO_HOST || 'fcrepo';
 var esHostname = process.env.ES_HOST || 'elasticsearch';
 var esPort = process.env.ES_PORT || 9200;
 
+let serviceAccountFile = process.env.GOOGLE_SERVICE_ACCOUNT_FILE || '/etc/fin/webapp-service-account.json';
+let serviceAccountExists = fs.existsSync(serviceAccountFile) && fs.lstatSync(serviceAccountFile).isFile();
+
 module.exports = {
 
   server : {
@@ -88,9 +91,7 @@ module.exports = {
     refreshTokenExpire : (86400 * 30)
   },
 
-  google : {
-    serviceAccountFile : process.env.GOOGLE_SERVICE_ACCOUNT_FILE || '/etc/fin/webapp-service-account.json'
-  },
+  google : {serviceAccountExists, serviceAccountFile},
 
   workflow : {
     root : '/.workflow'

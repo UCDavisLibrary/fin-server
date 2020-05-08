@@ -21,7 +21,7 @@ const streams = [
 
 // wire in stack driver if google cloud service account provided
 let projectId;
-if( fs.existsSync(config.google.serviceAccountFile) ) {
+if( config.google.serviceAccountExists ) {
   let {LoggingBunyan} = require('@google-cloud/logging-bunyan');
 
   // grab project id from service account file
