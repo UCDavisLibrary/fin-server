@@ -1,5 +1,5 @@
 ARG CORE_SERVER_REPO_TAG
-FROM ucdlib/fin-node-utils:${CORE_SERVER_REPO_TAG} as fin-node-utils
+FROM ucdlib/fin-node-utils:${CORE_SERVER_REPO_TAG} AS fin-node-utils
 FROM node:12
 
 RUN apt-get update
