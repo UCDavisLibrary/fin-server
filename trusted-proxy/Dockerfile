@@ -1,26 +1,18 @@
 ARG CORE_SERVER_REPO_TAG
-FROM ucdlib/fin-node-utils:${CORE_SERVER_REPO_TAG} AS fin-node-utils
+FROM ucdlib/fin-node-utils:${CORE_SERVER_REPO_TAG} as fin-node-utils
 FROM node:12
-
-RUN apt-get update
-RUN apt-get install -y git jq zip unzip
-RUN apt-get clean
 
 COPY --from=fin-node-utils /fin-node-utils /fin-node-utils
 RUN cd /fin-node-utils && npm link
 ENV NODE_PATH /usr/local/lib/node_modules
 
-RUN mkdir app
-WORKDIR /app
+RUN mkdir /service
+WORKDIR /service
 
-ADD package.json .
-ADD package-lock.json .
+COPY package.json .
+COPY package-lock.json .
 RUN npm install --production
 
-COPY controllers controllers
-COPY lib lib
-COPY models models
-COPY assets assets
 COPY index.js .
 
 ARG CORE_SERVER_REPO_HASH

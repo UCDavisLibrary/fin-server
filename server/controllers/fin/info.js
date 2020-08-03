@@ -1,6 +1,13 @@
-// const gitinfo = require('../../gitinfo.json');
 const services = require('../../models/services');
 const request = require('request');
+
+let VERSION_ARGS={};
+for( let key in process.env ) {
+  if( key.match(/^FIN_.*_(VERSION|HASH|TAG)$/) ) {
+    VERSION_ARGS[key] = process.env[key];
+  }
+}
+
 module.exports = async (req, res) => {
   let arr = [];
   for( var key in services.services ) {
@@ -28,7 +35,7 @@ module.exports = async (req, res) => {
   }
 
   res.json({
-    version: {},
+    versions: VERSION_ARGS,
     services : arr
   });
 }

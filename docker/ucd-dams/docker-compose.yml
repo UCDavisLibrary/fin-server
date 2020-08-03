@@ -18,7 +18,6 @@ services:
       - FIN_ALLOW_ORIGINS=localhost:8081
     volumes:
       - ../../services/default-services.js:/etc/fin/default-services.js
-      - ../../server/gitinfo.json:/app/gitinfo.json
       - ../webapp-service-account.json:/etc/fin/webapp-service-account.json
       - ../../server/backups:/fcrepo-backups
       - ../../server/default-transforms:/etc/fin/transforms

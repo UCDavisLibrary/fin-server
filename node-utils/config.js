@@ -1,13 +1,27 @@
 const fs = require('fs');
+const path = require('path');
 
 let defaultServices = [];
-if( fs.existsSync('/etc/fin/default-services.js') ) {
-  defaultServices = require('/etc/fin/default-services.js');
+if( fs.existsSync('/etc/fin') ) {
+  fs.readdirSync('/etc/fin')
+    .forEach(file => {
+      if( file.match(/.*-services.js$/) ) {
+        let serviceDef = require(path.join('/etc/fin', file));
+        if( Array.isArray(serviceDef) ) {
+          defaultServices = defaultServices.concat(serviceDef);
+        } else {
+          defaultServices.push(serviceDef);
+        }
+      }
+    });
 }
 
 var fcrepoHostname = process.env.FCREPO_HOST || 'fcrepo';
 var esHostname = process.env.ES_HOST || 'elasticsearch';
 var esPort = process.env.ES_PORT || 9200;
+
+let serviceAccountFile = process.env.GOOGLE_SERVICE_ACCOUNT_FILE || '/etc/fin/webapp-service-account.json';
+let serviceAccountExists = fs.existsSync(serviceAccountFile) && fs.lstatSync(serviceAccountFile).isFile();
 
 module.exports = {
 
@@ -77,9 +91,7 @@ module.exports = {
     refreshTokenExpire : (86400 * 30)
   },
 
-  google : {
-    serviceAccountFile : process.env.GOOGLE_SERVICE_ACCOUNT_FILE || '/etc/fin/webapp-service-account.json'
-  },
+  google : {serviceAccountExists, serviceAccountFile},
 
   workflow : {
     root : '/.workflow'
