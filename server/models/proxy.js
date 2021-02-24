@@ -66,7 +66,7 @@ class ProxyModel {
     app.use(/^\/auth\/(?!token|user|logout|mint|service|login-shell).*/i, authenticationServiceProxy);
 
     // handle global services
-    app.use(/^\/svc:.*/, (req, res) => serviceProxy.middleware(req, res));
+    app.use(/^\/.+/, serviceProxy.globalServiceMiddleware);
 
     // send all requests that are not /fcrepo, /auth or /fin to the ClientService
     // fcrepo is really handled above but reads a little better to add... :/

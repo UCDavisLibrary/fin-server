@@ -5,7 +5,7 @@ const {URL} = require('url');
 const forwardedHeader = require('../../lib/forwarded-header');
 const workflow = require('./workflows');
 // const streamify = require('stream-array');
-const stream = require('stream');
+// const stream = require('stream');
 
 let HOST = new URL(config.server.url);
 HOST = HOST.protocol+'//'+HOST.host;

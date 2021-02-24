@@ -63,6 +63,35 @@ class ServiceProxy {
 
   }
 
+  /**
+   * @method globalServiceMiddleware
+   * @description handle global fin service requests
+   * 
+   * @param {Object} req express request
+   * @param {Object} res express response
+   * @param {Function} next express middleware next function 
+   */
+  async globalServiceMiddleware(req, res, next) {
+    let name = req.originalUrl.replace(/^\//, '').split('/')[0];
+    let service = serviceModel.services[name];
+    
+    if( !service ) return next();
+    if( service.type !== api.service.TYPES.GLOBAL ) {
+      return next();
+    }
+
+    req.finServiceInfo = {
+      fcUrl : config.server.url+req.originalUrl,
+      fcPath : req.originalUrl,
+      name : name,
+      svcPath : req.originalUrl,
+      global : true
+    }
+    req.finService = service;
+
+    proxyService(req, res);
+  }
+
 
   /**
    * @method validateRequest
@@ -146,10 +175,10 @@ class ServiceProxy {
   async setContainerInfo(req) {
     req.token = jwt.getJwtFromRequest(req);
 
-    if( req.finServiceInfo.global ) {
-      req.finContainer = {access: true};
-      return;
-    }
+    // if( req.finServiceInfo.global ) {
+    //   req.finContainer = {access: true};
+    //   return;
+    // }
 
     // make a head request to get fcrepo statusCode and link headers
     var {response} = await _request({
@@ -204,7 +233,7 @@ class ServiceProxy {
       fcPath : parts[0],
       name : '',
       svcPath : '',
-      global : req.originalUrl.match(/^\/svc:.*/) ? true : false
+      // global : req.originalUrl.match(/^\/svc:.*/) ? true : false
     }
 
     parts = parts[1].split('/');
