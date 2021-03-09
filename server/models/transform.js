@@ -40,15 +40,17 @@ class TransformUtils {
     }
   }
 
-  init(item, container) {
+  init(item, container, isCollection=true) {
     this.item = item;
     this.container = container;
 
     item['@id'] = container['@id'];
     item['@type'] = container['@type'];
 
-    let re = new RegExp('.*'+config.fcrepo.root+'/collection/');
-    this.collection = container['@id'].replace(re, '').split('/')[0];
+    if( isCollection ) {
+      let re = new RegExp('.*'+config.fcrepo.root+'/collection/');
+      this.collection = container['@id'].replace(re, '').split('/')[0];
+    }
   }
 
   ns(namespace) {
@@ -110,6 +112,7 @@ class TransformUtils {
 
   async _lookupLabel(attr, uri) {
     let result = {'@id': uri};
+    if( !this.collection ) return result;
 
     if( BLACK_LIST_LABEL_ATTRS.indexOf(attr) > -1 ) {
       return result;
