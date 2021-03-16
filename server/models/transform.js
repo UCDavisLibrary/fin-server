@@ -59,6 +59,22 @@ class TransformUtils {
 
   async add(opts) {
     let sAttr = this._getSourceAttribute(opts);
+    if( !opts.regex ) {
+      return this._addValue(opts, sAttr);
+    }
+
+    let re = new RegExp(sAttr);
+    let props = Object.keys(this.container)
+      .filter(prop => prop.match(re));
+
+    for( let prop of props ) {
+      let tOpts = Object.assign({}, opts);
+      tOpts.attr = prop.match(re)[1];
+      this._addValue(tOpts, prop);
+    }
+  }
+
+  async _addValue(opts, sAttr) {
     let val = await this._getValues(sAttr, opts);
     if( val === null || val.length === 0 ) {
       if( opts.default ) {
