@@ -18,7 +18,7 @@ RUN npm link @ucd-lib/fin-node-utils
 COPY ucd-lib-client ucd-lib-client
 RUN cd ucd-lib-client/client/public && npm install
 RUN cd ucd-lib-client/client/public && ln -s node_modules/\@ucd-lib/cork-app-load/lib loader
-RUN npm run dist
+# RUN npm run client-dist
 
 # Services
 COPY api api

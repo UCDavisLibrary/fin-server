@@ -9,7 +9,10 @@
     "cas" : "node cas/index.js",
     "essync" : "node essync/index.js",
     "gateway" : "node gateway/index.js",
-    "trusted-proxy" : "node trusted-proxy/index.js"
+    "trusted-proxy" : "node trusted-proxy/index.js",
+    "client-dist": "cd ucd-lib-client/client && ./build.sh",
+    "client-watch": "cd ucd-lib-client/client && webpack --watch",
+    "client-analyze-bundle": "cd ucd-lib-client/client && webpack --profile --json webpack-dist.config.js > stats.json && webpack-bundle-analyzer -m server stats.json"
   },
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",
