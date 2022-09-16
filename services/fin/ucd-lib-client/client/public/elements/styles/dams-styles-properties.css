@@ -1,0 +1,83 @@
+html {
+
+  /* DAMS PRIMARY INTERFACE COLOR PALETTE */
+  --color-dams-primary          : var(--color-aggie-blue);
+  --color-dams-primary-g1       : var(--color-aggie-blue-60);
+  --color-dams-primary-g2       : var(--color-aggie-blue-50);
+  --color-dams-primary-g3       : var(--color-aggie-blue-40);
+  --color-dams-primary-g4       : var(--color-aggie-blue-20);
+  --color-dams-secondary        : var(--color-aggie-gold);
+  --color-dams-alt              : var(--color-putah-creek);
+  --color-dams-text             : var(--color-html);
+
+  /* DAMS WATER COLORS */
+  --color-dams-wc-1             : var(--color-quad);
+  --color-dams-wc-2             : var(--color-arboretum);
+  --color-dams-wc-3             : var(--color-pinot);
+  --color-dams-wc-4             : var(--color-strawberry);
+
+  /* DAMS GRADIENTS */
+  --gradient-dams-blue          : linear-gradient(0deg, rgba(111,207,235,0.8), rgba(2, 40, 81, 0.8) 100%);
+
+  /* CAMPUS STYLE OVERRIDES */
+  --color-a-hover               : var(--color-dams-alt);
+
+  /* POLYMER COLOR VARIABLES?? */
+  --default-primary-color : var(--color-dams-primary) !important;
+  --light-primary-color   : var(--color-dams-primary-g1) !important;
+
+  --default-secondary-color : var(--color-dams-secondary) !important;
+  --light-secondary-color   : var(--color-dams-alt ,#9be7ff) !important;
+  --dark-secondary-color    : var(--color-gunrock , #2286c3) !important;
+
+  --medium-background-color : #B2BDCF !important;
+  --light-background-color : #D6DCE6 !important;
+  --super-light-background-color: #f3f3f3 !important;
+
+  --text-primary-color      : var(--color-dams-text) !important;
+  --primary-text-color      : var(--color-dams-text) !important;
+  --secondary-text-color    : var(--color-dams-secondary) !important;
+  --inverse-text-color      : var(--color-white) !important;
+  --gray-text               : var(--color-black-50) !important;
+  --text-disabled           : var(--gray-text) !important;
+
+  --color-grey              : #808080;
+  --color-light-yellow      : #ede2c0;
+
+  --max-width               : 1200px;
+  --max-text-width          : 650px;
+
+  --layout-sm               : 768px;
+  --grid-cell-width         : 250px;
+
+  --default-outline         : 2px dotted var(--default-secondary-color);
+
+  --paper-icon-button-ink-color : transparent;
+
+  /**
+  * Custom mixins
+  */
+  --fin-search-box-select: {
+    font-size: var(--fs-p);
+    font-weight: var(--fw-regular);
+    color: var(--default-primary-color);
+    background-color: var(--default-secondary-color);
+    width: 100px;
+  }
+  --fin-search-box-select-inverse: {
+    @apply(--fin-search-box-select);
+    color: var(--default-secondary-color);
+    background-color: var(--default-primary-color);
+  }
+  --fin-search-box-input: {
+    padding-left: 10px;
+    font-size: var(--fs-p);
+    background-color: white;
+  }
+  --cork-drop-down-arrow-color: var(--default-primary-color);
+  --cork-toggle-panel-label : {
+    padding: 10px 0;
+    color: var(--default-primary-color);
+    font-weight: var(--fw-regular-bold);
+  }
+}

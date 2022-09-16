@@ -1,0 +1,78 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    padding: 15px;
+  }
+  h3, .header {
+    color: var(--default-primary-color);
+    margin: 5px 0;
+    font-weight: bold;
+  }
+  .section {
+    margin-bottom: 20px;
+  }
+  .break {
+    border-bottom: 1px solid var(--medium-background-color);
+    margin: 5px;
+  }
+
+  select {
+    margin-right: 10px;
+    outline-offset: 1px;
+    border: none;
+    background-color: white;
+    border-radius: 0;
+    height: 38px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    -ms-border-radius: 0px;
+    -o-border-radius: 0px;
+    padding: 5px 30px 5px 10px;
+    background-position: right 10px center;
+    background-size: 10px 6px;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');
+    background-color: var(--medium-background-color);
+  }
+  /* for IE */
+  select::-ms-expand {
+      display: none;
+  }
+
+  .buttons {
+    display: flex;
+    margin-top: 10px;
+  }
+</style>
+
+<div class="section" hidden$="[[!title]]">
+  <h3>[[title]]</h3>
+</div>
+
+<div class="section" hidden$="[[!description]]">
+  <div class="header">Description</div>
+  <div id="description"></div>
+</div>
+
+<div class="section" hidden$="[[!coverage]]">
+  <div class="header">Coverage</div>
+  <div>[[coverage]]</div>
+</div>
+
+<div class="break"></div>
+
+<div class="header">Cite this Collection</div>
+<div>
+  <app-copy-cite id="copyCite" text="[[citation]]">
+    <select id="citeFormatInput" value$="[[citationFormat]]" on-change="_onCiteFormatChange">
+      <template is="dom-repeat" items="[[engines]]">
+        <option value="[[item.engine]]">[[item.label]]</option>
+      </template>
+    </select>
+  </app-copy-cite>
+</div>

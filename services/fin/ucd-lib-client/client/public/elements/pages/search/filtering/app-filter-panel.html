@@ -1,0 +1,80 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+  }
+
+  .label {
+    cursor: pointer;
+    display: flex;
+    color: var(--default-primary-color);
+    padding: 10px 0;
+    font-weight: bold;
+    position: relative;
+    outline: none !important;
+  }
+
+  .highlight {
+    position: absolute;
+    left: -10px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color:  var(--default-secondary-color);
+    display: none;
+  }
+
+  .label:focus > .highlight {
+    display: block;
+  }
+
+  #activeFilters > div {
+    padding: 4px 5px;
+  }
+
+  .filter {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    font-weight: bold;
+    font-style: italic;
+  }
+
+  iron-icon[closed] {
+    transform: rotate(-90deg);
+  }
+
+  iron-icon[clear] {
+    color: var(--default-secondary-color);
+    margin-right: 2px;
+  }
+
+  /* JM - think this is redundant, scroll inforced by app-*-filter element */
+  /* #filters {
+    overflow-y: auto;
+    max-height: 200px;
+  } */
+</style>
+
+<div class="label" on-click="_onToggleClicked" on-keyup="_onToggleClicked" role="button" tabindex="0">
+  <div style="flex:1">[[filter.label]]</div>
+  <iron-icon icon="arrow-drop-down" closed$="[[!opened]]"></iron-icon>
+  <div class="highlight"></div>
+</div>
+
+<div id="activeFilters" hidden$="[[opened]]">
+  <div hidden$="[[!selected.length]]">
+    <template is="dom-repeat" items="[[selected]]">
+      <div class="filter" 
+        on-click="_onFilterClicked"
+        on-keyup="_onFilterClicked" 
+        label$="[[item.label]]"
+        tabindex="0" 
+        role="button">
+        <iron-icon icon="fin-icons:close" clear></iron-icon>
+        <div>[[item.niceLabel]]</div>
+      </div>
+    </template>
+  </div>
+</div>
+
+<div id="filters" hidden$="[[!opened]]"></div>

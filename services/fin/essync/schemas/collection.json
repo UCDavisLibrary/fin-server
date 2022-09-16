@@ -1,0 +1,63 @@
+{
+  "dynamic": false,
+
+  "properties" : {
+
+    "@id" : {
+      "type" : "keyword"
+    },
+
+    "identifier" : {
+      "type" : "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
+    "collectionId" : {
+      "type" : "keyword" 
+    },
+
+    "keywords" : {
+      "type" : "text"
+    },
+
+    "about.name" : {
+      "type" : "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
+    "name" : {
+      "type": "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
+    "description" : {
+      "type": "text"
+    },
+
+    "coverage" : {
+      "type":  "keyword"
+    },
+
+    "creators" : {
+      "type": "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    }
+
+  }
+}

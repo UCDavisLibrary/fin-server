@@ -1,0 +1,170 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    background-color: var(--default-primary-color);
+  }
+
+  :host([single-image]) {
+    background-color: transparent;
+    padding: 0 8px 8px 8px;
+  }
+
+  :host([single-image]) paper-icon-button,
+  :host([single-image]) app-share-btn,
+  :host app-share-btn,
+  :host paper-icon-button {
+    background-color: var(--default-primary-color);
+  }
+
+
+  .layout {
+    display: flex;
+    align-items: center;
+  }
+
+  #thumbnailInnerContainer {
+    padding-top: 7px;
+  }
+
+ 
+  #thumbnails {
+    /* (50px width + 10px margin + 4px border) * 8 thumbnails */
+    max-width: 512px;
+  }
+
+
+  #thumbnails {
+    overflow: hidden;
+  }
+
+  #thumbnails > div {
+    white-space: nowrap;
+    margin-left: 0;
+    will-change: margin-left;
+    transition: margin-left 250ms ease-out;
+  }
+
+  .thumbnail {
+    margin: 0 5px 5px 6px;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    color: white;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: black;    
+    border: 2px solid transparent;
+  }
+
+  .thumbnail:active {
+    border: 1px solid var(--default-secondary-color);
+  }
+
+  .thumbnail:focus {
+    outline: var(--default-outline);
+  }
+  
+  .thumbnail[selected] {
+    border: 2px solid var(--default-secondary-color);
+  }
+
+  iron-icon {
+    shape-rendering: geometricPrecision !important;
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  paper-icon-button {
+    color: var(--default-secondary-color);
+    min-width: 40px;
+  }
+
+  paper-icon-button:focus {
+    border-radius: 0 !important;
+  }
+
+  paper-icon-button[disabled] {
+    color: var(--gray-text);
+    min-width: 40px;
+  }
+
+  paper-icon-button[invisible] {
+    visibility: hidden;
+  }
+
+  .zoom-btns[pad] {
+    margin-right: 30px;
+  }
+</style>
+
+
+<div class="layout">
+
+  <div id="navLeft" hidden$="[[singleImage]]">
+    <paper-icon-button noink 
+      tabindex="0" 
+      icon="chevron-left" 
+      alt="Page thumbnails left"
+      disabled$="[[!showNavLeft]]"
+      invisible$="[[!showNavLeft]]"
+      on-click="_pageLeft">
+    </paper-icon-button>
+  </div>
+
+  <div id="thumbnails" hidden$="[[singleImage]]">
+    <div id="thumbnailInnerContainer">
+      <template is="dom-repeat" items="[[thumbnails]]">
+        <button 
+          class="thumbnail"
+          alt$="Page #[[item.position]]"
+          title$="[[item.id]]"
+          media-id$="[[item.id]]"
+          disabled$="[[item.disabled]]"
+          selected$="[[item.selected]]" 
+          style$="background-image:url([[item.src]])"
+          on-click="_onThumbnailClicked">
+            <iron-icon icon="fin-icons:[[item.icon]]"></iron-icon>
+        </button>
+      </template>
+    </div>
+  </div>
+
+  <div id="navRight" hidden$="[[singleImage]]">
+    <paper-icon-button noink 
+      tabindex="0" 
+      icon="chevron-right" 
+      alt="Page thumbnails right"
+      disabled$="[[!showNavRight]]"
+      invisible$="[[!showNavRight]]"
+      on-click="_pageRight">
+    </paper-icon-button>
+  </div>
+
+  <div style="flex:1"></div>
+  
+  <div id="buttonWrapper" hidden$="[[breakControls]]" style="white-space: nowrap">
+    <paper-icon-button id="zoomOut1" noink tabindex="0" icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
+    <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+    
+    <app-share-btn id="shareBtn" role="button"></app-share-btn>
+
+    <span hidden$="[[!showOpenLightbox]]" class="zoom-btns" pad$="[[!showOpenLightbox]]">
+      <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+      <paper-icon-button noink icon="fin-icons:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
+    </span>
+  </div>
+</div>
+
+<div hidden$="[[!breakControls]]" style="text-align: right">
+  <paper-icon-button id="zoomOut2" noink tabindex="0" icon="zoom-out" hidden$="[[!isLightbox]]" on-click="_onZoomOutClicked"></paper-icon-button>
+  <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+  
+  <app-share-btn></app-share-btn>
+  
+  <span hidden$="[[!showOpenLightbox]]" class="zoom-btns">
+    <paper-icon-button noink icon="zoom-in" tabindex="0" hidden$="[[isLightbox]]" on-click="_onZoomInClicked"></paper-icon-button>
+    <paper-icon-button noink icon="fin-icons:close" tabindex="0" hidden$="[[!isLightbox]]" on-click="_onCloseClicked"></paper-icon-button>
+  </span>
+</div>

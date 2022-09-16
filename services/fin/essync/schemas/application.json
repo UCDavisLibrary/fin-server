@@ -1,0 +1,22 @@
+{
+  "dynamic": false,
+
+  "properties" : {
+
+    "@id" : {
+      "type" : "keyword"
+    },
+
+    "applicationId" : {
+      "type" : "keyword"
+    },
+
+    "identifier" : {
+      "type":  "keyword"
+    },
+
+    "name" : {
+      "type" : "keyword"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+  }
+  .text {
+    display: block;
+    color: var(--gray-text);
+    line-height: 1.3;
+    font-weight: var(--fw-light);
+  }
+  :host([col]) .text {
+    word-break: break-all;
+  }
+  :host([grid]) .text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(var(--grid-cell-width) - 30px);
+  }
+</style>
+
+<a class="text" hidden="[[!link]]" href="[[textLabel]]" target="_blank" rel="noopener" on-click="_onClick">[[textLabel]]</a>
+<div class="text" hidden="[[link]]">[[textLabel]]</div>

@@ -1,0 +1,206 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    /* background: var(--default-primary-color); */
+  }
+
+  #loading {
+    width: 100%;
+    min-height: 700px;
+    height: 75vh;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    background-color: white;
+  }
+
+  #loading img {
+    animation: showLoading 400ms ease-in;
+  }
+
+  @keyframes showLoading {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  .footer {
+    display: flex; 
+    justify-content: center;
+    background-color: var(--color-dams-primary);
+  }
+
+  .mobile-filters-layout {
+    display: flex;
+  }
+
+  .main-content {
+    flex: 1;
+  }
+
+  .loading-dots {
+    text-align: center;
+    z-index: 5;
+    color: var(--default-primary-color);
+  }
+
+  .dot {
+    display: inline;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+    position: relative;
+    font-size: 3.5em;
+    opacity: 0;
+    animation: showHideDot 2.5s ease-in-out infinite;
+  }
+
+  .dot.one { animation-delay: 0.2s; }
+  .dot.two { animation-delay: 0.4s; }
+  .dot.three { animation-delay: 0.6s; }
+
+  @keyframes showHideDot {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    60% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  #drawer-background {
+    opacity: .7;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    background: black;
+    z-index: 5;
+    display: none;
+    animation: fadeIn 300ms;
+  }
+
+  #drawer {
+    position: absolute;
+    top: 0;
+    left: -335px;
+    bottom: 0;
+    background: white;
+    width: 300px;
+    z-index: 10;
+    transition: left 300ms ease-out;
+    background-color: var(--light-background-color);
+  }
+
+  #drawer[open] {
+    left: 0;
+  }
+
+  #outerDrawer {
+    position: relative;
+  }
+
+  #drawer-background[open] {
+    display: block;
+  }
+
+  #drawer app-filters-panel {
+    width: 300px;
+  }
+
+  @media( min-width: 975px ) {
+    #outerDrawer {
+      display: none;
+    }
+  }
+</style>
+
+<app-route app-routes="[[appRoutes]]"></app-route>
+
+<app-search-header hidden$="[[!showSearchHeader]]"></app-search-header>
+<!-- <app-search-breadcrumb hidden$="[[!showBreadcrumb]]"></app-search-breadcrumb> -->
+
+<div class="mobile-filters-layout">
+  <div id="outerDrawer">
+    <div id="drawer" open$="[[drawerOpen]]">
+      <app-filters-panel on-toggle-drawer="_toggleDrawer"></app-filters-panel>
+    </div>
+    <div id="drawer-background" open$="[[drawerOpen]]" on-click="_toggleDrawer"></div>
+  </div>
+
+  <div class="main-content">
+    <iron-pages selected="[[page]]" attr-for-selected="id" selected-attribute="visible">
+      <div id="loading">
+        <img src="/images/logos/logo-icon.svg" style="max-width: 128px" />
+        <div class="loading-dots">
+          <h1 class="dot one">.</h1><h1 class="dot two">.</h1><h1 class="dot three">.</h1>
+        </div>
+      </div>
+      <app-home id="home"></app-home>
+      <app-search id="search"></app-search>
+      <app-record id="record"></app-record>
+      <app-about id="about"></app-about>
+      <app-collections id="collections"></app-collections>
+      <app-browse-by id="subject" 
+        label="Subject" 
+        facet-query-name="abouts.raw">
+        <dams-watercolor-overlay 
+          icon="star"
+          slot="header-icon">
+        </dams-watercolor-overlay>
+      </app-browse-by>
+      <app-browse-by id="creator" 
+        label="Creator" 
+        facet-query-name="creators">
+        <dams-watercolor-overlay 
+          icon="star"
+          slot="header-icon">
+        </dams-watercolor-overlay>
+      </app-browse-by>
+      <app-browse-by id="format" 
+        label="Format" 
+        facet-query-name="fileFormats">
+        <dams-watercolor-overlay 
+          icon="star"
+          slot="header-icon">
+        </dams-watercolor-overlay>
+      </app-browse-by>
+      <app-components id="components"></app-components>
+    </iron-pages>
+    <div class="footer site-frame">
+      <ucdlib-site-footer>
+        <ucdlib-site-footer-column header="Digital Collections">
+          <ul>
+            <li><a href="/#collections">collections</a></li>
+            <li><a href="/search">items</a></li>
+            <li><a href="">faq</a></li>
+            <li><a href="/about">about digital collections</a></li>
+          </ul>
+        </ucdlib-site-footer-column>
+        <ucdlib-site-footer-column header="Library Info">
+          <ul>
+            <li><a href="https://library.ucdavis.edu/special-collections/" target="_blank" rel="noopener">special collections</a></li>
+            <li><a href="https://library.ucdavis.edu/news/" target="_blank" rel="noopener">news</a></li>
+            <li><a href="https://library.ucdavis.edu/about/" target="_blank" rel="noopener">About the Library</a></li>
+            <li><a href="https://library.ucdavis.edu/library/" target="_blank" rel="noopener">Visit</a></li>
+            <li><a href="https://library.ucdavis.edu/service/careers/" target="_blank" rel="noopener">Careers</a></li>
+            <li class="button">
+              <a href="http://give.ucdavis.edu/ULIB" target="_blank" rel="noopener">Give to the UC Davis Library</a>
+            </li>
+          </ul>
+        </ucdlib-site-footer-column>
+        <ucdlib-site-footer-column header="Account">
+          <ul>
+            <li><app-auth-footer></app-auth-footer></li>
+          </ul>
+        </ucdlib-site-footer-column>
+        <div insert-into="below-address" hidden?="[[showVersion]]">
+          <div><b>Build Information</b></div>
+          <div>[[appVersion]]</div>
+          <div>Build Time: [[localBuildTime]]</div>
+          <div>fin-server: [[coreTag]] @ [[coreHash]]</div>
+          <div>fin-ucd-lib-server: [[clientTag]] @ [[clientHash]]</div>
+        </div>
+      </ucdlib-site-footer>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,58 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    cursor: pointer;
+  }
+
+  :host(:focus) {
+    outline: var(--default-outline);
+  }
+
+  :host([disabled]) {
+    cursor: default;
+    outline: none !important;
+  }
+
+  iron-icon {
+    display: none;
+    color: var(--default-secondary-color);
+    min-width: 24px;
+    margin-right: 2px;
+  }
+
+  div {
+    user-select: none;
+    display: flex;
+    min-height: 24px;
+    align-items: top;
+  }
+
+  span {
+    display: inline-block;
+    padding-top: 3px;
+    line-height: normal;
+  }
+
+  div[checked] iron-icon {
+    display: inline-block;
+  }
+
+  div[checked] .value {
+    font-style: italic;
+    font-weight: bold;
+  }
+
+  div[disabled] iron-icon {
+    display: none;
+  }
+
+  div[disabled] .value {
+    font-style: italic;
+    color: var(--gray-text);
+  }
+</style>
+
+<div checked$="[[checked]]" disabled$="[[disabled]]">
+  <iron-icon icon="fin-icons:close"></iron-icon>
+  <span class="value">[[realLabel]]</span>
+</div>

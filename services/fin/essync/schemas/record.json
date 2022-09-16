@@ -1,0 +1,127 @@
+{
+  "dynamic": false,
+
+  "properties" : {
+
+    "@id" : {
+      "type" : "keyword"
+    },
+
+    "type" : {
+      "type" : "text",
+      "analyzer": "autocomplete", 
+      "search_analyzer": "autocomplete_search",
+      "fields" : {
+        "raw" : {
+          "type" : "keyword"
+        }
+      }
+    },
+
+    "identifier" : {
+      "type" : "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
+    "identifiers" : {
+      "type" : "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
+    "isPartOf.@id" : {
+      "type" : "keyword" 
+    },
+
+    "abouts" : {
+      "type" : "text",
+      "analyzer": "autocomplete", 
+      "search_analyzer": "autocomplete_search",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
+    "keywords" : {
+      "type" : "text"
+    },
+
+    "license.@id" : {
+      "type" : "keyword"
+    },
+
+    "collectionId" : {
+      "type" : "keyword"
+    },
+
+    "isRootRecord" : {
+      "type" : "boolean"
+    },
+
+    "creators" : {
+      "type" : "keyword"
+    },
+
+    "created" : {
+      "type" : "date",
+      "format" : "date_optional_time"
+    },
+
+    "parent.@id" : {
+      "type" : "keyword"
+    },
+
+    "directParent" : {
+      "type" : "keyword"
+    },
+
+    "filename": {
+      "type": "text",
+      "analyzer": "autocomplete", 
+      "search_analyzer": "autocomplete_search" 
+    },
+
+    "fileFormats" : {
+      "type" : "keyword"
+    },
+
+    "fileFormat" : {
+      "type" : "keyword"
+    },
+
+    "yearPublished" : {
+      "type" : "integer"
+    },
+
+    "name" : {
+      "type": "text",
+      "fields": {
+        "raw": { 
+          "type":  "keyword"
+        }
+      }
+    },
+
+    "alternativeHeadline" : {
+      "type" : "text"
+    },
+
+    "indexableContents" : {
+      "type": "text"
+    },
+
+    "indexableContent" : {
+      "type": "text"
+    }
+
+  }
+}

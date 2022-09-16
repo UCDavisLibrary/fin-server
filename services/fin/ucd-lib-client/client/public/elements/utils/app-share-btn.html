@@ -1,0 +1,141 @@
+<style include="shared-styles">
+  :host {
+    display: inline-block;
+    position: relative;
+  }
+
+  #popup {
+    display: none;
+    z-index: 5;
+    background: white;
+    padding: 10px;
+    position: absolute;
+    bottom: 70px;
+    right: -20px;
+    min-width: 200px;
+  }
+
+  .layout {
+    display: flex;
+    margin-bottom: 5px;
+    justify-content: center;
+  }
+
+  input {
+    font-size: var(--fs-p);
+    padding: 0 0 0 5px;
+    display: block;
+    border: none;
+    height: 38px;
+    outline: none;
+  }
+
+  #link {
+    width: 100%;
+    border-top: 1px solid var(--medium-background-color);
+    border-left: 1px solid var(--medium-background-color);
+    border-bottom: 1px solid var(--medium-background-color);
+    box-sizing: border-box;
+  }
+
+  .social {
+    margin: 8px;
+    display: inline-block;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    border: 2px solid transparent;
+    outline: none;
+  }
+  .social:focus {
+    border: var(--default-outline);
+    border-radius: 20px;
+  }
+
+  .copyButton {
+    white-space: nowrap;
+    height: 38px;
+    text-transform: uppercase;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-bold);
+    background-color: var(--default-secondary-color);
+    color: var(--default-primary-color);
+    border-radius: 0;
+    border: none;
+    cursor: pointer;
+    padding: 0 5px;
+  }
+  .copyButton[active] {
+    text-align: center;
+    background-color: var(--default-primary-color);
+    color: var(--default-secondary-color);
+  }
+  .copyButton[active] span {
+    display: none;
+  }
+
+  #main {
+    color: var(--default-secondary-color);
+  }
+
+  .arrow-down {
+    position: absolute;
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid white;
+    bottom: -20px;
+    right: 20px;
+  }
+
+  paper-icon-button:focus {
+    border-radius: 0 !important;
+  }
+</style>
+
+<div id="popup">
+  <div class="layout">
+    <img id="facebook" 
+      role="button" 
+      tabindex="0" 
+      src="/images/social-icons/icon-facebook.svg" 
+      class="social" 
+      on-click="_onSocialIconClick"
+      on-keyup="_onSocialIconClick" />
+    <img id="twitter" 
+      role="button" 
+      tabindex="0" 
+      src="/images/social-icons/icon-twitter.svg" 
+      class="social" 
+      on-click="_onSocialIconClick"
+      on-keyup="_onSocialIconClick" />
+    <img id="pinterest" 
+      role="button" 
+      tabindex="0" 
+      src="/images/social-icons/icon-pinterest.svg" 
+      class="social" 
+      on-click="_onSocialIconClick"
+      on-keyup="_onSocialIconClick" />
+  </div>
+  <div>
+    <div style="display: flex; align-items: center" class="section bordered">
+      <div style="flex:1">
+        <input id="link" type="text" />
+      </div>
+      <button on-click="_copyLink" id="copyButton" class="copyButton">
+        <iron-icon icon="content-copy" id="copyIcon"></iron-icon>
+      </button>
+    </div>
+  </div>
+  <div class="arrow-down"></div>
+</div>
+
+<paper-icon-button 
+  id="main" 
+  noink 
+  icon="social:share" 
+
+  on-click="_onBtnClicked">
+</paper-icon-button>
+

@@ -1,0 +1,148 @@
+/* Default typography */
+paper-tabs {
+  --paper-tabs-selection-bar: {
+    border-bottom: 3px solid var(--default-primary-color);
+  }
+}
+paper-tab {
+  --paper-tab-content-unselected : {    
+    text-transform: uppercase;
+    color: var(--text-disabled);
+  }
+  --paper-tab-content : {
+    text-transform: uppercase;
+    color: var(--default-primary-color);
+  }
+}
+
+button {
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  border-radius: 0;
+}
+
+input, select, button {
+  font-size        : var(--fs-p);
+  font-weight      : var(--fw-regular);
+  color            : var(--text-primary-color);
+  font-family      : proxima-nova,"Lucida Grande","Lucida Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  }
+
+a:focus, button:focus, select:focus, div[tabindex]:focus {
+  outline: var(--default-outline);
+}
+
+paper-icon-button {
+  border: 2px solid transparent;
+  /*background-color: var(--default-primary-color);*/
+}
+
+paper-icon-button:focus {
+  border: var(--default-outline);
+  border-radius: 20px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+main > * {
+  max-width: 1000px;
+  width: 100%;
+}
+
+ul.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+a.italic {
+  color: var(--default-secondary-color);
+  font-style: italic;
+}
+
+a.gold {
+  color: var(--default-secondary-color);
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-container > * {
+  max-width: var(--max-text-width);
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container > * {
+  max-width: var(--max-width);
+  width: 100%;
+  justify-content: center;
+}
+
+fin-search-box > iron-icon {
+  color: var(--default-secondary-color);
+}
+
+/** EVERYTHING BELOW HERE IS BEING USED. NEED TO AUDIT ABOVE RULES **/
+
+cork-pagination {
+  --cork-color : var(--color-dams-primary);
+  --cork-background-color : var(--color-dams-secondary);
+}
+
+.solid-line-break {
+  margin: 1rem 0;
+  height: 2px;
+  background-color: var(--color-aggie-blue-40);
+}
+
+.header-dots {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80px;
+  margin: var(--spacing-default) auto var(--spacing-sm) auto;
+}
+.dot {
+  border-radius: 50%;
+  background-color: var(--color-dams-secondary);
+}
+.header-dots .dot {
+  width: 12px;
+  height: 12px;
+}
+h2 .fw-light {
+  font-weight: var(--fw-regular);
+}
+.site-frame {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+@media (min-width: 767px) {
+
+}
+@media (min-width: 1060px) {
+  .site-frame {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+@media (min-width: 1601px) {
+
+}

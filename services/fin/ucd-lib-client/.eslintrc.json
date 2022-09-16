@@ -1,0 +1,50 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "jsdoc"
+  ],
+  "rules": {
+    "consistent-return": 2,
+    "indent": [
+      1,
+      2
+    ],
+    "no-else-return": 1,
+    "semi": [
+      2,
+      "always"
+    ],
+    "space-unary-ops": 2,
+    "jsdoc/require-jsdoc": [
+      1,
+      {
+        "require": {
+          "MethodDefinition": true,
+          "ClassDeclaration": true
+        },
+        "checkGetters": false,
+        "checkSetters": false,
+        "exemptEmptyConstructors": true
+      }
+    ],
+    "jsdoc/require-param": 1,
+    "jsdoc/require-returns": 1,
+    "jsdoc/require-description": [
+      1,
+      {
+        "descriptionStyle": "tag"
+      }
+    ]
+  }
+}

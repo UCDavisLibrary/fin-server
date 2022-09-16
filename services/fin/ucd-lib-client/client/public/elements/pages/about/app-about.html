@@ -1,0 +1,100 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    position: relative;
+    background-color: var(--super-light-background-color);
+  }
+
+  .text-container {
+    margin: 0;
+    padding: 50px 10px 50px 10px;
+  }
+
+  h1, h2 {
+    color: var(--default-primary-color);
+  }
+
+  h2 {
+    margin: 15px 0 0 0px;
+  }
+
+  .yellow-line {
+    margin: 0 auto 0 0;
+    text-align: left;
+    width: 50px;
+    height: 4px;
+
+    border-color: var(--default-secondary-color);
+    background-color: var(--default-secondary-color);
+  }
+</style>
+
+<app-header-colorbar height="8" flipped></app-header-colorbar>
+
+<div class="text-container">  
+  <div>
+    <h1>About Digital Collections</h1>
+    <div class="yellow-line">&nbsp;</div>
+  </div>
+  
+  <p>
+    The UC Davis Digital Collections is a locally developed digital repository that 
+    was designed to store and manage the digital assets of UC Davis. These Digital 
+    Collections are intended to increase access to previously undiscoverable digital 
+    assets held by the University Library.
+  </p>
+  
+  <p>
+    Initially launched in 2018, the repository currently stores <span>[[count]]</span> digital assets. 
+    Assests will be added continually as they are ready.
+  </p>
+  
+  <h2>Platform</h2>
+  
+  <p>
+    The Digital Asset Management System is built on the Fedora Linked Data Platform. 
+    Custom microservices are implemented using a Fedora (API-X) extension method as a general 
+    methodology. The User Interface was built with web-components anticipating a need for 
+    UI flexibility as the digital collection grows. For a more detailed explanation of 
+    the development, see our 
+    <a href="https://github.com/UCDavisLibrary/fin-server/wiki/Fin-Server-Overview">Fin Server Overview</a> or
+    <a href="https://github.com/UCDavisLibrary/fin-server/blob/master/docs/README.md">Developer Documentation.</a>
+  </p>
+  
+  <h2>Contact</h2>
+  <div>
+    <ul>
+      <li><a href="mailto:eanebeker@ucdavis.edu">Eric A Nebeker - Digital Assets Specialist</a></li>
+    </ul>
+  </div>
+  
+  <h2>Implementation Team</h2>
+  <div>
+    <ul>
+      <li><a href="https://www.library.ucdavis.edu/author/quinn-hart">Quinn Hart - Team Lead</a></li>
+      <li><a href="https://www.library.ucdavis.edu/author/justin-merz">Justin Merz - Lead Developer</a></li>
+      <li><a href="https://www.library.ucdavis.edu/author/kimmy-hescock">Kimmy Hescock - User Experience Designer</a></li>
+    </ul>
+  </div>
+  
+  <h2>Members of the DAMS Steering Committee</h2>
+  <div>
+    <ul>
+      <li><a href="https://www.library.ucdavis.edu/author/peter-brantley">Peter Brantley</a></li>
+      <li><a href="https://www.library.ucdavis.edu/author/vessela-ensberg">Vessela Ensberg</a></li>
+      <li><a href="https://www.library.ucdavis.edu/author/bob-heyer-gray">Robert Heyer-Gray</a></li>
+      <li><a href="https://www.library.ucdavis.edu/author/xiaoli-li">Xiaoli Li</a></li>
+      <li><a href="https://www.library.ucdavis.edu/author/kevin-miller">Kevin Miller</a></li>
+      <li><a href="https://www.library.ucdavis.edu/author/eric-nebeker">Eric Nebeker</a></li>
+      <li><a href="https://www.library.ucdavis.edu/author/dale-snapp">Dale Snapp</a></li>
+      <li><a href="https://www.library.ucdavis.edu/author/carl-stahmer">Carl Stahmer</a></li>
+      <li><a href="https://www.library.ucdavis.edu/author/neil-weingarten">Neil Weingarten</a></li>
+    </ul>
+  </div>
+  
+  <p>
+    The UC Davis Library DAMS was a project of the Library's 
+    <a href="https://www.library.ucdavis.edu/service/online-strategy-2/">Online Strategy team.</a>
+  </p>
+</div>
+<app-header-colorbar height="8" flipped></app-header-colorbar>

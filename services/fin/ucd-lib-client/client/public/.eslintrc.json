@@ -1,0 +1,9 @@
+{
+  "ignorePatterns" : ["*.tpl.js"],
+  "globals": {
+    "LitCorkUtils": "readonly",
+    "Mixin": "readonly",
+    "APP_CONFIG": "readonly",
+    "EventInterface" : "readonly"
+  }
+}

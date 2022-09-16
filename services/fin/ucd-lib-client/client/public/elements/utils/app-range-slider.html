@@ -1,0 +1,97 @@
+<style>
+  :host {
+    display: block;
+    position: relative;
+    height: 50px;
+    margin: 0 13px;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently */
+  }
+
+  #numberLine {
+    position: absolute;
+    left : 0;
+    right : 0;
+    height: 3px;
+    background-color: var(--light-background-color, #888);
+  }
+
+  #fillLine {
+    position: absolute;
+    cursor: move;
+    background-color: var(--default-primary-color);
+    height: 3px;
+  }
+
+  .btn {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    cursor: move;
+  }
+
+  .btn > div {
+    margin: 5px;
+    height: 15px;
+    width: 15px;
+    border-radius: 15px;
+    background-color: var(--default-primary-color);
+    transition: all 150ms linear;
+  }
+
+  .btn[moving] > div {
+    margin: 0px;
+    height: 25px;
+    width: 25px;
+    border-radius: 25px;
+  }
+
+  .label {
+    width : 25px;
+    font-size: 12px; 
+    position: absolute;
+    text-align: center;
+    transform: scale(0);
+    transition: transform 200ms linear;
+    color: var(--default-primary-color);
+  }
+
+  .label[moving] {
+    transform: scale(1);
+  }
+
+</style>
+
+<div id="numberLine"></div>
+
+<div id="fillLine" 
+  prop="range" 
+  on-mousedown="_onMoveStart" 
+  on-touchstart="_onMoveStart">
+</div>
+
+<div id="lowNumberLabel" class="label" moving$="[[isMoving]]">[[minValueLabel]]</div>
+<div id="highNumberLabel" class="label" moving$="[[isMoving]]">[[maxValueLabel]]</div>
+
+<div id="lowNumberBtn" 
+  class="btn" 
+  prop="min" 
+  on-mousedown="_onMoveStart" 
+  on-touchstart="_onMoveStart" 
+  moving$="[[movingMin]]" >
+  <div></div>
+</div>
+
+<div id="highNumberBtn" 
+  class="btn" 
+  prop="max" 
+  on-mousedown="_onMoveStart" 
+  on-touchstart="_onMoveStart" 
+  moving$="[[movingMax]]">
+  <div></div>
+</div>
