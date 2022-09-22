@@ -23,7 +23,7 @@ class AuthModel {
     this.ADMIN_LIST_KEY = 'admins';
     this.REFRESH_TOKEN_PREFIX = 'rtoken:';
 
-    redis.config('SET', 'save', '60 1 30 10');
+    redis.sendCommand(['CONFIG', 'SET', 'save', '60 1 30 10']);
 
     this.webac = {};
     this.admins = [];

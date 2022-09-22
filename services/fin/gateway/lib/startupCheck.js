@@ -15,8 +15,9 @@ module.exports = async function(callback) {
 async function check(count) {
   await wait(count);
   let resp = await api.get({path: '/'});
+  console.log(resp);
   if( resp.error ) return false;
-  return resp.checkStatus(200);
+  return resp.checkStatus(200) || resp.checkStatus(401);
 }
 
 function wait(count) {

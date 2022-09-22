@@ -209,6 +209,13 @@ class ProxyModel {
       path = path.replace(/fcr:metadata.*/, '');
     }
 
+    try {
+      let user = jwt.getUserFromRequest(req);
+      // TODO: handle admins
+      // See fcrepo.properties for this value
+      req.headers['x-fin-principal'] = user.username;
+    } catch(e) {}
+
     // store for serivce headers
     req.fcPath = path;
 
