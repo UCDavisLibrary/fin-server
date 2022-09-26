@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const api = require('@ucd-lib/fin-node-api');
 
 // used for JWT
-const SERVER_USERNAME = 'fin-server';
+const SERVER_USERNAME = 'fin-gateway';
 
 // global catch alls for errors
 process.on('uncaughtException', (e) => logger.fatal(e));
@@ -18,6 +18,7 @@ process.on('unhandledRejection', (e) => logger.fatal(e));
 api.setConfig({
   host: config.fcrepo.host,
   basePath : config.fcrepo.root,
+  directAccess : true,
   jwt : jwt.create(SERVER_USERNAME, true)
 });
 

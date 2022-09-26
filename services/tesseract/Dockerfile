@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
 
-COPY --from=fin-server /fin /fin-service-utils
+COPY --from=fin-server /fin/services /fin-service-utils
 RUN cd /fin-service-utils && npm link
 
 RUN mkdir /service

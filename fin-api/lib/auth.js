@@ -7,11 +7,18 @@ const request = require('request');
  */
 class Auth {
 
+  getJwtPayload(jwt) {
+    if( jwt ) {
+      let payload = Buffer.from(jwt.split('.')[1], 'base64');
+      return JSON.parse(payload);
+    }
+    return null;
+  }
+
   async getJwt() {
     if( config.jwt ) {
       // check that jwt is not expired
-      let payload = Buffer.from(config.jwt.split('.')[1], 'base64');
-      payload = JSON.parse(payload);
+      let payload = this.getJwtPayload(config.jwt);
       if( payload.exp*1000 > Date.now() ) {
         return config.jwt;
       }
