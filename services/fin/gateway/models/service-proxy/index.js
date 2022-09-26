@@ -2,7 +2,7 @@ const serviceModel = require('../services');
 const api = require('@ucd-lib/fin-node-api');
 const request = require('request');
 const path = require('path');
-const {config, jwt} = require('@ucd-lib/fin-node-utils');
+const {config, jwt} = require('@ucd-lib/fin-service-utils');
 const {URL} = require('url');
 
 const frameService = require('./frame-service');
@@ -10,7 +10,7 @@ const transformService = require('./transform-service');
 const proxyService = require('./proxy-service');
 const labelService = require('./label-service');
 const externalService = require('./external-service');
-const {logger} = require('@ucd-lib/fin-node-utils');
+const {logger} = require('@ucd-lib/fin-service-utils');
 
 const LABEL_SERVICE = 'label';
 const SERVICE_CHAR = '/svc:';

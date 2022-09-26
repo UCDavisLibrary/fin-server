@@ -30,7 +30,7 @@
     "@ucd-lib/cork-toggle-panel": "2.1.1",
     "@ucd-lib/fin-icons": "0.0.7",
     "@ucd-lib/fin-search-box": "0.1.2",
-    "@ucd-lib/fin-ucd-lib-node-utils": "file:../../../../node-utils",
+    "@ucd-lib/fin-service-utils": "file:../../../../node-utils",
     "bytes": "^3.0.0",
     "citeproc": "^2.1.200",
     "clone": "^2.1.1",

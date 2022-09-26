@@ -1,7 +1,7 @@
 global.LOGGER_NAME = 'api';
 
 const express = require('express');
-const {logger} = require('@ucd-lib/fin-node-utils');
+const {logger} = require('@ucd-lib/fin-service-utils');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');

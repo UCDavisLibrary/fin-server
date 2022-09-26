@@ -1,4 +1,4 @@
-let {config} = require('@ucd-lib/fin-node-utils');
+let {config} = require('@ucd-lib/fin-service-utils');
 
 let env = process.env.FIN_ENV || 'dev';
 

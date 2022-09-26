@@ -19,7 +19,7 @@ npm link
 
 Then in the fin-ucd-lib-server/services/ucd-lib-client/client/public folder run
 ```
-npm link @ucd-lib/fin-ucd-lib-node-utils
+npm link @ucd-lib/fin-service-utils
 ```
 
 This will create a symbolic link from the node-utils to your client node_modules

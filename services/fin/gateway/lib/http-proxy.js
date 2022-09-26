@@ -1,5 +1,5 @@
 const httpProxy = require('http-proxy');
-const {logger} = require('@ucd-lib/fin-node-utils')
+const {logger} = require('@ucd-lib/fin-service-utils')
 
 let proxy = httpProxy.createProxyServer({
   ignorePath : true

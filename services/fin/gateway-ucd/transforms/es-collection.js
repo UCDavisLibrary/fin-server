@@ -1,4 +1,4 @@
-const {config} = require('@ucd-lib/fin-node-utils');
+const {config} = require('@ucd-lib/fin-service-utils');
 
 
 module.exports = async function(path, graph, utils) {

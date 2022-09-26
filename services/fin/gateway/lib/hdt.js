@@ -1,7 +1,7 @@
 const hdt = require('hdt');
 const fs = require('fs-extra');
 const path = require('path');
-const {config, logger} = require('@ucd-lib/fin-node-utils');
+const {config, logger} = require('@ucd-lib/fin-service-utils');
 const api = require('@ucd-lib/fin-node-api');
 
 const HAS_GRAPH = 'http://digital.ucdavis.edu/schema#hasGraph';

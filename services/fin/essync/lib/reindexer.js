@@ -1,4 +1,4 @@
-const {logger, jwt} = require('@ucd-lib/fin-node-utils');
+const {logger, jwt} = require('@ucd-lib/fin-service-utils');
 const schemaRecord = require('../schemas/record');
 const schemaCollection = require('../schemas/collection');
 const schemaApplication = require('../schemas/application');

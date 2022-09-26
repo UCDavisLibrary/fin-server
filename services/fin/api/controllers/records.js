@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {records} = require('@ucd-lib/fin-ucd-lib-node-utils');
+const {records} = require('@ucd-lib/fin-service-utils');
 const utils = require('./utils');
 const cors = require('cors');
 

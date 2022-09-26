@@ -1,0 +1,10 @@
+@prefix webac:  <http://fedora.info/definitions/v4/webac#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ldp: <http://www.w3.org/ns/ldp#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<>
+  rdfs:label  "{{label}}"^^<http://www.w3.org/2001/XMLSchema#string> ;
+  rdf:type foaf:Group;
+  {{members}}

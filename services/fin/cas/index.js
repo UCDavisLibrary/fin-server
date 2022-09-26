@@ -1,7 +1,7 @@
 global.LOGGER_NAME = 'cas-service';
 
 const express = require('express');
-const {logger, config} = require('@ucd-lib/fin-node-utils');
+const {logger, config} = require('@ucd-lib/fin-service-utils');
 const session = require('express-session');
 
 // global catch alls for errors

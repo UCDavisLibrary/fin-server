@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {config} = require('@ucd-lib/fin-ucd-lib-node-utils');
+const {config} = require('@ucd-lib/fin-service-utils');
 const HttpTarStream = require('../lib/http-tar-stream');
 const cors = require('cors');
 

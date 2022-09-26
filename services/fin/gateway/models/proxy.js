@@ -1,6 +1,6 @@
 const {URL} = require('url');
 const api = require('@ucd-lib/fin-node-api');
-const {logger, config, jwt} = require('@ucd-lib/fin-node-utils');
+const {logger, config, jwt} = require('@ucd-lib/fin-service-utils');
 const authModel = require('./auth');
 const serviceModel = require('./services');
 const proxy = require('../lib/http-proxy');

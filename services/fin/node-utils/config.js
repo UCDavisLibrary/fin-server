@@ -83,6 +83,14 @@ module.exports = {
       return `http://elastic:changeme@${this.host}:${this.port}`
     }, 
     log : process.env.ES_LOG_LEVEL || 'error',
+    application : {
+      alias : 'fin-applications',
+      schemaType : 'fin-applications'
+    },
+    fields : {
+      exclude : ['indexableContent', 'indexableContents'],
+      fill : ['hasPart', 'associatedMedia', 'caption', 'transcript']
+    }
   },
 
   redis : {

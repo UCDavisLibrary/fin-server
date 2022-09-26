@@ -1,7 +1,7 @@
 // global connection to elastic search client
 
 const elasticsearch = require('elasticsearch');
-const {config} = require('@ucd-lib/fin-node-utils');
+const {config} = require('@ucd-lib/fin-service-utils');
 
 
 var client = new elasticsearch.Client({

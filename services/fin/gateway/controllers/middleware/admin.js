@@ -1,4 +1,4 @@
-const {config, jwt} = require('@ucd-lib/fin-node-utils');
+const {config, jwt} = require('@ucd-lib/fin-service-utils');
 const auth = require('../../models/auth');
 
 /**

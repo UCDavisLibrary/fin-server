@@ -1,4 +1,4 @@
-const {config} = require('@ucd-lib/fin-ucd-lib-node-utils');
+const {config} = require('@ucd-lib/fin-service-utils');
 
 config.essync = {
 

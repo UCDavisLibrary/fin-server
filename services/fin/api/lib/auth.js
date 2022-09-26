@@ -1,4 +1,4 @@
-var {config, jwt} = require('@ucd-lib/fin-node-utils');
+var {config, jwt} = require('@ucd-lib/fin-service-utils');
 
 class AuthUtils {
   /**

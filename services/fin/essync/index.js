@@ -1,6 +1,6 @@
 global.LOGGER_NAME = 'essync';
 
-const {MessageServer, config, logger, jwt} = require('@ucd-lib/fin-node-utils');
+const {MessageServer, config, logger, jwt} = require('@ucd-lib/fin-service-utils');
 const indexer = require('./lib/indexer');
 const reindexer = require('./lib/reindexer');
 const buffer = require('./lib/buffer');

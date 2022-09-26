@@ -1,6 +1,6 @@
 const redis = require('../lib/redisClient');
 const md5 = require('md5');
-const {config} = require('@ucd-lib/fin-node-utils');
+const {config} = require('@ucd-lib/fin-service-utils');
 
 /**
  * Custom redis cache

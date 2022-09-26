@@ -1,0 +1,12 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix ucdlib: <http://digital.ucdavis.edu/schema#> .
+
+<>
+  dc:title  "{{title}}"^^<http://www.w3.org/2001/XMLSchema#string> ;
+  dc:description  "{{description}}"^^<http://www.w3.org/2001/XMLSchema#string> ;
+  dc:identifier   "{{id}}"^^<http://www.w3.org/2001/XMLSchema#string> ;
+  rdf:type ucdlib:Service ;
+  rdf:type ucdlib:{{type}}
+  {{payload}}
+  .

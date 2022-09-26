@@ -9379,7 +9379,7 @@ const CollectionModel = __webpack_require__(/*! ./CollectionModel */ "./public/l
 const config = __webpack_require__(/*! ../config */ "./public/lib/config.js");
 const clone = __webpack_require__(/*! clone */ "./public/node_modules/clone/clone.js");
 
-const seo = __webpack_require__(/*! @ucd-lib/fin-ucd-lib-node-utils/lib/seo */ "../../../node-utils/lib/seo/index.js");
+const seo = __webpack_require__(/*! @ucd-lib/fin-service-utils/lib/seo */ "../../../node-utils/lib/seo/index.js");
 
 const transform = seo.recordTransform;
 const collectionTransform = seo.collectionTransform;
@@ -9690,7 +9690,7 @@ const {BaseService} = __webpack_require__(/*! @ucd-lib/cork-app-utils */ "./publ
 const RecordStore = __webpack_require__(/*! ../stores/RecordStore */ "./public/lib/stores/RecordStore.js");
 const deepEqual = __webpack_require__(/*! deep-equal */ "./public/node_modules/deep-equal/index.js");
 const config = __webpack_require__(/*! ../config */ "./public/lib/config.js");
-const seo = __webpack_require__(/*! @ucd-lib/fin-ucd-lib-node-utils/lib/seo */ "../../../node-utils/lib/seo/index.js");
+const seo = __webpack_require__(/*! @ucd-lib/fin-service-utils/lib/seo */ "../../../node-utils/lib/seo/index.js");
 const graphConcat = seo.graphConcat;
 
 class RecordService extends BaseService {

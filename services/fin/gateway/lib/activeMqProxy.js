@@ -1,5 +1,5 @@
 const stompit = require('stompit'); // docs: http://gdaws.github.io/node-stomp/api/channel/
-const {config, logger} = require('@ucd-lib/fin-node-utils');
+const {config, logger} = require('@ucd-lib/fin-service-utils');
 const request = require('request');
 const EventEmitter = require('events');
 

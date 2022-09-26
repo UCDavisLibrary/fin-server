@@ -2,7 +2,7 @@ global.LOGGER_NAME = 'trusted-proxy';
 
 var proxy = require('http-proxy');
 var http = require('http');
-const {jwt, config, logger} = require('@ucd-lib/fin-node-utils');
+const {jwt, config, logger} = require('@ucd-lib/fin-service-utils');
 
 
 var token = null;

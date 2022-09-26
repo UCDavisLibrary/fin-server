@@ -1,5 +1,5 @@
 const api = require('@ucd-lib/fin-node-api');
-const {logger, config} = require('@ucd-lib/fin-node-utils');
+const {logger, config} = require('@ucd-lib/fin-service-utils');
 const request = require('request');
 const fs = require('fs-extra');
 const {URL} = require('url');

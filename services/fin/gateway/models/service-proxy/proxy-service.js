@@ -1,6 +1,6 @@
 const proxy = require('../../lib/http-proxy');
 const serviceModel = require('../services');
-const {config} = require('@ucd-lib/fin-node-utils');
+const {config} = require('@ucd-lib/fin-service-utils');
 const {URL} = require('url');
 const forwardedHeader = require('../../lib/forwarded-header');
 const workflow = require('./workflows');

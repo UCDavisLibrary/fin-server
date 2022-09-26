@@ -1,4 +1,4 @@
-const {logger, config, utils} = require('@ucd-lib/fin-node-utils');
+const {logger, config, utils} = require('@ucd-lib/fin-service-utils');
 const CASAuthentication = require('cas-authentication');
 
 const AGENT_DOMAIN = process.env.CAS_AGENT_DOMAIN || utils.getRootDomain(config.cas.url);

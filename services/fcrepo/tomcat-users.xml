@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tomcat-users xmlns="http://tomcat.apache.org/xml"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd"
+              version="1.0">
+
+  <role rolename="fedoraAdmin"/>
+  <user username="${FEDORA_ADMIN_USERNAME}" password="${FEDORA_ADMIN_PASSWORD}" roles="fedoraAdmin"/>
+  
+  <!-- JM adding fedoraUser authz via env vars -->
+  <role rolename="fedoraUser"/>
+  <user username="${FEDORA_USER_USERNAME}" password="${FEDORA_USER_PASSWORD}" roles="fedoraUser"/>"
+</tomcat-users>

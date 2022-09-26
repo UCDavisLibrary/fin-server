@@ -1,7 +1,7 @@
 const config = require('../config');
-const {logger} = require('@ucd-lib/fin-node-utils');
+const {logger} = require('@ucd-lib/fin-service-utils');
 const cors = require('cors');
-const {records} = require('@ucd-lib/fin-ucd-lib-node-utils');
+const {records} = require('@ucd-lib/fin-service-utils');
 const model = records;
 
 let idRegExp = /(ark|doi):\/?[a-zA-Z0-9\.]+\/[a-zA-Z0-9\.]+/;

@@ -1,7 +1,7 @@
 global.LOGGER_NAME = 'fin-server';
 
 const express = require('express');
-const {logger, jwt, config} = require('@ucd-lib/fin-node-utils');
+const {logger, jwt, config} = require('@ucd-lib/fin-service-utils');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const api = require('@ucd-lib/fin-node-api');

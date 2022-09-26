@@ -1,5 +1,5 @@
 global.LOGGER_NAME = 'tesseract';
-const {config, logger, jwt} = require('@ucd-lib/fin-node-utils');
+const {config, logger, jwt} = require('@ucd-lib/fin-service-utils');
 const {exec} = require('child_process');
 const {URL} = require('url');
 const http = require('http');

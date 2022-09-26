@@ -6,7 +6,7 @@ const config = require('../config');
 const fetch = require('node-fetch');
 const authUtils = require('../lib/auth');
 
-const {seo, records, collections} = require('@ucd-lib/fin-ucd-lib-node-utils');
+const {seo, records, collections} = require('@ucd-lib/fin-service-utils');
 
 const transform = seo.recordTransform;
 const collectionTransform = seo.collectionTransform;

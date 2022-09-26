@@ -442,7 +442,7 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@ucd-lib/fin-ucd-lib-node-utils@file:../../../../node-utils":
+"@ucd-lib/fin-service-utils@file:../../../../node-utils":
   "resolved" "file:../../../../node-utils"
   "version" "0.0.1"
   dependencies:

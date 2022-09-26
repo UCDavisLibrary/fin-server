@@ -4,7 +4,7 @@ const CollectionModel = require('./CollectionModel');
 const config = require('../config');
 const clone = require('clone');
 
-const seo = require('@ucd-lib/fin-ucd-lib-node-utils/lib/seo');
+const seo = require('@ucd-lib/fin-service-utils/lib/seo');
 
 const transform = seo.recordTransform;
 const collectionTransform = seo.collectionTransform;

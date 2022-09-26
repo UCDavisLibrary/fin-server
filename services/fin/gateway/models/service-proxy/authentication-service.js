@@ -1,6 +1,6 @@
 const serviceModel = require('../services');
 const proxy = require('../../lib/http-proxy');
-const {logger} = require('@ucd-lib/fin-node-utils');
+const {logger} = require('@ucd-lib/fin-service-utils');
 
 const AUTHENTICATION_SERVICE_CHAR = '/auth';
 

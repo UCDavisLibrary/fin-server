@@ -2,7 +2,7 @@ const router = require('express').Router();
 const model = require('../models/auth');
 const serviceModel = require('../models/services');
 const middleware = require('./middleware');
-const {jwt} = require('@ucd-lib/fin-node-utils');
+const {jwt} = require('@ucd-lib/fin-service-utils');
 const path = require('path');
 const fs = require('fs-extra');
 

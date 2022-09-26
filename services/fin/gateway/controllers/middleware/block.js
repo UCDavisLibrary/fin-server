@@ -1,4 +1,4 @@
-const {jwt} = require('@ucd-lib/fin-node-utils');
+const {jwt} = require('@ucd-lib/fin-service-utils');
 
 /**
  * Block user if not logged in

@@ -6,8 +6,8 @@ RUN apt-get update && apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
 
-COPY --from=fin-server /fin /fin-node-utils
-RUN cd /fin-node-utils && npm link
+COPY --from=fin-server /fin /fin-service-utils
+RUN cd /fin-service-utils && npm link
 
 RUN mkdir /service
 WORKDIR /service
@@ -15,7 +15,7 @@ WORKDIR /service
 COPY package.json .
 COPY package-lock.json .
 RUN npm install --production
-RUN npm link @ucd-lib/fin-node-utils
+RUN npm link @ucd-lib/fin-service-utils
 
 COPY index.js .
 

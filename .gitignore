@@ -12,4 +12,5 @@ loaded-transforms
 gitinfo.json
 fcrepo-webapp-*-SNAPSHOT*
 tests
+test
 temp/

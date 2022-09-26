@@ -2,7 +2,7 @@ const {BaseService} = require('@ucd-lib/cork-app-utils');
 const RecordStore = require('../stores/RecordStore');
 const deepEqual = require('deep-equal');
 const config = require('../config');
-const seo = require('@ucd-lib/fin-ucd-lib-node-utils/lib/seo');
+const seo = require('@ucd-lib/fin-service-utils/lib/seo');
 const graphConcat = seo.graphConcat;
 
 class RecordService extends BaseService {

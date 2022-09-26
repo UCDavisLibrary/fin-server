@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const {config} = require('@ucd-lib/fin-ucd-lib-node-utils');
+const {config} = require('@ucd-lib/fin-service-utils');
 const HttpZipStream = require('../lib/http-zip-stream');
 const cors = require('cors');
-const {records} = require('@ucd-lib/fin-ucd-lib-node-utils');
+const {records} = require('@ucd-lib/fin-service-utils');
 const path = require('path');
 
 const model = records;

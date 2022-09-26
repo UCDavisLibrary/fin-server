@@ -1,0 +1,39 @@
+{
+  "name": "@ucd-lib/fin-cli",
+  "version": "0.12.3",
+  "description": "CLI interface to the fin-server",
+  "main": "lib/index.js",
+  "dependencies": {
+    "@ucd-lib/fin-node-api": "^0.14.2",
+    "content-disposition": "^0.5.2",
+    "cork-app-utils": "^1.0.5",
+    "fs-extra": "^4.0.3",
+    "inquirer": "^3.3.0",
+    "jsonwebtoken": "^8.1.1",
+    "n3": "^0.11.2",
+    "node-watch": "^0.6.4",
+    "open": "0.0.5",
+    "portfinder": "^1.0.13",
+    "request": "^2.88.0",
+    "vorpal": "^1.12.0",
+    "xml2js": "^0.4.19",
+    "xmldom": "^0.1.27",
+    "yargs": "^9.0.1"
+  },
+  "bin": {
+    "fin": "bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UCDavisLibrary/fin-cli.git"
+  },
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "author": "jrmerz@ucdavis.edu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UCDavisLibrary/fin-cli/issues"
+  },
+  "homepage": "https://github.com/UCDavisLibrary/fin-cli"
+}
