@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs-extra');
 
 const ASSETS_DIR = path.resolve(__dirname, '..', 'assets');
+model.init();
 
 router.get('/service/:id', middleware.admin, async (req, res) => {
   try {

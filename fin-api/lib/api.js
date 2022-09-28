@@ -226,12 +226,9 @@ class FinApi {
   createFcBasePath(options = {}) {
     if( options.finRequest === true ) return '';
 
-    let transactionToken = options.transactionToken || config.transactionToken || '';
+    // let transactionToken = options.transactionToken || config.transactionToken || '';
 
-    return pathutils.joinUrlPath(
-      (options.fcBasePath ? options.fcBasePath : config.fcBasePath),
-      transactionToken
-    );
+    return options.fcBasePath ? options.fcBasePath : config.fcBasePath;
   }
 
   /**
@@ -557,16 +554,19 @@ class FinApi {
     // container already exists
     if( response.last.statusCode === 200 ) {
       response.error = new Error('Path already exists: '+headOpts.path);
+      return response;
     }
 
-    if( response.error ) return response;
-    
-    // error code other than the 404 we are hoping for
+    // if( response.last.statusCode === 410 ) {
+    //   response.error = new Error('410 status code response on path check, container tombstone probably exists');
+    //   return response;
+    // }
+
+    // error code other than the 404 or 410 we are hoping for
     if( response.last.statusCode !== 404 ) {
       response.error = new Error('Non 404 status code response on path check: '+response.last.statusCode);
+      return response;
     }
-
-    if( response.error ) return response;
 
     // start a transation in case we don't get the slug we want
     response.appendResponse(await this.startTransaction());
@@ -696,6 +696,10 @@ class FinApi {
       return response;
     }
 
+    // TODO: remove this.  we should be able to delete tombstone as normal user
+    // however fcrepo 6.2.0 has a bug: https://fedora-repository.atlassian.net/browse/FCREPO-3848
+    req.superuser = true;
+
     req.uri = req.uri + '/fcr:tombstone';
     response.push(await request(req), true);
 
@@ -779,13 +783,14 @@ class FinApi {
    * @returns {Promise} ApiResponse
    */
   async commitTransaction(options = {}) {
-    options.path = '/fcr:tx/fcr:commit';
-    let req = this.baseRequest('POST', options);
+    options.path = '/fcr:tx/'+config.transactionToken.replace(/.*\//, '');
+    config.transactionToken = '';
+    let req = this.baseRequest('PUT', options);
 
     let response = await _simpleRequest(req);
 
     // if( response.last === 204 ) {
-      config.transactionToken = '';
+    //   config.transactionToken = '';
     // }
     return response;
   }
@@ -803,12 +808,13 @@ class FinApi {
    * @returns {Promise} ApiResponse
    */
   async rollbackTransaction(options = {}) {
-    options.path = '/fcr:tx/fcr:rollback';
+    options.path = '/fcr:tx/'+config.transactionToken.replace(/.*\//, '');;
+    config.transactionToken = '';
     let req = this.baseRequest('POST', options);
     let response = await _simpleRequest(req);
 
     // if( response.last === 204 ) {
-      config.transactionToken = '';
+    //   config.transactionToken = '';
     // }
     return response;
   }

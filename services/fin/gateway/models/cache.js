@@ -1,4 +1,4 @@
-const redis = require('../lib/redisClient');
+const redis = require('../lib/redisClient')();
 const md5 = require('md5');
 const {config} = require('@ucd-lib/fin-service-utils');
 
@@ -11,6 +11,10 @@ class CacheModel {
     this.EXPIRE_TIME = config.server.cacheExpireTime || 60*60*12;
     this.PREFIX = 'cache:';
     this.HEADER = 'X-FIN-CACHE';
+  }
+
+  async init() {
+    await redis.connect();
   }
 
   /**
@@ -66,7 +70,7 @@ class CacheModel {
       value = JSON.parse(value);
       
       // update expire time on cache hit
-      redis.expire(key, this.EXPIRE_TIME);
+      await redis.expire(key, this.EXPIRE_TIME);
     }
     return value;
   }

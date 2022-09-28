@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const {config, jwt, logger} = require('@ucd-lib/fin-service-utils');
 const api = require('@ucd-lib/fin-node-api');
 const ContainerHelper = require('@ucd-lib/fin-node-api/lib/utils/ContainerHelper');
-const redis = require('../lib/redisClient');
+const redis = require('../lib/redisClient')();
 const crypto = require('crypto');
 
 // const BASE_URI = config.fcrepo.host+config.fcrepo.root;
@@ -23,14 +23,18 @@ class AuthModel {
     this.ADMIN_LIST_KEY = 'admins';
     this.REFRESH_TOKEN_PREFIX = 'rtoken:';
 
-    redis.sendCommand(['CONFIG', 'SET', 'save', '60 1 30 10']);
-
     this.webac = {};
     this.admins = [];
     this.refreshTimer = -1;
   }
 
-  init() {
+  async init() {
+    if( this.initizalized === true ) return;
+    this.initizalized = true;
+
+    await redis.connect();
+    await redis.sendCommand(['CONFIG', 'SET', 'save', '60 1 30 10']);
+
     return this.refreshInMemAcl();
   }
 
@@ -148,8 +152,8 @@ class AuthModel {
       crypto.randomBytes(48, async (err, buffer) => {
         let token = buffer.toString('hex');
         let key = this.REFRESH_TOKEN_PREFIX+token;
-        redis.set(key, username);
-        redis.expire(key, config.redis.refreshTokenExpire);
+        await redis.set(key, username);
+        await redis.expire(key, config.redis.refreshTokenExpire);
 
         resolve(token);
       });

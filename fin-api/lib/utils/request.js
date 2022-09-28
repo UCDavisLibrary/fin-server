@@ -20,15 +20,25 @@ async function request(options) {
       let payload = auth.getJwtPayload(options.jwt || config.jwt);
       let principals = [payload.username];
 
-      if( payload.admin === true ) principals.push('fedoraAdmin'); 
+      if( payload.admin === true ) principals.push(config.roles.admin); 
 
-      let basicAuth = Buffer.from(config.username+':'+config.password).toString('base64');
-      options.headers['Authorization'] = `Basic ${basicAuth}`;
+      if( options.superuser === true ) {
+        let basicAuth = Buffer.from(config.adminUsername+':'+config.adminPassword).toString('base64');
+        options.headers['Authorization'] = `Basic ${basicAuth}`;
+      } else {
+        let basicAuth = Buffer.from(config.username+':'+config.password).toString('base64');
+        options.headers['Authorization'] = `Basic ${basicAuth}`;
+      }
+
       options.headers['x-fin-principal'] = principals.join(',');
 
     } else {
       options.headers['Authorization'] = `Bearer ${options.jwt || config.jwt}`;
     }
+  }
+
+  if( options.transactionToken || config.transactionToken ) {
+    options.headers['Atomic-ID'] = options.transactionToken || config.transactionToken;
   }
 
   // browsers are going to try and cache requests event though we may be switching

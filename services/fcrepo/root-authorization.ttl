@@ -1,18 +1,20 @@
+# Reference, syntax can be tricky for the root
+# Default fin implementation removes all access but those with admin principle
+# https://wiki.lyrasis.org/display/FEDORAM6M1P0/Default+Access+Control+List
+
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix acl: <http://www.w3.org/ns/auth/acl#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix fedora: <http://fedora.info/definitions/v4/repository#> .
+@prefix webac: <http://fedora.info/definitions/v4/webac#> .
 
-<> a acl:Authorization ;
-   rdfs:label "Root Authorization" ;
-   rdfs:comment "By default, all non-Admin agents (foaf:Agent) are denied access (no acl:mode is specified) to all resources." ;
-   acl:agent foaf:Agent ;
-   acl:accessToClass fedora:Resource .
+<info:fedora/fcr:acl> a webac:Acl .
 
-<> a acl:Authorization ;
+<info:fedora/fcr:acl#authz> a acl:Authorization ;
    rdfs:label "Root Authorization" ;
-   rdfs:comment "By default, all non-Admin agents (foaf:Agent) are denied access (no acl:mode is specified) to all resources." ;
-   acl:agent "fedoraAdmin";
+   rdfs:comment "By default, all non-Admin agents (foaf:Agent) only have read access (acl:Read) to the repository" ;
+   acl:agent "admin";
    acl:mode acl:Read ;
    acl:mode acl:Write ;
-   acl:accessToClass fedora:Resource .
+   acl:accessTo <info:fedora> ;
+   acl:default <info:fedora> .

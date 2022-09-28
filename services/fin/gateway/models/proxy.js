@@ -11,7 +11,7 @@ const clientServiceProxy = require('./service-proxy/client-service');
 
 const FIN_URL = new URL(config.server.url);
 
-
+authModel.init();
 
 
 // cors headers we attach to registered origins

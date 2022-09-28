@@ -7,7 +7,7 @@ const activeMqProxy = require('../lib/activeMqProxy');
 const jsonld = require('jsonld');
 const transform = require('./transform');
 const util = require('util');
-const redis = require('../lib/redisClient');
+const redis = require('../lib/redisClient')();
 const jwt = require('jsonwebtoken');
 const hdt = require('../lib/hdt');
 const auth = require('./auth');
@@ -48,6 +48,8 @@ class ServiceModel {
    */
   async init() {
     this.clientService = null;
+
+    await redis.connect();
 
     // make sure our root service container is in place
     await api.service.init();
@@ -114,9 +116,10 @@ class ServiceModel {
 
     // this is triggered by updating default services above
     // reload all service definitions from fedora
-    if( !config.defaultServices.length ) {
+    // console.log(config.defaultServices);
+    // if( !config.defaultServices.length ) {
       await this.reload();
-    }
+    // }
 
     // listen for service definition updates
     activeMqProxy.on('fcrepo-event', e => this._onFcrepoEvent(e));

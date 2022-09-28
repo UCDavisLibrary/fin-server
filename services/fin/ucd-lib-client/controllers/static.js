@@ -33,7 +33,7 @@ module.exports = (app) => {
     htmlFile : path.join(assetsDir, 'index.html'),
     isRoot : true,
     appRoutes : config.server.appRoutes,
-    getConfig : async (req, res) => {
+    getConfig : async (req, res, next) => {
       let user = authUtils.getUserFromRequest(req);
 
       if( user ) {
@@ -49,7 +49,7 @@ module.exports = (app) => {
 
       let fcAppConfig = await (await fetch(config.api.host+'/api/applications/'+config.server.appName)).json();
 
-      return {
+      next({
         collections : await collections.overview(),
         user : user,
         appRoutes : config.server.appRoutes,
@@ -64,9 +64,9 @@ module.exports = (app) => {
           CORE_SERVER_REPO_TAG: process.env.CORE_SERVER_REPO_TAG || ''
         },
         fcAppConfig
-      };
+      });
     },
-    template : async (req, res) => {
+    template : async (req, res, next) => {
       let jsonld = '';
 
       let isRecord = false;
@@ -81,12 +81,12 @@ module.exports = (app) => {
       }
 
       if( !isRecord && !isCollection ) {
-        return {
+        return next({
           jsonld, bundle,
           title : config.server.title,
           description : '',
           keywords : ''
-        };
+        });
       }
 
       try {
@@ -101,12 +101,12 @@ module.exports = (app) => {
             else keywords = collection.keywords;
           }
     
-          return {
+          return next({
             jsonld, bundle,
             title : collection.name + ' - '+ config.server.title,
             description : collection.description || '',
             keywords : keywords.join(', ')
-          }
+          })
 
         } else {
 
@@ -121,22 +121,22 @@ module.exports = (app) => {
             else keywords = record.keywords;
           }
 
-          return {
+          return next({
             jsonld, bundle,
             title : (record.name || record.title) + ' - '+ config.server.title,
             description : record.description || '',
             keywords : keywords.join(', ')
-          }
+          })
 
         }
       } catch(e) {
         console.log(e);
-        return {
+        return next({
           jsonld, bundle,
           title : 'Server Error',
           description : 'Invalid URL: '+req.originalUrl,
           keywords : ''
-        }
+        })
       }
     }
   });

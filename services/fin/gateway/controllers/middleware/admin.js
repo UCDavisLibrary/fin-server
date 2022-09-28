@@ -1,5 +1,4 @@
 const {config, jwt} = require('@ucd-lib/fin-service-utils');
-const auth = require('../../models/auth');
 
 /**
  * Only allow admin users
