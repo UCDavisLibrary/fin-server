@@ -1,6 +1,6 @@
 const Logger = require('../lib/logger');
 const location = require('../lib/location');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('../../..');
 
 const MEMBERSHIP_RESOURCE = 'http://www.w3.org/ns/ldp#membershipResource';
 const HAS_MEMBER_RELATION = 'http://www.w3.org/ns/ldp#hasMemberRelation';

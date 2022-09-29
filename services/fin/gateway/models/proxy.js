@@ -183,7 +183,7 @@ class ProxyModel {
 
     // set forwarded header to our base server url
     if( config.server.url ) {
-      req.headers['Forwarded'] = forwardedHeader();
+      req.headers['forwarded'] = forwardedHeader();
     }
 
     // if this is not a service request, preform basic fcrepo proxy request
@@ -209,18 +209,30 @@ class ProxyModel {
       path = path.replace(/fcr:metadata.*/, '');
     }
 
+    let user;
     try {
-      let user = jwt.getUserFromRequest(req);
+      user = jwt.getUserFromRequest(req);
       // TODO: handle admins
       // See fcrepo.properties for this value
-      req.headers['x-fin-principal'] = user.username;
+      if( user ) {
+        req.headers['x-fin-principal'] = user.username;
+        if( user.admin ) {
+          req.headers['x-fin-principal'] = req.headers['x-fin-principal']+',admin';
+        }
+      }
     } catch(e) {}
 
     // store for serivce headers
     req.fcPath = path;
 
+    // set base user auth
+    let fcrepoApiConfig = api.getConfig();
+    req.headers['authorization'] = 'Basic '+Buffer.from(fcrepoApiConfig.username+':'+fcrepoApiConfig.password).toString('base64');
+
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
     logger.debug(`Fcrepo proxy request: ${url}`);
+
+    console.log(url, req.headers);
 
     proxy.web(req, res, {
       target : url

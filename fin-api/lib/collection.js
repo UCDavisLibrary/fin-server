@@ -101,18 +101,19 @@ class Collection {
     let groupsPath = response.data;
 
     // create the collection acl root
-    options = clone(orgOptions);
-    options.path = newPath;
-    options.label = 'Collection Access Control'
-    response.appendResponse(await API.acl.create(options));
-    if( response.error ) return response;
+    // options = clone(orgOptions);
+    // options.path = newPath;
+    // options.label = 'Collection Access Control'
+    // console.log(options)
+    // response.appendResponse(await API.acl.create(options));
+    // if( response.error ) return response;
 
-    let aclPath = response.data.aclLocation.replace(API.getBaseUrl(options), '');
+    // let aclPath = response.data.aclLocation.replace(API.getBaseUrl(options), '');
 
     return response.setData({
       path : newPath,
-      groups : groupsPath,
-      acl : aclPath
+      groups : groupsPath
+      // acl : aclPath
     });
   }  
 
@@ -297,10 +298,12 @@ class Collection {
 
     // make sure collection exists
     options.path = collectionPath;
-    var response = await API.head(options);
-    if( !response.checkStatus(200) ) {
-      return response.setError('Unknown collection id: '+options.collectionId)
-    }
+
+    let response;
+    // var response = await API.head(options);
+    // if( !response.checkStatus(200) ) {
+    //   return response.setError('Unknown collection id: '+options.collectionId)
+    // }
 
     // set our current path relative to collection and parent path
     let currentPath = collectionPath;
@@ -322,6 +325,9 @@ class Collection {
 
     bOptions.slug = itemId;
     bOptions.path = currentPath;
+    if( options.method === 'PUT' ) {
+      bOptions.path = currentPath+itemId;
+    }
 
     // append custom headers provided by user
     if( options.customHeaders ) {
@@ -346,7 +352,20 @@ class Collection {
       bOptions.content = options.metadata;
     }
 
-    response.appendResponse(await API.postEnsureSlug(bOptions));
+    if( options.method === 'PUT' ) {
+      if( response ) {
+        response.appendResponse(await API.put(bOptions));
+      } else {
+        response = await API.put(bOptions);
+      }
+    } else {
+      if( response ) {
+        response.appendResponse(await API.postEnsureSlug(bOptions));
+      } else {
+        response = await API.postEnsureSlug(bOptions);
+      }
+    }
+    
     
     // patch item metadata
     let bmOptions = clone(orgOptions);
@@ -528,13 +547,13 @@ class Collection {
       return response.setError('You do not have write permissions to create a collection');
     }
 
-    options.path = '/';
+    options.path = '/'+this.COLLECTION_ROOT_PATH;
     if( !options.headers ) options.headers = {};
     options.headers['Content-Type'] = API.RDF_FORMATS.TURTLE;
-    options.headers['Slug'] = this.COLLECTION_ROOT_PATH;
+    // options.headers['Slug'] = this.COLLECTION_ROOT_PATH;
     options.content = loadTemplate('collectionRoot.ttl');
-    
-    response.appendResponse(await API.post(options));
+
+    response.appendResponse(await API.put(options));
     if( !response.checkStatus(201) ) {
       response.setError('You do not have write permissions to create a collection');
     }
@@ -545,7 +564,7 @@ class Collection {
   async _ensureCollectionTypes(jsonld) {
     if( !jsonld['@type'] ) jsonld['@type'] = [];
 
-    [BASIC_CONTAINER, SCHEMA_ORG_COLLECTION].forEach(type => {
+    [SCHEMA_ORG_COLLECTION].forEach(type => {
       if( jsonld['@type'].indexOf(type) == -1 ) {
         jsonld['@type'].push(type)
       }

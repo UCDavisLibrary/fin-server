@@ -6,4 +6,3 @@
 <>
   rdfs:label  "{{label}}"^^<http://www.w3.org/2001/XMLSchema#string> ;
   rdf:type webac:Acl;
-  rdf:type ldp:BasicContainer;

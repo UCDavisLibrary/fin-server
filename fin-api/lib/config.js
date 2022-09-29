@@ -22,8 +22,10 @@ const config = {
   adminUsername : env.FCREPO_ADMIN_USERNAME || 'fedoraAdmin',
   adminPassword : env.FCREPO_ADMIN_PASSWORD || 'fedoraAdmin',
 
+  superuser : (env.FCREPO_SUPERUSER === 'true'),
+
   // are we making direct calls to fcrepo or via the fin gateway?
-  directAccess : false,
+  directAccess : (env.FCREPO_DIRECT_ACCESS === 'true'),
 
   /**
    * Open transaction token

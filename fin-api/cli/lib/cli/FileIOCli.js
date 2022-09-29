@@ -1,4 +1,4 @@
-const api = require('@ucd-lib/fin-node-api');
+const api = require('../../..');
 
 const path = require('path');
 const location = require('../lib/location');

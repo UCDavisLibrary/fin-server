@@ -1,4 +1,4 @@
-const api = require('@ucd-lib/fin-node-api');
+const api = require('../../..');
 const inquirer = require('inquirer');
 const Logger = require('../lib/logger');
 const fs = require('fs-extra');

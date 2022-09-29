@@ -12,29 +12,32 @@ async function request(options) {
   if( !options.headers ) options.headers = {};
 
   let authUsed = false;
-  if( options.jwt || config.jwt ) {
+  if( options.jwt || config.jwt && config.directAccess === false ) {
     authUsed = true;
     options.headers['Authorization'] = `Bearer ${options.jwt || config.jwt}`;
-  
-    if( config.directAccess ) {
-      let payload = auth.getJwtPayload(options.jwt || config.jwt);
-      let principals = [payload.username];
+
+  } else if( config.directAccess === true ) {
+    authUsed = true;
+    let payload = {};
+    let principals = [];
+
+    if( options.jwt || config.jwt ) {
+      payload = auth.getJwtPayload(options.jwt || config.jwt);
+      principals = [payload.username];
 
       if( payload.admin === true ) principals.push(config.roles.admin); 
-
-      if( options.superuser === true ) {
-        let basicAuth = Buffer.from(config.adminUsername+':'+config.adminPassword).toString('base64');
-        options.headers['Authorization'] = `Basic ${basicAuth}`;
-      } else {
-        let basicAuth = Buffer.from(config.username+':'+config.password).toString('base64');
-        options.headers['Authorization'] = `Basic ${basicAuth}`;
-      }
-
-      options.headers['x-fin-principal'] = principals.join(',');
-
-    } else {
-      options.headers['Authorization'] = `Bearer ${options.jwt || config.jwt}`;
     }
+
+    if( options.superuser === true || config.superuser === true ) {
+      let basicAuth = Buffer.from(config.adminUsername+':'+config.adminPassword).toString('base64');
+      options.headers['Authorization'] = `Basic ${basicAuth}`;
+    } else {
+      let basicAuth = Buffer.from(config.username+':'+config.password).toString('base64');
+      options.headers['Authorization'] = `Basic ${basicAuth}`;
+    }
+
+    
+    options.headers['x-fin-principal'] = principals.join(',');
   }
 
   if( options.transactionToken || config.transactionToken ) {
@@ -66,6 +69,7 @@ async function request(options) {
         return reject({response, error});
       }
 
+      response.request.url = options.uri;
       response.finAuthenticated = authUsed;
       resolve(response);
     });

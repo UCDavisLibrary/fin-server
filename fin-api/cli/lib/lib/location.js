@@ -1,7 +1,7 @@
 const path = require('path');
 const config = require('../lib/config');
 const contentDisposition = require('content-disposition');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('../../..');
 
 const CONTAINS = 'http://www.w3.org/ns/ldp#contains';
 

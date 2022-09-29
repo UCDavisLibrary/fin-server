@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('../../..');
 
 const DOT_FILE = '.fccli';
 api.setConfig({userAgent: 'fin-cli'});

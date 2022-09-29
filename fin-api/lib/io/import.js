@@ -345,11 +345,18 @@ class ImportCollection {
 
         if( !response['http://www.loc.gov/premis/rdf/v1#hasMessageDigest'] ) continue;
 
-        let [urn,shaNum,sha] = response['http://www.loc.gov/premis/rdf/v1#hasMessageDigest'][0]['@id'].split(':');
-        shaNum = shaNum.replace('sha', '');
+        let shas = response['http://www.loc.gov/premis/rdf/v1#hasMessageDigest']
+          .map(item => {
+            let [urn, sha, hash] = item['@id'].split(':')
+            return [sha.replace('sha-', ''), hash];
+          });
+        
+        // picking the 256 sha or first
+        let sha = shas.find(item => item[0] === '256');
+        if( !sha ) sha = shas[0];
 
-        let localSha = await api.sha(binary.localpath, shaNum);
-        if( localSha === sha ) {
+        let localSha = await api.sha(binary.localpath, sha[0]);
+        if( localSha === sha[1] ) {
           console.log('IGNORING (sha match): '+binary.fcpath);
           continue;
         }
@@ -362,7 +369,7 @@ class ImportCollection {
         });
       }
 
-      console.log('POST BINARY: ', binary.fcpath);
+      console.log('PUT BINARY: ', binary.fcpath);
       
       let customHeaders = {};
       let ext = path.parse(binary.localpath).ext.replace(/^\./, '');
@@ -381,9 +388,16 @@ class ImportCollection {
           id : binary.fcpath,
           parentPath : '',
           data : binary.localpath,
-          customHeaders
+          customHeaders,
+          method : 'PUT'
         });
-        console.log(response.last.statusCode, response.last.body);
+
+        if( response.error ) {
+          console.error(response.error);
+          response.httpStack.forEach(item => console.log(item));
+        } else {
+          console.log(response.last.statusCode, response.last.body);
+        }
       }
     }
     

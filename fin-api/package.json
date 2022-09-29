@@ -1,7 +1,7 @@
 {
-  "name": "@ucd-lib/fin-node-api",
-  "version": "0.14.2",
-  "description": "NodeJS API for interacting with the FIN Fedora instance",
+  "name": "@ucd-lib/fin-api",
+  "version": "1.0.0",
+  "description": "NodeJS module and cli for interacting with the FIN Fedora instance",
   "main": "index.js",
   "directories": {
     "lib": "lib"
@@ -20,16 +20,25 @@
     "url": "https://github.com/UCDavisLibrary/fin-node-api/issues"
   },
   "homepage": "https://github.com/UCDavisLibrary/fin-node-api#readme",
+  "bin": {
+    "fin": "cli/bin/cli.js"
+  },
   "dependencies": {
     "clone": "^2.1.1",
+    "content-disposition": "^0.5.4",
     "fs-extra": "^7.0.1",
     "ignore": "^5.0.5",
+    "inquirer": "^8.2.4",
     "js-yaml": "^3.12.2",
     "jsonld": "^0.4.12",
     "mime": "^2.4.0",
     "n3": "^0.11.2",
+    "open": "^8.4.0",
+    "portfinder": "^1.0.32",
     "request": "^2.88.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "vorpal": "^1.12.0",
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -37,6 +46,6 @@
     "babel-preset-es2015": "^6.24.1",
     "jsdoc-babel": "^0.3.0",
     "jsdoc-to-markdown": "^3.0.3",
-    "jsonwebtoken": "^8.1.0"
+    "jsonwebtoken": "^8.5.1"
   }
 }

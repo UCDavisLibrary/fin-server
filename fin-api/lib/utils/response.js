@@ -40,8 +40,8 @@ class ApiResponse {
    * @param {Boolean} setData set http response as data
    */
   push(response, setData = false) {
-    this.httpStack.push(response);
-    this.last = response;
+    this.httpStack.push(transformResponse(response));
+    this.last = transformResponse(response);
     if( setData ) this.setData(response);
     return this;
   }
@@ -66,7 +66,7 @@ class ApiResponse {
   }
 
   setData(response) {
-    this.data = response;
+    this.data = transformResponse(response);
     return this;
   }
 
@@ -113,6 +113,26 @@ class ApiResponse {
     if( options.breaks ) console.log('END HTTP REQUEST STACK TRACE');
   }
 
+}
+
+function transformResponse(response={}) {
+  if( typeof response === 'string' ) return response;
+
+  if( !response.request ) {
+    return response;
+  }
+
+  return {
+    request : {
+      url : response.request.url,
+      method : response.request.method,
+      headers : response.request.headers,
+      body : response.request.body
+    },
+    headers : response.headers,
+    statusCode: response.statusCode,
+    body: response.body,
+  }
 }
 
 module.exports = ApiResponse;

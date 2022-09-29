@@ -364,8 +364,8 @@ class FinApi {
 
     // set the checksum if not an rdf file
     if( !options.isRdfType ) {
-      // let shaNum = 256; // this is causing issues, fcrepo doesn't seem to calculate it correctly
-      let shaNum = 1;
+      let shaNum = 256; // this is causing issues, fcrepo doesn't seem to calculate it correctly
+      // let shaNum = 1;
 
       var sha = await this.sha(options.file, shaNum );
       options.headers.digest = `sha${shaNum}=${sha}`;
@@ -622,7 +622,7 @@ class FinApi {
     var req = this.baseRequest('PUT', options);
 
     if( options.content !== undefined ) req.body = options.content;
-    else req.body = fs.createReadStream(options.file);
+    else if( options.file ) req.body = fs.createReadStream(options.file);
 
     if( options.partial ) {
       // This is what is should be... but there is a bug in fedora
@@ -810,7 +810,7 @@ class FinApi {
   async rollbackTransaction(options = {}) {
     options.path = '/fcr:tx/'+config.transactionToken.replace(/.*\//, '');;
     config.transactionToken = '';
-    let req = this.baseRequest('POST', options);
+    let req = this.baseRequest('DELETE', options);
     let response = await _simpleRequest(req);
 
     // if( response.last === 204 ) {

@@ -6,5 +6,6 @@
   rdf:type webac:Authorization ;
   rdfs:label  "{{label}}";
   webac:accessTo <{{authorizationPath}}> ;
+  webac:default <{{authorizationPath}}> ;
   webac:{{type}} {{agent}} ;
   {{modes}}

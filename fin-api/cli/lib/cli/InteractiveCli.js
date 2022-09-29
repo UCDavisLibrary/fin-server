@@ -1,5 +1,5 @@
 const path = require('path');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('../../..');
 const contentDisposition = require('content-disposition');
 const inquirer = require('inquirer');
 const fs = require('fs');
