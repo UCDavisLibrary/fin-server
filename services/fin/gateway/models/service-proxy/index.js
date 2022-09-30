@@ -1,5 +1,5 @@
 const serviceModel = require('../services');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('@ucd-lib/fin-api');
 const request = require('request');
 const path = require('path');
 const {config, jwt} = require('@ucd-lib/fin-service-utils');

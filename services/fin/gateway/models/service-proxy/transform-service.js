@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const serviceModel = require('../services');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('@ucd-lib/fin-api');
 
 module.exports = (req, res) => {
   if( req.finServiceInfo.global ) {

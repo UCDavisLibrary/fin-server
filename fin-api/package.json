@@ -10,16 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-docs": "jsdoc2md --configure jsdoc.json lib/api.js > README.md"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/UCDavisLibrary/fin-node-api.git"
-  },
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/UCDavisLibrary/fin-node-api/issues"
-  },
-  "homepage": "https://github.com/UCDavisLibrary/fin-node-api#readme",
   "bin": {
     "fin": "cli/bin/cli.js"
   },

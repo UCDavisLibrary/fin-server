@@ -1,7 +1,7 @@
 /**
  * Wait for fcrepo to respond before we attempt to start server
  */
-const api = require('@ucd-lib/fin-node-api');
+const api = require('@ucd-lib/fin-api');
 
 module.exports = async function(callback) {
   let c = 0;

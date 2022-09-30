@@ -9,6 +9,7 @@ const pathutils = require('../utils/path');
 
 let api;
 let CONFIG_DIR = '.fin';
+let ACL_FILE = 'acl.ttl';
 let CONFIG_FILE = 'config.yml';
 const IGNORE_FILE = '.finignore';
 
@@ -106,7 +107,26 @@ class ImportCollection {
         await api.collection.create({
           id: newCollectionName
         });
+        response = await api.head({path: '/collection/'+newCollectionName});
       }
+    }
+
+    let aclFile = path.join(options.fsPath, ACL_FILE);
+    if( fs.existsSync(aclFile) ) {
+      let aclLocation = api.parseLinkHeader(response.last.headers.link).acl[0];
+      let aclPath = aclLocation.url.split(newCollectionName)[1];
+      
+      console.log('COLLECION ACL: '+aclFile);
+      let aclContent = fs.readFileSync(aclFile, 'utf-8');
+      response = await api.put({
+        path : '/collection/'+newCollectionName+aclPath,
+        content : aclContent.replace(/{{collectionName}}/i, newCollectionName),
+        partial : true,
+        headers : {
+          'content-type' : api.RDF_FORMATS.TURTLE
+        }
+      });
+      console.log(response.last.statusCode, response.last.body);
     }
 
     // add implementation containers

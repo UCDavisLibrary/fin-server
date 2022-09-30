@@ -1,5 +1,5 @@
 const serviceModel = require('../services');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('@ucd-lib/fin-api');
 
 module.exports = async (req, res) => {
   try {

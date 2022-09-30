@@ -3,7 +3,7 @@ const schemaRecord = require('../schemas/record');
 const schemaCollection = require('../schemas/collection');
 const schemaApplication = require('../schemas/application');
 const indexer = require('./indexer');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('@ucd-lib/fin-api');
 const config = require('./config');
 
 api.setConfig({

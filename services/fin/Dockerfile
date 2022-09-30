@@ -29,7 +29,7 @@ COPY ${FIN_REPO_SERVICE_ROOT}/package.json .
 COPY ${FIN_REPO_SERVICE_ROOT}/package-lock.json .
 RUN npm install --production && \
   npm link && \
-  npm link @ucd-lib/fin-service-utils @ucd-lib/fin-node-api
+  npm link @ucd-lib/fin-service-utils @ucd-lib/fin-api
 
 # API Code
 WORKDIR ${FIN_API_ROOT}

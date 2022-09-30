@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const {config, jwt, logger} = require('@ucd-lib/fin-service-utils');
-const api = require('@ucd-lib/fin-node-api');
-const ContainerHelper = require('@ucd-lib/fin-node-api/lib/utils/ContainerHelper');
+const api = require('@ucd-lib/fin-api');
+const ContainerHelper = require('@ucd-lib/fin-api/lib/utils/ContainerHelper');
 const redis = require('../lib/redisClient')();
 const crypto = require('crypto');
 

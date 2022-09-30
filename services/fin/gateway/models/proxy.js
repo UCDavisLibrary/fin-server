@@ -1,5 +1,5 @@
 const {URL} = require('url');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('@ucd-lib/fin-api');
 const {logger, config, jwt} = require('@ucd-lib/fin-service-utils');
 const authModel = require('./auth');
 const serviceModel = require('./services');
@@ -210,6 +210,7 @@ class ProxyModel {
     }
 
     let user;
+    req.headers['x-fin-principal'] = 'fedoraUser';
     try {
       user = jwt.getUserFromRequest(req);
       // TODO: handle admins
@@ -227,6 +228,8 @@ class ProxyModel {
 
     // set base user auth
     let fcrepoApiConfig = api.getConfig();
+    console.log(fcrepoApiConfig);
+    console.log(fcrepoApiConfig.username+':'+fcrepoApiConfig.password)
     req.headers['authorization'] = 'Basic '+Buffer.from(fcrepoApiConfig.username+':'+fcrepoApiConfig.password).toString('base64');
 
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;

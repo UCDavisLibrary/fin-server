@@ -4,7 +4,7 @@ const express = require('express');
 const {logger, jwt, config} = require('@ucd-lib/fin-service-utils');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('@ucd-lib/fin-api');
 
 // used for JWT
 const SERVER_USERNAME = 'fin-gateway';

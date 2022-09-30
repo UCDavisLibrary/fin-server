@@ -2,7 +2,7 @@ const hdt = require('hdt');
 const fs = require('fs-extra');
 const path = require('path');
 const {config, logger} = require('@ucd-lib/fin-service-utils');
-const api = require('@ucd-lib/fin-node-api');
+const api = require('@ucd-lib/fin-api');
 
 const HAS_GRAPH = 'http://digital.ucdavis.edu/schema#hasGraph';
 const FILE_NAME = 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#filename';
