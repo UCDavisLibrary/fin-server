@@ -1,9 +1,8 @@
 const api = require('@ucd-lib/fin-api');
-const {logger, config} = require('@ucd-lib/fin-service-utils');
+const {logger, config, activemq} = require('@ucd-lib/fin-service-utils');
 const request = require('request');
 const fs = require('fs');
 const {URL} = require('url');
-const activeMqProxy = require('../lib/activeMqProxy');
 const jsonld = require('jsonld');
 const transform = require('./transform');
 const util = require('util');
@@ -122,8 +121,8 @@ class ServiceModel {
     // }
 
     // listen for service definition updates
-    activeMqProxy.on('fcrepo-event', e => this._onFcrepoEvent(e));
-    activeMqProxy.connect();
+    activemq.on('fcrepo-event', e => this._onFcrepoEvent(e));
+    activemq.connect('gateway', '/queue/gateway');
   }
 
   /**
@@ -428,7 +427,7 @@ class ServiceModel {
   
   /**
    * @method _onFcrepoEvent
-   * @description called from event listener on activeMqProxy.  called whenever
+   * @description called from event listener on activemq.  called whenever
    * a 'fcrepo-event' is emitted.  These come from ActiveMQ events.  Either reloads
    * service definitions if .service path, ignore is .[name] path or sends HTTP
    * webhook notification

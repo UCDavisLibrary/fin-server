@@ -2,13 +2,13 @@
 // the service model will ensure these are added
 
 module.exports = [
-  {
-    id : 'essync',
-    title : 'Elastic Search Sync',
-    description : 'Notify Elastic Search indexer when fedora updates',
-    type : 'WebhookService',
-    url : 'http://essync:3333'
-  },
+  // {
+  //   id : 'essync',
+  //   title : 'Elastic Search Sync',
+  //   description : 'Notify Elastic Search indexer when fedora updates',
+  //   type : 'WebhookService',
+  //   url : 'http://essync:3333'
+  // },
   {
     id : 'es-record-transform',
     title : 'Elastic Search - Record Record Transform',

@@ -354,10 +354,6 @@ class AttributeReducer {
   }
 
   async _get(id, alias) {
-    let stackTrace;
-    try { throw new Error('Stack Trace') }
-    catch(e) {stackTrace = e.stack};
-
     try {
       let record = await this.esClient.get({
         index: alias || config.elasticsearch.record.alias,
@@ -368,7 +364,7 @@ class AttributeReducer {
     } catch(e) {
       if( e.status === 404 ) return null;
       logger.error(`Failed to get '${id}' in elasticsearch`, e);
-      logger.error(stackTrace);
+      logger.error(e.stack);
     }
     return null;
   }

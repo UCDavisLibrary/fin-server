@@ -10,7 +10,7 @@ const config = require('./config');
 const AttributeReducer = require('./attribute-reducer');
 
 // everything depends on indexer, so placing this here...
-process.on('unhandledRejection', err => logger.error(err));
+// process.on('unhandledRejection', err => logger.error(err));
 
 const NULL_VALUE = '';
 const COLLECTION = 'http://schema.org/Collection';
@@ -427,7 +427,7 @@ class EsIndexer {
   async _requestContainer(path, compact=false) {
     // make a head request for access and container type info
     let response = await api.head({path});
-        
+
     if( response.last.statusCode === 403 ) {
       logger.debug('Ignoring non-public container: '+path);
       return null;
@@ -444,13 +444,22 @@ class EsIndexer {
       path = path + '/fcr:metadata'
     }
 
-    response = await this.request({
-      type : 'GET',
-      uri : path,
+    response = await api.get({
+      path,
       headers : {
         accept : 'application/ld+json'+(compact ? '; profile="http://www.w3.org/ns/json-ld#compacted"' : '')
       }
-    });
+    })
+
+    // response = await this.request({
+    //   type : 'GET',
+    //   uri : path,
+    //   headers : {
+    //     accept : 'application/ld+json'+(compact ? '; profile="http://www.w3.org/ns/json-ld#compacted"' : '')
+    //   }
+    // });
+
+    console.log(response);
     
     if( response.statusCode === 403 ) {
       logger.debug('Ignoring non-public container: '+path);
@@ -506,7 +515,7 @@ class EsIndexer {
    * @returns {String}
    */
   getFcRepoBaseUrl() {
-    return config.fin.host + config.fcrepo.root;
+    return config.fcrepo.host + config.fcrepo.root;
   }
 
   /**

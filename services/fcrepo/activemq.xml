@@ -16,10 +16,12 @@
 
         <destinationInterceptors>
             <virtualDestinationInterceptor>
+                <!-- https://activemq.apache.org/virtual-destinations -->
                 <virtualDestinations>
                     <compositeTopic name="fedora" forwardOnly="false">
                         <forwardTo>
-                            <queue physicalName="fedora"/>
+                            <queue physicalName="gateway"/>
+                            <queue physicalName="essync"/>
                         </forwardTo>
                     </compositeTopic>
                 </virtualDestinations>
@@ -140,7 +142,7 @@
         Enable web consoles, REST and Ajax APIs and demos
 
         Take a look at ${ACTIVEMQ_HOME}/conf/jetty.xml for more details
-
-    <import resource="jetty.xml"/>
-    -->
+-->
+    <!-- <import resource="jetty.xml"/> -->
+    
 </beans>

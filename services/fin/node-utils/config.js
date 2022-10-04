@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const env = process.env;
 
 let defaultServices = [];
 if( fs.existsSync('/etc/fin') ) {
@@ -35,8 +36,8 @@ module.exports = {
     hdtCacheDir : process.env.FIN_HDT_CACHE_DIR || '/etc/fin/hdt-cache'
   },
 
-  fin : {
-    host : 'http://server:3001'
+  gateway : {
+    host : 'http://gateway:3001'
   },
 
   defaultServices : defaultServices,
@@ -58,6 +59,13 @@ module.exports = {
       port : 61613,
       queue : '/queue/fedora'
     }
+  },
+
+  pg : {
+    host : env.PG_HOST || 'postgres',
+    port : env.PG_PORT || 5432,
+    user : env.PG_USER || 'postgres',
+    database : env.PG_DATABASE || 'fcrepo'
   },
 
   jwt : {

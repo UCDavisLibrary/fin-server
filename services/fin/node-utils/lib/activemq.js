@@ -1,6 +1,6 @@
 const stompit = require('stompit'); // docs: http://gdaws.github.io/node-stomp/api/channel/
-const {config, logger} = require('@ucd-lib/fin-service-utils');
-const request = require('request');
+const config = require('../config.js');
+const logger = require('./logger.js');
 const EventEmitter = require('events');
 
 
@@ -8,18 +8,18 @@ var connectOptions = {
   host : config.fcrepo.hostname,
   port : config.fcrepo.stomp.port,
   connectHeaders: {
-    host : config.fcrepo.hostname,
+    host : '/',
+    login : 'fedoraAdmin',
+    passcode : 'fedoraAdmin',
     'heart-beat': '5000,5000'
   }
 };
 
 var subscribeHeaders = {
   destination: config.fcrepo.stomp.queue || '/queue/fedora',
-  ack: 'client-individual'
+  ack: 'client-individual',
+  'activemq.prefetchSize' : 1
 };
-
-const ACTIVE_MQ_HEADER_ID = 'org.fcrepo.jms.identifier';
-const ACTIVE_MQ_HEADER_EVENT = 'org.fcrepo.jms.eventType';
 
 /**
  * @class MessageConsumer
@@ -32,10 +32,19 @@ class MessageConsumer extends EventEmitter {
     super();
     this.wait = 0;
     this.counter = 0;
+
+    this.ACTIVE_MQ_HEADER_ID = 'org.fcrepo.jms.identifier';
+    this.ACTIVE_MQ_HEADER_EVENT = 'org.fcrepo.jms.eventType';
+    this.callback = null;
   }
 
-  onDisconnect(event) {
+  onMessage(callback) {
+    this.callback = callback;
+  }
+
+  onDisconnect(event, error) {
     logger.warn('STOMP client disconnected: '+event);
+    if( error ) logger.error('STOMP client disconnect error: ', error)
     
     if( this.client ) { // make sure we are closed
       this.client.disconnect();
@@ -50,13 +59,20 @@ class MessageConsumer extends EventEmitter {
   }
 
 
-  connect() {
+  connect(clientName, queue) {
     if( !this.connecting ) {
       this.connecting = true;
     }
 
+    if( clientName ) {
+      connectOptions.connectHeaders['client-id'] = clientName;
+    }
+    if( queue ) {
+      subscribeHeaders.destination = queue;
+    }
+
     setTimeout(() => {
-      logger.info('STOMP attempting connection');
+      logger.info('STOMP attempting connection', connectOptions);
 
       stompit.connect(connectOptions, (error, client) => {
         if( error ) {
@@ -66,7 +82,7 @@ class MessageConsumer extends EventEmitter {
         }
 
         // capture all end/close/finish events, assume badness, reconnect
-        client.on('error', () => this.onDisconnect('error'));
+        client.on('error', e => this.onDisconnect('error', e));
         client.on('end', () => this.onDisconnect('end'));
         client.on('finish', () => this.onDisconnect('finish'));
         client.on('close', () => this.onDisconnect('close'));
@@ -85,10 +101,8 @@ class MessageConsumer extends EventEmitter {
    */
   init() {
     if( !this.client ) return;
-    logger.info('STOMP client connected to server');
+    logger.info('STOMP client connected to server', subscribeHeaders);
 
-    var uid = this.counter;
-    this.counter++;
 
     this.client.subscribe(subscribeHeaders, async (error, message) => {
       if( error ) {
@@ -99,34 +113,20 @@ class MessageConsumer extends EventEmitter {
 
       // message must be read before it can be ack'd ...
       var body = await this.readMessage(message);
+
       if( typeof body === 'string' ) {
         try {
           body = JSON.parse(body);
         } catch(e) {}
       }
 
-      var id = headers[ACTIVE_MQ_HEADER_ID];
-      logger.debug('ActiveMQ Event', id, headers[ACTIVE_MQ_HEADER_EVENT]);
+      var id = headers[this.ACTIVE_MQ_HEADER_ID];
+      logger.debug('ActiveMQ Event', id, headers[this.ACTIVE_MQ_HEADER_EVENT]);
 
-      this.broadcast({
-        type : 'fcrepo-event',
-        payload : {headers, body}
-      });
+      await this.callback({headers, body})
 
-      // TODO: do we need to ack?
       this.client.ack(message);
     });
-  }
-
-  /**
-   * @method message
-   * @description broadcast activemq message via event bus to internal modules
-   * 
-   * @param {Object} message
-   */
-  broadcast(message) {
-    // send via JS events
-    this.emit('fcrepo-event', message);
   }
 
   /**

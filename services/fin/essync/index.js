@@ -1,26 +1,40 @@
 global.LOGGER_NAME = 'essync';
 
-const {MessageServer, config, logger, jwt} = require('@ucd-lib/fin-service-utils');
+const {config, logger, activemq, pg, jwt} = require('@ucd-lib/fin-service-utils');
+const api = require('@ucd-lib/fin-api');
 const indexer = require('./lib/indexer');
 const reindexer = require('./lib/reindexer');
-const buffer = require('./lib/buffer');
-const JobQueue = require('./lib/queue');
+const postgres = require('./lib/postgres');
+// const buffer = require('./lib/buffer');
+// const JobQueue = require('./lib/queue');
+
+
 
 /**
  * Log promise errors, uncaught exceptions
  */
-process.on('unhandledRejection', e => logger.fatal(e));
-process.on('uncaughtException', e => logger.fatal(e));
+// process.on('unhandledRejection', e => logger.fatal(e));
+// process.on('uncaughtException', e => logger.fatal(e));
 
-class EsSyncMessageServer extends MessageServer {
+api.setConfig({
+  host: config.fcrepo.host,
+  basePath : config.fcrepo.root,
+  directAccess : true
+});
+
+
+class EsSyncMessageServer {
 
   constructor() {
-    super('Elasticsearch Sync');
+    // super('Elasticsearch Sync');
 
-    this.queue = new JobQueue();
-    this.queue.process = this.onContainerEvent.bind(this);
+    // this.queue = new JobQueue();
+    // this.queue.process = this.onContainerEvent.bind(this);
 
-    buffer.on('container-update', e => this.queue.add(e.id, e.data));
+    // buffer.on('container-update', e => this.queue.add(e.id, e.data));
+
+    activemq.onMessage(e => this.handleMessage(e));
+    activemq.connect('essync', '/queue/essync');
   }
 
   /**
@@ -29,19 +43,19 @@ class EsSyncMessageServer extends MessageServer {
    */
   async handleMessage(msg) {
     // check to see if we got a fin reindex event
-    if( msg.type === this.WEBHOOK_EVENT_TYPES.FIN_EVENT && msg.payload.action === 'reindex' ) {
-      return reindexer.run();
-    }
+    // if( msg.type === this.WEBHOOK_EVENT_TYPES.FIN_EVENT && msg.payload.action === 'reindex' ) {
+    //   return reindexer.run();
+    // }
 
     // at this point, we are only handling fcrepo events
-    if( msg.type !== this.WEBHOOK_EVENT_TYPES.FCREPO_EVENT ) return;
+    // if( msg.type !== this.WEBHOOK_EVENT_TYPES.FCREPO_EVENT ) return;
 
     // make sure indexer is using our latest jwt token
     // MessageServer is automatically keeping the token up to date for us
-    indexer.token = this.token;
+    // indexer.token = this.token;
 
     // grab the resource path
-    let path = this.getPath(msg);
+    let path = msg.headers['org.fcrepo.jms.identifier'];
 
     // walk path and register all containers in buffer
 
@@ -50,17 +64,21 @@ class EsSyncMessageServer extends MessageServer {
     let parts = path.replace(/\//, '').split('/');
     let root = parts.shift();
 
-    for( let i = parts.length; i >= 0; i-- ) {
-      path = parts.slice(0, i).join('/').trim();
-      if( !path ) continue;
+    await postgres.log(msg.headers, msg.body);
 
-      path = '/'+root+'/'+path;
+    // for( let i = parts.length; i >= 0; i-- ) {
+    //   path = parts.slice(0, i).join('/').trim();
+    //   if( !path ) continue;
 
-      // we don't want anything in a dot path
-      if( this.isDotPath(path) ) continue;
+    //   path = '/'+root+'/'+path;
 
-      buffer.add('container', path, {path});
-    }
+    //   // we don't want anything in a dot path
+    //   if( this.isDotPath(path) ) continue;
+
+    //   // buffer.add('container', path, {path});
+
+    //   // await this.onContainerEvent({path});
+    // }
   }
 
   /**
@@ -71,6 +89,7 @@ class EsSyncMessageServer extends MessageServer {
    */
   async onContainerEvent(e) {
     let path = e.path;
+    
     let container = await indexer.getContainer(path);
 
     // either doesn't exist or we don't have access
@@ -79,7 +98,7 @@ class EsSyncMessageServer extends MessageServer {
 
       // remove from elastic search
       return indexer.remove(path);
-    }
+    }    
 
     container = this._getGraphById(container, config.server.url+config.fcrepo.root+path);
     if( !container ) {
@@ -116,6 +135,31 @@ class EsSyncMessageServer extends MessageServer {
         return graph;
       }
     }
+    return null;
+  }
+
+  /**
+   * @method isDotPath
+   * @description given a path string from getPath, does any section of the path start
+   * with a .
+   * 
+   * @param {String} path
+   * 
+   * @returns {Boolean}
+   */
+  isDotPath(path) {
+    if( path.match(/^http/) ) {
+      let urlInfo = new URL(path);
+      path = urlInfo.pathname;
+    }
+    
+    path = path.split('/');
+    for( var i = 0; i < path.length; i++ ) {
+      if( path[i].match(/^\./) ) {
+        return path[i];
+      }
+    }
+
     return null;
   }
 

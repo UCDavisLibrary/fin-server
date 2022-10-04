@@ -4,6 +4,8 @@ module.exports = {
   jwt : require('./lib/jwt'),
   logger : require('./lib/logger'),
   MessageServer : require('./lib/message-server'),
+  activemq : require('./lib/activemq'),
+  PG : require('./lib/pg'),
   utils : require('./lib/utils'),
   waitUntil : require('./lib/wait-until'),
   collections : require('./models/collections'),

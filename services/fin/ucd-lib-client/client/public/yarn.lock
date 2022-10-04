@@ -442,12 +442,8 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@ucd-lib/fin-service-utils@file:../../../../node-utils":
-  "resolved" "file:../../../../node-utils"
-  "version" "0.0.1"
-  dependencies:
-    "clone" "^2.1.2"
-    "elasticsearch" "^16.7.2"
+"@ucd-lib/fin-service-utils@file:../../../node-utils":
+  "resolved" "file:../../../node-utils"
 
 "@webcomponents/shadycss@^1.9.1":
   "integrity" "sha512-GsD7RpDVrVdgC6e+D8zQia8RGNmEGQ9/qotnVPQYPrIXhGS5xSt6ZED9YmuHz3HbLqY+E54tE1EK3tjLzSCGrw=="
@@ -573,8 +569,6 @@
   "integrity" "sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss="
   "resolved" "https://registry.npmjs.org/jsonfile/-/jsonfile-4.0.0.tgz"
   "version" "4.0.0"
-  dependencies:
-    "graceful-fs" "^4.1.6"
   optionalDependencies:
     "graceful-fs" "^4.1.6"
 
