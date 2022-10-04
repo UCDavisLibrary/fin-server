@@ -14,3 +14,4 @@ fcrepo-webapp-*-SNAPSHOT*
 tests
 test
 temp/
+bundle.js
