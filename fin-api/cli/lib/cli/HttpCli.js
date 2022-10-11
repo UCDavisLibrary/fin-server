@@ -229,7 +229,7 @@ class HttpCli {
     response = response.last;
 
     if( print.H ) {
-      Logger.log(`${request.method} ${request.href}`);
+      Logger.log(`${request.method} ${request.url}`);
       this._displayHeaders(request.headers);
       Logger.log('');
     }

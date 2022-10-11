@@ -87,8 +87,10 @@ module.exports = {
     },
     host : esHostname,
     port : esPort,
+    username : process.env.ELASTIC_USERNAME || 'elastic',
+    password : process.env.ELASTIC_PASSWORD || 'elastic',
     get connStr () {
-      return `http://elastic:changeme@${this.host}:${this.port}`
+      return `http://${this.host}:${this.port}`
     }, 
     log : process.env.ES_LOG_LEVEL || 'error',
     application : {

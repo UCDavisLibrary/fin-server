@@ -156,24 +156,24 @@ class Service {
     // var {response} = await API.head(options);
     // if( response.statusCode !== 404 ) throw new Error('Service already exists: '+templateOptions.id);
     
-    options.path = '/'+ROOT;
-    options.headers.Slug = templateOptions.id;
+    options.path = '/'+ROOT+'/'+templateOptions.id;
+    // options.headers.Slug = templateOptions.id;
     
     if( options.type !== this.TYPES.TRANSFORM ) {
       options.headers['Content-Type'] = API.RDF_FORMATS.TURTLE;
       options.content = ttl;
-      return API.postEnsureSlug(options);
+      return API.put(options);
     }
 
     options.headers['Content-Type'] = 'application/javascript';
     options.content = options.transform;
 
-    let response = await API.postEnsureSlug(options);
-    if( !response.checkStatus(204) ) {
+    let response = await API.put(options);
+    if( !response.checkStatus(204) && !response.checkStatus(201) ) {
       return response.setError('Unable to create service container: '+response.last.body);
     }
 
-    let path = options.path+'/'+options.id+'/fcr:metadata';
+    let path = options.path+'/fcr:metadata';
 
     // get current metadata
     response.appendResponse(await API.get({path}));

@@ -121,6 +121,10 @@
 
     "indexableContent" : {
       "type": "text"
+    },
+
+    "_.updated" : {
+      "type" : "date"
     }
 
   }

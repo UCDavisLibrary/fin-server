@@ -137,7 +137,6 @@ class AttributeReducer {
 
     await this.esClient.index({
       index : index,
-      type: config.elasticsearch.record.schemaType,
       id : record['@id'],
       body: record
     });
@@ -212,7 +211,6 @@ class AttributeReducer {
 
       await this.esClient.index({
         index : alias,
-        type: config.elasticsearch.record.schemaType,
         id : record['@id'],
         body: record
       });
@@ -357,7 +355,6 @@ class AttributeReducer {
     try {
       let record = await this.esClient.get({
         index: alias || config.elasticsearch.record.alias,
-        type: config.elasticsearch.record.schemaType,
         id: id
       });
       return record._source;

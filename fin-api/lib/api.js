@@ -412,6 +412,11 @@ class FinApi {
    * @return {Boolean}
    */
   isSuccess(response) {
+    if( response.last ) {
+      if( response.last.statusCode >= 200 && response.last.statusCode < 300 ) {
+        return true;
+      }
+    }
     if( response.statusCode >= 200 && response.statusCode < 300 ) {
       return true;
     }
@@ -692,8 +697,10 @@ class FinApi {
 
     // if the initial delete fails, do not attempt to delete tombstone
     // 410 status code is 'gone'
-    if( response.error || (!this.isSuccess(response.last) && response.last.statusCode !== 410) ) {
-      return response;
+    if( response.error && response.last.statusCode !== 500 ) { // hack, deleting a deleted resource sometimes returns 500
+      if( response.error || (!this.isSuccess(response.last) && response.last.statusCode !== 410) ) {
+        return response;
+      }
     }
 
     // TODO: remove this.  we should be able to delete tombstone as normal user

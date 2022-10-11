@@ -23,7 +23,7 @@ api.setConfig({
 });
 
 
-class EsSyncMessageServer {
+class EsSync {
 
   constructor() {
     // super('Elasticsearch Sync');
@@ -35,6 +35,30 @@ class EsSyncMessageServer {
 
     activemq.onMessage(e => this.handleMessage(e));
     activemq.connect('essync', '/queue/essync');
+
+    this.UPDATE_TYPES = {
+      UPDATE : ['Create', 'Update'],
+      DELETE : ['Delete', 'Purge']
+    }
+
+    this.BINARY_CONTAINER = 'http://fedora.info/definitions/v4/repository#Binary';
+
+    postgres.connect()
+      .then(() => this.readLoop());
+  }
+
+  async readLoop() {
+    let item = await postgres.nextLogItem();
+    
+    if( !item ) {
+      setTimeout(() => this.readLoop(), 500);
+      return;
+    }
+
+    await this.updateContainer(item);
+    await postgres.clearLog(item.event_id);
+
+    this.readLoop();
   }
 
   /**
@@ -54,17 +78,16 @@ class EsSyncMessageServer {
     // MessageServer is automatically keeping the token up to date for us
     // indexer.token = this.token;
 
-    // grab the resource path
-    let path = msg.headers['org.fcrepo.jms.identifier'];
-
-    // walk path and register all containers in buffer
-
-
-    // let parts = path.replace(/\/collection\/?/, '').split('/');
-    let parts = path.replace(/\//, '').split('/');
-    let root = parts.shift();
-
-    await postgres.log(msg.headers, msg.body);
+    await postgres.log({
+      event_id : msg.headers['org.fcrepo.jms.eventID'],
+      event_timestamp : new Date(parseInt(msg.headers['org.fcrepo.jms.timestamp'])).toISOString(),
+      path : msg.headers['org.fcrepo.jms.identifier'],
+      container_types : msg.headers['org.fcrepo.jms.resourceType']
+        .split(',')
+        .map(item => item.trim())
+        .filter(item => item),
+      update_types : msg.body.type
+    });
 
     // for( let i = parts.length; i >= 0; i-- ) {
     //   path = parts.slice(0, i).join('/').trim();
@@ -81,50 +104,120 @@ class EsSyncMessageServer {
     // }
   }
 
+  isUpdate(e) {
+    return e.update_types.find(item => this.UPDATE_TYPES.UPDATE.includes(item)) ? true : false;
+  }
+
+  isDelete(e) {
+    return e.update_types.find(item => this.UPDATE_TYPES.DELETE.includes(item)) ? true : false;
+  }
+
   /**
-   * @method onContainerEvent
+   * @method item
    * @description called been buffer event timer fires
    * 
-   * @param {Object} e event payload passed to buffer.
+   * @param {Object} e event payload from log table
    */
-  async onContainerEvent(e) {
-    let path = e.path;
-    
-    let container = await indexer.getContainer(path);
+  async updateContainer(e) {
+
+    // check update_type is delete.
+    if( this.isDelete(e) ) {
+      logger.info('Container '+e.path+' was removed from LDP, removing from index');
+
+      e.action = 'delete';
+      await postgres.updateStatus(e);
+      return indexer.remove(e.path);
+    }
+
+    // check for binary
+    if( e.container_types.includes(this.BINARY_CONTAINER) ) {
+      logger.info('Ignoring container '+e.path+'.  binary container');
+
+      e.action = 'ignored';
+      e.message = 'binary container';
+      await postgres.updateStatus(e);
+      return indexer.remove(e.path);   
+    }
+
+    // we only want collection, application, record types
+    if( !indexer.isCollection(e.type) && 
+        !indexer.isRecord(e.path, e.type) &&
+        !indexer.isApplication(e.path) ) {
+      logger.info('Ignoring container '+e.path+'.  Not of type record, collection or application');
+      
+      e.action = 'ignored';
+      e.message = 'non-fin container type'
+      await postgres.updateStatus(e);
+      return indexer.remove(e.path);
+    }
+
+    // TODO: return status code
+    // let container = await indexer.getContainer(e.path);
 
     // either doesn't exist or we don't have access
-    if( !container ) {
-      logger.info('Container '+path+' either doesn\'t exist in LDP or is not publicly accessible.  Removing from index');
+    // if( typeof container === 'number' ) {
+    //   logger.info('Container '+e.path+' was publicly inaccessible ('+container+') from LDP, removing from index');
 
-      // remove from elastic search
-      return indexer.remove(path);
-    }    
+    //   e.action = 'ignored';
+    //   e.message = 'inaccessible'
+    //   await postgres.updateStatus(e);
+    //   return indexer.remove(e.path);
+    // }
 
-    container = this._getGraphById(container, config.server.url+config.fcrepo.root+path);
-    if( !container ) {
-      return logger.error('Failed to get container: ', path);
+    // if( !e.container_types ) {
+    //   container = this._getGraphById(container, config.server.url+config.fcrepo.root+path);
+    //   if( !container ) {
+    //     return logger.error('Failed to get container: ', path);
+    //   }
+
+    //   let type = container['@type'];
+    // }
+
+    // let esRecord = await indexer.getTransformedContainer(path, type);
+    // if( !esRecord ) {
+    //   return logger.error('Failed to get transform for container:', path);
+    // }
+
+    if( !e.container_types ) {
+      e.container_types = [];
+
+      let response = await api.head({path});
+      if( response.data.statusCode === 200 ) {
+        var link = response.last.headers['link'];
+        if( link ) {
+          link = api.parseLinkHeader(link);
+          e.container_types = link.type || [];
+        }
+      }
     }
 
-    let type = container['@type'];
+    let response = await indexer.getTransformedContainer(e.path, e.container_types);
+    if( response.data.statusCode !== 200 ) {
+      logger.info('Container '+e.path+' was inaccessible ('+response.data.statusCode+') from LDP, removing from index. url='+response.data.request.url);
 
-    // we only want collection and record types
-    if( !indexer.isCollection(type) && 
-        !indexer.isRecord(path, type) &&
-        !indexer.isApplication(path) ) {
-      logger.info('Ignoring container '+path+'.  Not of type record or collection');
-      return;
-    }
-
-    let esRecord = await indexer.getTransformedContainer(path, type);
-    if( !esRecord ) {
-      return logger.error('Failed to get transform for container:', path);
+      e.action = 'ignored';
+      e.message = 'inaccessible'
+      await postgres.updateStatus(e);
+      return indexer.remove(e.path);
     }
 
     // update elasticsearch
     try {
-      await indexer.update(esRecord);
-    } catch(e) {
-      logger.error('Failed to update: '+path, e);
+      let jsonld = JSON.parse(response.data.body);
+      if( jsonld['@id'].match(/\/fcrepo\/rest\//) ) {
+        jsonld['@id'] = jsonld['@id'].split('/fcrepo/rest')[1];
+      }
+      
+      let result = await indexer.update(e.path, jsonld);
+
+      e.action = 'updated';
+      e.es_response = JSON.stringify(result.response);
+      await postgres.updateStatus(e);
+    } catch(error) {
+      logger.error('Failed to update: '+e.path, error);
+      e.action = 'error';
+      e.message = error.message+'\n'+error.stack+'\n\nResponse: '+response.data.statusCode;
+      await postgres.updateStatus(e);
     }
   }
 
@@ -168,4 +261,4 @@ class EsSyncMessageServer {
   }
 }
 
-module.exports = new EsSyncMessageServer();
+module.exports = new EsSync();

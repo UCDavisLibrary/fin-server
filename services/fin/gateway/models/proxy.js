@@ -228,14 +228,10 @@ class ProxyModel {
 
     // set base user auth
     let fcrepoApiConfig = api.getConfig();
-    console.log(fcrepoApiConfig);
-    console.log(fcrepoApiConfig.username+':'+fcrepoApiConfig.password)
     req.headers['authorization'] = 'Basic '+Buffer.from(fcrepoApiConfig.username+':'+fcrepoApiConfig.password).toString('base64');
 
     let url = `http://${config.fcrepo.hostname}:8080${req.originalUrl}`;
     logger.debug(`Fcrepo proxy request: ${url}`);
-
-    console.log(url, req.headers);
 
     proxy.web(req, res, {
       target : url

@@ -83,7 +83,7 @@ class ServiceModel {
       }
 
       let response = await api.service.create(service);
-      if( !response.checkStatus(204) ) {
+      if( !response.checkStatus(204) && !response.checkStatus(201) ) {
         logger.warn(`Service ${service.id} may not have initialized correctly.  Returned status code: ${response.last.statusCode}`);
       }
 

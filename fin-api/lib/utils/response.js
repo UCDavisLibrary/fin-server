@@ -90,7 +90,7 @@ class ApiResponse {
     if( options.breaks ) console.log('START HTTP REQUEST STACK TRACE');
     this.httpStack.forEach(r => {
       if( options.breaks ) console.log('\n+++ START REQUEST');
-      console.log(r.request.method+' '+r.request.path);
+      console.log(r.request.method+' '+r.request.url);
       if( options.status ) console.log(r.statusCode);
       if( options.reqHeaders ) {
         if( options.breaks ) console.log('REQUEST HEADERS');
@@ -132,6 +132,8 @@ function transformResponse(response={}) {
     headers : response.headers,
     statusCode: response.statusCode,
     body: response.body,
+    httpVersion : response.httpVersion,
+    statusMessage : response.statusMessage
   }
 }
 

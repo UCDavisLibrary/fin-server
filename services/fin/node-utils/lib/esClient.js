@@ -1,13 +1,14 @@
 // global connection to elastic search client
 
-const elasticsearch = require('elasticsearch');
+const { Client } = require('@elastic/elasticsearch')
 const config = require('../config');
 
-
-var client = new elasticsearch.Client({
-  apiVersion: '5.6',
-  host: config.elasticsearch.connStr,
-  log: config.elasticsearch.log
+var client = new Client({
+  node: config.elasticsearch.connStr,
+  auth: {
+    username: config.elasticsearch.username,
+    password: config.elasticsearch.password
+  }
 });
 
 module.exports = client;

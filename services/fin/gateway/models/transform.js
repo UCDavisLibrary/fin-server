@@ -238,7 +238,7 @@ class TransformUtils {
       }
     }
 
-    let imgUrl = config.fin.host+json.image.url+'/svc:iiif/info.json';
+    let imgUrl = config.gateway.host+json.image.url+'/svc:iiif/info.json';
     var result = await this.request({
       type : 'GET',
       uri: imgUrl
@@ -254,7 +254,7 @@ class TransformUtils {
       logger.error('failed to get image height/width for: '+json['@id'], e,  body);
     }
     
-    imgUrl = config.fin.host+json.image.url+'/fcr:metadata';
+    imgUrl = config.gateway.host+json.image.url+'/fcr:metadata';
     result = await this.request({
       type : 'GET',
       uri: imgUrl,
@@ -404,7 +404,7 @@ class TransformUtils {
    */
   async _setColorPalette(json, width='8') {
     let imgPath = json.image.url.replace(/\/?svc:iiif\/.*/, '');
-    let imgUrl = config.fin.host+imgPath+`/svc:iiif/full/${width},/0/default.jpg`;
+    let imgUrl = config.gateway.host+imgPath+`/svc:iiif/full/${width},/0/default.jpg`;
 
     let result = await this.request({
       type : 'GET',
@@ -431,7 +431,7 @@ class TransformUtils {
 
     var result = await this.request({
       type : 'GET',
-      uri: config.fin.host+config.fcrepo.root+json['@id']
+      uri: config.gateway.host+config.fcrepo.root+json['@id']
     });
     json.indexableContent = result.body;
 
@@ -540,7 +540,7 @@ class TransformUtils {
    * @returns {String}
    */
   getFcRepoBaseUrl() {
-    return config.fin.host + config.fcrepo.root;
+    return config.gateway.host + config.fcrepo.root;
   }
 
   /**
@@ -617,14 +617,15 @@ class TransformService {
         path : pathOrData,
         headers : {
           Accept : api.RDF_FORMATS.JSON_LD,
-          Forwarded : this.getForwardedHeader()
         }
       }
+      this.setForwardedHeader(options.headers);
 
       let response = await api.head(options);
       if( !api.isRdfContainer(response.last) ) {
         options.path += '/fcr:metadata';
       }
+      console.log(options);
 
       response = await api.get(options);
       if( !response.checkStatus(200) ) {
@@ -646,8 +647,10 @@ class TransformService {
    * 
    * @returns {String}
    */
-  getForwardedHeader() {
-    return `host=${FIN_URL.host}; proto=${FIN_URL.protocol.replace(/:/, '')}`;
+  setForwardedHeader(headers) {
+    headers.forwarded = `host=${FIN_URL.host}; proto=${FIN_URL.protocol.replace(/:/, '')}`;
+    headers['x-forwarded-host'] = FIN_URL.host;
+    headers['x-forwarded-proto'] = FIN_URL.protocol.replace(/:/, '');
   }
 
 }

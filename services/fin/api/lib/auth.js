@@ -16,7 +16,9 @@ class AuthUtils {
     if( token ) return token;
     
     token = req.get('Authizoration');
-    if( token ) return token.replace(/^Bearer /, '');
+    if( token && token.match(/^Bearer/) ) {
+      return token.replace(/^Bearer /, '');
+    }
 
     return null;
   }

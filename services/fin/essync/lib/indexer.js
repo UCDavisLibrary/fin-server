@@ -1,9 +1,9 @@
-const elasticsearch = require('elasticsearch');
+// const elasticsearch = require('elasticsearch');
 const request = require('request');
 const schemaRecord = require('../schemas/record');
 const schemaCollection = require('../schemas/collection');
 const schemaApplication = require('../schemas/application');
-const {logger, jwt, waitUntil} = require('@ucd-lib/fin-service-utils');
+const {logger, jwt, waitUntil, esClient} = require('@ucd-lib/fin-service-utils');
 const api = require('@ucd-lib/fin-api');
 const {URL} = require('url');
 const config = require('./config');
@@ -30,11 +30,12 @@ class EsIndexer {
   
   constructor() {
     this.name = 'essync-indexer';
-    this.esClient = new elasticsearch.Client({
-      host: config.elasticsearch.connStr,
-      log: config.elasticsearch.log,
-      requestTimeout : 3*60*1000
-    });
+    // this.esClient = new elasticsearch.Client({
+    //   host: config.elasticsearch.connStr,
+    //   log: config.elasticsearch.log,
+    //   requestTimeout : 3*60*1000
+    // });
+    this.esClient = esClient;
 
     this.attributeReducer = new AttributeReducer(this.esClient);
     this.finUrlRegex = new RegExp(`^${config.server.url}${config.fcrepo.root}`);
@@ -52,7 +53,7 @@ class EsIndexer {
 
     // sometimes we still aren't ready....
     try {
-      await this.esClient.ping({requestTimeout: 5000});
+      // await this.esClient.ping({requestTimeout: 5000});
     } catch(e) {
       await this.isConnected();
     }
@@ -140,9 +141,10 @@ class EsIndexer {
               }
             }
           },
-          mappings : {
-            [schemaName] : schema
-          }
+          // mappings : {
+          //   [schemaName] : schema
+          // }
+          mappings : schema
         }
       });
     } catch(e) {
@@ -162,50 +164,61 @@ class EsIndexer {
    * 
    * @returns {Promise}
    */
-  async update(jsonld, recordIndex, collectionIndex, applicationIndex) {
-    if( !jsonld ) return;
+  async update(id, jsonld, recordIndex, collectionIndex, applicationIndex) {
+    if( !jsonld ) throw new Error('jsonld is null');
+
+    if( !jsonld._ ) jsonld._ = {};
+    jsonld._.updated = new Date();
 
     // only index binary and collections
     if ( this.isCollection(jsonld['@type']) ) {
-      logger.info(`ES Indexer updating collection container: ${jsonld['@id']}`);
+      logger.info(`ES Indexer updating collection container: ${id}`);
 
-      await this.esClient.index({
-        index : collectionIndex || config.elasticsearch.collection.alias,
-        type: config.elasticsearch.collection.schemaType,
-        id : jsonld['@id'],
+      let index = collectionIndex || config.elasticsearch.collection.alias;
+      let response = await this.esClient.index({
+        index,
+        id,
         body: jsonld
       });
 
-    } else if( this.isRecord(jsonld['@id'], jsonld['@type']) ) {
-      logger.info(`ES Indexer updating record container: ${jsonld['@id']}`);
+      return {index, id, response}
+    }  
+    
+    if( this.isRecord(jsonld['@id'], jsonld['@type']) ) {
+      logger.info(`ES Indexer updating record container: ${id}`);
 
-      await this.esClient.index({
-        index : recordIndex || config.elasticsearch.record.alias,
-        type: config.elasticsearch.record.schemaType,
-        id : jsonld['@id'],
+      let index = recordIndex || config.elasticsearch.record.alias;
+      let response = await this.esClient.index({
+        index,
+        id,
         body: jsonld
       });
 
       // start the timer for the attribute reducing
-      this.attributeReducer.onRecordUpdate({
-        record: jsonld,
-        alias : recordIndex || config.elasticsearch.record.alias
-      });
+      // this.attributeReducer.onRecordUpdate({
+      //   id,
+      //   record: jsonld,
+      //   alias : index
+      // });
+      
+      return {index, id, response};
+    } 
     
-    } else if ( this.isApplication(jsonld['@id']) ) {
+    if ( this.isApplication(jsonld['@id']) ) {
 
-      logger.info(`ES Indexer updating application container: ${jsonld['@id']}`);
+      logger.info(`ES Indexer updating application container: ${id}`);
 
-      await this.esClient.index({
-        index : applicationIndex || config.elasticsearch.application.alias,
-        type: config.elasticsearch.application.schemaType,
-        id : jsonld['@id'],
+      let index = applicationIndex || config.elasticsearch.application.alias;
+      let response = await this.esClient.index({
+        index,
+        id,
         body: jsonld
       });
 
-    } else {
-      logger.info(`ES Indexer ignoring container: ${jsonld['@id']}`, jsonld['@type']);
+      return {index, id, response};
     }
+    
+    logger.info(`ES Indexer ignoring container: ${id}`, jsonld['@type']);
   }
 
   /**
@@ -217,19 +230,17 @@ class EsIndexer {
    * @returns {Promise}
    */
   async remove(path='') {
-    
     // check collection
     let exists = await this.esClient.exists({
       index : config.elasticsearch.collection.alias,
-      type: config.elasticsearch.collection.schemaType,
       id : path
     });
+
     if( exists ) {
       logger.info(`ES Indexer removing collection container: ${path}`);
       try {
         await this.esClient.delete({
           index : config.elasticsearch.collection.alias,
-          type: config.elasticsearch.collection.schemaType,
           id : path
         });
   
@@ -242,7 +253,6 @@ class EsIndexer {
     // check container
     exists = await this.esClient.exists({
       index : config.elasticsearch.record.alias,
-      type: config.elasticsearch.record.schemaType,
       id : path
     });
     if( exists ) {
@@ -254,7 +264,6 @@ class EsIndexer {
 
         await this.esClient.delete({
           index : config.elasticsearch.record.alias,
-          type: config.elasticsearch.record.schemaType,
           id : path
         });
   
@@ -267,7 +276,6 @@ class EsIndexer {
     // check application
     exists = await this.esClient.exists({
       index : config.elasticsearch.application.alias,
-      type: config.elasticsearch.application.schemaType,
       id : path
     });
     if( exists ) {
@@ -276,7 +284,6 @@ class EsIndexer {
       try {
         await this.esClient.delete({
           index : config.elasticsearch.application.alias,
-          type: config.elasticsearch.application.schemaType,
           id : path
         });
   
@@ -304,14 +311,12 @@ class EsIndexer {
 
       let exists = await this.esClient.exists({
         index : config.elasticsearch.collection.alias,
-        type: config.elasticsearch.collection.schemaType,
         id : collectionId
       });
       if( !exists ) return;
 
       await this.esClient.delete({
         index : config.elasticsearch.collection.alias,
-        type: config.elasticsearch.collection.schemaType,
         id : collectionId
       });
     } catch(e) {
@@ -328,7 +333,7 @@ class EsIndexer {
    * 
    * @returns {Promise}
    */
-  async getTransformedContainer(path='', types=[]) {
+  async getTransformedContainer(path='', types=[], jwt) {
     if( path.match(/fcr:metadata$/) ) {
       path = path.replace(/\/fcr:metadata$/, '');
     }
@@ -348,15 +353,7 @@ class EsIndexer {
       return resp;
     }
 
-    let response = await this._requestSvcContainer(path, svc);
-    if( !response ) return null;
-
-    try {
-      return JSON.parse(response.body);
-    } catch(e) {
-      logger.fatal('Failed to get transform for: '+path, response.statusCode+' '+response.body,  e);
-      return null;
-    }
+    return this._requestSvcContainer(path, svc);
   }
 
   /**
@@ -371,14 +368,14 @@ class EsIndexer {
     if( path.match(/fcr:metadata$/) ) {
       path = path.replace(/\/fcr:metadata$/, '');
     }
-
+ 
     let response = await this._requestContainer(path, compact);
     if( !response ) return null;
 
     try {
-      return JSON.parse(response.body);
+      return JSON.parse(response.data.body);
     } catch(e) {
-      logger.fatal('Failed to get container for: '+path, response.statusCode+' '+response.body,  e);
+      logger.fatal('Failed to get container for: '+path, response.data.statusCode+' '+response.data.body,  e);
       return null;
     }
   }
@@ -395,22 +392,22 @@ class EsIndexer {
    * @return {Promise} resolves to null or response object
    */
   async _requestSvcContainer(path, svc, retry=false) {
-    var response = await this.request({
-      type : 'GET',
-      uri : path+`/svc:${svc}`
+    var response = await api.get({
+      host : config.gateway.host,
+      path : path+`/svc:${svc}`
     });
     
-    if( response.statusCode === 403 ) {
-      logger.error('Ignoring non-public container: '+path);
-      return null;
-    }
+    // if( response.statusCode === 403 ) {
+    //   logger.error('Ignoring non-public container: '+path);
+    //   return null;
+    // }
 
-    if( response.statusCode !== 200 ) {
-      logger.error('Non 200 status code for transform request '+path, response.statusCode, response.body);
-      if( retry ) return null;
-      logger.info('Retrying request for transform: '+path);
-      return await this._requestSvcContainer(path, svc, true);
-    }
+    // if( response.statusCode !== 200 ) {
+    //   logger.error('Non 200 status code for transform request '+path, response.statusCode, response.body);
+    //   if( retry ) return null;
+    //   logger.info('Retrying request for transform: '+path);
+    //   return await this._requestSvcContainer(path, svc, true);
+    // }
 
     return response;
   }
@@ -421,10 +418,11 @@ class EsIndexer {
    * a 403 is returned, will automatically try request again
    * 
    * @param {String} path fcrepo path
+   * @param {String} types fcrepo path
    * 
    * @return {Promise} resolves to null or response object
    */
-  async _requestContainer(path, compact=false) {
+  async _requestContainer(path, types, compact=false) {
     // make a head request for access and container type info
     let response = await api.head({path});
 
@@ -458,17 +456,15 @@ class EsIndexer {
     //     accept : 'application/ld+json'+(compact ? '; profile="http://www.w3.org/ns/json-ld#compacted"' : '')
     //   }
     // });
-
-    console.log(response);
     
-    if( response.statusCode === 403 ) {
+    if( response.data.statusCode === 403 ) {
       logger.debug('Ignoring non-public container: '+path);
-      return null;
+      return response.data.statusCode;
     }
 
-    if( response.statusCode !== 200 ) {
+    if( response.data.statusCode !== 200 ) {
       logger.debug('Non 200 status code for container request '+path, response.statusCode, response.body);
-      return null;
+      return response.data.statusCode;
     }
 
     return response;

@@ -194,6 +194,23 @@ class Config {
     }
 
     this.data = JSON.parse(fs.readFileSync(this.optionsPath, 'utf-8'));
+
+    if( process.env.FCREPO_HOST ) {
+      this.data.host = process.env.FCREPO_HOST;
+    }
+    if( process.env.FCREPO_REST_PATH ) {
+      this.data.fcBasePath = process.env.FCREPO_REST_PATH;
+    }
+    if( process.env.FCREPO_JWT ) {
+      this.data.jwt = process.env.FCREPO_JWT;
+    }
+    if( process.env.FCREPO_USERNAME ) {
+      this.data.username = process.env.FCREPO_USERNAME;
+    }
+    if( process.env.FCREPO_PASSWORD ) {
+      this.data.password = process.env.FCREPO_PASSWORD;
+    }
+
     api.setConfig(this.data);
   }
 

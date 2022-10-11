@@ -14,6 +14,7 @@ const {logger} = require('@ucd-lib/fin-service-utils');
 
 const LABEL_SERVICE = 'label';
 const SERVICE_CHAR = '/svc:';
+const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 
 class ServiceProxy {
 
@@ -131,7 +132,7 @@ class ServiceProxy {
     // this container from the fcrepo link headers
     await this.setContainerInfo(req);
     if( !req.finContainer.access ) {
-      res.status(info.response.statusCode).send(info.response.body);
+      res.status(req.finContainer.response.data.statusCode).send(req.finContainer.response.body);
       return false;
     }
 
@@ -181,10 +182,14 @@ class ServiceProxy {
     // }
 
     // make a head request to get fcrepo statusCode and link headers
-    var {response} = await _request({
-      method : 'HEAD',
-      uri : req.finServiceInfo.fcPath
-    }, req.token);
+    // var {response} = await _request({
+    //   method : 'HEAD',
+    //   uri : req.finServiceInfo.fcPath
+    // }, req.token);
+    let response = await api.head({
+      path : req.finServiceInfo.fcPath.replace(api.getConfig().basePath, ''),
+      jwt : req.token
+    });
 
     // if we don't get a 200 range status code from fcrepo, 
     // requesting agent does not have access to this container
@@ -195,25 +200,15 @@ class ServiceProxy {
 
     // parse the link headers, used by following operations
     let links = {};
-    if( response.headers.link ) {
-      links = api.parseLinkHeader(response.headers.link);
+    if( response.last.headers.link ) {
+      links = api.parseLinkHeader(response.last.headers.link);
     }
 
-    // if we have a content-disposition header, we are a binary
-    // TODO: should we check the couple standard type headers fcrepo includes in the links?
-    if( response.headers['content-disposition'] ) {
-      req.finContainer =  {
-        access: true, 
-        binary: true,
-        links, 
-        token: req.token,
-        response
-      };
-      return;
-    }
+    // check if binary
+    let binary = links.type.find(item => item.url === BINARY) ? true : false;
 
     // we are not a binary container
-    req.finContainer = {access: true, binary: false, links, response, token: req.token};
+    req.finContainer = {access: true, binary, links, response, token: req.token};
   }
 
   /**
@@ -250,21 +245,21 @@ class ServiceProxy {
  * @private
  * @description Request promise wrapper and authorization wrapper
  */
-function _request(options, token) {
-  if( token ) {
-    if( !options.headers ) options.headers = {};
-    options.headers.Authorization = `Bearer ${token}`;
-    options.headers.host = new URL(config.server.url).host;
-  }
+// function _request(options, token) {
+//   if( token ) {
+//     if( !options.headers ) options.headers = {};
+//     options.headers.Authorization = `Bearer ${token}`;
+//     options.headers.host = new URL(config.server.url).host;
+//   }
 
-  options.uri = `http://${config.fcrepo.hostname}:8080${options.uri}`;
+//   options.uri = `http://${config.fcrepo.hostname}:8080${options.uri}`;
 
-  return new Promise((resolve, reject) => {
-    request(options, (error, response, body) => {
-      if( error ) reject(error);
-      else resolve({response, body});
-    });
-  });
-}
+//   return new Promise((resolve, reject) => {
+//     request(options, (error, response, body) => {
+//       if( error ) reject(error);
+//       else resolve({response, body});
+//     });
+//   });
+// }
 
 module.exports = new ServiceProxy();

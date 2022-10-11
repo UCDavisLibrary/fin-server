@@ -104,15 +104,17 @@ class ImportCollection {
     if( response.last.statusCode !== 200 ) {
       console.log('Collection doesn\'t exist, creating');
       if( options.dryRun !== true ) {
-        await api.collection.create({
+        response = await api.collection.create({
           id: newCollectionName
         });
+        if( response.error ) throw new Error(response.error);
         response = await api.head({path: '/collection/'+newCollectionName});
       }
     }
 
     let aclFile = path.join(options.fsPath, ACL_FILE);
     if( fs.existsSync(aclFile) ) {
+      
       let aclLocation = api.parseLinkHeader(response.last.headers.link).acl[0];
       let aclPath = aclLocation.url.split(newCollectionName)[1];
       
@@ -343,7 +345,8 @@ class ImportCollection {
         response = await api.collection.addResource({
           collectionId : collectionName,
           id : container.fcpath,
-          parentPath : ''
+          parentPath : '',
+          method : 'PUT'
         });
         console.log(response.last.statusCode, response.last.body);
       }
@@ -414,7 +417,6 @@ class ImportCollection {
 
         if( response.error ) {
           console.error(response.error);
-          response.httpStack.forEach(item => console.log(item));
         } else {
           console.log(response.last.statusCode, response.last.body);
         }

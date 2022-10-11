@@ -79,11 +79,11 @@ class Collection {
     // set our content-type to turtle
     if( !options.headers ) options.headers = {};
     options.headers['Content-Type'] = API.RDF_FORMATS.TURTLE;
-    options.headers['Slug'] = options.id;
+    // options.headers['Slug'] = options.id;
     options.content = await transform.jsonldToTurtle(jsonld);
-    options.path = '/'+this.COLLECTION_ROOT_PATH;
+    options.path = '/'+this.COLLECTION_ROOT_PATH+'/'+options.id;
 
-    response.appendResponse(await API.postEnsureSlug(options));
+    response.appendResponse(await API.put(options));
     if( response.error ) return response;
 
     let newPath = response.data;
@@ -92,11 +92,11 @@ class Collection {
     options = clone(orgOptions);
     if( !options.headers ) options.headers = {};
     options.headers['Content-Type'] = API.RDF_FORMATS.TURTLE;
-    options.headers['Slug'] = 'groups';
-    options.path = newPath;
+    // options.headers['Slug'] = 'groups';
+    options.path = newPath+'/groups';
     options.content = loadTemplate('collectionGroups.ttl');
 
-    response.appendResponse(await API.postEnsureSlug(options));
+    response.appendResponse(await API.put(options));
     if( response.error ) return response;
     let groupsPath = response.data;
 
@@ -135,8 +135,8 @@ class Collection {
     // create the members path
     if( !options.headers ) options.headers = {};
     options.headers['Content-Type'] = API.RDF_FORMATS.JSON_LD;
-    options.headers['Slug'] = options.id;
-    options.path = '/'+this.COLLECTION_ROOT_PATH+'/'+options.collectionId;
+    // options.headers['Slug'] = options.id;
+    options.path = '/'+this.COLLECTION_ROOT_PATH+'/'+options.collectionId+'/'+options.id;
 
     let jsonld = {
       '@id' : ''
@@ -180,7 +180,7 @@ class Collection {
 
     options.content = JSON.stringify(jsonld);
 
-    return API.postEnsureSlug(options);
+    return API.put(options);
   }
 
   /**
