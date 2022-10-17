@@ -41,7 +41,6 @@ class EsIndexer {
     this.finUrlRegex = new RegExp(`^${config.server.url}${config.fcrepo.root}`);
 
     setInterval(() => this.generateToken(), 1000 * 60 * 60 * 6);
-    this.init();
   }
 
   /**
@@ -51,12 +50,8 @@ class EsIndexer {
   async isConnected() {
     await waitUntil(config.elasticsearch.host, config.elasticsearch.port);
 
-    // sometimes we still aren't ready....
-    try {
-      // await this.esClient.ping({requestTimeout: 5000});
-    } catch(e) {
-      await this.isConnected();
-    }
+    await this.esClient.cluster.health();
+    await this.init();
   }
 
   /**
@@ -64,9 +59,7 @@ class EsIndexer {
    * @description connect to elasticsearch and ensure collection indexes
    */
   async init() {
-    await this.isConnected();
-
-    logger.info('Connected to Elastic Search');
+    logger.info('Connected to Elastic Search. Verifing indexes.');
 
     let recordConfig = config.elasticsearch.record;
     let colConfig = config.elasticsearch.collection;
@@ -75,6 +68,8 @@ class EsIndexer {
     await this.ensureIndex(recordConfig.alias, recordConfig.schemaType, schemaRecord);
     await this.ensureIndex(colConfig.alias, colConfig.schemaType, schemaCollection);
     await this.ensureIndex(appConfig.alias, appConfig.schemaType, schemaApplication);
+
+    logger.info('Elastic Search ready.');
   }
 
   /**
@@ -188,10 +183,37 @@ class EsIndexer {
       logger.info(`ES Indexer updating record container: ${id}`);
 
       let index = recordIndex || config.elasticsearch.record.alias;
-      let response = await this.esClient.index({
+      try {
+        await this.esClient.index({
+          index,
+          op_type : 'create',
+          id : jsonld._.esId,
+          body: {id: jsonld._.esId, node: []}
+        });
+      } catch(e) {}
+
+      // for debug in the kinban -> menu -> management -> dev tools
+      // console.log(JSON.stringify({
+      //   index,
+      //   id : jsonld._.esId,
+      //   script : {
+      //     source : `
+      //     ctx._source.nodes.removeIf((Map item) -> { item['@id'] == params['@id'] });
+      //     ctx._source.nodes.add(params);
+      //     `,
+      //     params : jsonld
+      //   }
+      // }, '  ', '  '));
+
+      let response = await this.esClient.update({
         index,
-        id,
-        body: jsonld
+        id : jsonld._.esId,
+        script : {
+          source : `
+          ctx._source.node.removeIf((Map item) -> { item['@id'] == params['@id'] });
+          ctx._source.node.add(params);`,
+          params : jsonld
+        }
       });
 
       // start the timer for the attribute reducing
@@ -568,6 +590,18 @@ class EsIndexer {
 
   isApplication(path) {
     return path.match(/^\/application\//);
+  }
+
+  /**
+   * @method shouldIndexRecord
+   * @description we only index archival groups and binary containers
+   * 
+   * @param {Object} item 
+   * 
+   * @return {Boolean}
+   */
+  shouldIndexContainer(item) {
+
   }
 
   /**

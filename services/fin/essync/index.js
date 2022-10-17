@@ -44,6 +44,7 @@ class EsSync {
     this.BINARY_CONTAINER = 'http://fedora.info/definitions/v4/repository#Binary';
 
     postgres.connect()
+      .then(() => indexer.isConnected())
       .then(() => this.readLoop());
   }
 
@@ -140,13 +141,13 @@ class EsSync {
     }
 
     // we only want collection, application, record types
-    if( !indexer.isCollection(e.type) && 
-        !indexer.isRecord(e.path, e.type) &&
+    if( !indexer.isCollection(e.container_types) && 
+        !indexer.isRecord(e.path, e.container_types) &&
         !indexer.isApplication(e.path) ) {
       logger.info('Ignoring container '+e.path+'.  Not of type record, collection or application');
       
       e.action = 'ignored';
-      e.message = 'non-fin container type'
+      e.message = 'non-fin container type';
       await postgres.updateStatus(e);
       return indexer.remove(e.path);
     }
@@ -207,11 +208,20 @@ class EsSync {
       if( jsonld['@id'].match(/\/fcrepo\/rest\//) ) {
         jsonld['@id'] = jsonld['@id'].split('/fcrepo/rest')[1];
       }
-      
+     
+      if( !jsonld._.esId ) {
+        logger.info('Container '+e.path+' is not part of an archival group or a binary container');
+
+        e.action = 'ignored';
+        e.message = 'non-fin container type';
+        await postgres.updateStatus(e);
+        return indexer.remove(e.path);
+      }
+
       let result = await indexer.update(e.path, jsonld);
 
       e.action = 'updated';
-      e.es_response = JSON.stringify(result.response);
+      e.response = JSON.stringify(result.response);
       await postgres.updateStatus(e);
     } catch(error) {
       logger.error('Failed to update: '+e.path, error);

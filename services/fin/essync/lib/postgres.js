@@ -89,7 +89,7 @@ class EssyncPostgresUtils {
   if( resp.rows.length ) {
     await this.pg.query(`
         UPDATE update_status 
-          SET (event_id, event_timestamp, container_types, update_types, action, message, es_response, updated) = ($2, $3, $4, $5, $6, $7, $8)
+          SET (event_id, event_timestamp, container_types, update_types, action, message, es_response, updated) = ($2, $3, $4, $5, $6, $7, $8, $9)
         WHERE 
           PATH = $1
         ;`, [args.path, args.event_id, args.event_timestamp, args.container_types, args.update_types, args.action, args.message, args.response, new Date().toISOString()]
@@ -97,8 +97,8 @@ class EssyncPostgresUtils {
     } else {
       await this.pg.query(`
         INSERT INTO update_status (path, event_id, event_timestamp, container_types, update_types, action, message, es_response) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-      ;`, [args.path, args.event_id, args.event_timestamp, args.container_types, args.update_types, args.action, args.response, args.message]
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      ;`, [args.path, args.event_id, args.event_timestamp, args.container_types, args.update_types, args.action, args.message, args.response]
       );
     }
   }

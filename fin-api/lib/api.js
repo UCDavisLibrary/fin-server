@@ -589,7 +589,7 @@ class FinApi {
 
     // check location is as we expect
     let location = response.last.headers.location || '';
-    let createdSlug = location.replace(new RegExp(this.getBaseUrl(options)+options.path), '');
+    let createdSlug = location.replace(this.createUrl(options), '');
     if( createdSlug !== options.headers.Slug ) {
       response.appendResponse(await this.rollbackTransaction());
       response.setError('Failed to create container at location: '+options.headers.Slug);

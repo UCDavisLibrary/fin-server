@@ -121,7 +121,7 @@ class ServiceModel {
     // }
 
     // listen for service definition updates
-    activemq.on('fcrepo-event', e => this._onFcrepoEvent(e));
+    activemq.onMessage(e => this._onFcrepoEvent(e));
     activemq.connect('gateway', '/queue/gateway');
   }
 
@@ -435,7 +435,7 @@ class ServiceModel {
    * @param {Object} event
    */
   _onFcrepoEvent(event) {
-    let id = event.payload.headers[ACTIVE_MQ_HEADER_ID];
+    let id = event.headers[ACTIVE_MQ_HEADER_ID];
 
     // this is a service update, reload services
     let serviceIndex = id.indexOf('/'+api.service.DEFAULT_ROOT);
@@ -464,17 +464,17 @@ class ServiceModel {
    * @param {Object} event 
    */
   _sendHttpNotificationBuffered(event) {
-    let id = event.payload.headers[ACTIVE_MQ_HEADER_ID];
+    let id = event.headers[ACTIVE_MQ_HEADER_ID];
 
     if( this.notificationTimers[id] ) {
       clearTimeout(this.notificationTimers[id].timer);
     }
 
     // we need to save creation events
-    let eventType = event.payload.headers['org.fcrepo.jms.eventType'];
+    let eventType = event.headers['org.fcrepo.jms.eventType'];
 
     let timer = setTimeout(() => {
-      event.payload.headers['org.fcrepo.jms.eventType'] = this.notificationTimers[id].eventType;
+      event.headers['org.fcrepo.jms.eventType'] = this.notificationTimers[id].eventType;
       delete this.notificationTimers[id];
 
       this.sendWebhookNotification(event);

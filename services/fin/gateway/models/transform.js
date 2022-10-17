@@ -412,7 +412,7 @@ class TransformUtils {
       uri: imgUrl
     });
 
-    json.image.colorPalette = 'data:image/jpg;base64,'+new Buffer(result.body).toString('base64');
+    json.image.colorPalette = 'data:image/jpg;base64,'+Buffer.from(result.body).toString('base64');
     return json;
   }
 
@@ -610,6 +610,7 @@ class TransformService {
 
     let container = pathOrData;
     let path = pathOrData;
+    let headers = {};
 
     if( typeof container === 'string' ) {
       path = pathOrData;
@@ -625,7 +626,6 @@ class TransformService {
       if( !api.isRdfContainer(response.last) ) {
         options.path += '/fcr:metadata';
       }
-      console.log(options);
 
       response = await api.get(options);
       if( !response.checkStatus(200) ) {
@@ -633,11 +633,16 @@ class TransformService {
       }
 
       container = JSON.parse(response.last.body);
+      headers = response.last.headers || {};
+      if( headers.link ) {
+        headers.link = api.parseLinkHeader(headers.link);
+      }
+    
     } else {
       path = null;
     } 
 
-    return this.transforms[name](path, container, new TransformUtils());
+    return this.transforms[name](path, container, headers, new TransformUtils());
   }
 
   /**
@@ -648,6 +653,7 @@ class TransformService {
    * @returns {String}
    */
   setForwardedHeader(headers) {
+    headers.host = FIN_URL.host;
     headers.forwarded = `host=${FIN_URL.host}; proto=${FIN_URL.protocol.replace(/:/, '')}`;
     headers['x-forwarded-host'] = FIN_URL.host;
     headers['x-forwarded-proto'] = FIN_URL.protocol.replace(/:/, '');

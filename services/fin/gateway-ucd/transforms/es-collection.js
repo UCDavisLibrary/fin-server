@@ -1,7 +1,7 @@
 const {config} = require('@ucd-lib/fin-service-utils');
 
 
-module.exports = async function(path, graph, utils) {
+module.exports = async function(path, graph, headers, utils) {
   let item = {};
   let container = utils.get(path, graph);
   if( !container ) {

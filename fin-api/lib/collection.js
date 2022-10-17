@@ -89,16 +89,17 @@ class Collection {
     let newPath = response.data;
 
     // create the groups path
-    options = clone(orgOptions);
-    if( !options.headers ) options.headers = {};
-    options.headers['Content-Type'] = API.RDF_FORMATS.TURTLE;
-    // options.headers['Slug'] = 'groups';
-    options.path = newPath+'/groups';
-    options.content = loadTemplate('collectionGroups.ttl');
+    // options = clone(orgOptions);
+    // if( !options.headers ) options.headers = {};
+    // options.headers['Content-Type'] = API.RDF_FORMATS.TURTLE;
+    // // options.headers['Slug'] = 'groups';
+    // options.path = newPath+'/groups';
+    // options.content = loadTemplate('collectionGroups.ttl');
 
-    response.appendResponse(await API.put(options));
-    if( response.error ) return response;
-    let groupsPath = response.data;
+    // response.appendResponse(await API.put(options));
+    // if( response.error ) return response;
+    // let groupsPath = response.data;
+    let groupsPath = '/';
 
     // create the collection acl root
     // options = clone(orgOptions);

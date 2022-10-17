@@ -2,14 +2,21 @@ const fs = require('fs-extra');
 const path = require('path');
 const ignore = require('ignore');
 const pathutils = require('../utils/path');
+const transform = require('../utils/transform');
 const ioutils = require('./utils');
 
 const IGNORE_FILE = '.finignore';
+const ARCHIVAL_GROUP = 'http://fedora.info/definitions/v4/repository#ArchivalGroup';
 // https://www.npmjs.com/package/ignore
 
 class IoDir {
 
-  constructor(fsroot, subPath, config={}) {
+  constructor(fsroot, subPath, config={}, archivalGroup) {
+    if( !subPath.match(/^\//) ) {
+      subPath = '/'+subPath;
+    }
+
+    this.archivalGroup = archivalGroup;
     this.fsroot = fsroot;
     this.subPath = subPath;
     this.fsfull = path.join(this.fsroot, this.subPath);
@@ -53,8 +60,15 @@ class IoDir {
     }
 
     this.hasMetadata = false;
-    if( fs.existsSync(path.resolve(this.fsfull, '..', this.id+'.ttl')) ) {
+    let folderMetadataFile = path.resolve(this.fsfull, '..', this.id+'.ttl');
+    this.metadata = null;
+    if( fs.existsSync(folderMetadataFile) ) {
       this.hasMetadata = true;
+      this.metadata = (await this.getMetadata(folderMetadataFile))[0];
+      
+      if( this.metadata && this.metadata['@type'] && this.metadata['@type'].includes(ARCHIVAL_GROUP) ) {
+        this.archivalGroup = this;
+      }
     }
 
     let children = await fs.readdir(this.fsfull);
@@ -68,7 +82,8 @@ class IoDir {
       child = new IoDir(
         this.fsroot, 
         path.join(this.subPath, child),
-        this.config
+        this.config,
+        this.archivalGroup
       );
 
       this.children.push(child);
@@ -159,6 +174,11 @@ class IoDir {
         fcpath = pathutils.joinUrlPath(this.config.fcrepoPath, fcpath);
       }
 
+      if( this.archivalGroup ) {
+        id = fcpath.replace(this.archivalGroup.subPath, '').replace(/^\//, '');
+        fcpath = this.archivalGroup.subPath;
+      }
+
       result.binaries.push({
         id,
         filename : name,
@@ -182,6 +202,18 @@ class IoDir {
       let id = parentFcPath.pop();
       parentFcPath = parentFcPath.join('/');
 
+      
+      // at this point, we are in the parent.  We need to check child dirs to 
+      // see if there are any marked as an archive group and the parent is
+      // about to add the .ttl file.
+      let isArchiveGroup = this.children.find(item => item.archivalGroup && item.fsfull+'.ttl' === path.join(this.fsfull, name));
+      if( isArchiveGroup  ) {
+        fcpath = this.subPath;
+      } else if( this.archivalGroup ) {
+        id = fcpath.replace(this.archivalGroup.subPath, '').replace(/^\//, '');
+        fcpath = this.archivalGroup.subPath;
+      }
+
       result.containers.push({
         localpath : path.join(this.fsfull, name),
         fcpath, id, 
@@ -190,6 +222,27 @@ class IoDir {
     }
 
     return result;
+  }
+
+  getMetadata(path, options={}) {
+    let content = fs.readFileSync(path, 'utf-8');
+
+    // binary files are posted at /fcr:metadata, so root rdf node should point one level up
+    if( options.binaryId ) {
+      content = content.replace(/<\s*>/g, '<../'+options.binaryId+'>');
+    }
+
+    // if we are renaming collections, this hack is for the fact the top level containers
+    // must have the collection name in the ttl to correctly PUT to the LDP.  Simply
+    // replacing the old collection name with the new collection name.
+    if( options.oldCollectionName && options.newCollectionName ) {
+      content = content.replace(
+        new RegExp('<'+options.oldCollectionName+'(\/| *>)', 'g'), 
+        '<'+options.newCollectionName+'$1'
+      );
+    }
+
+    return transform.turtleToJsonLd(content);
   }
 
   getTTLPath() {

@@ -39,7 +39,7 @@ class AuthModel {
   }
 
   onContainerUpdate(event) {
-    let types = event.payload.body.type || [];
+    let types = event.body.type || [];
 
     if( types.indexOf(GROUP) > -1 ) {
       return this.refreshInMemAclDebounce();

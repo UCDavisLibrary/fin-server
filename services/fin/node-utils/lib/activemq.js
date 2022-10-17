@@ -1,7 +1,6 @@
 const stompit = require('stompit'); // docs: http://gdaws.github.io/node-stomp/api/channel/
 const config = require('../config.js');
 const logger = require('./logger.js');
-const EventEmitter = require('events');
 
 
 var connectOptions = {
@@ -26,10 +25,9 @@ var subscribeHeaders = {
  * @description connects to activemq via STOMP protocol and emits
  * messages via nodejs events
  */
-class MessageConsumer extends EventEmitter {
+class MessageConsumer {
 
   constructor() {
-    super();
     this.wait = 0;
     this.counter = 0;
 

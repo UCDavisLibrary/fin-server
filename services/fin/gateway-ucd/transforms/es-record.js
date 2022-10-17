@@ -1,7 +1,8 @@
 const {config} = require('@ucd-lib/fin-service-utils');
 
+const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 
-module.exports = async function(path, graph, utils) {
+module.exports = async function(path, graph, headers, utils) {
   let item = {};
   let container = utils.get(path, graph);
   if( !container ) {
@@ -132,6 +133,12 @@ module.exports = async function(path, graph, utils) {
   });
 
   await utils.add({
+    attr : 'mainEntity',
+    value : ['schema', 'mainEntity'],
+    type : 'id'
+  });
+
+  await utils.add({
     attr : 'identifier',
     value : ['schema', 'identifier']
   });
@@ -255,9 +262,16 @@ module.exports = async function(path, graph, utils) {
   item.directParent = item['@id'].split('/');
   item.directParent.pop();
   item.directParent = item.directParent.join('/');
+  item._ = {};
 
-  if( utils.isRecord(item['@type']) ) {
-    utils.setRootRecord(item);
+  utils.stripFinHost(headers)
+  if( headers.link && headers.link['archival-group'] ) {
+    item._['archival-group'] = headers.link['archival-group'].map(item => item.url);
+    item._.esId = item._['archival-group'][0];
+  }
+
+  if( !item._.esId && item['@type'].includes(BINARY) ) {
+    item._.esId = item['@id'];
   }
 
   return item;

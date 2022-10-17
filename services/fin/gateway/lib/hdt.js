@@ -28,7 +28,7 @@ class HdtWrapper {
       headers : {Accept : api.RDF_FORMATS.JSON_LD}
     });
 
-    if( !response.last.body ) return;
+    if( response.data !== 200 ) return;
     
     try {
       let body = JSON.parse(response.last.body);

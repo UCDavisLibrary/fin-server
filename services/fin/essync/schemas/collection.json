@@ -57,6 +57,10 @@
           "type":  "keyword"
         }
       }
+    },
+
+    "_.updated" : {
+      "type" : "date"
     }
 
   }
