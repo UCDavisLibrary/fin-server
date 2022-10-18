@@ -7,7 +7,7 @@ const {logger, jwt, waitUntil, esClient} = require('@ucd-lib/fin-service-utils')
 const api = require('@ucd-lib/fin-api');
 const {URL} = require('url');
 const config = require('./config');
-const AttributeReducer = require('./attribute-reducer');
+// const AttributeReducer = require('./attribute-reducer');
 
 // everything depends on indexer, so placing this here...
 // process.on('unhandledRejection', err => logger.error(err));
@@ -37,7 +37,7 @@ class EsIndexer {
     // });
     this.esClient = esClient;
 
-    this.attributeReducer = new AttributeReducer(this.esClient);
+    // this.attributeReducer = new AttributeReducer(this.esClient);
     this.finUrlRegex = new RegExp(`^${config.server.url}${config.fcrepo.root}`);
 
     setInterval(() => this.generateToken(), 1000 * 60 * 60 * 6);
@@ -183,6 +183,15 @@ class EsIndexer {
       logger.info(`ES Indexer updating record container: ${id}`);
 
       let index = recordIndex || config.elasticsearch.record.alias;
+
+      // make sure the record doesn't exist in alternative form
+      // if( jsonld._['archive-group'] && jsonld._.esId !== jsonld['@id'] ) {
+      //   await this.remove(jsonld['@id']);
+      // } else if( !jsonld._['archive-group'] && jsonld._.esId !== jsonld['@id'] ) {
+
+      // }
+
+      // ensure the base recoder exists
       try {
         await this.esClient.index({
           index,
@@ -282,7 +291,7 @@ class EsIndexer {
       
       try {
         // start the timer for the attribute reducing
-        await this.attributeReducer.onRecordUpdate({record: path, alias: config.elasticsearch.record.alias});
+        // await this.attributeReducer.onRecordUpdate({record: path, alias: config.elasticsearch.record.alias});
 
         await this.esClient.delete({
           index : config.elasticsearch.record.alias,

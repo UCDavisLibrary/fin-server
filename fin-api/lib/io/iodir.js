@@ -177,6 +177,9 @@ class IoDir {
       if( this.archivalGroup ) {
         id = fcpath.replace(this.archivalGroup.subPath, '').replace(/^\//, '');
         fcpath = this.archivalGroup.subPath;
+      } else {
+        id = fcpath;
+        fcpath = '/';
       }
 
       result.binaries.push({
@@ -212,6 +215,9 @@ class IoDir {
       } else if( this.archivalGroup ) {
         id = fcpath.replace(this.archivalGroup.subPath, '').replace(/^\//, '');
         fcpath = this.archivalGroup.subPath;
+      } else {
+        id = fcpath;
+        fcpath = '/';
       }
 
       result.containers.push({
