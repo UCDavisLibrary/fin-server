@@ -120,102 +120,82 @@ class EsSync {
    * @param {Object} e event payload from log table
    */
   async updateContainer(e) {
-
-    // check update_type is delete.
-    if( this.isDelete(e) ) {
-      logger.info('Container '+e.path+' was removed from LDP, removing from index');
-
-      e.action = 'delete';
-      await postgres.updateStatus(e);
-      return indexer.remove(e.path);
-    }
-
-    // check for binary
-    if( e.container_types.includes(this.BINARY_CONTAINER) ) {
-      logger.info('Ignoring container '+e.path+'.  binary container');
-
-      e.action = 'ignored';
-      e.message = 'binary container';
-      await postgres.updateStatus(e);
-      return indexer.remove(e.path);   
-    }
-
-    // we only want collection, application, record types
-    if( !indexer.isCollection(e.container_types) && 
-        !indexer.isRecord(e.path, e.container_types) &&
-        !indexer.isApplication(e.path) ) {
-      logger.info('Ignoring container '+e.path+'.  Not of type record, collection or application');
-      
-      e.action = 'ignored';
-      e.message = 'non-fin container type';
-      await postgres.updateStatus(e);
-      return indexer.remove(e.path);
-    }
-
-    // TODO: return status code
-    // let container = await indexer.getContainer(e.path);
-
-    // either doesn't exist or we don't have access
-    // if( typeof container === 'number' ) {
-    //   logger.info('Container '+e.path+' was publicly inaccessible ('+container+') from LDP, removing from index');
-
-    //   e.action = 'ignored';
-    //   e.message = 'inaccessible'
-    //   await postgres.updateStatus(e);
-    //   return indexer.remove(e.path);
-    // }
-
-    // if( !e.container_types ) {
-    //   container = this._getGraphById(container, config.server.url+config.fcrepo.root+path);
-    //   if( !container ) {
-    //     return logger.error('Failed to get container: ', path);
-    //   }
-
-    //   let type = container['@type'];
-    // }
-
-    // let esRecord = await indexer.getTransformedContainer(path, type);
-    // if( !esRecord ) {
-    //   return logger.error('Failed to get transform for container:', path);
-    // }
-
-    if( !e.container_types ) {
-      e.container_types = [];
-
-      let response = await api.head({path});
-      if( response.data.statusCode === 200 ) {
-        var link = response.last.headers['link'];
-        if( link ) {
-          link = api.parseLinkHeader(link);
-          e.container_types = link.type || [];
-        }
-      }
-    }
-
-    let response = await indexer.getTransformedContainer(e.path, e.container_types);
-    if( response.data.statusCode !== 200 ) {
-      logger.info('Container '+e.path+' was inaccessible ('+response.data.statusCode+') from LDP, removing from index. url='+response.data.request.url);
-
-      e.action = 'ignored';
-      e.message = 'inaccessible'
-      await postgres.updateStatus(e);
-      return indexer.remove(e.path);
-    }
-
     // update elasticsearch
     try {
+
+      // check update_type is delete.
+      if( this.isDelete(e) ) {
+        logger.info('Container '+e.path+' was removed from LDP, removing from index');
+
+        e.action = 'delete';
+        await indexer.remove(e.path);
+        await postgres.updateStatus(e);
+        return;
+      }
+
+      // check for binary
+      if( e.container_types.includes(this.BINARY_CONTAINER) ) {
+        logger.info('Ignoring container '+e.path+'.  binary container');
+
+        e.action = 'ignored';
+        e.message = 'binary container';
+        await postgres.updateStatus(e);
+        // JM - Not removing path, as the /fcr:metadata container is also mapped to this path
+        // return indexer.remove(e.path);   
+        return;
+      }
+
+      // we only want collection, application, record types
+      if( !indexer.isCollection(e.container_types) && 
+          !indexer.isRecord(e.path, e.container_types) &&
+          !indexer.isApplication(e.path) ) {
+        logger.info('Ignoring container '+e.path+'.  Not of type record, collection or application');
+        
+        e.action = 'ignored';
+        e.message = 'non-fin container type';
+        await indexer.remove(e.path);
+        await postgres.updateStatus(e);
+        return;
+      }
+
+
+      if( !e.container_types ) {
+        e.container_types = [];
+
+        let response = await api.head({path});
+        if( response.data.statusCode === 200 ) {
+          var link = response.last.headers['link'];
+          if( link ) {
+            link = api.parseLinkHeader(link);
+            e.container_types = link.type || [];
+          }
+        }
+      }
+
+      let response = await indexer.getTransformedContainer(e.path, e.container_types);
+      if( response.data.statusCode !== 200 ) {
+        logger.info('Container '+e.path+' was inaccessible ('+response.data.statusCode+') from LDP, removing from index. url='+response.data.request.url);
+
+        e.action = 'ignored';
+        e.message = 'inaccessible'
+        await indexer.remove(e.path);
+        await postgres.updateStatus(e);
+        return 
+      }
+
       let jsonld = JSON.parse(response.data.body);
       if( jsonld['@id'].match(/\/fcrepo\/rest\//) ) {
         jsonld['@id'] = jsonld['@id'].split('/fcrepo/rest')[1];
       }
      
       if( !jsonld._.esId ) {
-        logger.info('Container '+e.path+' is not part of an archival group or a binary container');
+        logger.info('Container '+e.path+' is not part of an archival group or a binary container (no jsonld._.esId provided)');
 
         e.action = 'ignored';
         e.message = 'non-fin container type';
+        await indexer.remove(e.path);
         await postgres.updateStatus(e);
-        return indexer.remove(e.path);
+        return;
       }
 
       let result = await indexer.update(e.path, jsonld);

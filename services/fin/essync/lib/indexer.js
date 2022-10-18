@@ -7,6 +7,7 @@ const {logger, jwt, waitUntil, esClient} = require('@ucd-lib/fin-service-utils')
 const api = require('@ucd-lib/fin-api');
 const {URL} = require('url');
 const config = require('./config');
+const postgres = require('./postgres.js');
 // const AttributeReducer = require('./attribute-reducer');
 
 // everything depends on indexer, so placing this here...
@@ -184,13 +185,6 @@ class EsIndexer {
 
       let index = recordIndex || config.elasticsearch.record.alias;
 
-      // make sure the record doesn't exist in alternative form
-      // if( jsonld._['archive-group'] && jsonld._.esId !== jsonld['@id'] ) {
-      //   await this.remove(jsonld['@id']);
-      // } else if( !jsonld._['archive-group'] && jsonld._.esId !== jsonld['@id'] ) {
-
-      // }
-
       // ensure the base recoder exists
       try {
         await this.esClient.index({
@@ -224,13 +218,7 @@ class EsIndexer {
           params : jsonld
         }
       });
-
-      // start the timer for the attribute reducing
-      // this.attributeReducer.onRecordUpdate({
-      //   id,
-      //   record: jsonld,
-      //   alias : index
-      // });
+      response['@id'] = jsonld['@id'];
       
       return {index, id, response};
     } 
@@ -275,32 +263,61 @@ class EsIndexer {
           id : path
         });
   
-        logger.info(`ES Indexer removed collection container: ${path}`);
       } catch(e) {
         logger.error('Failed to remove collection container from elasticsearch: '+path, e);
       }
     }
 
     // check container
-    exists = await this.esClient.exists({
-      index : config.elasticsearch.record.alias,
-      id : path
-    });
-    if( exists ) {
-      logger.info(`ES Indexer removing record container: ${path}`);
-      
-      try {
-        // start the timer for the attribute reducing
-        // await this.attributeReducer.onRecordUpdate({record: path, alias: config.elasticsearch.record.alias});
+    let containerStatus = await postgres.getStatus(path);
+    let containerRecordId = null, containerRecordPath = null;
+    if( containerStatus && containerStatus.es_response ) {
+      containerRecordId = containerStatus.es_response._id;
+      containerRecordPath = containerStatus.es_response['@id'] || path;
+    }
 
-        await this.esClient.delete({
-          index : config.elasticsearch.record.alias,
-          id : path
-        });
+    if( containerRecordId && containerRecordId !== path ) {
+      exists = await this.esClient.exists({
+        index : config.elasticsearch.record.alias,
+        id : containerRecordId
+      });
+      if( exists ) {
+        logger.info(`ES Indexer removing record container: ${containerRecordId} => ${containerRecordPath}`);
+        
+        try {
+          // start the timer for the attribute reducing
   
-        logger.info(`ES Indexer removed record container: ${path}`);
-      } catch(e) {
-        logger.error('Failed to remove record container from elasticsearch: '+path, e);
+          await this.esClient.update({
+            index : config.elasticsearch.record.alias,
+            id : containerRecordId,
+            script : {
+              source : `ctx._source.node.removeIf((Map item) -> { item['@id'] == params['id'] });`,
+              params : {id: containerRecordPath}
+            }
+          });
+        } catch(e) {
+          logger.error(`Failed to remove record container from elasticsearch: ${containerRecordId} => ${containerRecordPath}`, e);
+        }
+      }
+    } else {
+      exists = await this.esClient.exists({
+        index : config.elasticsearch.record.alias,
+        id : path
+      });
+      if( exists ) {
+        logger.info(`ES Indexer removing record container: ${path}`);
+        
+        try {
+          // start the timer for the attribute reducing
+  
+          await this.esClient.delete({
+            index : config.elasticsearch.record.alias,
+            id : path
+          });
+    
+        } catch(e) {
+          logger.error('Failed to remove record container from elasticsearch: '+path, e);
+        }
       }
     }
 
@@ -317,8 +334,7 @@ class EsIndexer {
           index : config.elasticsearch.application.alias,
           id : path
         });
-  
-        logger.info(`ES Indexer removed application container: ${path}`);
+
       } catch(e) {
         logger.error('Failed to remove application container from elasticsearch: '+path, e);
       }

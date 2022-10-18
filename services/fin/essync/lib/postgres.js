@@ -24,6 +24,12 @@ class EssyncPostgresUtils {
     resp = await this.pg.query('SELECT typname, oid, typarray FROM pg_type WHERE typname = $1', ['fcrepo_update_type']);
     let eum = resp.rows[0];
 
+    if( !eum ) {
+      logger.warn('Unable to discover enum types, retrying in 2 sec');
+      setTimeout(() => this.getEnumTypes(), 2000);
+      return;
+    }
+
     pg.types.setTypeParser(eum.typarray, pg.types.getTypeParser(text.typarray));
   }
 
@@ -101,6 +107,12 @@ class EssyncPostgresUtils {
       ;`, [args.path, args.event_id, args.event_timestamp, args.container_types, args.update_types, args.action, args.message, args.response]
       );
     }
+  }
+
+  async getStatus(path) {
+    let response = await this.pg.query(`select * from update_status where path = $1`, [path]);
+    if( !response.rows.length ) return null;
+    return response.rows[0];
   }
 
 

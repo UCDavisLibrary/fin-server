@@ -569,15 +569,12 @@ class ImportCollection {
           'content-type' : api.RDF_FORMATS.TURTLE
         }
 
-        console.log(pathutils.joinUrlPath('/collection', collectionName, binary.fcpath, binary.id, 'fcr:metadata'));
         let response = await api.put({
           path : pathutils.joinUrlPath('/collection', collectionName, binary.fcpath, binary.id, 'fcr:metadata'),
           content : metadata,
           partial : true,
           headers
         });
-
-        response.httpStack.forEach(item => console.log(item))
         console.log(response.last.statusCode, response.last.body);
       }
     }
@@ -588,7 +585,6 @@ class ImportCollection {
   }
 
   getMetadata(path, options={}) {
-    console.log(path, options)
     let content = fs.readFileSync(path, 'utf-8');
 
     // binary files are posted at /fcr:metadata, so root rdf node should point one level up
