@@ -397,7 +397,7 @@ class ImportCollection {
 
         let localSha = await api.sha(binary.localpath, sha[0]);
         if( localSha === sha[1] ) {
-          console.log('IGNORING (sha match): '+binary.fcpath);
+          console.log('IGNORING (sha match): '+binary.fcpath+'/'+binary.id);
           continue;
         }
       }
@@ -458,31 +458,60 @@ class ImportCollection {
     let files = await dir.getFiles();
 
     for( let container of files.containers ) {
-      console.log(`POST CONTAINER: ${container.fcpath} => ${container.id}`);
+      
 
       let headers = {
-        'content-type' : api.RDF_FORMATS.TURTLE
+        'content-type' : api.RDF_FORMATS.TURTLE,
+        Prefer: 'handling=lenient'
       }
 
+      // TODO: head check that container exists.  if exists, we are posting otherwise put.
+      // if exists ignore ArchivalGroup
+      // update log message as well
+
+      let response = await api.head({
+        path: pathutils.joinUrlPath('/collection', collectionName, container.fcpath)+'/'+container.id
+      });
+
+      let op = ( response.data.statusCode === 200 ) ? 'PUT' : 'POST';
+
+      console.log(`${op} CONTAINER ${op === 'PUT' ? 'Update' : 'Creation'}: ${container.fcpath} => ${container.id}`);
 
       let metadata = this.getMetadata(container.localpath, {newCollectionName:collectionName, oldCollectionName});
       metadata = (await transform.turtleToJsonLd(metadata))[0];
-      if( metadata['@type'] && metadata['@type'].includes('http://fedora.info/definitions/v4/repository#ArchivalGroup') ) {
+      if( op === 'POST' && metadata['@type'] && metadata['@type'].includes('http://fedora.info/definitions/v4/repository#ArchivalGroup') ) {
         metadata['@type'] = metadata['@type'].filter(item => item !== 'http://fedora.info/definitions/v4/repository#ArchivalGroup');
         headers.link = '<http://fedora.info/definitions/v4/repository#ArchivalGroup>;rel="type"'
         console.log('  - creating archive group')
       }
+
+      // TODO: strip all ldp (and possibly fedora properties)
+      metadata['@type'] = metadata['@type'].filter(item => !item.match('http://www.w3.org/ns/ldp#') && !item.match('http://fedora.info/definitions/v4/repository#'));
+
       metadata = await transform.jsonldToTurtle(metadata);
 
 
       if( this.options.dryRun !== true ) {
-        let response = await api.postEnsureSlug({
-          slug : container.id,
-          path : pathutils.joinUrlPath('/collection', collectionName, container.fcpath)+'/',
-          content : metadata,
-          partial : true,
-          headers
-        });
+        if( op === 'POST' ) {
+          response = await api.postEnsureSlug({
+            slug : container.id,
+            path : pathutils.joinUrlPath('/collection', collectionName, container.fcpath)+'/',
+            content : metadata,
+            partial : true,
+            headers
+          });
+        } else {
+          response = await api.put({
+            path : pathutils.joinUrlPath('/collection', collectionName, container.fcpath)+'/'+container.id,
+            content : metadata,
+            partial : true,
+            headers
+          });
+        }
+        
+        if( response.error ) {
+          throw new Error(response.error);
+        }
         console.log(response.last.statusCode, response.last.body);
       }
 
@@ -515,7 +544,7 @@ class ImportCollection {
 
         let localSha = await api.sha(binary.localpath, sha[0]);
         if( localSha === sha[1] ) {
-          console.log('IGNORING (sha match): '+binary.fcpath);
+          console.log('IGNORING (sha match): '+binary.fcpath+'/'+binary.id);
           continue;
         }
       }
@@ -551,7 +580,7 @@ class ImportCollection {
         });
 
         if( response.error ) {
-          console.error(response.error);
+          throw new Error(response.error);
         } else {
           console.log(response.last.statusCode, response.last.body);
         }
@@ -575,6 +604,9 @@ class ImportCollection {
           partial : true,
           headers
         });
+        if( response.error ) {
+          throw new Error(response.error);
+        }
         console.log(response.last.statusCode, response.last.body);
       }
     }

@@ -284,9 +284,7 @@ class EsIndexer {
       if( exists ) {
         logger.info(`ES Indexer removing record container: ${containerRecordId} => ${containerRecordPath}`);
         
-        try {
-          // start the timer for the attribute reducing
-  
+        try {  
           await this.esClient.update({
             index : config.elasticsearch.record.alias,
             id : containerRecordId,

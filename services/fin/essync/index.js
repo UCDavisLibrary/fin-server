@@ -206,7 +206,7 @@ class EsSync {
     } catch(error) {
       logger.error('Failed to update: '+e.path, error);
       e.action = 'error';
-      e.message = error.message+'\n'+error.stack+'\n\nResponse: '+response.data.statusCode;
+      e.message = error.message+'\n'+error.stack;
       await postgres.updateStatus(e);
     }
   }
