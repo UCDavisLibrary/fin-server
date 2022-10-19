@@ -54,6 +54,14 @@ html {
 
   --paper-icon-button-ink-color : transparent;
 
+  /*
+  * ucdlib-icon styles
+  */
+  --ucdlib-icon-width       : 45%;
+  --ucdlib-icon-height      : 45%;
+  --ucdlib-icon-fill-color  : var(--color-dams-primary);
+  /* stroke: var(--ucdlib-icon-stroke-color, none); */
+
   /**
   * Custom mixins
   */

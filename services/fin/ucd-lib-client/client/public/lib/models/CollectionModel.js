@@ -21,7 +21,7 @@ class CollectionModel extends BaseModel {
       );
 
       // if we pre-loaded collections, set them
-      if( APP_CONFIG.collections ) {
+      if( APP_CONFIG.collections && APP_CONFIG.collections.length > 0 ) {
         this.store.setCollectionOverviewLoaded(APP_CONFIG.collections);
       }
 

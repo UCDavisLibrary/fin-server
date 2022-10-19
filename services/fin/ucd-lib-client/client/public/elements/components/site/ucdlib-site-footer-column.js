@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 import render from "./ucdlib-site-footer-column.tpl.js";
 import { styles } from "./ucdlib-site-footer.tpl";
 

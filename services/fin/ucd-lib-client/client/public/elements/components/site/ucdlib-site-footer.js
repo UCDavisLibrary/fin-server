@@ -1,4 +1,4 @@
-import { LitElement, html, svg } from 'lit-element';
+import { LitElement, html, svg } from 'lit';
 import {render, styles} from "./ucdlib-site-footer.tpl.js";
 import ThemeUtils from "../themeUtils";
 
@@ -48,10 +48,8 @@ export default class UcdlibSiteFooter extends Mixin(LitElement)
         </div>
         <div class="row">
           <ul>
-            <li><a href="https://www.ucdavis.edu/help" class="pipe" target="_blank">Help</a></li>
             <li><a href="https://www.ucdavis.edu/contact" class="pipe" target="_blank">Questions or Comments?</a></li>
             <li><a href="https://www.ucdavis.edu/help/privacy-accessibility" class="pipe" target="_blank">Privacy & Accessibility</a></li>
-            <li><a href="https://diversity.ucdavis.edu/" class="pipe" target="_blank">Principles of Community</a></li>
             <li><a href="http://www.universityofcalifornia.edu/" class="${this.lastUpdate ? 'pipe' : ''}" target="_blank">University of California</a></li>
             ${this.lastUpdate ? html`
               <li>Last Updated: ${this.lastUpdate}</li>

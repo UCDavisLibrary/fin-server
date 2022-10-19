@@ -1,4 +1,4 @@
-import { LitElement} from 'lit-element';
+import { LitElement} from 'lit';
 
 import "@ucd-lib/fin-search-box";
 import "../../utils/app-collection-card";
@@ -8,7 +8,7 @@ import "@polymer/iron-icons";
 import "../../components/graphics/dams-watercolor";
 import "../../components/graphics/dams-watercolor-overlay";
 import "../../components/cards/dams-collection-card";
-import "../../components/icon";
+// import "../../components/icon";
 import "../../components/search-box";
 import "../../components/nav-bar";
 import "../../components/filterButton";

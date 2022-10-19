@@ -25,9 +25,10 @@
   }
 
   .footer {
-    display: flex; 
-    justify-content: center;
     background-color: var(--color-dams-primary);
+    position: absolute;
+    left: 0;
+    right: 0;
   }
 
   .mobile-filters-layout {
@@ -137,8 +138,17 @@
       <app-home id="home"></app-home>
       <app-search id="search"></app-search>
       <app-record id="record"></app-record>
+      <app-browse id="browse"></app-browse>
       <app-about id="about"></app-about>
       <app-collections id="collections"></app-collections>
+      <app-browse-by id="collection" 
+        label="Collection" 
+        facet-query-name="collection">
+        <dams-watercolor-overlay 
+          icon="star"
+          slot="header-icon">
+        </dams-watercolor-overlay>
+      </app-browse-by>
       <app-browse-by id="subject" 
         label="Subject" 
         facet-query-name="abouts.raw">
@@ -169,22 +179,18 @@
       <ucdlib-site-footer>
         <ucdlib-site-footer-column header="Digital Collections">
           <ul>
-            <li><a href="/#collections">collections</a></li>
-            <li><a href="/search">items</a></li>
-            <li><a href="">faq</a></li>
-            <li><a href="/about">about digital collections</a></li>
+            <li><a href="/#collections">Collections</a></li>
+            <li><a href="/search">Items</a></li>
+            <li><a href="/about">About Digital Collections</a></li>
+            <li><a href="">FAQ</a></li>
           </ul>
         </ucdlib-site-footer-column>
         <ucdlib-site-footer-column header="Library Info">
           <ul>
-            <li><a href="https://library.ucdavis.edu/special-collections/" target="_blank" rel="noopener">special collections</a></li>
-            <li><a href="https://library.ucdavis.edu/news/" target="_blank" rel="noopener">news</a></li>
-            <li><a href="https://library.ucdavis.edu/about/" target="_blank" rel="noopener">About the Library</a></li>
-            <li><a href="https://library.ucdavis.edu/library/" target="_blank" rel="noopener">Visit</a></li>
-            <li><a href="https://library.ucdavis.edu/service/careers/" target="_blank" rel="noopener">Careers</a></li>
-            <li class="button">
-              <a href="http://give.ucdavis.edu/ULIB" target="_blank" rel="noopener">Give to the UC Davis Library</a>
-            </li>
+            <li><a href="https://library.ucdavis.edu/special-collections/" target="_blank" rel="noopener">Archives and Special Collections</a></li>
+            <li><a href="https://library.ucdavis.edu/library/" target="_blank" rel="noopener">Visit the Library</a></li>
+            <li><a href="https://library.ucdavis.edu/news/" target="_blank" rel="noopener">Library News</a></li>
+            <li><a href="http://give.ucdavis.edu/ULIB" target="_blank" rel="noopener">Give to the Library</a></li>
           </ul>
         </ucdlib-site-footer-column>
         <ucdlib-site-footer-column header="Account">

@@ -6,7 +6,7 @@ import "../../auth/app-auth-header";
 import "@ucd-lib/fin-search-box";
 import "../../components/search-box";
 import "../../components/nav-bar";
-import "../../components/icon";
+// import "../../components/icon";
 import "../../components/filterButton";
 
 import RecordInterface from '../../interfaces/RecordInterface';

@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import render from "./app-fs-media-download.tpl.js"
 
 import "./viewer/app-fs-viewer"
