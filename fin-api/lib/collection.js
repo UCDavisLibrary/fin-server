@@ -361,9 +361,9 @@ class Collection {
       }
     } else {
       if( response ) {
-        response.appendResponse(await API.postEnsureSlug(bOptions));
+        response.appendResponse(await API.postEnsureSlug(bOptions, options.fail));
       } else {
-        response = await API.postEnsureSlug(bOptions);
+        response = await API.postEnsureSlug(bOptions, options.fail);
       }
     }
     

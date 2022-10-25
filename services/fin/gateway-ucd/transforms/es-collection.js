@@ -163,5 +163,9 @@ module.exports = async function(path, graph, headers, utils) {
 
   utils.setYearFromDate(item);
 
+  item._ = {
+    esId : item['@id']
+  };
+
   return item;
 }

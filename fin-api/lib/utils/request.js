@@ -36,8 +36,9 @@ async function request(options) {
       options.headers['Authorization'] = `Basic ${basicAuth}`;
     }
 
-    
-    options.headers['x-fin-principal'] = principals.join(',');
+    if( principals.length ) {    
+      options.headers['x-fin-principal'] = principals.join(',');
+    }
   }
 
   if( options.transactionToken || config.transactionToken ) {
@@ -54,6 +55,8 @@ async function request(options) {
   if( writeStream !== undefined ) delete options.writeStream;
 
   if( writeStream ) return download(options, writeStream, authUsed);
+
+  if( options.printCurl ) printCurl(options);
 
   return new Promise((resolve, reject) => {
     requestCallback(options, (error, response, body) => {
@@ -76,6 +79,27 @@ async function request(options) {
   });
 }
 
+function printCurl(options) {
+  let headers = [];
+  let body = '';
+
+  for( let key in options.headers ) {
+    if( ['Cache-Control', 'User-Agent'].includes(key) ) continue;
+    if( key === 'Authorization' ) {
+      headers.push(`-u "${Buffer.from(options.headers[key].replace(/Basic /, ''), 'base64').toString('utf8')}"`);
+      continue;
+    }
+    headers.push(`-H "${key}: ${options.headers[key].replace(/"/g, '\\"')}"`);
+  }
+  if( options.body && options.body.path ) {
+    body = `--binary-data "@${options.body.path}"`
+  }
+
+  let method = '-X '+options.method;
+  if( options.method === 'HEAD' ) method = '-I'
+
+  console.log(`curl ${method} ${headers.join(' ')} ${options.uri}`);
+}
 
 
 function download(options, writeStream, authUsed) {

@@ -12,9 +12,17 @@
 
 <info:fedora/fcr:acl#authz> a acl:Authorization ;
    rdfs:label "Root Authorization" ;
-   rdfs:comment "By default, all non-Admin agents (foaf:Agent) only have read access (acl:Read) to the repository" ;
+   rdfs:comment "By default, all non-Admin agents (foaf:Agent) do not have access" ;
    acl:agent "admin";
    acl:mode acl:Read ;
    acl:mode acl:Write ;
    acl:accessTo <info:fedora> ;
    acl:default <info:fedora> .
+
+<info:fedora/fcr:acl#authzui> a acl:Authorization ;
+   rdfs:label "Web UI Access" ;
+   rdfs:comment "Allow all access to web ui static assets" ;
+   acl:agentClass foaf:Agent;
+   acl:mode acl:Read ;
+   acl:accessTo </fcrepo/static> ;
+   acl:default </fcrepo/static> .
