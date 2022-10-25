@@ -20,9 +20,9 @@
    acl:default <info:fedora> .
 
 <info:fedora/fcr:acl#authzui> a acl:Authorization ;
-   rdfs:label "Web UI Access" ;
-   rdfs:comment "Allow all access to web ui static assets" ;
-   acl:agentClass foaf:Agent;
-   acl:mode acl:Read ;
-   acl:accessTo </fcrepo/static> ;
-   acl:default </fcrepo/static> .
+    rdfs:label "Web UI Access" ;
+    rdfs:comment "Allow all access to web ui static assets" ;
+    acl:agentClass foaf:Agent;
+    acl:mode acl:Read ;
+    acl:accessTo </fcrepo/static> ;
+    acl:default </fcrepo/static> .
