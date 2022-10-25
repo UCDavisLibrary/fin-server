@@ -13,6 +13,8 @@ let CONFIG_DIR = '.fin';
 let ACL_FILE = 'acl.ttl';
 let CONFIG_FILE = 'config.yml';
 const IGNORE_FILE = '.finignore';
+const METADATA_SHA = 'http://digital.ucdavis.edu/schema#metadataSha256';
+const HAS_MESSAGE_DIGEST = 'http://www.loc.gov/premis/rdf/v1#hasMessageDigest';
 
 class ImportCollection {
 
@@ -123,7 +125,7 @@ class ImportCollection {
       let aclContent = fs.readFileSync(aclFile, 'utf-8');
       response = await api.put({
         path : '/collection/'+newCollectionName+aclPath,
-        content : aclContent.replace(/{{collectionName}}/i, newCollectionName),
+        content : aclContent.replace(/{{collectionName}}/ig, newCollectionName),
         partial : true,
         headers : {
           'content-type' : api.RDF_FORMATS.TURTLE
@@ -134,36 +136,31 @@ class ImportCollection {
 
     // add implementation containers
     // we do not preform this step in importing to a nested collection path
-    if( options.includeImplementation && !options.fcrepoPath ) {
-      let ig = ignore();
-      ig.add(CONFIG_FILE);
-      rootDir.config.ignore.push({
-        rules : ig,
-        fsfull : path.join(options.fsPath, CONFIG_DIR)
-      });
+    // if( options.includeImplementation && !options.fcrepoPath ) {
+    //   let ig = ignore();
+    //   ig.add(CONFIG_FILE);
+    //   rootDir.config.ignore.push({
+    //     rules : ig,
+    //     fsfull : path.join(options.fsPath, CONFIG_DIR)
+    //   });
     
-      let implDir = new IoDir(
-        options.fsPath, 
-        CONFIG_DIR,
-        rootDir.config
-      );
+    //   let implDir = new IoDir(
+    //     options.fsPath, 
+    //     CONFIG_DIR,
+    //     rootDir.config
+    //   );
 
-      await implDir.crawl();
+    //   await implDir.crawl();
         
-      let implRootDir = new IoDir(fsPath, '/');
-      implRootDir.children = [implDir];
-      implRootDir.files = [];
+    //   let implRootDir = new IoDir(fsPath, '/');
+    //   implRootDir.children = [implDir];
+    //   implRootDir.files = [];
 
-      await this.postContainers(newCollectionName, implRootDir, config);
-      await this.putContainers(newCollectionName, implRootDir, config.source.collection);
-    }
-    
-    // create empty rdf as well as binary containers
-    // if( !options.ignorePost ) {
-      await this.putContainers(newCollectionName, rootDir, config);
-    // } else {
-    //   console.log('IGNORING CONTAINER POST');
+    //   await this.postContainers(newCollectionName, implRootDir, config);
+    //   await this.putContainers(newCollectionName, implRootDir, config.source.collection);
     // }
+    
+    await this.putContainers(newCollectionName, rootDir, config);
 
     // patch root collection container
     if( !options.fcrepoPath ) {
@@ -188,8 +185,6 @@ class ImportCollection {
       }
     }
 
-    // path rdf metadata now that all containers exist
-    // await this.putContainers(newCollectionName, rootDir, config.source.collection);
 
     // remove all containers that exist in fedora but not locally on disk
     if( !options.ignoreRemoval ) {
@@ -328,125 +323,6 @@ class ImportCollection {
   }
 
   /**
-   * @method postContainers
-   * @description create all containers.  rdf containers are empty.  binary files or posted.
-   * 
-   * @param {String} collectionName new collection name
-   * @param {IoDir} dir 
-   */
-  async postContainers(collectionName, dir, collectionConfig={}) {
-    let files = await dir.getFiles();
-
-    for( let container of files.containers ) {
-      let response = await api.head({path: pathutils.joinUrlPath('/collection', collectionName, container.fcpath)});
-      if( response.last.statusCode === 200 ) continue;
-
-      console.log('POST CONTAINER: ', container.fcpath);
-      // if( this.options.dryRun !== true ) {
-      //   response = await api.collection.addResource({
-      //     collectionId : collectionName,
-      //     id : container.fcpath,
-      //     parentPath : '',
-      //     method : 'PUT'
-      //   });
-      //   console.log(response.last.statusCode, response.last.body);
-      // }
-
-      let metadata = this.getMetadata(container.localpath, {newCollectionName:collectionName, oldCollectionName});
-      let headers = {
-        'content-type' : api.RDF_FORMATS.TURTLE
-      }
-
-      if( this.options.dryRun !== true ) {
-        let response = await api.postEnsureSlug({
-          id: container.id,
-          path : pathutils.joinUrlPath('/collection', collectionName, container.fcpath)+'/',
-          content : metadata,
-          partial : true,
-          headers
-        });
-        console.log(response.last.statusCode, response.last.body);
-      }
-    }
-
-    for( let binary of files.binaries ) {
-      let fullfcpath = pathutils.joinUrlPath('/collection/', collectionName, binary.fcpath);
-      let response = await api.head({path: fullfcpath});
-
-      if( !api.isRdfContainer(response.last) && response.last.statusCode === 200 ) {
-        response = await api.get({
-          path: pathutils.joinUrlPath(fullfcpath, 'fcr:metadata'),
-          headers : {
-            accept : api.RDF_FORMATS.JSON_LD
-          }
-        });
-
-        response = JSON.parse(response.last.body)[0];
-
-        if( !response['http://www.loc.gov/premis/rdf/v1#hasMessageDigest'] ) continue;
-
-        let shas = response['http://www.loc.gov/premis/rdf/v1#hasMessageDigest']
-          .map(item => {
-            let [urn, sha, hash] = item['@id'].split(':')
-            return [sha.replace('sha-', ''), hash];
-          });
-        
-        // picking the 256 sha or first
-        let sha = shas.find(item => item[0] === '256');
-        if( !sha ) sha = shas[0];
-
-        let localSha = await api.sha(binary.localpath, sha[0]);
-        if( localSha === sha[1] ) {
-          console.log('IGNORING (sha match): '+binary.fcpath+'/'+binary.id);
-          continue;
-        }
-      }
-
-      if( this.options.dryRun !== true ) {
-        await api.collection.deleteResource({
-          collectionId : collectionName,
-          id : binary.fcpath
-        });
-      }
-
-      console.log(`POST BINARY: ${binary.fcpath} => ${binary.id}`);
-      
-      let customHeaders = {};
-      let ext = path.parse(binary.localpath).ext.replace(/^\./, '');
-      let mimeLibType = mime.getType(ext);
-      if( collectionConfig.contentTypes && collectionConfig.contentTypes[ext] ) {
-        customHeaders['content-type'] = collectionConfig.contentTypes[ext];
-      } else if( mimeLibType ) {
-        customHeaders['content-type'] = mimeLibType;
-      } else {
-        customHeaders['content-type'] = 'application/octet-stream';
-      }
-
-      if( this.options.dryRun !== true ) {
-        response = await api.collection.addResource({
-          collectionId : collectionName,
-          id : binary.id,
-          parentPath : binary.fcpath.replace(/\/$/, ''),
-          data : binary.localpath,
-          customHeaders,
-          method : 'POST'
-        });
-
-        if( response.error ) {
-          console.error(response.error);
-        } else {
-          console.log(response.last.statusCode, response.last.body);
-        }
-      }
-
-    }
-    
-    for( let child of dir.children ) {
-      await this.postContainers(collectionName, child);
-    }
-  }
-
-  /**
    * @method putContainers
    * @description put rdf container metadata
    * 
@@ -469,24 +345,39 @@ class ImportCollection {
       // if exists ignore ArchivalGroup
       // update log message as well
 
-      let response = await api.head({
-        path: pathutils.joinUrlPath('/collection', collectionName, container.fcpath)+'/'+container.id
+      let metadata = this.getMetadata(container.localpath, {newCollectionName:collectionName, oldCollectionName});
+      metadata = (await transform.turtleToJsonLd(metadata))[0];
+
+      let response = await api.get({
+        path: pathutils.joinUrlPath('/collection', collectionName, container.fcpath)+'/'+container.id,
+        headers : {
+          accept : api.RDF_FORMATS.JSON_LD
+        }
       });
+
+      // check if d exists and if there is the ucd metadata sha.
+      if( response.data.statusCode === 200 ) {
+        let jsonld = JSON.parse(response.last.body)[0];
+        if( await this.isMetaShaMatch(jsonld, metadata, container.localpath ) ) {
+          console.log(`IGNORING (sha match): ${container.localpath}`);
+          continue;
+        } 
+      }
 
       let op = ( response.data.statusCode === 200 ) ? 'PUT' : 'POST';
 
       console.log(`${op} CONTAINER ${op === 'PUT' ? 'Update' : 'Creation'}: ${container.fcpath} => ${container.id}`);
-
-      let metadata = this.getMetadata(container.localpath, {newCollectionName:collectionName, oldCollectionName});
-      metadata = (await transform.turtleToJsonLd(metadata))[0];
+      
       if( op === 'POST' && metadata['@type'] && metadata['@type'].includes('http://fedora.info/definitions/v4/repository#ArchivalGroup') ) {
         metadata['@type'] = metadata['@type'].filter(item => item !== 'http://fedora.info/definitions/v4/repository#ArchivalGroup');
         headers.link = '<http://fedora.info/definitions/v4/repository#ArchivalGroup>;rel="type"'
         console.log('  - creating archive group')
       }
 
-      // TODO: strip all ldp (and possibly fedora properties)
-      metadata['@type'] = metadata['@type'].filter(item => !item.match('http://www.w3.org/ns/ldp#') && !item.match('http://fedora.info/definitions/v4/repository#'));
+      // strip all ldp (and possibly fedora properties)
+      if( metadata['@type'] ) {
+        metadata['@type'] = metadata['@type'].filter(item => !item.match('http://www.w3.org/ns/ldp#') && !item.match('http://fedora.info/definitions/v4/repository#'));
+      }
 
       metadata = await transform.jsonldToTurtle(metadata);
 
@@ -508,7 +399,6 @@ class ImportCollection {
             headers
           });
         }
-        
         if( response.error ) {
           throw new Error(response.error);
         }
@@ -519,16 +409,16 @@ class ImportCollection {
 
     for( let binary of files.binaries ) {
       let fullfcpath = pathutils.joinUrlPath('/collection/', collectionName, binary.fcpath, binary.id);
-      let response = await api.head({path: fullfcpath});
+      // let response = await api.head({path: fullfcpath});
+      // let headResponse = response;
+      let response = await api.get({
+        path: pathutils.joinUrlPath(fullfcpath, 'fcr:metadata'),
+        headers : {
+          accept : api.RDF_FORMATS.JSON_LD
+        }
+      });
 
-      if( !api.isRdfContainer(response.last) && response.last.statusCode === 200 ) {
-        response = await api.get({
-          path: pathutils.joinUrlPath(fullfcpath, 'fcr:metadata'),
-          headers : {
-            accept : api.RDF_FORMATS.JSON_LD
-          }
-        });
-
+      if( response.last.statusCode === 200 ) {
         response = JSON.parse(response.last.body)[0];
         if( !response['http://www.loc.gov/premis/rdf/v1#hasMessageDigest'] ) continue;
 
@@ -550,9 +440,9 @@ class ImportCollection {
       }
 
       if( this.options.dryRun !== true ) {
-        await api.collection.deleteResource({
-          collectionId : collectionName,
-          id : binary.fcpath.replace(/\/$/, '') + '/' + binary.id
+        await api.delete({
+          path : fullfcpath,
+          permanent: true
         });
       }
 
@@ -588,6 +478,7 @@ class ImportCollection {
 
     }
 
+    // you get a boost of up to 150ms by checking md5 of metadata file;
     for( let binary of files.binaries ) {
       if( !binary.metadata ) continue;
       console.log(`PUT BINARY METADATA: ${binary.fcpath} => ${binary.id}/fcr:metadata`);
@@ -598,7 +489,28 @@ class ImportCollection {
           'content-type' : api.RDF_FORMATS.TURTLE
         }
 
-        let response = await api.put({
+        let response = await api.get({
+          path : pathutils.joinUrlPath('/collection', collectionName, binary.fcpath, binary.id, 'fcr:metadata'),
+          headers : {
+            accept : api.RDF_FORMATS.JSON_LD
+          }
+        });
+
+
+        metadata = (await transform.turtleToJsonLd(metadata))[0];
+
+        // check if d exists and if there is the ucd metadata sha.
+        if( response.data.statusCode === 200 ) {
+          response = JSON.parse(response.last.body)[0];
+          if( await this.isMetaShaMatch(response, metadata, binary.metadata ) ) {
+            console.log(`IGNORING (sha match): ${binary.metadata}`);
+            continue;
+          } 
+        }
+
+        metadata = await transform.jsonldToTurtle(metadata);
+
+        response = await api.put({
           path : pathutils.joinUrlPath('/collection', collectionName, binary.fcpath, binary.id, 'fcr:metadata'),
           content : metadata,
           partial : true,
@@ -635,6 +547,18 @@ class ImportCollection {
     }
 
     return content;
+  }
+
+  async isMetaShaMatch(currentJsonLd, newJsonld, file) {
+    let localSha = await api.sha(file);
+
+    if( currentJsonLd[METADATA_SHA] && currentJsonLd[METADATA_SHA][0]['@value'] === localSha ) {
+      return true;
+    }
+
+    newJsonld[METADATA_SHA] = [{'@value': localSha}];
+
+    return false;
   }
 
 }

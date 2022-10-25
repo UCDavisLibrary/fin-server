@@ -41,49 +41,49 @@ router.delete('/service/:id', middleware.admin, async (req, res) => {
   }
 });
 
-router.get('/token/create', middleware.block, async (req, res) => {
-  var username = req.query.username;
-  if( !username ) return res.json({error: true, message: 'Username required'});
+// router.get('/token/create', middleware.block, async (req, res) => {
+//   var username = req.query.username;
+//   if( !username ) return res.json({error: true, message: 'Username required'});
 
-  try {
-    let token = await model.refreshToken(username);
-    res.json({
-      success : true,
-      token : token
-    });
-  } catch(e) {
-    res.json({
-      error: true,
-      message: e.message
-    });
-  }
-});
+//   try {
+//     let token = await model.refreshToken(username);
+//     res.json({
+//       success : true,
+//       token : token
+//     });
+//   } catch(e) {
+//     res.json({
+//       error: true,
+//       message: e.message
+//     });
+//   }
+// });
 
-router.post('/token/verify', async (req, res) => {
-  let username = req.body.username;
-  let token = req.body.token;
+// router.post('/token/verify', async (req, res) => {
+//   let username = req.body.username;
+//   let token = req.body.token;
 
-  try {
-    let valid = await model.refreshTokenVerification(username, token);
-    if( valid ) {
-      let isAdmin = model.isAdmin(username);
-      res.json({
-        success : true,
-        jwt : jwt.create(username, isAdmin)
-      });
-    } else {
-      res.json({
-        error : true,
-        message: 'Invalid token'
-      });
-    }
-  } catch(e) {
-    res.json({
-      error: true,
-      message: e.message
-    });
-  }
-});
+//   try {
+//     let valid = await model.refreshTokenVerification(username, token);
+//     if( valid ) {
+//       let isAdmin = model.isAdmin(username);
+//       res.json({
+//         success : true,
+//         jwt : jwt.create(username, isAdmin)
+//       });
+//     } else {
+//       res.json({
+//         error : true,
+//         message: 'Invalid token'
+//       });
+//     }
+//   } catch(e) {
+//     res.json({
+//       error: true,
+//       message: e.message
+//     });
+//   }
+// });
 
 
 router.get('/user', async ( req, res ) => {
