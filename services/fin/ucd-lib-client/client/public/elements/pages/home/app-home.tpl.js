@@ -318,6 +318,12 @@ return html`
   .browse-buttons .vertical-link--circle .vertical-link__figure:hover {
     background-color: var(--color-aggie-gold);
   }
+  @media (max-width: 1070px) {
+    .browse-buttons > div {
+      width: 100%;
+    }
+  }
+
   /* .vertical-link--circle .vertical-link__figure {
     width: 5rem;
     height: 5rem;  
@@ -337,12 +343,22 @@ return html`
     padding: 0;
     line-height: 1.2;
   }
-  .card-trio {
+  .card-2-4 {
+    width: 75%;
+    margin: 0 auto;
+  }
+  .card-2,
+  .card-2-4,
+  .card-trio,
+  .card-5-plus {
     display: grid;
     grid-template-columns: auto;
     grid-gap: var(--spacing-sm);
   }
-  .card-trio dams-collection-card {
+  .card-2 dams-collection-card,
+  .card-2-4 dams-collection-card,
+  .card-trio dams-collection-card,
+  .card-5-plus dams-collection-card {
     margin-bottom: var(--spacing-default);
   }
   .featured {
@@ -398,9 +414,15 @@ return html`
     .hero-top {
       margin-top: 40px;
     }
-    .card-trio {
+    .card-2,
+    .card-2-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .card-trio,
+    .card-5-plus {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+    
     .fg-header {
       grid-template-columns: 37% 55%;
       padding: 1rem 0;
@@ -456,6 +478,10 @@ return html`
   .btn--more-about:before {
     color: var(--color-aggie-blue-80);
   }
+
+  .btn--more-about:hover {
+    color: var(--color-aggie-blue-80);
+  }
   
   /*
   .mobile-bar {
@@ -472,16 +498,6 @@ return html`
     flex-shrink: 0;
     margin-right: 1rem;
     background-color: #13639e; /* var(--color-aggie-blue-80); 
-  }
-  */
-
-  /*
-  trying to get rid of padding for branding section of header component
-  .custom-branding {
-    display: none;
-  }
-  .custom-branding:has(.l-header__branding) {
-    padding: 0;
   }
   */
 
@@ -515,9 +531,6 @@ return html`
   <div class="hero-content">
 
     <ucd-theme-header>
-      <!-- <div slot="branding-bar" class="custom-branding">
-        <p>hi</p>
-      </div> -->
       <ucd-theme-primary-nav>
         <a href=/browse>Browse</a>
         <a href="/about">About</a>
@@ -535,7 +548,6 @@ return html`
         <a href="#">FAQ</a>
       </div>
     </div>
-
 
     <div class="hero-main site-frame">
       <h1 class="color-light">Digital Collections</h1>
@@ -608,31 +620,51 @@ return html`
 <section class="recent site-frame">
   <h1>Recently Digitized<br><span class="fw-light">Collections</span></h1> 
   ${ SharedHtml.headerDots() } 
+
+  <!-- TODO assign classes based on this.recentCollections.length -->
+  <h2>Layout 2 or 4</h2>
+  <div class="card-2-4">
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+
+  </div>
+  
+  <h2>Layout exactly 3</h2>
+
+  <!-- <div class="card-trio">
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+    <dams-collection-card .collection="${{}}"></dams-collection-card>  
+  </div> -->
+
+  <!-- TODO show/hide previous card-trio based on screen resolution -->
+  <div>
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+    <div class="card-2">
+      <dams-collection-card .collection="${{}}"></dams-collection-card>
+      <dams-collection-card .collection="${{}}"></dams-collection-card>  
+    </div>
+  </div>
+  
+  <h2>Layout 5+</h2>
+  <div class="card-5-plus">
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+    <dams-collection-card .collection="${{}}"></dams-collection-card>  
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+    <dams-collection-card .collection="${{}}"></dams-collection-card>
+  </div>
+  
+  
+
   <div class="card-trio">
     <dams-collection-card .collection="${{}}"></dams-collection-card>
     <dams-item-card .collection="${{}}"></dams-item-card>
-  
-    <!-- <ucdlib-iconset name="arrows" size= 24>
-      <svg>
-        <defs>
-          <g id="back"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></g>
-          <g id="downward"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path></g>
-          <g id="drop-down"><path d="M7 10l5 5 5-5z"></path></g>
-          <g id="drop-down-circle"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 12l-4-4h8l-4 4z"></path></g>
-          <g id="drop-up"><path d="M7 14l5-5 5 5z"></path></g>
-          <g id="forward"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path></g>
-          <g id="upward"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"></path></g>
-          <g id="scopus"><path style="fill:red;" d="M128 384V128h64V64H64v384h192v-64ZM384 64H256v64h128v256h-64v64h128V64Z"/></g>
-        </defs>
-      </svg>
-    </ucdlib-iconset>
-
-    <div style="display:flex">
-      <ucdlib-icon icon="arrows:back"></ucdlib-icon>
-      <p>back</p>
-    </div> -->
 
 
+  <!-- TODO figure out where to source the collections -->
   ${this.recentCollections.map((collection) => 
       html`
       <dams-collection-card .collection="${collection}"></dams-collection-card>

@@ -71,6 +71,12 @@ export default function render() {
       background-color: var(--color-aggie-gold);
     }
 
+    @media (max-width: 1070px) {
+      .browse-buttons > div {
+        width: 100%;
+      }
+    }
+
     .priority-links {
       padding: 0 0 1rem;
     }

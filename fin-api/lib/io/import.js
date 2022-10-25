@@ -549,7 +549,9 @@ class ImportCollection {
           customHeaders,
           method : 'POST'
         });
-
+        response.httpStack.forEach((item) => {
+          console.log(item);
+        });
         if( response.error ) {
           console.error(response.error);
         } else {

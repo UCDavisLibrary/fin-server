@@ -101,6 +101,20 @@
     background-color: var(--color-aggie-blue-40);
     padding-bottom: 1rem;
   }
+  .site-name-search {
+    display: none;
+  }
+  @media( max-width: 755px ) {
+   .searchContainer {
+      padding-top: 1rem;
+    }
+    .site-name-search {
+      display: block;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+  }
 </style>
 
 <div class="layout">
@@ -109,6 +123,7 @@
 
 <div class="searchContainer">
   <div style="margin: 1rem auto 0;">
+    <h4 class="site-name-search">Digital Collections</h4>
     <app-search-box 
       id="searchBox" 
       on-search="_onSearch" 
