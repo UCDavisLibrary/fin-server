@@ -110,7 +110,7 @@ class ElasticSearchModel {
     } else {
       esBody.sort = [
         '_score',
-        { 'name.raw' : 'asc' }
+        { 'node.name.raw' : 'asc' }
       ]
     }
 

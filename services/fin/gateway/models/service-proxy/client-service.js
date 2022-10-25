@@ -10,7 +10,6 @@ const {logger} = require('@ucd-lib/fin-service-utils');
  * @param {Object} res http-proxy response
  */
 module.exports = (req, res) => {
-  console.log(serviceModel.clientService);
   if( !serviceModel.clientService ) {
     return res.status(400).send('No ClientService registered');
   }
