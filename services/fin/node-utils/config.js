@@ -98,7 +98,7 @@ module.exports = {
       schemaType : 'fin-applications'
     },
     fields : {
-      exclude : ['indexableContent', 'indexableContents'],
+      exclude : ['node.indexableContent', 'node.indexableContents', 'node.createdBy', 'node.lastModifiedBy', 'node.directParent', 'node._'],
       fill : ['hasPart', 'associatedMedia', 'caption', 'transcript']
     }
   },

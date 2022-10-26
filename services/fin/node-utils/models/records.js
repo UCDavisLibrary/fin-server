@@ -260,9 +260,7 @@ class RecordsModel extends ElasticSearchModel {
     options.index = config.elasticsearch.record.alias;
     options.body = body;
     delete options.body.query;
-    // options._source_excludes = config.elasticsearch.fields.exclude;
-
-    console.log(options);
+    options._source_excludes = config.elasticsearch.fields.exclude.join(',');
 
     return es.search(options);
   }

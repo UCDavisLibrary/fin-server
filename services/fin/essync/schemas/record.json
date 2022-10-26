@@ -35,7 +35,7 @@
       "type" : "keyword" 
     },
 
-    "node.about" : {
+    "node.about.name" : {
       "type" : "text",
       "analyzer": "autocomplete", 
       "search_analyzer": "autocomplete_search",
@@ -58,7 +58,7 @@
       "type" : "keyword"
     },
 
-    "node.creator" : {
+    "node.creator.name" : {
       "type" : "keyword"
     },
 
