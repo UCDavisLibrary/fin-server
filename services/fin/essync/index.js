@@ -145,20 +145,6 @@ class EsSync {
         return;
       }
 
-      // we only want collection, application, record types
-      if( !indexer.isCollection(e.container_types) && 
-          !indexer.isRecord(e.path, e.container_types) &&
-          !indexer.isApplication(e.path) ) {
-        logger.info('Ignoring container '+e.path+'.  Not of type record, collection or application');
-        
-        e.action = 'ignored';
-        e.message = 'non-fin container type';
-        await indexer.remove(e.path);
-        await postgres.updateStatus(e);
-        return;
-      }
-
-
       if( !e.container_types ) {
         e.container_types = [];
 
@@ -170,6 +156,19 @@ class EsSync {
             e.container_types = link.type || [];
           }
         }
+      }
+
+      // we only want collection, application, record types
+      if( !indexer.isCollection(e.container_types) && 
+          !indexer.isRecord(e.path, e.container_types) &&
+          !indexer.isApplication(e.path) ) {
+        logger.info('Ignoring container '+e.path+'.  Not of type record, collection or application');
+        
+        e.action = 'ignored';
+        e.message = 'non-fin container type';
+        await indexer.remove(e.path);
+        await postgres.updateStatus(e);
+        return;
       }
 
       let response = await indexer.getTransformedContainer(e.path, e.container_types);

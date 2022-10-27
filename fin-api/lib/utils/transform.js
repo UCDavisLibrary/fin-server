@@ -22,15 +22,14 @@ class TransformUtils {
     }
 
     let ids = ensureRootIds(json);
-
-    // let namespaces = await parseNamespaces(json)
     let dataset = await jsonld.toRDF(json, {format: 'application/nquads'});
     let turtle = await ntToTurtle(dataset);
 
-    ids.forEach(id => {
-      let re = new RegExp(id, 'g');
-      turtle = turtle.replace(re, '');
-    });
+    // remove all temp ids (ids that were not http URI's)
+    for( let tmpId in ids ) {
+      let re = new RegExp(tmpId, 'g');
+      turtle = turtle.replace(re, ids[tmpId]);
+    }
 
     return turtle;
   }
@@ -244,18 +243,31 @@ function term(str) {
   }
 };
 
-function ensureRootIds(json) {
-  if( !Array.isArray(json) ) {
-    return [ensureRootId(json)];
+function ensureRootIds(json, ids={}) {
+  if( typeof json !== 'object' ) return ids;
+
+  if( Array.isArray(json) ) {
+    json.forEach(item => ensureRootIds(item, ids));
+    return ids;
   }
 
-  return json.map(obj => ensureRootId(obj));
+  ensureRootId(json, ids);
+
+  for( let prop in json ) {
+    if( prop.match(/^@/) ) continue;
+    ensureRootIds(json[prop], ids);
+  }
+
+  return ids;
 }
 
-function ensureRootId(json) {
-  if( json['@id'] && json['@id'].match(/^http/) ) return;
-  json['@id'] = 'http://'+uuid()+'.com';
-  return json['@id'];
+function ensureRootId(json, ids=[]) {
+  if( json['@id'] === undefined || json['@id'] === null ) return;
+  if( json['@id'].match(/^http:\/\//) ) return;
+
+  let id = 'http://'+uuid()+'.com';
+  ids[id] = json['@id'];
+  json['@id'] = id;
 }
 
 module.exports = new TransformUtils();

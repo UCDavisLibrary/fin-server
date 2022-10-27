@@ -174,7 +174,20 @@ class ServiceProxy {
    * @returns {Object}
    */
   async setContainerInfo(req) {
-    req.token = jwt.getJwtFromRequest(req);
+    let headOpts = {
+      path : req.finServiceInfo.fcPath.replace(api.getConfig().basePath, ''),
+    }
+
+
+    let token = jwt.getJwtFromRequest(req);
+
+    try {
+      if( token && jwt.validate(token) ) {
+        req.token = token;
+        headOpts.jwt = token;
+      }
+    } catch(e) {}
+
 
     // if( req.finServiceInfo.global ) {
     //   req.finContainer = {access: true};
@@ -186,10 +199,7 @@ class ServiceProxy {
     //   method : 'HEAD',
     //   uri : req.finServiceInfo.fcPath
     // }, req.token);
-    let response = await api.head({
-      path : req.finServiceInfo.fcPath.replace(api.getConfig().basePath, ''),
-      jwt : req.token
-    });
+    let response = await api.head(headOpts);
 
     // if we don't get a 200 range status code from fcrepo, 
     // requesting agent does not have access to this container

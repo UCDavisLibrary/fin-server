@@ -1,3 +1,4 @@
+# FROM fcrepo/fcrepo:6.3.0-SNAPSHOT
 FROM fcrepo/fcrepo:6.2.0
 
 RUN mkdir -p /etc/fin

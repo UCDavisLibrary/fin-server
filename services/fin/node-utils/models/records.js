@@ -194,13 +194,13 @@ class RecordsModel extends ElasticSearchModel {
       searchDocument.filters = {};
     }
 
-    if( !options.allRecords ) {
-      searchDocument.filters.isRootRecord = {
-        type : 'keyword',
-        op : 'and',
-        value : [true]
-      }
-    }
+    // if( !options.allRecords ) {
+    //   searchDocument.filters.isRootRecord = {
+    //     type : 'keyword',
+    //     op : 'and',
+    //     value : [true]
+    //   }
+    // }
 
     let esBody = this.searchDocumentToEsBody(searchDocument, options.noLimit);
     let esResult = await this.esSearch(esBody);
@@ -259,7 +259,8 @@ class RecordsModel extends ElasticSearchModel {
   esSearch(body = {}, options={}) {
     options.index = config.elasticsearch.record.alias;
     options.body = body;
-    options._source_exclude = config.elasticsearch.fields.exclude;
+    delete options.body.query;
+    options._source_excludes = config.elasticsearch.fields.exclude.join(',');
 
     return es.search(options);
   }

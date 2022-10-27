@@ -14,6 +14,15 @@ class CollectionsModel extends ElasticSearchModel {
    * @returns {Promise} resolves to search result
    */
   async search(searchDocument, options={debug:false}) {
+
+    // set default sort
+    if( !searchDocument.sort ) {
+      searchDocument.sort = [
+        '_score',
+        { 'name.raw' : 'asc' }
+      ]
+    }
+
     let esBody = this.searchDocumentToEsBody(searchDocument);
     let esResult = await this.esSearch(esBody);
     let result = this.esResultToDamsResult(esResult);

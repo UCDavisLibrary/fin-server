@@ -46,7 +46,7 @@ class RecordStore extends BaseStore {
   setRecordLoaded(id, payload) {
     this._setRecordState({
       state: this.STATE.LOADED,
-      rootId : payload['@id'],
+      rootId : payload.id,
       payload, id
     });
   }

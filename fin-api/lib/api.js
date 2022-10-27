@@ -100,14 +100,17 @@ class FinApi {
     this.LDP_TYPES = {
       RESOURCE : 'http://www.w3.org/ns/ldp#Resource',
       RDF_SOURCE : 'http://www.w3.org/ns/ldp#RDFSource',
-      NON_RDF_SOURCE : 'http://www.w3.org/ns/ldp#NonRDFSource'
+      NON_RDF_SOURCE : 'http://www.w3.org/ns/ldp#NonRDFSource',
+      DIRECT_CONTAINER : 'http://www.w3.org/ns/ldp#DirectContainer',
+      INDIRECT_CONTAINER : 'http://www.w3.org/ns/ldp#IndirectContainer'
     }
 
     this.FEDORA_TYPES = {
       RESOURCE : 'http://fedora.info/definitions/v4/repository#Resource',
       CONTAINER : 'http://fedora.info/definitions/v4/repository#Container',
       REPOSITORY_ROOT : 'http://fedora.info/definitions/v4/repository#RepositoryRoot',
-      SKOLEM : 'http://fedora.info/definitions/v4/repository#Skolem'
+      SKOLEM : 'http://fedora.info/definitions/v4/repository#Skolem',
+      ARCHIVAL_GROUP : 'http://fedora.info/definitions/v4/repository#ArchivalGroup'
     }
 
     /**

@@ -31,20 +31,11 @@
       }
     },
 
-    "node.identifiers" : {
-      "type" : "text",
-      "fields": {
-        "raw": { 
-          "type":  "keyword"
-        }
-      }
-    },
-
     "node.isPartOf.@id" : {
       "type" : "keyword" 
     },
 
-    "node.abouts" : {
+    "node.about.name" : {
       "type" : "text",
       "analyzer": "autocomplete", 
       "search_analyzer": "autocomplete_search",
@@ -67,11 +58,7 @@
       "type" : "keyword"
     },
 
-    "node.isRootRecord" : {
-      "type" : "boolean"
-    },
-
-    "node.creators" : {
+    "node.creator.name" : {
       "type" : "keyword"
     },
 
@@ -94,10 +81,6 @@
       "search_analyzer": "autocomplete_search" 
     },
 
-    "node.fileFormats" : {
-      "type" : "keyword"
-    },
-
     "node.fileFormat" : {
       "type" : "keyword"
     },
@@ -117,10 +100,6 @@
 
     "node.alternativeHeadline" : {
       "type" : "text"
-    },
-
-    "node.indexableContents" : {
-      "type": "text"
     },
 
     "node.indexableContent" : {

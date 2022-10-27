@@ -1,4 +1,4 @@
-const {PG} = require('@ucd-lib/fin-service-utils');
+const {PG, logger} = require('@ucd-lib/fin-service-utils');
 const pg = require('pg');
 
 class EssyncPostgresUtils {

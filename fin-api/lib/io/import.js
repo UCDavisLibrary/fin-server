@@ -16,10 +16,19 @@ const IGNORE_FILE = '.finignore';
 const METADATA_SHA = 'http://digital.ucdavis.edu/schema#metadataSha256';
 const HAS_MESSAGE_DIGEST = 'http://www.loc.gov/premis/rdf/v1#hasMessageDigest';
 
+const HAS_MEMBER_RELATION = 'http://www.w3.org/ns/ldp#hasMemberRelation';
+const IS_MEMBER_OF_RELATION = 'http://www.w3.org/ns/ldp#isMemberOfRelation';
+
 class ImportCollection {
 
   constructor(_api) {
     api = _api;
+
+    this.TO_HEADER_TYPES = [
+      api.LDP_TYPES.DIRECT_CONTAINER,
+      api.LDP_TYPES.INDIRECT_CONTAINER,
+      api.FEDORA_TYPES.ARCHIVAL_GROUP
+    ]
   }
 
   /**
@@ -110,6 +119,7 @@ class ImportCollection {
         response = await api.collection.create({
           id: newCollectionName
         });
+        response.httpStack.forEach(item => console.log(item));
         if( response.error ) throw new Error(response.error);
         response = await api.head({path: '/collection/'+newCollectionName});
       }
@@ -156,7 +166,7 @@ class ImportCollection {
     //   implRootDir.children = [implDir];
     //   implRootDir.files = [];
 
-    //   await this.postContainers(newCollectionName, implRootDir, config);
+    //   // await this.postContainers(newCollectionName, implRootDir, config);
     //   await this.putContainers(newCollectionName, implRootDir, config.source.collection);
     // }
     
@@ -368,10 +378,15 @@ class ImportCollection {
 
       console.log(`${op} CONTAINER ${op === 'PUT' ? 'Update' : 'Creation'}: ${container.fcpath} => ${container.id}`);
       
-      if( op === 'POST' && metadata['@type'] && metadata['@type'].includes('http://fedora.info/definitions/v4/repository#ArchivalGroup') ) {
-        metadata['@type'] = metadata['@type'].filter(item => item !== 'http://fedora.info/definitions/v4/repository#ArchivalGroup');
-        headers.link = '<http://fedora.info/definitions/v4/repository#ArchivalGroup>;rel="type"'
-        console.log('  - creating archive group')
+      // strip @types that must be provided as a Link headers
+      if( op === 'POST' && metadata['@type'] ) {
+        this.TO_HEADER_TYPES.forEach(type => {
+          if( !metadata['@type'].includes(type) ) return;
+
+          metadata['@type'] = metadata['@type'].filter(item => item !== type);
+          headers.link = `<${type}>;rel="type"`
+          console.log(`  - creating ${type.replace(/.*#/, '')}`);
+        })
       }
 
       // strip all ldp (and possibly fedora properties)
@@ -379,8 +394,14 @@ class ImportCollection {
         metadata['@type'] = metadata['@type'].filter(item => !item.match('http://www.w3.org/ns/ldp#') && !item.match('http://fedora.info/definitions/v4/repository#'));
       }
 
-      metadata = await transform.jsonldToTurtle(metadata);
+      // HACK to work around: https://fedora-repository.atlassian.net/browse/FCREPO-3858
+      // Just keeping down direction required by fin UI for now.
+      if( metadata[HAS_MEMBER_RELATION] && metadata[IS_MEMBER_OF_RELATION] ) {
+        delete metadata[IS_MEMBER_OF_RELATION];
+      }
 
+      
+      metadata = await transform.jsonldToTurtle(metadata);
 
       if( this.options.dryRun !== true ) {
         if( op === 'POST' ) {

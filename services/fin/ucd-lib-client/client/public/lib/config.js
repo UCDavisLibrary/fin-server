@@ -48,7 +48,7 @@ module.exports = {
   // facets to show on left side
   elasticSearch : {
     facets : {
-      'fileFormats' : {
+      'node.fileFormat' : {
         label : 'File Format',
         type : 'facet',
         valueMap : (value) => {
@@ -68,7 +68,7 @@ module.exports = {
           return value;
         }
       },
-      'collectionId' : {
+      'node.collectionId' : {
         label : 'Collection',
         type : 'facet',
         valueMap : (value) => {
@@ -77,27 +77,27 @@ module.exports = {
           return value;
         }
       },
-      'creators' : {
+      'node.creator' : {
         label : 'Creator',
         type : 'facet'
       },
-      yearPublished : {
+      'node.yearPublished' : {
         label : 'Published',
         type : 'range'
       },
-      license : {
+      'node.license' : {
         label : 'Rights',
         type : 'facet',
         valueMap : rightsMap
       },
-      'type.raw' : {
+      'node.type.raw' : {
         label : 'Type',
         type : 'facet',
         typeahead: 'type',
         ignore : ['CreativeWork', 'MediaObject'],
         valueMap : value => value.replace(/(.)([A-Z])/g, '$1 $2')
       },
-      'abouts.raw' : {
+      'node.about.raw' : {
         label : 'Subject',
         type : 'facet',
         typeahead: 'abouts'
@@ -105,7 +105,7 @@ module.exports = {
     },
 
     textFields : {
-      record : ['name', 'description', 'identifiers', 'abouts', 'keywords', 'alternativeHeadline', 'indexableContents'],
+      record : ['node.name', 'node.description', 'node.identifier', 'node.about', 'node.keywords', 'node.alternativeHeadline', 'node.indexableContent'],
       collection : ['name', 'description', 'about', 'keywords']
     },
     
