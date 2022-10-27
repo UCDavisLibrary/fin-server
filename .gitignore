@@ -12,5 +12,4 @@ fcrepo-webapp-*-SNAPSHOT*
 tests
 test
 temp/
-services/fin/ucd-lib-client/client/public/js/*bundle*.js
-services/fin/ucd-lib-client/client/public/js/*ie-bundle*.js
+services/fin/ucd-lib-client/client/public/js
