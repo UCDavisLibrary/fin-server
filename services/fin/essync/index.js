@@ -159,27 +159,27 @@ class EsSync {
       }
 
       // we only want collection, application, record types
-      if( !indexer.isCollection(e.container_types) && 
-          !indexer.isRecord(e.path, e.container_types) &&
-          !indexer.isApplication(e.path) ) {
-        logger.info('Ignoring container '+e.path+'.  Not of type record, collection or application');
+      // if( !indexer.isCollection(e.container_types) && 
+      //     !indexer.isRecord(e.path, e.container_types) &&
+      //     !indexer.isApplication(e.path) ) {
+      //   logger.info('Ignoring container '+e.path+'.  Not of type record, collection or application');
         
-        e.action = 'ignored';
-        e.message = 'non-fin container type';
-        await indexer.remove(e.path);
-        await postgres.updateStatus(e);
-        return;
-      }
+      //   e.action = 'ignored';
+      //   e.message = 'non-fin container type';
+      //   await indexer.remove(e.path);
+      //   await postgres.updateStatus(e);
+      //   return;
+      // }
 
       let response = await indexer.getTransformedContainer(e.path, e.container_types);
       if( response.data.statusCode !== 200 ) {
-        logger.info('Container '+e.path+' was inaccessible ('+response.data.statusCode+') from LDP, removing from index. url='+response.data.request.url);
+        logger.info('Container '+e.path+' was publicly inaccessible ('+response.data.statusCode+') from LDP, removing from index. url='+response.data.request.url);
 
         e.action = 'ignored';
         e.message = 'inaccessible'
         await indexer.remove(e.path);
         await postgres.updateStatus(e);
-        return 
+        return;
       }
 
       let jsonld = JSON.parse(response.data.body);
@@ -191,7 +191,7 @@ class EsSync {
         logger.info('Container '+e.path+' is not part of an archival group or a binary container (no jsonld._.esId provided)');
 
         e.action = 'ignored';
-        e.message = 'non-fin container type';
+        e.message = 'not a archival group or binary container type';
         await indexer.remove(e.path);
         await postgres.updateStatus(e);
         return;

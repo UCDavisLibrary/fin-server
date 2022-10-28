@@ -4,6 +4,7 @@ const config = require('../config');
 const yaml = require('js-yaml');
 const utils = require('./utils');
 
+const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 let api;
 
 class ExportCollection {
@@ -27,14 +28,16 @@ class ExportCollection {
    * 
    */
   async run(options) {
-    options.fsRoot = path.join(options.fsRoot || '.', options.collectionName+'-collection');
+    options.fsRoot = options.fsRoot || '.';
 
     if( options.dryRun !== true ) {
       await fs.mkdirp(options.fsRoot);
     }
 
-    options.currentPath = '/collection/'+options.collectionName;
-    options.collectionPath = '/collection/'+options.collectionName;
+    options.currentPath = options.fcrepoPath;
+    let parts = options.currentPath.split('/');
+    parts.pop();
+    options.dirReplace = parts.join('/');
 
     if( options.ignoreBinary !== true ) options.ignoreBinary = false;
     if( options.ignoreMetadata !== true ) options.ignoreMetadata = false;
@@ -55,43 +58,43 @@ class ExportCollection {
     }
 
     let orgRoot = options.fsRoot;
-    let finDir = path.join(orgRoot, '.fin');
-    let rootColDir = path.join(orgRoot, options.collectionName);
+    // let finDir = path.join(orgRoot, '.fin');
+    // let rootColDir = path.join(orgRoot, options.collectionName);
 
-    if( fs.existsSync(options.fsRoot) ) {
-      if( options.cleanDir ) {
-        console.log(`DIR EXISTS, removing: ${options.fsRoot}`);
-        if( options.dryRun !== true ) {
-          await fs.remove(options.fsRoot);
-        }
-      } else {
-        console.log(`DIR EXISTS, syncing: ${options.fsRoot}`);
-      }
-    }
+    // if( fs.existsSync(options.fsRoot) ) {
+    //   if( options.cleanDir ) {
+    //     console.log(`DIR EXISTS, removing: ${options.fsRoot}`);
+    //     if( options.dryRun !== true ) {
+    //       await fs.remove(options.fsRoot);
+    //     }
+    //   } else {
+    //     console.log(`DIR EXISTS, syncing: ${options.fsRoot}`);
+    //   }
+    // }
 
     let contentTypes = {};
     await this.crawl(options, contentTypes);
 
     if( options.dryRun === true ) return;
 
-    if( fs.existsSync(path.join(rootColDir, '.fin')) ) {
-      if( fs.existsSync(finDir) ) await fs.remove(finDir);
-      await fs.move(path.join(rootColDir, '.fin'), finDir);
-    } else {
-      await fs.mkdirp(finDir);
-    }
+    // if( fs.existsSync(path.join(rootColDir, '.fin')) ) {
+    //   if( fs.existsSync(finDir) ) await fs.remove(finDir);
+    //   await fs.move(path.join(rootColDir, '.fin'), finDir);
+    // } else {
+    //   await fs.mkdirp(finDir);
+    // }
 
-    await fs.writeFile(
-      path.join(finDir, 'config.yml'), 
-      yaml.dump({
-        source: {
-          host : config.host,
-          base : config.fcBasePath,
-          collection : options.collectionName
-        },
-        contentTypes : contentTypes
-      })
-    );
+    // await fs.writeFile(
+    //   path.join(finDir, 'config.yml'), 
+    //   yaml.dump({
+    //     source: {
+    //       host : config.host,
+    //       base : config.fcBasePath,
+    //       collection : options.collectionName
+    //     },
+    //     contentTypes : contentTypes
+    //   })
+    // );
   }
 
   async crawl(options, contentTypes) {
@@ -100,7 +103,14 @@ class ExportCollection {
         return;
     }
 
-    let metadata = await api.metadata({path: options.currentPath});
+    
+    let metadata = await api.head({
+      path: options.currentPath,
+      headers : {
+        accept : api.RDF_FORMATS.JSON_LD
+      }
+    });
+
     if( metadata.error ) {
       console.log('Error Access Path: '+options.currentPath);
       console.error(metadata.error);
@@ -109,20 +119,36 @@ class ExportCollection {
       return;
     }
 
-    metadata = JSON.parse(metadata.last.body)[0];
+    let links = api.parseLinkHeader(metadata.data.headers.link);
+    let cpath = options.currentPath;
+    let isBinary = false;
+    if( links.type && links.type.find(item => item.url === BINARY) ) {
+      isBinary = true;
+      cpath += '/fcr:metadata';
+    }
 
-    // prep dir
-    let cdir = path.join(options.fsRoot, options.currentPath.replace(/^\/collection\//, ''), '..');
+    metadata = await api.get({
+      path: cpath,
+      headers : {
+        accept : api.RDF_FORMATS.JSON_LD
+      }
+    });
+
+    metadata = JSON.parse(metadata.last.body).find(item => item['@id'].match(api.getConfig().basePath+options.currentPath) );
+    let cdir = path.join(options.fsRoot, options.currentPath.replace(options.dirReplace, ''))
     let dirname = options.currentPath.split('/').pop();
 
     if( options.dryRun !== true ) {
-      await fs.mkdirp(cdir);
+      if( isBinary ) await fs.mkdirp(path.resolve(cdir, '..'));
+      else await fs.mkdirp(cdir);
     }
 
     let binaryFile = '';
 
     // write binary
-    if( metadata['@type'].indexOf('http://fedora.info/definitions/v4/repository#Binary') > -1 ) {
+    if( isBinary ) {
+      cdir = path.resolve(cdir, '..');
+
       // if we are ignoring binary, we have hit a leaf and are down
       if( options.ignoreBinary === true || utils.ignoreSubPath(options) === true ) return;
 
@@ -149,47 +175,55 @@ class ExportCollection {
       let download = false;
 
       // check sha
-      if( !fs.existsSync(path.join(cdir, binaryFile)) ) {
+      let filePath = path.resolve(cdir, binaryFile);
+      if( !fs.existsSync(filePath) ) {
         download = true;
       } else {
-        let [urn,shaNum,sha] = metadata['http://www.loc.gov/premis/rdf/v1#hasMessageDigest'][0]['@id'].split(':');
-        shaNum = shaNum.replace('sha', '');
+        let shas = metadata['http://www.loc.gov/premis/rdf/v1#hasMessageDigest']
+          .map(item => {
+            let [urn, sha, hash] = item['@id'].split(':')
+            return [sha.replace('sha-', ''), hash];
+          });
+        
+        // picking the 256 sha or first
+        let sha = shas.find(item => item[0] === '256');
+        if( !sha ) sha = shas[0];
 
-        let localSha = await api.sha(path.join(cdir, binaryFile), shaNum);
-        if( localSha !== sha ) download = true;
-        else console.log('SHA OK: '+path.join(cdir, binaryFile));
+        let localSha = await api.sha(filePath, sha[0]);
+        if( localSha !== sha[1] ) download = true;
+        else console.log('SHA OK: '+filePath);
       }
 
       if( download ) {
-        console.log('DOWNLOADING BINARY: '+path.join(cdir, binaryFile));
+        console.log('DOWNLOADING BINARY: '+filePath);
         if( options.dryRun !== true ) {
           await api.get({
             path : options.currentPath,
             encoding : null,
-            writeStream : fs.createWriteStream(path.join(cdir, binaryFile))
+            writeStream : fs.createWriteStream(filePath)
           });
         }
       }
 
       // hack: fs.existsSync doesn't seem to link symlinks :(
-      let exists = true;
-      try {fs.lstatSync(path.join(cdir, dirname))} 
-      catch(e) {exists = false}
+      // let exists = true;
+      // try {fs.lstatSync(path.join(cdir, dirname))} 
+      // catch(e) {exists = false}
       
-      if( binaryFile !== dirname && !exists ) {
-        let rpath = path.relative(
-          path.join(cdir, dirname),
-          path.join(cdir, binaryFile) 
-        );
+      // if( binaryFile !== dirname && !exists ) {
+      //   let rpath = path.relative(
+      //     path.join(cdir, dirname),
+      //     path.join(cdir, binaryFile) 
+      //   );
 
-        console.log('  -> SETTING SYMLINK: '+path.join(cdir, dirname));
-        if( options.dryRun !== true ) {
-          await fs.symlink(
-            rpath,
-            path.join(cdir, dirname)
-          );
-        }
-      }
+      //   console.log('  -> SETTING SYMLINK: '+path.join(cdir, dirname));
+      //   if( options.dryRun !== true ) {
+      //     await fs.symlink(
+      //       rpath,
+      //       path.join(cdir, dirname)
+      //     );
+      //   }
+      // }
 
       options.currentPath += '/fcr:metadata'
     }
@@ -198,16 +232,16 @@ class ExportCollection {
     let ttl = await api.get({
       path: options.currentPath,
       headers : {
-        Prefer : 'return=representation; omit="http://www.w3.org/ns/ldp#PreferMembership http://www.w3.org/ns/ldp#PreferContainment http://fedora.info/definitions/v4/repository#InboundReferences http://fedora.info/definitions/v4/repository#EmbedResources http://fedora.info/definitions/v4/repository#ServerManaged"'
+        Prefer : 'return=representation; omit="http://www.w3.org/ns/ldp#PreferMembership http://www.w3.org/ns/ldp#PreferContainment http://fedora.info/definitions/fcrepo#PreferInboundReferences http://fedora.info/definitions/fcrepo#ServerManaged"'
       }
     });
 
     ttl = ttl.last.body
 
-    let baseRe = '<'+config.host+config.fcBasePath+'/collection';
-    if( options.currentPath !== '/collection/'+options.collectionName ) {
-      baseRe += '/'+options.collectionName;
-    }
+    
+    // if( options.currentPath !== '/collection/'+options.collectionName ) {
+    //   baseRe += '/'+options.collectionName;
+    // }
 
     // replace the root node, set as self reference
     let rootNode = '<'+config.host+config.fcBasePath+options.currentPath.replace(/\/fcr:metadata\/?$/, '')+'>';
@@ -215,23 +249,38 @@ class ExportCollection {
       .map(row => (row.trim() === rootNode) ? '<>' : row)
       .join('\n');
 
-    let parts = ttl.match(new RegExp(baseRe+'(>|/.*>)', 'g')) || [];
-    let relCurrentPath = (options.currentPath.replace(new RegExp('/collection/'+options.collectionName), '') || '/');
+    let baseUrl = config.host+config.fcBasePath;
+    let urls = ttl.match(new RegExp('<'+baseUrl+'(>|/.*>)', 'g')) || [];
+    // let relCurrentPath = (options.currentPath.replace(new RegExp(options.currentPath, 'g'), '') || '/');
 
-    parts.forEach(url => {
-      let urlPath = url
-        .replace(new RegExp(baseRe), '')
-        .replace(/>/, '') || '/';
+    urls.forEach(url => {
+      console.log('url', url);
 
-      /**
-       * If we have to go up a directory to get from current container path to linked container, you must
-       * remember the starting point is the parent path. So if you are at container /foo/bar/baz.  The parent
-       * 'folder'/'path' /foo/bar holds container baz, and relative paths should be from /foo/bar. 
-       */
-      let containerPath = path.resolve(relCurrentPath, '..');
-      containerPath = path.relative(containerPath, urlPath);
-      if( containerPath === '' ) containerPath = '.';
-      ttl = ttl.replace(url, '<'+containerPath+'>');
+      let cleanUrl = url.replace(/^</, '').replace(/>$/, '');
+      let relativePath = path.relative(
+        path.dirname(rootNode.replace(/^</, '').replace(/>$/, '')),
+        path.dirname(cleanUrl)
+      );
+
+      console.log(path.dirname(rootNode.replace(/^</, '').replace(/>$/, '')), path.dirname(cleanUrl))
+
+      console.log('url', url, relativePath);
+      if( relativePath === '' ) relativePath = '.';
+      ttl = ttl.replace(cleanUrl, relativePath);
+
+      // let urlPath = url
+      //   .replace(new RegExp(baseRe), '')
+      //   .replace(/>/, '') || '/';
+
+      // /**
+      //  * If we have to go up a directory to get from current container path to linked container, you must
+      //  * remember the starting point is the parent path. So if you are at container /foo/bar/baz.  The parent
+      //  * 'folder'/'path' /foo/bar holds container baz, and relative paths should be from /foo/bar. 
+      //  */
+      // let containerPath = path.resolve(relCurrentPath, '..');
+      // containerPath = path.relative(containerPath, urlPath);
+      // if( containerPath === '' ) containerPath = '.';
+      // ttl = ttl.replace(url, '<'+containerPath+'>');
     });
 
     if( options.ignoreMetadata !== true && utils.ignoreSubPath(options) !== true ) {
@@ -243,9 +292,9 @@ class ExportCollection {
         return;
       } 
 
-      console.log('WRITING METADATA: '+path.resolve(cdir, dirname+'.ttl'));
+      console.log('WRITING METADATA: '+path.resolve(cdir, '..', dirname+'.ttl'));
       if( options.dryRun !== true ) {
-        await fs.writeFile(path.resolve(cdir, dirname+'.ttl'), ttl);
+        await fs.writeFile(path.resolve(cdir, '..', dirname+'.ttl'), ttl);
       }
     } else {
       console.log('IGNORING: '+options.currentPath);

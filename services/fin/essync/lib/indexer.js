@@ -178,9 +178,21 @@ class EsIndexer {
       });
 
       return {index, id, response}
-    }  
     
-    if( this.isRecord(jsonld['@id'], jsonld['@type']) ) {
+    } else if ( this.isApplication(jsonld['@id']) ) {
+
+      logger.info(`ES Indexer updating application container: ${id}`);
+
+      let index = applicationIndex || config.elasticsearch.application.alias;
+      let response = await this.esClient.index({
+        index,
+        id,
+        body: jsonld
+      });
+
+      return {index, id, response};
+    
+    } else {
       logger.info(`ES Indexer updating record container: ${id}`);
 
       let index = recordIndex || config.elasticsearch.record.alias;
@@ -223,21 +235,7 @@ class EsIndexer {
       return {index, id, response};
     } 
     
-    if ( this.isApplication(jsonld['@id']) ) {
-
-      logger.info(`ES Indexer updating application container: ${id}`);
-
-      let index = applicationIndex || config.elasticsearch.application.alias;
-      let response = await this.esClient.index({
-        index,
-        id,
-        body: jsonld
-      });
-
-      return {index, id, response};
-    }
-    
-    logger.info(`ES Indexer ignoring container: ${id}`, jsonld['@type']);
+    // logger.info(`ES Indexer ignoring container: ${id}`, jsonld['@type']);
   }
 
   /**

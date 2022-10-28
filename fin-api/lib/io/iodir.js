@@ -174,13 +174,13 @@ class IoDir {
         fcpath = pathutils.joinUrlPath(this.config.fcrepoPath, fcpath);
       }
 
-      if( this.archivalGroup ) {
-        id = fcpath.replace(this.archivalGroup.subPath, '').replace(/^\//, '');
-        fcpath = this.archivalGroup.subPath;
-      } else {
+      // if( this.archivalGroup ) {
+      //   id = fcpath.replace(this.archivalGroup.subPath, '').replace(/^\//, '');
+      //   fcpath = this.archivalGroup.subPath;
+      // } else {
         id = fcpath;
         fcpath = '/';
-      }
+      // }
 
       result.binaries.push({
         id,
@@ -209,16 +209,16 @@ class IoDir {
       // at this point, we are in the parent.  We need to check child dirs to 
       // see if there are any marked as an archive group and the parent is
       // about to add the .ttl file.
-      let isArchiveGroup = this.children.find(item => item.archivalGroup && item.fsfull+'.ttl' === path.join(this.fsfull, name));
-      if( isArchiveGroup  ) {
-        fcpath = this.subPath;
-      } else if( this.archivalGroup ) {
-        id = fcpath.replace(this.archivalGroup.subPath, '').replace(/^\//, '');
-        fcpath = this.archivalGroup.subPath;
-      } else {
-        id = fcpath;
-        fcpath = '/';
-      }
+      // let isArchiveGroup = this.children.find(item => item.archivalGroup && item.fsfull+'.ttl' === path.join(this.fsfull, name));
+      // if( isArchiveGroup  ) {
+      //   fcpath = this.subPath;
+      // } else if( this.archivalGroup ) {
+      //   id = fcpath.replace(this.archivalGroup.subPath, '').replace(/^\//, '');
+      //   fcpath = this.archivalGroup.subPath;
+      // } else {
+        // id = fcpath;
+        // fcpath = '/';
+      // }
 
       result.containers.push({
         localpath : path.join(this.fsfull, name),
@@ -241,12 +241,12 @@ class IoDir {
     // if we are renaming collections, this hack is for the fact the top level containers
     // must have the collection name in the ttl to correctly PUT to the LDP.  Simply
     // replacing the old collection name with the new collection name.
-    if( options.oldCollectionName && options.newCollectionName ) {
-      content = content.replace(
-        new RegExp('<'+options.oldCollectionName+'(\/| *>)', 'g'), 
-        '<'+options.newCollectionName+'$1'
-      );
-    }
+    // if( options.oldCollectionName && options.newCollectionName ) {
+    //   content = content.replace(
+    //     new RegExp('<'+options.oldCollectionName+'(\/| *>)', 'g'), 
+    //     '<'+options.newCollectionName+'$1'
+    //   );
+    // }
 
     return transform.turtleToJsonLd(content);
   }

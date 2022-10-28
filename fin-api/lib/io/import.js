@@ -68,17 +68,17 @@ class ImportCollection {
     
     console.log('IMPORT OPTIONS:');
     console.log(options);
-    console.log('COLLECTION CONFIG:');
-    console.log(config);
+    // console.log('COLLECTION CONFIG:');
+    // console.log(config);
 
     // collection name we are inserting into.  Either passed via options or provided by config
-    let newCollectionName = options.collectionName || config.source.collection;
+    // let newCollectionName = options.collectionName || config.source.collection;
 
     // root fs path
-    let fsPath = path.join(options.fsPath, config.source.collection || '.');
+    // let fsPath = path.join(options.fsPath, config.source.collection || '.');
 
     // IoDir object for root fs path, crawl repo
-    let rootDir = new IoDir(fsPath, '/', {
+    let rootDir = new IoDir(options.fsPath, '/', {
       includeFilter : options.includeFilter,
       dryRun : options.dryRun,
       subPaths : options.subPaths,
@@ -87,62 +87,70 @@ class ImportCollection {
     });
 
     // set root ignore file if it exists
-    if( fs.existsSync(path.join(options.fsPath, IGNORE_FILE)) ) {
-      rootDir.parseIgnore(
-        path.join(options.fsPath, IGNORE_FILE),
-        path.join(options.fsPath, '/')
-      );
-    }
+    // if( fs.existsSync(path.join(options.fsPath, IGNORE_FILE)) ) {
+    //   rootDir.parseIgnore(
+    //     path.join(options.fsPath, IGNORE_FILE),
+    //     path.join(options.fsPath, '/')
+    //   );
+    // }
 
     await rootDir.crawl();
+    
 
 
     // check for current collection status
-    let response = await api.head({path: '/collection/'+newCollectionName});
+    // let response = await api.head({path: '/collection/'+newCollectionName});
     
     // check if collection is deleted but tombstone exists
-    if( response.last.statusCode === 410 ) {
-      console.log('Collection tombstone found, removing');
-      if( options.dryRun !== true ) {
-        try {
-          await api.collection.delete({id: newCollectionName});
-        } catch(e) { 
-          console.log(e);
-        }
-      }
-    }
+    // if( response.last.statusCode === 410 ) {
+    //   console.log('Collection tombstone found, removing');
+    //   if( options.dryRun !== true ) {
+    //     try {
+    //       await api.collection.delete({id: newCollectionName});
+    //     } catch(e) { 
+    //       console.log(e);
+    //     }
+    //   }
+    // }
 
     // create collection if it doesn't exist
-    if( response.last.statusCode !== 200 ) {
-      console.log('Collection doesn\'t exist, creating');
-      if( options.dryRun !== true ) {
-        response = await api.collection.create({
-          id: newCollectionName
-        });
-        response.httpStack.forEach(item => console.log(item));
-        if( response.error ) throw new Error(response.error);
-        response = await api.head({path: '/collection/'+newCollectionName});
-      }
-    }
+    // if( response.last.statusCode !== 200 ) {
+    //   console.log('Collection doesn\'t exist, creating');
+    //   if( options.dryRun !== true ) {
+    //     let content = null;
+    //     let rootMetadata = path.resolve(options.fsPath, 'index.ttl');
+    //     if( fs.existsSync(rootMetadata) ) {
+    //       content = this.getMetadata(rootMetadata, {newCollectionName, oldCollectionName: config.source.collection});
+    //     }
 
-    let aclFile = path.join(options.fsPath, ACL_FILE);
-    if( fs.existsSync(aclFile) ) {
+    //     response = await api.collection.create({
+    //       id: newCollectionName,
+    //       content
+    //     });
+    //     response.httpStack.forEach(item => console.log(item))
+    //     if( response.error ) throw new Error(response.error);
+    //     response = await api.head({path: '/collection/'+newCollectionName});
+    //   }
+    // }
+
+    // let aclFile = path.join(options.fsPath, ACL_FILE);
+    // if( fs.existsSync(aclFile) ) {
       
-      let aclLocation = api.parseLinkHeader(response.last.headers.link).acl[0];
-      let aclPath = aclLocation.url.split(newCollectionName)[1];
+    //   let aclLocation = api.parseLinkHeader(response.last.headers.link).acl[0];
+    //   let aclPath = aclLocation.url.split(newCollectionName)[1];
       
-      console.log('COLLECION ACL: '+aclFile);
-      let aclContent = fs.readFileSync(aclFile, 'utf-8');
-      response = await api.put({
-        path : '/collection/'+newCollectionName+aclPath,
-        content : aclContent.replace(/{{collectionName}}/ig, newCollectionName),
-        partial : true,
-        headers : {
-          'content-type' : api.RDF_FORMATS.TURTLE
-        }
-      });
-      console.log(response.last.statusCode, response.last.body);
-    }
+    //   console.log('COLLECION ACL: '+aclFile);
+    //   let aclContent = fs.readFileSync(aclFile, 'utf-8');
+    //   response = await api.put({
+    //     path : '/collection/'+newCollectionName+aclPath,
+    //     content : aclContent.replace(/{{collectionName}}/ig, newCollectionName),
+    //     partial : true,
+    //     headers : {
+    //       'content-type' : api.RDF_FORMATS.TURTLE
+    //     }
+    //   });
+    //   console.log(response.last.statusCode, response.last.body);
+    // }
 
     // add implementation containers
     // we do not preform this step in importing to a nested collection path
@@ -170,30 +178,30 @@ class ImportCollection {
     //   await this.putContainers(newCollectionName, implRootDir, config.source.collection);
     // }
     
-    await this.putContainers(newCollectionName, rootDir, config);
+    await this.putContainers(rootDir, config);
 
     // patch root collection container
-    if( !options.fcrepoPath ) {
-      let rootMetadata = path.resolve(options.fsPath, config.source.collection+'.ttl');
+    // if( !options.fcrepoPath ) {
+    //   let rootMetadata = path.resolve(options.fsPath, config.source.collection+'.ttl');
 
-      // add the root metadata
-      if( fs.existsSync(rootMetadata) ) {
-        let p = path.join('/collection', newCollectionName);
-        console.log('PUT CONTAINER '+p+'.ttl');
+    //   // add the root metadata
+    //   if( fs.existsSync(rootMetadata) ) {
+    //     let p = path.join('/collection', newCollectionName);
+    //     console.log('PUT CONTAINER '+p+'.ttl');
 
-        if( this.options.dryRun !== true ) {
-          response = await api.put({
-            path : p,
-            content : this.getMetadata(rootMetadata, {newCollectionName, oldCollectionName: config.source.collection}),
-            partial : true,
-            headers : {
-              'content-type' : api.RDF_FORMATS.TURTLE
-            }
-          });
-          console.log(response.last.statusCode, response.last.body);
-        }
-      }
-    }
+    //     if( this.options.dryRun !== true ) {
+    //       response = await api.put({
+    //         path : p,
+    //         content : this.getMetadata(rootMetadata, {newCollectionName, oldCollectionName: config.source.collection}),
+    //         partial : true,
+    //         headers : {
+    //           'content-type' : api.RDF_FORMATS.TURTLE
+    //         }
+    //       });
+    //       console.log(response.last.statusCode, response.last.body);
+    //     }
+    //   }
+    // }
 
 
     // remove all containers that exist in fedora but not locally on disk
@@ -339,12 +347,15 @@ class ImportCollection {
    * @param {String} collectionName
    * @param {IoDir} dir 
    */
-  async putContainers(collectionName, dir, collectionConfig={}) {
-    let oldCollectionName = (collectionConfig.source || {}).collection;
+  async putContainers(dir, collectionConfig={}) {
+    
     let files = await dir.getFiles();
 
     for( let container of files.containers ) {
-      
+      let op = 'PUT';
+      let containerPath = container.fcpath;
+      // let op = ( response.data.statusCode === 200 ) ? 'PUT' : 'POST';
+      console.log(`${op} CONTAINER ${op === 'PUT' ? 'Update' : 'Creation'}: ${containerPath}\n -> ${container.localpath}`);      
 
       let headers = {
         'content-type' : api.RDF_FORMATS.TURTLE,
@@ -355,11 +366,13 @@ class ImportCollection {
       // if exists ignore ArchivalGroup
       // update log message as well
 
-      let metadata = this.getMetadata(container.localpath, {newCollectionName:collectionName, oldCollectionName});
+      let metadata = this.getMetadata(container.localpath);
       metadata = (await transform.turtleToJsonLd(metadata))[0];
+      if( !metadata ) metadata = {};
 
+     
       let response = await api.get({
-        path: pathutils.joinUrlPath('/collection', collectionName, container.fcpath)+'/'+container.id,
+        path: containerPath,
         headers : {
           accept : api.RDF_FORMATS.JSON_LD
         }
@@ -369,23 +382,24 @@ class ImportCollection {
       if( response.data.statusCode === 200 ) {
         let jsonld = JSON.parse(response.last.body)[0];
         if( await this.isMetaShaMatch(jsonld, metadata, container.localpath ) ) {
-          console.log(`IGNORING (sha match): ${container.localpath}`);
+          console.log(` -> IGNORING (sha match)`);
           continue;
         } 
       }
 
-      let op = ( response.data.statusCode === 200 ) ? 'PUT' : 'POST';
-
-      console.log(`${op} CONTAINER ${op === 'PUT' ? 'Update' : 'Creation'}: ${container.fcpath} => ${container.id}`);
+      
       
       // strip @types that must be provided as a Link headers
-      if( op === 'POST' && metadata['@type'] ) {
+      if( metadata['@type'] ) {
         this.TO_HEADER_TYPES.forEach(type => {
           if( !metadata['@type'].includes(type) ) return;
 
           metadata['@type'] = metadata['@type'].filter(item => item !== type);
-          headers.link = `<${type}>;rel="type"`
-          console.log(`  - creating ${type.replace(/.*#/, '')}`);
+
+          if( response.data.statusCode !== 200 ) {
+            headers.link = `<${type}>;rel="type"`
+            console.log(`  - creating ${type.replace(/.*#/, '')}`);
+          }
         })
       }
 
@@ -400,26 +414,25 @@ class ImportCollection {
         delete metadata[IS_MEMBER_OF_RELATION];
       }
 
-      
       metadata = await transform.jsonldToTurtle(metadata);
 
       if( this.options.dryRun !== true ) {
-        if( op === 'POST' ) {
-          response = await api.postEnsureSlug({
-            slug : container.id,
-            path : pathutils.joinUrlPath('/collection', collectionName, container.fcpath)+'/',
-            content : metadata,
-            partial : true,
-            headers
-          });
-        } else {
+        // if( op === 'POST' ) {
+        //   response = await api.postEnsureSlug({
+        //     slug : container.id,
+        //     path : pathutils.joinUrlPath(container.fcpath)+'/',
+        //     content : metadata,
+        //     partial : true,
+        //     headers
+        //   });
+        // } else {
           response = await api.put({
-            path : pathutils.joinUrlPath('/collection', collectionName, container.fcpath)+'/'+container.id,
+            path : containerPath,
             content : metadata,
             partial : true,
             headers
           });
-        }
+        // }
         if( response.error ) {
           throw new Error(response.error);
         }
@@ -429,7 +442,10 @@ class ImportCollection {
     }
 
     for( let binary of files.binaries ) {
-      let fullfcpath = pathutils.joinUrlPath('/collection/', collectionName, binary.fcpath, binary.id);
+      let fullfcpath = pathutils.joinUrlPath(binary.fcpath, binary.id);
+      console.log(`PUT BINARY: ${fullfcpath}\n -> ${binary.localpath}`);
+
+      
       // let response = await api.head({path: fullfcpath});
       // let headResponse = response;
       let response = await api.get({
@@ -455,7 +471,7 @@ class ImportCollection {
 
         let localSha = await api.sha(binary.localpath, sha[0]);
         if( localSha === sha[1] ) {
-          console.log('IGNORING (sha match): '+binary.fcpath+'/'+binary.id);
+          console.log(' -> IGNORING (sha match)');
           continue;
         }
       }
@@ -466,8 +482,6 @@ class ImportCollection {
           permanent: true
         });
       }
-
-      console.log(`POST BINARY: ${binary.fcpath} => ${binary.id}`);
       
       let customHeaders = {};
       let ext = path.parse(binary.localpath).ext.replace(/^\./, '');
@@ -481,14 +495,20 @@ class ImportCollection {
       }
 
       if( this.options.dryRun !== true ) {
-        response = await api.collection.addResource({
-          collectionId : collectionName,
-          id : binary.id,
-          parentPath : binary.fcpath.replace(/\/$/, ''),
-          data : binary.localpath,
-          customHeaders,
-          method : 'POST'
+        response = await api.put({
+          path : fullfcpath,
+          file : binary.localpath,
+          partial : true,
+          headers : customHeaders
         });
+        // response = await api.collection.addResource({
+        //   collectionId : collectionName,
+        //   id : binary.id,
+        //   parentPath : binary.fcpath.replace(/\/$/, ''),
+        //   data : binary.localpath,
+        //   customHeaders,
+        //   method : 'POST'
+        // });
 
         if( response.error ) {
           throw new Error(response.error);
@@ -502,29 +522,36 @@ class ImportCollection {
     // you get a boost of up to 150ms by checking md5 of metadata file;
     for( let binary of files.binaries ) {
       if( !binary.metadata ) continue;
-      console.log(`PUT BINARY METADATA: ${binary.fcpath} => ${binary.id}/fcr:metadata`);
+      let containerPath = pathutils.joinUrlPath(binary.fcpath, binary.id, 'fcr:metadata');
+      console.log(`PUT BINARY METADATA: ${containerPath}\n -> ${binary.metadata}`);
 
       if( this.options.dryRun !== true ) {
-        let metadata = this.getMetadata(binary.metadata, {binaryId: binary.id, newCollectionName:collectionName, oldCollectionName});
+        let metadata = this.getMetadata(binary.metadata);
         let headers = {
           'content-type' : api.RDF_FORMATS.TURTLE
         }
 
         let response = await api.get({
-          path : pathutils.joinUrlPath('/collection', collectionName, binary.fcpath, binary.id, 'fcr:metadata'),
+          path : pathutils.joinUrlPath(binary.fcpath, binary.id, 'fcr:metadata'),
           headers : {
             accept : api.RDF_FORMATS.JSON_LD
           }
         });
 
-
         metadata = (await transform.turtleToJsonLd(metadata))[0];
+
+        if( metadata['@type'] ) {
+          this.TO_HEADER_TYPES.forEach(type => {
+            if( !metadata['@type'].includes(type) ) return;
+            metadata['@type'] = metadata['@type'].filter(item => item !== type);
+          })
+        }
 
         // check if d exists and if there is the ucd metadata sha.
         if( response.data.statusCode === 200 ) {
           response = JSON.parse(response.last.body)[0];
           if( await this.isMetaShaMatch(response, metadata, binary.metadata ) ) {
-            console.log(`IGNORING (sha match): ${binary.metadata}`);
+            console.log(` -> IGNORING (sha match)`);
             continue;
           } 
         }
@@ -532,7 +559,7 @@ class ImportCollection {
         metadata = await transform.jsonldToTurtle(metadata);
 
         response = await api.put({
-          path : pathutils.joinUrlPath('/collection', collectionName, binary.fcpath, binary.id, 'fcr:metadata'),
+          path : pathutils.joinUrlPath(binary.fcpath, binary.id, 'fcr:metadata'),
           content : metadata,
           partial : true,
           headers
@@ -545,7 +572,7 @@ class ImportCollection {
     }
 
     for( let child of dir.children ) {
-      await this.putContainers(collectionName, child, collectionConfig);
+      await this.putContainers(child, collectionConfig);
     }
   }
 
@@ -560,12 +587,12 @@ class ImportCollection {
     // if we are renaming collections, this hack is for the fact the top level containers
     // must have the collection name in the ttl to correctly PUT to the LDP.  Simply
     // replacing the old collection name with the new collection name.
-    if( options.oldCollectionName && options.newCollectionName ) {
-      content = content.replace(
-        new RegExp('<'+options.oldCollectionName+'(\/| *>)', 'g'), 
-        '<'+options.newCollectionName+'$1'
-      );
-    }
+    // if( options.oldCollectionName && options.newCollectionName ) {
+    //   content = content.replace(
+    //     new RegExp('<'+options.oldCollectionName+'(\/| *>)', 'g'), 
+    //     '<'+options.newCollectionName+'$1'
+    //   );
+    // }
 
     return content;
   }

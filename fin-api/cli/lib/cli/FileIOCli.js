@@ -8,7 +8,7 @@ class FileIOCli {
 
   init(vorpal) {
     debug.wrapOpts(vorpal
-      .command('io import <collection-id> <root-fs-path> ')
+      .command('io import <root-fcrepo-path> <root-fs-path> ')
       .option('-f --include-filter <path-regex>', 'only import files matching filesystem path regex. supply with slashes and do not include collection name; ex: /part\\/.*/i')
       .option('-s --sub-paths <paths>', 'only import containers under specified nested filesystem paths. Comma separate')
       .option('-p --collection-path <path>', 'import containers to nested fcrepo path within the collection')
@@ -19,7 +19,7 @@ class FileIOCli {
       .action(args => this.import(args)))
 
     debug.wrapOpts(vorpal
-      .command('io export <collection-id> [fs-path]')
+      .command('io export <root-fcrepo-path> [fs-path]')
       .option('-n --clean', 'Completely remove directory if it exists before starting export')
       .option('-i --ignore-binary', 'Ignore binary files, metadata only export')
       .option('-i --ignore-metadata', 'Ignore metadata files, binary only export')
@@ -36,17 +36,15 @@ class FileIOCli {
     let includeFilter = args.options['include-filter'] ? this._paramToRegex(args.options['include-filter']) : null;
     let dryRun = args.options['dry-run'] || false;
     let subPaths = args.options['sub-paths'] ? args.options['sub-paths'].split(',').map(p => p.trim()) : false;
-    let fcrepoPath = args.options['collection-path'] || '';
+    // let fcrepoPath = args.options['collection-path'] || '';
 
     let ignorePost = args.options['skip-post'] || false;
     let ignoreRemoval = args.options['sync-deletes'] ? false : true;
 
     await api.io.import.run({
-      collectionName: args['collection-id'], 
+      fcrepoPath: args['root-fcrepo-path'], 
       fsPath : rootPath, 
-      fcrepoPath,
-      includeFilter, dryRun, subPaths,
-      ignorePost,
+      includeFilter, dryRun,
       ignoreRemoval
     });
   }
@@ -66,7 +64,7 @@ class FileIOCli {
     }
 
     await api.io.export.run({
-      collectionName: args['collection-id'], 
+      fcrepoPath: args['root-fcrepo-path'], 
       fsRoot: dir,
       cleanDir, ignoreBinary, ignoreMetadata,
       includeFilter, dryRun, subPaths

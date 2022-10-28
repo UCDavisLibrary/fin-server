@@ -62,6 +62,13 @@ class HttpCli {
       .action(this.delete.bind(this))
     );
 
+    this._stdOptionWrapper(
+      vorpal.command('http find-delete [path]')
+      .option('-p --permanent', 'Permanently delete resource (remove /fcr:tombstone')
+      .description('Find all resources at path and delete.  Best done as root')
+      .action(this.findDelete.bind(this))
+    );
+
     // head
     this._stdOptionWrapper(
       vorpal.command('http head [path]')
@@ -443,6 +450,61 @@ class HttpCli {
     let response = await api.delete(options);
     this._display_and_exitcode(args, response);
     return {response, options};
+  }
+
+  /**
+   * @method findDelete
+   * @description Searches each sub path for references of fiven path and deletes
+   * if matches.  Good for finding all nested parts of object
+   *
+   * @param {Object} args Command line arguments
+   */
+  async findDelete(args) {
+    let options = this._initOptions(args);
+    if( args.options.permanent ) {
+      options.permanent = true;
+    }
+
+    let parts = ['', ...args.path.split('/').filter(item => item)];
+    let currentPath = [];
+
+    for( let i = 0; i < parts.length; i++ ) {
+      currentPath.push(parts[i]);
+      let p = currentPath.join('/');
+      if( !p.match(/^\//) ) p = '/'+p;
+      
+      let response = await api.get({
+        path: p,
+        headers : {
+          Accept : api.RDF_FORMATS.JSON_LD
+        }
+      });
+
+      if( response.data.statusCode !== 200 ) {
+        console.log(p+': able to access ('+response.data.statusCode+')');
+        continue;
+      }
+
+      let jsonld = JSON.parse(response.data.body)[0];
+      let contains = jsonld['http://www.w3.org/ns/ldp#contains'] || [];
+      let re = new RegExp(api.getConfig().basePath+args.path);
+
+      for( let child of contains ) {
+        if( child['@id'].match(re) ) {
+
+          let delRep = await api.delete({
+            path : child['@id'].split(api.getConfig().basePath)[1],
+            permanent : options.permanent
+          });
+
+          delRep.httpStack.forEach(r => {
+            console.log(r.request.method+' '+r.request.url+' '+r.statusCode);
+          });
+        }
+      }
+    }
+
+    return {options};
   }
 
   /**
