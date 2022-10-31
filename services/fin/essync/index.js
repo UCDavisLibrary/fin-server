@@ -26,13 +26,6 @@ api.setConfig({
 class EsSync {
 
   constructor() {
-    // super('Elasticsearch Sync');
-
-    // this.queue = new JobQueue();
-    // this.queue.process = this.onContainerEvent.bind(this);
-
-    // buffer.on('container-update', e => this.queue.add(e.id, e.data));
-
     activemq.onMessage(e => this.handleMessage(e));
     activemq.connect('essync', '/queue/essync');
 
@@ -67,18 +60,6 @@ class EsSync {
    * 
    */
   async handleMessage(msg) {
-    // check to see if we got a fin reindex event
-    // if( msg.type === this.WEBHOOK_EVENT_TYPES.FIN_EVENT && msg.payload.action === 'reindex' ) {
-    //   return reindexer.run();
-    // }
-
-    // at this point, we are only handling fcrepo events
-    // if( msg.type !== this.WEBHOOK_EVENT_TYPES.FCREPO_EVENT ) return;
-
-    // make sure indexer is using our latest jwt token
-    // MessageServer is automatically keeping the token up to date for us
-    // indexer.token = this.token;
-
     await postgres.log({
       event_id : msg.headers['org.fcrepo.jms.eventID'],
       event_timestamp : new Date(parseInt(msg.headers['org.fcrepo.jms.timestamp'])).toISOString(),
@@ -89,25 +70,11 @@ class EsSync {
         .filter(item => item),
       update_types : msg.body.type
     });
-
-    // for( let i = parts.length; i >= 0; i-- ) {
-    //   path = parts.slice(0, i).join('/').trim();
-    //   if( !path ) continue;
-
-    //   path = '/'+root+'/'+path;
-
-    //   // we don't want anything in a dot path
-    //   if( this.isDotPath(path) ) continue;
-
-    //   // buffer.add('container', path, {path});
-
-    //   // await this.onContainerEvent({path});
-    // }
   }
 
-  isUpdate(e) {
-    return e.update_types.find(item => this.UPDATE_TYPES.UPDATE.includes(item)) ? true : false;
-  }
+  // isUpdate(e) {
+  //   return e.update_types.find(item => this.UPDATE_TYPES.UPDATE.includes(item)) ? true : false;
+  // }
 
   isDelete(e) {
     return e.update_types.find(item => this.UPDATE_TYPES.DELETE.includes(item)) ? true : false;
@@ -158,19 +125,6 @@ class EsSync {
         }
       }
 
-      // we only want collection, application, record types
-      // if( !indexer.isCollection(e.container_types) && 
-      //     !indexer.isRecord(e.path, e.container_types) &&
-      //     !indexer.isApplication(e.path) ) {
-      //   logger.info('Ignoring container '+e.path+'.  Not of type record, collection or application');
-        
-      //   e.action = 'ignored';
-      //   e.message = 'non-fin container type';
-      //   await indexer.remove(e.path);
-      //   await postgres.updateStatus(e);
-      //   return;
-      // }
-
       let response = await indexer.getTransformedContainer(e.path, e.container_types);
       if( response.data.statusCode !== 200 ) {
         logger.info('Container '+e.path+' was publicly inaccessible ('+response.data.statusCode+') from LDP, removing from index. url='+response.data.request.url);
@@ -210,16 +164,6 @@ class EsSync {
     }
   }
 
-  _getGraphById(graphs, path) {
-    if( !Array.isArray(graphs) ) return graphs;
-    for( let graph of graphs ) {
-      if( graph['@id'] === path ) {
-        return graph;
-      }
-    }
-    return null;
-  }
-
   /**
    * @method isDotPath
    * @description given a path string from getPath, does any section of the path start
@@ -245,9 +189,6 @@ class EsSync {
     return null;
   }
 
-  version() {
-    return '';
-  }
 }
 
 module.exports = new EsSync();

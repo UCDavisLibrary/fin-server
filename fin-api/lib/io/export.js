@@ -228,77 +228,27 @@ class ExportCollection {
       options.currentPath += '/fcr:metadata'
     }
 
-    // write ttl
-    let ttl = await api.get({
-      path: options.currentPath,
-      headers : {
-        Prefer : 'return=representation; omit="http://www.w3.org/ns/ldp#PreferMembership http://www.w3.org/ns/ldp#PreferContainment http://fedora.info/definitions/fcrepo#PreferInboundReferences http://fedora.info/definitions/fcrepo#ServerManaged"'
-      }
-    });
+    let mainTTL = await this.getTTLFile(options.currentPath);
 
-    ttl = ttl.last.body
-
-    
-    // if( options.currentPath !== '/collection/'+options.collectionName ) {
-    //   baseRe += '/'+options.collectionName;
-    // }
-
-    // replace the root node, set as self reference
-    let rootNode = '<'+config.host+config.fcBasePath+options.currentPath.replace(/\/fcr:metadata\/?$/, '')+'>';
-    ttl = ttl.split('\n')
-      .map(row => (row.trim() === rootNode) ? '<>' : row)
-      .join('\n');
-
-    let baseUrl = config.host+config.fcBasePath;
-    let urls = ttl.match(new RegExp('<'+baseUrl+'(>|/.*>)', 'g')) || [];
-    // let relCurrentPath = (options.currentPath.replace(new RegExp(options.currentPath, 'g'), '') || '/');
-
-    urls.forEach(url => {
-      console.log('url', url);
-
-      let cleanUrl = url.replace(/^</, '').replace(/>$/, '');
-      let relativePath = path.relative(
-        path.dirname(rootNode.replace(/^</, '').replace(/>$/, '')),
-        path.dirname(cleanUrl)
-      );
-
-      console.log(path.dirname(rootNode.replace(/^</, '').replace(/>$/, '')), path.dirname(cleanUrl))
-
-      console.log('url', url, relativePath);
-      if( relativePath === '' ) relativePath = '.';
-      ttl = ttl.replace(cleanUrl, relativePath);
-
-      // let urlPath = url
-      //   .replace(new RegExp(baseRe), '')
-      //   .replace(/>/, '') || '/';
-
-      // /**
-      //  * If we have to go up a directory to get from current container path to linked container, you must
-      //  * remember the starting point is the parent path. So if you are at container /foo/bar/baz.  The parent
-      //  * 'folder'/'path' /foo/bar holds container baz, and relative paths should be from /foo/bar. 
-      //  */
-      // let containerPath = path.resolve(relCurrentPath, '..');
-      // containerPath = path.relative(containerPath, urlPath);
-      // if( containerPath === '' ) containerPath = '.';
-      // ttl = ttl.replace(url, '<'+containerPath+'>');
-    });
-
-    if( options.ignoreMetadata !== true && utils.ignoreSubPath(options) !== true ) {
-      if( binaryFile ) {
-        console.log('  -> WRITING METADATA: '+path.resolve(cdir, binaryFile+'.ttl'));
-        if( options.dryRun !== true ) {
-          await fs.writeFile(path.resolve(cdir, binaryFile+'.ttl'), ttl);
-        }
-        return;
-      } 
-
-      console.log('WRITING METADATA: '+path.resolve(cdir, '..', dirname+'.ttl'));
+    if( binaryFile ) {
+      console.log('  -> WRITING METADATA: '+path.resolve(cdir, binaryFile+'.ttl'));
       if( options.dryRun !== true ) {
-        await fs.writeFile(path.resolve(cdir, '..', dirname+'.ttl'), ttl);
+        await fs.writeFile(path.resolve(cdir, binaryFile+'.ttl'), mainTTL);
       }
-    } else {
-      console.log('IGNORING: '+options.currentPath);
+      return;
+    } 
+
+    console.log('WRITING METADATA: '+path.resolve(cdir, '..', dirname+'.ttl'));
+    if( options.dryRun !== true ) {
+      await fs.writeFile(path.resolve(cdir, '..', dirname+'.ttl'), mainTTL);
     }
+
+    let aclTTL = await this.getTTLFile(options.currentPath+'/fcr:acl');
+    if( aclTTL ) {
+      console.log(' -> WRITING ACL: '+path.resolve(cdir, 'fcr:acl.ttl'));
+      await fs.writeFile(path.resolve(cdir, 'fcr:acl.ttl'), aclTTL);
+    }
+
 
     // check if this container has children
     let contains = metadata['http://www.w3.org/ns/ldp#contains'];
@@ -317,6 +267,44 @@ class ExportCollection {
       await this.crawl(cOptions, contentTypes);
     }
 
+  }
+
+  async getTTLFile(fcrepoPath) {
+    // write ttl
+    let ttl = await api.get({
+      path: fcrepoPath,
+      headers : {
+        Prefer : 'return=representation; omit="http://www.w3.org/ns/ldp#PreferMembership http://www.w3.org/ns/ldp#PreferContainment http://fedora.info/definitions/fcrepo#PreferInboundReferences http://fedora.info/definitions/fcrepo#ServerManaged"'
+      }
+    });
+
+    if( ttl.error ) return '';
+    if( ttl.last.statusCode !== 200 ) return '';
+
+    ttl = ttl.last.body
+
+    // replace the root node, set as self reference
+    let rootNode = '<'+config.host+config.fcBasePath+fcrepoPath.replace(/\/fcr:metadata\/?$/, '')+'>';
+    ttl = ttl.split('\n')
+      .map(row => (row.trim() === rootNode) ? '<>' : row)
+      .join('\n');
+
+    // find all references to DAMS urls and replace with relative path
+    let baseUrl = config.host+config.fcBasePath;
+    let urls = ttl.match(new RegExp('<'+baseUrl+'(>|/.*>)', 'g')) || [];
+
+    urls.forEach(url => {
+      let cleanUrl = url.replace(/^</, '').replace(/>$/, '');
+      let relativePath = path.relative(
+        path.dirname(rootNode.replace(/^</, '').replace(/>$/, '')),
+        path.dirname(cleanUrl)
+      );
+
+      // if( relativePath === '' ) relativePath = '.';
+      ttl = ttl.replace(cleanUrl, relativePath);
+    });
+
+    return ttl;
   }
 
 }
