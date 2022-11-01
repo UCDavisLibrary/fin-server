@@ -6,10 +6,8 @@ const clone = require('clone');
 const URL = require('./utils/url');
 const config = require('./config');
 const pathutils = require('./utils/path');
-const ACL = require('./acl');
 const IO = require('./io');
 const Service = require('./service');
-const Collection = require('./collection');
 const Application = require('./application');
 const transformUtils = require('./utils/transform');
 const ApiResponse = require('./utils/response');
@@ -125,28 +123,12 @@ class FinApi {
     }
 
     /**
-     * @name acl
-     * @type {class}
-     * 
-     * @description set of functions for interacting with fin webac.
-     */
-    this.acl = new ACL(this);
-
-    /**
      * @name service
      * @type {class}
      * 
      * @description set of functions for interacting with fin services.
      */
     this.service = new Service(this);
-
-    /**
-     * @name collection
-     * @type {Object}
-     * 
-     * @description set of functions for interacting with fin collections
-     */
-    this.collection = new Collection(this);
 
     /**
      * @name application
@@ -457,26 +439,26 @@ class FinApi {
    * 
    * @returns {Promise} ApiResponse
    */
-  async metadata(options) {
-    let req = await this.head(options);
-    if( req.error || req.last.statusCode !== 200 ) return req;
+  // async metadata(options) {
+  //   let req = await this.head(options);
+  //   if( req.error || req.last.statusCode !== 200 ) return req;
     
-    if( !this.isRdfContainer(req.last) ) {
-      options.path += '/fcr:metadata';
-    }
+  //   if( !this.isRdfContainer(req.last) ) {
+  //     options.path += '/fcr:metadata';
+  //   }
 
-    if( !options.headers ) options.headers = {};
-    let hasAccept = false;
-    for( let key in options.headers ) {
-      if( key.toLowerCase().trim() === 'accept' ) {
-        hasAccept = true;
-        break;
-      }
-    }
-    if( !hasAccept ) options.headers['Accept'] = this.RDF_FORMATS.JSON_LD;
+  //   if( !options.headers ) options.headers = {};
+  //   let hasAccept = false;
+  //   for( let key in options.headers ) {
+  //     if( key.toLowerCase().trim() === 'accept' ) {
+  //       hasAccept = true;
+  //       break;
+  //     }
+  //   }
+  //   if( !hasAccept ) options.headers['Accept'] = this.RDF_FORMATS.JSON_LD;
 
-    return this.get(options);
-  }
+  //   return this.get(options);
+  // }
 
   /**
    * @method head

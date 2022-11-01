@@ -15,7 +15,6 @@ const config = {
    * Auth Information
    */
   jwt : env.FCREPO_JWT || '',
-  refreshToken : '',
   username : env.FCREPO_USERNAME || 'fedoraUser',
   password : env.FCREPO_PASSWORD || 'fedoraUser',
 

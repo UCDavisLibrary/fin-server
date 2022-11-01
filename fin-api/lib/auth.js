@@ -24,14 +24,6 @@ class Auth {
       }
     }
 
-    // now we either don't have a jwt or we have an exired jwt
-    
-    // check if we have a refresh token
-    if( config.refreshToken && config.username ) {
-      let success = await this.loginRefreshToken();
-      if( success ) return config.jwt;
-    }
-
     // check if we have a username / password
     if( config.password && config.username ) {
       let success = await this.loginPassword();
@@ -40,29 +32,6 @@ class Auth {
 
     config.jwt = '';
     return '';
-  }
-
-  async loginRefreshToken() {
-    var req = {
-      method : 'POST',
-      uri : `${config.host}/auth/token/verify`,
-      form : {
-        username: config.username, 
-        token: config.refreshToken
-      }
-    }
-
-    var {response, body} = await this.request(req);
-
-    if( response.statusCode >= 200 && response.statusCode < 300 ) {
-      var body = JSON.parse(body);
-
-      if( !body.error ) {
-        config.jwt = body.jwt;
-        return true;
-      }
-    }
-    return false;
   }
 
   async loginPassword() {

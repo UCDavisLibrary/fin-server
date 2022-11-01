@@ -68,14 +68,6 @@ class ImportCollection {
     
     console.log('IMPORT OPTIONS:');
     console.log(options);
-    // console.log('COLLECTION CONFIG:');
-    // console.log(config);
-
-    // collection name we are inserting into.  Either passed via options or provided by config
-    // let newCollectionName = options.collectionName || config.source.collection;
-
-    // root fs path
-    // let fsPath = path.join(options.fsPath, config.source.collection || '.');
 
     // IoDir object for root fs path, crawl repo
     let rootDir = new IoDir(options.fsPath, '/', {
@@ -86,123 +78,10 @@ class ImportCollection {
       collectionName : config.source.collection || options.collectionName
     });
 
-    // set root ignore file if it exists
-    // if( fs.existsSync(path.join(options.fsPath, IGNORE_FILE)) ) {
-    //   rootDir.parseIgnore(
-    //     path.join(options.fsPath, IGNORE_FILE),
-    //     path.join(options.fsPath, '/')
-    //   );
-    // }
 
-    await rootDir.crawl();
-    
-
-
-    // check for current collection status
-    // let response = await api.head({path: '/collection/'+newCollectionName});
-    
-    // check if collection is deleted but tombstone exists
-    // if( response.last.statusCode === 410 ) {
-    //   console.log('Collection tombstone found, removing');
-    //   if( options.dryRun !== true ) {
-    //     try {
-    //       await api.collection.delete({id: newCollectionName});
-    //     } catch(e) { 
-    //       console.log(e);
-    //     }
-    //   }
-    // }
-
-    // create collection if it doesn't exist
-    // if( response.last.statusCode !== 200 ) {
-    //   console.log('Collection doesn\'t exist, creating');
-    //   if( options.dryRun !== true ) {
-    //     let content = null;
-    //     let rootMetadata = path.resolve(options.fsPath, 'index.ttl');
-    //     if( fs.existsSync(rootMetadata) ) {
-    //       content = this.getMetadata(rootMetadata, {newCollectionName, oldCollectionName: config.source.collection});
-    //     }
-
-    //     response = await api.collection.create({
-    //       id: newCollectionName,
-    //       content
-    //     });
-    //     response.httpStack.forEach(item => console.log(item))
-    //     if( response.error ) throw new Error(response.error);
-    //     response = await api.head({path: '/collection/'+newCollectionName});
-    //   }
-    // }
-
-    // let aclFile = path.join(options.fsPath, ACL_FILE);
-    // if( fs.existsSync(aclFile) ) {
-      
-    //   let aclLocation = api.parseLinkHeader(response.last.headers.link).acl[0];
-    //   let aclPath = aclLocation.url.split(newCollectionName)[1];
-      
-    //   console.log('COLLECION ACL: '+aclFile);
-    //   let aclContent = fs.readFileSync(aclFile, 'utf-8');
-    //   response = await api.put({
-    //     path : '/collection/'+newCollectionName+aclPath,
-    //     content : aclContent.replace(/{{collectionName}}/ig, newCollectionName),
-    //     partial : true,
-    //     headers : {
-    //       'content-type' : api.RDF_FORMATS.TURTLE
-    //     }
-    //   });
-    //   console.log(response.last.statusCode, response.last.body);
-    // }
-
-    // add implementation containers
-    // we do not preform this step in importing to a nested collection path
-    // if( options.includeImplementation && !options.fcrepoPath ) {
-    //   let ig = ignore();
-    //   ig.add(CONFIG_FILE);
-    //   rootDir.config.ignore.push({
-    //     rules : ig,
-    //     fsfull : path.join(options.fsPath, CONFIG_DIR)
-    //   });
-    
-    //   let implDir = new IoDir(
-    //     options.fsPath, 
-    //     CONFIG_DIR,
-    //     rootDir.config
-    //   );
-
-    //   await implDir.crawl();
-        
-    //   let implRootDir = new IoDir(fsPath, '/');
-    //   implRootDir.children = [implDir];
-    //   implRootDir.files = [];
-
-    //   // await this.postContainers(newCollectionName, implRootDir, config);
-    //   await this.putContainers(newCollectionName, implRootDir, config.source.collection);
-    // }
+    await rootDir.crawl();    
     
     await this.putContainers(rootDir, config);
-
-    // patch root collection container
-    // if( !options.fcrepoPath ) {
-    //   let rootMetadata = path.resolve(options.fsPath, config.source.collection+'.ttl');
-
-    //   // add the root metadata
-    //   if( fs.existsSync(rootMetadata) ) {
-    //     let p = path.join('/collection', newCollectionName);
-    //     console.log('PUT CONTAINER '+p+'.ttl');
-
-    //     if( this.options.dryRun !== true ) {
-    //       response = await api.put({
-    //         path : p,
-    //         content : this.getMetadata(rootMetadata, {newCollectionName, oldCollectionName: config.source.collection}),
-    //         partial : true,
-    //         headers : {
-    //           'content-type' : api.RDF_FORMATS.TURTLE
-    //         }
-    //       });
-    //       console.log(response.last.statusCode, response.last.body);
-    //     }
-    //   }
-    // }
-
 
     // remove all containers that exist in fedora but not locally on disk
     if( !options.ignoreRemoval ) {

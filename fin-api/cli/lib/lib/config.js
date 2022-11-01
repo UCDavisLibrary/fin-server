@@ -210,6 +210,21 @@ class Config {
     if( process.env.FCREPO_PASSWORD ) {
       this.data.password = process.env.FCREPO_PASSWORD;
     }
+    if( process.env.FCREPO_ADMIN_USERNAME ) {
+      this.data.adminUsername = process.env.FCREPO_ADMIN_USERNAME;
+    }
+    if( process.env.FCREPO_ADMIN_PASSWORD ) {
+      this.data.adminPassword = process.env.FCREPO_ADMIN_PASSWORD;
+    }
+    if( process.env.FCREPO_JWT ) {
+      this.data.password = process.env.FCREPO_JWT;
+    }
+    if( process.env.FCREPO_SUPERUSER ) {
+      this.data.superuser = (process.env.FCREPO_SUPERUSER.toLowerCase().trim() === 'true')
+    }
+    if( process.env.FCREPO_DIRECT_ACCESS ) {
+      this.data.superuser = (process.env.FCREPO_DIRECT_ACCESS.toLowerCase().trim() === 'true')
+    }
 
     api.setConfig(this.data);
   }

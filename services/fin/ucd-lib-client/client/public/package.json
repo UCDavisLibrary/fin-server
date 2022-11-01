@@ -71,9 +71,5 @@
     "fast-deep-equal": "2.0.1"
   },
   "devDependencies": {
-    "@ucd-lib/cork-app-build": "^0.4.1",
-    "raw-loader": "^4.0.2",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
   }
 }
