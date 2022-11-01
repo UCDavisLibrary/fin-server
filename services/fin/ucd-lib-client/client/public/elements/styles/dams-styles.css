@@ -116,7 +116,7 @@ cork-pagination {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 80px;
+  width: 90px;
   margin: var(--spacing-default) auto var(--spacing-sm) auto;
 }
 .dot {
@@ -124,8 +124,8 @@ cork-pagination {
   background-color: var(--color-dams-secondary);
 }
 .header-dots .dot {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
 }
 h2 .fw-light {
   font-weight: var(--fw-regular);

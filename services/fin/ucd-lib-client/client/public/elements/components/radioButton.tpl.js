@@ -1,7 +1,7 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import sharedStylesCss from "../styles/shared-styles";
-import { classMap } from 'lit-html/directives/class-map';
-import { styleMap } from 'lit-html/directives/style-map';
+// import { classMap } from 'lit/directives/class-map';
+// import { styleMap } from 'lit/directives/style-map';
 
 export default function render() { 
 return html`

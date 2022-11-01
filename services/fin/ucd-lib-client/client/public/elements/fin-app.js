@@ -1,11 +1,13 @@
 import {PolymerElement, html} from "@polymer/polymer";
 
 // polymer elements
-import "@polymer/paper-button/paper-button";
-import "@polymer/iron-pages/iron-pages";
-import "@polymer/iron-icons/iron-icons";
-import "@polymer/iron-icons/social-icons";
-import "@polymer/iron-iconset-svg/iron-iconset-svg";
+// import "@polymer/paper-button/paper-button";
+// import "@polymer/iron-pages/iron-pages";
+// import "@polymer/iron-icons/iron-icons";
+// import "@polymer/iron-icons/social-icons";
+// import "@polymer/iron-iconset-svg/iron-iconset-svg";
+
+
 import "@ucd-lib/fin-icons";
 
 // sets globals Mixin and EventInterface
@@ -169,6 +171,8 @@ export class FinApp extends Mixin(PolymerElement)
       return import(/* webpackChunkName: "page-search" */ "./pages/search/app-search");
     } else if( page === 'record' ) {
       return import(/* webpackChunkName: "page-record" */ "./pages/record/app-record");
+    } else if( page === 'browse' ) {
+      return import(/* webpackChunkName: "page-browse" */ "./pages/browse/app-browse");
     } else if( page === 'about' ) {
       return import(/* webpackChunkName: "page-about" */ "./pages/about/app-about");
     }  else if( page === 'collections' ) {

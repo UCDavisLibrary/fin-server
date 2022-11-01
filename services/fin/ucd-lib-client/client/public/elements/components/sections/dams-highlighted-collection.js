@@ -1,5 +1,7 @@
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 import render from "./dams-highlighted-collection.tpl.js";
+// import "@fortawesome/fontawesome-free/js/all.js";
+
 
 /**
  * @class DamsHighlightedCollection

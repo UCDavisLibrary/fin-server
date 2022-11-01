@@ -1,5 +1,5 @@
-import { html } from 'lit-element';
-import { styleMap } from 'lit-html/directives/style-map';
+import { html } from 'lit';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 export default function render() { 
 return html`

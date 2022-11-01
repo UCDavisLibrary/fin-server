@@ -1,7 +1,9 @@
-import { LitElement} from 'lit-element';
+import { LitElement} from 'lit';
 import render from './nav-bar.tpl.js';
-import "@polymer/polymer/polymer-element";
-import "@polymer/iron-icons/iron-icons";
+
+import '@ucd-lib/theme-elements/ucdlib/ucdlib-header/ucdlib-header.js';
+import '@ucd-lib/theme-elements/ucdlib/ucdlib-primary-nav/ucdlib-primary-nav.js';
+// import '@ucd-lib/theme-elements/brand/ucd-theme-primary-nav/ucd-theme-primary-nav.js';
 
 /**
  * @class AppNavBar

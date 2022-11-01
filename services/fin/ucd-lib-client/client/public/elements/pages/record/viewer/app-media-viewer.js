@@ -1,4 +1,4 @@
-import { LitElement } from "lit-element"
+import { LitElement } from "lit"
 import render from "./app-media-viewer.tpl"
 
 import '@polymer/iron-pages'

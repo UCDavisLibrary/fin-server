@@ -1,5 +1,8 @@
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 import render from "./dams-hero.tpl.js";
+
+import '@ucd-lib/theme-elements/brand/ucd-theme-header/ucd-theme-header.js';
+import '@ucd-lib/theme-elements/brand/ucd-theme-primary-nav/ucd-theme-primary-nav.js';
 
 import "./dams-watercolor";
 
@@ -72,7 +75,7 @@ export default class DamsHero extends LitElement {
       let i = Math.floor(Math.random() *  setCt);
       src = this.srcOptions[i];
     }
-    this._selectedSrc = src;
+    this._selectedSrc = '/images/defaults/annual-winter-sale1952.jpg' ; //src; // todo later shuffle from curated list
     this.dispatchEvent(this._srcChange);
   }
 

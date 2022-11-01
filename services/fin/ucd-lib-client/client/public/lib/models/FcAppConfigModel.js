@@ -17,7 +17,7 @@ class FcAppConfigModel extends BaseModel {
 
     this.byId = {};
     
-    if( !APP_CONFIG.fcAppConfig ) {
+    if( !APP_CONFIG.fcAppConfig || !APP_CONFIG.fcAppConfig.length ) {
       APP_CONFIG.fcAppConfig = {error: true};
     }
 

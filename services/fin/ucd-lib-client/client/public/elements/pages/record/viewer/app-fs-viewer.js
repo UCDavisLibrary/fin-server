@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import render from "./app-fs-viewer.tpl.js"
 import "../../../utils/app-virtual-scroller"
 import "@polymer/iron-icons/editor-icons"

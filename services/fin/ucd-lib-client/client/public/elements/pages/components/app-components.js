@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 import render from "./app-components.tpl.js";
 
 import "../../components/graphics/dams-watercolor";
@@ -6,7 +6,7 @@ import "../../components/graphics/dams-watercolor-overlay";
 import "../../components/graphics/dams-hero";
 import "../../components/cards/dams-collection-card";
 import "../../components/filterButton";
-import "../../components/icon";
+// import "../../components/icon";
 import "../../components/nav-bar";
 import "../../components/radioButton";
 import "../../components/search-box";

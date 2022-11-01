@@ -1,7 +1,7 @@
-import { LitElement} from 'lit-element';
+import { LitElement} from 'lit';
 // import "/../node_modules/@polymer/iron-dropdown/iron-dropdown";
 import render from './filterButton.tpl.js';
-import "./icon";
+// import "./icon";
 
 /**
  * @class AppFilterButton

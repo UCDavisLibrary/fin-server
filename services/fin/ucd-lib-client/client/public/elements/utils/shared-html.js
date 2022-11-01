@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 
 /**
  * @class SharedHtml
@@ -15,6 +15,8 @@ class SharedHtml {
   headerDots(){
     return html`
       <div class="header-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
         <div class="dot"></div>
         <div class="dot"></div>
         <div class="dot"></div>

@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import { sharedStyles } from "../styles/shared-styles";
 
 export default function render() { 
@@ -73,7 +73,7 @@ return html`
   <div class="header-layout">
     <div><slot name="header-icon"></slot></div>
     <div>
-      <h1><span class="regular-wt">Browse</span> <span>${this.label}s</span></h1>
+      <h1>Browse <span>${this.label}s</span></h1>
     </div>
 
     <div class="sort">
