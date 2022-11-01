@@ -104,7 +104,7 @@
   .site-name-search {
     display: none;
   }
-  @media( max-width: 755px ) {
+  @media( max-width: 754px ) {
    .searchContainer {
       padding-top: 1rem;
     }
@@ -113,7 +113,16 @@
       text-align: center;
       margin-bottom: 1rem;
     }
-
+    app-search-box {
+      width: 80%;
+      margin: 0 auto;
+    }
+  }
+  @media( max-width: 450px ) {
+    app-search-box {
+      width: 60%;
+      margin: 0 auto;
+    }
   }
 </style>
 

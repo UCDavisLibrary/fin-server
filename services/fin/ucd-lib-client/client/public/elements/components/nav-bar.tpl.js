@@ -116,51 +116,9 @@ return html`
   }
 </style>
 
-<!-- <div class="nav">
-  <h4><a href="/">Digital Collections</a></h4>
-  <div class="links">
-    ${this.choices.map((choice, index) => html`
-      <div class="btn" 
-        @mouseover="${this._onBtnMouseOver}" 
-        @mouseout="${this._onBtnMouseOut}"
-        @keydown="${this._onBtnKeyDown}"
-        @focusout="${this._onFocusOut}"
-        index="${index}"
-        tabindex="${choice.href ? -1 : 0}">
-        ${choice.href ? 
-          html`<a class="parallelogram" href="${choice.href}"><span>${choice.text}</span></a>` :
-          html`<div class="parallelogram" 
-              aria-haspopup="true"
-              @click="${this._onBtnClick}" 
-              index="${index}">
-              <span>${choice.text}</span>
-            </div>`
-        }
-
-        <ul class="dropdown-content" 
-          @click="${this._onDropdownClick}"
-          role="menu"
-          ?visible="${choice.dropdownVisible}">
-          ${choice.dropdown ? 
-              choice.dropdown.map((option) => 
-                html `<li role="menuitem" tabindex="-1"><a href="${option.href}">${option.text}</a></li>`
-              ): 
-                html ``
-          }
-        </ul>
-      </div>
-    `)}
-  </div>
-  
-  
-  <div style="flex:1"></div>
-  <div class="ucd-logo-container">
-    <a href="https://ucdavis.edu"><img src="/images/logos/ucd-logo-white.svg" /></a>
-  </div>
-</div> -->
-<ucd-theme-header-alt site-name="Digital Collections">
-    <ucd-theme-primary-nav>
-      <ul link-text="Browse" href="/browse">
+<ucdlib-header site-name="Digital Collections">
+    <ucdlib-primary-nav>
+      <ul link-text="Browse" href="/">
         <li><a href="/browse/collections">Collections</a></li>
         <li><a href="/browse/items">Items</a></li>
         <li><a href="/browse/creators">Creators</a></li>
@@ -169,6 +127,6 @@ return html`
       </ul>
       <a href="/about">About</a>
       <a href="#">FAQ</a>
-    </ucd-theme-primary-nav>
-  </ucd-theme-header-alt>
+    </ucdlib-primary-nav>
+  </ucdlib-header>
 `;}
