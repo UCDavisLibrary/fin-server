@@ -1,12 +1,5 @@
-import {PolymerElement, html} from "@polymer/polymer";
-
-// polymer elements
-// import "@polymer/paper-button/paper-button";
-// import "@polymer/iron-pages/iron-pages";
-// import "@polymer/iron-icons/iron-icons";
-// import "@polymer/iron-icons/social-icons";
-// import "@polymer/iron-iconset-svg/iron-iconset-svg";
-
+import { LitElement, html } from 'lit';
+import render from "./fin-app.tpl.js";
 
 import "@ucd-lib/fin-icons";
 
@@ -15,7 +8,6 @@ import "@ucd-lib/cork-app-utils";
 
 // styles
 import "./styles/shared-styles";
-
 
 // main library
 import '../lib';
@@ -32,75 +24,45 @@ import "./utils/app-browse-by";
 import "./components/graphics/dams-watercolor-overlay";
 
 
-import AppStateInterface from "./interfaces/AppStateInterface";
-import AuthInterface from "./interfaces/AuthInterface";
-import CollectionInterface from "./interfaces/CollectionInterface";
-import RecordInterface from "./interfaces/RecordInterface";
+// import AppStateInterface from "./interfaces/AppStateInterface";
+// import AuthInterface from "./interfaces/AuthInterface";
+// import CollectionInterface from "./interfaces/CollectionInterface";
+// import RecordInterface from "./interfaces/RecordInterface";
 
-import template from "./fin-app.html";
-
-export class FinApp extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface, AuthInterface, CollectionInterface, RecordInterface) {
-
-  // Define a string template instead of a `<template>` element.
-  static get template() {
-    return html([template]);
-  }
+export class FinApp extends Mixin(LitElement)
+  .with(LitCorkUtils) {  
 
   static get properties() {
     return {
-      page : {
-        type : String,
-        value : 'loading'
-      },
-      appRoutes : {
-        type : Array,
-        value : () => APP_CONFIG.appRoutes
-      },
-      showSearchHeader : {
-        type : Boolean,
-        value : false
-      },
-      showBreadcrumb : {
-        type : Boolean,
-        value : false
-      },
-      drawerOpen : {
-        type : Boolean,
-        value : false
-      },
-      localBuildTime : {
-        type: String
-      },
-      appVersion : {
-        type: String
-      },
-      clientTag : {
-        type: String
-      },
-      clientHash : {
-        type: String
-      },
-      coreTag : {
-        type: String
-      },
-      coreHash : {
-        type: String
-      },
-      showVersion : {
-        type: Boolean
-      }
+      page : {type: String},
+      appRoutes : {type: Array},
+      showSearchHeader : {type: Boolean},
+      showBreadcrumb : {type : Boolean},
+      drawerOpen : {type : Boolean},
+      localBuildTime : {type: String},
+      appVersion : {type: String},
+      clientTag : {type: String},
+      clientHash : {type: String},
+      coreTag : {type: String},
+      coreHash : {type: String},
+      showVersion : {type: Boolean}
     };
   }
 
   constructor() {
     super();
     this.active = true;
-
+    this.render = render.bind(this);
     this.SEARCH_HEADER_PAGES = ['about', 'record', 'search', 'collections', 'components', 'browse'];
     this.BREADCRUMB_PAGES = ['record', 'search', 'collections'];
 
     this.loadedPages = {};
+
+    this.page = 'loading';
+    this.appRoutes = APP_CONFIG.appRoutes;
+    this.showSearchHeader = false;
+    this.showBreadcrumb = false;
+    this.drawerOpen = false;
 
     // App Version variables
     this.showVersion = APP_CONFIG.env.APP_VERSION.match(/(alpha|beta|rc)/) ? true : false;
@@ -113,7 +75,9 @@ export class FinApp extends Mixin(PolymerElement)
       this.localBuildTime = new Date(APP_CONFIG.env.BUILD_TIME).toISOString().replace('T', ' ');
     } else {
       this.localBuildTime = 'Not set';
-    }  
+    }
+    
+    this._injectModel('AppStateModel', 'AuthModel', 'CollectionModel', 'RecordModel');
   }
 
   ready() {

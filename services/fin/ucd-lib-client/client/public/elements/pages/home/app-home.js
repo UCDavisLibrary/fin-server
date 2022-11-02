@@ -8,9 +8,6 @@ import "@ucd-lib/theme-elements/ucdlib/ucdlib-icon/ucdlib-icon";
 import '@ucd-lib/theme-elements/ucdlib/ucdlib-icons/ucdlib-icons';
 import '../../utils/app-icons';
 
-// import "@polymer/iron-icons";
-
-// import "../../components/icon";
 import "../../components/search-box";
 import "../../components/nav-bar";
 import "../../components/filterButton";
@@ -27,13 +24,6 @@ import render from './app-home.tpl.js';
 import RecordInterface from "../../interfaces/RecordInterface"; 
 import AppStateInterface from "../../interfaces/AppStateInterface";
 import CollectionInterface from "../../interfaces/CollectionInterface";
-
-
-// import "@fortawesome/fontawesome-free/js/all.js";
-// import "@fortawesome/fontawesome-free/css/regular.css";
-// import "@fortawesome/fontawesome-free/scss/regular.scss";
-
-
 
 /**
  * @class AppHome
@@ -83,7 +73,6 @@ class AppHome extends Mixin(LitElement)
    * @description Lit lifecycle method called when element is first updated
    */
   async firstUpdated() {
-    debugger;
     // move iconset to head.. this.shadowRoot?
     // const iconset = document.querySelector('ucdlib-iconset');
     // document.head.appendChild(iconset);
@@ -106,7 +95,6 @@ class AppHome extends Mixin(LitElement)
 
     // Get hero image options
     this.heroImgOptions = this.FcAppConfigModel.getHomepageHeroOptions();
-    debugger;
 
     this.requestUpdate();
     

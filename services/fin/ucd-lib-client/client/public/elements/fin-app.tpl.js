@@ -1,3 +1,6 @@
+import { html } from 'lit';
+export default function render() {
+  return html`
 <style include="shared-styles">
   :host {
     display: block;
@@ -114,27 +117,26 @@
   }
 </style>
 
-<app-route app-routes="[[appRoutes]]"></app-route>
+<app-route app-routes="${this.appRoutes}"></app-route>
 
-<app-search-header hidden$="[[!showSearchHeader]]"></app-search-header>
-<!-- <app-search-breadcrumb hidden$="[[!showBreadcrumb]]"></app-search-breadcrumb> -->
+<app-search-header hidden="${!this.showSearchHeader}"></app-search-header>
 
 <div class="mobile-filters-layout">
   <div id="outerDrawer">
-    <div id="drawer" open$="[[drawerOpen]]">
-      <app-filters-panel on-toggle-drawer="_toggleDrawer"></app-filters-panel>
+    <div id="drawer" ${this.drawerOpen ? 'open' : ''}>
+      <app-filters-panel on-toggle-drawer="${this._toggleDrawer}"></app-filters-panel>
     </div>
-    <div id="drawer-background" open$="[[drawerOpen]]" on-click="_toggleDrawer"></div>
+    <div id="drawer-background" ${this.drawerOpen ? 'open' : ''} on-click="${this._toggleDrawer}"></div>
   </div>
 
   <div class="main-content">
-    <iron-pages selected="[[page]]" attr-for-selected="id" selected-attribute="visible">
-      <div id="loading">
+    <iron-pages selected="${this.page}" attr-for-selected="id" selected-attribute="visible">
+      <!--<div id="loading" hidden="${this.page}">
         <img src="/images/logos/logo-icon.svg" style="max-width: 128px" />
         <div class="loading-dots">
           <h1 class="dot one">.</h1><h1 class="dot two">.</h1><h1 class="dot three">.</h1>
         </div>
-      </div>
+      </div>-->
       <app-home id="home"></app-home>
       <app-search id="search"></app-search>
       <app-record id="record"></app-record>
@@ -198,15 +200,15 @@
             <li><app-auth-footer></app-auth-footer></li>
           </ul>
         </ucdlib-site-footer-column>
-        <div insert-into="below-address" hidden?="[[showVersion]]">
+        <div insert-into="below-address" hidden="${this.showVersion}">
           <div><b>Build Information</b></div>
-          <div>[[appVersion]]</div>
-          <div>Build Time: [[localBuildTime]]</div>
-          <div>fin-server: [[coreTag]] @ [[coreHash]]</div>
-          <div>fin-ucd-lib-server: [[clientTag]] @ [[clientHash]]</div>
+          <div>${this.appVersion}</div>
+          <div>Build Time: ${this.localBuildTime}</div>
+          <div>fin-server: ${this.coreTag} @ ${this.coreHash}</div>
+          <div>fin-ucd-lib-server: ${this.clientTag} @ ${this.clientHash}</div>
         </div>
       </ucdlib-site-footer>
     </div>
   </div>
 </div>
-
+`;}
