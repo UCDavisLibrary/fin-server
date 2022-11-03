@@ -107,6 +107,11 @@ class ProxyModel {
 
     // this is a hack for browser caching, see method details
     this._setNoCacheHeaders(proxyRes);
+
+    // hack for content-disposition using f6 inline flag
+    if( req.query.inline === 'true' && proxyRes.headers['content-disposition'] ) {
+      proxyRes.headers['content-disposition'] = proxyRes.headers['content-disposition'].replace(/^attachment;/, 'inline;');
+    }
   }
 
   /**
