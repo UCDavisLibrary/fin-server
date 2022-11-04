@@ -258,8 +258,8 @@ class ImportCollection {
    * @param {IoDir} dir 
    */
   async putAGContainers(dir) {
-    if( dir.archivalGroup === dir ) {
-      await this.putContainer(dir, dir);
+    if( dir.archivalGroup === dir || dir.metadata) {
+      await this.putContainer(dir);
     }
     
     if( !dir.getFiles ) return;
@@ -267,7 +267,7 @@ class ImportCollection {
     let files = await dir.getFiles();
 
     for( let container of files.containers ) {
-      await this.putContainer(container, dir);
+      await this.putContainer(container);
     }
 
     for( let binary of files.binaries ) {
@@ -345,7 +345,6 @@ class ImportCollection {
         metadata,
         this.createGitContainer(container.gitInfo)
       ];
-      console.log(metadata);
     }
     
 
@@ -466,7 +465,6 @@ class ImportCollection {
           metadata,
           this.createGitContainer(binary.gitInfo)
         ];
-        console.log(metadata);
       }
 
       response = await api.put({
@@ -495,7 +493,6 @@ class ImportCollection {
 
   async isMetaShaMatch(currentJsonLd, newJsonld, file) {
     let localSha = await api.sha(file);
-
     if( currentJsonLd[METADATA_SHA] && currentJsonLd[METADATA_SHA][0]['@value'] === localSha ) {
       return true;
     }

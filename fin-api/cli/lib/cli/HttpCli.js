@@ -472,7 +472,7 @@ class HttpCli {
       currentPath.push(parts[i]);
       let p = currentPath.join('/');
       if( !p.match(/^\//) ) p = '/'+p;
-      
+
       let response = await api.get({
         path: p,
         headers : {
@@ -488,6 +488,8 @@ class HttpCli {
       let jsonld = JSON.parse(response.data.body)[0];
       let contains = jsonld['http://www.w3.org/ns/ldp#contains'] || [];
       let re = new RegExp(api.getConfig().basePath+args.path);
+
+      console.log(p+': checking for matches');
 
       for( let child of contains ) {
         if( child['@id'].match(re) ) {

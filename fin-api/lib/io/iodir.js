@@ -36,10 +36,11 @@ class IoDir {
    * @param {Array} archivalGroups list of all known ArchivalGroups
    */
   constructor(fsroot, subPath='', config={}, archivalGroup, archivalGroups=[]) {
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0); 
-    process.stdout.write('Crawling: '+subPath);
-
+    if( process.stdout ) {
+      // process.stdout.clearLine();
+      // process.stdout.cursorTo(0); 
+      // process.stdout.write('Crawling: '+subPath);
+    }
 
     if( !subPath.match(/^\//) ) {
       subPath = '/'+subPath;
@@ -106,6 +107,10 @@ class IoDir {
       this.metadata = folderMetadata.metadata;
       this.containerFile = folderMetadata.filePath;
       await this.handleArchivalGroup();
+
+      if( !this.fcrepoPath ) {
+        this.fcrepoPath = this.getFcrepoPath(path.resolve(this.subPath, '..'), this.id);
+      }
     }
 
     let children = await fs.readdir(this.fsfull);
@@ -129,7 +134,7 @@ class IoDir {
           if( metadataFile.metadata !== null ) {
             let metadata = metadataFile.metadata;
             let gitInfo = await git.info(this.fsroot, {cwd: this.fsroot});
-            gitInfo.file = fileObject.containerFile.replace(gitInfo.rootDir, '');
+            gitInfo.file = metadataFile.filePath.replace(gitInfo.rootDir, '');
             gitInfo.rootDir = this.fsfull.replace(gitInfo.rootDir, '');
 
             let id = this.getIdentifier(metadata) || fileInfo.base;
