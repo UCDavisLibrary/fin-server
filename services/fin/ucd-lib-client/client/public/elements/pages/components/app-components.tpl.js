@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import { sharedStyles } from "../../styles/shared-styles";
 import SharedHtml from '../../utils/shared-html';
 
@@ -122,7 +122,7 @@ return html`
       <app-filter-button><div slot="filter-button-text">Filter4</div></app-filter-button> 
   </section>
 
-  <section>
+  <!-- <section>
   <h2>Icon</h2>
   ${ SharedHtml.headerDots() }
   <p>A specific icon for DAMS creation.</p>
@@ -133,7 +133,7 @@ return html`
   <p>Size Icon for a smaller size with <code>size-icon-svg='lg' size="lg"</code></p>
   <app-icons id="option" icon="iron-account-box" theme-color='secondary' size-icon-svg='lg' size="lg"><div slot="icon-text">Creators</div></app-icons>
   <app-icons id="option" icon="iron-create" theme-color='secondary' size-icon-svg='lg' size="lg"><div slot="icon-text">Formats</div></app-icons>
-  </section>
+  </section> -->
 
   <section>
   <h2>Navigation Bar</h2>

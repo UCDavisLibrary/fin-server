@@ -1,5 +1,5 @@
-import { html } from 'lit-element';
-import { styleMap } from 'lit-html/directives/style-map';
+import { html } from 'lit';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 export default function render() { 
 return html`
@@ -24,23 +24,9 @@ return html`
   }
   dams-watercolor {
     display: block;
-    height: 80px;
+    height: 8rem;
   }
-  @media (min-width: 767px) {
-    dams-watercolor {
-      height: 120px;
-    }
-  }
-  @media (min-width: 1060px) {
-    dams-watercolor {
-      height: 150px;
-    }
-  }
-  @media (min-width: 1601px) {
-    dams-watercolor {
-      height: 200px;
-    }
-  }
+  
 </style>
 <div class="container" style="${styleMap(this.getContainerStyles())}">
   <slot></slot>

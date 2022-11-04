@@ -1,10 +1,25 @@
-import { html } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map';
+import { html, css } from 'lit';
+import { classMap } from 'lit-html/directives/class-map.js';
+import linksCss from "@ucd-lib/theme-sass/1_base_html/_links.css";
+// import index1Css from "@ucd-lib/theme-sass/1_base_html/_index.css";
+import buttonsCss from "@ucd-lib/theme-sass/2_base_class/_buttons.css";
+import headingsCss from "@ucd-lib/theme-sass/2_base_class/_headings.css";
+// import index2Css from "@ucd-lib/theme-sass/2_base_class/_index.css";
+// import index3Css from "@ucd-lib/theme-sass/3_objects/_index.css";
+// import index4Css from "@ucd-lib/theme-sass/4_component/_index.css";
+// import index5Css from "@ucd-lib/theme-sass/5_layout/_index.css";
+// import index6Css from "@ucd-lib/theme-sass/6_utility/_index.css";
+// import faCss from "@fortawesome/fontawesome-free/css/all.css";
+// console.log(faCss);
 
 export default function render() { 
 return html`
 
 <style>
+  /* ${css`faCss`} */
+  ${linksCss}
+  ${buttonsCss}
+  ${headingsCss}
   :host {
     display: block;
   }
@@ -35,6 +50,7 @@ return html`
   .text-container {
     flex-grow: 1;
     align-self: flex-start;
+    padding-left: 2rem;
   }
   .title {
     color: var(--color-h3);
@@ -55,8 +71,9 @@ return html`
     font-weight: var(--fw-p);
     margin-bottom: 40px;
   }
-  .divider {
-    width: 0;
+  .btn--alt {
+    padding-top: 0;
+    padding-bottom: 0;
   }
   @media (min-width: 767px) {
     .container {
@@ -69,10 +86,6 @@ return html`
       flex-grow: unset;
       width: calc(50% - 20px);
       min-width: calc(50% - 20px);
-    }
-    .divider {
-      width: 40px;
-      min-width: 40px;
     }
     .title {
       margin-top: 0;
@@ -87,10 +100,6 @@ return html`
       width: calc(50% - 50px);
       min-width: calc(50% - 50px);
     }
-    .divider {
-      width: 100px;
-      min-width: 100px;
-    }
   }
 
   @media (min-width: 1601px) {
@@ -101,17 +110,30 @@ return html`
 
   <div class="img-flex">
     <div class="img-container">
-      ${this._imgSrc ? html`
+      <!-- ${this._imgSrc ? html`
         <img src="${this._imgSrc}">
-      ` : html``}
+      ` : html``} -->
+      <img src="/images/eastman-demo.jpeg">
     </div>
   </div>
-  <div class="divider"></div>
-  <div class="text-container">
+
+  <!-- <div class="text-container">
     <div class="title" role="heading" aria-level="2">${this._collectionTitle}</div>
     <div class="subtitle">${this._itemCt} item${this._itemCt === 1 ? "" : "s"}</div>
     <div class="description">${this._collectionDesc}</div>
-    <a href="${this._href}">Placeholder for button</a>
+    <a href="${this._href}" class="btn--alt btn--round">Explore this collection</a>
+  </div> -->
+
+  <div class="text-container">
+    <h3 class="heading--primary">Eastman's Originals</h3>
+    <div class="subtitle">13,258 items</div>
+    <div class="description">
+      Photographs, negatives and postcards captured by Jervie Henry Eastman for a wide
+      variety of northern California locations and events, including dam construction, logging, mining, food processing,
+      and commmunity buildings and activities from circa 1890 - 1960.
+    </div>
+    <a href="${this._href}" class="btn--alt btn--round">Explore this collection</a>
   </div>
+
 </div>
 `;}

@@ -2,7 +2,7 @@
 // https://github.com/google/shaka-player/
 // https://github.com/google/shaka-player/tree/master/docs/tutorials
 
-import { LitElement } from "lit-element"
+import { LitElement } from "lit"
 import render from "./app-video-viewer.tpl.js"
 
 import "@ucd-lib/cork-app-utils"

@@ -1,7 +1,7 @@
 // https://github.com/ucd-library/pgdm-ui/tree/master/app/elements/pages/connect
 
-import { html } from 'lit-element';
-import { repeat } from 'lit-html/directives/repeat';
+import { html } from 'lit';
+import { repeat } from 'lit-html/directives/repeat.js';
 
 export default function render() { 
 return html`

@@ -1,4 +1,4 @@
-import { html, css } from 'lit-element';
+import { html, css } from 'lit';
 
 export function styles() {
   const h2MarginBottom = css`var(--spacing-half)`;
@@ -11,13 +11,13 @@ export function styles() {
       }
       a {
         color: var(--color-white);
-        text-decoration: none;
       }
       .kt {
         white-space: nowrap;
-      }
-      .plain {
         text-decoration: none;
+      }
+      .underline {
+        text-decoration: underline;
       }
       h2 {
         color: var(--color-white);
@@ -27,8 +27,9 @@ export function styles() {
       }
       #lib-logo {
         margin-bottom: ${h2MarginBottom};
-        height: 40px;
-        min-height: 40px;
+        height: 60px;
+        min-height: 60px;
+        padding-bottom: 1rem;
       }
       #section-columns {
         display: flex;
@@ -39,6 +40,7 @@ export function styles() {
       #section-columns > * {
         margin: 0 var(--spacing-default) var(--spacing-default);
         flex-grow: 1;
+        padding: 4rem 3rem;
       }
       ucdlib-site-footer-column ul {
         margin: 0;
@@ -47,7 +49,6 @@ export function styles() {
       ucdlib-site-footer-column li {
         display: block;
         margin-bottom: 0;
-        text-transform: lowercase;
       }
       ucdlib-site-footer-column a {
         display: block;
@@ -141,10 +142,9 @@ return html`
         UC Davis Library <br>
         100 NW Quad <br>
         University of California, Davis <br>
-        Davis, CA 95616 <br>
-        <a href="tel:+1-530-752-8792" class="plain">(530) 752-8792</a><br>
-        <br>
-        <a href="mailto:library@ucdavis.edu" class="plain">library@ucdavis.edu</a>
+        Davis, CA 95616 <br><br>
+        <a href="tel:+1-530-752-8792" class="underline">530-752-8792</a><br><br>
+        <a href="mailto:library@ucdavis.edu" class="underline">library@ucdavis.edu</a>
       </address>
       <div id="below-address" shadow-anchor="below-address"></div>
     </div>

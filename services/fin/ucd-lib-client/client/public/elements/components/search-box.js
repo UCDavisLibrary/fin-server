@@ -1,7 +1,9 @@
-import { LitElement} from 'lit-element';
+import { LitElement} from 'lit';
 import render from './search-box.tpl.js';
-import "@polymer/polymer/polymer-element";
-import "@polymer/iron-icons/iron-icons";
+// import "@polymer/polymer/polymer-element";
+// import "@polymer/iron-icons/iron-icons";
+import "@ucd-lib/theme-elements/ucdlib/ucdlib-icon/ucdlib-icon";
+import '../utils/app-icons';
 
 /**
  * @class AppSearchBox

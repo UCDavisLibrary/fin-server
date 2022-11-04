@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 import render from "./app-browse-by.tpl.js";
 
 import "@ucd-lib/cork-pagination";
@@ -44,6 +44,16 @@ export default class AppBrowseBy extends Mixin(LitElement)
     this.reset();
 
     this._injectModel('BrowseByModel', 'AppStateModel', 'RecordModel');
+  }
+
+  firstUpdated() {
+    if( this.label.toLowerCase() === 'collection' ) {
+      this.sortByOptions = [
+        {label : 'A-Z', type: 'key', dir : 'asc', selected: true},
+        {label : 'Recent', dir : 'dsc', type: 'key'},
+        {label : 'Item Quantity', dir : 'dsc', type: 'count'}
+      ];
+    }
   }
 
   /**

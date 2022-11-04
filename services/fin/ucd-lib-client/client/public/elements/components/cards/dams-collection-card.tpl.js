@@ -1,5 +1,5 @@
-import { html } from 'lit-element';
-import { styleMap } from 'lit-html/directives/style-map';
+import { html } from 'lit';
+// import { styleMap } from 'lit/directives/style-map';
 
 export default function render() { 
 return html`
@@ -59,8 +59,54 @@ return html`
     width: 100%;
   }
 
+  .marketing-highlight {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .marketing-highlight:hover .marketing-highlight__image .u-background-image {
+    transform: scale(1.1);
+  }
+
+  .marketing-highlight__image {
+    position: relative;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+
+  .marketing-highlight__image .u-background-image {
+    transition: transform .3s ease-in-out;
+  }
+
+  .marketing-highlight__title {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+
+  .marketing-highlight__items {
+    font-size: 1rem;
+    color: var(--color-aggie-blue-80);
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0.5rem 0 1rem;
+  }
+
+  .u-background-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .aspect--4x3 {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding-top: 75%;
+  }
+
 </style>  
-<div class="container"><a href="${this.href}">
+
+<!-- <div class="container"><a href="${this.href}">
   <div class="head">
     <div class="img-container">
       ${this.imgSrc ? html`
@@ -75,7 +121,20 @@ return html`
   <div class="footer">
     <div class="gold-dots"></div>
   </div></a>
+</div> -->
 
 
-</div>
+<a href="" class="marketing-highlight category-brand--secondary u-space-mb o-box">
+  <div class="marketing-highlight__image">
+    <div class="aspect--4x3 u-background-image" role="img" aria-label="" style="background-image:url(https://stage.library.ucdavis.edu/wp-content/uploads/2022/09/amerine-menu-d7764v_16-9.jpg);">
+  </div>
+  </div>
+  <div class="marketing-highlight__body">
+    <h4 class="marketing-highlight__title">Amerine (Maynard) Menu Collection</h4>
+    <p class="marketing-highlight__items">1513 items</p>
+  </div>
+</a>
+
+
+
 `;}

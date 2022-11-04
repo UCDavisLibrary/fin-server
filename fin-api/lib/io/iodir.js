@@ -4,21 +4,54 @@ const ignore = require('ignore');
 const pathutils = require('../utils/path');
 const transform = require('../utils/transform');
 const ioutils = require('./utils');
+const git = require('./git.js');
+const config = require('../config');
 
 const IGNORE_FILE = '.finignore';
 const ARCHIVAL_GROUP = 'http://fedora.info/definitions/v4/repository#ArchivalGroup';
+const COLLECTION = 'http://schema.org/Collection';
+const IDENTIFIER = 'http://schema.org/identifier';
+const IS_PART_OF = 'http://schema.org/isPartOf';
+
+const INDIRECT_CONTAINER = 'http://www.w3.org/ns/ldp#IndirectContainer';
+const MEMBERSHIP_RESOURCE = 'http://www.w3.org/ns/ldp#membershipResource';
+const IS_MEMBER_OF_RELATION = 'http://www.w3.org/ns/ldp#isMemberOfRelation';
+const INSERTED_CONTENT_RELATION = 'http://www.w3.org/ns/ldp#insertedContentRelation';
 // https://www.npmjs.com/package/ignore
+
+const ROOT_FCR_PATHS = {
+  COLLECTION : '/collection',
+  ITEM : '/item'
+}
 
 class IoDir {
 
-  constructor(fsroot, subPath, config={}, archivalGroup) {
+  /**
+   * 
+   * @param {String} fsroot 
+   * @param {String} subPath for child directories 
+   * @param {Object} config
+   * @param {Object} config.fcrepoPathType id or subpath. 
+   * @param {IoDir} archivalGroup reference to IoDir object for ArchivalGroup 
+   * @param {Array} archivalGroups list of all known ArchivalGroups
+   */
+  constructor(fsroot, subPath='', config={}, archivalGroup, archivalGroups=[]) {
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0); 
+    process.stdout.write('Crawling: '+subPath);
+
+
     if( !subPath.match(/^\//) ) {
       subPath = '/'+subPath;
     }
 
+    if( !config.fcrepoPathType ) config.fcrepoPathType = 'id';
+
     this.archivalGroup = archivalGroup;
+    this.archivalGroups = archivalGroups;
     this.fsroot = fsroot;
     this.subPath = subPath;
+    this.fcrepoPath = '';
     this.fsfull = path.join(this.fsroot, this.subPath);
 
     this.config = config;
@@ -31,8 +64,13 @@ class IoDir {
 
     let parts = subPath.split('/');
     this.id = parts.pop();
+    this.pathName = this.id;
 
     this.parentSubPath = parts.join('/');
+
+
+    this.containers = [];
+    this.binaries = [];
   }
 
   _ioDirOptsToUtilsOpts(subPath) {
@@ -60,21 +98,56 @@ class IoDir {
     }
 
     this.hasMetadata = false;
-    let folderMetadataFile = path.resolve(this.fsfull, '..', this.id+'.ttl');
+
+    let folderMetadata = await this.getMetadata(this.fsfull);
     this.metadata = null;
-    if( fs.existsSync(folderMetadataFile) ) {
+    if( folderMetadata.metadata !== null ) {
       this.hasMetadata = true;
-      this.metadata = (await this.getMetadata(folderMetadataFile))[0];
-      
-      if( this.metadata && this.metadata['@type'] && this.metadata['@type'].includes(ARCHIVAL_GROUP) ) {
-        this.archivalGroup = this;
-      }
+      this.metadata = folderMetadata.metadata;
+      this.containerFile = folderMetadata.filePath;
+      await this.handleArchivalGroup();
     }
 
     let children = await fs.readdir(this.fsfull);
     for( let child of children ) {
       let p = path.join(this.fsfull, child);
       if( !fs.statSync(p).isDirectory() ) {
+
+        // if this is a .ttl file and there is a directory of same name, skip.
+        let childFileInfo = path.parse(child);
+        if( this.isMetadataFile(child) && 
+            children.includes(childFileInfo.name) && 
+            fs.statSync(path.join(this.fsfull, childFileInfo.name)) ) {
+          continue;
+        }
+
+        // add archive groups for binary files not in archive group
+        let fileInfo = path.parse(p);
+        if( !this.archivalGroup && !this.isMetadataFile(p) ) {
+          let metadataFile = await this.getMetadata(p);
+
+          if( metadataFile.metadata !== null ) {
+            let metadata = metadataFile.metadata;
+            let gitInfo = await git.info(this.fsroot, {cwd: this.fsroot});
+            gitInfo.file = fileObject.containerFile.replace(gitInfo.rootDir, '');
+            gitInfo.rootDir = this.fsfull.replace(gitInfo.rootDir, '');
+
+            let id = this.getIdentifier(metadata) || fileInfo.base;
+            this.archivalGroups.push({
+              id,
+              isBinary : true,
+              fsroot : this.fsroot,
+              localpath : p,
+              subPath : this.subPath,
+              fcrepoPath : ROOT_FCR_PATHS.ITEM+'/'+id,
+              gitInfo,
+              metadata,
+              containerFile : metadataFile.filePath
+            });
+            continue;
+          }
+        }
+
         this.files.push(child);
         continue;
       }
@@ -83,12 +156,15 @@ class IoDir {
         this.fsroot, 
         path.join(this.subPath, child),
         this.config,
-        this.archivalGroup
+        this.archivalGroup,
+        this.archivalGroups
       );
 
       this.children.push(child);
       await child.crawl();
     }
+
+    await this.getFiles();
 
     return this.children;
   }
@@ -123,6 +199,10 @@ class IoDir {
   }
 
   async getFiles() {
+    if( this.containers.length || this.binaries.length ) {
+      return {containers: this.containers, binaries: this.binaries};
+    }
+
     let symlinks = {};
     let binaryFiles = {};
     let containerFiles = {};
@@ -154,109 +234,234 @@ class IoDir {
       if( info.isSymbolicLink() ) {
         let pointer = fs.realpathSync(childFsPath).split('/').pop();
         symlinks[pointer] = child;
-      } else if( path.parse(child).ext !== '.ttl' ) {
+      } else if( !this.isMetadataFile(child) ) {
         binaryFiles[child] = childFsPath;
       } else {
         containerFiles[child] = childFsPath;
       }
     }
 
-    let result = {
-      containers : [],
-      binaries : []
-    }
-
     for( let name in binaryFiles ) {
       let id = symlinks[name] ? symlinks[name] : name;
 
-      let fcpath = pathutils.joinUrlPath(this.subPath, id);
-      if( this.config.fcrepoPath ) {
-        fcpath = pathutils.joinUrlPath(this.config.fcrepoPath, fcpath);
-      }
-
-      // if( this.archivalGroup ) {
-      //   id = fcpath.replace(this.archivalGroup.subPath, '').replace(/^\//, '');
-      //   fcpath = this.archivalGroup.subPath;
-      // } else {
-        id = fcpath;
-        fcpath = '/';
-      // }
-
-      result.binaries.push({
+      let binaryMetadata = await this.getMetadata(path.join(this.fsfull, name));
+      let metadata = {
         id,
         filename : name,
         parentPath : this.subPath,
-        fcpath,
+        fcrepoPath : this.getFcrepoPath(this.subPath, id),
         localpath : path.join(this.fsfull, name),
-        metadata : containerFiles[name+'.ttl'] || null
-      });
+        metadata : binaryMetadata.metadata,
+        containerFile : binaryMetadata.metadata ? binaryMetadata.filePath : null
+      };
+
+      // if we are not an archive group, grab git info
+      if( !this.archivalGroup ) {
+        metadata.gitInfo = await git.info(this.fsfull, {cwd: this.fsroot});
+        metadata.gitInfo.file = this.containerFile.replace(gitInfo.rootDir, '');
+        metadata.gitInfo.rootDir = this.fsfull.replace(gitInfo.rootDir, '');
+        metadata.fcrepoPath = pathutils.joinUrlPath(ROOT_FCR_PATHS.ITEM, metadata.fcpath);
+      }
+
+      this.binaries.push(metadata);
+
       if( containerFiles[name+'.ttl'] ) {
         delete containerFiles[name+'.ttl'];
+      }
+      if( containerFiles[name+'.jsonld.json'] ) {
+        delete containerFiles[name+'.jsonld.json'];
       }
     }
 
     for( let name in containerFiles ) {
-      let fcpath = pathutils.joinUrlPath(this.subPath, path.parse(name).name);
-      if( this.config.fcrepoPath ) {
-        fcpath = pathutils.joinUrlPath(this.config.fcrepoPath, fcpath);
-      }
+      let fcpath = this.getFcrepoPath(this.subPath, path.parse(name).name);
 
       let parentFcPath = fcpath.split('/');
       let id = parentFcPath.pop();
       parentFcPath = parentFcPath.join('/');
+      let containerMetadata = await this.getMetadata(path.join(this.fsfull, name));
 
-      
-      // at this point, we are in the parent.  We need to check child dirs to 
-      // see if there are any marked as an archive group and the parent is
-      // about to add the .ttl file.
-      // let isArchiveGroup = this.children.find(item => item.archivalGroup && item.fsfull+'.ttl' === path.join(this.fsfull, name));
-      // if( isArchiveGroup  ) {
-      //   fcpath = this.subPath;
-      // } else if( this.archivalGroup ) {
-      //   id = fcpath.replace(this.archivalGroup.subPath, '').replace(/^\//, '');
-      //   fcpath = this.archivalGroup.subPath;
-      // } else {
-        // id = fcpath;
-        // fcpath = '/';
-      // }
-
-      result.containers.push({
+      let fileObject = {
         localpath : path.join(this.fsfull, name),
-        fcpath, id, 
-        parentPath : parentFcPath
-      });
+        fcrepoPath: fcpath, 
+        id, 
+        parentPath : parentFcPath,
+        containerFile : containerMetadata.filePath,
+        metadata : containerMetadata.metadata
+      }
+
+      await this.handleArchivalGroup(fileObject);
+      this.containers.push(fileObject);
     }
 
-    return result;
+    return {
+      containers: this.containers, 
+      binaries: this.binaries
+    };
   }
 
-  getMetadata(path, options={}) {
-    let content = fs.readFileSync(path, 'utf-8');
+  isMetadataFile(filePath) {
+    let info = path.parse(filePath);
+    return (info.ext === '.ttl' || info.base.match(/\/.jsonld\.json$/)) ? true : false;
+  }
 
-    // binary files are posted at /fcr:metadata, so root rdf node should point one level up
-    if( options.binaryId ) {
-      content = content.replace(/<\s*>/g, '<../'+options.binaryId+'>');
+  async getMetadata(filePath, options={}) {
+    if( !fs.existsSync(filePath) ) return {filePath, metadata:null};
+
+    if( fs.lstatSync(filePath).isDirectory() ) {
+      // check for jsonld file one folder up
+      let jsonldPath = path.resolve(filePath, '..', path.parse(filePath).base + '.jsonld.json');
+      let jsonld = await this.getMetadata(jsonldPath, options);
+      if( jsonld.metadata !== null ) return jsonld;
+
+      // check for ttl file one folder up
+      let ttlPath = path.resolve(filePath, '..', path.parse(filePath).base + '.ttl');
+      let ttl = await this.getMetadata(ttlPath, options);
+      if( ttl.metadata !== null ) return ttl;
+
+      return {filePath, metadata: null};
     }
 
-    // if we are renaming collections, this hack is for the fact the top level containers
-    // must have the collection name in the ttl to correctly PUT to the LDP.  Simply
-    // replacing the old collection name with the new collection name.
-    // if( options.oldCollectionName && options.newCollectionName ) {
-    //   content = content.replace(
-    //     new RegExp('<'+options.oldCollectionName+'(\/| *>)', 'g'), 
-    //     '<'+options.newCollectionName+'$1'
-    //   );
-    // }
+    if( !this.isMetadataFile(filePath) ) {
+      // check for jsonld file 
+      let jsonldPath = filePath+'.jsonld.json';
+      let jsonld = await this.getMetadata(jsonldPath, options);
+      if( jsonld.metadata !== null ) return jsonld;
 
-    return transform.turtleToJsonLd(content);
+      // check for ttl file
+      let ttlPath = filePath+'.ttl';
+      let ttl = await this.getMetadata(ttlPath, options);
+      if( ttl.metadata !== null ) return ttl;
+
+      return {filePath, metadata: null};
+    }
+
+    let content = fs.readFileSync(filePath, 'utf-8');
+    let jsonld = null;
+
+    if( path.parse(filePath).ext === '.ttl' ) {
+      jsonld = await transform.turtleToJsonLd(content);
+    } else if( filePath.match(/\.jsonld\.json$/) ) {
+      jsonld = JSON.parse(content);
+    }
+
+    if( jsonld === null ) return {filePath, metadata: null};
+
+    // TODO: have id lookup?
+    if( Array.isArray(jsonld) && jsonld.length ) {
+      if( options.id ) {
+        jsonld = jsonld.find(item => item['@id'] === options.id);
+        if( !jsonld ) jsonld = jsonld[0];
+      } else {
+        jsonld = jsonld[0];
+      }
+    }
+
+    return {filePath, metadata: jsonld};
   }
 
   getTTLPath() {
     return path.join(this.root, this.path, 'index.ttl');
   }
 
-  getBinaryPath() {
-    return path.join(this.root, this.path, 'index.bin');
+
+  getFcrepoPath(subPath, id, fileObject) {
+    if( fileObject === undefined ) fileObject = this;
+
+    // this is root archival group
+    if( fileObject.archivalGroup === fileObject ) {
+      if( this.config.fcrepoPathType === 'id' ) {
+        return pathutils.joinUrlPath(fileObject.archivalGroup.fcrepoPath, id);
+      } else if( this.config.fcrepoPathType === 'subpath' ) {
+        return pathutils.joinUrlPath(fileObject.archivalGroup.fcrepoPath, subPath, id);
+      }
+    }
+
+    if( fileObject.archivalGroup ) {
+      if( this.config.fcrepoPathType === 'id' ) {
+        return pathutils.joinUrlPath(
+          fileObject.archivalGroup.fcrepoPath,
+          subPath.replace(fileObject.archivalGroup.subPath, ''),
+          id
+        );
+      } else if( this.config.fcrepoPathType === 'subpath' ) {
+        return pathutils.joinUrlPath(fileObject.archivalGroup.fcrepoPath, subpath, id);
+      }
+    }
+
+    if( this.config.fcrepoPathType === 'id' ) {
+      return id;
+    }
+
+    return pathutils.joinUrlPath(subpath, id);
+  }
+
+  getIdentifier(metadata={}) {
+    if( metadata[IDENTIFIER] && metadata[IDENTIFIER].length ) {
+      // attempt to find ark
+      let ark = metadata[IDENTIFIER].find(item => (item['@id'] || item['@value']).match(/^ark:\//) );
+      if( ark ) return ark['@id'] || ark['@value'];
+
+      // TODO: secondary uri?
+
+      // if no ark return first
+      return metadata[IDENTIFIER][0]['@id'] || metadata[IDENTIFIER][0]['@value'];
+    }
+
+    return null;
+  }
+
+  setIndirectCollection(fileObject) {
+    fileObject = fileObject || this;
+
+    // fileObject.indirectProxyUri = 'http://library.ucdavis.edu/'+fileObject.id+'/proxy';
+    fileObject.indirectProxyUri = IS_PART_OF;
+
+    if( !fileObject.metadata['@type'].includes(INDIRECT_CONTAINER) ) {
+      fileObject.metadata['@type'].push(INDIRECT_CONTAINER);
+    }
+
+    fileObject.metadata[MEMBERSHIP_RESOURCE] = [{
+      '@id': pathutils.joinUrlPath(config.fcBasePath, fileObject.fcrepoPath)
+    }];
+
+    fileObject.metadata[IS_MEMBER_OF_RELATION] = [{
+      '@id': IS_PART_OF
+    }];
+
+    fileObject.metadata[INSERTED_CONTENT_RELATION] = [{
+      '@id': fileObject.indirectProxyUri
+    }];
+  }
+
+  async handleArchivalGroup(fileObject) {
+    if( fileObject === undefined ) fileObject = this;
+
+    if( fileObject.metadata && fileObject.metadata['@type'] && 
+      fileObject.metadata['@type'].includes(ARCHIVAL_GROUP) ) {
+      fileObject.archivalGroup = fileObject;
+
+      this.archivalGroups.push(fileObject);
+      fileObject.gitInfo = await git.info(this.fsfull, {cwd: this.fsroot});
+      fileObject.gitInfo.file = fileObject.containerFile.replace(fileObject.gitInfo.rootDir, '');
+      fileObject.gitInfo.rootDir = this.fsfull.replace(fileObject.gitInfo.rootDir, '');
+
+      if( fileObject.metadata['@type'].includes(COLLECTION) ) {
+        fileObject.isCollection = true;
+        fileObject.localpath = fileObject.containerFile;
+        fileObject.fcrepoPath = ROOT_FCR_PATHS.COLLECTION;
+      } else {
+        fileObject.fcrepoPath = ROOT_FCR_PATHS.ITEM;
+      }
+
+      fileObject.id = this.getIdentifier(fileObject.metadata) || fileObject.id;
+      fileObject.fcrepoPath = this.getFcrepoPath(fileObject.subPath, fileObject.id, fileObject);
+
+      // needs to be after this.fcrepoPath is set
+      if( fileObject.isCollection ) {
+        this.setIndirectCollection(fileObject);
+      }
+    }
   }
 
 }

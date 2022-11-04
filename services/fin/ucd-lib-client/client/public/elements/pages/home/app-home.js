@@ -1,11 +1,16 @@
-import { LitElement} from 'lit-element';
+import { LitElement} from 'lit';
 
 import "@ucd-lib/fin-search-box";
 import "../../utils/app-collection-card";
 
-import "@polymer/iron-icons";
+import "@ucd-lib/theme-elements/ucdlib/ucdlib-iconset/ucdlib-iconset";
+import "@ucd-lib/theme-elements/ucdlib/ucdlib-icon/ucdlib-icon";
+import '@ucd-lib/theme-elements/ucdlib/ucdlib-icons/ucdlib-icons';
+import '../../utils/app-icons';
 
-import "../../components/icon";
+// import "@polymer/iron-icons";
+
+// import "../../components/icon";
 import "../../components/search-box";
 import "../../components/nav-bar";
 import "../../components/filterButton";
@@ -13,6 +18,7 @@ import "../../components/graphics/dams-watercolor";
 import "../../components/graphics/dams-watercolor-overlay";
 
 import "../../components/cards/dams-collection-card";
+import "../../components/cards/dams-item-card";
 import "../../components/graphics/dams-hero";
 import "../../components/sections/dams-highlighted-collection";
 
@@ -21,6 +27,13 @@ import render from './app-home.tpl.js';
 import RecordInterface from "../../interfaces/RecordInterface"; 
 import AppStateInterface from "../../interfaces/AppStateInterface";
 import CollectionInterface from "../../interfaces/CollectionInterface";
+
+
+// import "@fortawesome/fontawesome-free/js/all.js";
+// import "@fortawesome/fontawesome-free/css/regular.css";
+// import "@fortawesome/fontawesome-free/scss/regular.scss";
+
+
 
 /**
  * @class AppHome
@@ -70,7 +83,11 @@ class AppHome extends Mixin(LitElement)
    * @description Lit lifecycle method called when element is first updated
    */
   async firstUpdated() {
-    
+    debugger;
+    // move iconset to head.. this.shadowRoot?
+    // const iconset = document.querySelector('ucdlib-iconset');
+    // document.head.appendChild(iconset);
+
     // Get featured collections
     this.featuredCollections = this.FcAppConfigModel.getFeaturedCollections();
     this.featuredCollectionsCt = this.featuredCollections.length;
@@ -89,7 +106,7 @@ class AppHome extends Mixin(LitElement)
 
     // Get hero image options
     this.heroImgOptions = this.FcAppConfigModel.getHomepageHeroOptions();
-
+    debugger;
 
     this.requestUpdate();
     
