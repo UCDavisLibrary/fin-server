@@ -9,7 +9,7 @@ class GitWrapper {
 
   async info(cwd, opts={}) {
     let id = cwd+JSON.stringify(opts);
-    if( this.cache[id] ) return this.cache[id];
+    if( this.cache[id] ) return Object.assign({}, this.cache[id]);
 
     try {
       let gitInfo = {
@@ -19,7 +19,7 @@ class GitWrapper {
         repo : await this.getRepoName(opts),
         rootDir : await this.getRootDir(cwd, opts)
       }
-      this.cache[id] = gitInfo;
+      this.cache[id] = Object.assign({}, gitInfo);
       return gitInfo;
     } catch(e) {
       return {error: error.message};

@@ -677,7 +677,6 @@ class FinApi {
       return _simpleRequest(req);
     }
 
-
     let response = await _simpleRequest(req);
 
     // if the initial delete fails, do not attempt to delete tombstone

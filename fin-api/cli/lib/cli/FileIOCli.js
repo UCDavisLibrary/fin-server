@@ -21,9 +21,8 @@ class FileIOCli {
       .option('-i --ignore-binary', 'Ignore binary files, metadata only export')
       .option('-i --ignore-metadata', 'Ignore metadata files, binary only export')
       .option('-r --dry-run', 'do not download any files')
-      .option('-f --include-filter <path-regex>', 'only download files match fcrepo path regex. supply with slashes and do not include collection name; ex: /part\\/.*/i')
       .option('-s --sub-paths <paths>', 'only export containers under specified nested fcrepo paths. Comma separate')
-      .option('-h --host <url>', 'Set remote fedora host, just for this command')
+      .option('-e --export-collection-parts', 'Export collection hasPart references as well')
       .description('Export collection to Fin filesystem representation'))
       .action(args => this.export(args));
   }
@@ -52,9 +51,8 @@ class FileIOCli {
     let cleanDir = args.options['clean'] || false;
     let ignoreBinary = args.options['ignore-binary'] || false;
     let ignoreMetadata = args.options['ignore-metadata'] || false;
-    let includeFilter = args.options['include-filter'] ? this._paramToRegex(args.options['include-filter']) : null;
     let dryRun = args.options['dry-run'] || false;
-    let subPaths = args.options['sub-paths'] ? args.options['sub-paths'].split(',').map(p => p.trim()) : false;
+    let exportCollectionParts = args.options['export-collection-parts'] || false;
 
     if( args.options['host'] ) {
       api.setConfig({host: args.options['host']});
@@ -64,7 +62,8 @@ class FileIOCli {
       fcrepoPath: args['root-fcrepo-path'], 
       fsRoot: dir,
       cleanDir, ignoreBinary, ignoreMetadata,
-      includeFilter, dryRun, subPaths
+      dryRun,
+      exportCollectionParts
     });
   }
 

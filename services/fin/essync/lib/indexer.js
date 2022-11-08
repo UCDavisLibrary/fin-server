@@ -40,8 +40,6 @@ class EsIndexer {
 
     // this.attributeReducer = new AttributeReducer(this.esClient);
     this.finUrlRegex = new RegExp(`^${config.server.url}${config.fcrepo.root}`);
-
-    setInterval(() => this.generateToken(), 1000 * 60 * 60 * 6);
   }
 
   /**
@@ -167,7 +165,7 @@ class EsIndexer {
     jsonld._.updated = new Date();
 
     // only index binary and collections
-    if ( this.isCollection(jsonld['@type']) ) {
+    if ( this.isCollection(jsonld['@id']) ) {
       logger.info(`ES Indexer updating collection container: ${id}`);
 
       let index = collectionIndex || config.elasticsearch.collection.alias;
@@ -337,35 +335,35 @@ class EsIndexer {
     }
   }
 
-  async removeCollection(collectionId) {
-    logger.info(`Removing all records for collection: ${collectionId}`);
+  // async removeCollection(collectionId) {
+  //   logger.info(`Removing all records for collection: ${collectionId}`);
 
-    try {
-      let response = await this.esClient.deleteByQuery({
-        index: config.elasticsearch.record.alias,
-        body : {
-          query: {
-            term : { 
-              collectionId : collectionId
-            }
-          }
-        }
-      });
+  //   try {
+  //     let response = await this.esClient.deleteByQuery({
+  //       index: config.elasticsearch.record.alias,
+  //       body : {
+  //         query: {
+  //           term : { 
+  //             collectionId : collectionId
+  //           }
+  //         }
+  //       }
+  //     });
 
-      let exists = await this.esClient.exists({
-        index : config.elasticsearch.collection.alias,
-        id : collectionId
-      });
-      if( !exists ) return;
+  //     let exists = await this.esClient.exists({
+  //       index : config.elasticsearch.collection.alias,
+  //       id : collectionId
+  //     });
+  //     if( !exists ) return;
 
-      await this.esClient.delete({
-        index : config.elasticsearch.collection.alias,
-        id : collectionId
-      });
-    } catch(e) {
-      logger.error(`Failed to remove all records for collection: ${collectionId}`, e);
-    }
-  }
+  //     await this.esClient.delete({
+  //       index : config.elasticsearch.collection.alias,
+  //       id : collectionId
+  //     });
+  //   } catch(e) {
+  //     logger.error(`Failed to remove all records for collection: ${collectionId}`, e);
+  //   }
+  // }
 
   /**
    * @method getTransformedContainer
@@ -382,179 +380,21 @@ class EsIndexer {
     }
 
     let svc = '';
-    if( this.isCollection(types) ) svc = config.essync.transformServices.collection;
-    else if( this.isRecord(path, types) ) svc = config.essync.transformServices.record;
-    else if( this.isApplication(path, types) ) svc = config.essync.transformServices.application;
+    if( this.isCollection(path) ) svc = config.essync.transformServices.collection;
+    else if( this.isRecord(path) ) svc = config.essync.transformServices.record;
+    else if( this.isApplication(path) ) svc = config.essync.transformServices.application;
 
     // we don't have a frame service for this
-    // if( !svc ) return null;
+    if( !svc ) return null;
 
-    if( !svc ) {
-      let resp = await this.getContainer(path, true);
-      if( Array.isArray(resp) ) resp = resp[0];
-      if( resp['@context'] ) delete resp['@context'];
-      return resp;
-    }
-
-    return this._requestSvcContainer(path, svc);
-  }
-
-  /**
-   * @method getContainer
-   * @description get a es object for container at specified path. 
-   * 
-   * @param {String} path fcrepo url
-   * 
-   * @returns {Promise}
-   */
-  async getContainer(path='', compact=false) {
-    if( path.match(/fcr:metadata$/) ) {
-      path = path.replace(/\/fcr:metadata$/, '');
-    }
- 
-    let response = await this._requestContainer(path, compact);
-    if( !response ) return null;
-
-    try {
-      return JSON.parse(response.data.body);
-    } catch(e) {
-      logger.fatal('Failed to get container for: '+path, response.data.statusCode+' '+response.data.body,  e);
-      return null;
-    }
-  }
-
-  /**
-   * @method _requestSvcContainer
-   * @description request a container, if a non-200 status code that is not
-   * a 403 is returned, will automatically try request again
-   * 
-   * @param {String} path fcrepo path
-   * @param {String} svc fin service
-   * @param {Boolean} retry leave as false, function will handle this param
-   * 
-   * @return {Promise} resolves to null or response object
-   */
-  async _requestSvcContainer(path, svc, retry=false) {
     var response = await api.get({
       host : config.gateway.host,
       path : path+`/svc:${svc}`
     });
-    
-    // if( response.statusCode === 403 ) {
-    //   logger.error('Ignoring non-public container: '+path);
-    //   return null;
-    // }
 
-    // if( response.statusCode !== 200 ) {
-    //   logger.error('Non 200 status code for transform request '+path, response.statusCode, response.body);
-    //   if( retry ) return null;
-    //   logger.info('Retrying request for transform: '+path);
-    //   return await this._requestSvcContainer(path, svc, true);
-    // }
+    response.service = config.server.url+config.fcrepo.root+path+`/svc:${svc}`;
 
     return response;
-  }
-
-  /**
-   * @method _requestContainer
-   * @description request a container, if a non-200 status code that is not
-   * a 403 is returned, will automatically try request again
-   * 
-   * @param {String} path fcrepo path
-   * @param {String} types fcrepo path
-   * 
-   * @return {Promise} resolves to null or response object
-   */
-  async _requestContainer(path, types, compact=false) {
-    // make a head request for access and container type info
-    let response = await api.head({path});
-
-    if( response.last.statusCode === 403 ) {
-      logger.debug('Ignoring non-public container: '+path);
-      return null;
-    }
-
-    // make a head request for access and container type info
-    if( !response.checkStatus(200) ) {
-      logger.debug('Non 200 status code for '+path, response.last.statusCode);
-      return null;
-    }
-
-    // if this is binary container, append /fcr:metadata to path
-    if( !api.isRdfContainer(response) ) {
-      path = path + '/fcr:metadata'
-    }
-
-    response = await api.get({
-      path,
-      headers : {
-        accept : 'application/ld+json'+(compact ? '; profile="http://www.w3.org/ns/json-ld#compacted"' : '')
-      }
-    })
-
-    // response = await this.request({
-    //   type : 'GET',
-    //   uri : path,
-    //   headers : {
-    //     accept : 'application/ld+json'+(compact ? '; profile="http://www.w3.org/ns/json-ld#compacted"' : '')
-    //   }
-    // });
-    
-    if( response.data.statusCode === 403 ) {
-      logger.debug('Ignoring non-public container: '+path);
-      return response.data.statusCode;
-    }
-
-    if( response.data.statusCode !== 200 ) {
-      logger.debug('Non 200 status code for container request '+path, response.statusCode, response.body);
-      return response.data.statusCode;
-    }
-
-    return response;
-  }
-
-  /**
-   * @method generateToken
-   * @description create a new jwt token
-   */
-  generateToken() {
-    logger.info('Setting essync jwt token');
-    this.token = jwt.create(this.name, true);
-  }
-
-  /**
-   * @method request
-   * @description wrap request library in promise.  set authorization header with
-   * jwt token and set uri to full path of fcrepo based on config.fcrepo params.
-   */
-  request(options) {
-    if( !options.uri.match(/^http/i) ) {
-      options.uri = this.getFcRepoBaseUrl() + options.uri;
-    }
-    options.timeout = 3*60*1000;
-
-    if( !options.headers ) options.headers = {};
-    if( !options.headers.Authorization ) {
-      options.headers.Authorization = `Bearer ${this.token}`;
-    }
-
-    return new Promise((resolve, reject) => {
-      request(options, (error, response, body) => {
-        if( error ) reject(error);
-        else resolve(response);
-      });
-    });
-  }
-
-
-  /** 
-   * @method getFcRepoBaseUrl
-   * @description get the base url for fcrepo
-   *  
-   * @returns {String}
-   */
-  getFcRepoBaseUrl() {
-    return config.fcrepo.host + config.fcrepo.root;
   }
 
   /**
@@ -581,11 +421,13 @@ class EsIndexer {
    * 
    * @returns {Boolean}
    */
-  isCollection(types = []) {
-    return (
-      types.indexOf(COLLECTION) > -1 || 
-      types.indexOf(SHORT_COLLECTION) > -1
-    );
+  isCollection(path) {
+    // return (
+    //   types.indexOf(COLLECTION) > -1 || 
+    //   types.indexOf(SHORT_COLLECTION) > -1
+    // );
+
+    return path.match(/^\/collection\//);
   }
 
   /**
@@ -593,63 +435,20 @@ class EsIndexer {
    * @description given an array of types, is this a es record.
    * Currently that is any schema.org creative work or media object.
    * 
-   * @param {Array} types array or type uri's
+   * @param {String} path array or type uri's
    * 
    * @returns {Boolean}
    */ 
-  // isRecord(types = []) {
-  //   return (
-  //     types.indexOf(CREATIVE_WORK) > -1 || 
-  //     types.indexOf(MEDIA_OBJECT) > -1 ||
-  //     types.indexOf(SHORT_CREATIVE_WORK) > -1 || 
-  //     types.indexOf(SHORT_MEDIA_OBJECT) > -1
-  //   );
-  // }
-  isRecord(path, types=[]) {
-    return path.match(/^\/collection\/.*\/.*/);
+  isRecord(path) {
+    return path.match(/^\/item\//);
   }
 
   isApplication(path) {
     return path.match(/^\/application\//);
   }
 
-  /**
-   * @method shouldIndexRecord
-   * @description we only index archival groups and binary containers
-   * 
-   * @param {Object} item 
-   * 
-   * @return {Boolean}
-   */
-  shouldIndexContainer(item) {
 
-  }
-
-  /**
-   * @method isDotPath
-   * @description given a path string, does any section of the path start
-   * with a .
-   * 
-   * @param {String} path
-   * 
-   * @returns {Boolean}
-   */
-  isDotPath(path) {
-    if( path.match(/http/) ) {
-      let urlInfo = new URL(path);
-      path = urlInfo.pathname;
-    }
-    
-    path = path.split('/');
-    for( var i = 0; i < path.length; i++ ) {
-      if( path[i].match(/^\./) ) {
-        return path[i];
-      }
-    }
-
-    return null;
-  }
-
+ 
 }
 
 module.exports = new EsIndexer();

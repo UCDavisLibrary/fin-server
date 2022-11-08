@@ -131,6 +131,7 @@ class IoDir {
         if( !this.archivalGroup && !this.isMetadataFile(p) ) {
           let metadataFile = await this.getMetadata(p);
 
+
           if( metadataFile.metadata !== null ) {
             let metadata = metadataFile.metadata;
             let gitInfo = await git.info(this.fsroot, {cwd: this.fsroot});
@@ -402,6 +403,10 @@ class IoDir {
   }
 
   getIdentifier(metadata={}) {
+    if( metadata['@id'] ) {
+      return metadata['@id'];
+    }
+
     if( metadata[IDENTIFIER] && metadata[IDENTIFIER].length ) {
       // attempt to find ark
       let ark = metadata[IDENTIFIER].find(item => (item['@id'] || item['@value']).match(/^ark:\//) );
@@ -416,28 +421,28 @@ class IoDir {
     return null;
   }
 
-  setIndirectCollection(fileObject) {
-    fileObject = fileObject || this;
+  // setIndirectCollection(fileObject) {
+  //   fileObject = fileObject || this;
 
-    // fileObject.indirectProxyUri = 'http://library.ucdavis.edu/'+fileObject.id+'/proxy';
-    fileObject.indirectProxyUri = IS_PART_OF;
+  //   // fileObject.indirectProxyUri = 'http://library.ucdavis.edu/'+fileObject.id+'/proxy';
+  //   fileObject.indirectProxyUri = IS_PART_OF;
 
-    if( !fileObject.metadata['@type'].includes(INDIRECT_CONTAINER) ) {
-      fileObject.metadata['@type'].push(INDIRECT_CONTAINER);
-    }
+  //   if( !fileObject.metadata['@type'].includes(INDIRECT_CONTAINER) ) {
+  //     fileObject.metadata['@type'].push(INDIRECT_CONTAINER);
+  //   }
 
-    fileObject.metadata[MEMBERSHIP_RESOURCE] = [{
-      '@id': pathutils.joinUrlPath(config.fcBasePath, fileObject.fcrepoPath)
-    }];
+  //   fileObject.metadata[MEMBERSHIP_RESOURCE] = [{
+  //     '@id': pathutils.joinUrlPath(config.fcBasePath, fileObject.fcrepoPath)
+  //   }];
 
-    fileObject.metadata[IS_MEMBER_OF_RELATION] = [{
-      '@id': IS_PART_OF
-    }];
+  //   fileObject.metadata[IS_MEMBER_OF_RELATION] = [{
+  //     '@id': IS_PART_OF
+  //   }];
 
-    fileObject.metadata[INSERTED_CONTENT_RELATION] = [{
-      '@id': fileObject.indirectProxyUri
-    }];
-  }
+  //   fileObject.metadata[INSERTED_CONTENT_RELATION] = [{
+  //     '@id': fileObject.indirectProxyUri
+  //   }];
+  // }
 
   async handleArchivalGroup(fileObject) {
     if( fileObject === undefined ) fileObject = this;
@@ -463,9 +468,9 @@ class IoDir {
       fileObject.fcrepoPath = this.getFcrepoPath(fileObject.subPath, fileObject.id, fileObject);
 
       // needs to be after this.fcrepoPath is set
-      if( fileObject.isCollection ) {
-        this.setIndirectCollection(fileObject);
-      }
+      // if( fileObject.isCollection ) {
+      //   this.setIndirectCollection(fileObject);
+      // }
     }
   }
 

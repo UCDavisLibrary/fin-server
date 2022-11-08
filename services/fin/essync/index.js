@@ -87,6 +87,8 @@ class EsSync {
    * @param {Object} e event payload from log table
    */
   async updateContainer(e) {
+    let jsonld = {};
+
     // update elasticsearch
     try {
 
@@ -126,6 +128,20 @@ class EsSync {
       }
 
       let response = await indexer.getTransformedContainer(e.path, e.container_types);
+
+      if( !response ) {
+        logger.info('Container '+e.path+' did not have a know transform type');
+
+        e.action = 'ignored';
+        e.message = 'unknown transform type'
+        await indexer.remove(e.path);
+        await postgres.updateStatus(e);
+        return;
+      }
+
+      // set transform service used.
+      e.tranformService = response.service;
+
       if( response.data.statusCode !== 200 ) {
         logger.info('Container '+e.path+' was publicly inaccessible ('+response.data.statusCode+') from LDP, removing from index. url='+response.data.request.url);
 
@@ -136,11 +152,18 @@ class EsSync {
         return;
       }
 
-      let jsonld = JSON.parse(response.data.body);
+      jsonld = JSON.parse(response.data.body);
+
+      // store gitsource if we have it
+      if( !jsonld._ ) jsonld._ = {};
+      e.gitsource = jsonld._.gitsource;
+      
+      // cleanup id path
       if( jsonld['@id'].match(/\/fcrepo\/rest\//) ) {
         jsonld['@id'] = jsonld['@id'].split('/fcrepo/rest')[1];
       }
      
+      // if no esId, we don't add to elastic search
       if( !jsonld._.esId ) {
         logger.info('Container '+e.path+' is not part of an archival group or a binary container (no jsonld._.esId provided)');
 

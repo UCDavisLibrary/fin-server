@@ -13,11 +13,19 @@ let CONFIG_DIR = '.fin';
 let ACL_FILE = 'acl.ttl';
 let CONFIG_FILE = 'config.yml';
 const IGNORE_FILE = '.finignore';
-const METADATA_SHA = 'http://digital.ucdavis.edu/schema#metadataSha256';
+
 const HAS_MESSAGE_DIGEST = 'http://www.loc.gov/premis/rdf/v1#hasMessageDigest';
 
-const HAS_MEMBER_RELATION = 'http://www.w3.org/ns/ldp#hasMemberRelation';
+const FIN_IO_INDIRECT_REFERENCE = 'http://library.ucdavis.edu/schema#finIoIndirectReference';
+const METADATA_SHA = 'http://digital.ucdavis.edu/schema#finIoMetadataSha256';
+const IS_PART_OF = 'http://schema.org/isPartOf';
+const HAS_PART = 'http://schema.org/hasPart';
+
+const INDIRECT_CONTAINER = 'http://www.w3.org/ns/ldp#IndirectContainer';
+const MEMBERSHIP_RESOURCE = 'http://www.w3.org/ns/ldp#membershipResource';
 const IS_MEMBER_OF_RELATION = 'http://www.w3.org/ns/ldp#isMemberOfRelation';
+const HAS_MEMBER_RELATION = 'http://www.w3.org/ns/ldp#hasMemberRelation';
+const INSERTED_CONTENT_RELATION = 'http://www.w3.org/ns/ldp#insertedContentRelation';
 
 class ImportCollection {
 
@@ -94,21 +102,7 @@ class ImportCollection {
       // if this is an archival group collection, add all 'virtual'
       // indirect container references
       if( ag.isCollection ) {
-        for( let item of rootDir.archivalGroups ) {
-          if( item.isCollection ) continue;
-
-          await this.putContainer({
-            fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'item', item.id),
-            localpath : '_virtual_',
-            metadata : {
-              '@id' : '',
-              '@type' : ['http://library.ucdavis.edu#collectionItemProxyReference'],
-              [ag.indirectProxyUri] : [{
-                '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
-              }]
-            }
-          }, rootDir);
-        }
+        await this.putIndirectContainers(rootDir, ag);
       }
     }
 
@@ -413,6 +407,23 @@ class ImportCollection {
         headers : customHeaders
       });
 
+      // tombstone found, attempt removal
+      if( response.last.statusCode === 410 ) {
+        console.log(' -> tombstone found, removing')
+        response = await api.delete({
+          path: fullfcpath, 
+          permanent: true
+        });
+        console.log(' -> tombstone request: '+response.last.statusCode);
+
+        response = await api.put({
+          path : fullfcpath,
+          file : binary.localpath,
+          partial : true,
+          headers : customHeaders
+        });
+      }
+
       if( response.error ) {
         throw new Error(response.error);
       } else {
@@ -474,10 +485,93 @@ class ImportCollection {
         headers
       });
 
+      if( response.last.statusCode === 410 ) {
+        console.log(' -> tombstone found, removing')
+        response = await api.delete({
+          path: containerPath.replace(/\/fcr:metadata/, ''), 
+          permanent: true
+        });
+        console.log(' -> tombstone request: '+response.last.statusCode);
+
+        response = await api.put({
+          path : containerPath,
+          content : JSON.stringify(metadata),
+          partial : true,
+          headers
+        });
+      }
+
       if( response.error ) {
         throw new Error(response.error);
       }
       console.log(response.last.statusCode, response.last.body);
+    }
+  }
+
+  async putIndirectContainers(rootDir, ag) {
+    await this.putContainer({
+      fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'hasPart'),
+      localpath : '_virtual_',
+      metadata : {
+        '@id' : '',
+        '@type' : [FIN_IO_INDIRECT_REFERENCE, INDIRECT_CONTAINER],
+        [MEMBERSHIP_RESOURCE] : [{
+          '@id':  pathutils.joinUrlPath('info:fedora', ag.fcrepoPath)
+        }],
+        [HAS_MEMBER_RELATION] : [{
+          '@id': HAS_PART
+        }],
+        [INSERTED_CONTENT_RELATION] : [{
+          '@id': HAS_PART
+        }]
+      }
+    }, rootDir);
+
+    await this.putContainer({
+      fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'isPartOf'),
+      localpath : '_virtual_',
+      metadata : {
+        '@id' : '',
+        '@type' : [FIN_IO_INDIRECT_REFERENCE, INDIRECT_CONTAINER],
+        [MEMBERSHIP_RESOURCE] : [{
+          '@id':  pathutils.joinUrlPath('info:fedora', ag.fcrepoPath)
+        }],
+        [IS_MEMBER_OF_RELATION] : [{
+          '@id': IS_PART_OF
+        }],
+        [INSERTED_CONTENT_RELATION] : [{
+          '@id': IS_PART_OF
+        }]
+      }
+    }, rootDir);
+
+
+    for( let item of rootDir.archivalGroups ) {
+      if( item.isCollection ) continue;
+
+      await this.putContainer({
+        fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'isPartOf', item.id),
+        localpath : '_virtual_',
+        metadata : {
+          '@id' : '',
+          '@type' : [FIN_IO_INDIRECT_REFERENCE],
+          [IS_PART_OF] : [{
+            '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
+          }]
+        }
+      }, rootDir);
+
+      await this.putContainer({
+        fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'hasPart', item.id),
+        localpath : '_virtual_',
+        metadata : {
+          '@id' : '',
+          '@type' : [FIN_IO_INDIRECT_REFERENCE],
+          [HAS_PART] : [{
+            '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
+          }]
+        }
+      }, rootDir);
     }
   }
 
