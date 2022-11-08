@@ -152,6 +152,7 @@ class ExportCollection {
 
     if( metadata['@type'] && metadata['@type'].includes(FIN_IO_INDIRECT_REFERENCE) ) {
       console.log('IGNORING FIN IO INDIRECT REFERENCE: '+options.currentPath);
+      await this.crawlContains(options, metadata, archivalGroup);
       return;
     }
 
@@ -300,6 +301,10 @@ class ExportCollection {
       }
     }
 
+    await this.crawlContains(options, metadata, archivalGroup);
+  }
+
+  async crawlContains(options, metadata, archivalGroup) {
     // check if this container has children
     let contains = metadata['http://www.w3.org/ns/ldp#contains'];
     if( !contains ) return; // no more children, done crawling this branch
@@ -316,7 +321,6 @@ class ExportCollection {
 
       await this.crawl(cOptions, archivalGroup);
     }
-
   }
 
   getPath(currentDir, container, archivalGroup) {

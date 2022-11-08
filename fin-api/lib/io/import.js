@@ -97,13 +97,7 @@ class ImportCollection {
       }
 
       // recursively add all containers for archival group
-      await this.putAGContainers(ag, config);
-
-      // if this is an archival group collection, add all 'virtual'
-      // indirect container references
-      if( ag.isCollection ) {
-        await this.putIndirectContainers(rootDir, ag);
-      }
+      await this.putAGContainers(ag, rootDir);
     }
 
     // remove all containers that exist in fedora but not locally on disk
@@ -251,9 +245,22 @@ class ImportCollection {
    * @param {String} collectionName
    * @param {IoDir} dir 
    */
-  async putAGContainers(dir) {
+  async putAGContainers(dir, rootDir) {
     if( dir.archivalGroup === dir || dir.metadata) {
       await this.putContainer(dir);
+    }
+
+    // if this is an archival group collection, add all 'virtual'
+    // indirect container references
+    if( dir.archivalGroup === dir && dir.isCollection ) {
+      await this.putIndirectContainers(rootDir, dir);
+
+      if( dir.hasParts ) {
+        for( let container of dir.hasParts ) {
+          await this.putContainer(container);
+        }
+      }
+
     }
     
     if( !dir.getFiles ) return;

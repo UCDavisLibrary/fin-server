@@ -12,6 +12,9 @@ const ARCHIVAL_GROUP = 'http://fedora.info/definitions/v4/repository#ArchivalGro
 const COLLECTION = 'http://schema.org/Collection';
 const IDENTIFIER = 'http://schema.org/identifier';
 const IS_PART_OF = 'http://schema.org/isPartOf';
+const HAS_PART = 'http://schema.org/hasPart';
+
+const FIN_IO_INDIRECT_REFERENCE = 'http://library.ucdavis.edu/schema#finIoIndirectReference';
 
 const INDIRECT_CONTAINER = 'http://www.w3.org/ns/ldp#IndirectContainer';
 const MEMBERSHIP_RESOURCE = 'http://www.w3.org/ns/ldp#membershipResource';
@@ -50,6 +53,7 @@ class IoDir {
 
     this.archivalGroup = archivalGroup;
     this.archivalGroups = archivalGroups;
+    this.hasParts = [];
     this.fsroot = fsroot;
     this.subPath = subPath;
     this.fcrepoPath = '';
@@ -131,7 +135,6 @@ class IoDir {
         if( !this.archivalGroup && !this.isMetadataFile(p) ) {
           let metadataFile = await this.getMetadata(p);
 
-
           if( metadataFile.metadata !== null ) {
             let metadata = metadataFile.metadata;
             let gitInfo = await git.info(this.fsroot, {cwd: this.fsroot});
@@ -154,6 +157,13 @@ class IoDir {
           }
         }
 
+        // TODO: need to check for hasPart/isPartOf and add inverse
+        // perhaps on the crawl?  check collection AG and dir hasPart?
+        if( this.archivalGroup && this.id === 'hasPart' || this.id === 'isPartOf' ) {
+          await this.setHasPart(p)
+          continue;
+        }
+
         this.files.push(child);
         continue;
       }
@@ -173,6 +183,40 @@ class IoDir {
     await this.getFiles();
 
     return this.children;
+  }
+
+  async setHasPart(cPath) {
+    let metadataFile = await this.getMetadata(cPath);
+    let id = path.parse(cPath).name;
+
+    let orgMetadata = metadataFile.metadata;
+
+    let ref = orgMetadata[HAS_PART];
+    if( !ref ) ref = orgMetadata[IS_PART_OF];
+
+    let part = {
+      id,
+      fsroot : this.fsroot,
+      localpath : cPath,
+      subPath : this.subPath,
+      containerFile : metadataFile.filePath
+    }
+
+    let hasPart = Object.assign({}, part);
+    hasPart.fcrepoPath = this.archivalGroup.fcrepoPath +'/hasPart/'+id,
+    hasPart.metadata = {
+      '@id' : '',
+      [HAS_PART] : ref
+    };
+    this.archivalGroup.hasParts.push(hasPart);
+
+    let isPartOf = Object.assign({}, part);
+    isPartOf.fcrepoPath = this.archivalGroup.fcrepoPath +'/isPartOf/'+id,
+    isPartOf.metadata = {
+      '@id' : '',
+      '@type' : [FIN_IO_INDIRECT_REFERENCE],
+      [IS_PART_OF] : ref
+    };
   }
 
   parseIgnore(file, fsfull) {
@@ -466,11 +510,6 @@ class IoDir {
 
       fileObject.id = this.getIdentifier(fileObject.metadata) || fileObject.id;
       fileObject.fcrepoPath = this.getFcrepoPath(fileObject.subPath, fileObject.id, fileObject);
-
-      // needs to be after this.fcrepoPath is set
-      // if( fileObject.isCollection ) {
-      //   this.setIndirectCollection(fileObject);
-      // }
     }
   }
 
