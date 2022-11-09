@@ -1,6 +1,6 @@
 {
   "name": "@ucd-lib/fin-api",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.1",
   "description": "NodeJS module and cli for interacting with the FIN Fedora instance",
   "main": "index.js",
   "directories": {
@@ -13,10 +13,11 @@
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",
   "bin": {
-    "fin": "cli/bin/cli.js"
+    "fin": "cli/bin/fin.js"
   },
   "dependencies": {
     "clone": "^2.1.1",
+    "commander": "^9.4.1",
     "content-disposition": "^0.5.4",
     "fs-extra": "^7.0.1",
     "ignore": "^5.0.5",
@@ -28,9 +29,7 @@
     "open": "^8.4.0",
     "portfinder": "^1.0.32",
     "request": "^2.88.0",
-    "uuid": "^3.2.1",
-    "vorpal": "^1.12.0",
-    "yargs": "^17.5.1"
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

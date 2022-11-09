@@ -479,40 +479,26 @@ class TransformUtils {
   }
 
   /**
-   * @method isRecord
-   * @description given an array of types, is this a es record.
-   * Currently that is any schema.org creative work or media object.
+   * @method get
+   * @description get a container from JSON-LD graph array by path/id
    * 
-   * @param {Array} types array or type uri's
+   * @param {String} type type uri of container to fetch from array  
+   * @param {Object|Array} container 
    * 
-   * @returns {Boolean}
-   */ 
-  isRecord(types = []) {
-    return (
-      types.indexOf(this.CREATIVE_WORK) > -1 || 
-      types.indexOf(this.MEDIA_OBJECT) > -1 ||
-      types.indexOf(this.SHORT_CREATIVE_WORK) > -1 || 
-      types.indexOf(this.SHORT_MEDIA_OBJECT) > -1 ||
-      types.includes(this.BAG_OF_FILES)
-    );
-  }
-
-  /**
-   * @method setRootRecord
-   * @description given a record, set the isRootRecord flag if the
-   * isPartOf attribute is equal to the collection id
-   * 
-   * @param {Object} json record
+   * @returns {Object}
    */
-  setRootRecord(json) {
-    if( !json.isPartOf ) return;
-    let isPartOf = Array.isArray(json.isPartOf) ? json.isPartOf : [json.isPartOf];
-    for( let part of isPartOf ) {
-      if( part['@id'] === json.collectionId ) {
-        json.isRootRecord = true;
-        return;
+  getByType(type, container) {
+    if( !Array.isArray(container) ) {
+      container = [container];
+    }
+
+    for( var i = 0; i < container.length; i++ ) {
+      if( container[i]['@type'] && container[i]['@type'].includes(type) ) {
+        return container[i];
       }
     }
+
+    return null;
   }
 
   /**

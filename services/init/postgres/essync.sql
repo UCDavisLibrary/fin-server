@@ -28,8 +28,10 @@ CREATE TABLE IF NOT EXISTS update_status (
   event_id TEXT NOT NULL UNIQUE,
   event_timestamp timestamp NOT NULL,
   action TEXT NOT NULL,
+  transform_service TEXT,
   message TEXT,
-  es_response JSONB
+  es_response JSONB,
+  gitsource JSONB
 );
 CREATE INDEX IF NOT EXISTS update_status_path_idx ON update_status (path);
 CREATE INDEX IF NOT EXISTS update_status_action_idx ON update_status (action);

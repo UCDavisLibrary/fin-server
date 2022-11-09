@@ -84,8 +84,9 @@ class EssyncPostgresUtils {
    * @param {String} args.path
    * @param {Array<String>} args.container_types
    * @param {Array<String>} args.update_types
-   * @param {String} action
-   * @param {String} message
+   * @param {String} args.action
+   * @param {String} args.message
+   * @param {Object} args.gitsource
    * 
    * @return {Promise}
    */
@@ -95,16 +96,16 @@ class EssyncPostgresUtils {
   if( resp.rows.length ) {
     await this.pg.query(`
         UPDATE update_status 
-          SET (event_id, event_timestamp, container_types, update_types, action, message, es_response, updated) = ($2, $3, $4, $5, $6, $7, $8, $9)
+          SET (event_id, event_timestamp, container_types, update_types, action, message, es_response, transform_service, gitsource, updated) = ($2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
         WHERE 
           PATH = $1
-        ;`, [args.path, args.event_id, args.event_timestamp, args.container_types, args.update_types, args.action, args.message, args.response, new Date().toISOString()]
+        ;`, [args.path, args.event_id, args.event_timestamp, args.container_types, args.update_types, args.action, args.message, args.response, args.tranformService, args.gitsource, new Date().toISOString()]
       );
     } else {
       await this.pg.query(`
-        INSERT INTO update_status (path, event_id, event_timestamp, container_types, update_types, action, message, es_response) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-      ;`, [args.path, args.event_id, args.event_timestamp, args.container_types, args.update_types, args.action, args.message, args.response]
+        INSERT INTO update_status (path, event_id, event_timestamp, container_types, update_types, action, message, es_response, transform_service, gitsource) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      ;`, [args.path, args.event_id, args.event_timestamp, args.container_types, args.update_types, args.action, args.message, args.response, args.tranformService, args.gitsource]
       );
     }
   }

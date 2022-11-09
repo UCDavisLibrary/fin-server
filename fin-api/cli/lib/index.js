@@ -11,12 +11,9 @@ const cliComponents = {
   config : require('./cli/ConfigCli'),
   location : require('./cli/LocationCli'),
   interactive : require('./cli/InteractiveCli'),
-  acl : require('./cli/AclCli'),
   io : require('./cli/FileIOCli'),
   service : require('./cli/ServiceCli'),
-  collection : require('./cli/CollectionCli'),
   application : require('./cli/ApplicationCli'),
-  search : require('./cli/SearchCli'),
   logger : logger
 }
 
@@ -24,10 +21,10 @@ process.on('unhandledRejection', e => console.error(e));
 
 // using yargs to parse global arguments
 var argv = yargs
-            .option('config', {
-              alias: 'c'
-            })
-            .help(false); // disable yargs help
+  .option('config', {
+    alias: 'c'
+  })
+  .help(false); // disable yargs help
 
 for( var key in config.cliOptions ) {
   argv.option(key, {alias: config.cliOptions[key].alias});

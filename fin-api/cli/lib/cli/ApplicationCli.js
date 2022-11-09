@@ -3,7 +3,7 @@ const inquirer = require('inquirer');
 const Logger = require('../lib/logger');
 const fs = require('fs-extra');
 const path = require('path');
-const acl = require('./AclCli');
+// const acl = require('./AclCli');
 const debug = require('../lib/debug');
 
 class CollectionCli {
