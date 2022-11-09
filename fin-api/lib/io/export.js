@@ -6,11 +6,11 @@ const utils = require('./utils');
 
 const METADATA_SHA = 'http://digital.ucdavis.edu/schema#finIoMetadataSha256';
 const FIN_IO_INDIRECT_REFERENCE = 'http://library.ucdavis.edu/schema#finIoIndirectReference';
+const GIT_SOURCE = 'http://library.ucdavis.edu/gitsource';
+const GIT_SOURCE_PROP = 'http://library.ucdavis.edu/git#';
 
 const ARCHIVAL_GROUP = 'http://fedora.info/definitions/v4/repository#ArchivalGroup';
 const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
-const GIT_SOURCE = 'http://library.ucdavis.edu/gitsource';
-const GIT_SOURCE_PROP = 'http://library.ucdavis.edu/git#';
 const COLLECTION = 'http://schema.org/Collection';
 const HAS_PART = 'http://schema.org/hasPart';
 
@@ -50,7 +50,6 @@ class ExportCollection {
     if( options.ignoreBinary !== true ) options.ignoreBinary = false;
     if( options.ignoreMetadata !== true ) options.ignoreMetadata = false;
     if( options.cleanDir !== true ) options.cleanDir = false;
-    if( options.subPaths ) options.subPaths = options.subPaths.map(p => p.split('/'));
 
     // if( options.ignoreBinary && options.cleanDir ) {
     //   console.error('ERROR: you cannot clean directory and ignore binary.');
@@ -65,20 +64,16 @@ class ExportCollection {
 `);
     }
 
-    let orgRoot = options.fsRoot;
-    // let finDir = path.join(orgRoot, '.fin');
-    // let rootColDir = path.join(orgRoot, options.collectionName);
+    if( options.cleanDir ) {
+      console.log(`DIR EXISTS, cleaning: ${options.fsRoot}`);
 
-    // if( fs.existsSync(options.fsRoot) ) {
-    //   if( options.cleanDir ) {
-    //     console.log(`DIR EXISTS, removing: ${options.fsRoot}`);
-    //     if( options.dryRun !== true ) {
-    //       await fs.remove(options.fsRoot);
-    //     }
-    //   } else {
-    //     console.log(`DIR EXISTS, syncing: ${options.fsRoot}`);
-    //   }
-    // }
+      if( options.dryRun !== true ) {
+        let children = await fs.readdir(options.fsRoot);
+        for( let child of children ) {
+          await fs.remove(path.join(options.fsRoot, child));
+        }
+      }
+    }
 
     await this.crawl(options);
 
@@ -169,7 +164,7 @@ class ExportCollection {
       }
     }
 
-    let cdir = this.getPath(options.fsRoot, metadata, archivalGroup);
+    let cdir = this.getPath(options.fsRoot, metadata, archivalGroup, options);
     let dirname = options.currentPath.split('/').pop();
 
     if( options.dryRun !== true ) {
@@ -183,21 +178,7 @@ class ExportCollection {
     // write binary
     if( isBinary ) {
       // if we are ignoring binary, we have hit a leaf and are down
-      if( options.ignoreBinary === true || utils.ignoreSubPath(options) === true ) return;
-
-      // binaryFile = metadata['http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#filename']
-      // if( binaryFile && binaryFile.length ) {
-      //   binaryFile = binaryFile[0]['@value'];
-      // }
-      
-      // // HACK: not sure how this happens, but you can have empty filenames for binaries...
-      // if( !binaryFile ) binaryFile = dirname;
-
-      // // prep dir
-      // console.log(cdir, binaryFile, path.join(cdir, binaryFile))
-      // if( options.dryRun !== true ) {
-      //   await fs.mkdirp(cdir);
-      // }
+      if( options.ignoreBinary === true ) return;
 
       let download = false;
 
@@ -234,56 +215,37 @@ class ExportCollection {
         }
       }
 
-      // hack: fs.existsSync doesn't seem to link symlinks :(
-      // let exists = true;
-      // try {fs.lstatSync(path.join(cdir, dirname))} 
-      // catch(e) {exists = false}
-      
-      // if( binaryFile !== dirname && !exists ) {
-      //   let rpath = path.relative(
-      //     path.join(cdir, dirname),
-      //     path.join(cdir, binaryFile) 
-      //   );
-
-      //   console.log('  -> SETTING SYMLINK: '+path.join(cdir, dirname));
-      //   if( options.dryRun !== true ) {
-      //     await fs.symlink(
-      //       rpath,
-      //       path.join(cdir, dirname)
-      //     );
-      //   }
-      // }
-
       options.currentPath += '/fcr:metadata'
     }
 
     let diskMetadata = await this.getDiskMetadataFile(options.currentPath, isArchivalGroup);
-
     if( diskMetadata === null ) return;
 
-    if( binaryFile ) {
-      console.log('  -> WRITING METADATA: '+path.resolve(cdir, binaryFile+'.jsonld.json').replace(options.fsRoot, ''));
-      if( options.dryRun !== true ) {
-        await fs.writeFile(path.resolve(cdir, binaryFile+'.jsonld.json'), diskMetadata);
+    if( options.ignoreMetadata !== true ) {
+      if( binaryFile ) {
+        console.log('  -> WRITING METADATA: '+path.resolve(cdir, binaryFile+'.jsonld.json').replace(options.fsRoot, ''));
+        if( options.dryRun !== true ) {
+          await fs.writeFile(path.resolve(cdir, binaryFile+'.jsonld.json'), diskMetadata);
+        }
+        return;
+      } 
+
+      if( cdir.match(/\.ttl$/) ) {
+        cdir = cdir.replace(/\.ttl$/, '.jsonld.json');
+      } else {
+        cdir = cdir + '.jsonld.json';
       }
-      return;
-    } 
 
-    if( cdir.match(/\.ttl$/) ) {
-      cdir = cdir.replace(/\.ttl$/, '.jsonld.json');
-    } else {
-      cdir = cdir + '.jsonld.json';
-    }
+      console.log('WRITING METADATA: '+cdir.replace(options.fsRoot, ''));
+      if( options.dryRun !== true ) {
+        await fs.writeFile(cdir, diskMetadata);
+      }
 
-    console.log('WRITING METADATA: '+cdir.replace(options.fsRoot, ''));
-    if( options.dryRun !== true ) {
-      await fs.writeFile(cdir, diskMetadata);
-    }
-
-    let aclTTL = await this.getDiskMetadataFile(options.currentPath+'/fcr:acl');
-    if( aclTTL ) {
-      console.log(' -> WRITING ACL: '+path.resolve(cdir, 'fcr:acl.jsonld.json').replace(options.fsRoot, ''));
-      await fs.writeFile(path.resolve(cdir, 'fcr:acl.jsonld.json'), aclTTL);
+      let aclTTL = await this.getDiskMetadataFile(options.currentPath+'/fcr:acl');
+      if( aclTTL ) {
+        console.log(' -> WRITING ACL: '+path.resolve(cdir, 'fcr:acl.jsonld.json').replace(options.fsRoot, ''));
+        await fs.writeFile(path.resolve(cdir, 'fcr:acl.jsonld.json'), aclTTL);
+      }
     }
 
     // are we a collection and exporting hasPart references?
@@ -323,24 +285,26 @@ class ExportCollection {
     }
   }
 
-  getPath(currentDir, container, archivalGroup) {
+  getPath(currentDir, container, archivalGroup, options) {
     let id = container['@id'];
     if( id.match(/\/fcr:metadata$/) ) {
       id = id.replace(/\/fcr:metadata$/, '')
     }
 
-    let rootDir = '.';
-    if( archivalGroup && archivalGroup.gitsource && archivalGroup.gitsource.rootDir) {
-      rootDir = archivalGroup.gitsource.rootDir;
-    }
-    
-    if( container === archivalGroup ) {
-      return path.join(currentDir, archivalGroup.gitsource.file);
-    }
+    if( options.useFcExportPath !== true ) {
+      let rootDir = '.';
+      if( archivalGroup && archivalGroup.gitsource && archivalGroup.gitsource.rootDir ) {
+        rootDir = archivalGroup.gitsource.rootDir;
+      }
+      
+      if( container === archivalGroup &&  archivalGroup.gitsource &&  archivalGroup.gitsource.file ) {
+        return path.join(currentDir, archivalGroup.gitsource.file);
+      }
 
-    if( archivalGroup ) {
-      let agRelativePath = container['@id'].replace(archivalGroup['@id'], '');
-      return path.join(currentDir, rootDir, agRelativePath);
+      if( archivalGroup ) {
+        let agRelativePath = container['@id'].replace(archivalGroup['@id'], '');
+        return path.join(currentDir, rootDir, agRelativePath);
+      }
     }
 
     return path.join(currentDir, container['@id'].split(api.getConfig().basePath)[1])

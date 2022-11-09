@@ -6,36 +6,11 @@ const debug = require('../lib/debug');
 
 class FileIOCli {
 
-  init(vorpal) {
-    debug.wrapOpts(vorpal
-      .command('io import <root-fs-path> ')
-      .option('-m, --force-metadata-update', 'Always re-PUT metadata, ignore sha check')
-      .option('-r --dry-run', 'do not write any containers')
-      .option('-r --sync-deletes', 'Remove files from fedora that do not exist on disk')
-      .description('Import a collection from Fin filesystem representation. root-fs-path should be the folder containing the .fin and collection-name.ttl files')
-      .action(args => this.import(args)))
-
-    debug.wrapOpts(vorpal
-      .command('io export <root-fcrepo-path> [fs-path]')
-      .option('-n --clean', 'Completely remove directory if it exists before starting export')
-      .option('-i --ignore-binary', 'Ignore binary files, metadata only export')
-      .option('-i --ignore-metadata', 'Ignore metadata files, binary only export')
-      .option('-r --dry-run', 'do not download any files')
-      .option('-s --sub-paths <paths>', 'only export containers under specified nested fcrepo paths. Comma separate')
-      .option('-e --export-collection-parts', 'Export collection hasPart references as well')
-      .description('Export collection to Fin filesystem representation'))
-      .action(args => this.export(args));
-  }
-
   async import(args) {
-    let rootPath = location.makeAbsolutePath(args['root-fs-path'] || '.');
-    let includeFilter = args.options['include-filter'] ? this._paramToRegex(args.options['include-filter']) : null;
-    let dryRun = args.options['dry-run'] || false;
-    let subPaths = args.options['sub-paths'] ? args.options['sub-paths'].split(',').map(p => p.trim()) : false;
-    // let fcrepoPath = args.options['collection-path'] || '';
-
-    let forceMetadataUpdate = args.options['force-metadata-update'] || false;
-    let ignoreRemoval = args.options['sync-deletes'] ? false : true;
+    let rootPath = location.makeAbsolutePath(args.rootFsPath || '.');
+    let dryRun = args.options.dryRun || false;
+    let forceMetadataUpdate = args.options.forceMetadataUpdate || false;
+    let ignoreRemoval = args.options.syncDeletes ? false : true;
 
     await api.io.import.run({
       fsPath : rootPath, 
@@ -46,24 +21,22 @@ class FileIOCli {
   }
 
   async export(args) {
-    let dir = location.makeAbsolutePath(args['fs-path'] || '.');
+    let dir = location.makeAbsolutePath(args.fsPath || '.');
 
-    let cleanDir = args.options['clean'] || false;
-    let ignoreBinary = args.options['ignore-binary'] || false;
-    let ignoreMetadata = args.options['ignore-metadata'] || false;
-    let dryRun = args.options['dry-run'] || false;
-    let exportCollectionParts = args.options['export-collection-parts'] || false;
-
-    if( args.options['host'] ) {
-      api.setConfig({host: args.options['host']});
-    }
+    let cleanDir = args.options.clean || false;
+    let ignoreBinary = args.options.ignoreBinary || false;
+    let ignoreMetadata = args.options.ignoreMetadata || false;
+    let dryRun = args.options.dryRun || false;
+    let exportCollectionParts = args.options.exportCollectionParts || false;
+    let useFcExportPath = args.options.useFcpaths ? true : false;
 
     await api.io.export.run({
-      fcrepoPath: args['root-fcrepo-path'], 
+      fcrepoPath: args.rootFcrepoPath, 
       fsRoot: dir,
       cleanDir, ignoreBinary, ignoreMetadata,
       dryRun,
-      exportCollectionParts
+      exportCollectionParts,
+      useFcExportPath
     });
   }
 

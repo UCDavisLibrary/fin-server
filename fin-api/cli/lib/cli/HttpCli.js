@@ -14,99 +14,6 @@ const config = require('../lib/config');
 class HttpCli {
 
   async init(vorpal, argv) {
-    this.vorpal = vorpal;
-
-    // get
-    this._stdOptionWrapper(
-      vorpal.command('http get [path]')
-      .description('Retrieve the content of the resource')
-      .action(this.get.bind(this))
-    );
-
-    // post
-    this._stdOptionWrapper(
-      vorpal.command('http post [path]')
-      .description('Create new resources within a LDP container')
-      .option('-p --prefix <prefix>', 'Additional header prefix')
-      .option('-@ --data-binary <binary>', 'Specify a data file to add.  Can be to stdin')
-      .option('-t --data-string <data>', 'Specify a string to be used as turtle formatted triples, use defined prefixes')
-      .action(this.post.bind(this))
-    );
-
-    // put
-    this._stdOptionWrapper(
-      vorpal.command('http put [path]')
-      .description('Create a resource with a specified path, or replace the triples associated with a resource with the triples provided in the request body')
-      .option('-p --prefix <prefix>', 'Additional header prefix')
-      .option('-l --partial', 'When supplying only user metadata, not the entire container')
-      .option('-@ --data-binary <binary>', 'Specify a data file to add.  Can be to stdin')
-      .option('-t --data-string <data>', 'Specify a string to be used as turtle formatted triples, use defined prefixes')
-      .action(this.put.bind(this))
-    );
-
-    // patch
-    this._stdOptionWrapper(
-      vorpal.command('http patch [path]')
-      .description('Modify the triples associated with a resource with SPARQL-Update')
-      .option('-p --prefix <prefix>', 'Additional header prefix')
-      .option('-@ --data-binary <binary>', 'Specify a data file to add.  Can be to stdin')
-      .option('-t --data-string <data>', 'Specify a string to be used as turtle formatted triples, use defined prefixes')
-      .action(this.patch.bind(this))
-    );
-
-    // delete
-    this._stdOptionWrapper(
-      vorpal.command('http delete [path]')
-      .option('-p --permanent', 'Permanently delete resource (remove /fcr:tombstone')
-      .description('Delete a resource')
-      .action(this.delete.bind(this))
-    );
-
-    this._stdOptionWrapper(
-      vorpal.command('http find-delete [path]')
-      .option('-p --permanent', 'Permanently delete resource (remove /fcr:tombstone')
-      .description('Find all resources at path and delete.  Best done as root')
-      .action(this.findDelete.bind(this))
-    );
-
-    // head
-    this._stdOptionWrapper(
-      vorpal.command('http head [path]')
-      .description('Retrieve the resource headers')
-      .action(this.head.bind(this))
-    );
-
-    // move
-    this._stdOptionWrapper(
-      vorpal.command('http move <path> <destination>')
-      .description('Move a resource (and its subtree) to a new location')
-      .action(this.move.bind(this))
-    );
-
-    // copy
-    this._stdOptionWrapper(
-      vorpal.command('http copy <path> <destination>')
-      .description('Copy a resource (and its subtree) to a new location')
-      .action(this.copy.bind(this))
-    );
-
-    this._stdOptionWrapper(
-      vorpal.command('http transaction start')
-      .description('')
-      .action(this.startTransaction.bind(this))
-    );
-
-    this._stdOptionWrapper(
-      vorpal.command('http transaction commit')
-      .description('')
-      .action(this.commitTransaction.bind(this))
-    );
-
-    this._stdOptionWrapper(
-      vorpal.command('http transaction rollback')
-      .description('')
-      .action(this.rollbackTransaction.bind(this))
-    );
 
     this._stdOptionWrapper(
       vorpal.command('http version list [path]')
@@ -134,21 +41,15 @@ class HttpCli {
     );
   }
 
-  /**
-   * @method
-   * @private
-   *
-   * @description wrap standard options for all http methods
-   */
-  _stdOptionWrapper(command) {
+  stdOptionWrapper(command) {
     command
-    .option('-H, --header <header>', 'Add additional Headers to the request')
-    .option('--check-status','Return exit code for unsucessful calls')
-    .option('--pretty', 'Pretty response body print if application/json or application/ld+json')
-    .option('-P, --print <print>', '[hbsHB] Specify what components to print to user. Value should '+
-            'be any combination of hbsHB where: H=request headers, B=request body,'+
-            'h=response headers, b=response body and s=response HTTP status code')
-    .option('-d, --debug', 'Debug all http requests')
+      .option('-H, --header <header>', 'Add additional Headers to the request')
+      .option('--check-status','Return exit code for unsucessful calls')
+      .option('--pretty', 'Pretty response body print if application/json or application/ld+json')
+      .option('-P, --print <print>', '[hbsHB] Specify what components to print to user. Value should '+
+              'be any combination of hbsHB where: H=request headers, B=request body,'+
+              'h=response headers, b=response body and s=response HTTP status code')
+      .option('-d, --debug', 'Debug all http requests')
   }
 
   /**
@@ -224,7 +125,7 @@ class HttpCli {
   _display_and_exitcode(args, response) {
     if( response.error ) {
       Logger.log(response.error.message);
-      if (args.options['check-status']) {
+      if (args.options.checkStatus) {
         process.exitCode = 111;
       }
       return;
@@ -281,7 +182,7 @@ class HttpCli {
       Logger.log();
     }
 
-    if (args.options['check-status']) {
+    if (args.options.checkStatus) {
       if (!api.isSuccess(response)) {
         process.exitCode = Math.floor(response.statusCode/100);
       }
@@ -313,30 +214,30 @@ class HttpCli {
    * @returns {Boolean} was valid file or contents passed
    */
   _parseDataOptions(args, options, sparql = false) {
-    if( args.options['data-binary'] ) {
+    if( args.options.dataBinary ) {
       // prompt user for input
-      if( args.options['data-binary'].toLowerCase() === 'stdin' ) {
+      if( args.options.dataBinary.toLowerCase() === 'stdin' ) {
         var input = inquirer.prompt([{
           type: 'text',
           name: 'postdata'
         }]);
         options.content = input.postdata;
 
-      } else if( args.options['data-binary'].toLowerCase() === '/dev/stdin' ) {
+      } else if( args.options.dataBinary.toLowerCase() === '/dev/stdin' ) {
         options.content = fs.readFileSync('/dev/stdin', 'utf-8');
 
       // set file from file system
       } else {
-        options.file = location.makeAbsolutePath(args.options['data-binary']);
+        options.file = location.makeAbsolutePath(args.options.dataBinary);
         if( !fs.existsSync(options.file) ) {
           Logger.error(`Invalid file: ${options.file}`);
           return false;
         }
       }
 
-    } else if( args.options['data-string'] ) {
+    } else if( args.options.dataString ) {
       let prefixes = prefixutils(args, sparql);
-      options.content = prefixes+'\n'+args.options['data-string'];
+      options.content = prefixes+'\n'+args.options.dataString;
       options.headers['Content-Type'] = api.RDF_FORMATS.TURTLE;
     }
 
