@@ -1,4 +1,6 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
+import { LitElement, html } from 'lit';
+import render from "./app-search-results-panel.tpl.js";
+
 import "@ucd-lib/cork-pagination"
 import "@polymer/paper-spinner/paper-spinner-lite"
 
@@ -6,119 +8,56 @@ import "./app-search-grid-result"
 import "./app-search-list-result"
 import "../../../utils/app-collection-card"
 import "../filtering/app-top-active-filters"
-import RecordInterface from "../../../interfaces/RecordInterface"
-import AppStateInterface from "../../../interfaces/AppStateInterface"
-import CollectionInterface from "../../../interfaces/CollectionInterface"
-import MediaInterface from "../../../interfaces/MediaInterface"
-
-import template from './app-search-results-panel.html'
 
 const SEARCH_RESULTS_LAYOUT = 'search-results-layout';
 let initIsListLayout = localStorage.getItem(SEARCH_RESULTS_LAYOUT);
 if( initIsListLayout === 'list' ) initIsListLayout = true
 else initIsListLayout = false;
 
-class AppSearchResultsPanel extends Mixin(PolymerElement)
-      .with(EventInterface, RecordInterface, AppStateInterface, CollectionInterface, MediaInterface) {
+class AppSearchResultsPanel extends Mixin(LitElement)
+      .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      /**
-       * Array of search results
-       */
-      results : {
-        type : Array,
-        value : () => []
-      },
-
-      /**
-       * Array of collection search results
-       */
-      collectionResults : {
-        type : Array,
-        value : () => []
-      },
-
-      /**
-       * size in px's between each masonary layout cell
-       */
-      masonryMargin : {
-        type : Number,
-        value : 15
-      },
-      /**
-       * are we in list or masonry layout
-       */
-      isListLayout : {
-        type : Boolean,
-        value : initIsListLayout
-      },
-      /**
-       * UI display of total results
-       */
-      total : {
-        type : String,
-        value : '0'
-      },
-
-      numPerPage : {
-        type : Number,
-        value : 1
-      },
-      
-      currentIndex : {
-        type : Number,
-        value : 0
-      },
-
-      showCollectionResults : {
-        type : Boolean,
-        value : false
-      },
-
-      showError : {
-        type : Boolean,
-        value : false
-      },
-      
-      showLoading : {
-        type : Boolean,
-        value : false
-      },
-
-      errorMsg : {
-        type : Boolean,
-        value : false
-      },
-
-      // total number for pagination widget
-      // we make out at 10000
-      paginationTotal : {
-        type : Number,
-        value : false
-      },
-
-      totalOverMaxWindow : {
-        type : Boolean,
-        value : false
-      }
-
+      results : { type: Array }, // array of search results
+      collectionResults : { type: Array }, // array of collection search results
+      masonryMargin : { type: Number }, // size in px's between each masonary layout cell
+      isListLayout : { type: Boolean }, // are we in list or masonry layout   
+      total : { type: String }, // UI display of total results
+      numPerPage : { type: Number },
+      currentIndex : { type: Number },
+      showCollectionResults : { type: Boolean },
+      showError : { type: Boolean },
+      showLoading : { type: Boolean },
+      errorMsg : { type: Boolean },
+      paginationTotal : { type: Number }, // total number for pagination widget, we max out at 10000
+      totalOverMaxWindow : { type: Boolean }
     }
-  }
-
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
   }
 
   constructor() {
     super();
     this.active = true;
+    this.render = render.bind(this);
+
+    this.results = [];
+    this.collectionResults = [];
+    this.masonryMargin = 15;
+    this.isListLayout = initIsListLayout;
+    this.total = '0';
+    this.numPerPage = 1;
+    this.currentIndex = 0;
+    this.showCollectionResults = false;
+    this.showError = false;
+    this.showLoading = false;
+    this.errorMsg = false;
+    this.paginationTotal = false;
+    this.totalOverMaxWindow = false;
 
     this.resizeTimer = -1;
     window.addEventListener('resize', () => this._resizeAsync());
 
+    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'MediaModel');
     this.EventBus().on('show-collection-search-results', show => this._updateCollectionResultsVisibility(show));
   }
 
@@ -239,8 +178,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    */
   _resize() {
     if( this.isListLayout ) return;
-
-    let firstDiv = this.$.layout.querySelector('app-search-grid-result');
+    let firstDiv = this.shadowRoot.querySelector('#layout').querySelector('app-search-grid-result');
     if( !firstDiv ) return;
 
     let ew = this.offsetWidth;

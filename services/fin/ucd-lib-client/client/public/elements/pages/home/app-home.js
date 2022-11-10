@@ -21,10 +21,6 @@ import "../../components/sections/dams-highlighted-collection";
 
 import render from './app-home.tpl.js';
 
-import RecordInterface from "../../interfaces/RecordInterface"; 
-import AppStateInterface from "../../interfaces/AppStateInterface";
-import CollectionInterface from "../../interfaces/CollectionInterface";
-
 /**
  * @class AppHome
  * @description home page is rendered to the DAMS v2
@@ -38,7 +34,7 @@ import CollectionInterface from "../../interfaces/CollectionInterface";
  * @prop {Object} heroImgCurrent - The currently displayed hero image.
  */
 class AppHome extends Mixin(LitElement)
-  .with(EventInterface, RecordInterface, AppStateInterface, CollectionInterface) {
+  .with(LitCorkUtils) {
   
   static get properties() {
     return {
@@ -63,20 +59,14 @@ class AppHome extends Mixin(LitElement)
     this.textTrio = {};
     this.heroImgOptions = {};
     this.heroImgCurrent = {};
-    this._injectModel('FcAppConfigModel');
-    this._injectModel('CollectionModel');
+    this._injectModel('FcAppConfigModel', 'CollectionModel', 'RecordModel');
   }
-
 
   /**
    * @method firstUpdated
    * @description Lit lifecycle method called when element is first updated
    */
   async firstUpdated() {
-    // move iconset to head.. this.shadowRoot?
-    // const iconset = document.querySelector('ucdlib-iconset');
-    // document.head.appendChild(iconset);
-
     // Get featured collections
     this.featuredCollections = this.FcAppConfigModel.getFeaturedCollections();
     this.featuredCollectionsCt = this.featuredCollections.length;
@@ -97,7 +87,6 @@ class AppHome extends Mixin(LitElement)
     this.heroImgOptions = this.FcAppConfigModel.getHomepageHeroOptions();
 
     this.requestUpdate();
-    
   }
 
   /**
@@ -135,9 +124,10 @@ class AppHome extends Mixin(LitElement)
    * @param {Object} e
    */
   _onSearch(e) {
-
-    let searchDoc = this._getEmptySearchDocument();
-    this._setTextFilter(searchDoc, e.detail);
+    // let searchDoc = this._getEmptySearchDocument();
+    let searchDoc = this.RecordModel.emptySearchDocument();
+    // this._setTextFilter(searchDoc, e.detail);
+    this.RecordModel.setTextFilter(searchDoc, e.detail);
     this.RecordModel.setSearchLocation(searchDoc);
   }
 

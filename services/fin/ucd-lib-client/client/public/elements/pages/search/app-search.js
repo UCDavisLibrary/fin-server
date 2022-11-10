@@ -1,66 +1,37 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
-import "@polymer/paper-input/paper-input"
-import template from "./app-search.html";
+import { LitElement, html } from 'lit';
+import render from "./app-search.tpl.js";
 
 import "./results/app-search-results-panel"
 import "./filtering/app-filters-panel"
 
-import AppStateInterface from '../../interfaces/AppStateInterface'
-import RecordInterface from '../../interfaces/RecordInterface'
-import CollectionInterface from '../../interfaces/CollectionInterface'
-
-export class AppSearch extends Mixin(PolymerElement)
-            .with(EventInterface, RecordInterface, CollectionInterface, AppStateInterface) {
-
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
-  }
+export class AppSearch extends Mixin(LitElement)
+            .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      visible : {
-        type : Boolean,
-        value : false
-        // observer : '_onVisibleUpdate'
-      },
-      results : {
-        type : Array,
-        value : () => []
-      },
-      drawerOpen : {
-        type : Boolean,
-        value : false
-      },
-      firstLoad : {
-        type : Boolean,
-        value : true
-      },
-      appState : {
-        type : Object,
-        value : () => ({})
-      },
-      wideFiltersPanel : {
-        type : Boolean,
-        value : false
-      }
+      visible : {type: Boolean},
+      results : {type: Array},
+      drawerOpen : {type: Boolean},
+      firstLoad : {type: Boolean},
+      appState : {type: Object},
+      wideFiltersPanel : {type: Boolean}
     }
   }
 
   constructor() {
     super();
     this.active = true;
-    // this._initState();
-  }
+    this.render = render.bind(this);
 
-  // async _initState() {
-  //   let startState = await this._getAppState();
-  //   if( startState.location.path[0] === 'search' ) {
-  //     this.appState = startState;
-  //     this._searchFromAppState();
-  //   }
-  // }
+    this.visible = false;
+    this.results = [];
+    this.drawerOpen = false;
+    this.firstLoad = true;
+    this.appState = {};
+    this.wideFiltersPanel = false;
+    
+    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel');
+  }
 
   /**
    * @description AppStateInterface, fired when state updates
@@ -103,15 +74,16 @@ export class AppSearch extends Mixin(PolymerElement)
       this._searchRecords(query, false);
       return;
     } else if( searchUrlParts[0] === 'search' && searchUrlParts.length > 1 ) {
-      query = this._urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
+      // query = this._urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
+      query = this.RecordModel.urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
     } else {
       query = this.RecordModel.emptySearchDocument();
     }
-    
     if( this.lastQuery === query ) return;
     this.lastQuery = query;
 
-    this._searchRecords(query);
+    // this._searchRecords(query);
+    this.RecordModel.search(query);
   }
 
   /**
@@ -122,9 +94,9 @@ export class AppSearch extends Mixin(PolymerElement)
    */
   _onRecordSearchUpdate(e) {
     if( e.state === 'error' ) {
-      return this.$.resultsPanel.onError(e);
+      return this.shadowRoot.querySelector('#resultsPanel').onError(e);
     } else if( e.state === 'loading' ) {
-      return this.$.resultsPanel.onLoading();
+      return this.shadowRoot.querySelector('#resultsPanel').onLoading();
     }
 
     if( e.state !== 'loaded' ) return;
@@ -134,7 +106,7 @@ export class AppSearch extends Mixin(PolymerElement)
     let total = payload.total;
     this.results = payload.results;
 
-    this.$.resultsPanel.render(this.results, total, e.searchDocument.limit, currentIndex);
+    this.shadowRoot.querySelector('#resultsPanel').render(this.results, total, e.searchDocument.limit, currentIndex);
   }
 
   /**

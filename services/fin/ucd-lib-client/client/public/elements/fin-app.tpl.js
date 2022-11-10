@@ -119,7 +119,7 @@ export default function render() {
 
 <app-route app-routes="${this.appRoutes}"></app-route>
 
-<app-search-header hidden="${!this.showSearchHeader}"></app-search-header>
+<app-search-header ?hidden="${!this.showSearchHeader}"></app-search-header>
 
 <div class="mobile-filters-layout">
   <div id="outerDrawer">
@@ -131,7 +131,7 @@ export default function render() {
 
   <div class="main-content">
     <iron-pages selected="${this.page}" attr-for-selected="id" selected-attribute="visible">
-      <!--<div id="loading" hidden="${this.page}">
+      <!--<div id="loading" ?hidden="${this.page}">
         <img src="/images/logos/logo-icon.svg" style="max-width: 128px" />
         <div class="loading-dots">
           <h1 class="dot one">.</h1><h1 class="dot two">.</h1><h1 class="dot three">.</h1>
@@ -143,7 +143,7 @@ export default function render() {
       <app-browse id="browse"></app-browse>
       <app-about id="about"></app-about>
       <app-collections id="collections"></app-collections>
-      <app-browse-by id="collection" 
+      <!--<app-browse-by id="collection" 
         label="Collection" 
         facet-query-name="collection">
         <dams-watercolor-overlay 
@@ -174,7 +174,7 @@ export default function render() {
           icon="star"
           slot="header-icon">
         </dams-watercolor-overlay>
-      </app-browse-by>
+      </app-browse-by>-->
       <app-components id="components"></app-components>
     </iron-pages>
     <div class="footer site-frame">

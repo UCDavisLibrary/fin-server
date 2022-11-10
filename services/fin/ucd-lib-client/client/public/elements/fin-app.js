@@ -23,12 +23,6 @@ import "./utils/app-header-colorbar";
 import "./utils/app-browse-by";
 import "./components/graphics/dams-watercolor-overlay";
 
-
-// import AppStateInterface from "./interfaces/AppStateInterface";
-// import AuthInterface from "./interfaces/AuthInterface";
-// import CollectionInterface from "./interfaces/CollectionInterface";
-// import RecordInterface from "./interfaces/RecordInterface";
-
 export class FinApp extends Mixin(LitElement)
   .with(LitCorkUtils) {  
 

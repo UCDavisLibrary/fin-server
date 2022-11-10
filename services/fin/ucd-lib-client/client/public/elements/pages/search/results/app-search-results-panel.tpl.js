@@ -1,3 +1,7 @@
+import { html } from 'lit';
+
+export default function render() {
+return html`
 <style include="shared-styles">
   :host {
     display: block;
@@ -183,14 +187,14 @@
 </style>
 
 <div class="header">
-  <div class="total" hidden$="[[showLoading]]">[[total]] results found</div>
+  <div class="total" ?hidden="${this.showLoading}">${this.total} results found</div>
   
   <div class="filler"></div>
   
   <paper-icon-button 
     noink
     icon="fin-icons:grid" 
-    disabled$="[[!isListLayout]]"
+    ?disabled="${!this.isListLayout}"
     on-click="_onLayoutToggle" 
     type="masonry">
   </paper-icon-button>
@@ -198,7 +202,7 @@
   <paper-icon-button 
     noink
     icon="fin-icons:list" 
-    disabled$="[[isListLayout]]"
+    ?disabled="${this.isListLayout}"
     on-click="_onLayoutToggle" 
     type="list">
   </paper-icon-button>
@@ -225,7 +229,7 @@
   </div>
 
   <div class="row2">
-    <div class="total" hidden$="[[showLoading]]">[[total]] results</div>
+    <div class="total" ?hidden="${this.showLoading}">${this.total} results</div>
 
     <div class="row2-right">
       <div class="filler"></div>
@@ -233,7 +237,7 @@
       <paper-icon-button 
         noink
         icon="fin-icons:grid" 
-        disabled$="[[!isListLayout]]"
+        ?disabled="${!this.isListLayout}"
         on-click="_onLayoutToggle" 
         type="masonry">
       </paper-icon-button>
@@ -241,7 +245,7 @@
       <paper-icon-button
         noink
         icon="fin-icons:list" 
-        disabled$="[[isListLayout]]"
+        ?disabled="${this.isListLayout}"
         on-click="_onLayoutToggle" 
         type="list">
       </paper-icon-button>
@@ -261,54 +265,55 @@
 
 <app-top-active-filters></app-top-active-filters>
 
-<div class="collections" hidden$="[[!showCollectionResults]]">
-  <div hidden$="[[!collectionResults.length]]">
+<div class="collections" ?hidden="${!this.showCollectionResults}">
+  <div ?hidden="${!this.collectionResults.length}">
     <h3>Collections</h3>
     <div style="text-align:center">
-      <template is="dom-repeat" items="[[collectionResults]]">
+      ${this.collectionResults.map(col => html`
         <app-collection-card 
-          collection="[[item]]" 
+          collection="${col.item}" 
           on-keyup="_onCollectionClicked"
           on-click="_onCollectionClicked">
         </app-collection-card>
-      </template>
+      `)}
     </div>
-    <h3 hidden$="[[!results.length]]">Items</h3>
+    <h3 ?hidden="${!this.results.length}">Items</h3>
   </div>
 </div>
 
-<div hidden$="[[showError]]">
-  <div hidden$="[[showLoading]]">
-    <div class="masonry" id="layout" hidden$="[[isListLayout]]">
-      <template is="dom-repeat" items="[[results]]">
-        <app-search-grid-result data="[[item]]" class="item"></app-search-grid-result>
-      </template>
+<div ?hidden="${this.showError}">
+  <div ?hidden="${this.showLoading}">
+    <div class="masonry" id="layout" ?hidden="${this.isListLayout}">
+      ${this.results.map(res => html`
+        <app-search-grid-result data="${res.item}" class="item"></app-search-grid-result>
+      `)}
     </div>
 
-    <div class="list" hidden$="[[!isListLayout]]">
-      <template is="dom-repeat" items="[[results]]">
-        <app-search-list-result data="[[item]]"></app-search-list-result>
-      </template>
+    <div class="list" ?hidden="${!this.isListLayout}">
+      ${this.results.map(res => html`
+        <app-search-list-result data="${res.item}"></app-search-list-result>
+      `)}
     </div>
   </div>
 </div>
 
-<div class="error" hidden$="[[!showError]]">
-  <div>[[errorMsg]]</div>
+<div class="error" ?hidden="${!this.showError}">
+  <div>${this.errorMsg}</div>
 </div>
-<div class="loading" hidden$="[[!showLoading]]">
-  <paper-spinner-lite active$="[[showLoading]]"></paper-spinner-lite>
+<div class="loading" ?hidden="${!this.showLoading}">
+  <paper-spinner-lite ?active="${this.showLoading}"></paper-spinner-lite>
 </div>
 
-<div style="text-align:center" hidden$="[[showLoading]]">
+<div style="text-align:center" ?hidden="${this.showLoading}">
   <cork-pagination 
-    total-results="[[paginationTotal]]" 
-    items-per-page="[[numPerPage]]"
-    current-index="[[currentIndex]]"
+    total-results="${this.paginationTotal}" 
+    items-per-page="${this.numPerPage}"
+    current-index="${this.currentIndex}"
     on-nav="_onPaginationNav">
   </cork-pagination>
 </div>
 
-<div hidden$="[[!totalOverMaxWindow]]" style="text-align: center">Digital Collections limits results to 
+<div ?hidden="${!this.totalOverMaxWindow}" style="text-align: center">Digital Collections limits results to 
   10,000.  Use keywords and/or filters to refine search.
 </div>
+`;}

@@ -1,17 +1,10 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element";
-import AppStateInterface from "./interfaces/AppStateInterface";
+import { LitElement, html } from 'lit';
+import render from "./app-footer.tpl.js";
+
 import "./auth/app-auth-footer";
 
-import template from "./app-footer.html";
-
-class AppFooter extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface) {
-  
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
-  }
+class AppFooter extends Mixin(LitElement)
+  .with(LitCorkUtils) {
 
   static get properties() {
     return { 
@@ -28,6 +21,7 @@ class AppFooter extends Mixin(PolymerElement)
   constructor() {
     super();
     this.active = true;
+    this.render = render.bind(this);
 
     this.appVersion = APP_CONFIG.env.APP_VERSION;
     this.clientTag = APP_CONFIG.env.UCD_LIB_SERVER_REPO_TAG;
@@ -40,6 +34,8 @@ class AppFooter extends Mixin(PolymerElement)
     } else {
       this.localBuildTime = 'Not set';
     }   
+
+    this._injectModel('AppStateModel');
   }  
 
   getLocalTime(date) {

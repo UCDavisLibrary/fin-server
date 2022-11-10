@@ -1,44 +1,28 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element";
-import template from "./app-search-header.html";
-import "@polymer/iron-pages/iron-pages";
-import "@polymer/iron-icons/iron-icons";
+import { LitElement, html } from 'lit';
+import render from "./app-search-header.tpl.js";
+
 import "../../auth/app-auth-header";
 import "@ucd-lib/fin-search-box";
 import "../../components/search-box";
 import "../../components/nav-bar";
 // import "../../components/icon";
 import "../../components/filterButton";
-
-import RecordInterface from '../../interfaces/RecordInterface';
-import CollectionInterface from '../../interfaces/CollectionInterface';
-import AppStateInterface from '../../interfaces/AppStateInterface';
-
-class AppSearchHeader extends Mixin(PolymerElement)
-      .with(EventInterface, RecordInterface, CollectionInterface, AppStateInterface) {
+class AppSearchHeader extends Mixin(LitElement)
+      .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      selectedCollection : {
-        type : String,
-        value : ''
-      },
-      navBarChoices : {
-        type : Array,
-        value : () => []
-      }
+      selectedCollection : {type: String},
+      navBarChoices : {type: Array}
     };
-  }
-
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
   }
 
   constructor() {
     super();
     this.active = true;
+    this.render = render.bind(this);
 
+    this.selectedCollection = '';
     this.navBarChoices = [
       { text: 'Browse', 
         dropdown: [
@@ -52,6 +36,8 @@ class AppSearchHeader extends Mixin(PolymerElement)
       {text: 'About', href: '/about'},
       {text: 'FAQ', href: '/faq'}
     ];
+
+    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel');
   }
   /**
    * @method ready
@@ -62,6 +48,60 @@ class AppSearchHeader extends Mixin(PolymerElement)
   async ready() {
     super.ready();
     this._setCollections(await this.CollectionModel.overview());
+  }
+
+  /**
+   * @description AppStateInterface, fired when state updates
+   * @param {*} e 
+   */
+   _onAppStateUpdate(e) {
+    this.drawerOpen = e.filtersDrawerOpen ? true : false;
+    this.appState = e;
+    if( 
+      e.location.path[0] !== 'search' &&
+      e.location.path[0] !== 'collection'
+    ) return;
+    this._searchFromAppState();
+  }
+
+  /**
+   * @method _searchFromAppState
+   * @description use current app state to preform a search, should be called on first load
+   * or if state update event is from popup state (forward, back button hit)
+   */
+  _searchFromAppState() {
+    if( !this.drawerOpen || window.innerWidth > 975 ) {
+      window.scrollTo(0, 0);
+    }
+
+    this.firstLoad = false;
+
+    let searchUrlParts = this.appState.location.path;
+    let query;
+
+    if( searchUrlParts[0] === 'collection' ) {
+      query = this._urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
+        // ["isPartOf.@id","or",`/collection/${searchUrlParts[1]}`]
+        ["collectionId","or",`/collection/${searchUrlParts[1]}`]
+      ])),'', '10']);
+
+      if( this.lastQuery === query ) return;
+      this.lastQuery = query;
+
+      this._searchRecords(query, false);
+      return;
+    } else if( searchUrlParts[0] === 'search' && searchUrlParts.length > 1 ) {
+      // query = this._urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
+      query = this.RecordModel.urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
+    } else {
+      query = this.RecordModel.emptySearchDocument();
+    }
+
+    if( this.lastQuery === query ) return;
+    this.lastQuery = query;
+
+    // this._searchRecords(query);
+    this.RecordModel.search(query);
   }
 
   /**
@@ -94,7 +134,7 @@ class AppSearchHeader extends Mixin(PolymerElement)
   _onBrowse(e) {
     let id = e.detail;
 
-    this.$.searchInput.browseValue = 'Browse';
+    this.$.searchBox.browseValue = 'Browse';
 
     if( !id || id === 'Browse' ) {
       return this.RecordModel.setSearchLocation(this._getEmptySearchDocument());
@@ -112,9 +152,15 @@ class AppSearchHeader extends Mixin(PolymerElement)
    * @param {Object} e
    */
   _onSearch(e) {
-    let searchDoc = this._getCurrentSearchDocument();
-    this._setPaging(searchDoc, 0);
-    this._setTextFilter(searchDoc, e.detail);
+    // let searchDoc = this._getCurrentSearchDocument();
+    let searchDoc = this.RecordModel.getCurrentSearchDocument();
+    
+    // this._setPaging(searchDoc, 0);
+    this.RecordModel.setPaging(searchDoc, 0);
+
+    // this._setTextFilter(searchDoc, e.detail);
+    this.RecordModel.setTextFilter(searchDoc, e.detail);
+
     this.RecordModel.setSearchLocation(searchDoc);
   }
 
@@ -125,10 +171,11 @@ class AppSearchHeader extends Mixin(PolymerElement)
    * @param {*} e 
    */
   _onRecordSearchUpdate(e) {
+    const searchBox = this.shadowRoot.querySelector('#searchBox');
     try {
-      this.$.searchInput.value = e.searchDocument.text || '';
+      searchBox.shadowRoot.querySelector('#input').value = e.searchDocument.text || '';
     } catch(e) {
-      this.$.searchInput.value = '';
+      searchBox.shadowRoot.querySelector('#input').value = '';
     }
   }
 
