@@ -3,9 +3,15 @@ const {config} = require('@ucd-lib/fin-service-utils');
 const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 const ARCHIVAL_GROUP = 'http://fedora.info/definitions/v4/repository#ArchivalGroup';
 
+const GIT_TYPE = 'http://library.ucdavis.edu/gitsource';
+const GIT_PROP = 'http://library.ucdavis.edu/git#';
+
 module.exports = async function(path, graph, headers, utils) {
   let item = {};
+
   let container = utils.get(path, graph);
+  let gitsource = utils.getByType(GIT_TYPE, graph);
+
   if( !container ) {
     throw new Error('unknown container: '+path);
   }
@@ -280,6 +286,14 @@ module.exports = async function(path, graph, headers, utils) {
 
   if( !item._.esId && item['@type'].includes(BINARY) ) {
     item._.esId = item['@id'];
+  }
+
+  if( gitsource ) {
+    item._.gitsource = {};
+    for( let attr in gitsource ) {
+      if( !attr.startsWith(GIT_PROP) ) continue;
+      item._.gitsource[attr.replace(GIT_PROP, '')] = gitsource[attr][0]['@value'] || gitsource[attr][0]['@id'];
+    }
   }
 
   return item;

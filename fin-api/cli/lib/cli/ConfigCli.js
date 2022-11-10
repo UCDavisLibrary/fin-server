@@ -7,35 +7,14 @@ const cas = require('../lib/cas');
 const {URL} = require('url');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
+const pkg = require('../../../package.json');
 
 class ConfigCli {
 
   async init(vorpal, argv) {
     this.vorpal = vorpal;
 
-    // if a local config file was passed, use that
-    if( argv.config ) {
-      config.load(argv.config);
-    }
 
-    vorpal.command('login')
-          .description('Login using UCD CAS Authentication')
-          .option('--local, -l <username>', 'Login using local UCD DAMS authentication')
-          .option('--headless, -h', 'Login without local browser, copy and paste token')
-          .option('--super-user, -s <username>', 'Login as a user with admin privileges using root server credentials')
-          .action(this.login.bind(this));
-
-    vorpal.command('logout')
-          .description('Logout current user')
-          .action(this.logout);
-          
-    vorpal.command('config').action(this.display);
-    
-    vorpal.command('config set <attribute> <value>').action(this.setAttribute.bind(this));
-
-    vorpal.command('config prefix').action(this.showPrefix);
-    vorpal.command('config prefix add <prefix> <url>').action(this.addPrefix.bind(this));
-    vorpal.command('config prefix remove <prefix>').action(this.removePrefix.bind(this));
 
     vorpal.command('jwt encode <secret> <issuer> <username>')
       .option('-a --admin', 'set the admin flag for the token')
@@ -56,19 +35,92 @@ class ConfigCli {
       location.setCwd(config.cwd);
     }
 
-    if( !config.host ) {
-      Logger.log('Initializing CLI...');
-      if( !argv.shell ) return;
+  }
 
-      var args = await inquirer.prompt([{
-        type: 'text',
-        name: 'host',
-        message: 'FIN Host: '
-      }]);
+  getConfigDocs() {
+    return `
+                    ███████╗██╗███╗   ██╗     ██████╗██╗     ██╗
+                    ██╔════╝██║████╗  ██║    ██╔════╝██║     ██║
+                    █████╗  ██║██╔██╗ ██║    ██║     ██║     ██║
+                    ██╔══╝  ██║██║╚██╗██║    ██║     ██║     ██║
+                    ██║     ██║██║ ╚████║    ╚██████╗███████╗██║
+                    ╚═╝     ╚═╝╚═╝  ╚═══╝     ╚═════╝╚══════╝╚═╝
+                    v${pkg.version}
 
-      config.host = args.host;
-      config.basePath = '/fcrepo/rest';
-    }
+====================================== FIN CLI  ======================================
+
+Welcome to the FIN CLI for interacting with the Fedora Repository backed FIN Server.  
+
+- Project Code - 
+https://github.com/UCDavisLibrary/fin-server
+
+- CLI Setup - 
+fin config set <attribute> <value>
+where attributes and there values are stored in your home directory at ~/.fccli
+
+- CLI Quick Start -
+fin config set host [host url]
+fin auth login
+fin http get / -P hbsHB
+
+- CLI Attributes -
+
+attribute   : host
+env         : FCREPO_HOST
+example     : http://digital.ucdavis.edu
+description : Host url for your fin instance
+
+attribute   : fcBasePath
+env         : FCREPO_REST_PATH
+default     : /fcrepo/rest
+description : Base url path to fcrepo rest api
+
+attribute   : jwt
+env         : FCREPO_JWT
+description : json web token to use for http requests.  Used when the 'directAccess' 
+              attribute is set to 'false'
+
+attribute   : username
+env         : FCREPO_USERNAME
+default     : fedoraUser
+description : when making a 'directAccess' request WITHOUT the 'superuser' flag set 
+              to 'true', 'username' for basic HTTP authentication against fcrepo
+
+attribute   : password
+env         : FCREPO_PASSWORD
+default     : fedoraUser
+description : when making a 'directAccess' request WITHOUT the 'superuser' flag set 
+              to 'true', 'password' for basic HTTP authentication against fcrepo
+
+attribute   : adminUsername
+env         : FCREPO_ADMIN_USERNAME
+default     : fedoraAdmin
+description : when making a 'directAccess' request WITH the 'superuser' flag set to 
+              'true', 'username' for basic HTTP authentication against fcrepo
+
+attribute   : adminUsername
+env         : FCREPO_ADMIN_PASSWORD
+default     : fedoraAdmin
+description : when making a 'directAccess' request WITH the 'superuser' flag set to 
+              'true', 'password' for basic HTTP authentication against fcrepo
+
+attribute   : directAccess
+env         : FCREPO_DIRECT_ACCESS
+default     : false
+description : Is the 'host' url attribute set to access fcrepo directly or hit the main fin
+              gateway service?  If 'directAccess' is set to 'true' the cli will assume the 
+              'host' attribute is directly accessing fcrepo and will use basic HTTP 
+              authentication 'Authorization: Basic [username:password]' 
+              If set 'directAccess' is set to 'false', jwt authentication 
+              'Authorization: Bearer [jwt]' will be used.
+
+attribute   : superuser
+env         : FCREPO_SUPERUSER
+default     : false
+description : if the 'directAccess' flag is set to true, setting 'superuser' to true will
+              use the adminUsername/adminPassword combo for basic HTTP authentication.  
+              Otherwise the username/password combination will be used.
+`
   }
 
   /**
@@ -174,26 +226,6 @@ Config File: ${config.optionsPath}
 CWD: ${config.cwd}
 `);
     if( callback ) callback();
-  }
-
-  async showPrefix() {
-    var display = [];
-    for( var key in config.globalPrefix ) {
-      display.push(`${key}: ${config.globalPrefix[key]}`);
-    }
-    Logger.log(display.join('\n'));
-  }
-
-  async addPrefix(args) {
-    config.addPrefix(args);
-    this.showPrefix();
-  }
-
-  async removePrefix(args) {
-    if( !config.removePrefix(args) ) {
-      return Logger.log(`No prefix defined by: ${args.prefix}`);
-    }
-    this.showPrefix();
   }
 
   async jwtEncode(args) {

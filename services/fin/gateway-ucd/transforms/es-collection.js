@@ -3,7 +3,10 @@ const {config} = require('@ucd-lib/fin-service-utils');
 
 module.exports = async function(path, graph, headers, utils) {
   let item = {};
+  
   let container = utils.get(path, graph);
+  let gitsource = utils.get(path+'#gitsource', graph);
+
   if( !container ) {
     throw new Error('unknown container: '+path);
   }
@@ -166,6 +169,14 @@ module.exports = async function(path, graph, headers, utils) {
   item._ = {
     esId : item['@id']
   };
+
+  if( gitsource ) {
+    item._.gitsource = {};
+    for( let attr in gitsource ) {
+      if( attr.startsWith('@') ) continue;
+      item._.gitsource[attr.replace(/.*#/, '')] = gitsource[attr][0]['@value'] || gitsource[attr][0]['@id'];
+    }
+  }
 
   return item;
 }
