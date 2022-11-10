@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const ignore = require('ignore');
 const yaml = require('js-yaml');
+const crypto = require('crypto');
 const mime = require('mime');
 const pathutils = require('../utils/path');
 const transform = require('../utils/transform');
@@ -17,6 +18,7 @@ const IGNORE_FILE = '.finignore';
 const HAS_MESSAGE_DIGEST = 'http://www.loc.gov/premis/rdf/v1#hasMessageDigest';
 
 const FIN_IO_INDIRECT_REFERENCE = 'http://library.ucdavis.edu/schema#finIoIndirectReference';
+const FIN_IO_INDIRECT_REFERENCE_SHA = 'http://library.ucdavis.edu/schema#finIoIndirectReferenceSha';
 const METADATA_SHA = 'http://digital.ucdavis.edu/schema#finIoMetadataSha256';
 const IS_PART_OF = 'http://schema.org/isPartOf';
 const HAS_PART = 'http://schema.org/hasPart';
@@ -72,12 +74,11 @@ class ImportCollection {
 
     // IoDir object for root fs path, crawl repo
     let rootDir = new IoDir(options.fsPath, '/', {
-      includeFilter : options.includeFilter,
       dryRun : options.dryRun,
-      subPaths : options.subPaths,
       fcrepoPath : options.fcrepoPath
     });
 
+    // crawl user suppied director f
     await rootDir.crawl();
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
@@ -100,142 +101,9 @@ class ImportCollection {
       await this.putAGContainers(ag, rootDir);
     }
 
-    // remove all containers that exist in fedora but not locally on disk
-    if( !options.ignoreRemoval ) {
-      console.log('Crawling for container removal');
-
-      if( !options.fcrepoPath ) {
-        await this.remove(rootDir, newCollectionName);
-      } else {
-        // we can only sync deletes for child files as other same-level containers in fcrepo
-        // may exist but not be on disk with fcrepoPath
-
-        // remove same level files
-        let fsPaths = await this.getAllFsPaths(rootDir, {}, newCollectionName);
-        for( let file of rootDir.files ) {
-          let startPath = pathutils.joinUrlPath(this.options.fcrepoPath, file);
-          await this._removeFcPaths(startPath, fsPaths, newCollectionName);
-        }
-
-        // remove sub folders
-        for( let child of rootDir.children ) {
-          await this.remove(child, newCollectionName);
-        }
-      }
-
-    } else {
-      console.log('IGNORING CONTAINER REMOVAL');
-    }
-
     console.log('Filesytem import completed.');
     console.log(` - ArchivalGroup Collections: ${collections.length}`);
     console.log(` - ArchivalGroup Items: ${rootDir.archivalGroups.length-collections.length}`);
-  }
-
-  /**
-   * @method parseConfig
-   * @description parse the ./.fin/config.yaml file
-   * 
-   * @param {String} fsRoot
-   * 
-   * @returns {Object}
-   */
-  parseConfig(fsRoot) {
-    let configFolder = path.join(fsRoot, CONFIG_DIR);
-    let configFile = path.join(configFolder, CONFIG_FILE);
-
-    if( !fs.existsSync(configFolder) ) return {source:{},implementation:{}};
-    if( !fs.existsSync(configFile) ) return {source:{},implementation:{}};
-    
-    let config = yaml.safeLoad(fs.readFileSync(configFile, 'utf-8'));
-    if( !config.source ) config.source = {};
-    if( !config.implementation ) config.implementation = [];
-    config.implementation = config.implementation.map(item => {
-      let [id, fcPath] = item.split(':');
-      return {id, fcPath}; 
-    });
-
-    return config;
-  }
-
-  async remove(dir, collectionName) {
-    let fsPaths = await this.getAllFsPaths(dir, {}, collectionName);
-    fsPaths[pathutils.joinUrlPath('/collection', collectionName, '.fin')] = true;
-
-    let startPath = '';
-    if( this.options.fcrepoPath ) {
-      startPath = pathutils.joinUrlPath(this.options.fcrepoPath, dir.subPath);
-    }
-
-    await this._removeFcPaths(startPath, fsPaths, collectionName);
-  }
-
-  async _removeFcPaths(currentPath, fsPaths, collectionName) {
-    let cPath = pathutils.joinUrlPath('/collection', collectionName, currentPath);
-
-    let response = await api.head({path: cPath});
-    if( response.last.statusCode !== 200 ) return;
-
-    if( !api.isRdfContainer(response.last) ) {
-      if( !fsPaths[cPath] ) {
-        console.log('REMOVING: '+cPath);
-        if( this.options.dryRun !== true ) {
-          response = await api.delete({
-            path : cPath,
-            permanent : true
-          });
-          console.log(response.last.statusCode, response.last.body);
-        }
-      }
-      return;
-    } 
-    
-    response = await api.get({
-      path: cPath,
-      headers : {
-        accept : api.RDF_FORMATS.JSON_LD
-      }
-    });
-    response = JSON.parse(response.last.body)[0];
-
-    let contains = response['http://www.w3.org/ns/ldp#contains'];
-    if( !contains ) return;
-    if( !Array.isArray(contains) ) {
-      contains = [contains];
-    }
-
-    for( var i = 0; i < contains.length; i++ ) {
-      let p = contains[i]['@id'].replace(new RegExp('.*'+pathutils.joinUrlPath(config.fcBasePath, 'collection', collectionName)+'/'), '');
-
-      if( p.match(/^.fin/) ) continue; 
-
-      if( !fsPaths[pathutils.joinUrlPath('/collection', collectionName, p)] ) {
-        console.log('REMOVING: '+pathutils.joinUrlPath('/collection', collectionName, p));
-        if( this.options.dryRun !== true ) {
-          response = await api.delete({
-            path : pathutils.joinUrlPath('/collection', collectionName, p),
-            permanent : true
-          });
-          console.log(response.last.statusCode, response.last.body);
-        }
-      } else {
-        await this._removeFcPaths(p, fsPaths, collectionName);
-      }
-    }
-  }
-
-  async getAllFsPaths(dir, paths, collectionName) {
-    let files = await dir.getFiles();
-    for( let container of files.containers ) {
-      paths[pathutils.joinUrlPath('/collection', collectionName, container.fcpath)] = true;
-    }
-    for( let binary of files.binaries ) {
-      paths[pathutils.joinUrlPath('/collection', collectionName, binary.fcpath)] = true;
-    }
-    for( let child of dir.children ) {
-      await this.getAllFsPaths(child, paths, collectionName);
-    }
-    return paths;
   }
 
   /**
@@ -246,25 +114,76 @@ class ImportCollection {
    * @param {IoDir} dir 
    */
   async putAGContainers(dir, rootDir) {
-    if( dir.archivalGroup === dir || dir.metadata) {
+    let isArchivalGroup = (dir.archivalGroup === dir);
+    let indirectContainers = null;
+    let indirectContainerSha = null;
+
+
+    // check for changes
+    if( isArchivalGroup ) {
+      console.log('ARCHIVAL GROUP: '+dir.fcrepoPath);
+      console.log(' -> crawling fcrepo and local fs for changes');
+
+      if( !dir.isCollection ) {
+        return;
+      }
+
+      let fcrManifest = await this.createArchivalGroupFcrManifest(dir.fcrepoPath);
+      let dirManifest = await this.createArchivalGroupDirManifest(dir);
+      let response = this.checkArchivalGroupManifest(fcrManifest, dirManifest);
+
+      // maybe required below
+      if( dir.isCollection ) {
+        indirectContainers = this.getIndirectContainerList(rootDir, dir);
+      }
+
+      // if collection, we need to check if the indirect references as changed
+      if( dir.isCollection && response.equal === true ) {
+        let hash = crypto.createHash('sha256');
+        hash.update(JSON.stringify(indirectContainers));
+        indirectContainerSha = hash.digest('hex');
+
+        if( !fcrManifest[dir.fcrepoPath].indirectSha ) {
+          response = {equal:false, message: 'No indirect reference sha found: '+dir.fcrepoPath};
+        } else if( indirectContainerSha !== fcrManifest[dir.fcrepoPath].indirectSha ) {
+          response = {equal:false, message: 'indirect reference sha missmatch: '+dir.fcrepoPath};
+        }
+
+        dir.metadata[FIN_IO_INDIRECT_REFERENCE_SHA] = [{'@value': indirectContainerSha}];
+      }
+
+      response.equal = false;
+
+      if( response.equal === true ) {
+        console.log(' -> no changes found, ignoring');
+        return;
+      } else {
+        console.log(' -> changes found, removing and reimporting: '+response.message);
+        await api.delete({path: dir.fcrepoPath, permanent: true});
+      }
+    }
+
+    // does the archive group need a container?
+    if( isArchivalGroup|| dir.metadata) {
       await this.putContainer(dir);
     }
 
     // if this is an archival group collection, add all 'virtual'
     // indirect container references
-    if( dir.archivalGroup === dir && dir.isCollection ) {
-      await this.putIndirectContainers(rootDir, dir);
+    if( isArchivalGroup && dir.isCollection ) {
+      await this.putIndirectContainers(rootDir, indirectContainers);
 
+      // where there hardcoded collection hasParts?
       if( dir.hasParts ) {
         for( let container of dir.hasParts ) {
           await this.putContainer(container);
         }
       }
-
     }
     
+    // are we a directory?
+    // if not quit, otherwise add dir containers and binary files
     if( !dir.getFiles ) return;
-
     let files = await dir.getFiles();
 
     for( let container of files.containers ) {
@@ -276,6 +195,7 @@ class ImportCollection {
       await this.putBinaryMetadata(binary);
     }
 
+    // are their child directories
     for( let child of dir.children ) {
       await this.putAGContainers(child);
     }
@@ -312,6 +232,9 @@ class ImportCollection {
         console.log(` -> IGNORING (sha match)`);
         return;
       }
+    } else if ( localpath !== '_virtual_' ) {
+      let localSha = await api.sha(localpath);
+      metadata[METADATA_SHA] = [{'@value': localSha}];
     }
 
     // strip @types that must be provided as a Link headers
@@ -347,7 +270,6 @@ class ImportCollection {
         this.createGitContainer(container.gitInfo)
       ];
     }
-    
 
     if( this.options.dryRun !== true ) {
       response = await api.put({
@@ -467,6 +389,9 @@ class ImportCollection {
           console.log(` -> IGNORING (sha match)`);
           return;
         } 
+      } else {
+        let localSha = await api.sha(binary.containerFile);
+        metadata[METADATA_SHA] = [{'@value': localSha}];
       }
 
       // strip any ldp types that are not allowed
@@ -515,8 +440,17 @@ class ImportCollection {
     }
   }
 
-  async putIndirectContainers(rootDir, ag) {
-    await this.putContainer({
+  async putIndirectContainers(rootDir, containers) {
+    for( let container of containers ) {
+      await this.putContainer(container, rootDir);
+    }
+  }
+
+  getIndirectContainerList(rootDir, ag) {
+    let containers = [];
+
+    // root hasPart
+    containers.push({
       fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'hasPart'),
       localpath : '_virtual_',
       metadata : {
@@ -532,9 +466,10 @@ class ImportCollection {
           '@id': HAS_PART
         }]
       }
-    }, rootDir);
+    });
 
-    await this.putContainer({
+    // root isPartOf
+    containers.push({
       fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'isPartOf'),
       localpath : '_virtual_',
       metadata : {
@@ -550,13 +485,12 @@ class ImportCollection {
           '@id': IS_PART_OF
         }]
       }
-    }, rootDir);
-
+    });
 
     for( let item of rootDir.archivalGroups ) {
       if( item.isCollection ) continue;
 
-      await this.putContainer({
+      containers.push({
         fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'isPartOf', item.id),
         localpath : '_virtual_',
         metadata : {
@@ -566,9 +500,9 @@ class ImportCollection {
             '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
           }]
         }
-      }, rootDir);
+      });
 
-      await this.putContainer({
+      containers.push({
         fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'hasPart', item.id),
         localpath : '_virtual_',
         metadata : {
@@ -578,8 +512,10 @@ class ImportCollection {
             '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
           }]
         }
-      }, rootDir);
+      });
     }
+
+    return containers;
   }
 
   createGitContainer(gitInfo) {
@@ -590,6 +526,122 @@ class ImportCollection {
     gitInfo['@id'] = '#gitsource';
     gitInfo['@type'] = 'http://library.ucdavis.edu/gitsource';
     return gitInfo;
+  }
+
+  async getRootMetadataContainer(path) {
+    let response = await api.metadata({path});
+
+    if( response.error || response.last.statusCode !== 200 ) {
+      return {metadata: null, response: response.last};
+    }
+
+    let graph = JSON.parse(response.data.body);
+    let metadata = graph.find(item => item['@id'].match(api.getConfig().fcBasePath+path));
+    return {metadata, response: response.last};
+  }
+
+  async createArchivalGroupFcrManifest(path, manifest={}) {
+    let metadata = await this.getRootMetadataContainer(path);
+    manifest[path] = {statusCode: metadata.response.statusCode};
+    if( metadata.response.error || metadata.response.statusCode !== 200 ) {
+      return manifest;
+    }
+    metadata = metadata.metadata;
+
+    if( !metadata ) {
+      manifest[path].metadata = false;
+      return manifest;
+    }
+
+    if( metadata['@type'] && !metadata['@type'].includes(FIN_IO_INDIRECT_REFERENCE) ) {
+      if( metadata[HAS_MESSAGE_DIGEST] ) {
+        let shas = metadata[HAS_MESSAGE_DIGEST]
+          .map(item => {
+            let [urn, sha, hash] = item['@id'].split(':')
+            return [sha.replace('sha-', ''), hash];
+          });
+
+        // picking the 256 sha or first
+        let sha = shas.find(item => item[0] === '256');
+        if( !sha ) sha = shas[0];
+        manifest[path].binarySha = sha[1];
+      }
+      if( metadata[METADATA_SHA] ) {
+        manifest[path].metadataSha = metadata[METADATA_SHA][0]['@value'];
+      }
+      if( metadata[FIN_IO_INDIRECT_REFERENCE_SHA] ) {
+        manifest[path].indirectSha = metadata[FIN_IO_INDIRECT_REFERENCE_SHA][0]['@value'];
+      }
+    } else {
+      delete manifest[path]
+    }
+
+    let contains = metadata['http://www.w3.org/ns/ldp#contains'];
+    if( !contains ) return manifest;
+    for( var i = 0; i < contains.length; i++ ) {
+      path = contains[i]['@id'].replace(new RegExp('.*'+api.getConfig().fcBasePath), '');
+      await this.createArchivalGroupFcrManifest(path, manifest);
+    }
+
+    return manifest;
+  }
+
+  async createArchivalGroupDirManifest(dir, manifest={}) {
+    if( dir.containerFile ) {
+      manifest[dir.fcrepoPath] = {
+        metadataSha :  await api.sha(dir.containerFile)
+      }
+    }
+    
+    if( !dir.getFiles ) return manifest;
+
+    let files = await dir.getFiles();
+
+    for( let container of files.containers ) {
+      manifest[container.fcrepoPath] = {
+        metadataSha :  await api.sha(container.localfile)
+      }
+    }
+
+    for( let binary of files.binaries ) {
+      manifest[binary.fcrepoPath] = {
+        binarySha : await api.sha(binary.localpath || binary.containerFile),
+      }
+
+      if( binary.containerFile ) {
+        manifest[binary.fcrepoPath].metadataSha = await api.sha(binary.containerFile);
+      }
+    }
+
+    for( let child of dir.children ) {
+      await this.createArchivalGroupDirManifest(child, manifest);
+    }
+
+    return manifest;
+  }
+
+  checkArchivalGroupManifest(fcrManifest, dirManifest) {
+    for( let path in dirManifest ) {
+      if( !fcrManifest[path] ) {
+        return {equal: false, message: 'fcrepo missing: '+path};
+      }
+
+      if( fcrManifest[path].binarySha !== dirManifest[path].binarySha ) {
+        return {equal: false, message: 'binary sha missmatch: '+path};
+      }
+
+      if( fcrManifest[path].metadataSha !== dirManifest[path].metadataSha ) {
+        return {equal: false, message: 'metadata sha missmatch: '+path};
+      }
+    }
+
+    for( let path in fcrManifest ) {
+      if( !dirManifest[path] ) {
+        return {equal: false, message: 'dir missing: '+path};
+      }
+    }
+
+    return {equal: true};
   }
 
   async isMetaShaMatch(currentJsonLd, newJsonld, file) {

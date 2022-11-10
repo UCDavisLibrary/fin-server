@@ -17,6 +17,13 @@ const HAS_PART = 'http://schema.org/hasPart';
 
 let api;
 
+const OMIT = [
+  'http://www.w3.org/ns/ldp#PreferMembership',
+  'http://www.w3.org/ns/ldp#PreferContainment',
+  'http://fedora.info/definitions/fcrepo#PreferInboundReferences',
+  'http://fedora.info/definitions/fcrepo#ServerManaged'
+]
+
 class ExportCollection {
 
   constructor(_api) {
@@ -143,7 +150,7 @@ class ExportCollection {
     });
 
     let graph = JSON.parse(metadata.last.body);
-    metadata = graph.find(item => item['@id'].match(api.getConfig().basePath+options.currentPath) );
+    metadata = graph.find(item => item['@id'].match(api.getConfig().fcBasePath+options.currentPath) );
 
     if( metadata['@type'] && metadata['@type'].includes(FIN_IO_INDIRECT_REFERENCE) ) {
       console.log('IGNORING FIN IO INDIRECT REFERENCE: '+options.currentPath);
@@ -307,7 +314,7 @@ class ExportCollection {
       }
     }
 
-    return path.join(currentDir, container['@id'].split(api.getConfig().basePath)[1])
+    return path.join(currentDir, container['@id'].split(api.getConfig().fcBasePath)[1])
   }
 
   async getDiskMetadataFile(fcrepoPath, isArchivalGroup) {
@@ -315,7 +322,7 @@ class ExportCollection {
       path: fcrepoPath,
       headers : {
         accept : api.RDF_FORMATS.JSON_LD,
-        Prefer : 'return=representation; omit="http://www.w3.org/ns/ldp#PreferMembership http://www.w3.org/ns/ldp#PreferContainment http://fedora.info/definitions/fcrepo#PreferInboundReferences http://fedora.info/definitions/fcrepo#ServerManaged"'
+        Prefer : `return=representation; omit="${OMIT.join(' ')}"`
       }
     });
 

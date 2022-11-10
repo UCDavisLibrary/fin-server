@@ -99,15 +99,4 @@ stdOptionWrapper(
   })
 )
 
-function stdOptionWrapper(command) {
-  command
-    .option('-H, --header <header>', 'Add additional Headers to the request')
-    .option('--check-status','Return exit code for unsucessful calls')
-    .option('--pretty', 'Pretty response body print if application/json or application/ld+json')
-    .option('-P, --print <print>', '[hbsHB] Specify what components to print to user. Value should '+
-            'be any combination of hbsHB where: H=request headers, B=request body,'+
-            'h=response headers, b=response body and s=response HTTP status code')
-    .option('-d, --debug', 'Debug all http requests')
-}
-
 program.parse(process.argv);

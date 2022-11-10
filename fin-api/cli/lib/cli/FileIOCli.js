@@ -14,7 +14,7 @@ class FileIOCli {
 
     await api.io.import.run({
       fsPath : rootPath, 
-      includeFilter, dryRun,
+      dryRun,
       forceMetadataUpdate,
       ignoreRemoval
     });

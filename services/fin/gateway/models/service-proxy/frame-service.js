@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
       req.finServiceInfo.fcPath = new URL(describedBy[0].url).pathname;
     }
 
-    let fcPath = req.finServiceInfo.fcPath.replace(api.getConfig().basePath, '');
+    let fcPath = req.finServiceInfo.fcPath.replace(api.getConfig().fcBasePath, '');
     let framed = await serviceModel.renderFrame(req.finService.id, fcPath);
     res.json(framed);
   } catch(e) {

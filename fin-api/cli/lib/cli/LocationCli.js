@@ -116,7 +116,7 @@ class LocationCli {
       }
 
       jsonld[MEMBERSHIP_RESOURCE] = {
-        '@id': api.getConfig().basePath + location.makeAbsoluteFcPath(args.options['membership-resource'] || parent)
+        '@id': api.getConfig().fcBasePath + location.makeAbsoluteFcPath(args.options['membership-resource'] || parent)
       }
     }
 

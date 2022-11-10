@@ -439,26 +439,26 @@ class FinApi {
    * 
    * @returns {Promise} ApiResponse
    */
-  // async metadata(options) {
-  //   let req = await this.head(options);
-  //   if( req.error || req.last.statusCode !== 200 ) return req;
+  async metadata(options) {
+    let req = await this.head(options);
+    if( req.error || req.last.statusCode !== 200 ) return req;
     
-  //   if( !this.isRdfContainer(req.last) ) {
-  //     options.path += '/fcr:metadata';
-  //   }
+    if( !this.isRdfContainer(req.last) ) {
+      options.path += '/fcr:metadata';
+    }
 
-  //   if( !options.headers ) options.headers = {};
-  //   let hasAccept = false;
-  //   for( let key in options.headers ) {
-  //     if( key.toLowerCase().trim() === 'accept' ) {
-  //       hasAccept = true;
-  //       break;
-  //     }
-  //   }
-  //   if( !hasAccept ) options.headers['Accept'] = this.RDF_FORMATS.JSON_LD;
+    if( !options.headers ) options.headers = {};
+    let hasAccept = false;
+    for( let key in options.headers ) {
+      if( key.toLowerCase().trim() === 'accept' ) {
+        hasAccept = true;
+        break;
+      }
+    }
+    if( !hasAccept ) options.headers['Accept'] = this.RDF_FORMATS.JSON_LD;
 
-  //   return this.get(options);
-  // }
+    return this.get(options);
+  }
 
   /**
    * @method head
