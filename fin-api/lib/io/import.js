@@ -124,10 +124,6 @@ class ImportCollection {
       console.log('ARCHIVAL GROUP: '+dir.fcrepoPath);
       console.log(' -> crawling fcrepo and local fs for changes');
 
-      if( !dir.isCollection ) {
-        return;
-      }
-
       let fcrManifest = await this.createArchivalGroupFcrManifest(dir.fcrepoPath);
       let dirManifest = await this.createArchivalGroupDirManifest(dir);
       let response = this.checkArchivalGroupManifest(fcrManifest, dirManifest);
@@ -151,8 +147,6 @@ class ImportCollection {
 
         dir.metadata[FIN_IO_INDIRECT_REFERENCE_SHA] = [{'@value': indirectContainerSha}];
       }
-
-      response.equal = false;
 
       if( response.equal === true ) {
         console.log(' -> no changes found, ignoring');
@@ -215,8 +209,7 @@ class ImportCollection {
     // if exists ignore ArchivalGroup
     // update log message as well
 
-    let metadata = container.metadata;
-    if( !metadata ) metadata = {};
+    let metadata = container.mainMetadataNode;
 
     let response = await api.get({
       path: containerPath,
@@ -265,16 +258,13 @@ class ImportCollection {
 
     // check for gitinfo, add container
     if( container.gitInfo ) {
-      metadata = [
-        metadata,
-        this.createGitContainer(container.gitInfo)
-      ];
+      container.metadata.push(this.createGitContainer(container.gitInfo));
     }
 
     if( this.options.dryRun !== true ) {
       response = await api.put({
         path : containerPath,
-        content : JSON.stringify(metadata),
+        content : JSON.stringify(container.metadata),
         partial : true,
         headers
       });
@@ -369,7 +359,7 @@ class ImportCollection {
     console.log(`PUT BINARY METADATA: ${containerPath}\n -> ${binary.containerFile}`);
 
     if( this.options.dryRun !== true ) {
-      let metadata = binary.metadata;
+      let metadata = binary.mainMetadataNode;
 
       let headers = {
         'content-type' : api.RDF_FORMATS.JSON_LD
@@ -404,15 +394,12 @@ class ImportCollection {
 
       // check for gitinfo, add container
       if( binary.gitInfo ) {
-        metadata = [
-          metadata,
-          this.createGitContainer(binary.gitInfo)
-        ];
+        binary.metadata.push(this.createGitContainer(binary.gitInfo))
       }
 
       response = await api.put({
         path : containerPath,
-        content : JSON.stringify(metadata),
+        content : JSON.stringify(binary.metadata),
         partial : true,
         headers
       });
@@ -427,7 +414,7 @@ class ImportCollection {
 
         response = await api.put({
           path : containerPath,
-          content : JSON.stringify(metadata),
+          content : JSON.stringify(binary.metadata),
           partial : true,
           headers
         });
@@ -453,7 +440,7 @@ class ImportCollection {
     containers.push({
       fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'hasPart'),
       localpath : '_virtual_',
-      metadata : {
+      mainMetadataNode : {
         '@id' : '',
         '@type' : [FIN_IO_INDIRECT_REFERENCE, INDIRECT_CONTAINER],
         [MEMBERSHIP_RESOURCE] : [{
@@ -472,7 +459,7 @@ class ImportCollection {
     containers.push({
       fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'isPartOf'),
       localpath : '_virtual_',
-      metadata : {
+      mainMetadataNode : {
         '@id' : '',
         '@type' : [FIN_IO_INDIRECT_REFERENCE, INDIRECT_CONTAINER],
         [MEMBERSHIP_RESOURCE] : [{
@@ -493,7 +480,7 @@ class ImportCollection {
       containers.push({
         fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'isPartOf', item.id),
         localpath : '_virtual_',
-        metadata : {
+        mainMetadataNode : {
           '@id' : '',
           '@type' : [FIN_IO_INDIRECT_REFERENCE],
           [IS_PART_OF] : [{
@@ -505,7 +492,7 @@ class ImportCollection {
       containers.push({
         fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'hasPart', item.id),
         localpath : '_virtual_',
-        metadata : {
+        mainMetadataNode : {
           '@id' : '',
           '@type' : [FIN_IO_INDIRECT_REFERENCE],
           [HAS_PART] : [{
@@ -514,6 +501,9 @@ class ImportCollection {
         }
       });
     }
+    containers.forEach(item => {
+      item.metadata = [item.mainMetadataNode];
+    })
 
     return containers;
   }
@@ -599,7 +589,7 @@ class ImportCollection {
 
     for( let container of files.containers ) {
       manifest[container.fcrepoPath] = {
-        metadataSha :  await api.sha(container.localfile)
+        metadataSha : await api.sha(container.localfile || container.containerFile)
       }
     }
 

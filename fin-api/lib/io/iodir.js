@@ -110,6 +110,7 @@ class IoDir {
       this.hasMetadata = true;
       this.metadata = folderMetadata.metadata;
       this.containerFile = folderMetadata.filePath;
+      this.mainMetadataNode = folderMetadata.mainNode;
       await this.handleArchivalGroup();
 
       if( !this.fcrepoPath ) {
@@ -151,6 +152,7 @@ class IoDir {
               fcrepoPath : ROOT_FCR_PATHS.ITEM+'/'+id,
               gitInfo,
               metadata,
+              mainMetadataNode : metadataFile.mainNode,
               containerFile : metadataFile.filePath
             });
             continue;
@@ -189,7 +191,7 @@ class IoDir {
     let metadataFile = await this.getMetadata(cPath);
     let id = path.parse(cPath).name;
 
-    let orgMetadata = metadataFile.metadata;
+    let orgMetadata = metadataFile.mainNode;
 
     let ref = orgMetadata[HAS_PART];
     if( !ref ) ref = orgMetadata[IS_PART_OF];
@@ -204,19 +206,22 @@ class IoDir {
 
     let hasPart = Object.assign({}, part);
     hasPart.fcrepoPath = this.archivalGroup.fcrepoPath +'/hasPart/'+id,
-    hasPart.metadata = {
+    hasPart.mainMetadataNode = {
       '@id' : '',
       [HAS_PART] : ref
     };
+    hasPart.metadata = [hasPart.mainMetadataNode];
     this.archivalGroup.hasParts.push(hasPart);
 
     let isPartOf = Object.assign({}, part);
     isPartOf.fcrepoPath = this.archivalGroup.fcrepoPath +'/isPartOf/'+id,
-    isPartOf.metadata = {
+    isPartOf.mainMetadataNode = {
       '@id' : '',
       '@type' : [FIN_IO_INDIRECT_REFERENCE],
       [IS_PART_OF] : ref
     };
+    isPartOf.metadata = [isPartOf.mainMetadataNode];
+    this.archivalGroup.hasParts.push(isPartOf);
   }
 
   parseIgnore(file, fsfull) {
@@ -302,15 +307,16 @@ class IoDir {
         fcrepoPath : this.getFcrepoPath(this.subPath, id),
         localpath : path.join(this.fsfull, name),
         metadata : binaryMetadata.metadata,
-        containerFile : binaryMetadata.metadata ? binaryMetadata.filePath : null
+        mainMetadataNode : binaryMetadata.mainNode,
+        containerFile : binaryMetadata.filePath
       };
 
       // if we are not an archive group, grab git info
-      if( !this.archivalGroup ) {
+      if( !this.archivalGroup && this.containerFile ) {
         metadata.gitInfo = await git.info(this.fsfull, {cwd: this.fsroot});
-        metadata.gitInfo.file = this.containerFile.replace(gitInfo.rootDir, '');
-        metadata.gitInfo.rootDir = this.fsfull.replace(gitInfo.rootDir, '');
-        metadata.fcrepoPath = pathutils.joinUrlPath(ROOT_FCR_PATHS.ITEM, metadata.fcpath);
+        metadata.gitInfo.file = binaryMetadata.filePath.replace(metadata.gitInfo.rootDir, '');
+        metadata.gitInfo.rootDir = this.fsfull.replace(metadata.gitInfo.rootDir, '');
+        metadata.fcrepoPath = pathutils.joinUrlPath(ROOT_FCR_PATHS.ITEM, metadata.fcrepoPath);
       }
 
       this.binaries.push(metadata);
@@ -337,6 +343,7 @@ class IoDir {
         id, 
         parentPath : parentFcPath,
         containerFile : containerMetadata.filePath,
+        mainMetadataNode : containerMetadata.mainNode,
         metadata : containerMetadata.metadata
       }
 
@@ -397,17 +404,25 @@ class IoDir {
 
     if( jsonld === null ) return {filePath, metadata: null};
 
-    // TODO: have id lookup?
-    if( Array.isArray(jsonld) && jsonld.length ) {
-      if( options.id ) {
-        jsonld = jsonld.find(item => item['@id'] === options.id);
-        if( !jsonld ) jsonld = jsonld[0];
-      } else {
-        jsonld = jsonld[0];
+    if( !Array.isArray(jsonld) ) {
+      jsonld = [jsonld];
+    }
+
+    // attempt to lookup main node for graph
+    let mainNode = null;
+    if( options.id ) {
+      mainNode = jsonld.find(item => item['@id'] === options.id);
+    } else {
+      mainNode = jsonld.find(item => item['@id'] && item['@id'].trim() === '');
+      if( !mainNode ) {
+        mainNode = jsonld.find(item => item['@id'] && item['@id'].match(/^ark:\//));
+      }
+      if( !mainNode ) {
+        mainNode = jsonld[0];
       }
     }
 
-    return {filePath, metadata: jsonld};
+    return {filePath, metadata: jsonld, mainNode};
   }
 
   getTTLPath() {
@@ -491,8 +506,8 @@ class IoDir {
   async handleArchivalGroup(fileObject) {
     if( fileObject === undefined ) fileObject = this;
 
-    if( fileObject.metadata && fileObject.metadata['@type'] && 
-      fileObject.metadata['@type'].includes(ARCHIVAL_GROUP) ) {
+    if( fileObject.mainMetadataNode && fileObject.mainMetadataNode['@type'] && 
+      fileObject.mainMetadataNode['@type'].includes(ARCHIVAL_GROUP) ) {
       fileObject.archivalGroup = fileObject;
 
       this.archivalGroups.push(fileObject);
@@ -500,7 +515,7 @@ class IoDir {
       fileObject.gitInfo.file = fileObject.containerFile.replace(fileObject.gitInfo.rootDir, '');
       fileObject.gitInfo.rootDir = this.fsfull.replace(fileObject.gitInfo.rootDir, '');
 
-      if( fileObject.metadata['@type'].includes(COLLECTION) ) {
+      if( fileObject.mainMetadataNode['@type'].includes(COLLECTION) ) {
         fileObject.isCollection = true;
         fileObject.localpath = fileObject.containerFile;
         fileObject.fcrepoPath = ROOT_FCR_PATHS.COLLECTION;
@@ -508,7 +523,7 @@ class IoDir {
         fileObject.fcrepoPath = ROOT_FCR_PATHS.ITEM;
       }
 
-      fileObject.id = this.getIdentifier(fileObject.metadata) || fileObject.id;
+      fileObject.id = this.getIdentifier(fileObject.mainMetadataNode) || fileObject.id;
       fileObject.fcrepoPath = this.getFcrepoPath(fileObject.subPath, fileObject.id, fileObject);
     }
   }
