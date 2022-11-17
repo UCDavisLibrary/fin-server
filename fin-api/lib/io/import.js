@@ -8,37 +8,15 @@ const crypto = require('crypto');
 const mime = require('mime');
 const pathutils = require('../utils/path');
 const transform = require('../utils/transform');
+const utils = require('./utils');
 
 let api;
-let CONFIG_DIR = '.fin';
-let ACL_FILE = 'acl.ttl';
-let CONFIG_FILE = 'config.yml';
-const IGNORE_FILE = '.finignore';
 
-const HAS_MESSAGE_DIGEST = 'http://www.loc.gov/premis/rdf/v1#hasMessageDigest';
-
-const FIN_IO_INDIRECT_REFERENCE = 'http://library.ucdavis.edu/schema#finIoIndirectReference';
-const FIN_IO_INDIRECT_REFERENCE_SHA = 'http://library.ucdavis.edu/schema#finIoIndirectReferenceSha';
-const METADATA_SHA = 'http://digital.ucdavis.edu/schema#finIoMetadataSha256';
-const IS_PART_OF = 'http://schema.org/isPartOf';
-const HAS_PART = 'http://schema.org/hasPart';
-
-const INDIRECT_CONTAINER = 'http://www.w3.org/ns/ldp#IndirectContainer';
-const MEMBERSHIP_RESOURCE = 'http://www.w3.org/ns/ldp#membershipResource';
-const IS_MEMBER_OF_RELATION = 'http://www.w3.org/ns/ldp#isMemberOfRelation';
-const HAS_MEMBER_RELATION = 'http://www.w3.org/ns/ldp#hasMemberRelation';
-const INSERTED_CONTENT_RELATION = 'http://www.w3.org/ns/ldp#insertedContentRelation';
 
 class ImportCollection {
 
   constructor(_api) {
     api = _api;
-
-    this.TO_HEADER_TYPES = [
-      api.LDP_TYPES.DIRECT_CONTAINER,
-      api.LDP_TYPES.INDIRECT_CONTAINER,
-      api.FEDORA_TYPES.ARCHIVAL_GROUP
-    ]
   }
 
   /**
@@ -108,16 +86,15 @@ class ImportCollection {
 
   /**
    * @method putAGContainers
-   * @description put rdf container metadata
-   * 
-   * @param {String} collectionName
-   * @param {IoDir} dir 
+   * @description put ldp:ArchivalGraph container
+   *
+   * @param {IoDir} dir current directory
+   * @param {IoDir} rootDir root directory for crawl
    */
   async putAGContainers(dir, rootDir) {
     let isArchivalGroup = (dir.archivalGroup === dir);
     let indirectContainers = null;
     let indirectContainerSha = null;
-
 
     // check for changes
     if( isArchivalGroup ) {
@@ -145,7 +122,8 @@ class ImportCollection {
           response = {equal:false, message: 'indirect reference sha missmatch: '+dir.fcrepoPath};
         }
 
-        dir.metadata[FIN_IO_INDIRECT_REFERENCE_SHA] = [{'@value': indirectContainerSha}];
+        let finIoNode = utils.getGraphNode(dir.graph, utils.GRAPH_NODES.FIN_IO);
+        finIoNode[utils.PROPERTIES.FIN_IO.INDIRECT_REFERENCE_SHA] = [{'@value': indirectContainerSha}];
       }
 
       if( response.equal === true ) {
@@ -158,14 +136,17 @@ class ImportCollection {
     }
 
     // does the archive group need a container?
-    if( isArchivalGroup|| dir.metadata) {
+    if( isArchivalGroup || dir.containerGraph) {
       await this.putContainer(dir);
     }
 
     // if this is an archival group collection, add all 'virtual'
     // indirect container references
     if( isArchivalGroup && dir.isCollection ) {
-      await this.putIndirectContainers(rootDir, indirectContainers);
+      // add all indirect containers
+      for( let container of indirectContainers ) {
+        await this.putContainer(container, rootDir);
+      }
 
       // where there hardcoded collection hasParts?
       if( dir.hasParts ) {
@@ -195,6 +176,13 @@ class ImportCollection {
     }
   }
 
+  /**
+   * @method putContainer
+   * @description PUT rdf container
+   * 
+   * @param {Object} container 
+   * @returns {Promise}
+   */
   async putContainer(container) {
     let containerPath = container.fcrepoPath;
     let localpath = container.localpath || container.containerFile;
@@ -209,7 +197,7 @@ class ImportCollection {
     // if exists ignore ArchivalGroup
     // update log message as well
 
-    let metadata = container.mainMetadataNode;
+    let containerNode = container.mainGraphNode;
 
     let response = await api.get({
       path: containerPath,
@@ -218,53 +206,35 @@ class ImportCollection {
       }
     });
 
+    let finIoNode = this.createFinIoNode();
+
     // check if d exists and if there is the ucd metadata sha.
-    if( this.options.forceMetadataUpdate !== true && response.data.statusCode === 200 && localpath !== '_virtual_' ) {
+    if( this.options.forceMetadataUpdate !== true && 
+        response.data.statusCode === 200 && localpath !== '_virtual_' ) {
+      
       let jsonld = JSON.parse(response.last.body)[0];
-      if( await this.isMetaShaMatch(jsonld, metadata, localpath ) ) {
+      if( await this.isMetaShaMatch(jsonld, finIoNode, localpath ) ) {
         console.log(` -> IGNORING (sha match)`);
         return;
       }
     } else if ( localpath !== '_virtual_' ) {
       let localSha = await api.sha(localpath);
-      metadata[METADATA_SHA] = [{'@value': localSha}];
+      finIoNode[utils.PROPERTIES.FIN_IO.METADATA_SHA] = [{'@value': localSha}];
     }
 
-    // strip @types that must be provided as a Link headers
-    if( metadata['@type'] ) {
-      this.TO_HEADER_TYPES.forEach(type => {
-        if( !metadata['@type'].includes(type) ) return;
-
-        metadata['@type'] = metadata['@type'].filter(item => item !== type);
-
-        if( response.data.statusCode !== 200 ) {
-          if( !headers.link ) headers.link = [];
-          headers.link.push(`<${type}>;rel="type"`)
-          console.log(`  - creating ${type.replace(/.*#/, '')}`);
-        }
-      })
-    }
-
-    // strip all ldp (and possibly fedora properties)
-    if( metadata['@type'] ) {
-      metadata['@type'] = metadata['@type'].filter(item => !item.match('http://www.w3.org/ns/ldp#') && !item.match('http://fedora.info/definitions/v4/repository#'));
-    }
-
-    // HACK to work around: https://fedora-repository.atlassian.net/browse/FCREPO-3858
-    // Just keeping down direction required by fin UI for now.
-    if( metadata[HAS_MEMBER_RELATION] && metadata[IS_MEMBER_OF_RELATION] ) {
-      delete metadata[IS_MEMBER_OF_RELATION];
-    }
+    // set ldp headers for types that must be specified there and not in @type
+    utils.cleanupContainerNode(containerNode, headers, response);
 
     // check for gitinfo, add container
     if( container.gitInfo ) {
-      container.metadata.push(this.createGitContainer(container.gitInfo));
+      container.containerGraph.push(this.createGitNode(container.gitInfo));
     }
+    container.containerGraph.push(finIoNode);
 
     if( this.options.dryRun !== true ) {
       response = await api.put({
         path : containerPath,
-        content : JSON.stringify(container.metadata),
+        content : JSON.stringify(container.containerGraph),
         partial : true,
         headers
       });
@@ -289,8 +259,8 @@ class ImportCollection {
 
     if( response.last.statusCode === 200 ) {
       response = JSON.parse(response.last.body)[0];
-      if( response[HAS_MESSAGE_DIGEST] ) {
-        let shas = response[HAS_MESSAGE_DIGEST]
+      if( response[utils.PROPERTIES.PREMIS.HAS_MESSAGE_DIGEST] ) {
+        let shas = response[utils.PROPERTIES.PREMIS.HAS_MESSAGE_DIGEST]
           .map(item => {
             let [urn, sha, hash] = item['@id'].split(':')
             return [sha.replace('sha-', ''), hash];
@@ -352,15 +322,12 @@ class ImportCollection {
   }
 
   async putBinaryMetadata(binary) {
-    if( !binary.metadata ) return;
-
+    if( !binary.containerGraph ) return;
 
     let containerPath = pathutils.joinUrlPath(binary.fcrepoPath, 'fcr:metadata');
     console.log(`PUT BINARY METADATA: ${containerPath}\n -> ${binary.containerFile}`);
 
     if( this.options.dryRun !== true ) {
-      let metadata = binary.mainMetadataNode;
-
       let headers = {
         'content-type' : api.RDF_FORMATS.JSON_LD
       }
@@ -372,34 +339,31 @@ class ImportCollection {
         }
       });
 
+      let finIoContainer = this.createFinIoNode();
+
       // check if d exists and if there is the ucd metadata sha.
       if( this.options.forceMetadataUpdate !== true && response.data.statusCode === 200 ) {
-        response = JSON.parse(response.last.body)[0];
-        if( await this.isMetaShaMatch(response, metadata, binary.containerFile ) ) {
+        response = JSON.parse(response.last.body);
+        if( await this.isMetaShaMatch(response, finIoContainer, binary.containerFile ) ) {
           console.log(` -> IGNORING (sha match)`);
           return;
-        } 
+        }
       } else {
         let localSha = await api.sha(binary.containerFile);
-        metadata[METADATA_SHA] = [{'@value': localSha}];
+        finIoContainer[utils.PROPERTIES.FIN_IO.METADATA_SHA] = [{'@value': localSha}];
       }
 
-      // strip any ldp types that are not allowed
-      if( metadata['@type'] ) {
-        this.TO_HEADER_TYPES.forEach(type => {
-          if( !metadata['@type'].includes(type) ) return;
-          metadata['@type'] = metadata['@type'].filter(item => item !== type);
-        })
-      }
+      utils.cleanupContainerNode(binary.mainGraphNode);
 
       // check for gitinfo, add container
       if( binary.gitInfo ) {
-        binary.metadata.push(this.createGitContainer(binary.gitInfo))
+        binary.containerGraph.push(this.createGitNode(binary.gitInfo))
       }
+      binary.containerGraph.push(finIoContainer);
 
       response = await api.put({
         path : containerPath,
-        content : JSON.stringify(binary.metadata),
+        content : JSON.stringify(binary.containerGraph),
         partial : true,
         headers
       });
@@ -414,7 +378,7 @@ class ImportCollection {
 
         response = await api.put({
           path : containerPath,
-          content : JSON.stringify(binary.metadata),
+          content : JSON.stringify(binary.containerGraph),
           partial : true,
           headers
         });
@@ -427,12 +391,16 @@ class ImportCollection {
     }
   }
 
-  async putIndirectContainers(rootDir, containers) {
-    for( let container of containers ) {
-      await this.putContainer(container, rootDir);
-    }
-  }
-
+  /**
+   * @method getIndirectContainerList
+   * @description given a list of ldp:ArchivalGroup nodes (from the root dir crawled)
+   * create the virual 'hasPart', 'isPartOf' root containers and their child containers
+   * based on all of the item AG's found in the crawl
+   * 
+   * @param {IoDir} rootDir the root dir for the crawl
+   * @param {IoDir} ag the collection AG 
+   * @returns 
+   */
   getIndirectContainerList(rootDir, ag) {
     let containers = [];
 
@@ -440,17 +408,17 @@ class ImportCollection {
     containers.push({
       fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'hasPart'),
       localpath : '_virtual_',
-      mainMetadataNode : {
+      mainGraphNode : {
         '@id' : '',
-        '@type' : [FIN_IO_INDIRECT_REFERENCE, INDIRECT_CONTAINER],
-        [MEMBERSHIP_RESOURCE] : [{
+        '@type' : [utils.TYPES.INDIRECT_CONTAINER],
+        [utils.PROPERTIES.LDP.MEMBERSHIP_RESOURCE] : [{
           '@id':  pathutils.joinUrlPath('info:fedora', ag.fcrepoPath)
         }],
-        [HAS_MEMBER_RELATION] : [{
-          '@id': HAS_PART
+        [utils.PROPERTIES.LDP.HAS_MEMBER_RELATION] : [{
+          '@id': utils.PROPERTIES.SCHEMA.HAS_PART
         }],
-        [INSERTED_CONTENT_RELATION] : [{
-          '@id': HAS_PART
+        [utils.PROPERTIES.LDP.INSERTED_CONTENT_RELATION] : [{
+          '@id': utils.PROPERTIES.SCHEMA.HAS_PART
         }]
       }
     });
@@ -459,17 +427,17 @@ class ImportCollection {
     containers.push({
       fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'isPartOf'),
       localpath : '_virtual_',
-      mainMetadataNode : {
+      mainGraphNode : {
         '@id' : '',
-        '@type' : [FIN_IO_INDIRECT_REFERENCE, INDIRECT_CONTAINER],
-        [MEMBERSHIP_RESOURCE] : [{
+        '@type' : [utils.TYPES.INDIRECT_CONTAINER],
+        [utils.PROPERTIES.LDP.MEMBERSHIP_RESOURCE] : [{
           '@id':  pathutils.joinUrlPath('info:fedora', ag.fcrepoPath)
         }],
-        [IS_MEMBER_OF_RELATION] : [{
-          '@id': IS_PART_OF
+        [utils.PROPERTIES.LDP.IS_MEMBER_OF_RELATION] : [{
+          '@id': utils.PROPERTIES.SCHEMA.IS_PART_OF
         }],
-        [INSERTED_CONTENT_RELATION] : [{
-          '@id': IS_PART_OF
+        [utils.PROPERTIES.LDP.INSERTED_CONTENT_RELATION] : [{
+          '@id': utils.PROPERTIES.SCHEMA.IS_PART_OF
         }]
       }
     });
@@ -480,10 +448,9 @@ class ImportCollection {
       containers.push({
         fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'isPartOf', item.id),
         localpath : '_virtual_',
-        mainMetadataNode : {
+        mainGraphNode : {
           '@id' : '',
-          '@type' : [FIN_IO_INDIRECT_REFERENCE],
-          [IS_PART_OF] : [{
+          [utils.PROPERTIES.SCHEMA.IS_PART_OF] : [{
             '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
           }]
         }
@@ -492,60 +459,89 @@ class ImportCollection {
       containers.push({
         fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'hasPart', item.id),
         localpath : '_virtual_',
-        mainMetadataNode : {
+        mainGraphNode : {
           '@id' : '',
-          '@type' : [FIN_IO_INDIRECT_REFERENCE],
-          [HAS_PART] : [{
+          [utils.PROPERTIES.SCHEMA.HAS_PART] : [{
             '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
           }]
         }
       });
     }
+
+    // now assign a containerGraph and a FinIo node to every graph
     containers.forEach(item => {
-      item.metadata = [item.mainMetadataNode];
+      item.containerGraph = [item.mainGraphNode, this.createFinIoNode([utils.TYPES.FIN_IO_INDIRECT_REFERENCE])];
     })
 
     return containers;
   }
 
-  createGitContainer(gitInfo) {
+  /**
+   * @method createGitNode
+   * @description given a gitInfo object (created in git.js), turn it into rdf graph node
+   * 
+   * @param {Object} gitInfo 
+   * @returns {Object}
+   */
+  createGitNode(gitInfo) {
     for( let attr in gitInfo ) {
-      gitInfo['http://library.ucdavis.edu/git#'+attr] = [{'@value' : gitInfo[attr]}];
+      gitInfo[utils.GIT_SOURCE_PROPERTY_BASE+attr] = [{'@value' : gitInfo[attr]}];
       delete gitInfo[attr];
     }
-    gitInfo['@id'] = '#gitsource';
-    gitInfo['@type'] = 'http://library.ucdavis.edu/gitsource';
+    gitInfo['@id'] = utils.GRAPH_NODES.GIT_SOURCE;
+    gitInfo['@type'] = utils.TYPES.GIT_SOURCE;
     return gitInfo;
   }
 
-  async getRootMetadataContainer(path) {
+  /**
+   * @method createFinIoNode create the base FinIo graph node
+   * 
+   * @param {Array} additionalTypes optional additional types to add to node 
+   * @returns 
+   */
+  createFinIoNode(additionalTypes=[]) {
+    return {
+      '@id' : utils.GRAPH_NODES.FIN_IO,
+      '@type' : [utils.TYPES.FIN_IO, ...additionalTypes]
+    };
+  }
+
+  /**
+   * @method getRootGraphNode
+   * @description fetch the main graph node for container.  Mostly a helper for
+   * createArchivalGroupFcrManifest()
+   * 
+   * @param {String} path fcrepo path without fedora:info stuffs
+   * @returns 
+   */
+  async getRootGraphNode(path) {
     let response = await api.metadata({path});
 
     if( response.error || response.last.statusCode !== 200 ) {
-      return {metadata: null, response: response.last};
+      return {graph: null, response: response.last};
     }
 
     let graph = JSON.parse(response.data.body);
-    let metadata = graph.find(item => item['@id'].match(api.getConfig().fcBasePath+path));
-    return {metadata, response: response.last};
+    let mainNode = graph.find(item => item['@id'].match(api.getConfig().fcBasePath+path));
+    return {mainNode, graph, response: response.last};
   }
 
   async createArchivalGroupFcrManifest(path, manifest={}) {
-    let metadata = await this.getRootMetadataContainer(path);
-    manifest[path] = {statusCode: metadata.response.statusCode};
-    if( metadata.response.error || metadata.response.statusCode !== 200 ) {
+    let nodeGraph = await this.getRootGraphNode(path);
+    manifest[path] = {statusCode: nodeGraph.response.statusCode};
+    if( nodeGraph.response.error || nodeGraph.response.statusCode !== 200 ) {
       return manifest;
     }
-    metadata = metadata.metadata;
+    let mainNode = nodeGraph.mainNode;
 
-    if( !metadata ) {
-      manifest[path].metadata = false;
+    if( !mainNode ) {
+      manifest[path].mainNode = false;
       return manifest;
     }
 
-    if( metadata['@type'] && !metadata['@type'].includes(FIN_IO_INDIRECT_REFERENCE) ) {
-      if( metadata[HAS_MESSAGE_DIGEST] ) {
-        let shas = metadata[HAS_MESSAGE_DIGEST]
+    if( mainNode['@type'] && !mainNode['@type'].includes(utils.TYPES.FIN_IO_INDIRECT_REFERENCE) ) {
+      if( mainNode[utils.PROPERTIES.PREMIS.HAS_MESSAGE_DIGEST] ) {
+        let shas = mainNode[utils.PROPERTIES.PREMIS.HAS_MESSAGE_DIGEST]
           .map(item => {
             let [urn, sha, hash] = item['@id'].split(':')
             return [sha.replace('sha-', ''), hash];
@@ -556,17 +552,21 @@ class ImportCollection {
         if( !sha ) sha = shas[0];
         manifest[path].binarySha = sha[1];
       }
-      if( metadata[METADATA_SHA] ) {
-        manifest[path].metadataSha = metadata[METADATA_SHA][0]['@value'];
+
+      let finIoSha = utils.getGraphNode(nodeGraph.graph, utils.PROPERTIES.FIN_IO.METADATA_SHA);
+      if( finIoSha ) {
+        manifest[path].metadataSha = finIoSha;
       }
-      if( metadata[FIN_IO_INDIRECT_REFERENCE_SHA] ) {
-        manifest[path].indirectSha = metadata[FIN_IO_INDIRECT_REFERENCE_SHA][0]['@value'];
+
+      let finIoRefSha = utils.getGraphNode(nodeGraph.graph, utils.PROPERTIES.FIN_IO.INDIRECT_REFERENCE_SHA);
+      if( finIoRefSha ) {
+        manifest[path].indirectSha = finIoRefSha;
       }
     } else {
       delete manifest[path]
     }
 
-    let contains = metadata['http://www.w3.org/ns/ldp#contains'];
+    let contains = mainNode[utils.PROPERTIES.LDP.CONTAINS];
     if( !contains ) return manifest;
     for( var i = 0; i < contains.length; i++ ) {
       path = contains[i]['@id'].replace(new RegExp('.*'+api.getConfig().fcBasePath), '');
@@ -635,12 +635,20 @@ class ImportCollection {
   }
 
   async isMetaShaMatch(currentJsonLd, newJsonld, file) {
-    let localSha = await api.sha(file);
-    if( currentJsonLd[METADATA_SHA] && currentJsonLd[METADATA_SHA][0]['@value'] === localSha ) {
-      return true;
-    }
+    // newJsonLd might not be a graph, but the node itself
+    if( !Array.isArray(newJsonld) ) newJsonld = [newJsonld];
 
-    newJsonld[METADATA_SHA] = [{'@value': localSha}];
+    let currentSha = utils.getGraphValue(currentJsonLd, utils.PROPERTIES.FIN_IO.METADATA_SHA);
+
+    // check sha match
+    let localSha = await api.sha(file);
+    if(currentSha === localSha ) {
+      return true;
+    }    
+
+    // if not match, set value on new finIoNode
+    let newFinIoNode = utils.getGraphNode(newJsonld, utils.GRAPH_NODES.FIN_IO);
+    newFinIoNode[utils.PROPERTIES.FIN_IO.METADATA_SHA] = [{'@value': localSha}];
 
     return false;
   }
