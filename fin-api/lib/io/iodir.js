@@ -127,7 +127,7 @@ class IoDir {
         // perhaps on the crawl?  check collection AG and dir hasPart?
         if( this.archivalGroup && utils.COLLECTION_PART_FOLDERS.includes(this.id) ) {
           await this.setHasPart(p)
-          continue;
+          // continue;
         }
 
         this.files.push(child);
@@ -246,7 +246,7 @@ class IoDir {
         localpath : path.join(this.fsfull, name),
         containerGraph : binaryGraph.graph,
         mainGraphNode : binaryGraph.mainNode,
-        containerFile : binaryGraph.filePath
+        containerFile : binaryGraph.graph ? binaryGraph.filePath : null
       };
 
       // if we are not an archive group, grab git info

@@ -111,19 +111,21 @@ class ImportCollection {
       }
 
       // if collection, we need to check if the indirect references as changed
-      if( dir.isCollection && response.equal === true ) {
+      if( dir.isCollection ) {
         let hash = crypto.createHash('sha256');
         hash.update(JSON.stringify(indirectContainers));
         indirectContainerSha = hash.digest('hex');
 
-        if( !fcrManifest[dir.fcrepoPath].indirectSha ) {
-          response = {equal:false, message: 'No indirect reference sha found: '+dir.fcrepoPath};
-        } else if( indirectContainerSha !== fcrManifest[dir.fcrepoPath].indirectSha ) {
-          response = {equal:false, message: 'indirect reference sha missmatch: '+dir.fcrepoPath};
+        if( response.equal === true ) { 
+          if( !fcrManifest[dir.fcrepoPath].indirectSha ) {
+            response = {equal:false, message: 'No indirect reference sha found: '+dir.fcrepoPath};
+          } else if( indirectContainerSha !== fcrManifest[dir.fcrepoPath].indirectSha ) {
+            response = {equal:false, message: 'indirect reference sha missmatch: '+dir.fcrepoPath};
+          }
         }
 
-        let finIoNode = utils.getGraphNode(dir.graph, utils.GRAPH_NODES.FIN_IO);
-        finIoNode[utils.PROPERTIES.FIN_IO.INDIRECT_REFERENCE_SHA] = [{'@value': indirectContainerSha}];
+        dir.finIoNode = this.createFinIoNode();
+        dir.finIoNode[utils.PROPERTIES.FIN_IO.INDIRECT_REFERENCE_SHA] = [{'@value': indirectContainerSha}];
       }
 
       if( response.equal === true ) {
@@ -206,7 +208,8 @@ class ImportCollection {
       }
     });
 
-    let finIoNode = this.createFinIoNode();
+    // collections might have already created the node in the manifest check set
+    let finIoNode = container.finIoNode || this.createFinIoNode();
 
     // check if d exists and if there is the ucd metadata sha.
     if( this.options.forceMetadataUpdate !== true && 
@@ -539,7 +542,9 @@ class ImportCollection {
       return manifest;
     }
 
-    if( mainNode['@type'] && !mainNode['@type'].includes(utils.TYPES.FIN_IO_INDIRECT_REFERENCE) ) {
+    let finIoIndirectRef = utils.getGraphNode(nodeGraph.graph, utils.TYPES.FIN_IO_INDIRECT_REFERENCE);
+
+    if( mainNode['@type'] && !finIoIndirectRef ) {
       if( mainNode[utils.PROPERTIES.PREMIS.HAS_MESSAGE_DIGEST] ) {
         let shas = mainNode[utils.PROPERTIES.PREMIS.HAS_MESSAGE_DIGEST]
           .map(item => {
@@ -553,17 +558,17 @@ class ImportCollection {
         manifest[path].binarySha = sha[1];
       }
 
-      let finIoSha = utils.getGraphNode(nodeGraph.graph, utils.PROPERTIES.FIN_IO.METADATA_SHA);
+      let finIoSha = utils.getGraphValue(nodeGraph.graph, utils.PROPERTIES.FIN_IO.METADATA_SHA);
       if( finIoSha ) {
         manifest[path].metadataSha = finIoSha;
       }
 
-      let finIoRefSha = utils.getGraphNode(nodeGraph.graph, utils.PROPERTIES.FIN_IO.INDIRECT_REFERENCE_SHA);
+      let finIoRefSha = utils.getGraphValue(nodeGraph.graph, utils.PROPERTIES.FIN_IO.INDIRECT_REFERENCE_SHA);
       if( finIoRefSha ) {
         manifest[path].indirectSha = finIoRefSha;
       }
     } else {
-      delete manifest[path]
+      delete manifest[path];
     }
 
     let contains = mainNode[utils.PROPERTIES.LDP.CONTAINS];
