@@ -27,6 +27,7 @@ class ImportCollection {
    * @param {Boolean} options.forceMetadataUpdate
    * @param {Boolean} options.ignoreRemoval skip container removal where fc containers that do not exist on disk are removed.
    * @param {Boolean} options.dryRun do not download the files
+   * @param {String} options.agImportStrategy
    * 
    */
   async run(options) {
@@ -35,6 +36,11 @@ class ImportCollection {
       options.fcrepoPath = '/'+options.fcrepoPath;
     }
     this.options = options;
+
+    if( !options.agImportStrategy ) {
+      options.agImportStrategy = 'transaction'
+    }
+    // TODO: check options.agImportStrategy types
 
     if( options.dryRun ) {
       console.log(`
@@ -66,22 +72,27 @@ class ImportCollection {
     if( collections.length > 1 ) {
       throw new Error('More than one collection found: ', collections.map(item => item.localpath).join(', '));
     }
+    let agUpdates = 0;
 
     for( let ag of rootDir.archivalGroups ) {
       // just put container and binary
       if( ag.isBinary ) {
-        await this.putBinary(ag);
-        await this.putBinaryMetadata(ag);
+        let bUpdate = await this.putBinary(ag);
+        let mUpdate = await this.putBinaryMetadata(ag);
+        if( bUpdate || mUpdate ) agUpdates++;
         continue;
       }
 
       // recursively add all containers for archival group
-      await this.putAGContainers(ag, rootDir);
+      if( await this.putAGContainers(ag, rootDir) ) {
+        agUpdates++;
+      }
     }
 
     console.log('Filesytem import completed.');
     console.log(` - ArchivalGroup Collections: ${collections.length}`);
     console.log(` - ArchivalGroup Items: ${rootDir.archivalGroups.length-collections.length}`);
+    console.log(` - Total ArchivalGroups updated: ${agUpdates}`);
   }
 
   /**
@@ -130,10 +141,17 @@ class ImportCollection {
 
       if( response.equal === true ) {
         console.log(' -> no changes found, ignoring');
-        return;
-      } else {
+        return false;
+      } else if( this.options.agImportStrategy === 'remove' ) {
         console.log(' -> changes found, removing and reimporting: '+response.message);
         await api.delete({path: dir.fcrepoPath, permanent: true});
+      } else if( this.options.agImportStrategy === 'transaction' ) {
+        await api.startTransaction();
+        console.log(' -> changes found, running transaction based update ('+api.getConfig().transactionToken+'): '+response.message);
+      } else if( this.options.agImportStrategy === 'version-all' ) {
+        console.log(' -> changes found, WARNING versioning every change: '+response.message);
+      } else {
+        throw new Error('Invalid ArchivalGroup strategy provided');
       }
     }
 
@@ -176,6 +194,14 @@ class ImportCollection {
     for( let child of dir.children ) {
       await this.putAGContainers(child);
     }
+
+    if( isArchivalGroup && this.options.agImportStrategy === 'transaction' ) {
+      let token = api.getConfig().transactionToken;
+      let tResp = await api.commitTransaction();
+      console.log(' -> commit ArchivalGroup transaction based update ('+token+'): '+tResp.data.statusCode);
+    }
+
+    return true;
   }
 
   /**
@@ -276,7 +302,7 @@ class ImportCollection {
         let localSha = await api.sha(binary.localpath, sha[0]);
         if( localSha === sha[1] ) {
           console.log(' -> IGNORING (sha match)');
-          return;
+          return false;
         }
       }
     }
@@ -322,10 +348,12 @@ class ImportCollection {
         console.log(response.last.statusCode, response.last.body);
       }
     }
+
+    return true;
   }
 
   async putBinaryMetadata(binary) {
-    if( !binary.containerGraph ) return;
+    if( !binary.containerGraph ) return false;
 
     let containerPath = pathutils.joinUrlPath(binary.fcrepoPath, 'fcr:metadata');
     console.log(`PUT BINARY METADATA: ${containerPath}\n -> ${binary.containerFile}`);
@@ -349,7 +377,7 @@ class ImportCollection {
         response = JSON.parse(response.last.body);
         if( await this.isMetaShaMatch(response, finIoContainer, binary.containerFile ) ) {
           console.log(` -> IGNORING (sha match)`);
-          return;
+          return false;
         }
       } else {
         let localSha = await api.sha(binary.containerFile);
@@ -392,6 +420,8 @@ class ImportCollection {
       }
       console.log(response.last.statusCode, response.last.body);
     }
+
+    return true;
   }
 
   /**
