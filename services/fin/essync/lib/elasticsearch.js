@@ -1,45 +1,14 @@
-// const elasticsearch = require('elasticsearch');
-const request = require('request');
 const schemaRecord = require('../schemas/record');
 const schemaCollection = require('../schemas/collection');
 const schemaApplication = require('../schemas/application');
-const {logger, jwt, waitUntil, esClient} = require('@ucd-lib/fin-service-utils');
-const api = require('@ucd-lib/fin-api');
-const {URL} = require('url');
+const {logger, waitUntil, esClient} = require('@ucd-lib/fin-service-utils');
 const config = require('./config');
 const postgres = require('./postgres.js');
-// const AttributeReducer = require('./attribute-reducer');
 
-// everything depends on indexer, so placing this here...
-// process.on('unhandledRejection', err => logger.error(err));
-
-const NULL_VALUE = '';
-const COLLECTION = 'http://schema.org/Collection';
-const CREATIVE_WORK = 'http://schema.org/CreativeWork';
-const MEDIA_OBJECT = 'http://schema.org/MediaObject';
-const SHORT_COLLECTION = 'schema:Collection';
-const SHORT_CREATIVE_WORK = 'schema:CreativeWork';
-const SHORT_MEDIA_OBJECT = 'schema:MediaObject';
-const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
-const SHORT_BINARY = 'fedora:Binary';
-const TEXT_INDEXABLE = 'textIndexable';
-
-const FIN_URL = new URL(config.server.url);
-const HOST = FIN_URL.host;
-
-class EsIndexer {
+class ElasticSearchModel {
   
   constructor() {
-    this.name = 'essync-indexer';
-    // this.esClient = new elasticsearch.Client({
-    //   host: config.elasticsearch.connStr,
-    //   log: config.elasticsearch.log,
-    //   requestTimeout : 3*60*1000
-    // });
     this.esClient = esClient;
-
-    // this.attributeReducer = new AttributeReducer(this.esClient);
-    this.finUrlRegex = new RegExp(`^${config.server.url}${config.fcrepo.root}`);
   }
 
   /**
@@ -88,7 +57,7 @@ class EsIndexer {
     logger.info(`No alias exists: ${alias}, creating...`);
 
     let indexName = await this.createIndex(alias, schemaName, schema);
-    await this.esClient.indices.putAlias({index: indexName, name: alias});
+    this.setIndex(indexName, alias)
     
     logger.info(`Index ${indexName} created pointing at alias ${alias}`);
   }
@@ -335,83 +304,6 @@ class EsIndexer {
     }
   }
 
-  // async removeCollection(collectionId) {
-  //   logger.info(`Removing all records for collection: ${collectionId}`);
-
-  //   try {
-  //     let response = await this.esClient.deleteByQuery({
-  //       index: config.elasticsearch.record.alias,
-  //       body : {
-  //         query: {
-  //           term : { 
-  //             collectionId : collectionId
-  //           }
-  //         }
-  //       }
-  //     });
-
-  //     let exists = await this.esClient.exists({
-  //       index : config.elasticsearch.collection.alias,
-  //       id : collectionId
-  //     });
-  //     if( !exists ) return;
-
-  //     await this.esClient.delete({
-  //       index : config.elasticsearch.collection.alias,
-  //       id : collectionId
-  //     });
-  //   } catch(e) {
-  //     logger.error(`Failed to remove all records for collection: ${collectionId}`, e);
-  //   }
-  // }
-
-  /**
-   * @method getTransformedContainer
-   * @description get a es object for container at specified path. 
-   * 
-   * @param {String} path fcrepo url
-   * @param {Array} types JSON-LD @type array 
-   * 
-   * @returns {Promise}
-   */
-  async getTransformedContainer(path='', types=[], jwt) {
-    if( path.match(/fcr:metadata$/) ) {
-      path = path.replace(/\/fcr:metadata$/, '');
-    }
-
-    let svc = '';
-    if( this.isCollection(path) ) svc = config.essync.transformServices.collection;
-    else if( this.isRecord(path) ) svc = config.essync.transformServices.record;
-    else if( this.isApplication(path) ) svc = config.essync.transformServices.application;
-
-    // we don't have a frame service for this
-    if( !svc ) return null;
-
-    var response = await api.get({
-      host : config.gateway.host,
-      path : path+`/svc:${svc}`
-    });
-
-    response.service = config.server.url+config.fcrepo.root+path+`/svc:${svc}`;
-
-    return response;
-  }
-
-  /**
-   * @method isBinary
-   * @description given an array of types, is this a fedora binary container.
-   * 
-   * @param {Array} types array or type uri's
-   * 
-   * @returns {Boolean}
-   */
-  isBinary(types = []) {
-    return (
-      types.indexOf(BINARY) > -1 || 
-      types.indexOf(SHORT_BINARY) > -1
-    );
-  }
-
   /**
    * @method isCollection
    * @description given an array of types, is this a es collection.
@@ -422,11 +314,6 @@ class EsIndexer {
    * @returns {Boolean}
    */
   isCollection(path) {
-    // return (
-    //   types.indexOf(COLLECTION) > -1 || 
-    //   types.indexOf(SHORT_COLLECTION) > -1
-    // );
-
     return path.match(/^\/collection\//);
   }
 
@@ -447,8 +334,37 @@ class EsIndexer {
     return path.match(/^\/application\//);
   }
 
+  /**
+   * @method getCurrentIndexes
+   * @description given a index alias name, find all real indexes that use this name.
+   * This is done by querying for all indexes that regex for the alias name.  The indexers
+   * index name creation always uses the alias name in the index.
+   * 
+   * @param {String} alias name of alias to find real indexes for
+   * @return {Promise} resolves to array of index names
+   */
+  async getCurrentIndexes(alias) {
+    var re = new RegExp('^'+alias);
+    var results = [];
 
+    try {
+      var resp = await indexer.esClient.cat.indices({v: true, format: 'json'});
+      resp.forEach((i) => {
+        if( i.index.match(re) ) {
+          results.push(i.index);
+        }
+      })
+    } catch(e) {
+      throw e;
+    }
+
+    return results;
+  }
+
+  setIndex(indexName, alias) {
+    return this.esClient.indices.putAlias({index: indexName, name: alias});
+  }
  
 }
 
-module.exports = new EsIndexer();
+module.exports = new ElasticSearchModel();

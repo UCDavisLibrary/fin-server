@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const model = require('../models/auth');
 const serviceModel = require('../models/services');
 const middleware = require('./middleware');
 const {jwt} = require('@ucd-lib/fin-service-utils');
@@ -7,7 +6,6 @@ const path = require('path');
 const fs = require('fs-extra');
 
 const ASSETS_DIR = path.resolve(__dirname, '..', 'assets');
-model.init();
 
 router.get('/service/:id', middleware.admin, async (req, res) => {
   try {

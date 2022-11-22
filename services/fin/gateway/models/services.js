@@ -9,7 +9,6 @@ const util = require('util');
 const redis = require('../lib/redisClient')();
 const jwt = require('jsonwebtoken');
 const hdt = require('../lib/hdt');
-const auth = require('./auth');
 
 jsonld.frame = util.promisify(jsonld.frame);
 
@@ -450,7 +449,7 @@ class ServiceModel {
     }
 
     // see if we need to update in memory acl
-    auth.onContainerUpdate(event);
+    // auth.onContainerUpdate(event);
 
     this._sendHttpNotificationBuffered(event);
   }

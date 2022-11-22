@@ -26,7 +26,6 @@ api.setConfig({
 // to fcrepo, init these models here
 async function initFromFcRepo() {
   await require('./models/services').init();
-  await require('./models/auth').init();
 }
 
 logger.info('waiting for fcrepo connection');
@@ -96,7 +95,6 @@ require('./lib/startupCheck')(() => {
   app.use(bodyParser.text({type: (req) => true}));
   // register auth controller
   app.use('/auth', require('./controllers/auth'));
-  app.use('/fin', require('./controllers/fin'));
 
 
 

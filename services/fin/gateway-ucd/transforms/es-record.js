@@ -1,16 +1,15 @@
 const {config} = require('@ucd-lib/fin-service-utils');
+const ioUtils = require('@ucd-lib/fin-api/lib/io/utils.js');
 
 const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 const ARCHIVAL_GROUP = 'http://fedora.info/definitions/v4/repository#ArchivalGroup';
 
-const GIT_TYPE = 'http://library.ucdavis.edu/gitsource';
-const GIT_PROP = 'http://library.ucdavis.edu/git#';
 
 module.exports = async function(path, graph, headers, utils) {
   let item = {};
 
   let container = utils.get(path, graph);
-  let gitsource = utils.getByType(GIT_TYPE, graph);
+  let gitsource = utils.getByType(ioUtils.TYPES.GIT_SOURCE, graph);
 
   if( !container ) {
     throw new Error('unknown container: '+path);
@@ -263,12 +262,6 @@ module.exports = async function(path, graph, headers, utils) {
 
   utils.setYearFromDate(item);
 
-  item.collectionId = item['@id'].split('/').splice(0, 3).join('/');
-
-  // set direct parent
-  item.directParent = item['@id'].split('/');
-  item.directParent.pop();
-  item.directParent = item.directParent.join('/');
   item._ = {};
 
   utils.stripFinHost(headers)
@@ -291,8 +284,8 @@ module.exports = async function(path, graph, headers, utils) {
   if( gitsource ) {
     item._.gitsource = {};
     for( let attr in gitsource ) {
-      if( !attr.startsWith(GIT_PROP) ) continue;
-      item._.gitsource[attr.replace(GIT_PROP, '')] = gitsource[attr][0]['@value'] || gitsource[attr][0]['@id'];
+      if( !attr.startsWith(ioUtils.GIT_SOURCE_PROPERTY_BASE) ) continue;
+      item._.gitsource[attr.replace(ioUtils.GIT_SOURCE_PROPERTY_BASE, '')] = gitsource[attr][0]['@value'] || gitsource[attr][0]['@id'];
     }
   }
 

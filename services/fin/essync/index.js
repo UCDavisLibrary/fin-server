@@ -1,20 +1,9 @@
-global.LOGGER_NAME = 'essync';
-
-const {config, logger, activemq, pg, jwt} = require('@ucd-lib/fin-service-utils');
+const express = require('express');
+const {config, logger} = require('@ucd-lib/fin-service-utils');
+const ReindexCrawler = require('./lib/reindex-crawler.js');
 const api = require('@ucd-lib/fin-api');
-const indexer = require('./lib/indexer');
-const reindexer = require('./lib/reindexer');
-const postgres = require('./lib/postgres');
-// const buffer = require('./lib/buffer');
-// const JobQueue = require('./lib/queue');
-
-
-
-/**
- * Log promise errors, uncaught exceptions
- */
-// process.on('unhandledRejection', e => logger.fatal(e));
-// process.on('uncaughtException', e => logger.fatal(e));
+const elasticsearch = require('./lib/elasticsearch.js');
+require('./lib/model');
 
 api.setConfig({
   host: config.fcrepo.host,
@@ -22,196 +11,99 @@ api.setConfig({
   directAccess : true
 });
 
+// simple, in mem, for now
+let statusCache = {};
 
-class EsSync {
+const app = express();
 
-  constructor() {
-    activemq.onMessage(e => this.handleMessage(e));
-    activemq.connect('essync', '/queue/essync');
+// TODO: add admin check
+app.get(/^\/reindex\/.*/, async (req, res) => {
+  let path = req.path.replace( /^\/reindex\//, '/');
+  let cache = statusCache[path];
 
-    this.UPDATE_TYPES = {
-      UPDATE : ['Create', 'Update'],
-      DELETE : ['Delete', 'Purge']
+  if( req.query.status === 'true' ) {
+    if( cache ) {
+      res.json(cache);
+    } else {
+      res.json({status: 'none'});
     }
-
-    this.BINARY_CONTAINER = 'http://fedora.info/definitions/v4/repository#Binary';
-
-    postgres.connect()
-      .then(() => indexer.isConnected())
-      .then(() => this.readLoop());
+    return;
+  }
+  if( cache && cache.status === 'crawling' ) {
+    return res.json(cache);
   }
 
-  async readLoop() {
-    let item = await postgres.nextLogItem();
-    
-    if( !item ) {
-      setTimeout(() => this.readLoop(), 500);
-      return;
-    }
-
-    await this.updateContainer(item);
-    await postgres.clearLog(item.event_id);
-
-    this.readLoop();
-  }
-
-  /**
-   * @method handleMessage
-   * 
-   */
-  async handleMessage(msg) {
-    await postgres.log({
-      event_id : msg.headers['org.fcrepo.jms.eventID'],
-      event_timestamp : new Date(parseInt(msg.headers['org.fcrepo.jms.timestamp'])).toISOString(),
-      path : msg.headers['org.fcrepo.jms.identifier'],
-      container_types : msg.headers['org.fcrepo.jms.resourceType']
+  try {
+    let crawler = new ReindexCrawler(path, {
+      follow : (req.query.follow || '')
         .split(',')
         .map(item => item.trim())
-        .filter(item => item),
-      update_types : msg.body.type
+        .filter(item => item)
     });
-  }
 
-  // isUpdate(e) {
-  //   return e.update_types.find(item => this.UPDATE_TYPES.UPDATE.includes(item)) ? true : false;
-  // }
-
-  isDelete(e) {
-    return e.update_types.find(item => this.UPDATE_TYPES.DELETE.includes(item)) ? true : false;
-  }
-
-  /**
-   * @method item
-   * @description called been buffer event timer fires
-   * 
-   * @param {Object} e event payload from log table
-   */
-  async updateContainer(e) {
-    let jsonld = {};
-
-    // update elasticsearch
-    try {
-
-      // check update_type is delete.
-      if( this.isDelete(e) ) {
-        logger.info('Container '+e.path+' was removed from LDP, removing from index');
-
-        e.action = 'delete';
-        await indexer.remove(e.path);
-        await postgres.updateStatus(e);
-        return;
-      }
-
-      // check for binary
-      if( e.container_types.includes(this.BINARY_CONTAINER) ) {
-        logger.info('Ignoring container '+e.path+'.  binary container');
-
-        e.action = 'ignored';
-        e.message = 'binary container';
-        await postgres.updateStatus(e);
-        // JM - Not removing path, as the /fcr:metadata container is also mapped to this path
-        // return indexer.remove(e.path);   
-        return;
-      }
-
-      if( !e.container_types ) {
-        e.container_types = [];
-
-        let response = await api.head({path});
-        if( response.data.statusCode === 200 ) {
-          var link = response.last.headers['link'];
-          if( link ) {
-            link = api.parseLinkHeader(link);
-            e.container_types = link.type || [];
-          }
-        }
-      }
-
-      let response = await indexer.getTransformedContainer(e.path, e.container_types);
-
-      if( !response ) {
-        logger.info('Container '+e.path+' did not have a know transform type');
-
-        e.action = 'ignored';
-        e.message = 'unknown transform type'
-        await indexer.remove(e.path);
-        await postgres.updateStatus(e);
-        return;
-      }
-
-      // set transform service used.
-      e.tranformService = response.service;
-
-      if( response.data.statusCode !== 200 ) {
-        logger.info('Container '+e.path+' was publicly inaccessible ('+response.data.statusCode+') from LDP, removing from index. url='+response.data.request.url);
-
-        e.action = 'ignored';
-        e.message = 'inaccessible'
-        await indexer.remove(e.path);
-        await postgres.updateStatus(e);
-        return;
-      }
-
-      jsonld = JSON.parse(response.data.body);
-
-      // store gitsource if we have it
-      if( !jsonld._ ) jsonld._ = {};
-      e.gitsource = jsonld._.gitsource;
-      
-      // cleanup id path
-      if( jsonld['@id'].match(/\/fcrepo\/rest\//) ) {
-        jsonld['@id'] = jsonld['@id'].split('/fcrepo/rest')[1];
-      }
-     
-      // if no esId, we don't add to elastic search
-      if( !jsonld._.esId ) {
-        logger.info('Container '+e.path+' is not part of an archival group or a binary container (no jsonld._.esId provided)');
-
-        e.action = 'ignored';
-        e.message = 'not a archival group or binary container type';
-        await indexer.remove(e.path);
-        await postgres.updateStatus(e);
-        return;
-      }
-
-      let result = await indexer.update(e.path, jsonld);
-
-      e.action = 'updated';
-      e.response = JSON.stringify(result.response);
-      await postgres.updateStatus(e);
-    } catch(error) {
-      logger.error('Failed to update: '+e.path, error);
-      e.action = 'error';
-      e.message = error.message+'\n'+error.stack;
-      await postgres.updateStatus(e);
-    }
-  }
-
-  /**
-   * @method isDotPath
-   * @description given a path string from getPath, does any section of the path start
-   * with a .
-   * 
-   * @param {String} path
-   * 
-   * @returns {Boolean}
-   */
-  isDotPath(path) {
-    if( path.match(/^http/) ) {
-      let urlInfo = new URL(path);
-      path = urlInfo.pathname;
-    }
-    
-    path = path.split('/');
-    for( var i = 0; i < path.length; i++ ) {
-      if( path[i].match(/^\./) ) {
-        return path[i];
-      }
+    statusCache[path] = {
+      status : 'crawling',
+      startTime : new Date().toISOString(),
+      options : crawler.options
     }
 
-    return null;
-  }
+    res.redirect(req.headers['x-fin-original-url'].replace(/\?.*/, '')+'?status=true');
 
+    statusCache[path].paths = await crawler.reindex()
+    statusCache[path].status = 'crawl-complete';
+    statusCache[path].completedTime = new Date().toISOString();
+  } catch(e) {
+    onError(res, e);
+  }
+});
+
+app.get('/rebuild-index', async (req, res) => {
+  try {
+    let crawler = new ReindexCrawler('/collection', {
+      follow : 'hasPart'
+    });
+    crawler.reindex();
+  } catch(e) {
+    onError(res, e);
+  }
+});
+
+app.get('/alias', async (req, res) => {
+  try {
+    let aliases = await elasticsearch.getCurrentIndexes(req.query.alias);
+    res.json(aliases);
+  } catch(e) {
+    onError(res, e);
+  }
+});
+
+app.put('/alias', async (req, res) => {
+  try {
+    let resp = await elasticsearch.getCurrentIndexes(req.query.indexName, req.query.alias);
+    resp.state = await elasticsearch.getCurrentIndexes(req.query.alias);
+    res.json(resp);
+  } catch(e) {
+    onError(res, e);
+  }
+});
+
+app.delete('/index/:indexName', async (req, res) => {
+  try {
+    let resp = await elasticsearch.deleteIndex(req.params.indexName);
+    res.json(resp);
+  } catch(e) {
+    onError(res, e);
+  }
+});
+
+app.listen(3000, () => {
+  logger.info('server ready on port 3000');
+});
+
+function onError(res, e) {
+  res.status(500).json({
+    error : true,
+    message : e.message,
+    stack : e.stack
+  });
 }
-
-module.exports = new EsSync();

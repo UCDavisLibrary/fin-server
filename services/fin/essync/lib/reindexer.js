@@ -2,7 +2,7 @@ const {logger, jwt} = require('@ucd-lib/fin-service-utils');
 const schemaRecord = require('../schemas/record');
 const schemaCollection = require('../schemas/collection');
 const schemaApplication = require('../schemas/application');
-const indexer = require('./indexer');
+const indexer = require('./elasticsearch');
 const api = require('@ucd-lib/fin-api');
 const config = require('./config');
 

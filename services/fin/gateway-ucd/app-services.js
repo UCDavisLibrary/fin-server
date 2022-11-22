@@ -18,5 +18,11 @@ module.exports = [
     description : 'UCD CAS authentication service',
     type : 'AuthenticationService',
     url : 'http://cas:8000'
+  },
+  {
+    id : 'reindex',
+    description : 'Reindex item or collection',
+    type : 'ProxyService',
+    urlTemplate : 'http://essync:3000/reindex/{{fcPath}}{{svcPath}}'
   }
 ];

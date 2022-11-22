@@ -3,7 +3,6 @@ module.exports = {
   jsonld : require('./lib/jsonld'),
   jwt : require('./lib/jwt'),
   logger : require('./lib/logger'),
-  MessageServer : require('./lib/message-server'),
   activemq : require('./lib/activemq'),
   PG : require('./lib/pg'),
   utils : require('./lib/utils'),
