@@ -171,12 +171,10 @@ class ServiceModel {
     }
 
     let service = new ServiceDefinition(mainNode);
-    console.log(service);
     this.services[service.id] = service;
 
     if( service.type === api.service.TYPES.TRANSFORM ) {
       let response = await api.get({path: fcPath.replace(/\/fcr:metadata$/, '')});
-      console.log(response);
       mainNode.transform = response.last.body;
     }
 
