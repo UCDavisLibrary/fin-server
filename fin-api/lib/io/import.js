@@ -60,7 +60,8 @@ class ImportCollection {
     let rootDir = new IoDir(options.fsPath, '/', {
       dryRun : options.dryRun,
       fcrepoPath : options.fcrepoPath,
-      fcrepoPathType : options.fcrepoPathType
+      fcrepoPathType : options.fcrepoPathType,
+      importFromRoot : options.importFromRoot
     });
 
     // crawl user suppied director f
@@ -251,7 +252,7 @@ class ImportCollection {
     if( this.options.forceMetadataUpdate !== true && 
         response.data.statusCode === 200 && localpath !== '_virtual_' ) {
       
-      let jsonld = JSON.parse(response.last.body)[0];
+      let jsonld = JSON.parse(response.last.body);
       if( await this.isMetaShaMatch(jsonld, finIoNode, localpath ) ) {
         console.log(` -> IGNORING (sha match)`);
         return;

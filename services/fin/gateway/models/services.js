@@ -18,7 +18,11 @@ const AUTHENTICATION_SERVICE_CHAR = '^/auth';
 const IS_SERVICE_URL = new RegExp(SERVICE_CHAR, 'i');
 const IS_AUTHENTICATION_SERVICE_URL = new RegExp(AUTHENTICATION_SERVICE_CHAR, 'i');
 const ACTIVE_MQ_HEADER_ID = 'org.fcrepo.jms.identifier';
+const ACTIVE_MQ_HEADER_TYPES = 'org.fcrepo.jms.resourceType';
 const SECRET_PREFIX = 'service-secret:';
+
+const SERVICE_TYPE = 'http://digital.ucdavis.edu/schema#Service';
+const UCD_SCHEMA_BASE = 'http://digital.ucdavis.edu/schema#';
 
 class ServiceModel {
 
@@ -47,49 +51,14 @@ class ServiceModel {
   async init() {
     this.clientService = null;
 
-    await redis.connect();
+    // listen for service definition updates
+    activemq.onMessage(e => this._onFcrepoEvent(e));
+    activemq.connect('gateway', '/queue/gateway');
 
-    // make sure our root service container is in place
-    // await api.service.init();
-    // let list = await api.service.list();
+    await this.waitForFcRepoServices();
+    await this.reload();
 
-    // ensure all default services
-    for( var i = 0; i < config.defaultServices.length; i++ ) {
-      let service = config.defaultServices[i];
-
-      // switching to a force attempt delete strategy in case system is in bad state
- 
-      // var response = await api.head({
-      //   path : '/'+api.service.ROOT+'/'+service.id
-      // });
-
-      // if( response.checkStatus(200) ) {
-      //   response = await api.delete({
-      //     path: '/'+api.service.ROOT+'/'+service.id,
-      //     permanent: true
-      //   })
-      // }
-
-      try {
-        await api.delete({
-          path: '/'+api.service.ROOT+'/'+service.id,
-          permanent: true
-        });
-      } catch(e) {};
-
-      if( service.type === api.service.TYPES.TRANSFORM ) {
-        service.transform = fs.readFileSync(service.transform, 'utf-8');
-      }
-
-      let response = await api.service.create(service);
-      if( !response.checkStatus(204) && !response.checkStatus(201) ) {
-        logger.warn(`Service ${service.id} may not have initialized correctly.  Returned status code: ${response.last.statusCode}`);
-      }
-
-      if( service.secret ) {
-        await this.setServiceSecret(service.id, service.secret);
-      }
-    }
+    return;
 
     // clone our current redis connection to setup a listener
     redis.duplicate((err, listenerClient) => {
@@ -118,11 +87,22 @@ class ServiceModel {
     // if( !config.defaultServices.length ) {
       await this.reload();
     // }
-
-    // listen for service definition updates
-    activemq.onMessage(e => this._onFcrepoEvent(e));
-    activemq.connect('gateway', '/queue/gateway');
   }
+
+  async waitForFcRepoServices() {
+    let response = await api.head({path : api.service.ROOT});
+    await this.wait(500);
+    if( response.data.statusCode !== 200 ) {
+      await this.waitForFcRepoServices(); 
+    }
+  }
+
+  wait(ms) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(), ms);
+    });
+  }
+
 
   /**
    * @method reload
@@ -133,22 +113,21 @@ class ServiceModel {
    * 
    * @return {Promise}
    */
-  async reload(testingPath) {
-    let list = await api.service.list();
-    list = list.data;
+  async reload() {
+    // TODO: this only handles 100 and total results are broken.
+    let resp = await api.search({
+      condition: "rdf_type="+SERVICE_TYPE
+    });
+    let services = JSON.parse(resp.data.body).items;
 
-    // for testing only.  load the testing path services as well.
-    // these will be overridden when a testing path is not provided
-    if( testingPath ) {
-      api.service.testing();
-      try {
-        let response = await api.service.list();
-        list = list.concat(response.data);
-      } catch(e) {}
-      api.service.testing(false);
+    for( let service of services ) {
+      await this.loadService(service.fedora_id, service.rdf_type)
     }
 
-    let services = {
+    logger.info('Services reloaded', Object.keys(this.services));
+    return;
+
+    services = {
       // hardcoded collection label service
       label : new ServiceDefinition({type: 'label'})
     };
@@ -157,21 +136,7 @@ class ServiceModel {
     for( var i = 0; i < list.length; i++ ) {
       let service = list[i];
 
-      if( service.type === api.service.TYPES.TRANSFORM ) {
-        let response = await api.get({path: service.path});
-        service.transform = response.last.body;
-      }
-
-      services[service.id] = new ServiceDefinition(service);
-
-      if( service.type === api.service.TYPES.CLIENT ) {
-        this.clientService = services[service.id];
-      } else if( service.type === api.service.TYPES.EXTERNAL ) {
-        let domain = this.getRootDomain(service.urlTemplate);
-        this.authServiceDomains[domain] = new RegExp(domain+'$', 'i');
-      } else if( service.type === api.service.TYPES.TRANSFORM ) {
-        await transform.load(service.id, service.transform);
-      }
+      
     };
 
     this.services = services;
@@ -183,19 +148,48 @@ class ServiceModel {
     }
   }
 
-  /**
-   * @method bufferedReload
-   * @description just like reload but buffers request for 1 sec
-   * 
-   * @param {String} testingPath for testing only.  When a none root .services container is
-   * updated, it will be included in the known services.  THIS IS FOR TESTING ONLY.
-   */
-  bufferedReload(testingPath) {
-    if( this.reloadTimer !== -1 ) clearTimeout(this.reloadTimer);
-    this.reloadTimer = setTimeout(() => {
-      this.reloadTimer = -1;
-      this.reload(testingPath);
-    }, 300);
+  async loadService(uri) {
+    let fcPath = uri.split(api.getConfig().fcBasePath)[1];
+
+    let response = await api.metadata({
+      path: fcPath,
+      headers : {
+        Accept: 'application/ld+json; profile="http://www.w3.org/ns/json-ld#compacted"'
+      }
+    });
+    let graph = JSON.parse(response.data.body);
+    if( graph['@graph'] ) graph = graph['@graph'];
+    if( !Array.isArray(graph) ) graph = [graph]
+
+    let nodeId = api.getConfig().fcBasePath+fcPath.replace(/\/fcr:metadata$/, '');
+    let mainNode = graph.find(item => item['@id'].match(nodeId));
+    let types = mainNode['@type'];
+
+    if( !types ) {
+      logger.warn(`Attempting load service ${uri} but not types found`);
+      return;
+    }
+
+    let service = new ServiceDefinition(mainNode);
+    console.log(service);
+    this.services[service.id] = service;
+
+    if( service.type === api.service.TYPES.TRANSFORM ) {
+      let response = await api.get({path: fcPath.replace(/\/fcr:metadata$/, '')});
+      console.log(response);
+      mainNode.transform = response.last.body;
+    }
+
+    if( service.type === api.service.TYPES.CLIENT ) {
+      this.clientService = this.services[service.id];
+    } else if( service.type === api.service.TYPES.EXTERNAL ) {
+      let domain = this.getRootDomain(service.urlTemplate);
+      this.authServiceDomains[domain] = new RegExp(domain+'$', 'i');
+    } else if( service.type === api.service.TYPES.TRANSFORM ) {
+      await transform.load(service.id, service.transform);
+    }
+
+    // TODO: handle label service
   }
 
   /**
@@ -341,61 +335,6 @@ class ServiceModel {
   }
 
   /**
-   * @method createWorkflowContainer
-   * @description create a new container for a workflow, return the pair tree id
-   * 
-   * @return {Promise} resolves to id
-   */
-  async createWorkflowContainer(service, username) {
-    if( !config.workflow ) {
-      config.workflow = {root: '/.workflow'}
-    }
-
-    let response = await api.head({path: config.workflow.root});
-    if( response.checkStatus(404) ) {
-      response = await api.postEnsureSlug({
-        path : '/',
-        slug: config.workflow.root.replace(/^\//, '')
-      });
-
-      // TODO: check status code
-    }
-
-    let jsonld = [{
-      "@id" : '',
-      "@type": [
-        "http://digital.ucdavis.edu/schema#Workflow"
-      ],
-      "http://digital.ucdavis.edu/schema#workflowServiceId": [{
-        "@value" : service.id,
-      }],
-      "http://digital.ucdavis.edu/schema#workflowServiceType": [{
-        "@value" : service.type,
-      }],
-      "http://schema.org/status": [{
-        "@value": "init"
-      }],
-      "http://schema.org/creator": [{
-        "@value": username
-      }]
-    }]
-
-    response = await api.post({
-      path : config.workflow.root,
-      headers : {
-        'content-type': 'application/ld+json'
-      },
-      content : JSON.stringify(jsonld)
-    });
-
-    if( !response.checkStatus(201) ) {
-      throw new Error(`Unable to create LDP workflow.  HTTP ${response.last.statusCode}: ${response.last.body}`);
-    }
-
-    return response.last.body.replace(/.*fcrepo\/rest/, '');
-  }
-  
-  /**
    * @method getForwardedHeader
    * @description return the forwarded header for fcrepo responses that represent actual domain
    * name and protocol, not docker fcrepo:8080 name.
@@ -435,108 +374,16 @@ class ServiceModel {
    */
   _onFcrepoEvent(event) {
     let id = event.headers[ACTIVE_MQ_HEADER_ID];
+    let types = msg.headers[ACTIVE_MQ_HEADER_TYPES]
+      .split(',')
+      .map(item => item.trim())
+      .filter(item => item)
 
-    // this is a service update, reload services
-    let serviceIndex = id.indexOf('/'+api.service.DEFAULT_ROOT);
-    let testingServiceIndex = id.indexOf('/integration-test/'+api.service.DEFAULT_ROOT);
-    if( serviceIndex === 0 || testingServiceIndex === 0 ) {
-      this.bufferedReload(testingServiceIndex === 0 ? id : null);
+    if( !types.includes(SERVICE_TYPE) ) {
       return;
     }
 
-    if( id.match(/^\/collection\/[\w-_]+$/) ) {
-      hdt.onCollectionUpdate(id.replace('/collection/', ''));
-    }
-
-    // see if we need to update in memory acl
-    // auth.onContainerUpdate(event);
-
-    this._sendHttpNotificationBuffered(event);
-  }
-
-  /**
-   * @method _sendHttpNotificationBuffered
-   * @description we want to debounce event notifications.  ie we want to let events
-   * for a certain path settle before we send notifications so listeners are hammer
-   * fin server requests as updates happen on the same path.
-   * 
-   * @param {Object} event 
-   */
-  _sendHttpNotificationBuffered(event) {
-    let id = event.headers[ACTIVE_MQ_HEADER_ID];
-
-    if( this.notificationTimers[id] ) {
-      clearTimeout(this.notificationTimers[id].timer);
-    }
-
-    // we need to save creation events
-    let eventType = event.headers['org.fcrepo.jms.eventType'];
-
-    let timer = setTimeout(() => {
-      event.headers['org.fcrepo.jms.eventType'] = this.notificationTimers[id].eventType;
-      delete this.notificationTimers[id];
-
-      this.sendWebhookNotification(event);
-    }, 10 * 1000);
-
-    // if there is a buffered event and it is a creation event, and there is a new event
-    // that is a modification event, set the type as creation.
-    if( this.notificationTimers[id] && 
-        this.notificationTimers[id].eventType.indexOf('ResourceCreation') > -1 &&
-        eventType.indexOf('ResourceModification') > -1 ) {
-      eventType = this.notificationTimers[id].eventType;
-    }
-
-    this.notificationTimers[id] = {
-      timer,
-      eventType
-    } 
-  }
-
-  /**
-   * @method sendWebhookNotification
-   * @description broadcase a webhook notification to all webhook services
-   * 
-   * @param {Object} event
-   * @param {String} event.type webhook event type
-   * @param {Object} event.payload webhook event payload
-   */
-  sendWebhookNotification(event) {
-    for( let serviceId in this.services ) {
-      let service = this.services[serviceId];
-      if( service.type !== 'WebhookService' ) continue;
-
-      this._sendHttpNotification(serviceId, service.url, event);
-    }
-  }
-
-  /**
-   * @method _sendHttpNotification
-   * @description send a HTTP webhook notification.  we don't really care about the response
-   * unless there is an error, then log it.
-   * 
-   * @param {String} id service name
-   * @param {String} url webhook url to post to
-   * @param {Object} event event payload
-   */
-  _sendHttpNotification(id, url, event) {
-    logger.debug(`Sending HTTP webhook notifiction to service ${id} ${url}`);
-
-    request({
-      type : 'POST',
-      uri : url,
-      headers : {
-        [this.SIGNATURE_HEADER] : this.createServiceSignature(id),
-        'Content-Type': 'application/json'
-      },
-      body : JSON.stringify(event)
-    },
-    (error, response, body) => {
-      if( error ) return logger.error(`Failed to send HTTP notification to service ${id} ${url}`, error);
-      if( !api.isSuccess(response) ) {
-        logger.error(`Failed to send HTTP notification to service ${id} ${url}`, response.statusCode, response.body);
-      }
-    });
+    this.loadService(id);
   }
 
   /**
@@ -654,6 +501,18 @@ class ServiceModel {
 class ServiceDefinition {
 
   constructor(data = {}) {
+    for( let prop in data ) {
+      data[prop.replace(UCD_SCHEMA_BASE, '')] = data[prop];
+    }
+
+    // set the type
+    for( let type of data['@type'] ) {
+      if( type.match(UCD_SCHEMA_BASE) && type !== SERVICE_TYPE ) {
+        data.type = type.replace(/.*#/, '');
+        break;
+      }
+    }
+
     this.type = data.type || '';
     this.frame = data.frame || '';
     this.urlTemplate = data.urlTemplate || '';
@@ -664,7 +523,7 @@ class ServiceDefinition {
     this.description = data.description || '';
     this.transform = data.transform || '';
     this.supportedTypes = data.supportedTypes || [];
-    this.id = data.id || '';
+    this.id = data.identifier || data.id || '';
     this.workflow = data.workflow ? JSON.parse(data.workflow) : false;
   }
 

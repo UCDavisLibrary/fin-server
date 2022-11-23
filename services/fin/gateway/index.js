@@ -27,8 +27,7 @@ api.setConfig({
 // models like the service model and auth model require access
 // to fcrepo, init these models here
 async function initFromFcRepo() {
-
-  // await require('./models/services').init();
+  await require('./models/services').init();
 }
 
 logger.info('waiting for fcrepo connection');

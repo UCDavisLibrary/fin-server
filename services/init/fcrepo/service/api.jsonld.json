@@ -2,7 +2,7 @@
   "@id": "",
   "@type": [
     "http://digital.ucdavis.edu/schema#Service",
-    "http://digital.ucdavis.edu/schema#GlobalService",
+    "http://digital.ucdavis.edu/schema#GlobalService"
   ],
   "urlTemplate": "http://api:3000{{svcPath}}",
   "description": "UCD Api for frontend client",

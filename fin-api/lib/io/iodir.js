@@ -97,7 +97,7 @@ class IoDir {
 
         // add archive groups for binary files not in archive group
         let fileInfo = path.parse(p);
-        if( !this.archivalGroup && !this.isContainerGraphFile(p) ) {
+        if( !this.archivalGroup && !this.isContainerGraphFile(p) && !this.config.importFromRoot ) {
           let containerFile = await this.getContainerGraph(p);
 
           if( containerFile.graph !== null ) {
@@ -254,7 +254,9 @@ class IoDir {
         container.gitInfo = await git.info(this.fsfull, {cwd: this.fsroot});
         container.gitInfo.file = binaryGraph.filePath.replace(container.gitInfo.rootDir, '');
         container.gitInfo.rootDir = this.fsfull.replace(container.gitInfo.rootDir, '');
-        container.fcrepoPath = pathutils.joinUrlPath(utils.ROOT_FCREPO_PATHS.ITEM, container.fcrepoPath);
+        if( !this.config.importFromRoot ) {
+          container.fcrepoPath = pathutils.joinUrlPath(utils.ROOT_FCREPO_PATHS.ITEM, container.fcrepoPath);
+        }
       }
 
       // add binary container to list

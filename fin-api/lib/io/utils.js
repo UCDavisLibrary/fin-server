@@ -19,7 +19,7 @@ class IoUtils {
       ARCHIVAL_GROUP : 'http://fedora.info/definitions/v4/repository#ArchivalGroup',
       INDIRECT_CONTAINER : 'http://www.w3.org/ns/ldp#IndirectContainer',
       COLLECTION : 'http://schema.org/Collection',
-      GIT_SOURCE : 'http://digital.ucdavis.edu/schema/#GitSource',
+      GIT_SOURCE : 'http://digital.ucdavis.edu/schema#GitSource',
       FIN_IO : 'http://digital.ucdavis.edu/schema#FinIoContainer',
       FIN_IO_INDIRECT_REFERENCE : 'http://digital.ucdavis.edu/schema#FinIoIndirectReference'
     }
