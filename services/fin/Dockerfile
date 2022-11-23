@@ -53,12 +53,6 @@ COPY ${FIN_REPO_SERVICE_ROOT}/gateway gateway
 COPY ${FIN_REPO_SERVICE_ROOT}/node-utils node-utils
 COPY ${FIN_REPO_SERVICE_ROOT}/trusted-proxy trusted-proxy
 
-# implement gateway config
-WORKDIR ${FIN_CONFIG_ROOT}
-COPY ${FIN_REPO_SERVICE_ROOT}/gateway-ucd/transforms transforms
-COPY ${FIN_REPO_SERVICE_ROOT}/gateway-ucd/core-services.js core-services.js
-COPY ${FIN_REPO_SERVICE_ROOT}/gateway-ucd/app-services.js app-services.js
-
 # Leave us in the service root dir
 WORKDIR ${FIN_SERVICE_ROOT}
 

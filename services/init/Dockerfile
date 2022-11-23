@@ -6,6 +6,8 @@ FROM ${INIT_BASE}
 COPY --from=fin-server /fin/api /fin-api
 RUN cd /fin-api && npm link
 
+RUN apt-get update && apt-get install -y wait-for-it
+
 RUN mkdir -p /etc/ucdlib-service-init
 COPY postgres /etc/ucdlib-service-init/postgres
 COPY fcrepo /etc/ucdlib-service-init/fcrepo
