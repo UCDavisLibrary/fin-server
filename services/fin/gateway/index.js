@@ -5,6 +5,7 @@ const {logger, jwt, config} = require('@ucd-lib/fin-service-utils');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const api = require('@ucd-lib/fin-api');
+const path = require('path');
 
 // used for JWT
 const SERVER_USERNAME = 'fin-gateway';
@@ -19,13 +20,15 @@ api.setConfig({
   host: config.fcrepo.host,
   basePath : config.fcrepo.root,
   directAccess : true,
-  jwt : jwt.create(SERVER_USERNAME, true)
+  superuser : true
+  // jwt : jwt.create(SERVER_USERNAME, true)
 });
 
 // models like the service model and auth model require access
 // to fcrepo, init these models here
 async function initFromFcRepo() {
-  await require('./models/services').init();
+
+  // await require('./models/services').init();
 }
 
 logger.info('waiting for fcrepo connection');

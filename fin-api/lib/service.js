@@ -19,7 +19,7 @@ const AUTHENTICATION = 'AuthenticationService';
 const CLIENT = 'ClientService';
 const GLOBAL = 'GlobalService';
 
-let DEFAULT_ROOT = '.services';
+let DEFAULT_ROOT = 'service';
 let ROOT = DEFAULT_ROOT;
 
 const CONTAINS = 'http://www.w3.org/ns/ldp#contains';

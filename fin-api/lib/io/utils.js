@@ -9,7 +9,7 @@ class IoUtils {
     // if you want to add additional container graph file types, make sure
     // to updates this arrays as well as add a parser to parseContainerGraphFile
     this.CONTAINER_FILE_EXTS = ['.ttl', '.jsonld.json'];
-    this.CONTAINER_FILE_EXTS_REGEX = [/\.ttl$/, /\.jsonld\.json$/];
+    this.CONTAINER_FILE_EXTS_REGEX = /(\.ttl|\.jsonld\.json)$/;
 
     this.GIT_SOURCE_PROPERTY_BASE = 'http://digital.ucdavis.edu/schema#git/';
     this.LDP_SCHEMA = 'http://www.w3.org/ns/ldp#';
@@ -134,6 +134,7 @@ class IoUtils {
    * @param {*} id 
    */
   getMainGraphNode(graph, id) {
+    if( graph['@graph'] ) graph = graph['@graph'];
     let mainNode = null;
 
     // if there is id given, graph by id

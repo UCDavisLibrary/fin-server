@@ -22,7 +22,7 @@ class GitWrapper {
       this.cache[id] = Object.assign({}, gitInfo);
       return gitInfo;
     } catch(e) {
-      return {error: error.message};
+      return {error: e.message};
     }
   }
 

@@ -17,7 +17,7 @@ class IoDir {
    * @param {Array} archivalGroups list of all known ArchivalGroups
    */
   constructor(fsroot, subPath='', config={}, archivalGroup, archivalGroups=[]) {
-    if( process.stdout ) {
+    if( process.stdout && process.stdout.clearLine ) {
       process.stdout.clearLine();
       process.stdout.cursorTo(0); 
       process.stdout.write('Crawling: '+subPath);
@@ -270,7 +270,7 @@ class IoDir {
 
     // for all container (.ttl, jsonld.json) files, create binary file container objects
     for( let name in containerFiles ) {
-      let fcpath = this.getFcrepoPath(this.subPath, path.parse(name).name);
+      let fcpath = this.getFcrepoPath(this.subPath, path.parse(name).base.replace(utils.CONTAINER_FILE_EXTS_REGEX, ''));
 
       let parentFcPath = fcpath.split('/');
       let id = parentFcPath.pop();
@@ -307,9 +307,7 @@ class IoDir {
    */
   isContainerGraphFile(filePath) {
     let info = path.parse(filePath);
-    for( let re of utils.CONTAINER_FILE_EXTS_REGEX ) {
-      if( info.ext.match(re) ) return true;
-    }
+    if( info.base.match(utils.CONTAINER_FILE_EXTS_REGEX) ) return true;
     return false;
   }
 
@@ -344,7 +342,7 @@ class IoDir {
     let jsonld = await utils.parseContainerGraphFile(filePath);
     if( jsonld === null ) return {filePath, graph: null};
 
-    if( !Array.isArray(jsonld) ) {
+    if( !jsonld['@graph'] && !Array.isArray(jsonld) ) {
       jsonld = [jsonld];
     }
 
@@ -384,7 +382,7 @@ class IoDir {
           id
         );
       } else if( this.config.fcrepoPathType === 'subpath' ) {
-        return pathutils.joinUrlPath(fileObject.archivalGroup.fcrepoPath, subpath, id);
+        return pathutils.joinUrlPath(fileObject.archivalGroup.fcrepoPath, subPath, id);
       }
     }
 
@@ -392,7 +390,7 @@ class IoDir {
       return id;
     }
 
-    return pathutils.joinUrlPath(subpath, id);
+    return pathutils.joinUrlPath(subPath, id);
   }
 
   getIdentifier(graphNode={}) {

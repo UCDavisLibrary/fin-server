@@ -11,12 +11,16 @@ class FileIOCli {
     let dryRun = args.options.dryRun || false;
     let forceMetadataUpdate = args.options.forceMetadataUpdate || false;
     let ignoreRemoval = args.options.syncDeletes ? false : true;
+    let fcrepoPathType = args.options.fcrepoPathType;
+    let importFromRoot = args.options.importFromRoot;
 
     await api.io.import.run({
       fsPath : rootPath, 
       dryRun,
       forceMetadataUpdate,
-      ignoreRemoval
+      ignoreRemoval,
+      fcrepoPathType,
+      importFromRoot
     });
   }
 

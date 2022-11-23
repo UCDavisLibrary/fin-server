@@ -50,7 +50,7 @@ class ServiceModel {
     await redis.connect();
 
     // make sure our root service container is in place
-    await api.service.init();
+    // await api.service.init();
     // let list = await api.service.list();
 
     // ensure all default services

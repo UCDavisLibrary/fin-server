@@ -7,6 +7,8 @@ program
   .command('import <root-fs-path>')
   .option('-m, --force-metadata-update', 'Always re-PUT metadata, ignore sha check')
   .option('-r, --dry-run', 'do not write any containers')
+  .option('--import-from-root', 'import data starting at given fs path, instead of ArchivalGroups')
+  .option('--fcrepo-path-type <type>', 'import relative to ArchivalGroups + subpath + id (id, default) or subpath + id (subpath)')
   .option('-s, --sync-deletes', 'Remove files from fedora that do not exist on disk')
   .description('Import a collection from Fin filesystem representation. root-fs-path should be the folder containing the .fin and collection-name.ttl files')
   .action((rootFsPath, options) => {

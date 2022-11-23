@@ -59,14 +59,18 @@ class ImportCollection {
     // IoDir object for root fs path, crawl repo
     let rootDir = new IoDir(options.fsPath, '/', {
       dryRun : options.dryRun,
-      fcrepoPath : options.fcrepoPath
+      fcrepoPath : options.fcrepoPath,
+      fcrepoPathType : options.fcrepoPathType
     });
 
     // crawl user suppied director f
     await rootDir.crawl();
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
-    console.log('');
+
+    if( process.stdout && process.stdout.clearLine ) {
+      process.stdout.clearLine();
+      process.stdout.cursorTo(0);
+      console.log('');
+    }
 
     let collections = rootDir.archivalGroups.filter(item => item.isCollection);
     if( collections.length > 1 ) {
@@ -74,20 +78,26 @@ class ImportCollection {
     }
     let agUpdates = 0;
 
-    for( let ag of rootDir.archivalGroups ) {
-      // just put container and binary
-      if( ag.isBinary ) {
-        let bUpdate = await this.putBinary(ag);
-        let mUpdate = await this.putBinaryMetadata(ag);
-        if( bUpdate || mUpdate ) agUpdates++;
-        continue;
-      }
-
-      // recursively add all containers for archival group
-      if( await this.putAGContainers(ag, rootDir) ) {
-        agUpdates++;
+    if( options.importFromRoot ) {
+      await this.putAGContainers(rootDir, rootDir)
+    } else {
+      for( let ag of rootDir.archivalGroups ) {
+        // just put container and binary
+        if( ag.isBinary ) {
+          let bUpdate = await this.putBinary(ag);
+          let mUpdate = await this.putBinaryMetadata(ag);
+          if( bUpdate || mUpdate ) agUpdates++;
+          continue;
+        }
+  
+        // recursively add all containers for archival group
+        if( await this.putAGContainers(ag, rootDir) ) {
+          agUpdates++;
+        }
       }
     }
+
+    
 
     console.log('Filesytem import completed.');
     console.log(` - ArchivalGroup Collections: ${collections.length}`);
@@ -256,9 +266,9 @@ class ImportCollection {
 
     // check for gitinfo, add container
     if( container.gitInfo ) {
-      container.containerGraph.push(this.createGitNode(container.gitInfo));
+      this.addNodeToGraph(container.containerGraph, this.createGitNode(container.gitInfo));
     }
-    container.containerGraph.push(finIoNode);
+    this.addNodeToGraph(container.containerGraph, finIoNode);
 
     if( this.options.dryRun !== true ) {
       response = await api.put({
@@ -388,9 +398,9 @@ class ImportCollection {
 
       // check for gitinfo, add container
       if( binary.gitInfo ) {
-        binary.containerGraph.push(this.createGitNode(binary.gitInfo))
+        this.addNodeToGraph(binary.containerGraph, this.createGitNode(binary.gitInfo));
       }
-      binary.containerGraph.push(finIoContainer);
+      this.addNodeToGraph(binary.containerGraph, finIoContainer);
 
       response = await api.put({
         path : containerPath,
@@ -507,6 +517,11 @@ class ImportCollection {
     })
 
     return containers;
+  }
+
+  addNodeToGraph(graph, node) {
+    if( graph['@graph'] ) graph = graph['@graph'];
+    graph.push(node);
   }
 
   /**

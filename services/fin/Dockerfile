@@ -35,6 +35,7 @@ RUN npm install --production && \
 WORKDIR ${FIN_API_ROOT}
 COPY ${FIN_REPO_API_ROOT}/index.js .
 COPY ${FIN_REPO_API_ROOT}/lib lib
+COPY ${FIN_REPO_API_ROOT}/cli cli
 
 # Client Code
 WORKDIR ${FIN_SERVICE_ROOT}

@@ -1,0 +1,43 @@
+{
+  "@id": "",
+  "@type": [
+    "http://digital.ucdavis.edu/schema#ClientService",
+    "http://digital.ucdavis.edu/schema#Service"
+  ],
+  "url": "http://ucd-lib-client:8000",
+  "description": "UCD Library DAMS Client UI",
+  "identifier": "ucd-lib-client",
+  "title": "ucd-lib-client",
+  "@context": {
+    "lastModified": {
+      "@id": "http://fedora.info/definitions/v4/repository#lastModified",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "url": {
+      "@id": "http://digital.ucdavis.edu/schema#url"
+    },
+    "description": {
+      "@id": "http://purl.org/dc/elements/1.1/description"
+    },
+    "createdBy": {
+      "@id": "http://fedora.info/definitions/v4/repository#createdBy"
+    },
+    "identifier": {
+      "@id": "http://purl.org/dc/elements/1.1/identifier"
+    },
+    "title": {
+      "@id": "http://purl.org/dc/elements/1.1/title"
+    },
+    "lastModifiedBy": {
+      "@id": "http://fedora.info/definitions/v4/repository#lastModifiedBy"
+    },
+    "created": {
+      "@id": "http://fedora.info/definitions/v4/repository#created",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "fedora": "http://fedora.info/definitions/v4/repository#",
+    "ldp": "http://www.w3.org/ns/ldp#",
+    "dc": "http://purl.org/dc/elements/1.1/"
+  }
+}

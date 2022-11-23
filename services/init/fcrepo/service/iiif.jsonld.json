@@ -1,0 +1,48 @@
+{
+  "@id": "",
+  "@type": [
+    "http://digital.ucdavis.edu/schema#Service",
+    "http://digital.ucdavis.edu/schema#ProxyService"
+  ],
+  "supportedType": "ldp:NonRDFSource",
+  "urlTemplate": "http://loris:5004{{fcPath}}{{svcPath}}",
+  "description": "International Image Interoperability Framework Service",
+  "identifier": "iiif",
+  "title": "iiif",
+  "@context": {
+    "createdBy": {
+      "@id": "http://fedora.info/definitions/v4/repository#createdBy"
+    },
+    "description": {
+      "@id": "http://purl.org/dc/elements/1.1/description"
+    },
+    "lastModified": {
+      "@id": "http://fedora.info/definitions/v4/repository#lastModified",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "supportedType": {
+      "@id": "http://digital.ucdavis.edu/schema#supportedType",
+      "@type": "@id"
+    },
+    "identifier": {
+      "@id": "http://purl.org/dc/elements/1.1/identifier"
+    },
+    "title": {
+      "@id": "http://purl.org/dc/elements/1.1/title"
+    },
+    "created": {
+      "@id": "http://fedora.info/definitions/v4/repository#created",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "urlTemplate": {
+      "@id": "http://digital.ucdavis.edu/schema#urlTemplate"
+    },
+    "lastModifiedBy": {
+      "@id": "http://fedora.info/definitions/v4/repository#lastModifiedBy"
+    },
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "fedora": "http://fedora.info/definitions/v4/repository#",
+    "ldp": "http://www.w3.org/ns/ldp#",
+    "dc": "http://purl.org/dc/elements/1.1/"
+  }
+}
