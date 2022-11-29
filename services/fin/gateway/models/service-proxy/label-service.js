@@ -3,7 +3,7 @@ const serviceModel = require('../services');
 
 module.exports = async (req, res) => {
   try {
-    let fcPath = req.finServiceInfo.fcPath.replace(api.getConfig().basePath, '');
+    let fcPath = req.finServiceInfo.fcPath.replace(api.getConfig().fcBasePath, '');
     let resp = await serviceModel.renderLabel(fcPath, req.finServiceInfo.svcPath);
     res.json(resp);
   } catch(e) {

@@ -56,6 +56,17 @@ class MessageConsumer {
     }
   }
 
+  sendMessage(msg, additionalHeaders={}) {
+    if( typeof message !== 'string' ) {
+      msg = JSON.stringify(msg);
+    } 
+    const frame = this.client.send(Object.assign({
+      'destination': subscribeHeaders.destination,
+      'content-type': 'application/json'
+    }, additionalHeaders));
+    frame.write(msg);
+    frame.end();
+  }
 
   connect(clientName, queue) {
     if( !this.connecting ) {

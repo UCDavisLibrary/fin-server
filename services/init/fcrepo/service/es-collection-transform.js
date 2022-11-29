@@ -1,11 +1,10 @@
-const {config} = require('@ucd-lib/fin-service-utils');
-
+const ioUtils = require('@ucd-lib/fin-api/lib/io/utils.js');
 
 module.exports = async function(path, graph, headers, utils) {
   let item = {};
   
   let container = utils.get(path, graph);
-  let gitsource = utils.get(path+'#gitsource', graph);
+  let gitsource = utils.get(ioUtils.TYPES.GIT_SOURCE, graph);
 
   if( !container ) {
     throw new Error('unknown container: '+path);
@@ -173,8 +172,8 @@ module.exports = async function(path, graph, headers, utils) {
   if( gitsource ) {
     item._.gitsource = {};
     for( let attr in gitsource ) {
-      if( attr.startsWith('@') ) continue;
-      item._.gitsource[attr.replace(/.*#/, '')] = gitsource[attr][0]['@value'] || gitsource[attr][0]['@id'];
+      if( !attr.startsWith(ioUtils.GIT_SOURCE_PROPERTY_BASE) ) continue;
+      item._.gitsource[attr.replace(ioUtils.GIT_SOURCE_PROPERTY_BASE, '')] = gitsource[attr][0]['@value'] || gitsource[attr][0]['@id'];
     }
   }
 

@@ -1,0 +1,9 @@
+{
+  "@context" : {
+    "schema" : "http://schema.org/"
+  },
+  "@graph" : [{
+    "@id" : "",
+    "schema:name" : "Root container for defining webac groups"
+  }]
+}

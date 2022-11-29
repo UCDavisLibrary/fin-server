@@ -388,15 +388,14 @@ class HttpCli {
 
       let jsonld = JSON.parse(response.data.body)[0];
       let contains = jsonld['http://www.w3.org/ns/ldp#contains'] || [];
-      let re = new RegExp(api.getConfig().basePath+args.path);
+      let re = new RegExp(api.getConfig().fcBasePath+args.path);
 
       console.log(p+': checking for matches');
-
       for( let child of contains ) {
         if( child['@id'].match(re) ) {
 
           let delRep = await api.delete({
-            path : child['@id'].split(api.getConfig().basePath)[1],
+            path : child['@id'].split(api.getConfig().fcBasePath)[1],
             permanent : options.permanent
           });
 

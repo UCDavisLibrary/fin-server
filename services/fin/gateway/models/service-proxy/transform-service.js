@@ -15,7 +15,7 @@ module.exports = (req, res) => {
       parsed(req.body, req, res);
     });
   } else {
-    parsed((req.finServiceInfo.fcPath || '').replace(api.getConfig().basePath, ''), req, res);
+    parsed((req.finServiceInfo.fcPath || '').replace(api.getConfig().fcBasePath, ''), req, res);
   }
 }
 

@@ -1,7 +1,6 @@
 const {URL} = require('url');
 const api = require('@ucd-lib/fin-api');
 const {logger, config, jwt} = require('@ucd-lib/fin-service-utils');
-const authModel = require('./auth');
 const serviceModel = require('./services');
 const proxy = require('../lib/http-proxy');
 const serviceProxy = require('./service-proxy');
@@ -10,9 +9,6 @@ const authenticationServiceProxy = require('./service-proxy/authentication-servi
 const clientServiceProxy = require('./service-proxy/client-service');
 
 const FIN_URL = new URL(config.server.url);
-
-authModel.init();
-
 
 // cors headers we attach to registered origins
 const CORS_HEADERS = {
@@ -273,8 +269,13 @@ class ProxyModel {
   async _handleAuthenticationSuccess(req, res) {
     // mint token
     let username = res.headers['x-fin-authorized-agent'];
-    let isAdmin = authModel.isAdmin(username);
-    let acl = authModel.getUserAcl(username);
+
+    // TODO
+    let isAdmin = false;
+    let acl = {};
+    // let isAdmin = authModel.isAdmin(username);
+    // let acl = authModel.getUserAcl(username);
+
     let token = jwt.create(username, isAdmin, acl);
 
 

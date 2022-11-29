@@ -73,7 +73,7 @@ class ServiceProxy {
    * @param {Function} next express middleware next function 
    */
   async globalServiceMiddleware(req, res, next) {
-    let name = req.originalUrl.replace(/^\//, '').split('/')[0];
+    let name = req.originalUrl.replace(/^\//, '').split('/')[0].replace(/\?.*/, '');
     let service = serviceModel.services[name];
     
     if( !service ) return next();
@@ -175,7 +175,7 @@ class ServiceProxy {
    */
   async setContainerInfo(req) {
     let headOpts = {
-      path : req.finServiceInfo.fcPath.replace(api.getConfig().basePath, ''),
+      path : req.finServiceInfo.fcPath.replace(api.getConfig().fcBasePath, ''),
     }
 
 
@@ -241,9 +241,10 @@ class ServiceProxy {
       // global : req.originalUrl.match(/^\/svc:.*/) ? true : false
     }
 
-    parts = parts[1].split('/');
-    serviceRequest.name = parts.shift();
-    serviceRequest.svcPath = parts.length > 0 ? '/'+parts.join('/') : '';
+    parts[1] = parts[1].replace(/^\//, '');
+    let svcParts = parts[1].split(/[\?\/]/);
+    serviceRequest.name = svcParts.shift();
+    serviceRequest.svcPath = parts[1].replace(new RegExp('^/?'+serviceRequest.name), '');
 
     req.finServiceInfo = serviceRequest;
   }
