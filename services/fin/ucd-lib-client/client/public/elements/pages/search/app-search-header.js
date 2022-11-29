@@ -7,6 +7,7 @@ import "../../components/search-box";
 import "../../components/nav-bar";
 // import "../../components/icon";
 import "../../components/filterButton";
+
 class AppSearchHeader extends Mixin(LitElement)
       .with(LitCorkUtils) {
 
@@ -36,7 +37,7 @@ class AppSearchHeader extends Mixin(LitElement)
       {text: 'About', href: '/about'},
       {text: 'FAQ', href: '/faq'}
     ];
-
+    // this.EventBus.on('search-controller-update', e => this._onSearchControllerUpdate(e));
     this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel');
   }
   /**
@@ -100,7 +101,6 @@ class AppSearchHeader extends Mixin(LitElement)
     if( this.lastQuery === query ) return;
     this.lastQuery = query;
 
-    // this._searchRecords(query);
     this.RecordModel.search(query);
   }
 

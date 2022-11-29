@@ -30,7 +30,7 @@ export class AppSearch extends Mixin(LitElement)
     this.appState = {};
     this.wideFiltersPanel = false;
     
-    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel');
+    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'RecordSearchVCModel');
   }
 
   /**
@@ -86,13 +86,34 @@ export class AppSearch extends Mixin(LitElement)
     this.RecordModel.search(query);
   }
 
+  // /**
+  //  * @method _onEsSearchUpdate
+  //  * @description RecordInterface, fired when search updates
+  //  * 
+  //  * @param {Object} e 
+  //  */
+  // _onRecordSearchUpdate(e) {
+  //   if( e.state === 'error' ) {
+  //     return this.shadowRoot.querySelector('#resultsPanel').onError(e);
+  //   } else if( e.state === 'loading' ) {
+  //     return this.shadowRoot.querySelector('#resultsPanel').onLoading();
+  //   }
+
+  //   if( e.state !== 'loaded' ) return;
+
+  //   let currentIndex = e.searchDocument.offset;
+  //   let payload = e.payload;
+  //   let total = payload.total;
+  //   this.results = payload.results;
+
+  //   this.shadowRoot.querySelector('#resultsPanel').render(this.results, total, e.searchDocument.limit, currentIndex);
+  // }
+
   /**
-   * @method _onEsSearchUpdate
-   * @description RecordInterface, fired when search updates
-   * 
-   * @param {Object} e 
+   * @description _onRecordSearchVcUpdate, fired when record search viewController updates
+   * @param {*} e 
    */
-  _onRecordSearchUpdate(e) {
+  _onRecordSearchVcUpdate(e) {
     if( e.state === 'error' ) {
       return this.shadowRoot.querySelector('#resultsPanel').onError(e);
     } else if( e.state === 'loading' ) {
@@ -103,10 +124,10 @@ export class AppSearch extends Mixin(LitElement)
 
     let currentIndex = e.searchDocument.offset;
     let payload = e.payload;
-    let total = payload.total;
+    let total = payload.results.length; // payload.total;
     this.results = payload.results;
 
-    this.shadowRoot.querySelector('#resultsPanel').render(this.results, total, e.searchDocument.limit, currentIndex);
+    this.shadowRoot.querySelector('#resultsPanel').renderResults(this.results, total, e.searchDocument.limit, currentIndex);
   }
 
   /**

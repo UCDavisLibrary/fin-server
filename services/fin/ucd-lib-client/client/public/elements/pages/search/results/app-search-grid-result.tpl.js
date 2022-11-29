@@ -1,3 +1,7 @@
+import { html } from 'lit';
+
+export default function render() {
+return html`
 <style include="shared-styles">
   :host {
     display: block;
@@ -86,17 +90,17 @@
   hidden$="[[!isImage]]" 
   class="image" 
   id="imgRoot"
-  style$="background-image: url('[[imgThumbail]]'); height:[[imgHeight]]px;">
-  <img id="img" src$="[[imgUrl]]" style$="height:[[imgHeight]]px; width: 100%" onload="this.style.display='block';" />
-  <div hidden$="[[!isVideo]]" class="video-thumbnail"></div>
+  style="background-image: url('${this.data.thumbnailUrl}'); height:10rem">
+  <img id="img" src="${this.data.thumbnailUrl}" style="height:10rem; width: 100%" onload="this.style.display='block';" />
+  <div ?hidden="[[!isVideo]]" class="video-thumbnail"></div>
   <!--
-    <div style$="background-image: url('[[imgThumbail]]');height:[[imgHeight]]px" class="img"></div>
-    <div style$="background-image: url('[[imgUrl]]');height:[[imgHeight]]px" class="img"></div>
+    <div style="background-image: url('[[imgThumbail]]');height:[[imgHeight]]px" class="img"></div>
+    <div style="background-image: url('[[imgUrl]]');height:[[imgHeight]]px" class="img"></div>
   -->
 </div>
 
 <div class="card-text">
-  <div class="collection-name">[[collectionName]]</div>
+  <div class="collection-name">${this.data.title}</div>
 
   <h4>[[name]]</h4>
 
@@ -111,3 +115,4 @@
     </div>
   </div>
 </div>
+`;}

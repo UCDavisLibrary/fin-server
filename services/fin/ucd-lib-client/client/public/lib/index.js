@@ -2,6 +2,7 @@ module.exports = {
   AuthModel : require('./models/AuthModel'),
   AppStateModel : require('./models/AppStateModel'),
   RecordModel : require('./models/RecordModel'),
+  RecordSearchVCStore : require('./models/RecordSearchVCModel'),
   CollectionModel : require('./models/CollectionModel'),
   MediaModel : require('./models/MediaModel'),
   CitationModel : require('./models/CitationsModel'),

@@ -271,7 +271,7 @@ return html`
     <div style="text-align:center">
       ${this.collectionResults.map(col => html`
         <app-collection-card 
-          collection="${col.item}" 
+          .collection="${col}" 
           on-keyup="_onCollectionClicked"
           on-click="_onCollectionClicked">
         </app-collection-card>
@@ -285,13 +285,13 @@ return html`
   <div ?hidden="${this.showLoading}">
     <div class="masonry" id="layout" ?hidden="${this.isListLayout}">
       ${this.results.map(res => html`
-        <app-search-grid-result data="${res.item}" class="item"></app-search-grid-result>
+        <app-search-grid-result .data="${res}" class="item"></app-search-grid-result>
       `)}
     </div>
 
     <div class="list" ?hidden="${!this.isListLayout}">
       ${this.results.map(res => html`
-        <app-search-list-result data="${res.item}"></app-search-list-result>
+        <app-search-list-result .data="${res}"></app-search-list-result>
       `)}
     </div>
   </div>

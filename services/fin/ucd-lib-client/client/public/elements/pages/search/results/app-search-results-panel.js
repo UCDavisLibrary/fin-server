@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement } from 'lit';
 import render from "./app-search-results-panel.tpl.js";
 
 import "@ucd-lib/cork-pagination"
@@ -57,7 +57,7 @@ class AppSearchResultsPanel extends Mixin(LitElement)
     this.resizeTimer = -1;
     window.addEventListener('resize', () => this._resizeAsync());
 
-    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'MediaModel');
+    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'MediaModel', 'RecordSearchVCModel');
     this.EventBus().on('show-collection-search-results', show => this._updateCollectionResultsVisibility(show));
   }
 
@@ -73,22 +73,24 @@ class AppSearchResultsPanel extends Mixin(LitElement)
   }
 
   /**
-   * @method render
-   * @description render results of search query
+   * @method renderResults
+   * @description renderResults results of search query
    * 
    * @param {Array} results results to render
+   * @param {Array} total total matched results
+   * @param {Array} numPerPage results to render on each page
+   * @param {Array} currentIndex index
    */
-  render(results, total, numPerPage, currentIndex) {
+  renderResults(results, total, numPerPage, currentIndex) {
     this.results = [];
     this.showHeaderFooter = true;
     this.showError = false;
-
     clearTimeout(this.showLoadingTimer);
     this.showLoading = false;
+    
 
     requestAnimationFrame(() => {
-      this.total = this.numberWithCommas(total);
-
+      this.total = total;
       // make sure we don't have a page the returns results > 10000k
       let t = Math.floor((10000-numPerPage) / numPerPage) * numPerPage;
       if( total > t ) {
@@ -101,8 +103,8 @@ class AppSearchResultsPanel extends Mixin(LitElement)
       this.results = results;
       this.paginationTotal = total;
       this.numPerPage = numPerPage;
-      this.$.numPerPage.value = numPerPage+'';
-      this.$.numPerPageM.value = numPerPage+'';
+      this.shadowRoot.querySelector('#numPerPage').value = numPerPage+'';
+      this.shadowRoot.querySelector('#numPerPageM').value = numPerPage+'';
       this.currentIndex = currentIndex;
 
       requestAnimationFrame(() => this._resize());
@@ -191,7 +193,7 @@ class AppSearchResultsPanel extends Mixin(LitElement)
     let colHeights = [];
     for( let i = 0; i < numCols; i++ ) colHeights.push(0);
 
-    let eles = this.$.layout.querySelectorAll('app-search-grid-result');
+    let eles = this.shadowRoot.querySelector('#layout').querySelectorAll('app-search-grid-result');
     for( let i = 0; i < eles.length; i++ ) {
       let col = this._findMinCol(colHeights);
       let cheight = colHeights[col];
@@ -204,7 +206,7 @@ class AppSearchResultsPanel extends Mixin(LitElement)
     }
 
     let maxHeight = Math.max.apply(Math, colHeights);
-    this.$.layout.style.height = maxHeight+'px';
+    this.shadowRoot.querySelector('#layout').style.height = maxHeight+'px';
   }
 
   /**
@@ -273,9 +275,18 @@ class AppSearchResultsPanel extends Mixin(LitElement)
    * 
    * @param {Object} e 
    */
-  _onCollectionSearchUpdate(e) {
+  // _onCollectionSearchUpdate(e) {
+  //   if( e.state !== 'loaded' ) return;
+  //   this.collectionResults = e.payload.results;
+  // }
+
+  /**
+   * @description _onRecordSearchVcUpdate, fired when record search viewController updates
+   * @param {*} e 
+   */
+   _onRecordSearchVcUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this.collectionResults = e.payload.results;
+    this.collectionResults = e.payload.results.filter(c => c.collection);
   }
 
   /**
