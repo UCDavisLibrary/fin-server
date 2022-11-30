@@ -1,0 +1,97 @@
+const api = require('@ucd-lib/fin-api');
+const {PG, logger} = require('@ucd-lib/fin-service-utils');
+const crypto = require('crypto');
+
+let pg = new PG('label_service');
+pg.connect();
+
+class LabelService {
+
+  constructor() {
+    this.TYPES = [
+      'http://schema.org/name',
+      'http://www.w3.org/2000/01/rdf-schema#label'
+    ];
+  }
+
+  async load(containerUri) {
+    let hostRoot = api.getConfig().host+api.getConfig().fcBasePath;
+    if( !containerUri.match(/^http(s)?:\/\//) ) {
+      containerUri = hostRoot+containerUri;
+    }
+    let containerPath = containerUri.replace(hostRoot, '');
+
+    let container = await api.get({
+      path: containerPath,
+      headers: {accept: api.RDF_FORMATS.JSON_LD}
+    });
+
+    if( container.data.statusCode !== 200 ) {
+      return logger.error('Failed to load container into label service: '+containerPath)
+    }
+
+    let hash = crypto.createHash('sha256');
+    hash.update(container.data.body);
+    let containerSha = hash.digest('hex');
+
+    let shaok = await this.checkSha(containerPath, containerSha);
+    if( shaok ) return;
+
+    container = JSON.parse(container.data.body);
+    if( container['@graph'] ) container = container['@graph'];
+    if( !Array.isArray(container) ) container = [container];
+
+    for( let node of container ) {
+      for( let type of this.TYPES ) {
+        if( !node[type] ) continue;
+        if( !Array.isArray(node[type]) ) {
+          node[type] = [node[type]];
+        }
+
+        for( let item of node[type] ) {
+          await pg.query(
+            `INSERT INTO label_service.label (container, subject, predicate, object) values ($1, $2, $3, $4)`,
+            [containerPath, node['@id'], type, item['@value'] || item['@id'] || '']
+          );
+        }
+      }
+    }
+  }
+
+  /**
+   * @method render
+   * @description render a label
+   * 
+   * @param {String} uri uri for label
+   * @param {Object} opts 
+   */
+  async render(uri, opts={}) {
+    let resp = await pg.query('SELECT * FROM label_service.label WHERE subject = $1', [uri]);
+    return resp.rows;
+  }
+
+  async checkSha(uri, sha) {
+    let resp = await pg.query('SELECT * FROM label_service.label_container WHERE uri = $1', [uri]);
+    if( !resp.rows.length ) {
+      await this.cleanContainer(uri, sha);
+      return false;
+    }
+
+    let currentSha = resp.rows[0].sha;
+    if( currentSha === sha ) return true;
+
+    // run cleanup after sha missmatch
+    await this.cleanContainer(uri, sha);
+
+    return false;
+  }
+
+  async cleanContainer(uri, sha) {
+    await pg.query('DELETE FROM label_service.label WHERE container = $1', [uri]);
+    await pg.query('DELETE FROM label_service.label_container WHERE uri = $1', [uri]);
+    await pg.query('INSERT INTO label_service.label_container (uri, sha) VALUES ($1, $2)', [uri, sha]);
+  }
+
+}
+
+module.exports = new LabelService();

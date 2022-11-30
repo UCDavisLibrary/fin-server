@@ -61,6 +61,8 @@ class ProxyModel {
     // of /auth/token /auth/user /auth/logout /auth/mint /auth/service, these are reserved
     app.use(/^\/auth\/(?!token|user|logout|mint|service|login-shell).*/i, authenticationServiceProxy);
 
+    app.use(/^\/label\/.*/, this._renderLabel);
+
     // handle global services
     app.use(/^\/.+/, serviceProxy.globalServiceMiddleware);
 
@@ -320,6 +322,22 @@ class ProxyModel {
   _setReqTime(req) {
     if( !req.fcrepoProxyTime ) return;
     req.fcrepoProxyTime = Date.now() - req.fcrepoProxyTime;
+  }
+
+  async _renderLabel(req, res) {
+    try {
+      console.log('here');
+      let uri = decodeURIComponent(req.originalUrl.replace(/^\/label\//, ''));
+      let labels = await serviceModel.renderLabel(uri);
+      res.json(labels);
+    } catch(e) {
+      res.status(500)
+        .json({
+          error : true,
+          message : e.message,
+          stack: e.stack
+        })
+    }
   }
 
 }

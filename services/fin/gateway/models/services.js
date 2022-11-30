@@ -8,7 +8,7 @@ const transform = require('./transform');
 const util = require('util');
 const redis = require('../lib/redisClient')();
 const jwt = require('jsonwebtoken');
-const hdt = require('../lib/hdt');
+const label = require('../models/label');
 
 jsonld.frame = util.promisify(jsonld.frame);
 
@@ -57,36 +57,6 @@ class ServiceModel {
 
     await this.waitForFcRepoServices();
     await this.reload();
-
-    return;
-
-    // clone our current redis connection to setup a listener
-    redis.duplicate((err, listenerClient) => {
-      if( err ) throw new Error('Failed to setup redis sync for service secrets');
-
-      // handle updates to the admin key which we have subscribed to below
-      listenerClient.on('pmessage', async (channel, message) => {
-        await this.reloadSecrets();
-      });
-
-      // listen for updates to the admin key
-      listenerClient.psubscribe(`__keyspace@*__:${SECRET_PREFIX}*`, function (err) {
-        if( err ) throw new Error('Failed to setup redis sync for admin list');
-      });
-    });  
-
-    // reload all service secrets from redis
-    await this.reloadSecrets();
-
-    // update hdt cache files
-    hdt.init();
-
-    // this is triggered by updating default services above
-    // reload all service definitions from fedora
-    // console.log(config.defaultServices);
-    // if( !config.defaultServices.length ) {
-      await this.reload();
-    // }
   }
 
   async waitForFcRepoServices() {
@@ -125,22 +95,6 @@ class ServiceModel {
     }
 
     logger.info('Services reloaded', Object.keys(this.services));
-    return;
-
-    services = {
-      // hardcoded collection label service
-      label : new ServiceDefinition({type: 'label'})
-    };
-    this.authServiceDomains = {};
-    
-    for( var i = 0; i < list.length; i++ ) {
-      let service = list[i];
-
-      
-    };
-
-    this.services = services;
-    logger.info('Services reloaded', Object.keys(services));
 
     // run init
     for( let id in this.services ) {
@@ -149,6 +103,7 @@ class ServiceModel {
   }
 
   async loadService(uri) {
+    console.log(uri);
     let fcPath = uri.split(api.getConfig().fcBasePath)[1];
 
     let response = await api.metadata({
@@ -185,9 +140,9 @@ class ServiceModel {
       this.authServiceDomains[domain] = new RegExp(domain+'$', 'i');
     } else if( service.type === api.service.TYPES.TRANSFORM ) {
       await transform.load(service.id, service.transform);
+    } else if ( service.type === api.service.TYPES.LABEL ) {
+      await label.load(uri);
     }
-
-    // TODO: handle label service
   }
 
   /**
@@ -326,10 +281,8 @@ class ServiceModel {
     return transform.exec(service, pathOrData)
   }
 
-  renderLabel(fcPath, svcPath = '') {
-    let collection = fcPath.split('/')[2];
-    let uri = decodeURIComponent(svcPath.replace(/^\//, ''));
-    return hdt.getSubjects(collection, uri);
+  renderLabel(uri = '') {
+    return label.render(uri);
   }
 
   /**
@@ -372,7 +325,7 @@ class ServiceModel {
    */
   _onFcrepoEvent(event) {
     let id = event.headers[ACTIVE_MQ_HEADER_ID];
-    let types = msg.headers[ACTIVE_MQ_HEADER_TYPES]
+    let types = event.headers[ACTIVE_MQ_HEADER_TYPES]
       .split(',')
       .map(item => item.trim())
       .filter(item => item)
