@@ -44,16 +44,11 @@ class LabelService {
     for( let node of container ) {
       for( let type of this.TYPES ) {
         if( !node[type] ) continue;
-        if( !Array.isArray(node[type]) ) {
-          node[type] = [node[type]];
-        }
 
-        for( let item of node[type] ) {
-          await pg.query(
-            `INSERT INTO label_service.label (container, subject, predicate, object) values ($1, $2, $3, $4)`,
-            [containerPath, node['@id'], type, item['@value'] || item['@id'] || '']
-          );
-        }
+        await pg.query(
+          `INSERT INTO label_service.label (container, subject, predicate, object) values ($1, $2, $3, $4)`,
+          [containerPath, node['@id'], type, JSON.stringify(node[type])]
+        );
       }
     }
   }
@@ -67,6 +62,9 @@ class LabelService {
    */
   async render(uri, opts={}) {
     let resp = await pg.query('SELECT * FROM label_service.label WHERE subject = $1', [uri]);
+    resp.rows.forEach(item => {
+      item.object = JSON.parse(item.object);
+    });
     return resp.rows;
   }
 

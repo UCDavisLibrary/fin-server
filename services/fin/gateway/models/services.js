@@ -103,7 +103,6 @@ class ServiceModel {
   }
 
   async loadService(uri) {
-    console.log(uri);
     let fcPath = uri.split(api.getConfig().fcBasePath)[1];
 
     let response = await api.metadata({

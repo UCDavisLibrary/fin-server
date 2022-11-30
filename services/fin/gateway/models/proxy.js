@@ -326,10 +326,21 @@ class ProxyModel {
 
   async _renderLabel(req, res) {
     try {
-      console.log('here');
       let uri = decodeURIComponent(req.originalUrl.replace(/^\/label\//, ''));
       let labels = await serviceModel.renderLabel(uri);
-      res.json(labels);
+      let graphs = labels.map(item => {
+        return {
+          '@id' : item.container,
+          '@graph' : [{
+            '@id' : item.subject,
+            [item.predicate] : item.object
+          }]
+        }}
+      );
+
+      res.json({
+        '@graph' : graphs
+      });
     } catch(e) {
       res.status(500)
         .json({
