@@ -4,10 +4,10 @@
     "http://digital.ucdavis.edu/schema#Service",
     "http://digital.ucdavis.edu/schema#AuthenticationService"
   ],
-  "url": "http://cas:8000",
-  "description": "UCD CAS authentication service",
-  "identifier": "cas",
-  "title": "cas",
+  "url": "http://oidc:3000",
+  "description": "Keycloak oidc authentication service",
+  "identifier": "keycloak-oidc",
+  "title": "keycloak-oidc",
   "@context": {
     "createdBy": {
       "@id": "http://fedora.info/definitions/v4/repository#createdBy"

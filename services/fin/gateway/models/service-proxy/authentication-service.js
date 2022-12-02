@@ -30,7 +30,7 @@ module.exports = (req, res) => {
       let urlInfo = new URL(path);
       path = urlInfo.pathname;
     }
-    path = path.replace(AUTHENTICATION_SERVICE_CHAR+'/'+service.id, '');
+    // path = path.replace(AUTHENTICATION_SERVICE_CHAR+'/'+service.id, '');
 
     logger.info(`AuthenticationService proxy request: ${req.originalUrl} -> ${service.url+path}`);
 

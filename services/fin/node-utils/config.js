@@ -69,6 +69,7 @@ module.exports = {
   },
 
   jwt : {
+    jwksUri : process.env.JWT_JWKS_URI,
     secret : process.env.JWT_SECRET,
     issuer : process.env.JWT_ISSUER,
     // expires in seconds

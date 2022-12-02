@@ -90,6 +90,8 @@ class ProxyModel {
     if( serviceModel.isAuthenticationServiceRequest(req) ) {
       if( proxyRes.headers['x-fin-authorized-agent'] ) {
         this._handleAuthenticationSuccess(req, proxyRes);
+      } else if( proxyRes.headers['x-fin-authorized-token'] ) {
+        this._handleAuthenticationSuccess(req, proxyRes);
       }
       return;
     }
@@ -210,7 +212,7 @@ class ProxyModel {
     let user;
     req.headers['x-fin-principal'] = 'fedoraUser';
     try {
-      user = jwt.getUserFromRequest(req);
+      user = await jwt.getUserFromRequest(req);
       // TODO: handle admins
       // See fcrepo.properties for this value
       if( user ) {
@@ -269,17 +271,19 @@ class ProxyModel {
    * @param {Object} res http-proxy response
    */
   async _handleAuthenticationSuccess(req, res) {
-    // mint token
-    let username = res.headers['x-fin-authorized-agent'];
+    let token = res.headers['x-fin-authorized-token'];
+    if( !token ) {
+      // mint token
+      let username = res.headers['x-fin-authorized-agent'];
 
-    // TODO
-    let isAdmin = false;
-    let acl = {};
-    // let isAdmin = authModel.isAdmin(username);
-    // let acl = authModel.getUserAcl(username);
+      // TODO
+      let isAdmin = false;
+      let acl = {};
+      // let isAdmin = authModel.isAdmin(username);
+      // let acl = authModel.getUserAcl(username);
 
-    let token = jwt.create(username, isAdmin, acl);
-
+      token = jwt.create(username, isAdmin, acl);
+    }
 
     // set redirect url
     logger.info('redirect debug', req.query.cliRedirectUrl, req.query.redirectUrl, '/');

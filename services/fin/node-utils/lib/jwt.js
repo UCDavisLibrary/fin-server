@@ -1,8 +1,18 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 const logger = require('./logger');
+var jwksClient = require('jwks-rsa');
+
 
 class JwtUtils {
+
+  constructor() {
+    if( config.jwt.jwksUri ) {
+      this.jwksClient = jwksClient({
+        jwksUri: config.jwt.jwksUri 
+      });
+    }
+  }
 
   /**
    * @method getJwtFromRequest
@@ -77,7 +87,33 @@ class JwtUtils {
    * 
    * @return {Boolean|Object} returns false if invalid or token payload if valid.
    */
-  validate(token) {
+  async validate(token) {
+    
+    if( config.jwt.jwksUri ) {
+      return new Promise((resolve, reject) => {
+        let client = this.jwksClient;
+
+        function getKey(header, callback) {
+          console.log(header);
+          // TODO: cache this
+          client.getSigningKey(header.kid, function(err, key) {
+            if( err ) {
+              console.log(err);
+              return callback(err);
+            }
+            var signingKey = key.publicKey || key.rsaPublicKey;
+            callback(null, signingKey);
+          });
+        }
+
+        jwt.verify(token, getKey, {}, function(err, decoded) {
+          console.log(err);
+          if( err ) reject(err);
+          else resolve(decoded);
+        });
+      });
+    }
+
     try {
       token = jwt.verify(token, config.jwt.secret);
       var issuer = token.iss;
