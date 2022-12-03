@@ -1,15 +1,16 @@
 const { Issuer } = require('openid-client');
 const express = require('express');
 const { auth } = require('express-openid-connect');
+const {logger, config, utils} = require('@ucd-lib/fin-service-utils');
 
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 const app = express();
 
 app.use(auth({
-  issuerBaseURL: 'https://keycloak:8443/realms/dams-local-dev',
-  baseURL: 'http://localhost:3000',
-  clientID: 'dams-local-dev',
-  secret: 'rBtnqiqtCh8bAJ7bxmjXDE5Ez3UqumjD',
+  issuerBaseURL: config.oicd.baseUrl,
+  baseURL: config.server.url,
+  clientID: config.oicd.clientId,
+  secret: config.oicd.secret,
   routes : {
     callback : '/auth/keycloak-oidc/callback',
     login : '/auth/keycloak-oidc/login',

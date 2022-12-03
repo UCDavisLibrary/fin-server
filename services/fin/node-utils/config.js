@@ -77,6 +77,12 @@ module.exports = {
     cookieName : process.env.JWT_COOKIE_NAME || 'fin-jwt'
   },
 
+  oicd : {
+    clientId : env.OIDC_CLIENT_ID,
+    baseUrl : env.OIDC_BASE_URL,
+    secret : env.OIDC_SECRET,
+  },
+
   elasticsearch : {
     record : {
       alias : 'fcrepo-records',
