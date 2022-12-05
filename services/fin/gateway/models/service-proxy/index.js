@@ -169,6 +169,7 @@ class ServiceProxy {
    */
   async setContainerInfo(req) {
     let headOpts = {
+      host : config.gateway.host,
       path : req.finServiceInfo.fcPath.replace(api.getConfig().fcBasePath, ''),
     }
 

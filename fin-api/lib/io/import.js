@@ -190,8 +190,6 @@ class ImportCollection {
     // are we a directory?
     // if not quit, otherwise add dir containers and binary files
     if( !dir.getFiles ) {
-
-      // console.log(dir)
       if( isArchivalGroup && this.options.agImportStrategy === 'transaction' ) {
         let token = api.getConfig().transactionToken;
         let tResp = await api.commitTransaction();

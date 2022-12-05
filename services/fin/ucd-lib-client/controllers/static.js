@@ -39,9 +39,10 @@ module.exports = (app) => {
       if( user ) {
         let result = {
           loggedIn : true,
-          username : user.username || user.name
+          username : user.username || user.name || user.preferred_username,
+          roles : user.roles || []
         };
-        if( user.admin ) result.admin = true;
+        if( result.roles.includes('admin') ) result.admin = true;
         user = result;
       } else {
         user = {loggedIn: false};
