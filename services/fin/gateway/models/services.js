@@ -129,7 +129,7 @@ class ServiceModel {
 
     if( service.type === api.service.TYPES.TRANSFORM ) {
       let response = await api.get({path: fcPath.replace(/\/fcr:metadata$/, '')});
-      mainNode.transform = response.last.body;
+      service.transform = response.last.body;
     }
 
     if( service.type === api.service.TYPES.CLIENT ) {
@@ -322,7 +322,7 @@ class ServiceModel {
    * 
    * @param {Object} event
    */
-  _onFcrepoEvent(event) {
+  async _onFcrepoEvent(event) {
     let id = event.headers[ACTIVE_MQ_HEADER_ID];
     let types = event.headers[ACTIVE_MQ_HEADER_TYPES]
       .split(',')
@@ -333,7 +333,9 @@ class ServiceModel {
       return;
     }
 
-    this.loadService(id);
+    let uri = api.getConfig().host+api.getConfig().fcBasePath+id;
+    await this.loadService(uri);
+    logger.info('Loaded service from fcrepo update event: '+id);
   }
 
   /**
@@ -457,7 +459,8 @@ class ServiceDefinition {
 
     // set the type
     for( let type of data['@type'] ) {
-      if( type.match(UCD_SCHEMA_BASE) && type !== SERVICE_TYPE ) {
+      // HACK: todo, fix service match
+      if( type.match(UCD_SCHEMA_BASE) && type !== SERVICE_TYPE && type.match(/Service/i) ) {
         data.type = type.replace(/.*#/, '');
         break;
       }

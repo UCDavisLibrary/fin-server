@@ -94,11 +94,9 @@ class JwtUtils {
         let client = this.jwksClient;
 
         function getKey(header, callback) {
-          console.log(header);
           // TODO: cache this
           client.getSigningKey(header.kid, function(err, key) {
             if( err ) {
-              console.log(err);
               return callback(err);
             }
             var signingKey = key.publicKey || key.rsaPublicKey;
@@ -107,9 +105,12 @@ class JwtUtils {
         }
 
         jwt.verify(token, getKey, {}, function(err, decoded) {
-          console.log(err);
-          if( err ) reject(err);
-          else resolve(decoded);
+          if( err ) {
+            logger.debug('Invalid JWT Token: '+err.message);
+            resolve(false);
+          } else {
+            resolve(decoded);
+          }
         });
       });
     }
@@ -118,15 +119,15 @@ class JwtUtils {
       token = jwt.verify(token, config.jwt.secret);
       var issuer = token.iss;
       if( issuer !== config.jwt.issuer ) {
-        logger.info('Invalid JWT Token:', `Invalid issuer: ${issuer}/${config.jwt.issuer}`);
+        logger.debug('Invalid JWT Token:', `Invalid issuer: ${issuer}/${config.jwt.issuer}`);
         return false;
       }
       if( !token.username ) {
-        logger.info('Invalid JWT Token:', `No username provided`);
+        logger.debug('Invalid JWT Token:', `No username provided`);
         return false;
       }
     } catch(e) {
-      logger.info('Invalid JWT Token:', e.message);
+      logger.debug('Invalid JWT Token:', e.message);
       return false;
     }
 

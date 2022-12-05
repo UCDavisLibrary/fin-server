@@ -189,7 +189,14 @@ class ImportCollection {
     
     // are we a directory?
     // if not quit, otherwise add dir containers and binary files
-    if( !dir.getFiles ) return;
+    if( !dir.getFiles ) {
+      if( isArchivalGroup && this.options.agImportStrategy === 'transaction' ) {
+        let token = api.getConfig().transactionToken;
+        let tResp = await api.commitTransaction();
+        console.log(' -> commit ArchivalGroup transaction based update ('+token+'): '+tResp.data.statusCode);
+      }
+      return true;
+    }
     let files = await dir.getFiles();
 
     for( let container of files.containers ) {
