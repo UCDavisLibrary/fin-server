@@ -34,12 +34,12 @@ module.exports = (app) => {
     isRoot : true,
     appRoutes : config.server.appRoutes,
     getConfig : async (req, res, next) => {
-      let user = authUtils.getUserFromRequest(req);
+      let user = await authUtils.getUserFromRequest(req);
 
       if( user ) {
         let result = {
           loggedIn : true,
-          username : user.username
+          username : user.username || user.name
         };
         if( user.admin ) result.admin = true;
         user = result;

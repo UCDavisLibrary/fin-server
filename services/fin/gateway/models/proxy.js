@@ -61,6 +61,8 @@ class ProxyModel {
     // of /auth/token /auth/user /auth/logout /auth/mint /auth/service, these are reserved
     app.use(/^\/auth\/(?!token|user|logout|mint|service|login-shell).*/i, authenticationServiceProxy);
 
+    app.use(/^\/label\/.*/, this._renderLabel);
+
     // handle global services
     app.use(/^\/.+/, serviceProxy.globalServiceMiddleware);
 
@@ -87,6 +89,8 @@ class ProxyModel {
     // x-fin-authorized-agent header, hijack response and finish Fin auth flow
     if( serviceModel.isAuthenticationServiceRequest(req) ) {
       if( proxyRes.headers['x-fin-authorized-agent'] ) {
+        this._handleAuthenticationSuccess(req, proxyRes);
+      } else if( proxyRes.headers['x-fin-authorized-token'] ) {
         this._handleAuthenticationSuccess(req, proxyRes);
       }
       return;
@@ -208,7 +212,7 @@ class ProxyModel {
     let user;
     req.headers['x-fin-principal'] = 'fedoraUser';
     try {
-      user = jwt.getUserFromRequest(req);
+      user = await jwt.getUserFromRequest(req);
       // TODO: handle admins
       // See fcrepo.properties for this value
       if( user ) {
@@ -267,17 +271,19 @@ class ProxyModel {
    * @param {Object} res http-proxy response
    */
   async _handleAuthenticationSuccess(req, res) {
-    // mint token
-    let username = res.headers['x-fin-authorized-agent'];
+    let token = res.headers['x-fin-authorized-token'];
+    if( !token ) {
+      // mint token
+      let username = res.headers['x-fin-authorized-agent'];
 
-    // TODO
-    let isAdmin = false;
-    let acl = {};
-    // let isAdmin = authModel.isAdmin(username);
-    // let acl = authModel.getUserAcl(username);
+      // TODO
+      let isAdmin = false;
+      let acl = {};
+      // let isAdmin = authModel.isAdmin(username);
+      // let acl = authModel.getUserAcl(username);
 
-    let token = jwt.create(username, isAdmin, acl);
-
+      token = jwt.create(username, isAdmin, acl);
+    }
 
     // set redirect url
     logger.info('redirect debug', req.query.cliRedirectUrl, req.query.redirectUrl, '/');
@@ -320,6 +326,33 @@ class ProxyModel {
   _setReqTime(req) {
     if( !req.fcrepoProxyTime ) return;
     req.fcrepoProxyTime = Date.now() - req.fcrepoProxyTime;
+  }
+
+  async _renderLabel(req, res) {
+    try {
+      let uri = decodeURIComponent(req.originalUrl.replace(/^\/label\//, ''));
+      let labels = await serviceModel.renderLabel(uri);
+      let graphs = labels.map(item => {
+        return {
+          '@id' : item.container,
+          '@graph' : [{
+            '@id' : item.subject,
+            [item.predicate] : item.object
+          }]
+        }}
+      );
+
+      res.json({
+        '@graph' : graphs
+      });
+    } catch(e) {
+      res.status(500)
+        .json({
+          error : true,
+          message : e.message,
+          stack: e.stack
+        })
+    }
   }
 
 }

@@ -18,6 +18,7 @@ const EXTERNAL = 'ExternalService';
 const AUTHENTICATION = 'AuthenticationService';
 const CLIENT = 'ClientService';
 const GLOBAL = 'GlobalService';
+const LABEL = 'LabelService';
 
 let DEFAULT_ROOT = 'service';
 let ROOT = DEFAULT_ROOT;
@@ -33,7 +34,7 @@ class Service {
   constructor(api) {
     API = api;
 
-    this.TYPES = {PROXY, FRAME, WEBHOOK, EXTERNAL, AUTHENTICATION, CLIENT, TRANSFORM, GLOBAL}
+    this.TYPES = {LABEL, PROXY, FRAME, WEBHOOK, EXTERNAL, AUTHENTICATION, CLIENT, TRANSFORM, GLOBAL}
     this.ROOT = ROOT;
     this.DEFAULT_ROOT = DEFAULT_ROOT;
 
@@ -43,6 +44,7 @@ class Service {
       FRAME_SERVICE : 'http://digital.ucdavis.edu/schema#FrameService',
       TRANSFORM_SERVICE : 'http://digital.ucdavis.edu/schema#TransformService',
       PROXY_SERVICE : 'http://digital.ucdavis.edu/schema#ProxyService',
+      LABEL_SERVICE : 'http://digital.ucdavis.edu/schema#LabelService',
       GLOBAL_SERVICE : 'http://digital.ucdavis.edu/schema#GlobalService',
       EXTERNAL_SERVICE : 'http://digital.ucdavis.edu/schema#ExternalService',
       WEBHOOK_SERVICE : 'http://digital.ucdavis.edu/schema#WebhookService',

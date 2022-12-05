@@ -69,11 +69,18 @@ module.exports = {
   },
 
   jwt : {
+    jwksUri : process.env.JWT_JWKS_URI,
     secret : process.env.JWT_SECRET,
     issuer : process.env.JWT_ISSUER,
     // expires in seconds
     ttl : process.env.JWT_TTL ? parseInt(process.env.JWT_TTL) : (60 * 60 * 24 * 14),
     cookieName : process.env.JWT_COOKIE_NAME || 'fin-jwt'
+  },
+
+  oicd : {
+    clientId : env.OIDC_CLIENT_ID,
+    baseUrl : env.OIDC_BASE_URL,
+    secret : env.OIDC_SECRET,
   },
 
   elasticsearch : {

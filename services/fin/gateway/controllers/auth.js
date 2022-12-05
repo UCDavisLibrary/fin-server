@@ -85,7 +85,7 @@ router.delete('/service/:id', middleware.admin, async (req, res) => {
 
 
 router.get('/user', async ( req, res ) => {
-  let user = jwt.getUserFromRequest(req);
+  let user = await jwt.getUserFromRequest(req);
 
   if( user ) {
     res.json(user);

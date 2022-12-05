@@ -8,11 +8,9 @@ const {URL} = require('url');
 const frameService = require('./frame-service');
 const transformService = require('./transform-service');
 const proxyService = require('./proxy-service');
-const labelService = require('./label-service');
 const externalService = require('./external-service');
 const {logger} = require('@ucd-lib/fin-service-utils');
 
-const LABEL_SERVICE = 'label';
 const SERVICE_CHAR = '/svc:';
 const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 
@@ -51,14 +49,10 @@ class ServiceProxy {
         externalService(req, res);
         break;
 
-      case LABEL_SERVICE:
-        labelService(req, res);
-        break;
-
       default:
         res.status(500).json({
           error : true,
-          message : 'Unsupported service type for request: '+service.type
+          message : 'Unsupported service type for request: '+req.finService.type
         });
     }
 
