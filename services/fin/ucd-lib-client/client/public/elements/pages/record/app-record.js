@@ -42,7 +42,7 @@ export default class AppRecord extends Mixin(LitElement)
     this.size = '';
     this.rights = {};
     this.metadata = [];
-    this.isBagOfFiles = false;
+    this.isBagOfFiles = false;    
 
     this._injectModel('AppStateModel', 'RecordModel', 'CollectionModel');
   }
@@ -65,7 +65,7 @@ export default class AppRecord extends Mixin(LitElement)
    */
   _onRecordUpdate(e) {
     if( e.state !== 'loading' ) return;
-
+    debugger;
     this.renderedRecordId = null;
     this.record = null;
     this.$.description.classList.add('hidden');

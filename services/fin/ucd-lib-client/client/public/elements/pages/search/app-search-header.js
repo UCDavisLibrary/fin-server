@@ -81,7 +81,8 @@ class AppSearchHeader extends Mixin(LitElement)
     let query;
 
     if( searchUrlParts[0] === 'collection' ) {
-      query = this._urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
+      // query = this._urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
+      query = this.RecordModel.urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
         // ["isPartOf.@id","or",`/collection/${searchUrlParts[1]}`]
         ["collectionId","or",`/collection/${searchUrlParts[1]}`]
       ])),'', '10']);

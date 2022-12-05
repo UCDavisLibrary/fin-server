@@ -43,7 +43,7 @@ export class AppSearchGridResult extends Mixin(LitElement)
     }
 
     _updateThumbnailProps() {
-      debugger
+      // debugger
       let imgWidth = 250;    
       let img = this.data.image;
       if( img ) {
