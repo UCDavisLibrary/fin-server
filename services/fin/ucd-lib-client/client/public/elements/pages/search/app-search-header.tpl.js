@@ -94,13 +94,13 @@ return html`
     padding: 1rem 0;
     display: flex;
     justify-content: center;
-    background-color: var(--color-aggie-blue-40);
+    background-color: var(--color-aggie-blue-30);
   }
   #filter-box{
     width:100%;
     text-align:center;
     align-items:center;
-    background-color: var(--color-aggie-blue-40);
+    background-color: var(--color-aggie-blue-30);
     padding-bottom: 1rem;
   }
   .site-name-search {

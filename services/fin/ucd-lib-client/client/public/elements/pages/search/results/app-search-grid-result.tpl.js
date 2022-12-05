@@ -7,13 +7,13 @@ return html`
     display: block;
     width: var(--grid-cell-width);
     background-color: white;
-    cursor: pointer;
+    
   }
 
   :host(:hover), :host(:focus) {
-    border: 2px solid var(--default-secondary-color);
+    /* border: 2px solid var(--default-secondary-color);
     margin: -2px 0 0 -2px;
-    outline: none !important;
+    outline: none !important; */
   }
 
   @keyframes show-img {
@@ -32,13 +32,20 @@ return html`
     /* position: absolute;
     top: 0;
     left: 0; */
+    cursor: pointer;
+    border: solid 2px transparent;
+    transition: border-color .3s ease-in-out;
+  }
+
+  img:hover, img:focus {
+    border-color: var(--default-secondary-color);
+    /* margin: -2px 0 0 -2px;
+    outline: none !important; */
   }
 
   .collection-name {
-    font-style: italic;
-    font-size: var(--fs-sm);
-    color: var(--gray-text);
-    font-weight: var(--fw-light);
+    color: var(--color-aggie-blue-70);
+    font-size: .95rem;
   }
 
   .year {
@@ -86,33 +93,16 @@ return html`
   }
 </style>
 
-<div 
-  hidden$="[[!isImage]]" 
+<!--hidden$="${!this.isImage}" -->
+<div   
   class="image" 
   id="imgRoot"
-  style="background-image: url('${this.data.thumbnailUrl}'); height:10rem">
-  <img id="img" src="${this.data.thumbnailUrl}" style="height:10rem; width: 100%" onload="this.style.display='block';" />
+  >
+  <img id="img" src="${this.data.thumbnailUrl}" style="height:${this.imgHeight}px; width: 100%; display: block" onload="this.style.display='block';" />
   <div ?hidden="[[!isVideo]]" class="video-thumbnail"></div>
-  <!--
-    <div style="background-image: url('[[imgThumbail]]');height:[[imgHeight]]px" class="img"></div>
-    <div style="background-image: url('[[imgUrl]]');height:[[imgHeight]]px" class="img"></div>
-  -->
 </div>
 
 <div class="card-text">
   <div class="collection-name">${this.data.title}</div>
-
-  <h4>[[name]]</h4>
-
-  <template is="dom-repeat" items="[[creator]]">
-    <app-search-result-creator creator="[[item]]" grid></app-search-result-creator>
-  </template>
-
-  <div class="footer">
-    <div class="year">[[year]]</div>
-    <div>
-      <!-- <iron-icon icon="fin-icons:image" hidden$="[[!isImage]]"></iron-icon> -->
-    </div>
-  </div>
 </div>
 `;}

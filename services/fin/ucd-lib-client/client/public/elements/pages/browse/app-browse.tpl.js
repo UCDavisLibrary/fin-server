@@ -1,17 +1,10 @@
 import { html } from 'lit';
 
-import SharedHtml from '../../utils/shared-html';
 import { sharedStyles } from "../../styles/shared-styles";
 import priorityLinksCss from "@ucd-lib/theme-sass/4_component/_priority-links.css";
 import iconsCss from "@ucd-lib/theme-sass/4_component/_icons.css";
 import categoryBrandCss from "@ucd-lib/theme-sass/4_component/_category-brand.css";
 import verticalLinksCss from "@ucd-lib/theme-sass/4_component/_vertical-link.css";
-// import mobileBarCss from "@ucd-lib/theme-sass/4_component/_mobile-bar.css";
-// import navToggleCss from "@ucd-lib/theme-sass/4_component/_nav-toggle.css";
-// import headingsCss from "@ucd-lib/theme-sass/2_base_class/_headings.css";
-// import linksCss from "@ucd-lib/theme-sass/1_base_html/_links.css";
-// import buttonsCss from "@ucd-lib/theme-sass/2_base_class/_buttons.css";
-
 
 export default function render() { 
   return html`

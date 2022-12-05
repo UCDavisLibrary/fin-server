@@ -125,7 +125,7 @@ class ServiceModel {
     }
 
     logger.info('Services reloaded', Object.keys(this.services));
-    return;
+    // return;
 
     services = {
       // hardcoded collection label service

@@ -29,7 +29,7 @@ export default class DamsItemCard extends LitElement {
     super();
     this.render = render.bind(this);
     this.imgSrc = "";
-    this.cardTitle = "";
+    this.cardTitle = "Davis BoyScout Troup";
     this.itemCt = 0;
     this.href = "";
 
@@ -53,7 +53,11 @@ export default class DamsItemCard extends LitElement {
         this.itemCt = this.item.recordCount;
         this.href = this.item['@id'];
       }
+    }
 
+    // truncate title if longer than 1 line
+    if( this.cardTitle.length > 38 ) {
+      this.cardTitle = this.cardTitle.substring(0, 35) + '...';
     }
   }
 }

@@ -10,12 +10,15 @@ return html`
     margin: 0 5px
   }
 
+  [hidden] { display: none !important; }
+
   .header {
     font-size: var(--fs-sm);
     display: flex;
     align-items: center;
     margin-bottom: 11px;
     margin-top: 5px;
+    padding: 1.5rem;
   }
 
   select {
@@ -28,12 +31,13 @@ return html`
     -o-appearance: none;
     appearance: none;
     -webkit-border-radius: 0px;
-    padding: 5px 30px 5px 10px;
+    padding: 5px 25px 5px 10px;
     background-position: right 10px center;
-    background-size: 16px 16px;
+    background-size: 10px 10px;
     background-repeat: no-repeat;
     background-color: transparent;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCA2Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwMjg1NTt9PC9zdHlsZT48L2RlZnM+PGc+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjAgMCAxMCAwIDUgNiAwIDAiLz48L2c+PC9zdmc+');
+    background-position-y: 13px;
   }
   /* for IE */
   select::-ms-expand {
@@ -47,19 +51,29 @@ return html`
     color: var(--default-primary-color);
   }
 
-  .masonry {
+  .grid {
     margin: 10px;
     position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
   }
 
-  .masonry .item {
-    display: block;
-    position: absolute;
+  .grid .item {
+    1display: block;
+    1position: absolute;
     /* visibility: hidden; */
-    top : 25px;
-    left: 25px;
-    will-change: top, left;
-    transition: top 500ms ease-out, left 500ms ease-out;
+    1top : 25px;
+    1left: 25px;
+    1will-change: top, left;
+    1transition: top 500ms ease-out, left 500ms ease-out;
+  }
+
+  .grid dams-item-card {
+    flex: 30%;
+    padding: 1rem;
+    max-width: 383px;
   }
 
   .list {
@@ -79,9 +93,9 @@ return html`
   }
 
   .total {
-    font-style: italic; 
+    font-size: .9rem;
     padding-left: 10px;
-    flex: 1;
+    /* flex: 1; */
   }
 
   .mobile-total {
@@ -116,6 +130,10 @@ return html`
 
     --cork-color : var(--default-primary-color);
     --cork-background-color : var(--default-secondary-color);
+  }
+
+  #numPerPage {
+    font-size: .9rem;
   }
 
   .drawer-toggle {
@@ -166,6 +184,67 @@ return html`
     text-align: center;
   }
 
+  .collections-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .collections-content dams-collection-card {
+    flex: 33.33%;
+    max-width: 383px;
+  }
+
+  .mosaic {
+    1display: grid;
+    1grid-gap: 10px;
+    1grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+    1grid-auto-rows: 20px;
+  }
+
+  .header ucdlib-icon {
+    height: 40px; 
+
+    1display: inline-block;
+    1position: relative;
+    1padding: 8px 0;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    z-index: 0;
+    line-height: 1;
+    width: 45px;
+    height: 45px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box !important;
+    justify-content: flex-end;
+    fill: var(--color-aggie-blue-80);
+  }
+
+  .masonry {
+    margin: 10px;
+    position: relative;
+  }
+
+  .masonry .item {
+    display: block;
+    position: absolute;
+    /* visibility: hidden; */
+    top : 25px;
+    left: 25px;
+    will-change: top, left;
+    transition: top 500ms ease-out, left 500ms ease-out;
+  }
+
+  .selected-layout {
+    box-shadow: inset -2px 0 0 var(--color-aggie-gold), inset 0 -2px 0 var(--color-aggie-gold), inset 2px 0 0 var(--color-aggie-gold), inset 0 2px 0 var(--color-aggie-gold);
+  }
+
   @media( max-width: 400px ) {
     .mobile-header .row2 {
       flex-direction: column;
@@ -190,23 +269,14 @@ return html`
   <div class="total" ?hidden="${this.showLoading}">${this.total} results found</div>
   
   <div class="filler"></div>
+  <div style="margin: 0 10px; font-size: .9rem; display: flex; max-width: 5rem">
+    <span style="margin: auto 5px">Display:</span>
+    <ucdlib-icon icon="ucdlib-dams:result-display-grid" @click="${this._onLayoutToggle}" type="grid" class="grid-layout-icon selected-layout"></ucdlib-icon>
+    <ucdlib-icon icon="ucdlib-dams:result-display-mosaic" @click="${this._onLayoutToggle}" type="mosaic" class="mosaic-layout-icon"></ucdlib-icon>
+    <ucdlib-icon icon="ucdlib-dams:result-display-list" @click="${this._onLayoutToggle}" type="list" class="list-layout-icon"></ucdlib-icon>
+  </div>
+  <div style="flex: .25"></div>
   
-  <paper-icon-button 
-    noink
-    icon="fin-icons:grid" 
-    ?disabled="${!this.isListLayout}"
-    on-click="_onLayoutToggle" 
-    type="masonry">
-  </paper-icon-button>
-  <div class="spacer"></div>
-  <paper-icon-button 
-    noink
-    icon="fin-icons:list" 
-    ?disabled="${this.isListLayout}"
-    on-click="_onLayoutToggle" 
-    type="list">
-  </paper-icon-button>
-  <div class="spacer"></div>
   
   <div>
     <select id="numPerPage" on-change="_onPageSizeChange">
@@ -215,7 +285,7 @@ return html`
       <option value="10" selected>10</option>
     </select>
   </div>
-  <div style="margin: 0 10px; font-style:italic">Items per page</div>
+  <div style="margin: 0 10px; font-size: .9rem">items per page</div>
 </div>
 
 <div class="mobile-header">
@@ -266,24 +336,27 @@ return html`
 <app-top-active-filters></app-top-active-filters>
 
 <div class="collections" ?hidden="${!this.showCollectionResults}">
-  <div ?hidden="${!this.collectionResults.length}">
+  <!--<div ?hidden="${!this.collectionResults.length}">-->
+  <div style="display: none">
     <h3>Collections</h3>
-    <div style="text-align:center">
+    <div style="text-align:center" class="collections-content">
       ${this.collectionResults.map(col => html`
-        <app-collection-card 
-          .collection="${col}" 
-          on-keyup="_onCollectionClicked"
-          on-click="_onCollectionClicked">
-        </app-collection-card>
+        <dams-collection-card .collection="${col}"></dams-collection-card>
       `)}
-    </div>
-    <h3 ?hidden="${!this.results.length}">Items</h3>
+    </div>  
   </div>
 </div>
 
 <div ?hidden="${this.showError}">
   <div ?hidden="${this.showLoading}">
-    <div class="masonry" id="layout" ?hidden="${this.isListLayout}">
+
+    <div class="grid" id="gridLayout" ?hidden="${!this.isGridLayout}">
+      ${this.results.map(res => html`
+        <dams-item-card .item="${res}"></dams-item-card>
+      `)}
+    </div>
+
+    <div class="masonry" id="layout" ?hidden="${!this.isMosaicLayout}">
       ${this.results.map(res => html`
         <app-search-grid-result .data="${res}" class="item"></app-search-grid-result>
       `)}
@@ -294,6 +367,7 @@ return html`
         <app-search-list-result .data="${res}"></app-search-list-result>
       `)}
     </div>
+  
   </div>
 </div>
 

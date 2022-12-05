@@ -142,6 +142,7 @@ export default function render() {
       <app-record id="record"></app-record>
       <app-browse id="browse"></app-browse>
       <app-about id="about"></app-about>
+      <app-collection id="collection"></app-collection>
       <app-collections id="collections"></app-collections>
       <!--<app-browse-by id="collection" 
         label="Collection" 

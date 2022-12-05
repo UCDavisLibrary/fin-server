@@ -15,6 +15,7 @@ return html`
   .search-content {
     flex: 1;
     padding-bottom: 35px;
+    background-color: white;
   }
 
   app-filters-panel {

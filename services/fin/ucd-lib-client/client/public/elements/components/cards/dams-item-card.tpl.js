@@ -86,6 +86,7 @@ return html`
     font-size: 1rem;
     margin-bottom: 0;
     color: var(--color-aggie-blue-80);
+    text-align: center;
   }
 
   /* .marketing-highlight__items {
@@ -151,22 +152,22 @@ return html`
 
 
 <a href="" class="marketing-highlight category-brand--secondary u-space-mb o-box">
-    <div class="marketing-highlight__image">
-      <div class="aspect--4x3 u-background-image" role="img" aria-label="" style="background-image:url(https://stage.library.ucdavis.edu/wp-content/uploads/2022/09/059-Boy_Scout_Cabin_4-3.jpg);"></div>
-      <div class="media-type">
-        <img class="media-type__icon" src="/images/icons/item-stack-blank.svg">
-        <!-- <svg class="media-type__icon">
-          <image href="/images/icons/item-stack-blank.svg" />
-        </svg> -->
-          <!-- <ucdlib-icon class="vertical-link__image" icon="ucd-public:fa-box-archive"></ucdlib-icon>  -->
-          <!-- <ucdlib-icon class="vertical-link__image" src="/images/icons/item-stack-blank.svg"></ucdlib-icon> -->
-      </div>
+  <div class="marketing-highlight__image">
+    <div class="aspect--4x3 u-background-image" role="img" aria-label="" style="background-image:url(https://stage.library.ucdavis.edu/wp-content/uploads/2022/09/059-Boy_Scout_Cabin_4-3.jpg);"></div>
+    <div class="media-type">
+      <img class="media-type__icon" src="/images/icons/item-stack-blank.svg">
+      <!-- <svg class="media-type__icon">
+        <image href="/images/icons/item-stack-blank.svg" />
+      </svg> -->
+        <!-- <ucdlib-icon class="vertical-link__image" icon="ucd-public:fa-box-archive"></ucdlib-icon>  -->
+        <!-- <ucdlib-icon class="vertical-link__image" src="/images/icons/item-stack-blank.svg"></ucdlib-icon> -->
     </div>
-    <div class="gold-dots"></div>
-    <div class="marketing-highlight__body">
-      <p class="marketing-highlight__title">Davis BoyScout Troup</p>
-    </div>
-  </a>
+  </div>
+  <div class="gold-dots"></div>
+  <div class="marketing-highlight__body">
+    <p class="marketing-highlight__title">${this.cardTitle}</p>
+  </div>
+</a>
 
 
 `;}

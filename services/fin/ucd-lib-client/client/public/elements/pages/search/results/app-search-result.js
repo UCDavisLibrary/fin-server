@@ -1,78 +1,61 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
+import { LitElement } from 'lit';
 import utils from "../../../../lib/utils"
 import "./app-search-result-creator"
 
-import CollectionInterface from "../../../interfaces/CollectionInterface"
-import AppStateInterface from "../../../interfaces/AppStateInterface"
-import MediaInterface from "../../../interfaces/MediaInterface"
+// import CollectionInterface from "../../../interfaces/CollectionInterface"
+// import AppStateInterface from "../../../interfaces/AppStateInterface"
+// import MediaInterface from "../../../interfaces/MediaInterface"
 
-export default class AppSearchResult extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface, CollectionInterface, MediaInterface) {
+export default class AppSearchResult extends Mixin(LitElement)
+  .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      data : {
-        type : Object,
-        value : () => {},
-        observer : '_onDataUpdate'
-      },
-      fetchId : {
-        type : String,
-        value : ''
-      },
-      isVideo: {
-        type: Boolean,
-        value: false
-      },
-      isImage : {
-        type : Boolean,
-        value : false
-      },
-      imgUrl : {
-        type : String,
-        value : ''
-      },
-      collectionName : {
-        type : String,
-        value : ''
-      },
-      name : {
-        type : String,
-        value : ''
-      },
-      description : {
-        type : String,
-        value : ''
-      },
-      creator : {
-        type : Array,
-        value : () => []
-      },
-      year : {
-        type : String,
-        value : ''
-      },
-      tabindex : {
-        type : Number,
-        value : 0,
-        reflectToAttribute : true
-      }
+      data : { type : Object },
+      fetchId : { type : String },
+      isVideo: { type: Boolean },
+      isImage : { type : Boolean },
+      imgUrl : { type : String },
+      collectionName : { type : String },
+      title : { type : String },
+      description : { type : String },
+      creator : { type : Array },
+      year : { type : String },
+      tabindex : { type : Number }
     }
   }
 
   constructor() {
     super();
+    this.active = true;
 
+    this.data = {};
+    this.fetchId = '';
+    this.isVideo = false;
+    this.isImage = false;
+    this.imgUrl = '';
+    this.collectionName = '';
+    this.title = '';
+    this.description = '';
+    this.creator = [];
+    this.year = '';
+    this.tabindex = 0;
+
+    // this._injectModel('AppStateModel', 'CollectionModel', 'MediaModel');
     this.baseUrl = window.location.protocol+'//'+window.location.host+'/fcrepo/rest';
   }
 
   ready() {
     super.ready();
-    this.addEventListener('click', e => this._onClick());
-    this.addEventListener('keyup', e => {
-      if( e.which !== 13 ) return;
-      this._onClick();
-    });
+    // this.addEventListener('click', e => this._onClick());
+    // this.addEventListener('keyup', e => {
+    //   if( e.which !== 13 ) return;
+    //   this._onClick();
+    // });
+  }
+
+  updated() {
+    this._onDataUpdate();
   }
 
   /**
@@ -80,7 +63,7 @@ export default class AppSearchResult extends Mixin(PolymerElement)
    * @description Fired when this element is clicked
    */
   _onClick() {
-    this._setWindowLocation(this.fetchId);
+    // this._setWindowLocation(this.fetchId);
   }
 
   /**
@@ -88,13 +71,14 @@ export default class AppSearchResult extends Mixin(PolymerElement)
    * @description fired when `data` property updates.  Set UI properties.
    */
   async _onDataUpdate() {
+    // return;
     let data = Object.assign({}, this.data);
 
-    if( !data['@id'] ) return;
+    if( !data['id'] ) return;
     
-    this.fetchId = data['@id'];
+    this.fetchId = data['id'];
 
-    this.name = this.data.name || (this.data.identifier ? this.data.identifier['@id'] : '');
+    this.title = this.data.title || (this.data.identifier ? this.data.identifier['id'] : '');
 
     let video = this.data.video;
     if ( video ) {
@@ -105,11 +89,12 @@ export default class AppSearchResult extends Mixin(PolymerElement)
     if( imgEle ) imgEle.style.display = 'none';
 
     let imgWidth = 250;    
-    let img = this.data.image;  
+    let img = this.data.image;
     if( img ) {
       let ratio = img.height / img.width;
       this.imgHeight = Math.floor(imgWidth * ratio);
-      this.imgUrl = this._getImgUrl(img.url, null, this.imgHeight);
+      // this.imgUrl = this._getImgUrl(img.url, null, this.imgHeight);
+      this.imgUrl = this.MediaModel.getImgUrl(img.url, null, this.imgHeight);
 
       if( img.colorPalette ) {
         this.imgThumbail = img.colorPalette;

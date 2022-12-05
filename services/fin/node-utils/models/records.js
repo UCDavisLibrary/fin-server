@@ -61,7 +61,7 @@ class RecordsModel extends ElasticSearchModel {
           }
         }
       },
-      _source_exclude : config.elasticsearch.fields.exclude,
+      _source_excludes : config.elasticsearch.fields.exclude,
     });
 
     // see if its a collection
@@ -77,7 +77,7 @@ class RecordsModel extends ElasticSearchModel {
             }
           }
         },
-        _source_exclude : config.elasticsearch.fields.exclude
+        _source_excludes : config.elasticsearch.fields.exclude
       });
     }
 
@@ -201,7 +201,6 @@ class RecordsModel extends ElasticSearchModel {
     //     value : [true]
     //   }
     // }
-
     let esBody = this.searchDocumentToEsBody(searchDocument, options.noLimit);
     let esResult = await this.esSearch(esBody);
     let result = this.esResultToDamsResult(esResult, searchDocument);
@@ -296,7 +295,7 @@ class RecordsModel extends ElasticSearchModel {
     }
 
     if( !debug ) {
-      queryDoc._source_exclude = config.elasticsearch.fields.exclude;
+      queryDoc._source_excludes = config.elasticsearch.fields.exclude;
     }
 
     return es.get(queryDoc);
@@ -314,7 +313,7 @@ class RecordsModel extends ElasticSearchModel {
     return es.mget({
       index: config.elasticsearch.record.alias,
       type: '_all',
-      _source_exclude : config.elasticsearch.fields.exclude,
+      _source_excludes : config.elasticsearch.fields.exclude,
       body: {ids}
     });
   }

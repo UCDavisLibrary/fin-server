@@ -20,7 +20,6 @@ class RecordSearchVCModel extends BaseModel {
   async _onRecordSearchUpdate(e) {
     if( e.state === 'loaded' ) {
 
-      debugger;
       // translate RecordGraph's to ui model
       const matchedRecords = [];
       e.payload.results.forEach(result => {
@@ -47,6 +46,43 @@ class RecordSearchVCModel extends BaseModel {
           // todo image dimensions
         });
       });
+
+      // temp
+      let randomThumbnails = [
+        { url: "https://stage.library.ucdavis.edu/wp-content/uploads/2022/09/sherry-lehmann-d7mm2n_4-3.jpg", width: "389", height: "292" },
+        { url: "https://stage.library.ucdavis.edu/wp-content/uploads/2022/09/059-Boy_Scout_Cabin_4-3.jpg", width: "389", height: "292" },
+        { url: "https://stage.library.ucdavis.edu/wp-content/uploads/2022/10/ASC_RareBooks_LookingGlass005.jpg", width: "210", height: "292" },
+        { url: "https://stage.library.ucdavis.edu/wp-content/uploads/2022/10/ASC_RareBooks_GoblinMarket003.jpg", width: "291", height: "292" },
+        { url: "https://stage.library.ucdavis.edu/wp-content/uploads/2022/10/ASC_RareBooks_LookingGlass001-Edit.jpg", width: "233", height: "292" },
+        { url: "https://stage.library.ucdavis.edu/wp-content/uploads/2022/10/ASC_RareBooks_ShadowForms002-Edit.jpg", width: "292", height: "292" },
+        { url: "https://stage.library.ucdavis.edu/wp-content/uploads/2022/09/NVWL_Slide_30_4-3.jpg", width: "389", height: "292" },
+        { url: "https://stage.library.ucdavis.edu/wp-content/uploads/2022/09/d74w7z-0-web.png", width: "252", height: "292" }
+      ];
+
+      if( matchedRecords.length === 0 ) {
+        while( matchedRecords.length < 8 ) {
+          let thumbnail = randomThumbnails[matchedRecords.length];
+          matchedRecords.push({
+            id : '/item/ark:/pets/ashley',
+            title : 'A title of significance that is quite long and unwieldy ugh',
+            thumbnailUrl : thumbnail.url,
+            mediaType : null,
+            collectionItemsCount: 42,
+            collection : 'Dusty',
+            creator : 'Dusty',
+            date : 1986,
+            format : [
+              'Image'
+            ],
+            subject : null,
+            image : {
+              width: thumbnail.width,
+              height: thumbnail.height
+            }
+          });
+        }
+      }
+
       e.payload.results = matchedRecords;
 
       // todo save translated data to store

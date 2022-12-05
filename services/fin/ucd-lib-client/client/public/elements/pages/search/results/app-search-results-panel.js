@@ -1,18 +1,21 @@
 import { LitElement } from 'lit';
 import render from "./app-search-results-panel.tpl.js";
 
-import "@ucd-lib/cork-pagination"
-import "@polymer/paper-spinner/paper-spinner-lite"
+import "@ucd-lib/cork-pagination";
+import "@polymer/paper-spinner/paper-spinner-lite";
 
-import "./app-search-grid-result"
-import "./app-search-list-result"
-import "../../../utils/app-collection-card"
-import "../filtering/app-top-active-filters"
+import "./app-search-grid-result";
+import "./app-search-list-result";
+import "../../../utils/app-collection-card";
+import "../filtering/app-top-active-filters";
+import "../../../components/cards/dams-collection-card";
+import "../../../components/cards/dams-item-card";
+
+import "@ucd-lib/theme-elements/ucdlib/ucdlib-icon/ucdlib-icon";
+import '../../../utils/app-icons';
 
 const SEARCH_RESULTS_LAYOUT = 'search-results-layout';
 let initIsListLayout = localStorage.getItem(SEARCH_RESULTS_LAYOUT);
-if( initIsListLayout === 'list' ) initIsListLayout = true
-else initIsListLayout = false;
 
 class AppSearchResultsPanel extends Mixin(LitElement)
       .with(LitCorkUtils) {
@@ -21,8 +24,10 @@ class AppSearchResultsPanel extends Mixin(LitElement)
     return {
       results : { type: Array }, // array of search results
       collectionResults : { type: Array }, // array of collection search results
-      masonryMargin : { type: Number }, // size in px's between each masonary layout cell
-      isListLayout : { type: Boolean }, // are we in list or masonry layout   
+      gridMargin : { type: Number }, // size in px's between each masonary layout cell
+      isGridLayout : { type: Boolean }, // are we in grid layout
+      isListLayout : { type: Boolean },
+      isMosaicLayout : { type: Boolean },
       total : { type: String }, // UI display of total results
       numPerPage : { type: Number },
       currentIndex : { type: Number },
@@ -42,8 +47,22 @@ class AppSearchResultsPanel extends Mixin(LitElement)
 
     this.results = [];
     this.collectionResults = [];
-    this.masonryMargin = 15;
-    this.isListLayout = initIsListLayout;
+    this.gridMargin = 15;
+
+    if( initIsListLayout === 'grid' ) {
+      this.isGridLayout = true;
+      this.isListLayout = false;
+      this.isMosaicLayout = false;
+    } else if( initIsListLayout === 'list' ) {
+      this.isGridLayout = false;
+      this.isListLayout = true;
+      this.isMosaicLayout = false;
+    } else {
+      this.isGridLayout = false;
+      this.isListLayout = false;
+      this.isMosaicLayout = true;
+    }
+    
     this.total = '0';
     this.numPerPage = 1;
     this.currentIndex = 0;
@@ -69,6 +88,7 @@ class AppSearchResultsPanel extends Mixin(LitElement)
    */
   _onAppStateUpdate(e) {
     if( e.location.page !== 'search') return;
+    this._setSelectedDisplay();
     this._resizeAsync();
   }
 
@@ -137,28 +157,64 @@ class AppSearchResultsPanel extends Mixin(LitElement)
     if( state.showErrorMessage ) {
       this.errorMsg = state.error.message;
     } else {
-      this.errorMsg = 'Ooops. Something went wrong with search!';
+      this.errorMsg = 'Oops. Something went wrong with search!';
     }
   }
 
   /**
    * @method _onLayoutToggle
-   * @description Toggle between masonry and list layout
+   * @description Toggle between grid, list and mosaic layouts
    * 
    * @param {Event} e HTML click event
    */
   _onLayoutToggle(e) {
     let type = e.currentTarget.getAttribute('type');
-    if( type === 'masonry' ) {
+    if( type === 'grid' ) {
+      this.isGridLayout = true;
       this.isListLayout = false;
-      localStorage.setItem(SEARCH_RESULTS_LAYOUT, 'masonry');
-    } else {
+      this.isMosaicLayout = false;
+      localStorage.setItem(SEARCH_RESULTS_LAYOUT, 'grid');
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.add('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.remove('selected-layout');
+    } else if( type === 'list' ) {
+      this.isGridLayout = false;
       this.isListLayout = true;
+      this.isMosaicLayout = false;
       localStorage.setItem(SEARCH_RESULTS_LAYOUT, 'list');
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.add('selected-layout');
+    } else {
+      this.isGridLayout = false;
+      this.isListLayout = false;
+      this.isMosaicLayout = true;
+      localStorage.setItem(SEARCH_RESULTS_LAYOUT, 'mosaic');
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.add('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.remove('selected-layout');
     }
+    this._setSelectedDisplay();
 
-    if( !this.isListLayout ) {
-      requestAnimationFrame(() => this._resize());
+    // if( !this.isListLayout ) {
+    requestAnimationFrame(() => this._resize());
+    // }
+  }
+
+  _setSelectedDisplay() {
+    let type = localStorage.getItem(SEARCH_RESULTS_LAYOUT);
+    if( type === 'grid' ) {
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.add('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.remove('selected-layout');
+    } else if( type === 'list' ) {
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.add('selected-layout');
+    } else {
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.add('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.remove('selected-layout');
     }
   }
 
@@ -184,7 +240,7 @@ class AppSearchResultsPanel extends Mixin(LitElement)
     if( !firstDiv ) return;
 
     let ew = this.offsetWidth;
-    let w = firstDiv.offsetWidth + this.masonryMargin;
+    let w = firstDiv.offsetWidth + 25;
 
     let numCols = Math.max(Math.floor(ew / w), 1);
     // this makes sure columns are centered
@@ -202,11 +258,45 @@ class AppSearchResultsPanel extends Mixin(LitElement)
       eles[i].style.top = colHeights[col] + 'px';
       // eles[i].style.visibility = 'visible';
 
-      colHeights[col] += eles[i].offsetHeight + this.masonryMargin;
+      colHeights[col] += eles[i].offsetHeight + 25;
     }
 
     let maxHeight = Math.max.apply(Math, colHeights);
     this.shadowRoot.querySelector('#layout').style.height = maxHeight+'px';
+
+
+    // also reposition mosaic grid
+    /*
+    function resizeGridItem(item){
+      grid = document.getElementsByClassName("grid")[0];
+      rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+      rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
+      rowSpan = Math.ceil((item.querySelector('.content').getBoundingClientRect().height+rowGap)/(rowHeight+rowGap));
+        item.style.gridRowEnd = "span "+rowSpan;
+    }
+
+    function resizeAllGridItems(){
+      allItems = document.getElementsByClassName("item");
+      for(x=0;x<allItems.length;x++){
+        resizeGridItem(allItems[x]);
+      }
+    }
+
+    function resizeInstance(instance){
+      item = instance.elements[0];
+      resizeGridItem(item);
+    }
+
+    window.onload = resizeAllGridItems();
+    window.addEventListener("resize", resizeAllGridItems);
+
+    allItems = document.getElementsByClassName("item");
+    for(x=0;x<allItems.length;x++){
+      imagesLoaded( allItems[x], resizeInstance);
+    }
+    */
+
+
   }
 
   /**

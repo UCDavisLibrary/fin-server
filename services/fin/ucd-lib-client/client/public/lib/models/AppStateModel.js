@@ -17,17 +17,19 @@ class AppStateModelImpl extends AppStateModel {
       update.lastLocation = clone(this.store.data.location);
 
       // /collection/* is an alias for a base collection search
+      // ^ this might change, since collection in v2 will be a placeholder page with a summary of the collection and links
+      // to highlighted items in the collection, and citation copy link section
 
       let page = update.location.path ? update.location.path[0] : 'home';
       if( !page ) page = 'home'
 
-      if( page === 'collection' ) {
-        if( update.location.path.length === 2 ) {
-          page = 'search';
-        } else {
-          page = 'record';
-        }
-      }
+      // if( page === 'collection' ) {
+      //   if( update.location.path.length === 2 ) {
+      //     page = 'search';
+      //   } else {
+      //     page = 'record';
+      //   }
+      // }
       
       update.location.page = page;
     }
