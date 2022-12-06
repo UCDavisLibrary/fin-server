@@ -107,12 +107,6 @@ class ExportCollection {
   }
 
   async crawl(options, archivalGroup) {
-    if( !utils.crawlSubPath(options) ) {
-        console.log('IGNORING: '+options.currentPath);
-        return;
-    }
-
-    
     let metadata = await api.head({
       path: options.currentPath,
       headers : {
@@ -175,9 +169,9 @@ class ExportCollection {
     let dirname = options.currentPath.split('/').pop();
 
     if( options.dryRun !== true ) {
-      // if( isBinary ) await fs.mkdirp(path.resolve(cdir, '..'));
-      // else await fs.mkdirp(cdir);
-      await fs.mkdirp(path.resolve(cdir, '..'))
+      if( isBinary ) await fs.mkdirp(path.resolve(cdir, '..'));
+      else await fs.mkdirp(cdir);
+      // await fs.mkdirp(path.resolve(cdir, '..'))
     }
 
     let binaryFile = '';
@@ -237,15 +231,16 @@ class ExportCollection {
         return;
       } 
 
+      let mFile;
       if( cdir.match(/\.ttl$/) ) {
-        cdir = cdir.replace(/\.ttl$/, '.jsonld.json');
+        mFile = cdir.replace(/\.ttl$/, '.jsonld.json');
       } else {
-        cdir = cdir + '.jsonld.json';
+        mFile = cdir + '.jsonld.json';
       }
 
-      console.log('WRITING METADATA: '+cdir.replace(options.fsRoot, ''));
+      console.log('WRITING METADATA: '+mFile.replace(options.fsRoot, ''));
       if( options.dryRun !== true ) {
-        await fs.writeFile(cdir, diskMetadata);
+        await fs.writeFile(mFile, diskMetadata);
       }
 
       let aclTTL = await this.getDiskMetadataFile(options.currentPath+'/fcr:acl');
