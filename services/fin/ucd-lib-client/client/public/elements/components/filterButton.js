@@ -1,11 +1,9 @@
 import { LitElement} from 'lit';
-// import "/../node_modules/@polymer/iron-dropdown/iron-dropdown";
 import render from './filterButton.tpl.js';
-// import "./icon";
 
 /**
  * @class AppFilterButton
- * @description Styleized UI component for button. Wrapper around polymer's options.
+ * @description Styleized UI component for button
  */
 export class AppFilterButton extends LitElement {
   static get properties() {

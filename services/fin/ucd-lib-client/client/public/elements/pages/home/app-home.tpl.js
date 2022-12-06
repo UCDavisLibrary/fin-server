@@ -12,8 +12,6 @@ import headingsCss from "@ucd-lib/theme-sass/2_base_class/_headings.css";
 import linksCss from "@ucd-lib/theme-sass/1_base_html/_links.css";
 import buttonsCss from "@ucd-lib/theme-sass/2_base_class/_buttons.css";
 
-// import "@ucd-lib/theme-elements/ucdlib/ucdlib-icon/ucdlib-icon";
-
 export default function render() { 
 return html`
 <style>
@@ -27,11 +25,11 @@ return html`
   ${headingsCss}
   ${linksCss}
   ${buttonsCss}
+
   :host {
     display: block;
     position: relative;
     background: var(--super-light-background-color);
-
   }
   a {
     text-decoration: none;
@@ -559,8 +557,8 @@ return html`
         <iron-icon icon="fin-icons:search" class="search-icon" slot="button-content"></iron-icon>
       </app-search-box>
       <div class="sub-search">
-        Featured Image: <a href="${this.heroImgCurrent.itemLink}">${this.heroImgCurrent.itemName}</a> | 
-        <a href="${this.heroImgCurrent.collectionLink}">${this.heroImgCurrent.collectionName}</a>
+        Featured Image: <!--<a href="${this.heroImgCurrent.itemLink}">${this.heroImgCurrent.itemName}</a> | 
+        <a href="${this.heroImgCurrent.collectionLink}">${this.heroImgCurrent.collectionName}</a>-->
       </div>
     </div>
   </div>
@@ -621,7 +619,10 @@ return html`
   <h1>Recently Digitized<br><span class="fw-light">Collections</span></h1> 
   ${ SharedHtml.headerDots() } 
 
+
+
   <!-- TODO assign classes based on this.recentCollections.length -->
+  <!--
   <h2>Layout 2 or 4</h2>
   <div class="card-2-4">
     <dams-collection-card .collection="${{}}"></dams-collection-card>
@@ -631,7 +632,7 @@ return html`
 
   </div>
   
-  <h2>Layout exactly 3</h2>
+  <h2>Layout exactly 3</h2>-->
 
   <!-- <div class="card-trio">
     <dams-collection-card .collection="${{}}"></dams-collection-card>
@@ -640,6 +641,7 @@ return html`
   </div> -->
 
   <!-- TODO show/hide previous card-trio based on screen resolution -->
+  <!--
   <div>
     <dams-collection-card .collection="${{}}"></dams-collection-card>
     <div class="card-2">
@@ -656,7 +658,7 @@ return html`
     <dams-collection-card .collection="${{}}"></dams-collection-card>
     <dams-collection-card .collection="${{}}"></dams-collection-card>
   </div>
-  
+  -->
   
 
   <div class="card-trio">
@@ -670,7 +672,7 @@ return html`
       <dams-collection-card .collection="${collection}"></dams-collection-card>
       `
       )}
-    
+      <dams-collection-card .collection="${this.recentCollections[0]}"></dams-collection-card>
   </div>
 </section>
 

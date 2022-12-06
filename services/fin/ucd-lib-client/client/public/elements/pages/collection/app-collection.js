@@ -1,7 +1,9 @@
 import { LitElement} from 'lit';
-import render from "./app-browse.tpl.js";
+import render from "./app-collection.tpl.js";
 
-class AppBrowse extends Mixin(LitElement) 
+import "../../components/cards/dams-item-card";
+
+class AppCollection extends Mixin(LitElement) 
       .with(LitCorkUtils) {
 
   static get properties() {
@@ -19,4 +21,4 @@ class AppBrowse extends Mixin(LitElement)
   
 }
 
-customElements.define('app-browse', AppBrowse);
+customElements.define('app-collection', AppCollection);

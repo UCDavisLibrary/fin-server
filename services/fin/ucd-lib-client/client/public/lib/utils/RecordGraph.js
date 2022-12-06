@@ -35,11 +35,11 @@ class RecordGraph {
    * @returns {Array<Object>}
    */
   getChildren(nodeOrPath) {
-    let container = this.getContainer(nodeOrPath);    
     let children = {};
+    if( !nodeOrPath ) return children;
 
+    let container = this.getContainer(nodeOrPath);
     if( !container ) return children;
-
 
     CHILD_LINKS.forEach(prop => {
       children[prop] = [];

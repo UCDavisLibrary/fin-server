@@ -64,7 +64,8 @@ module.exports = (app) => {
           CORE_SERVER_REPO_HASH: process.env.CORE_SERVER_REPO_HASH || '',
           CORE_SERVER_REPO_TAG: process.env.CORE_SERVER_REPO_TAG || ''
         },
-        fcAppConfig
+        fcAppConfig,
+        fcAppConfigUrl: config.api.host+'/api/applications/'+config.server.appName
       });
     },
     template : async (req, res, next) => {

@@ -1,18 +1,11 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element";
+import { LitElement, html } from 'lit';
+import render from "./app-about.tpl.js";
 
-import template from "./app-about.html";
-// import "../../utils/app-header-colorbar";
+import "@ucd-lib/fin-search-box";
+import "../../components/search-box";
 
-import AppStateInterface from "../../interfaces/AppStateInterface";
-
-class AppAbout extends Mixin(PolymerElement) 
-      .with(EventInterface, AppStateInterface) {
-  
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
-  }
+class AppAbout extends Mixin(LitElement) 
+      .with(LitCorkUtils) {
 
   static get properties() {
     return {
@@ -22,8 +15,21 @@ class AppAbout extends Mixin(PolymerElement)
 
   constructor() {
     super();
+    this.render = render.bind(this);
     this.active = true;
-    this._injectModel('AppStateModel');
+    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel');
+  }
+
+  /**
+   * @method _onSearch
+   * @description called from the search box button is clicked or
+   * the enter key is hit.  set the text filter
+   * @param {Object} e
+   */
+   _onSearch(e) {
+    let searchDoc = this.RecordModel.emptySearchDocument();
+    this.RecordModel.setTextFilter(searchDoc, e.detail);
+    this.RecordModel.setSearchLocation(searchDoc);
   }
   
 }

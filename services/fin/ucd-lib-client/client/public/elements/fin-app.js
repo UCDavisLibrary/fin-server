@@ -23,12 +23,6 @@ import "./utils/app-header-colorbar";
 import "./utils/app-browse-by";
 import "./components/graphics/dams-watercolor-overlay";
 
-
-// import AppStateInterface from "./interfaces/AppStateInterface";
-// import AuthInterface from "./interfaces/AuthInterface";
-// import CollectionInterface from "./interfaces/CollectionInterface";
-// import RecordInterface from "./interfaces/RecordInterface";
-
 export class FinApp extends Mixin(LitElement)
   .with(LitCorkUtils) {  
 
@@ -53,7 +47,7 @@ export class FinApp extends Mixin(LitElement)
     super();
     this.active = true;
     this.render = render.bind(this);
-    this.SEARCH_HEADER_PAGES = ['about', 'record', 'search', 'collections', 'components', 'browse'];
+    this.SEARCH_HEADER_PAGES = ['about', 'record', 'search', 'collections', 'collection', 'components', 'browse'];
     this.BREADCRUMB_PAGES = ['record', 'search', 'collections'];
 
     this.loadedPages = {};
@@ -104,7 +98,6 @@ export class FinApp extends Mixin(LitElement)
 
     this.appState = e;
     window.scrollTo(0, 0);
-    
     let page = e.location.page;
     if( !this.loadedPages[page] ) {
       this.page = 'loading';
@@ -141,6 +134,8 @@ export class FinApp extends Mixin(LitElement)
       return import(/* webpackChunkName: "page-about" */ "./pages/about/app-about");
     }  else if( page === 'collections' ) {
       return import(/* webpackChunkName: "page-collections" */ "./pages/collections/app-collections");
+    }  else if( page === 'collection' ) {
+      return import(/* webpackChunkName: "page-collections" */ "./pages/collection/app-collection");
     }  else if( page === 'components' ) {
       return import(/* webpackChunkName: "page-components" */ "./pages/components/app-components");
     }

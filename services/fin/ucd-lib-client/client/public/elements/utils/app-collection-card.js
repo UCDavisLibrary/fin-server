@@ -1,32 +1,24 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element";
-import template from "./app-collection-card.html";
+import { LitElement } from 'lit';
+import render from "./app-collection-card.tpl.js";
 import ioLoader from "../../lib/utils/intersection-observer-loader";
 
-export default class AppCollectionCard extends PolymerElement {
-
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
-  }
+export default class AppCollectionCard extends Mixin(LitElement)
+  .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      collection : {
-        type : Object,
-        value : () => ({}),
-        observer : '_onCollectionChange'
-      },
-      tabindex : {
-        type : Number,
-        value : 0,
-        reflectToAttribute : true
-      },
+      collection : { type : Object },
+      tabindex : { type : Number },
     };
   }
 
   constructor() {
     super();
+    this.render = render.bind(this);
+
+    this.collection = {};
+    this.tabindex = 0;
+
     this.shownInViewport = false;
     this.active = true;
   }
@@ -58,6 +50,10 @@ export default class AppCollectionCard extends PolymerElement {
     this.observer.disconnect();
   }
 
+  updated() {
+    this._onCollectionChange();
+  }
+
   _onCollectionChange() {
     if( !this.shownInViewport ) return;
     this._setBackgroundImage();
@@ -74,7 +70,7 @@ export default class AppCollectionCard extends PolymerElement {
   }
 
   _setBackgroundImage() {
-    this.$.img.style.backgroundImage = `url('${this.collection.thumbnailUrl}')`;
+    this.shadowRoot.querySelector('#img').style.backgroundImage = `url('${this.collection.thumbnailUrl}')`;
   }
 }
 

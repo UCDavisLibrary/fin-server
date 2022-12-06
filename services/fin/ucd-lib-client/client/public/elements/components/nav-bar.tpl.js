@@ -117,16 +117,16 @@ return html`
 </style>
 
 <ucdlib-header site-name="Digital Collections">
-    <ucdlib-primary-nav>
-      <ul link-text="Browse" href="/">
-        <li><a href="/browse/collections">Collections</a></li>
-        <li><a href="/browse/items">Items</a></li>
-        <li><a href="/browse/creators">Creators</a></li>
-        <li><a href="/browse/formats">Formats</a></li>
-        <li><a href="/browse/subjects">Subjects</a></li>
-      </ul>
-      <a href="/about">About</a>
-      <a href="#">FAQ</a>
-    </ucdlib-primary-nav>
+  <ucdlib-primary-nav>
+    <ul link-text="Browse" href="/">
+      <li><a href="/browse/collections">Collections</a></li>
+      <li><a href="/browse/items">Items</a></li>
+      <li><a href="/browse/creators">Creators</a></li>
+      <li><a href="/browse/formats">Formats</a></li>
+      <li><a href="/browse/subjects">Subjects</a></li>
+    </ul>
+    <a href="/about">About</a>
+    <a href="#">FAQ</a>
+  </ucdlib-primary-nav>
   </ucdlib-header>
 `;}

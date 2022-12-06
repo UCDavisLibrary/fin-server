@@ -1,37 +1,26 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
-import template from "./app-search-breadcrumb.html"
-import { isRegExp } from "util";
+import { LitElement, html } from 'lit';
+import render from "./app-search-breadcrumb.tpl.js";
 
-class AppSearchBreadcrumb extends Mixin(PolymerElement)
-        .with(EventInterface) {
+class AppSearchBreadcrumb extends Mixin(LitElement)
+  .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      collection : {
-        type : Object,
-        value : null
-      },
-      record : {
-        type : Object,
-        value : null
-      },
-      name : {
-        type : String,
-        value : ''
-      }
+      collection : {type: Object},
+      record : {type: Object},
+      name : {type: String}
     }
-  }
-
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
   }
 
   constructor() {
     super();
     this.active = true;
+    this.render = render.bind(this);
     
+    this.collection = null;
+    this.record = null;
+    this.name = '';
+
     this.lastSearchForCollection = {};
 
     this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel');

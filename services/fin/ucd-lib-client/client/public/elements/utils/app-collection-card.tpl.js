@@ -1,3 +1,8 @@
+import { html } from 'lit';
+
+export default function render() {
+return html`
+
 <style>
   :host {
     display: inline-block;
@@ -46,9 +51,11 @@
   id="img"
   class="img" 
   role="img" 
-  aria-label="[[collection.name]]">
+  aria-label="${this.collection.title}">
   <div>
-    <div>[[collection.name]]</div>
-    <div>[[collection.recordCount]] items</div>
+    <div>${this.collection.title}</div>
+    <div>42 items</div>
   </div>
 </div>
+
+`;}

@@ -1,3 +1,7 @@
+import { html } from 'lit';
+
+export default function render() {
+return html`
 <style>
   :host {
     display: block;
@@ -157,12 +161,12 @@
       </p>
 
       <!-- Build Info -->
-      <div hidden?="[[showVersion]]">
+      <div ?hidden="${this.showVersion}">
         <div><b>Build Information</b></div>
-        <div>[[appVersion]]</div>
-        <div>Build Time: [[localBuildTime]]</div>
-        <div>fin-server: [[coreTag]] @ [[coreHash]]</div>
-        <div>fin-ucd-lib-server: [[clientTag]] @ [[clientHash]]</div>
+        <div>${this.appVersion}</div>
+        <div>Build Time: ${this.localBuildTime}</div>
+        <div>fin-server: ${this.coreTag} @ ${this.coreHash}</div>
+        <div>fin-ucd-lib-server: ${this.clientTag} @ ${this.clientHash}</div>
       </div>
     </div><!-- col end -->
 
@@ -221,3 +225,4 @@
     </div>
   </div>
 </footer>
+`;}

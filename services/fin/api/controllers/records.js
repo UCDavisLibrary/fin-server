@@ -123,7 +123,7 @@ router.get('/*', async (req, res) => {
         parts.splice(i, 1);
       }
     }
-
+    
     let result = await model.get(id, (req.query.seo || req.query.schema));
     res.json(result);
   } catch(e) {

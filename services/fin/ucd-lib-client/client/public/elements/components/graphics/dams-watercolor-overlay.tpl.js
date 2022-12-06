@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import { styleMap } from 'lit-html/directives/style-map.js';
-import "@polymer/iron-icons/iron-icons";
 import './dams-watercolor';
 
 
@@ -47,6 +46,4 @@ ${this.overlayTemplate === "stars" ? html`
   <iron-icon style="width:25px;height:25px;top:20%;left:50%;" icon="star" class="white"></iron-icon>
   <iron-icon style="width:25px;height:25px;top:40%;left:60%;" icon="star" class="white"></iron-icon>
 ` : html``}
-
-
 `;}

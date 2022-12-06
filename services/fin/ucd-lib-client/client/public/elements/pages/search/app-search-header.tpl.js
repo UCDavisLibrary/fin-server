@@ -1,6 +1,8 @@
-<style include="shared-styles">
+import { html } from 'lit';
 
-
+export default function render() {
+return html`
+<style>
   app-auth-header {
     margin-left: 10px;
   }
@@ -92,13 +94,13 @@
     padding: 1rem 0;
     display: flex;
     justify-content: center;
-    background-color: var(--color-aggie-blue-40);
+    background-color: var(--color-aggie-blue-30);
   }
   #filter-box{
     width:100%;
     text-align:center;
     align-items:center;
-    background-color: var(--color-aggie-blue-40);
+    background-color: var(--color-aggie-blue-30);
     padding-bottom: 1rem;
   }
   .site-name-search {
@@ -127,7 +129,7 @@
 </style>
 
 <div class="layout">
-  <app-nav-bar id="foo" choices="[[navBarChoices]]"></app-nav-bar> 
+  <app-nav-bar id="foo" choices="${this.navBarChoices}"></app-nav-bar> 
 </div>
 
 <div class="searchContainer">
@@ -135,8 +137,8 @@
     <h4 class="site-name-search">Digital Collections</h4>
     <app-search-box 
       id="searchBox" 
-      on-search="_onSearch" 
-      on-browse="_onBrowse"
+      @search="${this._onSearch}" 
+      on-browse="${this._onBrowse}"
       placeholder="search digital collections">
       <!-- <button class="search-icon" slot="button-content"></button> -->
       <!-- <iron-icon icon="fin-icons:search" class="search-icon" slot="button-content"></iron-icon> -->
@@ -148,3 +150,4 @@
 
 </div>
 
+`;}
