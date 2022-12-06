@@ -1,0 +1,14 @@
+{
+  "@context" : {
+    "acl" : "http://www.w3.org/ns/auth/acl#",
+    "foaf" : "http://xmlns.com/foaf/0.1/"
+  },
+  "@graph" : [{
+    "@id" : "#authz",
+    "@type" : ["acl:Authorization"],
+    "acl:accessTo" : [{"@id": "."}],
+    "acl:default" : [{"@id": "."}],
+    "acl:mode" : [{"@id": "acl:Read"}],
+    "acl:agentClass" : [{"@id": "foaf:Agent"}]
+  }]
+}

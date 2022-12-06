@@ -25,37 +25,37 @@ class Auth {
     }
 
     // check if we have a username / password
-    if( config.password && config.username ) {
-      let success = await this.loginPassword();
-      if( success ) return config.jwt;
-    }
+    // if( config.password && config.username ) {
+    //   let success = await this.loginPassword();
+    //   if( success ) return config.jwt;
+    // }
 
     config.jwt = '';
     return '';
   }
 
-  async loginPassword() {
-    var req = {
-      method : 'POST',
-      uri : `${config.host}/auth/local`,
-      form : {
-        username: config.username, 
-        password: config.password
-      }
-    }
+  // async loginPassword() {
+  //   var req = {
+  //     method : 'POST',
+  //     uri : `${config.host}/auth/local`,
+  //     form : {
+  //       username: config.username, 
+  //       password: config.password
+  //     }
+  //   }
 
-    var {response, body} = await this.request(req);
+  //   var {response, body} = await this.request(req);
 
-    if( response.statusCode >= 200 && response.statusCode < 300 ) {
-      var body = JSON.parse(body);
+  //   if( response.statusCode >= 200 && response.statusCode < 300 ) {
+  //     var body = JSON.parse(body);
 
-      if( !body.error ) {
-        config.jwt = body.jwt;
-        return true;
-      }
-    }
-    return false;
-  }
+  //     if( !body.error ) {
+  //       config.jwt = body.jwt;
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   // promise based request
   request(options) {  

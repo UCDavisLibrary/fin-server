@@ -17,21 +17,22 @@ class FcAppConfigModel extends BaseModel {
 
     this.byId = {};
     
-    if( !APP_CONFIG.fcAppConfig || !APP_CONFIG.fcAppConfig.length ) {
-      APP_CONFIG.fcAppConfig = {error: true};
-    }
+    // TODO: fix
+    // if( !APP_CONFIG.fcAppConfig || !APP_CONFIG.fcAppConfig.length ) {
+    //   APP_CONFIG.fcAppConfig = {error: true};
+    // }
 
-    this.enabled = Array.isArray(APP_CONFIG.fcAppConfig);
+    // this.enabled = Array.isArray(APP_CONFIG.fcAppConfig);
 
-    if( this.enabled ) {
-      APP_CONFIG.fcAppConfig.forEach(item => {
-        if ( item.associatedMedia && Array.isArray(APP_CONFIG.collections) ) {
-          let collectionData = APP_CONFIG.collections.find(c => c['@id'] === item.associatedMedia['@id']);
-          if ( collectionData ) Object.assign(item['associatedMedia'], collectionData);
-        }
-        this.byId[item['@id']] = item;
-      });
-    }
+    // if( this.enabled ) {
+    //   APP_CONFIG.fcAppConfig.forEach(item => {
+    //     if ( item.associatedMedia && Array.isArray(APP_CONFIG.collections) ) {
+    //       let collectionData = APP_CONFIG.collections.find(c => c['@id'] === item.associatedMedia['@id']);
+    //       if ( collectionData ) Object.assign(item['associatedMedia'], collectionData);
+    //     }
+    //     this.byId[item['@id']] = item;
+    //   });
+    // }
 
     this.defaultHomepageHero = {
       imgSrc: "/images/defaults/annual-winter-sale1952.jpg",
