@@ -1,3 +1,8 @@
+import { html } from 'lit';
+
+export default function render() {
+return html`
+
 <style include="shared-styles">
   :host {
     display: block;
@@ -10,6 +15,7 @@
   .search-content {
     flex: 1;
     padding-bottom: 35px;
+    background-color: white;
   }
 
   app-filters-panel {
@@ -50,13 +56,14 @@
 </style>
 
 <div class="search-container">
-  <app-filters-panel id="desktop-filter-panel" wide$="[[wideFiltersPanel]]" on-selected-tab-changed="_onFiltersTabUpdate"></app-filters-panel>
+  <app-filters-panel id="desktop-filter-panel" ${this.wideFiltersPanel ? 'wide' : ''} on-selected-tab-changed="${this._onFiltersTabUpdate}"></app-filters-panel>
   <div class="search-content">
     <app-search-results-panel 
       id="resultsPanel" 
-      on-toggle-drawer="_toggleDrawer" 
-      on-page-size-change="_onPageSizeChange"
-      on-page-change="_onPaginationChange">
+      on-toggle-drawer="${this._toggleDrawer}" 
+      on-page-size-change="${this._onPageSizeChange}"
+      on-page-change="${this._onPaginationChange}">
     </app-search-results-panel>
   </div>
 </div>
+`;}

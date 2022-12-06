@@ -1,124 +1,82 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
-import "@ucd-lib/cork-pagination"
-import "@polymer/paper-spinner/paper-spinner-lite"
+import { LitElement } from 'lit';
+import render from "./app-search-results-panel.tpl.js";
 
-import "./app-search-grid-result"
-import "./app-search-list-result"
-import "../../../utils/app-collection-card"
-import "../filtering/app-top-active-filters"
-import RecordInterface from "../../../interfaces/RecordInterface"
-import AppStateInterface from "../../../interfaces/AppStateInterface"
-import CollectionInterface from "../../../interfaces/CollectionInterface"
-import MediaInterface from "../../../interfaces/MediaInterface"
+import "@ucd-lib/cork-pagination";
+import "@polymer/paper-spinner/paper-spinner-lite";
 
-import template from './app-search-results-panel.html'
+import "./app-search-grid-result";
+import "./app-search-list-result";
+import "../../../utils/app-collection-card";
+import "../filtering/app-top-active-filters";
+import "../../../components/cards/dams-collection-card";
+import "../../../components/cards/dams-item-card";
+
+import "@ucd-lib/theme-elements/ucdlib/ucdlib-icon/ucdlib-icon";
+import '../../../utils/app-icons';
 
 const SEARCH_RESULTS_LAYOUT = 'search-results-layout';
 let initIsListLayout = localStorage.getItem(SEARCH_RESULTS_LAYOUT);
-if( initIsListLayout === 'list' ) initIsListLayout = true
-else initIsListLayout = false;
 
-class AppSearchResultsPanel extends Mixin(PolymerElement)
-      .with(EventInterface, RecordInterface, AppStateInterface, CollectionInterface, MediaInterface) {
+class AppSearchResultsPanel extends Mixin(LitElement)
+      .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      /**
-       * Array of search results
-       */
-      results : {
-        type : Array,
-        value : () => []
-      },
-
-      /**
-       * Array of collection search results
-       */
-      collectionResults : {
-        type : Array,
-        value : () => []
-      },
-
-      /**
-       * size in px's between each masonary layout cell
-       */
-      masonryMargin : {
-        type : Number,
-        value : 15
-      },
-      /**
-       * are we in list or masonry layout
-       */
-      isListLayout : {
-        type : Boolean,
-        value : initIsListLayout
-      },
-      /**
-       * UI display of total results
-       */
-      total : {
-        type : String,
-        value : '0'
-      },
-
-      numPerPage : {
-        type : Number,
-        value : 1
-      },
-      
-      currentIndex : {
-        type : Number,
-        value : 0
-      },
-
-      showCollectionResults : {
-        type : Boolean,
-        value : false
-      },
-
-      showError : {
-        type : Boolean,
-        value : false
-      },
-      
-      showLoading : {
-        type : Boolean,
-        value : false
-      },
-
-      errorMsg : {
-        type : Boolean,
-        value : false
-      },
-
-      // total number for pagination widget
-      // we make out at 10000
-      paginationTotal : {
-        type : Number,
-        value : false
-      },
-
-      totalOverMaxWindow : {
-        type : Boolean,
-        value : false
-      }
-
+      results : { type: Array }, // array of search results
+      collectionResults : { type: Array }, // array of collection search results
+      gridMargin : { type: Number }, // size in px's between each masonary layout cell
+      isGridLayout : { type: Boolean }, // are we in grid layout
+      isListLayout : { type: Boolean },
+      isMosaicLayout : { type: Boolean },
+      total : { type: String }, // UI display of total results
+      numPerPage : { type: Number },
+      currentIndex : { type: Number },
+      showCollectionResults : { type: Boolean },
+      showError : { type: Boolean },
+      showLoading : { type: Boolean },
+      errorMsg : { type: Boolean },
+      paginationTotal : { type: Number }, // total number for pagination widget, we max out at 10000
+      totalOverMaxWindow : { type: Boolean }
     }
-  }
-
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
   }
 
   constructor() {
     super();
     this.active = true;
+    this.render = render.bind(this);
+
+    this.results = [];
+    this.collectionResults = [];
+    this.gridMargin = 15;
+
+    if( initIsListLayout === 'grid' ) {
+      this.isGridLayout = true;
+      this.isListLayout = false;
+      this.isMosaicLayout = false;
+    } else if( initIsListLayout === 'list' ) {
+      this.isGridLayout = false;
+      this.isListLayout = true;
+      this.isMosaicLayout = false;
+    } else {
+      this.isGridLayout = false;
+      this.isListLayout = false;
+      this.isMosaicLayout = true;
+    }
+    
+    this.total = '0';
+    this.numPerPage = 1;
+    this.currentIndex = 0;
+    this.showCollectionResults = false;
+    this.showError = false;
+    this.showLoading = false;
+    this.errorMsg = false;
+    this.paginationTotal = false;
+    this.totalOverMaxWindow = false;
 
     this.resizeTimer = -1;
     window.addEventListener('resize', () => this._resizeAsync());
 
+    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'MediaModel', 'RecordSearchVCModel');
     this.EventBus().on('show-collection-search-results', show => this._updateCollectionResultsVisibility(show));
   }
 
@@ -130,26 +88,29 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    */
   _onAppStateUpdate(e) {
     if( e.location.page !== 'search') return;
+    this._setSelectedDisplay();
     this._resizeAsync();
   }
 
   /**
-   * @method render
-   * @description render results of search query
+   * @method renderResults
+   * @description renderResults results of search query
    * 
    * @param {Array} results results to render
+   * @param {Array} total total matched results
+   * @param {Array} numPerPage results to render on each page
+   * @param {Array} currentIndex index
    */
-  render(results, total, numPerPage, currentIndex) {
+  renderResults(results, total, numPerPage, currentIndex) {
     this.results = [];
     this.showHeaderFooter = true;
     this.showError = false;
-
     clearTimeout(this.showLoadingTimer);
     this.showLoading = false;
+    
 
     requestAnimationFrame(() => {
-      this.total = this.numberWithCommas(total);
-
+      this.total = total;
       // make sure we don't have a page the returns results > 10000k
       let t = Math.floor((10000-numPerPage) / numPerPage) * numPerPage;
       if( total > t ) {
@@ -162,8 +123,8 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
       this.results = results;
       this.paginationTotal = total;
       this.numPerPage = numPerPage;
-      this.$.numPerPage.value = numPerPage+'';
-      this.$.numPerPageM.value = numPerPage+'';
+      this.shadowRoot.querySelector('#numPerPage').value = numPerPage+'';
+      this.shadowRoot.querySelector('#numPerPageM').value = numPerPage+'';
       this.currentIndex = currentIndex;
 
       requestAnimationFrame(() => this._resize());
@@ -196,28 +157,64 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
     if( state.showErrorMessage ) {
       this.errorMsg = state.error.message;
     } else {
-      this.errorMsg = 'Ooops. Something went wrong with search!';
+      this.errorMsg = 'Oops. Something went wrong with search!';
     }
   }
 
   /**
    * @method _onLayoutToggle
-   * @description Toggle between masonry and list layout
+   * @description Toggle between grid, list and mosaic layouts
    * 
    * @param {Event} e HTML click event
    */
   _onLayoutToggle(e) {
     let type = e.currentTarget.getAttribute('type');
-    if( type === 'masonry' ) {
+    if( type === 'grid' ) {
+      this.isGridLayout = true;
       this.isListLayout = false;
-      localStorage.setItem(SEARCH_RESULTS_LAYOUT, 'masonry');
-    } else {
+      this.isMosaicLayout = false;
+      localStorage.setItem(SEARCH_RESULTS_LAYOUT, 'grid');
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.add('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.remove('selected-layout');
+    } else if( type === 'list' ) {
+      this.isGridLayout = false;
       this.isListLayout = true;
+      this.isMosaicLayout = false;
       localStorage.setItem(SEARCH_RESULTS_LAYOUT, 'list');
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.add('selected-layout');
+    } else {
+      this.isGridLayout = false;
+      this.isListLayout = false;
+      this.isMosaicLayout = true;
+      localStorage.setItem(SEARCH_RESULTS_LAYOUT, 'mosaic');
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.add('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.remove('selected-layout');
     }
+    this._setSelectedDisplay();
 
-    if( !this.isListLayout ) {
-      requestAnimationFrame(() => this._resize());
+    // if( !this.isListLayout ) {
+    requestAnimationFrame(() => this._resize());
+    // }
+  }
+
+  _setSelectedDisplay() {
+    let type = localStorage.getItem(SEARCH_RESULTS_LAYOUT);
+    if( type === 'grid' ) {
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.add('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.remove('selected-layout');
+    } else if( type === 'list' ) {
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.add('selected-layout');
+    } else {
+      this.shadowRoot.querySelector('.grid-layout-icon').classList.remove('selected-layout');
+      this.shadowRoot.querySelector('.mosaic-layout-icon').classList.add('selected-layout');
+      this.shadowRoot.querySelector('.list-layout-icon').classList.remove('selected-layout');
     }
   }
 
@@ -239,12 +236,11 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    */
   _resize() {
     if( this.isListLayout ) return;
-
-    let firstDiv = this.$.layout.querySelector('app-search-grid-result');
+    let firstDiv = this.shadowRoot.querySelector('#layout').querySelector('app-search-grid-result');
     if( !firstDiv ) return;
 
     let ew = this.offsetWidth;
-    let w = firstDiv.offsetWidth + this.masonryMargin;
+    let w = firstDiv.offsetWidth + 25;
 
     let numCols = Math.max(Math.floor(ew / w), 1);
     // this makes sure columns are centered
@@ -253,7 +249,7 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
     let colHeights = [];
     for( let i = 0; i < numCols; i++ ) colHeights.push(0);
 
-    let eles = this.$.layout.querySelectorAll('app-search-grid-result');
+    let eles = this.shadowRoot.querySelector('#layout').querySelectorAll('app-search-grid-result');
     for( let i = 0; i < eles.length; i++ ) {
       let col = this._findMinCol(colHeights);
       let cheight = colHeights[col];
@@ -262,11 +258,45 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
       eles[i].style.top = colHeights[col] + 'px';
       // eles[i].style.visibility = 'visible';
 
-      colHeights[col] += eles[i].offsetHeight + this.masonryMargin;
+      colHeights[col] += eles[i].offsetHeight + 25;
     }
 
     let maxHeight = Math.max.apply(Math, colHeights);
-    this.$.layout.style.height = maxHeight+'px';
+    this.shadowRoot.querySelector('#layout').style.height = maxHeight+'px';
+
+
+    // also reposition mosaic grid
+    /*
+    function resizeGridItem(item){
+      grid = document.getElementsByClassName("grid")[0];
+      rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+      rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
+      rowSpan = Math.ceil((item.querySelector('.content').getBoundingClientRect().height+rowGap)/(rowHeight+rowGap));
+        item.style.gridRowEnd = "span "+rowSpan;
+    }
+
+    function resizeAllGridItems(){
+      allItems = document.getElementsByClassName("item");
+      for(x=0;x<allItems.length;x++){
+        resizeGridItem(allItems[x]);
+      }
+    }
+
+    function resizeInstance(instance){
+      item = instance.elements[0];
+      resizeGridItem(item);
+    }
+
+    window.onload = resizeAllGridItems();
+    window.addEventListener("resize", resizeAllGridItems);
+
+    allItems = document.getElementsByClassName("item");
+    for(x=0;x<allItems.length;x++){
+      imagesLoaded( allItems[x], resizeInstance);
+    }
+    */
+
+
   }
 
   /**
@@ -335,9 +365,18 @@ class AppSearchResultsPanel extends Mixin(PolymerElement)
    * 
    * @param {Object} e 
    */
-  _onCollectionSearchUpdate(e) {
+  // _onCollectionSearchUpdate(e) {
+  //   if( e.state !== 'loaded' ) return;
+  //   this.collectionResults = e.payload.results;
+  // }
+
+  /**
+   * @description _onRecordSearchVcUpdate, fired when record search viewController updates
+   * @param {*} e 
+   */
+   _onRecordSearchVcUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this.collectionResults = e.payload.results;
+    this.collectionResults = e.payload.results.filter(c => c.collection);
   }
 
   /**

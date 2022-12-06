@@ -83,7 +83,7 @@ a {
   color: var(--color-a);
 }
 a:visited {
-  color: var(--color-a-visited);
+  /* color: var(--color-a-visited); */
 }
 a:hover {
   color: var(--color-a-hover);

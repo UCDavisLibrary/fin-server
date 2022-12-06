@@ -3,6 +3,7 @@ const api = require('@ucd-lib/fin-api');
 
 const SCHEMA_ORG = 'http://schema.org/';
 const CONTAINS = 'http://www.w3.org/ns/ldp#contains';
+const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 
 const FC_BASE_RE = new RegExp('^'+api.getConfig().fcBasePath);
 const FC_HOST_RE = new RegExp('^'+config.fcrepo.host+api.getConfig().fcBasePath);
@@ -51,7 +52,7 @@ class ReindexCrawler {
     path = this.cleanPath(path);
 
     if( crawled.has(path) ) return;
-
+    
     let graph = await api.metadata({path});
 
     // we might have accessed fcr:metadata
@@ -73,7 +74,6 @@ class ReindexCrawler {
       mainNode['@id'] = mainNode['@id'] + '/fcr:metadata';
       mainNode['@type'].splice(mainNode['@type'].indexOf(BINARY), 1);
     }
-
     this.sendReindexEvent(mainNode);
 
     for( let followProp of this.options.follow ) {

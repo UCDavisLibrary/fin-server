@@ -3,7 +3,7 @@ import render from './radioButton.tpl.js';
 
 /**
  * @class AppRadioButton
- * @description Styleized UI component for Radio button. Wrapper around polymer's options.
+ * @description Styleized UI component for Radio button
  */
 export class AppRadioButton extends LitElement {
   static get properties() {

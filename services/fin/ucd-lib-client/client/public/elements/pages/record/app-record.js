@@ -1,7 +1,7 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
-import {markdown} from "markdown"
+import { LitElement } from 'lit';
+import render from "./app-record.tpl.js";
 
-import template from "./app-record.html"
+import {markdown} from "markdown"
 import rightsDefinitions from "../../../lib/rights.json"
 import citations from "../../../lib/models/CitationsModel"
 import utils from "../../../lib/utils"
@@ -12,65 +12,43 @@ import "./app-record-metadata-layout"
 import "./app-copy-cite"
 import "./viewer/app-media-viewer"
 
-import CollectionInterface from "../../interfaces/CollectionInterface"
-import MediaInterface from "../../interfaces/MediaInterface"
+import { LitCorkUtils } from '@ucd-lib/cork-app-utils';
 
-export default class AppRecord extends Mixin(PolymerElement)
-      .with(EventInterface, CollectionInterface, MediaInterface) {
-
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
-  }
+export default class AppRecord extends Mixin(LitElement)
+      .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      currentRecordId : {
-        type : String,
-        value : ''
-      },
-      name : {
-        type : String,
-        value : ''
-      },
-      collectionName : {
-        type : String,
-        value : ''
-      },
-      date : {
-        type : String,
-        value : ''
-      },
-      size : {
-        type : String,
-        value : ''
-      },
-      rights : {
-        type : Object,
-        value : () => {}
-      },
-      metadata : {
-        type : Array,
-        value : () => []
-      },
-      isBagOfFiles : {
-        type : Boolean,
-        value : false
-      }
+      currentRecordId : {type: String},
+      name : {type: String},
+      collectionName : {type: String},
+      date : {type: String},
+      size : {type: String},
+      rights : {type: Object},
+      metadata : {type: Array},
+      isBagOfFiles : {type: Boolean}
     }
   }
 
   constructor() {
     super();
     this.active = true;
-    this._injectModel('AppStateModel');
-    this._injectModel('RecordModel');
+    this.render = render.bind(this);
+
+    this.currentRecordId = '';
+    this.name = '';
+    this.collectionName = '';
+    this.date = '';
+    this.size = '';
+    this.rights = {};
+    this.metadata = [];
+    this.isBagOfFiles = false;    
+
+    this._injectModel('AppStateModel', 'RecordModel', 'CollectionModel');
   }
 
   async ready() {
     super.ready();
-
     let selectedRecord = await this.AppStateModel.getSelectedRecord();
     if( selectedRecord ) {
       await this._onSelectedRecordUpdate(selectedRecord);
@@ -87,7 +65,7 @@ export default class AppRecord extends Mixin(PolymerElement)
    */
   _onRecordUpdate(e) {
     if( e.state !== 'loading' ) return;
-
+    debugger;
     this.renderedRecordId = null;
     this.record = null;
     this.$.description.classList.add('hidden');

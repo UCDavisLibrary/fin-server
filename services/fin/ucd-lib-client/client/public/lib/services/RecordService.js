@@ -62,7 +62,6 @@ class RecordService extends BaseService {
           result.body.results = result.body.results.map(record => new RecordGraph(record));
         }
         result.body.results.map(item => item.getChildren(item.root))
-        debugger;
         this.store.setSearchLoaded(searchDocument, result.body)
       },
       onError : e => this.store.setSearchError(searchDocument, e)
