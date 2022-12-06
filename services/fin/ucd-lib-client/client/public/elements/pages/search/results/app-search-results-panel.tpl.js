@@ -197,18 +197,20 @@ return html`
   }
 
   .mosaic {
-    1display: grid;
-    1grid-gap: 10px;
-    1grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
-    1grid-auto-rows: 20px;
+    /*display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+    grid-auto-rows: 20px;*/
   }
 
   .header ucdlib-icon {
     height: 40px; 
 
-    1display: inline-block;
-    1position: relative;
-    1padding: 8px 0;
+    /*
+    display: inline-block;
+    position: relative;
+    padding: 8px 0;
+    */
     outline: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -352,7 +354,7 @@ return html`
 
     <div class="grid" id="gridLayout" ?hidden="${!this.isGridLayout}">
       ${this.results.map(res => html`
-        <dams-item-card .item="${res}"></dams-item-card>
+        <dams-item-card .data="${res}"></dams-item-card>
       `)}
     </div>
 

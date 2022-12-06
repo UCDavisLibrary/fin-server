@@ -17,22 +17,17 @@ export default class DamsItemCard extends LitElement {
 
   static get properties() {
     return {
-      item: {type: Object},
-      imgSrc: {type: String, attribute: 'img-src'},
-      cardTitle: {type: String, attribute: 'card-title'},
-      itemCt: {type: Number, attribute: 'item-ct'},
-      href: {type: String}
+      data : { type : Object },
+      truncatedTitle : { type : String }
     };
   }
 
   constructor() {
     super();
     this.render = render.bind(this);
-    this.imgSrc = "";
-    this.cardTitle = "Davis BoyScout Troup";
-    this.itemCt = 0;
-    this.href = "";
 
+    this.data = {};
+    this.truncatedTitle = '';
   }
 
   /**
@@ -41,23 +36,25 @@ export default class DamsItemCard extends LitElement {
    * @param {Map} props - Properties that have changed.
    */
   updated(props) {
-    if ( props.has('item') && this.item['@id'] ) {
-      if ( this.item.associatedMedia ) {
-        this.imgSrc = this.item.thumbnailUrl ? this.item.thumbnailUrl : this.item.associatedMedia.thumbnailUrl;
-        this.cardTitle = this.item.label ? this.item.label : this.item.associatedMedia.name;
-        this.itemCt = this.item.associatedMedia.recordCount;
-        this.href = this.item.associatedMedia['@id'];
-      } else {
-        this.imgSrc = this.item.thumbnailUrl;
-        this.cardTitle = this.item.name;
-        this.itemCt = this.item.recordCount;
-        this.href = this.item['@id'];
-      }
-    }
+    // if ( props.has('item') && this.item['@id'] ) {
+    //   if ( this.item.associatedMedia ) {
+    //     this.imgSrc = this.item.thumbnailUrl ? this.item.thumbnailUrl : this.item.associatedMedia.thumbnailUrl;
+    //     this.cardTitle = this.item.label ? this.item.label : this.item.associatedMedia.name;
+    //     this.itemCt = this.item.associatedMedia.recordCount;
+    //     this.href = this.item.associatedMedia['@id'];
+    //   } else {
+    //     this.imgSrc = this.item.thumbnailUrl;
+    //     this.cardTitle = this.item.name;
+    //     this.itemCt = this.item.recordCount;
+    //     this.href = this.item['@id'];
+    //   }
+    // }
 
     // truncate title if longer than 1 line
-    if( this.cardTitle.length > 38 ) {
-      this.cardTitle = this.cardTitle.substring(0, 35) + '...';
+    if( this.data && this.data.title && this.data.title.length > 38 ) {
+      this.truncatedTitle = this.data.title.substring(0, 34) + '...';
+    } else if( this.data && this.data.title ) {
+      this.truncatedTitle = this.data.title;
     }
   }
 }

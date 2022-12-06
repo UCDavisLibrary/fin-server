@@ -386,6 +386,7 @@ class AppSearchResultsPanel extends Mixin(LitElement)
    * @param {Object} e click|keyup event
    */
   _onCollectionClicked(e) {
+    debugger;
     if( e.type === 'keyup' && e.which !== 13 ) return;
     let id = e.currentTarget.collection['@id']
 

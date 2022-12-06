@@ -99,9 +99,11 @@ return html`
 
   .u-background-image {
     /* background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; */
+    background-position: center; */
+    background-repeat: no-repeat;
     object-fit: contain;
+    background-size: contain;
+    background-position: bottom center;
   }
   .aspect--4x3 {
     position: relative;
@@ -153,7 +155,7 @@ return html`
 
 <a href="" class="marketing-highlight category-brand--secondary u-space-mb o-box">
   <div class="marketing-highlight__image">
-    <div class="aspect--4x3 u-background-image" role="img" aria-label="" style="background-image:url(https://stage.library.ucdavis.edu/wp-content/uploads/2022/09/059-Boy_Scout_Cabin_4-3.jpg);"></div>
+    <div class="aspect--4x3 u-background-image" role="img" aria-label="" style="background-image:url(${this.data.thumbnailUrl});"></div>
     <div class="media-type">
       <img class="media-type__icon" src="/images/icons/item-stack-blank.svg">
       <!-- <svg class="media-type__icon">
@@ -165,7 +167,7 @@ return html`
   </div>
   <div class="gold-dots"></div>
   <div class="marketing-highlight__body">
-    <p class="marketing-highlight__title">${this.cardTitle}</p>
+    <p class="marketing-highlight__title">${this.truncatedTitle}</p>
   </div>
 </a>
 

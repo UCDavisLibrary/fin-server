@@ -22,15 +22,6 @@ export class AppSearchGridResult extends Mixin(LitElement)
       this._injectModel('AppStateModel', 'MediaModel');      
     }
 
-    ready() {
-      // this._updateThumbnailProps();
-    }
-
-    updated() {
-      // this._updateThumbnailProps();
-      debugger;
-    }
-
     /**
      * @method _onAppStateUpdate
      * @description on the App update, the state is determined and by checking
