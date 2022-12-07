@@ -74,7 +74,6 @@ class AppConfig {
   }
 
   cleanPath(path) {
-    console.log(path, api.getConfig().fcBasePath);
     if( path.match(api.getConfig().fcBasePath) ) {
       path = path.split(api.getConfig().fcBasePath)[1];
     }

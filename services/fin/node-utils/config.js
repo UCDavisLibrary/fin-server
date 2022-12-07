@@ -116,6 +116,12 @@ module.exports = {
     refreshTokenExpire : (86400 * 30)
   },
 
+  backups : {
+    enabled : (env.DATA_BACKUPS === 'true'),
+    cron : env.BACKUP_CRON || '0 4 * * *',
+    env : env.DATA_ENV
+  },
+
   google : {serviceAccountExists, serviceAccountFile},
 
   workflow : {
