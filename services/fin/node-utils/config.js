@@ -77,7 +77,7 @@ module.exports = {
     cookieName : process.env.JWT_COOKIE_NAME || 'fin-jwt'
   },
 
-  oicd : {
+  oidc : {
     clientId : env.OIDC_CLIENT_ID,
     baseUrl : env.OIDC_BASE_URL,
     secret : env.OIDC_SECRET,

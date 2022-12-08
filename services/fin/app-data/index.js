@@ -1,24 +1,22 @@
 const express = require('express');
 const {logger, config} = require('@ucd-lib/fin-service-utils');
-const {exec} = require('child_process')
+const {exec, spawn} = require('child_process')
 const path = require('path');
 const {CronJob} = require('cron');
-const { backups } = require('../node-utils/config');
 const app = express();
 
 function run(script, env={}) {
   script = path.resolve(__dirname, 'scripts', script+'.sh');
   env = Object.assign({}, process.env, env);
-  let opts = {
-    env
-  }
+  let opts = {shell:true, env};
 
   return new Promise((resolve, reject) => {
-    exec(script, opts, (error, stdout, stderr) => {
-      logger.info(script, {stdout, stderr});
-
-      if( error ) reject(error);
-      else resolve({stdout, stderr});
+    const cmd = spawn(script, opts);
+    cmd.stdout.on('data', data => logger.info(data.toString()));
+    cmd.stderr.on('data', data => logger.error(data.toString()));
+    cmd.on('close', code => {
+      logger.info(script+' completed.  code: '+code);
+      resolve(code)
     });
   });
 }
@@ -42,8 +40,8 @@ if( config.backups.enabled === true ) {
   );
 }
 
-// if( config.backups.env ) {
-if( process.env.DATA_ENV ) {
+if( config.backups.env ) {
+  logger.info('DATA_ENV flag set, checking init state');
   run('init');
 }
 

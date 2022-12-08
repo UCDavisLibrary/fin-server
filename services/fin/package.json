@@ -11,7 +11,6 @@
     "essync": "node essync/index.js",
     "gateway": "node gateway/index.js",
     "trusted-proxy": "node trusted-proxy/index.js",
-    "app-data": "node app-data/index.js",
     "ucd-lib-client": "node ucd-lib-client/index.js",
     "client-dist": "cd ucd-lib-client/client && ./build.sh",
     "client-watch": "cd ucd-lib-client/client && webpack --watch",

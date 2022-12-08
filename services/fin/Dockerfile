@@ -24,8 +24,9 @@ RUN mkdir -p $FIN_CONFIG_ROOT
 WORKDIR ${FIN_API_ROOT}
 COPY ${FIN_REPO_API_ROOT}/package.json .
 COPY ${FIN_REPO_API_ROOT}/package-lock.json .
-RUN npm install --production && \
-  npm link
+RUN npm install && npm link
+# The npm link doesn't always properly set this :/
+RUN ln -s /fin/api/cli/bin/fin.js /usr/local/bin/fin
 
 # Main service package
 WORKDIR ${FIN_SERVICE_ROOT}
