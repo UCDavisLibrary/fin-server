@@ -30,7 +30,7 @@ export class AppSearch extends Mixin(LitElement)
     this.appState = {};
     this.wideFiltersPanel = false;
     
-    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'RecordSearchVCModel');
+    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'SearchVcModel');
   }
 
   /**
@@ -63,7 +63,8 @@ export class AppSearch extends Mixin(LitElement)
     let query;
 
     if( searchUrlParts[0] === 'collection' ) {
-      query = this._urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
+      // query = this._urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
+      query = this.RecordModel.urlToSearchDocument(['', encodeURIComponent(JSON.stringify([
         // ["isPartOf.@id","or",`/collection/${searchUrlParts[1]}`]
         ["collectionId","or",`/collection/${searchUrlParts[1]}`]
       ])),'', '10']);
@@ -71,7 +72,8 @@ export class AppSearch extends Mixin(LitElement)
       if( this.lastQuery === query ) return;
       this.lastQuery = query;
 
-      this._searchRecords(query, false);
+      // this._searchRecords(query, false);
+      this.RecordModel.search(query);
       return;
     } else if( searchUrlParts[0] === 'search' && searchUrlParts.length > 1 ) {
       // query = this._urlToSearchDocument(searchUrlParts.slice(1, searchUrlParts.length));
@@ -110,10 +112,10 @@ export class AppSearch extends Mixin(LitElement)
   // }
 
   /**
-   * @description _onRecordSearchVcUpdate, fired when record search viewController updates
+   * @description _onSearchVcUpdate, fired when record search viewController updates
    * @param {*} e 
    */
-  _onRecordSearchVcUpdate(e) {
+  _onSearchVcUpdate(e) {
     if( e.state === 'error' ) {
       return this.shadowRoot.querySelector('#resultsPanel').onError(e);
     } else if( e.state === 'loading' ) {
@@ -124,8 +126,8 @@ export class AppSearch extends Mixin(LitElement)
 
     let currentIndex = e.searchDocument.offset;
     let payload = e.payload;
-    let total = payload.results.length; // payload.total;
-    this.results = payload.results;
+    let total = payload.searchVcResults.length; // payload.total;
+    this.results = payload.searchVcResults;
 
     this.shadowRoot.querySelector('#resultsPanel').renderResults(this.results, total, e.searchDocument.limit, currentIndex);
   }

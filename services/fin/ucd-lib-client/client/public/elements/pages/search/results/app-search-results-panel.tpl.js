@@ -15,6 +15,8 @@ return html`
   .header {
     font-size: var(--fs-sm);
     display: flex;
+    /* display: grid;
+    grid-template-columns: 5fr 4fr; */
     align-items: center;
     margin-bottom: 11px;
     margin-top: 5px;
@@ -196,21 +198,22 @@ return html`
     max-width: 383px;
   }
 
+  /*
   .mosaic {
-    /*display: grid;
+    display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
-    grid-auto-rows: 20px;*/
+    grid-auto-rows: 20px;
   }
+  */
 
-  .header ucdlib-icon {
+  ucdlib-icon {
     height: 40px; 
 
-    /*
     display: inline-block;
     position: relative;
     padding: 8px 0;
-    */
+   
     outline: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -243,6 +246,10 @@ return html`
     transition: top 500ms ease-out, left 500ms ease-out;
   }
 
+  /* app-search-grid-result {
+    width: 33%;
+  } */
+
   .selected-layout {
     box-shadow: inset -2px 0 0 var(--color-aggie-gold), inset 0 -2px 0 var(--color-aggie-gold), inset 2px 0 0 var(--color-aggie-gold), inset 0 2px 0 var(--color-aggie-gold);
   }
@@ -260,6 +267,9 @@ return html`
   @media( min-width: 975px ) {
     .header {
       display: flex;
+      /* display: grid;
+      grid-template-columns: 5fr 4fr;
+      align-items: center; */
     }
     .mobile-header {
       display: none;
@@ -270,24 +280,31 @@ return html`
 <div class="header">
   <div class="total" ?hidden="${this.showLoading}">${this.total} results found</div>
   
-  <div class="filler"></div>
-  <div style="margin: 0 10px; font-size: .9rem; display: flex; max-width: 5rem">
+  <!-- <div class="filler"></div> -->
+  <div style="margin: 0 10px; font-size: .9rem; display: inline-flex; max-width: 5rem">
     <span style="margin: auto 5px">Display:</span>
     <ucdlib-icon icon="ucdlib-dams:result-display-grid" @click="${this._onLayoutToggle}" type="grid" class="grid-layout-icon selected-layout"></ucdlib-icon>
     <ucdlib-icon icon="ucdlib-dams:result-display-mosaic" @click="${this._onLayoutToggle}" type="mosaic" class="mosaic-layout-icon"></ucdlib-icon>
     <ucdlib-icon icon="ucdlib-dams:result-display-list" @click="${this._onLayoutToggle}" type="list" class="list-layout-icon"></ucdlib-icon>
-  </div>
-  <div style="flex: .25"></div>
   
-  
-  <div>
     <select id="numPerPage" on-change="_onPageSizeChange">
       <option value="50">50</option>
       <option value="20">20</option>
       <option value="10" selected>10</option>
     </select>
+    <div style="margin: 0 10px; font-size: .9rem; min-width: max-content">items per page</div>
   </div>
-  <div style="margin: 0 10px; font-size: .9rem">items per page</div>
+  <!-- <div style="flex: .25"></div> -->
+  
+  
+  <!-- <div>
+    <select id="numPerPage" on-change="_onPageSizeChange">
+      <option value="50">50</option>
+      <option value="20">20</option>
+      <option value="10" selected>10</option>
+    </select>
+  </div>-->
+  <!-- <div style="margin: 0 10px; font-size: .9rem">items per page</div> -->
 </div>
 
 <div class="mobile-header">
@@ -301,7 +318,22 @@ return html`
   </div>
 
   <div class="row2">
-    <div class="total" ?hidden="${this.showLoading}">${this.total} results</div>
+
+
+    <span style="margin: auto 5px">Display:</span>
+      <ucdlib-icon icon="ucdlib-dams:result-display-grid" @click="${this._onLayoutToggle}" type="grid" class="grid-layout-icon selected-layout"></ucdlib-icon>
+      <ucdlib-icon icon="ucdlib-dams:result-display-mosaic" @click="${this._onLayoutToggle}" type="mosaic" class="mosaic-layout-icon"></ucdlib-icon>
+      <ucdlib-icon icon="ucdlib-dams:result-display-list" @click="${this._onLayoutToggle}" type="list" class="list-layout-icon"></ucdlib-icon>
+    
+      <select id="numPerPageM" on-change="_onPageSizeChange">
+        <option value="50">50</option>
+        <option value="20">20</option>
+        <option value="10" selected>10</option>
+      </select>
+      <div style="margin: 0 10px; font-size: .9rem; min-width: max-content">items per page</div>
+
+
+    <!-- <div class="total" ?hidden="${this.showLoading}">${this.total} results</div>
 
     <div class="row2-right">
       <div class="filler"></div>
@@ -331,7 +363,7 @@ return html`
         </select>
       </div>
       <div style="margin: 0 10px; font-style:italic">per page</div>
-    </div>
+    </div> -->
   </div>
 </div>
 
@@ -339,11 +371,12 @@ return html`
 
 <div class="collections" ?hidden="${!this.showCollectionResults}">
   <!--<div ?hidden="${!this.collectionResults.length}">-->
-  <div style="display: none">
+  <!-- <div style="display: none"> -->
+  <div>
     <h3>Collections</h3>
     <div style="text-align:center" class="collections-content">
-      ${this.collectionResults.map(col => html`
-        <dams-collection-card .collection="${col}"></dams-collection-card>
+      ${this.collectionResults.map(res => html`
+        <dams-collection-card .collection="${res}" data-collectionid="${res.collectionId}" @click=${this._onCollectionClicked}></dams-collection-card>
       `)}
     </div>  
   </div>
@@ -354,19 +387,19 @@ return html`
 
     <div class="grid" id="gridLayout" ?hidden="${!this.isGridLayout}">
       ${this.results.map(res => html`
-        <dams-item-card .data="${res}"></dams-item-card>
+        <dams-item-card .data="${res}" data-itemid="${res.id}" @click=${this._onRecordClicked}></dams-item-card>
       `)}
     </div>
 
     <div class="masonry" id="layout" ?hidden="${!this.isMosaicLayout}">
       ${this.results.map(res => html`
-        <app-search-grid-result .data="${res}" class="item"></app-search-grid-result>
+        <app-search-grid-result .data="${res}" class="item" data-itemid="${res.id}" @click=${this._onRecordClicked}></app-search-grid-result>
       `)}
     </div>
 
     <div class="list" ?hidden="${!this.isListLayout}">
       ${this.results.map(res => html`
-        <app-search-list-result .data="${res}"></app-search-list-result>
+        <app-search-list-result .data="${res}" data-itemid="${res.id}" @click=${this._onRecordClicked}></app-search-list-result>
       `)}
     </div>
   

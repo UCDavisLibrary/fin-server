@@ -47,8 +47,8 @@ export class FinApp extends Mixin(LitElement)
     super();
     this.active = true;
     this.render = render.bind(this);
-    this.SEARCH_HEADER_PAGES = ['about', 'record', 'search', 'collections', 'collection', 'components', 'browse'];
-    this.BREADCRUMB_PAGES = ['record', 'search', 'collections'];
+    this.SEARCH_HEADER_PAGES = ['about', 'item', 'search', 'collections', 'collection', 'components', 'browse'];
+    this.BREADCRUMB_PAGES = ['item', 'search', 'collections'];
 
     this.loadedPages = {};
 
@@ -126,7 +126,7 @@ export class FinApp extends Mixin(LitElement)
       return import(/* webpackChunkName: "page-home" */ "./pages/home/app-home");
     } else if( page === 'search' ) {
       return import(/* webpackChunkName: "page-search" */ "./pages/search/app-search");
-    } else if( page === 'record' ) {
+    } else if( page === 'item' ) {
       return import(/* webpackChunkName: "page-record" */ "./pages/record/app-record");
     } else if( page === 'browse' ) {
       return import(/* webpackChunkName: "page-browse" */ "./pages/browse/app-browse");

@@ -58,7 +58,7 @@ class AppSearchBreadcrumb extends Mixin(LitElement)
       this.searchCollection = null;
     }
 
-    if( e.location.page === 'record' ) {
+    if( e.location.page === 'item' ) {
       this.currentRecordId = e.location.pathname;
 
       this.record = await this.RecordModel.get(this.currentRecordId);
