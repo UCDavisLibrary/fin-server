@@ -41,7 +41,6 @@
     "express-openid-connect": "^2.10.0",
     "express-session": "^1.17.3",
     "fs-extra": "^10.1.0",
-    "hdt": "^3.0.2",
     "http-proxy": "^1.18.1",
     "jsonld": "^0.4.12",
     "jsonwebtoken": "^8.1.0",
