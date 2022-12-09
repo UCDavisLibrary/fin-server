@@ -32,8 +32,7 @@ module.exports = {
     cookieSecret : process.env.FIN_COOKIE_SECRET || 'changeme',
     cookieMaxAge : process.env.FIN_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 60 * 60 * 24 * 7),
     allowOrigins : (process.env.FIN_ALLOW_ORIGINS || '').split(',').filter(domain => domain !== '').map(domain => domain.trim()),
-    cacheExpireTime : process.env.FIN_CACHE_EXPIRE || (60*60*12),
-    hdtCacheDir : process.env.FIN_HDT_CACHE_DIR || '/etc/fin/hdt-cache'
+    cacheExpireTime : process.env.FIN_CACHE_EXPIRE || (60*60*12)
   },
 
   gateway : {

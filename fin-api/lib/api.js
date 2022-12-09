@@ -441,7 +441,15 @@ class FinApi {
    * @returns {Promise} ApiResponse
    */
   async metadata(options) {
-    let req = await this.head(options);
+    let hOptions = clone(options);
+
+    // remove any accept headers in binary check
+    if( hOptions.headers ) {
+      delete hOptions.headers.Accept;
+      delete hOptions.headers.accept; 
+    }
+
+    let req = await this.head(hOptions);
     if( req.error || req.last.statusCode !== 200 ) return req;
     
     if( !this.isRdfContainer(req.last) ) {

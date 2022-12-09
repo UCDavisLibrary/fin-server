@@ -7,7 +7,11 @@
       "type" : "keyword"
     },
 
-    "identifier" : {
+    "node.@id" : {
+      "type" : "keyword"
+    },
+
+    "node.identifier" : {
       "type" : "text",
       "fields": {
         "raw": { 
@@ -16,15 +20,11 @@
       }
     },
 
-    "collectionId" : {
-      "type" : "keyword" 
-    },
-
-    "keywords" : {
+    "node.keywords" : {
       "type" : "text"
     },
 
-    "about.name" : {
+    "node.about.name" : {
       "type" : "text",
       "fields": {
         "raw": { 
@@ -33,7 +33,7 @@
       }
     },
 
-    "name" : {
+    "node.name" : {
       "type": "text",
       "fields": {
         "raw": { 
@@ -42,15 +42,15 @@
       }
     },
 
-    "description" : {
+    "node.description" : {
       "type": "text"
     },
 
-    "coverage" : {
+    "node.coverage" : {
       "type":  "keyword"
     },
 
-    "creators" : {
+    "node.creators" : {
       "type": "text",
       "fields": {
         "raw": { 
@@ -59,7 +59,7 @@
       }
     },
 
-    "_.updated" : {
+    "node._.updated" : {
       "type" : "date"
     }
 

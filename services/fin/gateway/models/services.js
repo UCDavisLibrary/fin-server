@@ -111,6 +111,7 @@ class ServiceModel {
         Accept: 'application/ld+json; profile="http://www.w3.org/ns/json-ld#compacted"'
       }
     });
+
     let graph = JSON.parse(response.data.body);
     if( graph['@graph'] ) graph = graph['@graph'];
     if( !Array.isArray(graph) ) graph = [graph]

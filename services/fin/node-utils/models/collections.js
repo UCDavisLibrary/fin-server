@@ -1,6 +1,11 @@
 const es = require('../lib/esClient');
 const config = require('../config');
 const ElasticSearchModel = require('./elasticsearch');
+const PG = require('../lib/pg');
+const api = require('@ucd-lib/fin-api');
+
+const pg = new PG();
+pg.connect();
 
 class CollectionsModel extends ElasticSearchModel {
 
@@ -59,12 +64,80 @@ class CollectionsModel extends ElasticSearchModel {
    * 
    * @returns {Promise} resolves to elasticsearch result
    */
-  get(id) {
-    return es.get({
-      index : config.elasticsearch.collection.alias,
-      type: '_all',
-      id: id
+  async get(id, opts={}) {
+    if( typeof opts !== 'object' ) {
+      opts = {seo: opts};
+    }
+
+    let result = await this.esSearch({
+      from: 0,
+      size: 1,
+      query: {
+        bool : {
+          filter : [{term: {'node.@id': id}}]
+        }
+      }
+    }, {
+      _source_excludes : (opts.admin === true) ? false : true
     });
+
+    if( result.hits.total.value === 1 ) {
+      result = result.hits.hits[0]._source;
+    } else {
+      result = {};
+    }
+
+    if( opts.admin === true ) {
+      try {
+        let response = await api.metadata({
+          path : id,
+          host : config.gateway.host
+        });
+        if( response.data.statusCode === 200 ) {
+          result.fcrepo = JSON.parse(response.data.body);
+        } else {
+          result.fcrepo = {
+            error: true,
+            body : response.data.body,
+            statusCode : response.data.statusCode
+          }
+        }
+      } catch(e) {
+        result.fcrepo = {
+          error: true,
+          message : e.message,
+          stack : e.stack
+        }
+      }
+      
+      try {
+        result.essync = {};
+        let response = await pg.query('select * from essync.update_status where path = $1', [id]);
+        if( response.rows.length ) result.essync[id] = response.rows[0];
+
+        response = await pg.query('select * from essync.update_status where path = $1', [id+'/fcr:metadata']);
+        if( response.rows.length ) result.essync[id+'/fcr:metadata'] = response.rows[0];
+      } catch(e) {
+        result.essync = {
+          message : e.message,
+          stack : e.stack
+        }
+      }
+    }
+
+    // let graph = {[id]: result._source};
+
+    // await this._fillGraphRecord(graph, result._source, seo);
+
+    // graph = Object.values(graph);
+
+    // if( seo ) {
+    //   let record = graphConcat(id, graph)
+    //   transform(record);
+    //   return record;
+    // }
+    
+    return result;
   }
 
   /**

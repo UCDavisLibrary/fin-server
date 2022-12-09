@@ -1,5 +1,7 @@
 const ioUtils = require('@ucd-lib/fin-api/lib/io/utils.js');
 
+const ARCHIVAL_GROUP = 'http://fedora.info/definitions/v4/repository#ArchivalGroup';
+
 module.exports = async function(path, graph, headers, utils) {
   let item = {};
   
@@ -165,9 +167,23 @@ module.exports = async function(path, graph, headers, utils) {
 
   utils.setYearFromDate(item);
 
-  item._ = {
-    esId : item['@id']
-  };
+  item._ = {};
+  utils.stripFinHost(headers);
+
+  if( headers.link ) {
+    if( headers.link['archival-group'] ) {
+      item._['archival-group'] = headers.link['archival-group'].map(item => item.url);
+      item._.esId = item._['archival-group'][0];
+    } else if( headers.link.type && 
+      headers.link.type.find(item => item.rel === 'type' && item.url === ARCHIVAL_GROUP) ) {
+      item._['archival-group'] = item['@id'];
+      item._.esId = item['@id'];
+    }
+  }
+
+  if( !item._.esId ) {
+    item._.esId = item['@id'];
+  }
 
   if( gitsource ) {
     item._.gitsource = {};

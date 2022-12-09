@@ -137,15 +137,39 @@ class ElasticSearchModel {
     if ( this.isCollection(jsonld['@id']) ) {
       logger.info(`ES Indexer updating collection container: ${id}`);
 
-      let index = collectionIndex || config.elasticsearch.collection.alias;
-      let response = await this.esClient.index({
-        index,
-        id,
-        body: jsonld
-      });
-
-      return {index, id, response}
+      // let index = collectionIndex || config.elasticsearch.collection.alias;
+      // let response = await this.esClient.index({
+      //   index,
+      //   id,
+      //   body: jsonld
+      // });
     
+      let index = collectionIndex || config.elasticsearch.collection.alias;
+
+      // ensure the base recoder exists
+      try {
+        await this.esClient.index({
+          index,
+          op_type : 'create',
+          id : jsonld._.esId,
+          body: {id: jsonld._.esId, node: []}
+        });
+      } catch(e) {}
+
+      let response = await this.esClient.update({
+        index,
+        id : jsonld._.esId,
+        script : {
+          source : `
+          ctx._source.node.removeIf((Map item) -> { item['@id'] == params['@id'] });
+          ctx._source.node.add(params);`,
+          params : jsonld
+        }
+      });
+      response['@id'] = jsonld['@id'];
+      
+      return {index, id, response}
+
     } else if ( this.isApplication(jsonld['@id']) ) {
 
       logger.info(`ES Indexer updating application container: ${id}`);
