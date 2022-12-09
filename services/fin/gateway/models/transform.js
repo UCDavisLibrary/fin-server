@@ -128,31 +128,45 @@ class TransformUtils {
 
   async _lookupLabel(attr, uri) {
     let result = {'@id': uri};
-    if( !this.collection ) return result;
-
     if( BLACK_LIST_LABEL_ATTRS.indexOf(attr) > -1 ) {
       return result;
     }
 
     try {
       let response = await this.request({
-        uri: this.getFcRepoBaseUrl()+'/collection/'+this.collection+'/svc:label/'+encodeURIComponent(uri)
+        uri: config.gateway.host+'/label/'+encodeURIComponent(uri)
       });
       response = JSON.parse(response.body);
-      response.forEach(item => this._addLabel(result, item));
+      
+      // this is the list of graph, grab first
+      if( response['@graph'] ) response = response['@graph'];
+      if( !Array.isArray(response) ) response = [response];
+      if( !response.length ) return result;
+
+      response = response[0];
+
+      // this is the list of responses within the graph
+      if( response['@graph'] ) response = response['@graph'];
+      
+      response.forEach(item => {
+        if( item['@id'] !== uri ) return;
+
+        let tmp = {'@id': item['@id']};
+        for( let key in item ) {
+          if( key.startsWith('@') ) continue;
+          if( !item[key].length ) continue;
+          if( !item[key][0]['@value'] ) continue;
+
+          tmp[key.split(/(#|\/)/).pop()] = item[key][0]['@value'];
+        }
+
+        result = Object.assign(result, tmp);
+      });
     } catch(e) {
-      logger.warn('Label service lookup failed in transform, collection:'+this.collection+': '+uri, e);
+      logger.warn('Label service lookup failed in transform, collection: '+uri, e);
     }
 
     return result;
-  }
-
-  _addLabel(result, item) {
-    let key = new URL(item.predicate);
-    if( key.hash ) key = key.hash;
-    else key = key.pathname.split('/').pop();
-
-    result[key] = item.object;
   }
 
   _getSourceAttribute(opts) {
