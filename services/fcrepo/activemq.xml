@@ -22,6 +22,7 @@
                         <forwardTo>
                             <queue physicalName="gateway"/>
                             <queue physicalName="essync"/>
+                            <queue physicalName="ucd-lib-client"/>
                         </forwardTo>
                     </compositeTopic>
                 </virtualDestinations>

@@ -9,7 +9,11 @@ ARG FIN_REPO_SERVICE_ROOT=services/fin
 ARG FIN_REPO_API_ROOT=fin-api
 
 RUN apt-get update
-RUN apt-get install -y git jq zip unzip vim
+RUN apt-get install -y git jq zip unzip vim apt-transport-https ca-certificates gnupg
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | \
+  tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
+  apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - && apt-get update -y && apt-get install google-cloud-cli -y
+
 RUN apt-get clean
 
 RUN mkdir -p $FIN_SERVICE_ROOT
@@ -20,8 +24,9 @@ RUN mkdir -p $FIN_CONFIG_ROOT
 WORKDIR ${FIN_API_ROOT}
 COPY ${FIN_REPO_API_ROOT}/package.json .
 COPY ${FIN_REPO_API_ROOT}/package-lock.json .
-RUN npm install --production && \
-  npm link
+RUN npm install && npm link
+# The npm link doesn't always properly set this :/
+RUN ln -s /fin/api/cli/bin/fin.js /usr/local/bin/fin
 
 # Main service package
 WORKDIR ${FIN_SERVICE_ROOT}

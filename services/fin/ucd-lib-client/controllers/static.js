@@ -5,6 +5,7 @@ const spaMiddleware = require('@ucd-lib/spa-router-middleware');
 const config = require('../config');
 const fetch = require('node-fetch');
 const authUtils = require('../lib/auth');
+const appConfig = require('../lib/fcrepo-app-config');
 
 const {seo, records, collections} = require('@ucd-lib/fin-service-utils');
 
@@ -48,8 +49,6 @@ module.exports = (app) => {
         user = {loggedIn: false};
       }
 
-      let fcAppConfig = await (await fetch(config.api.host+'/api/applications/'+config.server.appName)).json();
-
       next({
         collections : await collections.overview(),
         user : user,
@@ -64,8 +63,7 @@ module.exports = (app) => {
           CORE_SERVER_REPO_HASH: process.env.CORE_SERVER_REPO_HASH || '',
           CORE_SERVER_REPO_TAG: process.env.CORE_SERVER_REPO_TAG || ''
         },
-        fcAppConfig,
-        fcAppConfigUrl: config.api.host+'/api/applications/'+config.server.appName
+        fcAppConfig : appConfig.config
       });
     },
     template : async (req, res, next) => {
