@@ -247,6 +247,7 @@ export default function render() {
       .cite-graphic,
       .cite-collection {
         width: 80%;
+        padding-top: 0;
       }
 
     }
