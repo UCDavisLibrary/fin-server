@@ -1,8 +1,8 @@
-import { html } from 'lit';
+import { html, unsafeCSS } from 'lit';
 
 import { sharedStyles } from "../../styles/shared-styles";
 import SharedHtml from '../../utils/shared-html';
-
+import jsonStyles from 'json-formatter-js/dist/json-formatter.css';
 import linksCss from "@ucd-lib/theme-sass/1_base_html/_links.css";
 import buttonsCss from "@ucd-lib/theme-sass/2_base_class/_buttons.css";
 import headingsCss from "@ucd-lib/theme-sass/2_base_class/_headings.css";
@@ -14,7 +14,7 @@ export default function render() {
     ${linksCss}
     ${buttonsCss}
     ${headingsCss}
-
+    ${unsafeCSS(jsonStyles)}
     :host {
       display: block;
       position: relative;
@@ -207,6 +207,23 @@ export default function render() {
       margin-bottom: 3rem;
     }
 
+    .admin-heading {
+      margin-top: 5rem;
+      text-align: center;
+    }
+
+    .admin-content {
+      border-style: inset;
+      border-color: rgb(235, 243, 250);
+      margin: 2rem;
+    }
+
+    .admin-box-title {
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+    }
+
     @media (min-width: 767px) {
       .card-2,
       .card-2-4 {
@@ -327,6 +344,12 @@ export default function render() {
         <a href="" class="btn btn-copy">Copy Text</a>
 
       </div>
+    </div>
+
+    <h2 class="admin-heading">Admin ${this.collectionId}</h2>
+    <div class="admin-content">
+      <h4 class="admin-box-title">essync</h4>
+      <!-- json injected admin data -->
     </div>
   
   `;}

@@ -52,13 +52,50 @@ class CollectionModel extends BaseModel {
      * 
      * @param {String} id id of the collection
      */
+    // async get(id) {
+    //   if( this.store.data.overview.state !== 'loaded' ) {
+    //     await this.overview();
+    //   }
+
+    //   return this.store.data.byId[id];
+    // }
+
+    /**
+     * @method get
+     * @description load a record by id from elastic search
+     * 
+     * @param {String} id record id
+     * 
+     * @returns {Promise} resolves to record
+     */
     async get(id) {
-      if( this.store.data.overview.state !== 'loaded' ) {
-        await this.overview();
+      let state = this.store.getCollection(id);
+
+      if( state && state.request ) {
+        await state.request;
+      } else if( state && state.state === 'loaded' ) {
+        if( state.id !== id ) {
+          this.store.setCollectionLoaded(id, state.payload)
+        }
+      } else {
+        await this.service.get(id);
       }
 
-      return this.store.data.byId[id];
+      return this.store.getCollection(id);
     }
+
+    /**
+     * @method getAdminData
+     * @description load a records admin data by id
+     * 
+     * @param {String} id record id
+     * 
+     * @returns {Promise} resolves to record
+     */
+    async getAdminData(id) {
+      return await this.service.getAdminData(id);
+    }
+  
 
     /**
      * @method getSelectedCollection

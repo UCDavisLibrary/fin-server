@@ -7,21 +7,29 @@ class CollectionVcModel extends BaseModel {
     super();
 
     this.store = CollectionVcStore;
-    this.EventBus.on('record-search-update', e => this._onRecordSearchUpdate(e));
+    this.EventBus.on('collection-update', e => this._onCollectionUpdate(e));
     this.register('CollectionVcModel');
   }
 
   /**
-   * @method _onRecordSearchUpdate
+   * @method _onCollectionUpdate
    * @description listen for record search update events, transform data for ui and emit event to update
    * 
    * @param {Object} e 
    */
-  async _onRecordSearchUpdate(e) {
+  async _onCollectionUpdate(e) {
     if( e.state === 'loaded' ) {
 
-      // translate RecordGraph's to ui model
-      const matchedRecords = [];
+      // translate collection and related nodes/items to ui model
+      // const rootNode = e.payload.node[0];
+
+      // const collection = {
+      //   id : e.payload.id,
+      //   description : rootNode.description,
+      //   items : [
+
+      //   ]
+      // };
       // debugger;
 
       // e.payload.results.forEach(result => {
