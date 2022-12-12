@@ -7,6 +7,8 @@ export default function render() {
     /* background: var(--default-primary-color); */
   }
 
+  [hidden] { display: none !important; }
+
   #loading {
     width: 100%;
     min-height: 700px;
@@ -131,15 +133,15 @@ export default function render() {
 
   <div class="main-content">
     <iron-pages selected="${this.page}" attr-for-selected="id" selected-attribute="visible">
-      <!--<div id="loading" ?hidden="${this.page}">
+      <div id="loading" ?hidden="${this.page}">
         <img src="/images/logos/logo-icon.svg" style="max-width: 128px" />
         <div class="loading-dots">
           <h1 class="dot one">.</h1><h1 class="dot two">.</h1><h1 class="dot three">.</h1>
         </div>
-      </div>-->
+      </div>
       <app-home id="home"></app-home>
       <app-search id="search"></app-search>
-      <app-record id="record"></app-record>
+      <app-record id="item"></app-record>
       <app-browse id="browse"></app-browse>
       <app-about id="about"></app-about>
       <app-collection id="collection"></app-collection>

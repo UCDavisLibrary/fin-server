@@ -29,7 +29,7 @@ class SeoModel extends BaseModel {
   async _onAppStateUpdate() {
     let state = AppStateModel.store.data;
 
-    let isRecord = (state.location.page === 'record');
+    let isRecord = (state.location.page === 'item');
     let isCollection = (
       state.location.pathname.match(/^\/search\//) &&
       CollectionModel.getSelectedCollection()

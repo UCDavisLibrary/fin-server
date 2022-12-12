@@ -91,22 +91,22 @@ return html`
     </div>
     <div class="headerText"> Browse <b>Collections</b></div>
     
-    <app-radio-button choices='[{"text": "Title"},
+    <app-radio-button choices='[{"text": "A-Z"},
                                 {"text": "Recent"},
                                 {"text": "Item Quantity"}]'></app-radio-button>
     
   </div>
 
 
-  <!-- <div class="collection-grid-container">
+  <div class="collection-grid-container">
       <div class="collection-outer">
         <div class="collections" id="collections-home">
-          ${this.items.map((item) => 
+          ${this.collections.map((col) => 
             html`
             <div class="grid-item">
               <app-collection-card 
-                data-id="${item._id}" 
-                .collection="${item}" 
+                data-id="${col._id}" 
+                .data="${col}" 
                 @keyup="${this._onCollectionClicked}"
                 @click="${this._onCollectionClicked}">
               </app-collection-card>
@@ -114,9 +114,9 @@ return html`
             `
             )}
         </div>
-    </div> -->
+    </div>
     
-  <div class="collection-grid-container">
+  <!-- <div class="collection-grid-container">
 
     <div class="grid-item">
       <div>  
@@ -209,7 +209,7 @@ return html`
       </div>
     </div>
 
-  </div>
+  </div> -->
 
   <div>
     ${this.itemsTotal > 16 ? 

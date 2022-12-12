@@ -30,7 +30,7 @@ class RecordModel extends ElasticSearchModel {
    * @param {Object} e 
    */
   async _onAppStateUpdate(e) {
-    if( e.location.page !== 'record' ) {
+    if( e.location.page !== 'item' ) {
       this.currentRecordId = null;
       this.currentMediaId = null;
       AppStateModel.setSelectedRecord(null);
@@ -339,11 +339,13 @@ class RecordModel extends ElasticSearchModel {
     let corrections = false;
     for( var key in searchDocument.filters ) {
       if( key === 'isPartOf.@id' ) continue;
-
-      let type = config.elasticSearch.facets[key].type;
+      
+      let type = config.elasticSearch.facets['node.'+key].type;
+      // let type = config.elasticSearch.facets[key].type;
 
       if( type === 'facet' ) {
-        let bucket = defaultSearch.payload.aggregations.facets[key];
+        let bucket = defaultSearch.payload.aggregations.facets['node.'+key];
+        // let bucket = defaultSearch.payload.aggregations.facets[key];
         if( bucket === undefined ) {
           corrections = true;
           console.warn(`Collection '${collectionId}' unknown bucket '${key}', correcting search.`);

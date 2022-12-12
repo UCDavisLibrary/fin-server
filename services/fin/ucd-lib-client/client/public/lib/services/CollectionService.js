@@ -8,7 +8,27 @@ class CollectionService extends BaseService {
     super();
     this.store = CollectionStore;
 
-    this.baseUrl = '/api/collections';
+    this.baseUrl = '/api/collection';
+  }
+
+  get(id) {
+    return this.request({
+      url : `${this.baseUrl}${id.replace('/collection', '')}?root=true`,
+      checkCached : () => this.store.getCollection(id),
+      onLoading : request => this.store.setCollectionLoading(request),
+      onLoad : result => this.store.setCollectionLoaded(result.body),
+      onError : e => this.store.setCollectionError(e)
+    });
+  }
+
+  getAdminData(id) {
+    return this.request({
+      url : `${this.baseUrl}${id.replace('/collection', '')}?admin=true`,
+      checkCached : () => null,
+      onLoading : null,
+      onLoad : null,
+      onError : null
+    });
   }
 
   async overview() {
@@ -32,7 +52,7 @@ class CollectionService extends BaseService {
   async search(searchDocument = {}) {
     searchDocument.textFields = config.elasticSearch.textFields.collection;
     return this.request({
-      url : this.baseUrl+'/search?debug=true',
+      url : this.baseUrl+'?debug=true',
       fetchOptions : {
         method : 'POST',
         headers : {

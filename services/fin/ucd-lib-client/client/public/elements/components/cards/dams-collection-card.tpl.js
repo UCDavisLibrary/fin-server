@@ -126,12 +126,12 @@ return html`
 
 <a href="" class="marketing-highlight category-brand--secondary u-space-mb o-box">
   <div class="marketing-highlight__image">
-    <div class="aspect--4x3 u-background-image" role="img" aria-label="" style="background-image:url(https://stage.library.ucdavis.edu/wp-content/uploads/2022/09/amerine-menu-d7764v_16-9.jpg);">
+    <div class="aspect--4x3 u-background-image" role="img" aria-label="" style="background-image:url(${this.collection.thumbnailUrl});">
   </div>
   </div>
   <div class="marketing-highlight__body">
-    <h4 class="marketing-highlight__title">Amerine (Maynard) Menu Collection</h4>
-    <p class="marketing-highlight__items">1513 items</p>
+    <h4 class="marketing-highlight__title">${this.collection.title}</h4>
+    <p class="marketing-highlight__items">${this.collection.collectionItemsCount} items</p>
   </div>
 </a>
 
