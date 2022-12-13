@@ -28,20 +28,44 @@ class ClientMedia {
     this.parse();
 
     for( let i = 0; i < this.mediaGroups.length; i++ ) {
-      let nodes = this.mediaGroup[i];
+      let nodes = this.mediaGroups[i];
+
+      // filter out nodes that don't have displayType or fileType
+      let displayNodes = nodes.filter(node => node._.displayTypeIndex != -1 && node._.fileTypeIndex != -1);
+        
+      displayNodes.sort((a, b) => {
+        let aCm = a._.clientMedia;
+        let bCm = b._.clientMedia;
+
+        if( aCm.displayTypeIndex < bCm.displayTypeIndex ) return -1;
+        if( aCm.displayTypeIndex > bCm.displayTypeIndex ) return 1;
+
+        if( aCm.fileTypeIndex < bCm.fileTypeIndex ) return -1;
+        if( aCm.fileTypeIndex > bCm.fileTypeIndex ) return 1;
+
+        return 0;
+      });
 
       let mediaGroup = {
         nodes,
         display : null,
-        downloads : null,
-        indexedDownloads : null,        
+        downloads : [],
+        indexedDownloads : [],        
       }
-      // TODO: sort nodes by displayType and fileType
+      this.mediaGroups[i] = mediaGroup;
 
-      // NOTE: if a displayType is not in the DISPLAY_ORDER.displayTypes,
-      // then is shouldn't be used.
+      if( displayNodes.length ) {
+        mediaGroup.display = displayNodes[0];
+      }
 
-      // Set 'bundled' download and individual download arrays
+      nodes.forEach(node => {
+        if( node._.clientMedia.displayType.match(/list$/i) ) {
+          mediaGroup.indexedDownloads.push(node);
+        } else {
+          mediaGroup.downloads.push(node);
+        }
+      });
+
     }
 
   }
@@ -54,7 +78,15 @@ class ClientMedia {
   }
 
   parse(node, crawled={}) {
-    if( !node ) node = this.root;
+    if( !node ) {
+      node = this.root;
+      // check if root node is media
+      let mediaType = this.getMediaType(node);
+      if( mediaType ) {
+        this._crawlMedia(node);
+        return;
+      }
+    }
 
     // make sure no cycles
     if( crawled[node['@id']] ) return;
@@ -65,7 +97,7 @@ class ClientMedia {
       let nodes = node[link];
 
       for( let child of nodes ) {
-        this._crawl(child);
+        this._crawlMedia(child);
       }
     });
 
@@ -76,8 +108,6 @@ class ClientMedia {
         this.parse(child, crawled);
       }
     });
-
-    return media;
   }
 
   /**
@@ -106,7 +136,7 @@ class ClientMedia {
     let mediaType = this.getMediaType(node);
     if( mediaType ) {
       this.setCmTypes(node, mediaType);
-      media.push(mediaType);
+      media.push(node);
     }
 
     // crawl child media links
@@ -121,16 +151,26 @@ class ClientMedia {
   }
 
   /**
-   * @method setTypes
-   * @description some bookkeeping for sorting later on the various client media types
+   * @method setCmTypes
+   * @description some bookkeeping for sorting later on the various client media types and
+   * index within display order
    * 
    * @param {Object} node 
    * @param {String} mediaType 
    */
-  setTypes(node, mediaType) {
+   setCmTypes(node, mediaType) {
     node._.clientMedia.mediaType = mediaType;
     node._.clientMedia.displayType = this.getDisplayType(node);
     node._.clientMedia.fileType = this.getFileType(node, node._.clientMedia.displayType);
+
+    node._.clientMedia.displayTypeIndex = definition.DISPLAY_ORDER.DISPLAY_TYPES.indexOf(node._.clientMedia.displayType);
+    
+    let fileTypeOrdering = definition.DISPLAY_ORDER.FILE_TYPES[node._.clientMedia.displayType];
+    if( fileTypeOrdering ) {
+      node._.clientMedia.fileTypeIndex = fileTypeOrdering.indexOf(node._.clientMedia.fileType);
+    } else {
+      node._.clientMedia.fileTypeIndex = 0;
+    }
   }
 
   /**
@@ -142,7 +182,8 @@ class ClientMedia {
    * @returns {String}
    */
   getMediaType(node) {
-    return definition.MEDIA_TYPES.find(type => node['@type'].includes(type));
+    let type = definition.MEDIA_TYPES.find(type => node['@type'].includes(type)) || '';
+    return type.split(/(#|\/)/).pop();
   }
 
   /**
@@ -155,10 +196,10 @@ class ClientMedia {
    * @returns {String}
    */
   getDisplayType(node) {
-    let mediaType = this.getMediaType(type);
+    let mediaType = this.getMediaType(node);
     if( mediaType ) {
       let displayType = mediaType.replace(/(object|streaming)/ig, '').toLowerCase();
-      if( displayType !== 'media' ) return; 
+      if( displayType !== 'media' ) return displayType;
     }
 
     if( node.hasMimeType ) {
@@ -186,13 +227,28 @@ class ClientMedia {
    * @returns 
    */
   getFileType(node, displayType) {
+    // crawl for first item in list
     if( displayType.match('list') ) {
-      // TODO: check for hasPart, and use definitions.CRAWL_LINKS
-      node = this.getNode(node.hasPart[0]);
+
+      let found = false;
+      for( let link of definition.CRAWL_LINKS ) {
+        if( !node[link] ) continue;
+        node = this.getNode(node[link][0]);
+        if( node ) {
+          found = true;
+          break;
+        }
+      }
+
+      if( !found ) return '';
     }
 
-    let parts = node['@id'].split('/').pop().split('.');
-    if( parts.length ) return parts.pop();
+    let parts;
+
+    if( node.fileFormat ) {
+      parts = node.fileFormat.split('/');
+      if( parts.length ) return parts[1];
+    }
 
     if( node.hasMimeType ) {
       parts = node.hasMimeType.split('/');
@@ -202,6 +258,14 @@ class ClientMedia {
     if( node.encodingFormat ) {
       parts = node.encodingFormat.split('/');
       if( parts.length ) return parts[1];
+    }
+
+    parts = node['@id'].split('/').pop().split('.');
+    if( parts.length > 1 ) return parts.pop();
+
+    if( node.filename ) {
+      parts = node.filename.split('.');
+      if( parts.length > 1 ) return parts.pop();
     }
 
     return '';

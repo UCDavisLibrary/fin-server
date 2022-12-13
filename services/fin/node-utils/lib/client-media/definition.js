@@ -32,7 +32,7 @@ const MEDIA_TYPES = [
 
 const DISPLAY_ORDER = {
   // order of precedence for display types
-  displayTypes : [
+  DISPLAY_TYPES : [
     'pdf',
     'imagelist',
     'video',
@@ -41,7 +41,7 @@ const DISPLAY_ORDER = {
   ],
 
   // sort within media types
-  fileTypes : {
+  FILE_TYPES : {
     image : [
       // sometimes pdf's are marked as image display types
       'pdf', 
@@ -56,7 +56,6 @@ const DISPLAY_ORDER = {
       'video'
     ]
   }
-
 
 }
 

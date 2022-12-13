@@ -5,6 +5,7 @@ const config = require('../config');
 const seo = require('@ucd-lib/fin-service-utils/lib/seo');
 const graphConcat = seo.graphConcat;
 const RecordGraph = require('../utils/RecordGraph.js').default;
+const ClientMedia = require('../../../../../node-utils/lib/client-media/model.js');
 
 class RecordService extends BaseService {
 
@@ -23,7 +24,11 @@ class RecordService extends BaseService {
       url : `${this.baseUrl}${id}?root=true`,
       checkCached : () => this.store.getRecord(id),
       onLoading : request => this.store.setRecordLoading(id, request),
-      onLoad : result => this.store.setRecordLoaded(id, new RecordGraph(result.body)),
+      onLoad : result => {
+        let rg = new RecordGraph(result.body);
+        rg.clientMedia = new ClientMedia(id, result.body.node);
+        this.store.setRecordLoaded(id, rg);
+      },
       onError : e => this.store.setRecordError(id, e)
     });
   }
@@ -59,7 +64,11 @@ class RecordService extends BaseService {
       onLoading : promise => this.store.setSearchLoading(searchDocument,  promise),
       onLoad : result => {
         if( result.body.results ) {
-          result.body.results = result.body.results.map(record => new RecordGraph(record));
+          result.body.results = result.body.results.map(record => {
+            let rg = new RecordGraph(record);
+            rg.clientMedia = new ClientMedia(record.id, record);
+            return rg;
+          });
         }
         result.body.results.map(item => item.getChildren(item.root))
         this.store.setSearchLoaded(searchDocument, result.body)
