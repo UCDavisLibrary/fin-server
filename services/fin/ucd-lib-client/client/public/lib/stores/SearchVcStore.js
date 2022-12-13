@@ -1,7 +1,7 @@
 const {BaseStore} = require('@ucd-lib/cork-app-utils');
 const clone = require('clone');
 
-class RecordSearchVCStore extends BaseStore {
+class SearchVcStore extends BaseStore {
 
   constructor() {
     super();
@@ -16,7 +16,7 @@ class RecordSearchVCStore extends BaseStore {
     }
 
     this.events = {
-      RECORD_SEARCH_VC_UPDATE : 'record-search-vc-update',
+      SEARCH_VC_UPDATE : 'search-vc-update',
     }
 
   }
@@ -136,4 +136,4 @@ class RecordSearchVCStore extends BaseStore {
 
 }
 
-module.exports = new RecordSearchVCStore();
+module.exports = new SearchVcStore();

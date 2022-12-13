@@ -1,8 +1,8 @@
-import { html } from 'lit';
+import { html, unsafeCSS } from 'lit';
 
 import { sharedStyles } from "../../styles/shared-styles";
 import SharedHtml from '../../utils/shared-html';
-
+import jsonStyles from 'json-formatter-js/dist/json-formatter.css';
 import linksCss from "@ucd-lib/theme-sass/1_base_html/_links.css";
 import buttonsCss from "@ucd-lib/theme-sass/2_base_class/_buttons.css";
 import headingsCss from "@ucd-lib/theme-sass/2_base_class/_headings.css";
@@ -14,11 +14,12 @@ export default function render() {
     ${linksCss}
     ${buttonsCss}
     ${headingsCss}
-
+    ${unsafeCSS(jsonStyles)}
     :host {
       display: block;
       position: relative;
       font-size: .9rem;
+      width: 100vw;
     }
 
     :host > div {
@@ -42,12 +43,13 @@ export default function render() {
 
     .title-section {
       display: flex;
-      min-height: 550px;
+      min-height: 42vw;
     }
 
     .title-section > div {
       flex: 1;
       padding: 2rem;
+      width: 50%;
     }
 
     .collection-header {
@@ -68,14 +70,20 @@ export default function render() {
       z-index: 1;
       position: absolute;
       top: 0;
-      left: 5rem;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
     }
 
     .featured-image {
       z-index: 50;
       position: absolute;
-      top: 100px;
-      left: 11rem;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
       transform: rotate(356deg)
     }
 
@@ -83,7 +91,10 @@ export default function render() {
       z-index: 100;
       position: absolute;
       top: 0;
-      left: 5rem;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
     }
 
     .content-warning {
@@ -93,9 +104,9 @@ export default function render() {
     }
 
     .detail-section {
+      line-height: 1.7rem;
       width: 60%;
       margin: 0 auto;
-      line-height: 1.7rem;
     }
 
     .description {
@@ -139,9 +150,8 @@ export default function render() {
 
     .citation {
       background-color: var(--color-aggie-blue-30);
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      grid-gap: 1rem;
+      display: flex;
+      width: 100vw;
     }
 
     .citation a {
@@ -175,6 +185,7 @@ export default function render() {
 
     .cite-graphic {
       margin: auto;
+      width: 33%;
     }
 
     .citation .header-dots {
@@ -183,6 +194,8 @@ export default function render() {
 
     .cite-collection {
       margin: auto;
+      width: 67%;
+      padding: 2rem;
     }
 
     .cite-collection h2,
@@ -192,6 +205,23 @@ export default function render() {
 
     .cite-collection p {
       margin-bottom: 3rem;
+    }
+
+    .admin-heading {
+      margin-top: 5rem;
+      text-align: center;
+    }
+
+    .admin-content {
+      border-style: inset;
+      border-color: rgb(235, 243, 250);
+      margin: 2rem;
+    }
+
+    .admin-box-title {
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
     }
 
     @media (min-width: 767px) {
@@ -209,14 +239,44 @@ export default function render() {
         margin-left: 0;
       }
     }
+
+    @media (max-width: 600px) {
+      
+      .title-section {
+        display: block;
+        min-height: 90vh;
+      }
+
+      .title-section > div {
+        width: 80%;
+        margin: auto;
+        height: 30vh;
+      }
+      
+      .detail-section {
+        width: 80%;
+      }
+
+      .citation {
+        display: block;
+      }
+
+      .cite-graphic,
+      .cite-collection {
+        width: 80%;
+        padding-top: 0;
+      }
+
+    }
+
     
   </style>
   
     <div class="title-section">
       <div class="image-overlay">
-        <img class="watercolor-bg" src="/images/watercolors/collection-watercolor-thiebaud-icing-back.png" height="500px" alt="something" />
-        <img class="featured-image" src="/images/stub/amerine.jpg" height="300px" alt="something" />
-        <img class="watercolor-fg" src="/images/watercolors/collection-watercolor-thiebaud-icing-front.png" height="500px" alt="something" />
+        <img class="watercolor-bg" src="/images/watercolors/collection-watercolor-thiebaud-icing-back.png" width="100%" alt="something" />
+        <img class="featured-image" src="/images/stub/amerine.jpg" width="60%" alt="something" />
+        <img class="watercolor-fg" src="/images/watercolors/collection-watercolor-thiebaud-icing-front.png" width="100%" alt="something" />
       </div>
       <div class="collection-header">
         <h1>Amerine (Maynard) Menu Collection</h1>
@@ -234,10 +294,10 @@ export default function render() {
         Maynard A. Amerine (1911-1998) was Professor of Viticulture and Enology at the University of California, Davis. He was an author, lecturer, bibliographer, and consultant on wine matters. This collection of over 1,500 menus and wine lists complements Amerine’s larger wine label collection. It spans several decades and chronicles dining experiences in United States and European restaurants, at bon voyage and welcome home celebrations, at UC Davis Department of Enology events and parties, at meetings of food and wine societies, aboard ships and airlines, and more. Menu styles vary from simple lists of items and prices to hand-illustrated works of art. Some menus are pristine, while others bear the marks of their use through stains of food and drink, personal notes on the wine selection, or the collected signatures of organizers and guests.
       </p>
 
-      <div style="margin-bottom: 1rem;">
+      <div style="margin-bottom: .4rem;">
         <span class="label">Coverage: </span> Date
       </div>
-      <div style="margin-bottom: 1rem;">
+      <div style="margin-bottom: .4rem;">
         <span class="label">Subjects: </span> <a href="">Keyword</a>, <a href="">Keyword</a>
       </div>
       <div style="margin-bottom: 3rem;">
@@ -266,7 +326,7 @@ export default function render() {
 
     <div class="citation">
       <div class="cite-graphic">
-        <img src="/images/watercolors/citation-watercolor-800px-square.png" height="400px" alt="cite this collection image" />
+        <img src="/images/watercolors/citation-watercolor-800px-square.png" width="100%" alt="cite this collection image" />
       </div>
       <div class="cite-collection">
         <h2>Cite This Collection</h2>
@@ -284,6 +344,12 @@ export default function render() {
         <a href="" class="btn btn-copy">Copy Text</a>
 
       </div>
+    </div>
+
+    <h2 class="admin-heading">Admin ${this.collectionId}</h2>
+    <div class="admin-content">
+      <h4 class="admin-box-title">essync</h4>
+      <!-- json injected admin data -->
     </div>
   
   `;}

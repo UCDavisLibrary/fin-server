@@ -11,7 +11,7 @@ class RecordService extends BaseService {
   constructor() {
     super();
     this.store = RecordStore;
-    this.baseUrl = '/api/records';
+    this.baseUrl = '/api/item';
   }
 
   setModel(model) {
@@ -48,7 +48,7 @@ class RecordService extends BaseService {
     }
 
     return this.request({
-      url : `${this.baseUrl}/search${debug ? '?debug=true' : ''}`,
+      url : `${this.baseUrl}${debug ? '?debug=true' : ''}`,
       fetchOptions : {
         method : 'POST',
         headers : {
@@ -87,7 +87,7 @@ class RecordService extends BaseService {
 
     return new Promise((resolve, reject) => {
       this.request({
-        url : `${this.baseUrl}/search`,
+        url : `${this.baseUrl}`,
         fetchOptions : {
           method : 'POST',
           headers : {
@@ -112,7 +112,7 @@ class RecordService extends BaseService {
    */
   defaultSearch(id, searchDocument = {}) {
     return this.request({
-      url : `${this.baseUrl}/search?debug=true`,
+      url : `${this.baseUrl}?debug=true`,
       fetchOptions : {
         method : 'POST',
         headers : {

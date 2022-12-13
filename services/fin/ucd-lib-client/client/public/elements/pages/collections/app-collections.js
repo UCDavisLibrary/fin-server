@@ -3,7 +3,7 @@ import { LitElement} from 'lit';
 import "@ucd-lib/fin-search-box";
 import "../../utils/app-collection-card";
 
-import "@polymer/iron-icons";
+// import "@polymer/iron-icons";
 
 import "../../components/graphics/dams-watercolor";
 import "../../components/graphics/dams-watercolor-overlay";
@@ -15,32 +15,27 @@ import "../../components/filterButton";
 import "../../components/radioButton";
 import "../../components/pagination";
 
-
 import render from './app-collections.tpl.js';
-
-import RecordInterface from "../../interfaces/RecordInterface"; 
-import AppStateInterface from "../../interfaces/AppStateInterface";
-import CollectionInterface from "../../interfaces/CollectionInterface";
 
 /**
  * @class AppHome
  * @description home page is rendered to the DAMS v2
  */
 class AppCollections extends Mixin(LitElement)
-  .with(EventInterface, RecordInterface, AppStateInterface, CollectionInterface) {
+  .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      hasPagination: {type: Boolean},
-      pgPer: {type: Number},
-      pgCurrent: {type: Number},
-      items: {type: Array},
-      itemsStatus: {type: String},
-      itemsTotal: {type: Number},
-      count : {type : String},
-      choices: {
-        type: Array
-      },
+      // hasPagination: {type: Boolean},
+      // pgPer: {type: Number},
+      // pgCurrent: {type: Number},
+      collections: {type: Array},
+      collectionsStatus: {type: String},
+      collectionsTotal: {type: Number},
+      // count : {type : String},
+      // choices: {
+      //   type: Array
+      // },
     };
   }
 
@@ -48,25 +43,17 @@ class AppCollections extends Mixin(LitElement)
     super();
     this.render = render.bind(this);
     this.active = true;
-    this.items = [];
-    this.itemsTotal = 17;
-  }
 
-  /**
-   * @method ready
-   * @description It gets the model information for the Collections when 
-   * function is fired.
-   * 
-   */
-  // async ready() {
-  //   super.ready();
-  //   this._setCollections(await this.CollectionModel.overview());
-  // }
+    this.collections = [];
+    this.collectionsTotal = 0;
+
+    this._injectModel('AppStateModel', 'SearchVcModel', 'CollectionModel');
+  }
 
   async firstUpdated() {
     this._setCollections(await this.CollectionModel.overview());
-
   }
+
   /**
    * @method _onAppStateUpdate
    * @description on the App update, the state is determined and by checking
@@ -128,9 +115,9 @@ class AppCollections extends Mixin(LitElement)
    */
   _onSearch(e) {
 
-    let searchDoc = this._getEmptySearchDocument();
-    this._setTextFilter(searchDoc, e.detail);
-    this.RecordModel.setSearchLocation(searchDoc);
+    // let searchDoc = this._getEmptySearchDocument();
+    // this._setTextFilter(searchDoc, e.detail);
+    // this.RecordModel.setSearchLocation(searchDoc);
   }
 
   /**

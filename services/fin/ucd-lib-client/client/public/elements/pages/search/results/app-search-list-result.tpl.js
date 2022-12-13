@@ -21,25 +21,21 @@ return html`
   .img {
     height: 250px;
     width: var(--grid-cell-width);
-    background-size: cover;
-    background-color: white;
+    background-size: contain;
     background-position: center center;
+    background-repeat: no-repeat;
   }
 
   .collection-title {
     color: var(--color-aggie-blue-80);
     font-weight: bold;
+    border-bottom: 6px dotted var(--color-dams-secondary); 
+    padding: .5rem 0;
   }
 
   .year {
     color: var(--gray-text);
     flex: 1;
-  }
-
-  .spacer {
-    flex: 1;
-    border-bottom: 6px dotted var(--color-dams-secondary); 
-    padding: .4rem;
   }
 
   .footer {
@@ -106,19 +102,19 @@ return html`
 </style>
 
 <div class="layout">
-  <div style="background-image: url('${this.imgUrl}')" ?hidden="${!this.isImage}" class="img" ></div>
+  <div style="background-image: url('${this.data.thumbnailUrl}')" class="img" ></div>
 
   <div class="data">
     <div class="flex-vertical">
-      <div class="collection-title">${this.title}</div>
+      <div class="collection-title">${this.data.title}</div>
       
-      <div class="spacer"></div>
+      <!-- <div class="spacer"></div> -->
 
       <div class="collection-details">
-        <p><span class="label">Collection:</span> ${this.collectionName}</p>
-        <p><span class="label">Creator:</span> ${this.creator}</p>
-        <p><span class="label">Date:</span> ${this.date}</p>
-        <p><span class="label">Format:</span> ${this.format}</p>
+        <p><span class="label">Collection:</span> ${this.data.collectionName}</p>
+        <p><span class="label">Creator:</span> ${this.data.creator}</p>
+        <p><span class="label">Date:</span> ${this.data.date}</p>
+        <p><span class="label">Format:</span> ${this.data.format}</p>
       </div>
       
     </div>

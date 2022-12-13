@@ -76,7 +76,7 @@ class AppSearchResultsPanel extends Mixin(LitElement)
     this.resizeTimer = -1;
     window.addEventListener('resize', () => this._resizeAsync());
 
-    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'MediaModel', 'RecordSearchVCModel');
+    this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'MediaModel', 'SearchVcModel');
     this.EventBus().on('show-collection-search-results', show => this._updateCollectionResultsVisibility(show));
   }
 
@@ -243,6 +243,8 @@ class AppSearchResultsPanel extends Mixin(LitElement)
     let w = firstDiv.offsetWidth + 25;
 
     let numCols = Math.max(Math.floor(ew / w), 1);
+    if( numCols > 3 ) numCols = 3;
+
     // this makes sure columns are centered
     let leftOffset = Math.floor((ew - numCols * w) / 2);
 
@@ -359,24 +361,12 @@ class AppSearchResultsPanel extends Mixin(LitElement)
   }
 
   /**
-   * @method _onSearchCollectionUpdate
-   * @description from CollectionInterface, called when a collection search state
-   * is updated.
-   * 
-   * @param {Object} e 
-   */
-  // _onCollectionSearchUpdate(e) {
-  //   if( e.state !== 'loaded' ) return;
-  //   this.collectionResults = e.payload.results;
-  // }
-
-  /**
-   * @description _onRecordSearchVcUpdate, fired when record search viewController updates
+   * @description _onSearchVcUpdate, fired when record search viewController updates
    * @param {*} e 
    */
-   _onRecordSearchVcUpdate(e) {
+   _onSearchVcUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this.collectionResults = e.payload.results.filter(c => c.collection);
+    this.collectionResults = e.payload.searchVcResults.filter(c => c.collection);
   }
 
   /**
@@ -387,11 +377,25 @@ class AppSearchResultsPanel extends Mixin(LitElement)
    */
   _onCollectionClicked(e) {
     if( e.type === 'keyup' && e.which !== 13 ) return;
-    let id = e.currentTarget.collection['@id']
 
-    let searchDoc = this._getEmptySearchDocument();
-    this._setKeywordFilter(searchDoc, 'isPartOf.@id', id);
-    this.RecordModel.setSearchLocation(searchDoc);
+    const location = e.target.dataset.collectionid;
+    if( location ) {
+      this.AppStateModel.setLocation(location);
+    }
+  }
+
+  /**
+   * @method _onRecordClicked
+   * @description bound to click events of the search result record cards/list items
+   * 
+   * @param {Object} e click|keyup event
+   */
+  _onRecordClicked(e) {
+    if( e.type === 'keyup' && e.which !== 13 ) return;
+    const location = e.target.dataset.itemid;
+    if( location ) {
+      this.AppStateModel.setLocation(location);
+    }
   }
 
 }
