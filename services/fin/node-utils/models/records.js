@@ -36,7 +36,10 @@ class RecordsModel extends ElasticSearchModel {
       size: 1,
       query: {
         bool : {
-          filter : [{term: {'node.@id': id}}]
+          filter : [
+            {term : {'node.identifier.raw' : id}},
+            {term: {'node.@id': id}}
+          ]
         }
       }
     }, {

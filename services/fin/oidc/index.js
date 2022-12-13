@@ -9,7 +9,8 @@ app.use(auth({
   issuerBaseURL: config.oidc.baseUrl,
   baseURL: config.server.url,
   clientID: config.oidc.clientId,
-  secret: config.oidc.secret,
+  clientSecret: config.oidc.secret,
+  secret : config.jwt.secret,
   routes : {
     callback : '/auth/keycloak-oidc/callback',
     login : '/auth/keycloak-oidc/login',
@@ -17,7 +18,8 @@ app.use(auth({
     postLogoutRedirect : '/auth/keycloak-oidc/postLogoutRedirect'
   },
   authorizationParams: {
-    scope : 'roles openid profile email'
+    response_type: 'code',
+    scope : 'idp roles openid profile email acr'
   },
   idpLogout: true,
   afterCallback : (req, res, session, decodedState) => {
