@@ -36,7 +36,7 @@ class RecordsModel extends ElasticSearchModel {
       size: 1,
       query: {
         bool : {
-          filter : [
+          should : [
             {term : {'node.identifier.raw' : id}},
             {term: {'node.@id': id}}
           ]
@@ -114,42 +114,42 @@ class RecordsModel extends ElasticSearchModel {
    * 
    * @returns {Object|null}
    */
-  async getByArk(id) {
-    let result = await es.search({
-      index: config.elasticsearch.record.alias,
-      body : {
-        query : {
-          bool : {
-            filter : [
-              {term : {'identifier.raw' : id}},
-              {term : {isRootRecord : true}}
-            ]
-          }
-        }
-      },
-      _source_excludes : config.elasticsearch.fields.exclude,
-    });
+  // async getByArk(id) {
+  //   let result = await es.search({
+  //     index: config.elasticsearch.record.alias,
+  //     body : {
+  //       query : {
+  //         bool : {
+  //           filter : [
+  //             {term : {'identifier.raw' : id}},
+  //             {term : {isRootRecord : true}}
+  //           ]
+  //         }
+  //       }
+  //     },
+  //     _source_excludes : config.elasticsearch.fields.exclude,
+  //   });
 
-    // see if its a collection
-    if( result.hits.total === 0 )  {
-      result = await es.search({
-        index : config.elasticsearch.collection.alias,
-        body : {
-          query : {
-            bool : {
-              filter : [
-                {term : {'identifier.raw' : id}},
-              ]
-            }
-          }
-        },
-        _source_excludes : config.elasticsearch.fields.exclude
-      });
-    }
+  //   // see if its a collection
+  //   if( result.hits.total === 0 )  {
+  //     result = await es.search({
+  //       index : config.elasticsearch.collection.alias,
+  //       body : {
+  //         query : {
+  //           bool : {
+  //             filter : [
+  //               {term : {'identifier.raw' : id}},
+  //             ]
+  //           }
+  //         }
+  //       },
+  //       _source_excludes : config.elasticsearch.fields.exclude
+  //     });
+  //   }
 
-    if( result.hits.total === 0 ) return null;
-    return result.hits.hits[0]._source;
-  }
+  //   if( result.hits.total === 0 ) return null;
+  //   return result.hits.hits[0]._source;
+  // }
 
   /**
    * @method _fillGraphRecord

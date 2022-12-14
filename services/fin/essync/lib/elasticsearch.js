@@ -238,78 +238,16 @@ class ElasticSearchModel {
    * @returns {Promise}
    */
   async remove(path='') {
-    // check collection
-    let exists = await this.esClient.exists({
-      index : config.elasticsearch.collection.alias,
-      id : path
-    });
+    let type = path.replace(/^\//, '').split('/')[0];
 
-    if( exists ) {
-      logger.info(`ES Indexer removing collection container: ${path}`);
-      try {
-        await this.esClient.delete({
-          index : config.elasticsearch.collection.alias,
-          id : path
-        });
-  
-      } catch(e) {
-        logger.error('Failed to remove collection container from elasticsearch: '+path, e);
-      }
-    }
-
-    // check container
-    let containerStatus = await postgres.getStatus(path);
-    let containerRecordId = null, containerRecordPath = null;
-    if( containerStatus && containerStatus.es_response ) {
-      containerRecordId = containerStatus.es_response._id;
-      containerRecordPath = containerStatus.es_response['@id'] || path;
-    }
-
-    if( containerRecordId && containerRecordId !== path ) {
-      exists = await this.esClient.exists({
-        index : config.elasticsearch.record.alias,
-        id : containerRecordId
-      });
-      if( exists ) {
-        logger.info(`ES Indexer removing record container: ${containerRecordId} => ${containerRecordPath}`);
-        
-        try {  
-          await this.esClient.update({
-            index : config.elasticsearch.record.alias,
-            id : containerRecordId,
-            script : {
-              source : `ctx._source.node.removeIf((Map item) -> { item['@id'] == params['id'] });`,
-              params : {id: containerRecordPath}
-            }
-          });
-        } catch(e) {
-          logger.error(`Failed to remove record container from elasticsearch: ${containerRecordId} => ${containerRecordPath}`, e);
-        }
-      }
-    } else {
-      exists = await this.esClient.exists({
-        index : config.elasticsearch.record.alias,
-        id : path
-      });
-      if( exists ) {
-        logger.info(`ES Indexer removing record container: ${path}`);
-        
-        try {
-          // start the timer for the attribute reducing
-  
-          await this.esClient.delete({
-            index : config.elasticsearch.record.alias,
-            id : path
-          });
-    
-        } catch(e) {
-          logger.error('Failed to remove record container from elasticsearch: '+path, e);
-        }
-      }
+    if( type === 'collection' || type === 'item' ) {
+      if( type === 'item' ) type = 'record';
+      await this._remove(path, type);
+      return;
     }
 
     // check application
-    exists = await this.esClient.exists({
+    let exists = await this.esClient.exists({
       index : config.elasticsearch.application.alias,
       id : path
     });
@@ -326,6 +264,68 @@ class ElasticSearchModel {
         logger.error('Failed to remove application container from elasticsearch: '+path, e);
       }
     }
+  }
+
+  async _remove(path, type) {
+    // find container
+    let body = {
+      from: 0,
+      size: 100,
+      query: {
+        bool : {
+          filter : [
+            {term: {'node.@id': path}}
+          ]
+        }
+      }
+    };
+
+    let response = await this.esClient.search({
+      index : config.elasticsearch[type].alias,
+      body
+    });
+
+    let hits = [];
+    if( response.hits && response.hits.hits ) {
+      hits = response.hits.hits;
+    }
+
+    if( !hits.length ) return;
+
+    for( let doc of hits ) {
+      logger.info(`ES Indexer removing ${type} container: ${path} from ${doc._id}`);
+        
+      try {  
+        await this.esClient.update({
+          index : config.elasticsearch[type].alias,
+          id : doc._id,
+          script : {
+            source : `ctx._source.node.removeIf((Map item) -> { item['@id'] == params['id'] });`,
+            params : {id: path}
+          }
+        });
+
+        // now see if document is empty
+        response = await this.esClient.get({
+          index : config.elasticsearch[type].alias,
+          id : doc._id
+        });
+        
+        // if the document is empty, remove
+        if( response._source && response._source.node && response._source.node.length === 0 ) {
+          logger.info(`ES Indexer removing ${type} document: ${doc._id}.  No nodes left in graph`);
+          await this.esClient.delete({
+            index : config.elasticsearch[type].alias,
+            id : doc._id
+          });
+        }
+
+      } catch(e) {
+        logger.error(`Failed to remove ${type} container from elasticsearch: ${path} from ${doc._id}`, e);
+      }
+    }
+
+
   }
 
   /**

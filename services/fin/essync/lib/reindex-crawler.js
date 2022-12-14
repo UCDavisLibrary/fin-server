@@ -68,12 +68,21 @@ class ReindexCrawler {
 
     let mainNode = graph.find(item => item['@id'].match(api.getConfig().fcBasePath+path.replace(/\/fcr:metadata$/,'')));
     if( !mainNode ) return;
+    
+    // patch in all graph types
+    let types = new Set();
+    graph.forEach(node => {
+      if( !node['@type'] ) return;
+      node['@type'].forEach(type => types.add(type));
+    });
+    mainNode['@type'] = Array.from(types);
 
     // hack events for binary containers.
     if( mainNode['@type'] && mainNode['@type'].includes(BINARY) ) {
       mainNode['@id'] = mainNode['@id'] + '/fcr:metadata';
       mainNode['@type'].splice(mainNode['@type'].indexOf(BINARY), 1);
     }
+
     this.sendReindexEvent(mainNode);
 
     for( let followProp of this.options.follow ) {
