@@ -18,6 +18,7 @@ class EsSync {
     }
 
     this.BINARY_CONTAINER = 'http://fedora.info/definitions/v4/repository#Binary';
+    this.FIN_IO_INDIRECT_CONTAINER = 'http://digital.ucdavis.edu/schema#FinIoIndirectReference';
 
     postgres.connect()
       .then(() => indexer.isConnected())
@@ -107,6 +108,17 @@ class EsSync {
         // JM - Not removing path, as the /fcr:metadata container is also mapped to this path
         // return indexer.remove(e.path);   
         return;
+      }
+
+      // check for fin io container
+      if( e.container_types.includes(this.FIN_IO_INDIRECT_CONTAINER) ) {
+        logger.info('Ignoring container '+e.path+'.  fin io indirect container');
+
+        e.action = 'ignored';
+        e.message = 'fin io indirect container';
+        await indexer.remove(e.path);
+        await postgres.updateStatus(e);
+        return;   
       }
 
       if( !e.container_types ) {

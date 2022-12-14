@@ -49,11 +49,17 @@ class CollectionsModel extends ElasticSearchModel {
    * 
    * @returns {Promise} resolves to elasticsearch result
    */
-  esSearch(body = {}) {
-    return es.search({
-      index : config.elasticsearch.collection.alias,
-      body : body
-    });
+  esSearch(body = {}, options={}) {
+    options.index = config.elasticsearch.collection.alias;
+    options.body = body;
+
+    if( options._source_excludes === false ) {
+      delete options._source_excludes;
+    } else {
+      options._source_excludes = config.elasticsearch.fields.exclude.join(',');
+    }
+
+    return es.search(options);
   }
 
   /**
@@ -69,12 +75,19 @@ class CollectionsModel extends ElasticSearchModel {
       opts = {seo: opts};
     }
 
+    console.log([
+          {term : {'node.identifier.raw' : id}},
+          {term: {'node.@id': id}}
+        ]);
     let result = await this.esSearch({
       from: 0,
       size: 1,
       query: {
         bool : {
-          filter : [{term: {'node.@id': id}}]
+          should : [
+            {term : {'node.identifier.raw' : id}},
+            {term: {'node.@id': id}}
+          ]
         }
       }
     }, {
