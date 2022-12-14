@@ -11,6 +11,13 @@ class AppCollection extends Mixin(LitElement)
     return {
       collectionId : { type : String },
       adminRendered : { type : Boolean },
+      description : { type : String },
+      title : { type : String },
+      thumbnailImg : { type : String },
+      keywords : { type : Array },    
+      items : { type : Array }, 
+      yearPublished : { type : Number }, 
+      highlightedCollections : { type : Array },
       essync : { type : Object }
     };
   }
@@ -22,8 +29,14 @@ class AppCollection extends Mixin(LitElement)
 
     this.collectionId = '';
     this.adminRendered = false;
+    this.description = '';
+    this.title = '';
+    this.thumbnailImg = '';
+    this.keywords = [];    
+    this.items = [];
+    this.yearPublished = 0;
+    this.highlightedCollections = [];
     this.essync = {};
-    
 
     this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'CollectionVcModel');
   }
@@ -46,11 +59,27 @@ class AppCollection extends Mixin(LitElement)
    * @description _onCollectionVcUpdate, fired when collection viewController updates
    * @param {*} e 
    */
-   _onCollectionVcUpdate(e) {
+   async _onCollectionVcUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this._showAdminPanel();
     
+    this.collectionId = e.payload.results.id;
+    this.description = e.payload.results.description
+    this.title = e.payload.results.title;
+    this.thumbnailImg = e.payload.results.thumbnailImg;
+    this.keywords = e.payload.results.keywords;
+    this.items = e.payload.results.items[0];
+    this.yearPublished = e.payload.results.yearPublished;
+    this.highlightedCollections = e.payload.results.highlightedCollections;
+    
+    const result = await this.RecordModel.defaultSearch(this.collectionId);
+    // const result = await this.RecordModel.get('/collection/sherry-lehmann/hasPart/ark:/87287/d7rw8x');
+    debugger;
 
+  }
+
+  onDefaultSearchUpdate(e) {
+    debugger;
   }
 
   /**

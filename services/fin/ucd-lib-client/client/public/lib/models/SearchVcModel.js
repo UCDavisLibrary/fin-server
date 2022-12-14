@@ -56,7 +56,7 @@ class SearchVcModel extends BaseModel {
         });
       });
 
-      e.payload.searchVcResults = matchedRecords;
+      e.payload.results = matchedRecords;
 
       // todo save translated data to store
       // todo this really will emit from this.store.setRecordSearchState() or similar

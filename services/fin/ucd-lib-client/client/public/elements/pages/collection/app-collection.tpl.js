@@ -268,20 +268,19 @@ export default function render() {
       }
 
     }
-
     
   </style>
   
     <div class="title-section">
       <div class="image-overlay">
         <img class="watercolor-bg" src="/images/watercolors/collection-watercolor-thiebaud-icing-back.png" width="100%" alt="something" />
-        <img class="featured-image" src="/images/stub/amerine.jpg" width="60%" alt="something" />
+        <img class="featured-image" src="${this.thumbnailImg}" width="60%" alt="something" />
         <img class="watercolor-fg" src="/images/watercolors/collection-watercolor-thiebaud-icing-front.png" width="100%" alt="something" />
       </div>
       <div class="collection-header">
-        <h1>Amerine (Maynard) Menu Collection</h1>
+        <h1>${this.title}</h1>
         <h3>Collection #D-060</h3>
-        <a href="${this._href}" class="btn--alt btn--round">View 42 items</a>
+        <a href="${this._href}" class="btn--alt btn--round">View ${this.items.length} items</a>
       </div>
     </div>
 
@@ -291,14 +290,15 @@ export default function render() {
         There may be occurences of language, positions and values that do not align with our current values and practices at UC Davis.
       </div>
       <p class="description">
-        Maynard A. Amerine (1911-1998) was Professor of Viticulture and Enology at the University of California, Davis. He was an author, lecturer, bibliographer, and consultant on wine matters. This collection of over 1,500 menus and wine lists complements Amerine’s larger wine label collection. It spans several decades and chronicles dining experiences in United States and European restaurants, at bon voyage and welcome home celebrations, at UC Davis Department of Enology events and parties, at meetings of food and wine societies, aboard ships and airlines, and more. Menu styles vary from simple lists of items and prices to hand-illustrated works of art. Some menus are pristine, while others bear the marks of their use through stains of food and drink, personal notes on the wine selection, or the collected signatures of organizers and guests.
+        ${this.description}
       </p>
 
       <div style="margin-bottom: .4rem;">
-        <span class="label">Coverage: </span> Date
+        <span class="label">Coverage: </span> ${this.yearPublished}
       </div>
       <div style="margin-bottom: .4rem;">
-        <span class="label">Subjects: </span> <a href="">Keyword</a>, <a href="">Keyword</a>
+        <span class="label">Subjects: </span> 
+        ${this.keywords.map((item, index) => html`${index > 0 ? ', ' : ''}<a href="">${item}</a>`)}
       </div>
       <div style="margin-bottom: 3rem;">
         <span class="label">Finding Aid: </span> <a href="">Online Archive of California</a>
@@ -310,14 +310,14 @@ export default function render() {
       ${ SharedHtml.headerDots() }
       
       <div class="card-trio">
-        <dams-item-card .collection="${{}}"></dams-item-card>
-        <dams-item-card .collection="${{}}"></dams-item-card>
-        <dams-item-card .collection="${{}}"></dams-item-card>
+        ${this.highlightedCollections.map((item, index) => html`
+          ${index < 3 ? html`<dams-item-card .data="${item}"></dams-item-card>` : ''}
+        `)}
       </div>
       <div class="card-trio">
-        <dams-item-card .collection="${{}}"></dams-item-card>
-        <dams-item-card .collection="${{}}"></dams-item-card>
-        <dams-item-card .collection="${{}}"></dams-item-card>
+        ${this.highlightedCollections.map((item, index) => html`
+          ${index >= 3 ? html`<dams-item-card .data="${item}"></dams-item-card>` : ''}
+        `)}
       </div>
 
       <a href="" class="btn btn--primary">View all collection items</a>

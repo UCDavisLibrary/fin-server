@@ -121,7 +121,16 @@ class RecordService extends BaseService {
         body : JSON.stringify(searchDocument)
       },
       onLoading : promise => this.store.setDefaultSearchLoading(id, searchDocument, promise),
-      onLoad : result => this.store.setDefaultSearchLoaded(id, searchDocument, result.body),
+      // onLoad : result => this.store.setDefaultSearchLoaded(id, searchDocument, result.body),
+
+      onLoad : result => {
+        if( result.body.results ) {
+          result.body.results = result.body.results.map(record => new RecordGraph(record));
+        }
+        result.body.results.map(item => item.getChildren(item.root))
+        this.store.setDefaultSearchLoaded(id, searchDocument, result.body)
+      },
+
       onError : e => this.store.setDefaultSearchError(id, searchDocument, e)
     });
   }
