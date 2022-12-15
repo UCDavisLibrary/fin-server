@@ -3,6 +3,7 @@ const config = require('../config');
 const ElasticSearchModel = require('./elasticsearch');
 const PG = require('../lib/pg');
 const api = require('@ucd-lib/fin-api');
+const utils = require('./utils.js');
 
 const pg = new PG();
 pg.connect();
@@ -31,6 +32,11 @@ class CollectionsModel extends ElasticSearchModel {
     let esBody = this.searchDocumentToEsBody(searchDocument);
     let esResult = await this.esSearch(esBody);
     let result = this.esResultToDamsResult(esResult);
+
+    result.results = result.results.forEach(item => {
+      if( options.compact ) utils.compactAllTypes(item);
+      if( options.singleNode ) item.node = utils.singleNode(item.id, item.node);
+    });
     
     if( options.debug ) {
       result.searchDocument = searchDocument;
@@ -54,7 +60,9 @@ class CollectionsModel extends ElasticSearchModel {
     options.body = body;
 
     if( options._source_excludes === false ) {
-      delete options._source_excludes;
+      delete options._source_excludes; 
+    } else if( options._source_excludes === 'compact' ) {
+      options._source_excludes = config.elasticsearch.fields.excludeCompact.join(',');
     } else {
       options._source_excludes = config.elasticsearch.fields.exclude.join(',');
     }
@@ -75,10 +83,10 @@ class CollectionsModel extends ElasticSearchModel {
       opts = {seo: opts};
     }
 
-    console.log([
-          {term : {'node.identifier.raw' : id}},
-          {term: {'node.@id': id}}
-        ]);
+    let _source_excludes = true;
+    if( opts.admin ) _source_excludes = false;
+    else if( opts.compact ) _source_excludes = 'compact';
+
     let result = await this.esSearch({
       from: 0,
       size: 1,
@@ -91,11 +99,13 @@ class CollectionsModel extends ElasticSearchModel {
         }
       }
     }, {
-      _source_excludes : (opts.admin === true) ? false : true
+      _source_excludes
     });
 
     if( result.hits.total.value === 1 ) {
       result = result.hits.hits[0]._source;
+      if( opts.compact ) utils.compactAllTypes(result);
+      if( opts.singleNode ) result.node = utils.singleNode(id, result.node);
     } else {
       result = {};
     }

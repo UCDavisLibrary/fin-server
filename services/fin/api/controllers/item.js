@@ -16,7 +16,9 @@ router.post('/', async (req, res) => {
   try {
     res.json(await model.search(req.body, {
       allRecords: req.query.all, 
-      debug: req.query.debug
+      debug: req.query.debug,
+      compact : req.query.compact ? true : false,
+      singleNode : req.query['single-node'] ? true : false
     }));
   } catch(e) {
     res.json(utils.errorResponse(e, 'Error with search query'));
@@ -34,32 +36,18 @@ router.get('/files/*', async (req, res) => {
 });
 
 router.get('/*', async (req, res) => {
-  let id = '/item'+req.path;
+  let id = '/item'+decodeURIComponent(req.path);
 
   if( !id ) {
     return res.json({error: true, message: 'no id sent'});
   }
 
   try {
-    if( id.match(/^\/(ark|doi):*/) ) {
-      let info = id.split(idRegExp);
-      info = {
-        id : req.url.match(idRegExp)[0],
-        type : info[1],
-        suffix : info[2]
-      }
-
-      let result = await model.getByArk(info.id);
-      if( !result ) {
-        return res.status(404).json({error: true, message: 'unknown ark/doi: '+id})
-      }
-      res.redirect('/api/'+result['@id']+info.suffix);
-      return;
-    }
-    
     let opts = {
       seo : (req.query.seo || req.query.schema) ? true : false,
-      admin : req.query.admin ? true : false
+      admin : req.query.admin ? true : false,
+      compact : req.query.compact ? true : false,
+      singleNode : req.query['single-node'] ? true : false
     }
 
     let result = await model.get(id, opts);
