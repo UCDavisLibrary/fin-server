@@ -103,9 +103,16 @@ module.exports = {
       alias : 'fin-applications',
       schemaType : 'fin-applications'
     },
+    compactTypeInclude : [
+      new RegExp('http://digital.ucdavis.edu/schema#'),
+      new RegExp('http://schema.org/')
+    ],
     fields : {
       exclude : ['node.indexableContent', 'node.indexableContents', 
-      'node.createdBy', 'node.lastModifiedBy', 'node.directParent', 'node._'],
+      'node.createdBy', 'node.lastModifiedBy', 'node.directParent', 'node._', 'node.textIndexable'],
+      excludeCompact : ['node.indexableContent', 'node.indexableContents', 
+      'node.createdBy', 'node.lastModifiedBy', 'node.directParent', 'node._',
+      'node.image', 'node.textIndexable', 'node.lastModified'],
       fill : ['hasPart', 'associatedMedia', 'caption', 'transcript']
     }
   },

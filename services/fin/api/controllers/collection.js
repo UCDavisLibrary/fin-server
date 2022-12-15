@@ -24,7 +24,11 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    res.json(await model.search(req.body, {debug: req.query.debug}));
+    res.json(await model.search(req.body, {
+      debug: req.query.debug,
+      compact : req.query.compact ? true : false,
+      singleNode : req.query['single-node'] ? true : false
+    }));
   } catch(e) {
     res.json(utils.errorResponse(e, 'Error with search query'));
   }
@@ -37,7 +41,9 @@ router.get('/*', async (req, res) => {
 
     let opts = {
       seo : (req.query.seo || req.query.schema) ? true : false,
-      admin : req.query.admin ? true : false
+      admin : req.query.admin ? true : false,
+      compact : req.query.compact ? true : false,
+      singleNode : req.query['single-node'] ? true : false
     }
 
     res.json(await model.get(id, opts));
