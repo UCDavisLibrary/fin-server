@@ -11,6 +11,8 @@ class JwtUtils {
       this.jwksClient = jwksClient({
         jwksUri: config.jwt.jwksUri 
       });
+      this._getSigningKey = this._getSigningKey.bind(this);
+      setTimeout(() => this.signingKey = null, 1000);
     }
   }
 
@@ -56,25 +58,18 @@ class JwtUtils {
    * @description create a new JWT token
    * 
    * @param {String} username username to create token for
-   * @param {Boolean} admin admin flag, set true for admin privileges 
-   * @param {Object} acl 
+   * @param {Array} roles 
    * 
    * @return {String} new jwt token
    */
-  create(username, admin, acl) {
-    var user = { username }
-
-    if( admin === true ) {
-       user.admin = true;
-    }
-    user.acl = acl || {};
-
+  create(username, roles = [], expires) {
+    var user = { username, roles }
     return jwt.sign(
       user, 
       config.jwt.secret, 
       {
         issuer: config.jwt.issuer,
-        expiresIn: config.jwt.ttl
+        expiresIn: expires || config.jwt.ttl
       }
     );
   }
@@ -89,30 +84,12 @@ class JwtUtils {
    */
   async validate(token) {
     
+    // TODO: fix this!
+    // we need service accounts and never allow secret below
     if( config.jwt.jwksUri ) {
-      return new Promise((resolve, reject) => {
-        let client = this.jwksClient;
-
-        function getKey(header, callback) {
-          // TODO: cache this
-          client.getSigningKey(header.kid, function(err, key) {
-            if( err ) {
-              return callback(err);
-            }
-            var signingKey = key.publicKey || key.rsaPublicKey;
-            callback(null, signingKey);
-          });
-        }
-
-        jwt.verify(token, getKey, {}, function(err, decoded) {
-          if( err ) {
-            logger.debug('Invalid JWT Token: '+err.message);
-            resolve(false);
-          } else {
-            resolve(decoded);
-          }
-        });
-      });
+      try {
+        return await this.verifyJwksUriToken(token);
+      } catch(e) {}
     }
 
     try {
@@ -132,6 +109,31 @@ class JwtUtils {
     }
 
     return token;
+  }
+
+  verifyJwksUriToken(token) {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, this._getSigningKey, {}, function(err, decoded) {
+        if( err ) {
+          logger.debug('Invalid JWT Token: '+err.message);
+          resolve(false);
+        } else {
+          resolve(decoded);
+        }
+      });
+    });
+  }
+
+  _getSigningKey(header, callback) {
+    if( this.signingKey ) callback(null, this.signingKey);
+
+    this.jwksClient.getSigningKey(header.kid, (err, key) => {
+      if( err ) {
+        return callback(err);
+      }
+      this.signingKey = key.publicKey || key.rsaPublicKey;
+      callback(null, signingKey);
+    });
   }
 }
 

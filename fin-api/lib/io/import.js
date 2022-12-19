@@ -583,7 +583,15 @@ class ImportCollection {
   }
 
   async createArchivalGroupFcrManifest(path, manifest={}) {
+    if( manifest[path] ) return manifest;
+
     let nodeGraph = await this.getRootGraphNode(path);
+
+    // only care about acls that are in place in fcrepo.
+    if( path.match(/\/fcr:acl$/) && nodeGraph.response.statusCode === 404 ) {
+      return manifest;
+    }
+
     manifest[path] = {statusCode: nodeGraph.response.statusCode};
     if( nodeGraph.response.error || nodeGraph.response.statusCode !== 200 ) {
       return manifest;
@@ -622,6 +630,11 @@ class ImportCollection {
       }
     } else {
       delete manifest[path];
+    }
+
+    // check for acl
+    if( !path.match(/\/fcr:acl$/) ) {
+      await this.createArchivalGroupFcrManifest(path.replace(/\/fcr:metadata$/, '')+'/fcr:acl', manifest);
     }
 
     let contains = mainNode[utils.PROPERTIES.LDP.CONTAINS];

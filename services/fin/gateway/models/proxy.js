@@ -7,6 +7,7 @@ const serviceProxy = require('./service-proxy');
 const forwardedHeader = require('../lib/forwarded-header');
 const authenticationServiceProxy = require('./service-proxy/authentication-service');
 const clientServiceProxy = require('./service-proxy/client-service');
+const finac = require('../../fin-ac/lib/model.js');
 
 const FIN_URL = new URL(config.server.url);
 
@@ -216,10 +217,19 @@ class ProxyModel {
       // TODO: handle admins
       // See fcrepo.properties for this value
       if( user ) {
-        req.headers['x-fin-principal'] = user.username;
-        if( user.admin ) {
-          req.headers['x-fin-principal'] = req.headers['x-fin-principal']+',admin';
+        let roles = [user.username];
+
+        if( user.roles && Array.isArray(user.roles) ) {
+          roles = [...roles, ...user.roles];
         }
+
+        // now see if the user has a finac role
+        let hasFinacGrant = await finac.hasAccess(path, roles);
+        if( hasFinacGrant ) {
+          roles.push(config.finac.agent);
+        }
+
+        req.headers['x-fin-principal'] = roles.join(',');
       }
     } catch(e) {}
 

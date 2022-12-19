@@ -93,7 +93,7 @@ class CollectionsModel extends ElasticSearchModel {
       query: {
         bool : {
           should : [
-            {term : {'node.identifier.raw' : id}},
+            {term : {'node.identifier.raw' : id.replace(/^\/collection\//, '')}},
             {term: {'node.@id': id}}
           ]
         }

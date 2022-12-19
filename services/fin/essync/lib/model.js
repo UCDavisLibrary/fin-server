@@ -1,6 +1,6 @@
 global.LOGGER_NAME = 'essync';
 
-const {config, logger, activemq} = require('@ucd-lib/fin-service-utils');
+const {config, logger, activemq, records} = require('@ucd-lib/fin-service-utils');
 const api = require('@ucd-lib/fin-api');
 const indexer = require('./elasticsearch');
 const postgres = require('./postgres');
@@ -149,6 +149,9 @@ class EsSync {
       // set transform service used.
       e.tranformService = response.service;
 
+      // under this condition, the acl may have been updated.  Remove item and any 
+      // child items in elastic search.  We need to do it here so we can mark PG why we
+      // did it.
       if( response.data.statusCode !== 200 ) {
         logger.info('Container '+e.path+' was publicly inaccessible ('+response.data.statusCode+') from LDP, removing from index. url='+response.data.request.url);
 
@@ -156,6 +159,7 @@ class EsSync {
         e.message = 'inaccessible'
         await indexer.remove(e.path);
         await postgres.updateStatus(e);
+        await this.removeInaccessableChildrenInEs(e);
         return;
       }
 
@@ -256,6 +260,55 @@ class EsSync {
     response.service = config.server.url+config.fcrepo.root+path+`/svc:${svc}`;
 
     return response;
+  }
+
+  /**
+   * @method removeInaccessableChildrenInEs
+   * @description for use when a parent path becomes inaccessible.  Remove all children nodes
+   * from elastic search
+   * 
+   * @param {Object} e fcrepo update event 
+   */
+  async removeInaccessableChildrenInEs(e) {
+    let path = e.path;
+    if( path.match(/\/fcr:.+$/) ) {
+      path = path.replace(/\/fcr:.+$/, '');
+    }
+
+    // if something like /fcr:acl was updated, make sure the container is updated
+    if( path !== e.path ) {
+      logger.info('Container '+e.path+' was publicly inaccessible from LDP, removing '+path+' from index.');
+
+      e.action = 'ignored';
+      e.message = e.path+' inaccessible'
+      await indexer.remove(path);
+  
+      let fakeEvent = Object.assign({}, e);
+      e.path = path;
+      await postgres.updateStatus(fakeEvent);
+    }
+    
+
+    // ask elastic search for all child paths
+    let children = await records.getChildren(path);
+
+    for( let child of children ) {
+      for( let node of child.node ) {
+        // make sure we are only remove paths that container parent
+        if( !node['@id'] ) continue;
+        if( !node['@id'].startsWith(path) ) continue;
+
+        logger.info('Container '+path+' was publicly inaccessible from LDP, removing child '+node['@id']+' from index.');
+
+        e.action = 'ignored';
+        e.message = 'parent '+path+' inaccessible'
+        await indexer.remove(node['@id']);
+    
+        let fakeEvent = Object.assign({}, e);
+        e.path = node['@id'];
+        await postgres.updateStatus(fakeEvent);
+      }
+    }
   }
 
 }

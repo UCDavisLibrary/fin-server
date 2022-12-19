@@ -82,6 +82,12 @@ module.exports = {
     secret : env.OIDC_SECRET,
   },
 
+  finac : {
+    agent : 'finac',
+    publicAgent : 'public',
+    defaultAccessTime : 60 * 60 * 3 // 3 hours
+  },
+
   elasticsearch : {
     record : {
       alias : 'fcrepo-records',

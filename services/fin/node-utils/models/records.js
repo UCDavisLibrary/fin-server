@@ -18,8 +18,7 @@ class RecordsModel extends ElasticSearchModel {
 
   /**
    * @method get
-   * @description get a record by id.  This method will walk 'hasPart'
-   * and 'associatedMedia' array filling in child records.
+   * @description get a record by id.  
    * 
    * @param {String} id record id
    * @param {Boolean} seo apply seo/schema.org transform.  This will provide json-ld
@@ -35,11 +34,6 @@ class RecordsModel extends ElasticSearchModel {
     let _source_excludes = true;
     if( opts.admin ) _source_excludes = false;
     else if( opts.compact ) _source_excludes = 'compact';
-
-console.log([
-  {term : {'node.identifier.raw' : id.replace(/^\/item\//, '')}},
-  {term: {'node.@id': id}}
-]);
 
     let result = await this.esSearch({
       from: 0,
@@ -101,20 +95,31 @@ console.log([
         }
       }
     }
+  }
 
-    // let graph = {[id]: result._source};
+  /**
+   * @method getChildren
+   * @description child from fcrepo path
+   * 
+   * @param {String} id record id
 
-    // await this._fillGraphRecord(graph, result._source, seo);
+   * 
+   * @return {Promise} resolves to record
+   */
+  async getChildren(id) {
+    let result = await this.esSearch({
+      from: 0,
+      size: 10000,
+      query: {
+        wildcard : {
+          'node.@id' : {
+            value : id+'/*'
+          }
+        }
+      }
+    });
 
-    // graph = Object.values(graph);
-
-    // if( seo ) {
-    //   let record = graphConcat(id, graph)
-    //   transform(record);
-    //   return record;
-    // }
-    
-    return result;
+    return (result.hits.hits || []).map(item => item._source);
   }
 
   /**

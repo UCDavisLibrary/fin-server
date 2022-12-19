@@ -3,7 +3,7 @@ const schemaCollection = require('../schemas/collection');
 const schemaApplication = require('../schemas/application');
 const {logger, waitUntil, esClient} = require('@ucd-lib/fin-service-utils');
 const config = require('./config');
-const postgres = require('./postgres.js');
+const finac = require('../../fin-ac/lib/model.js');
 
 class ElasticSearchModel {
   
@@ -133,6 +133,20 @@ class ElasticSearchModel {
     if( !jsonld._ ) jsonld._ = {};
     jsonld._.updated = new Date();
 
+    // get roles based on finac
+    let roles = [];
+    let access = await finac.getAccess(jsonld._.esId);
+    if( access ) { // some form of access control
+      roles.push(config.finac.agent);
+
+      // the public are allowed to discover the item
+      if( access.public_metadata === true ) {
+        roles.push(config.finac.publicAgent);
+      }
+    } else { // not protected by finac
+      roles.push(config.finac.publicAgent);
+    }
+
     // only index binary and collections
     if ( this.isCollection(jsonld['@id']) ) {
       logger.info(`ES Indexer updating collection container: ${id}`);
@@ -152,7 +166,7 @@ class ElasticSearchModel {
           index,
           op_type : 'create',
           id : jsonld._.esId,
-          body: {id: jsonld._.esId, node: []}
+          body: {id: jsonld._.esId, node: [], roles: []}
         });
       } catch(e) {}
 
@@ -162,8 +176,9 @@ class ElasticSearchModel {
         script : {
           source : `
           ctx._source.node.removeIf((Map item) -> { item['@id'] == params['@id'] });
-          ctx._source.node.add(params);`,
-          params : jsonld
+          ctx._source.node.add(params.node);
+          ctx._source.roles = params.roles;`,
+          params : {node:jsonld, roles}
         }
       });
       response['@id'] = jsonld['@id'];
@@ -194,7 +209,7 @@ class ElasticSearchModel {
           index,
           op_type : 'create',
           id : jsonld._.esId,
-          body: {id: jsonld._.esId, node: []}
+          body: {id: jsonld._.esId, node: [], roles: []}
         });
       } catch(e) {}
 
@@ -217,8 +232,9 @@ class ElasticSearchModel {
         script : {
           source : `
           ctx._source.node.removeIf((Map item) -> { item['@id'] == params['@id'] });
-          ctx._source.node.add(params);`,
-          params : jsonld
+          ctx._source.node.add(params.node);
+          ctx._source.roles = params.roles;`,
+          params : {node:jsonld, roles}
         }
       });
       response['@id'] = jsonld['@id'];

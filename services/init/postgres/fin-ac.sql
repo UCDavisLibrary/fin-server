@@ -1,0 +1,84 @@
+create schema if not exists finac;
+set search_path=finac,public;
+
+CREATE TABLE IF NOT EXISTS protected (
+  protected_id SERIAL PRIMARY KEY,
+  created timestamp NOT NULL DEFAULT NOW(),
+  public_metadata BOOLEAN NOT NULL,
+  path TEXT UNQIUE NOT NULL
+);
+CREATE INDEX IF NOT EXISTS protected_path_idx ON protected (path);
+
+CREATE TABLE IF NOT EXISTS grant (
+  grant_id SERIAL PRIMARY KEY,
+  created timestamp NOT NULL DEFAULT NOW(),
+  expire timestamp NOT NULL,
+  agent TEXT NOT NULL,
+  role TEXT NOT NULL,
+  UNIQUE(agent, role)
+);
+CREATE INDEX IF NOT EXISTS grant_expire_idx ON grant (expire);
+CREATE INDEX IF NOT EXISTS grant_agent_idx ON grant (agent);
+CREATE INDEX IF NOT EXISTS grant_role_idx ON grant (role);
+
+CREATE TABLE IF NOT EXISTS grant_history (
+  grant_history_id SERIAL PRIMARY KEY,
+  created timestamp NOT NULL DEFAULT NOW(),
+  expire timestamp NOT NULL,
+  agent TEXT NOT NULL,
+  role TEXT NOT NULL
+);
+
+CREATE OR REPLACE FUNCTION create_grant_history() 
+RETURNS TRIGGER AS $$
+    BEGIN
+      INSERT INTO grant_history (created, expire, agent, role)
+      VALUES (OLD.created, OLD.expire, OLD.agent, OLD.role);
+      
+      RETURN OLD;
+    END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER grant_history
+AFTER UPDATE OR DELETE ON grant
+FOR EACH ROW EXECUTE PROCEDURE create_grant_history();
+
+CREATE VIEW IF NOT EXISTS current_grants AS
+SELECT * FROM grants WHERE expire > NOW();
+
+CREATE TABLE IF NOT EXISTS access (
+  access_id SERIAL PRIMARY KEY,
+  created timestamp NOT NULL DEFAULT NOW(),
+  expire timestamp NOT NULL,
+  path TEXT NOT NULL,
+  agent TEXT NOT NULL,
+  UNIQUE(agent, role)
+);
+CREATE INDEX IF NOT EXISTS access_path_idx ON access (path);
+CREATE INDEX IF NOT EXISTS access_agent_idx ON access (agent);
+CREATE INDEX IF NOT EXISTS access_expire_idx ON access (expire);
+
+CREATE VIEW IF NOT EXISTS current_access AS
+SELECT * FROM access WHERE expire > NOW();
+
+CREATE TABLE IF NOT EXISTS access_history (
+  access_history_id SERIAL PRIMARY KEY,
+  created timestamp NOT NULL DEFAULT NOW(),
+  expire timestamp NOT NULL,
+  path TEXT NOT NULL,
+  agent TEXT NOT NULL
+);
+
+CREATE OR REPLACE FUNCTION create_access_history() 
+RETURNS TRIGGER AS $$
+    BEGIN
+      INSERT INTO access_history (created, expire, path, agent)
+      VALUES (OLD.created, OLD.expire, OLD.path, OLD.agent);
+      
+      RETURN OLD;
+    END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER access_history
+AFTER UPDATE OR DELETE ON access
+FOR EACH ROW EXECUTE PROCEDURE create_access_history();

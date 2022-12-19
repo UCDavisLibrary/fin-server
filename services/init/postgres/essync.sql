@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS update_status (
   path TEXT NOT NULL UNIQUE,
   update_types fcrepo_update_type[] NOT NULL,
   container_types text[] NOT NULL,
-  event_id TEXT NOT NULL UNIQUE,
+  event_id TEXT NOT NULL,
   event_timestamp timestamp NOT NULL,
   action TEXT NOT NULL,
   transform_service TEXT,

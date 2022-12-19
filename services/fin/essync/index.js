@@ -1,15 +1,21 @@
 const express = require('express');
-const {config, logger} = require('@ucd-lib/fin-service-utils');
+const {config, logger, jwt} = require('@ucd-lib/fin-service-utils');
 const ReindexCrawler = require('./lib/reindex-crawler.js');
 const api = require('@ucd-lib/fin-api');
 const elasticsearch = require('./lib/elasticsearch.js');
 require('./lib/model');
 
 api.setConfig({
-  host: config.fcrepo.host,
+  host: config.gatway.host,
   basePath : config.fcrepo.root,
-  directAccess : true
+  jwt : jwt.create('essync', ['public', config.finac.agent])
 });
+setInterval(() => {
+  api.setConfig({
+    jwt: jwt.create('essync', ['public', config.finac.agent])
+  });
+}, 1000);
+
 
 // simple, in mem, for now
 let statusCache = {};
