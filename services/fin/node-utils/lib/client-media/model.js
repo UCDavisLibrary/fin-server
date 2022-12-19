@@ -182,7 +182,7 @@ class ClientMedia {
    * @returns {String}
    */
   getMediaType(node) {
-    let type = definition.MEDIA_TYPES.find(type => node['@type'].includes(type)) || '';
+    let type = definition.MEDIA_TYPES.find(type => node['@shortType'].includes(type)) || '';
     return type.split(/(#|\/)/).pop();
   }
 

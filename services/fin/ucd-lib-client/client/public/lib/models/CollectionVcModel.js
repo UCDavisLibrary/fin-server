@@ -22,29 +22,29 @@ class CollectionVcModel extends BaseModel {
 
       // translate collection and related nodes/items to ui model
       const rootNode = e.payload.node[0];
-      e.payload.node.shift();
+      // e.payload.node.shift();
       // todo this will come from admin application storage pref
-      let highlightedCollections = [];
-      for( let i = 1; i < 7 && e.payload.node.length > i; i++ ) {
-        highlightedCollections.push({
-          id : e.payload.node[i]['@id'],
+      // let highlightedCollections = [];
+      // for( let i = 1; i < 7 && e.payload.node.length > i; i++ ) {
+      //   highlightedCollections.push({
+      //     id : e.payload.node[i]['@id'],
           // title : e.payload.node[i].?,
           // thumbnailUrl : e.payload.node[i].?,
-
-        });
-      }
+        // });
+      // }
 
       const collection = {
         id : e.payload.id,
         description : rootNode.description,
         title : rootNode.name,
-        thumbnailImg : rootNode.thumbnailUrl,
+        thumbnailImg : rootNode.image.url,
         keywords : rootNode.keywords,
-        items : [
-          e.payload.node
-        ],
-        yearPublished : rootNode.yearPublished,
-        highlightedCollections
+        callNumber : rootNode.image.url.split(rootNode['@id']+'/')[1].split('/')[0], // hack to splice from image url, find actual source
+        // items : [
+        //   e.payload.node
+        // ],
+        yearPublished : rootNode.yearPublished
+        // highlightedCollections
       };
       // debugger;
 

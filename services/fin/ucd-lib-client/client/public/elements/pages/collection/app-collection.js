@@ -14,6 +14,7 @@ class AppCollection extends Mixin(LitElement)
       description : { type : String },
       title : { type : String },
       thumbnailImg : { type : String },
+      callNumber : { type : String },
       keywords : { type : Array },    
       items : { type : Array }, 
       yearPublished : { type : Number }, 
@@ -32,6 +33,7 @@ class AppCollection extends Mixin(LitElement)
     this.description = '';
     this.title = '';
     this.thumbnailImg = '';
+    this.callNumber = '';
     this.keywords = [];    
     this.items = [];
     this.yearPublished = 0;
@@ -39,6 +41,16 @@ class AppCollection extends Mixin(LitElement)
     this.essync = {};
 
     this._injectModel('AppStateModel', 'CollectionModel', 'RecordModel', 'CollectionVcModel');
+  }
+
+  updated() {
+    // this._showAdminPanel();
+    // could we check if this.adminRendered is false here to hide the admin section? or possibly recall the showAdmin function?
+    if( !this.adminRendered && !this.collectionId ) {
+      this.collectionId = window.location.pathname;
+    } else if( !this.adminRendered && this.collectionId ) {
+      this._showAdminPanel();
+    }
   }
 
   /**
@@ -53,33 +65,43 @@ class AppCollection extends Mixin(LitElement)
 
     this.collectionId = e.location.fullpath; // ie '/collection/sherry-lehmann'
     // appStateUpdate already loads collection on route change
+    // this._showAdminPanel();
   }
 
   /**
    * @description _onCollectionVcUpdate, fired when collection viewController updates
    * @param {*} e 
    */
-   async _onCollectionVcUpdate(e) {
+   _onCollectionVcUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this._showAdminPanel();
     
     this.collectionId = e.payload.results.id;
     this.description = e.payload.results.description
     this.title = e.payload.results.title;
     this.thumbnailImg = e.payload.results.thumbnailImg;
+    this.callNumber = e.payload.results.callNumber;
     this.keywords = e.payload.results.keywords;
-    this.items = e.payload.results.items[0];
+    // this.items = e.payload.results.items[0];
     this.yearPublished = e.payload.results.yearPublished;
-    this.highlightedCollections = e.payload.results.highlightedCollections;
+    // this.highlightedCollections = e.payload.results.highlightedCollections;
     
-    const result = await this.RecordModel.defaultSearch(this.collectionId);
-    // const result = await this.RecordModel.get('/collection/sherry-lehmann/hasPart/ark:/87287/d7rw8x');
-    debugger;
+    this._showAdminPanel();
 
+    // search highlighted collection items
+    this.RecordModel.searchHighlighted(this.collectionId, true, true);
   }
 
-  onDefaultSearchUpdate(e) {
-    debugger;
+  _onDefaultRecordSearchUpdate(e) {
+    if( e.state !== 'loaded' ) return;
+
+    if( e.payload && e.payload.results ) {
+      this.highlightedCollections = e.payload.results.map(rg => {
+        return {
+          title : rg.root.name,
+          thumbnailUrl : rg.root.image.url
+        };
+      })
+    }
   }
 
   /**
@@ -87,19 +109,21 @@ class AppCollection extends Mixin(LitElement)
    */
   async _showAdminPanel() {
     const user = APP_CONFIG.user;
-    if( user && user.loggedIn && user.roles.includes('admin') && !this.adminRendered ) {
-      const adminData = await this.CollectionModel.getAdminData(this.collectionId);
-      if( adminData && adminData.response && adminData.response.status === 200 ) {
-
-        const response = adminData.body;
-        if( response && !this.adminRendered ) {
-          this.essync = response.essync;
-
-          this.shadowRoot.querySelector('.admin-content')
-            .appendChild((new JSONFormatter(Object.values(this.essync)[0], 1)).render());
-          this.adminRendered = true;
-          this.shadowRoot.querySelector('.admin-heading').style.display = '';
-          this.shadowRoot.querySelector('.admin-content').style.display = '';  
+    if( user && user.loggedIn && user.roles.includes('admin') ) {
+      if( !this.adminRendered ) {
+        const adminData = await this.CollectionModel.getAdminData(this.collectionId);
+        if( adminData && adminData.response && adminData.response.status === 200 ) {
+  
+          const response = adminData.body;
+          if( response && !this.adminRendered ) {
+            this.essync = response.essync;
+  
+            this.shadowRoot.querySelector('.admin-content')
+              .appendChild((new JSONFormatter(Object.values(this.essync)[0], 1)).render());
+            this.adminRendered = true;
+            this.shadowRoot.querySelector('.admin-heading').style.display = '';
+            this.shadowRoot.querySelector('.admin-content').style.display = '';  
+          }
         }
       }
     } else {

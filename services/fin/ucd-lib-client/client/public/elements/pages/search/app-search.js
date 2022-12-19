@@ -41,8 +41,8 @@ export class AppSearch extends Mixin(LitElement)
     this.drawerOpen = e.filtersDrawerOpen ? true : false;
     this.appState = e;
     if( 
-      e.location.path[0] !== 'search' &&
-      e.location.path[0] !== 'collection'
+      e.location.path[0] !== 'search'// &&
+      // e.location.path[0] !== 'collection'
     ) return;
     this._searchFromAppState();
   }
@@ -116,6 +116,7 @@ export class AppSearch extends Mixin(LitElement)
    * @param {*} e 
    */
   _onSearchVcUpdate(e) {
+    // debugger;
     if( e.state === 'error' ) {
       return this.shadowRoot.querySelector('#resultsPanel').onError(e);
     } else if( e.state === 'loading' ) {
@@ -126,8 +127,8 @@ export class AppSearch extends Mixin(LitElement)
 
     let currentIndex = e.searchDocument.offset;
     let payload = e.payload;
-    let total = payload.searchVcResults.length; // payload.total;
-    this.results = payload.searchVcResults;
+    let total = payload.results.length; // payload.total;
+    this.results = payload.results;
 
     this.shadowRoot.querySelector('#resultsPanel').renderResults(this.results, total, e.searchDocument.limit, currentIndex);
   }

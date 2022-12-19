@@ -25,15 +25,15 @@ class CollectionsModel extends ElasticSearchModel {
     if( !searchDocument.sort ) {
       searchDocument.sort = [
         '_score',
-        { 'name.raw' : 'asc' }
+        { 'node.name.raw' : 'asc' }
       ]
     }
 
     let esBody = this.searchDocumentToEsBody(searchDocument);
     let esResult = await this.esSearch(esBody);
     let result = this.esResultToDamsResult(esResult);
-
-    result.results = result.results.forEach(item => {
+    
+    result.results.forEach(item => {
       if( options.compact ) utils.compactAllTypes(item);
       if( options.singleNode ) item.node = utils.singleNode(item.id, item.node);
     });
@@ -93,7 +93,7 @@ class CollectionsModel extends ElasticSearchModel {
       query: {
         bool : {
           should : [
-            {term : {'node.identifier.raw' : id}},
+            {term : {'node.identifier.raw' : id.replace(/^\/collection\//, '')}},
             {term: {'node.@id': id}}
           ]
         }

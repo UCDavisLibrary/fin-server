@@ -46,8 +46,8 @@ class RecordStore extends BaseStore {
   setRecordLoaded(id, payload) {
     this._setRecordState({
       state: this.STATE.LOADED,
-      rootId : payload.id,
-      payload, id
+      id,
+      payload, payload
     });
   }
 
@@ -60,9 +60,9 @@ class RecordStore extends BaseStore {
 
   _setRecordState(state) {
     this.data.byId[state.id] = state;
-    if( state.rootId ) {
-      this.data.byId[state.rootId] = state;
-    }
+    // if( state.rootId ) {
+    //   this.data.byId[state.rootId] = state;
+    // }
     this.emit(this.events.RECORD_UPDATE, state);
   }
 
@@ -128,12 +128,13 @@ class RecordStore extends BaseStore {
   }
 
   getDefaultSearch(id) {
+    debugger;
     return this.data.defaultSearch[id];
   }
 
   _setDefaultSearchState(state) {
     this.data.defaultSearch[state.id] = state;
-    this.emit(this.events.DEFAULT_SEARCH_UPDATE, this.data.defaultSearch[state.id]);
+    this.emit(this.events.DEFAULT_RECORD_SEARCH_UPDATE, this.data.defaultSearch[state.id]);
   }
 
 }

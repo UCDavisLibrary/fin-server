@@ -23,12 +23,12 @@ class SearchVcModel extends BaseModel {
       // translate RecordGraph's to ui model
       const matchedRecords = [];
       e.payload.results.forEach(result => {
-        const associatedMedia = result.getChildren(result.data.id).associatedMedia;
+        // const associatedMedia = result.getChildren(result.data.id).associatedMedia;
 
-        let collectionItemsCount = 0;
-        associatedMedia.forEach(media => {
-          collectionItemsCount += media.hasPart ? media.hasPart.length : 0;
-        });
+        // let collectionItemsCount = 0;
+        // associatedMedia.forEach(media => {
+        //   collectionItemsCount += media.hasPart ? media.hasPart.length : 0;
+        // });
 
         let collectionId;
         if( Array.isArray(result.root.isPartOf) ) {
@@ -43,7 +43,7 @@ class SearchVcModel extends BaseModel {
           title : result.root.name,              // different for collections? might need to loop over nodes
           thumbnailUrl : result.root.thumbnailUrl,  // main image to show
           mediaType : null,                      // todo for media type icon, not sure on variety of icons
-          collectionItemsCount,
+          // collectionItemsCount,
           collection : result.root.publisher ? result.root.publisher.name : '', // for detail display
           creator : result.root.creator ? result.root.creator.name : '',    // for detail display
           date : result.root.yearPublished,      // for detail display

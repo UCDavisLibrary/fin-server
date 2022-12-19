@@ -37,13 +37,17 @@ class RecordModel extends ElasticSearchModel {
       AppStateModel.setSelectedRecordMedia(null);
       return;
     }
-    let id = '/'+e.location.path.join('/');
+    let id = '/' + e.location.path.join('/');
 
     let result = await this.get(id);
 
+    // item view controller event vs stuff below?
+
+
+
     // only trigger a change if the root record changed.
-    if( result.rootId !== this.currentRecordId ) {
-      this.currentRecordId = result.rootId;
+    if( result.id !== this.currentRecordId ) {
+      this.currentRecordId = result.id;
       AppStateModel.setSelectedRecord(result.payload);
     }
 
@@ -52,37 +56,37 @@ class RecordModel extends ElasticSearchModel {
     this.currentMediaId = id;
 
     // select the current media based on url id
-    for( let type in result.payload.media ) {
-      let mediaGroup = result.payload.media[type];
-      for( let media of mediaGroup ) {
-        if( type === 'imageList' ) {
-          for( let image of media.hasPart ) {
-            if( image['@id'] === id ) {
-              AppStateModel.setSelectedRecordMedia(image);
-              return;
-            }
-          }
-        } else if( media['@id'] === id ) {
-          AppStateModel.setSelectedRecordMedia(media);
-          return;
-        }
-      }
-    }
+    // for( let type in result.payload.media ) {
+    //   let mediaGroup = result.payload.media[type];
+    //   for( let media of mediaGroup ) {
+    //     if( type === 'imageList' ) {
+    //       for( let image of media.hasPart ) {
+    //         if( image['@id'] === id ) {
+    //           AppStateModel.setSelectedRecordMedia(image);
+    //           return;
+    //         }
+    //       }
+    //     } else if( media['@id'] === id ) {
+    //       AppStateModel.setSelectedRecordMedia(media);
+    //       return;
+    //     }
+    //   }
+    // }
 
     // default, nothing currently selected
-    if (result.payload.media.imageList && result.payload.media.imageList[0].hasPart.length ) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.imageList[0].hasPart[0]);
-    } else if (result.payload.media.video) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.video[0]);
-    } else if (result.payload.media.audio) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.audio[0]);
-    } else if (result.payload.media.image) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.image[0]);
-    } else if (result.payload.media.bagOfFiles ) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.bagOfFiles[0]);
-    } else {
-      AppStateModel.setSelectedRecordMedia(null);
-    }
+    // if (result.payload.media.imageList && result.payload.media.imageList[0].hasPart.length ) {
+    //   AppStateModel.setSelectedRecordMedia(result.payload.media.imageList[0].hasPart[0]);
+    // } else if (result.payload.media.video) {
+    //   AppStateModel.setSelectedRecordMedia(result.payload.media.video[0]);
+    // } else if (result.payload.media.audio) {
+    //   AppStateModel.setSelectedRecordMedia(result.payload.media.audio[0]);
+    // } else if (result.payload.media.image) {
+    //   AppStateModel.setSelectedRecordMedia(result.payload.media.image[0]);
+    // } else if (result.payload.media.bagOfFiles ) {
+    //   AppStateModel.setSelectedRecordMedia(result.payload.media.bagOfFiles[0]);
+    // } else {
+    //   AppStateModel.setSelectedRecordMedia(null);
+    // }
 
   }
 
@@ -92,13 +96,20 @@ class RecordModel extends ElasticSearchModel {
    * agg counts.
    * 
    * @param {String} collectionId
+   * @param {Boolean} compact return compacted data, @type only has creative work and UC Davis schema, and minimal timestamps and fedora info
+   * @param {Boolean} singleNode return single node
    * 
    * @returns {Promise}
    */
-  async defaultSearch(collectionId) {
+  async defaultSearch(collectionId, compact=false, singleNode=false) {
     let storeId = collectionId;
     if( !storeId ) storeId = 'default';
 
+    let params = [];
+    if( compact ) params.push('compact=true');
+    if( singleNode ) params.push('single-node=true');
+    if( params.length ) storeId += '?' + params.join('&');
+    
     if( this.store.getDefaultSearch(storeId) ) {
       let search = this.store.getDefaultSearch(storeId);
 
@@ -115,10 +126,46 @@ class RecordModel extends ElasticSearchModel {
       this.appendKeywordFilter(searchDocument, 'collectionId', collectionId, 'and');
     }
 
-    await this.service.defaultSearch(storeId, searchDocument);
+    await this.service.defaultSearch(storeId, searchDocument, compact, singleNode);
 
     return this.store.getDefaultSearch(storeId);
   }
+
+/**
+   * @method searchHighlighted
+   * @description perform search for highlighted items in a collection
+   * 
+   * @param {String} collectionId
+   * @param {Boolean} compact return compacted data, @type only has creative work and UC Davis schema, and minimal timestamps and fedora info
+   * @param {Boolean} singleNode return single node
+   * 
+   * @returns {Promise}
+   */
+  async searchHighlighted(collectionId, compact=false, singleNode=false) {
+    let storeId = collectionId;
+
+    let params = [];
+    if( compact ) params.push('compact=true');
+    if( singleNode ) params.push('single-node=true');
+    if( params.length ) storeId += '?' + params.join('&');
+    
+    let searchDocument = this.emptySearchDocument();
+
+    // temp hack, move to ElasticSearchModel function
+    searchDocument.filters['node.isPartOf.@id'] = {
+        type: 'keyword',
+        value: [
+          collectionId
+        ],
+        op: 'and'
+    };
+    searchDocument.limit = 6;
+
+    await this.service.defaultSearch(storeId, searchDocument, compact, singleNode);
+
+    return this.store.getDefaultSearch(storeId);
+  }
+    
 
   /**
    * @method createMediaObject
@@ -326,7 +373,7 @@ class RecordModel extends ElasticSearchModel {
    * 
    * @returns {Promise}
    */
-  async search(searchDocument = {}) {
+  async search(searchDocument = {}, compact=false, singleNode=false, ignoreClientMedia=false) {
     if( !searchDocument.filters ) searchDocument.filters = {};
 
     // first, we need to verify all filters are available to us
@@ -335,7 +382,7 @@ class RecordModel extends ElasticSearchModel {
       collectionId = searchDocument.filters['isPartOf.@id'].value[0];
     }
 
-    let defaultSearch = await this.defaultSearch(collectionId);
+    let defaultSearch = await this.defaultSearch(collectionId, compact, singleNode);
     let corrections = false;
     for( var key in searchDocument.filters ) {
       if( key === 'isPartOf.@id' ) continue;
@@ -371,7 +418,7 @@ class RecordModel extends ElasticSearchModel {
     if( corrections ) {
       // This causes loop badness
       // AppStateModel.setLocation(path);
-      return await this.search(searchDocument, false);
+      return await this.search(searchDocument, false, compact, singleNode);
     }
     
     // if( updateHistoryState ) {
@@ -395,7 +442,7 @@ class RecordModel extends ElasticSearchModel {
     this.searchCache = searchDocumentStr;
 
     try {
-      await this.service.search(searchDocument);
+      await this.service.search(searchDocument, true,  compact, singleNode, ignoreClientMedia);
     } catch(e) {}
 
     return this.store.getSearch();
