@@ -117,7 +117,6 @@ class CollectionStore extends BaseStore {
   }
 
   setCollectionLoaded(payload) {
-    // debugger;
     if( payload.node && payload.node.length ) {
       payload.node.forEach(item => {
         item._id = item['@id']; // friendly id for polymer data binding
@@ -161,7 +160,6 @@ class CollectionStore extends BaseStore {
   // }
 
   // setAdminDataLoaded(payload) {
-  //   // debugger;
   //   if( payload.node && payload.node.length ) {
   //     payload.node.forEach(item => {
   //       item._id = item['@id']; // friendly id for polymer data binding

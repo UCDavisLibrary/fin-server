@@ -68,7 +68,6 @@ class RecordService extends BaseService {
       },
       onLoading : promise => this.store.setSearchLoading(searchDocument,  promise),
       onLoad : result => {
-        // debugger;
         if( result.body.results ) {
           result.body.results = result.body.results.map(record => {
             let rg = new RecordGraph(record);

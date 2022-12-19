@@ -128,7 +128,6 @@ class RecordStore extends BaseStore {
   }
 
   getDefaultSearch(id) {
-    debugger;
     return this.data.defaultSearch[id];
   }
 

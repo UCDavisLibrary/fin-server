@@ -46,7 +46,6 @@ class CollectionVcModel extends BaseModel {
         yearPublished : rootNode.yearPublished
         // highlightedCollections
       };
-      // debugger;
 
       e.payload.results = collection;
 

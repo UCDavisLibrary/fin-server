@@ -116,7 +116,6 @@ export class AppSearch extends Mixin(LitElement)
    * @param {*} e 
    */
   _onSearchVcUpdate(e) {
-    // debugger;
     if( e.state === 'error' ) {
       return this.shadowRoot.querySelector('#resultsPanel').onError(e);
     } else if( e.state === 'loading' ) {
