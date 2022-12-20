@@ -6,13 +6,13 @@ const elasticsearch = require('./lib/elasticsearch.js');
 require('./lib/model');
 
 api.setConfig({
-  host: config.gatway.host,
+  host: config.gateway.host,
   basePath : config.fcrepo.root,
-  jwt : jwt.create('essync', ['public', config.finac.agent])
+  jwt : jwt.create('essync', [config.finac.agent])
 });
 setInterval(() => {
   api.setConfig({
-    jwt: jwt.create('essync', ['public', config.finac.agent])
+    jwt: jwt.create('essync', [config.finac.agent])
   });
 }, 1000);
 

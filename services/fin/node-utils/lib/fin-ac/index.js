@@ -3,9 +3,13 @@ const fcrepo = require('./fcrepo.js');
 
 class FinAc {
 
-  async setProtectedPath(path, public=false) {
+  constructor() {
+    pg.connect();
+  }
+
+  async setProtectedPath(path, isPublic=false) {
     await fcrepo.setProtectedPath(path);
-    await pg.setProtectedPath(path, public=false);
+    await pg.setProtectedPath(path, isPublic=false);
   }
 
   async removeProtectPath(path) {
@@ -30,7 +34,7 @@ class FinAc {
   async getAccess(path) {
     return Object.assign(
       (await pg.getProtected(path)) || {},
-      {access: await pg.getAccess({path})}
+      {access: await pg.getAccess(path)}
     );
   }
 
@@ -42,4 +46,4 @@ class FinAc {
 
 }
 
-module.exports = new FinAc();
+module.exports = FinAc;

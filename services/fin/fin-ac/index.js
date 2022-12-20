@@ -1,12 +1,19 @@
 const express = require('express');
-const {config, logger} = require('@ucd-lib/fin-service-utils');
-const model = require('./lib/model.js');
+const api = require('@ucd-lib/fin-api');
+const {config, logger, FinAC} = require('@ucd-lib/fin-service-utils');
+const model = new FinAC();
+
+api.setConfig({
+  host : config.fcrepo.host,
+  directAccess : true,
+  superuser : true
+})
 
 const app = express();
 
 app.get(/\/.*/, async (req, res) => {
   try {
-    res.json(await model.getAccess({path: req.path}));
+    res.json(await model.getAccess(cleanPath(req.path)));
   } catch(e) {
     res.status(500).json({
       error: true,
@@ -18,17 +25,18 @@ app.get(/\/.*/, async (req, res) => {
 
 app.post(/\/.*/, async (req, res) => {
   try {
+    let path = cleanPath(req.path);
     let public = (req.body && req.body.public ? req.body.public : req.query.public)+'';
-    await model.setProtectedPath(req.path, public === 'true');
+    await model.setProtectedPath(path, public === 'true');
 
     // see if we were given grants
     if( req.body && req.body.access && Array.isArray(req.body.access) ) {
       for( let access of req.body.access ) {
-        await model.grantAccess(access.agent, req.path, access.expire);
+        await model.grantAccess(access.agent, path, access.expire);
       }
     }
 
-    res.json(await model.getAccess({path: req.path}));
+    res.json(await model.getAccess(path));
   } catch(e) {
     res.status(500).json({
       error: true,
@@ -40,7 +48,7 @@ app.post(/\/.*/, async (req, res) => {
 
 app.delete(/\/.*/, async (req, res) => {
   try {
-    res.json(await model.removeProtectedPath({path: req.path}));
+    res.json(await model.removeProtectedPath({path: cleanPath(req.path)}));
   } catch(e) {
     res.status(500).json({
       error: true,
@@ -51,16 +59,14 @@ app.delete(/\/.*/, async (req, res) => {
 });
 
 app.put(/\/.*/, async (req, res) => {
+  let path = cleanPath(req.path);
   let agent = req.body && req.body.agent ? req.body.agent : req.query.agent;
   let expire = req.body && req.body.expire ? req.body.expire : req.query.expire;
 
   try {
-    await model.grantAccess({
-      path: req.path,
-      agent, expire
-    });
+    await model.grantAccess(agent, path, expire);
 
-    res.json(await model.getAccess({path: req.path}));
+    res.json(await model.getAccess({path}));
   } catch(e) {
     res.status(500).json({
       error: true,
@@ -72,7 +78,7 @@ app.put(/\/.*/, async (req, res) => {
 
 app.delete(/\/.*/, async (req, res) => {
   try {
-    res.json(await model.removeProtectedPath({path: req.path}));
+    res.json(await model.removeProtectedPath({path: cleanPath(req.path)}));
   } catch(e) {
     res.status(500).json({
       error: true,
@@ -82,6 +88,9 @@ app.delete(/\/.*/, async (req, res) => {
   }
 });
 
+function cleanPath(path) {
+  return path.replace(/\/fcrepo\/rest/, '');
+}
 
 app.listen(3000, () => {
   logger.info('fin ac listening on port 3000');

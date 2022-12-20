@@ -1,9 +1,9 @@
 const schemaRecord = require('../schemas/record');
 const schemaCollection = require('../schemas/collection');
 const schemaApplication = require('../schemas/application');
-const {logger, waitUntil, esClient} = require('@ucd-lib/fin-service-utils');
+const {logger, waitUntil, esClient, FinAC} = require('@ucd-lib/fin-service-utils');
 const config = require('./config');
-const finac = require('../../fin-ac/lib/model.js');
+const finac = new FinAC();
 
 class ElasticSearchModel {
   

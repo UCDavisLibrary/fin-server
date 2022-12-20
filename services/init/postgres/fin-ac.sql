@@ -5,11 +5,11 @@ CREATE TABLE IF NOT EXISTS protected (
   protected_id SERIAL PRIMARY KEY,
   created timestamp NOT NULL DEFAULT NOW(),
   public_metadata BOOLEAN NOT NULL,
-  path TEXT UNQIUE NOT NULL
+  path TEXT NOT NULL UNIQUE
 );
 CREATE INDEX IF NOT EXISTS protected_path_idx ON protected (path);
 
-CREATE TABLE IF NOT EXISTS grant (
+CREATE TABLE IF NOT EXISTS "grant" (
   grant_id SERIAL PRIMARY KEY,
   created timestamp NOT NULL DEFAULT NOW(),
   expire timestamp NOT NULL,
@@ -17,9 +17,9 @@ CREATE TABLE IF NOT EXISTS grant (
   role TEXT NOT NULL,
   UNIQUE(agent, role)
 );
-CREATE INDEX IF NOT EXISTS grant_expire_idx ON grant (expire);
-CREATE INDEX IF NOT EXISTS grant_agent_idx ON grant (agent);
-CREATE INDEX IF NOT EXISTS grant_role_idx ON grant (role);
+CREATE INDEX IF NOT EXISTS grant_expire_idx ON "grant" (expire);
+CREATE INDEX IF NOT EXISTS grant_agent_idx ON "grant" (agent);
+CREATE INDEX IF NOT EXISTS grant_role_idx ON "grant" (role);
 
 CREATE TABLE IF NOT EXISTS grant_history (
   grant_history_id SERIAL PRIMARY KEY,
@@ -39,12 +39,12 @@ RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER grant_history
-AFTER UPDATE OR DELETE ON grant
+CREATE OR REPLACE TRIGGER grant_history
+AFTER UPDATE OR DELETE ON "grant"
 FOR EACH ROW EXECUTE PROCEDURE create_grant_history();
 
-CREATE VIEW IF NOT EXISTS current_grants AS
-SELECT * FROM grants WHERE expire > NOW();
+CREATE OR REPLACE VIEW current_grants AS
+SELECT * FROM "grant" WHERE expire > NOW();
 
 CREATE TABLE IF NOT EXISTS access (
   access_id SERIAL PRIMARY KEY,
@@ -52,13 +52,13 @@ CREATE TABLE IF NOT EXISTS access (
   expire timestamp NOT NULL,
   path TEXT NOT NULL,
   agent TEXT NOT NULL,
-  UNIQUE(agent, role)
+  UNIQUE(path, agent)
 );
 CREATE INDEX IF NOT EXISTS access_path_idx ON access (path);
 CREATE INDEX IF NOT EXISTS access_agent_idx ON access (agent);
 CREATE INDEX IF NOT EXISTS access_expire_idx ON access (expire);
 
-CREATE VIEW IF NOT EXISTS current_access AS
+CREATE OR REPLACE VIEW current_access AS
 SELECT * FROM access WHERE expire > NOW();
 
 CREATE TABLE IF NOT EXISTS access_history (
@@ -79,6 +79,6 @@ RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER access_history
+CREATE OR REPLACE TRIGGER access_history
 AFTER UPDATE OR DELETE ON access
 FOR EACH ROW EXECUTE PROCEDURE create_access_history();

@@ -1,10 +1,16 @@
-const {config, pg} = require('@ucd-lib/fin-service-utils');
+const PG = require('../pg');
+const config = require('../../config.js');
 const SCHEMA = 'finac';
+const pg = new PG();
 
 class FinAcPg {
 
-  setProtectedPath(path, public) {
-    return pg.query(`INSERT INTO ${SCHEMA}.protected (path, public_metadata) VALUES ($1, $2)`, [path, public]);
+  connect() {
+    return pg.connect();
+  }
+
+  setProtectedPath(path, isPublic) {
+    return pg.query(`INSERT INTO ${SCHEMA}.protected (path, public_metadata) VALUES ($1, $2)`, [path, isPublic]);
   }
 
   async removeProtectedPath(path) {
@@ -12,16 +18,16 @@ class FinAcPg {
     await pg.query(`DELETE FROM ${SCHEMA}.access WHERE path = $1`, [path]);
   }
 
-  getProtected(path) {
-    let result = pg.query(`SELECT * FROM ${SCHEMA}.access WHERE path = $1`, [path]);
+  async getProtected(path) {
+    let result = await pg.query(`SELECT * FROM ${SCHEMA}.protected WHERE path = $1`, [path]);
     if( !result.rows.length ) return null;
-    return results.rows[0]
+    return result.rows[0]
   }
 
   async grantAgentRole(agent, role, expire) {
     if( !expire ) expire = config.finac.defaultAccessTime;
     expire = new Date(Date.now() + (expire*1000));
-    return pg.query(`INSERT INTO ${SCHEMA}.grant (agent, role, expire) VALUES ($1, $2, $3)`, [agent, role, expire]);
+    return pg.query(`INSERT INTO ${SCHEMA}."grant" (agent, role, expire) VALUES ($1, $2, $3)`, [agent, role, expire]);
   }
 
   async removeAgentRole(agent, role) {
@@ -35,7 +41,7 @@ class FinAcPg {
       params.push(role);
     }
 
-    return pg.query(`DELETE FROM grant WHERE agent = $1 ${roleQuery}`, params);
+    return pg.query(`DELETE FROM ${SCHEMA}."grant" WHERE agent = $1 ${roleQuery}`, params);
   }
 
   async grantAccess(agent, path, expire) {
@@ -45,7 +51,7 @@ class FinAcPg {
   }
 
   removeAccess(agent, path) {
-    return pg.query(`DELETE FROM access WHERE agent = $1 and path = $2`, [agent, path]);
+    return pg.query(`DELETE FROM ${SCHEMA}.access WHERE agent = $1 and path = $2`, [agent, path]);
   }
 
   async getGrants(query) {
@@ -61,17 +67,17 @@ class FinAcPg {
       throw new Error('Invalid query object: '+JSON.stringify(query));
     }
 
-    let result = await pg.query('SELECT * FROM current_grants '+where, [value]);
+    let result = await pg.query(`SELECT * FROM ${SCHEMA}.current_grants `+where, [value]);
     return result.rows;
   }
 
   async getAccess(path) {
-    let result = await pg.query('SELECT * FROM current_access WHERE path = $1', [path]);
+    let result = await pg.query(`SELECT * FROM ${SCHEMA}.current_access WHERE path = $1`, [path]);
     return result.rows;
   }
 
   async getAgentsAccess(path, agents) {
-    let result = await pg.query('SELECT * FROM current_access WHERE path = $1 AND agent = ANY($2) ', [path, agents]);
+    let result = await pg.query(`SELECT * FROM ${SCHEMA}.current_access WHERE path = $1 AND agent = ANY($2)`, [path, agents]);
     return result.rows;
   }
 

@@ -1,3 +1,3 @@
-FROM postgres:12.3
+FROM postgres:14.6
 
 ENV POSTGRES_DB fcrepo

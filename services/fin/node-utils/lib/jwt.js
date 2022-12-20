@@ -132,7 +132,7 @@ class JwtUtils {
         return callback(err);
       }
       this.signingKey = key.publicKey || key.rsaPublicKey;
-      callback(null, signingKey);
+      callback(null, this.signingKey);
     });
   }
 }

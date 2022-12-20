@@ -1,13 +1,13 @@
 const {URL} = require('url');
 const api = require('@ucd-lib/fin-api');
-const {logger, config, jwt} = require('@ucd-lib/fin-service-utils');
+const {logger, config, jwt, FinAC} = require('@ucd-lib/fin-service-utils');
 const serviceModel = require('./services');
 const proxy = require('../lib/http-proxy');
 const serviceProxy = require('./service-proxy');
 const forwardedHeader = require('../lib/forwarded-header');
 const authenticationServiceProxy = require('./service-proxy/authentication-service');
 const clientServiceProxy = require('./service-proxy/client-service');
-const finac = require('../../fin-ac/lib/model.js');
+const finac = new FinAC();
 
 const FIN_URL = new URL(config.server.url);
 

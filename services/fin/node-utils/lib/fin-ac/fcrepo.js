@@ -1,5 +1,5 @@
 const api = require('@ucd-lib/fin-api');
-const {config} = require('@ucd-lib/fin-service-utils');
+const config = require('../../config.js');
 
 class FinAcFcrepo {
 
@@ -19,8 +19,9 @@ class FinAcFcrepo {
     let response = await api.put({
       path: path+'/fcr:acl',
       headers : {'content-type': api.RDF_FORMATS.JSON_LD},
-      body : JSON.stringify(body)
+      content : JSON.stringify(body)
     });
+
     return response.last;
   }
 

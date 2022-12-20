@@ -12,5 +12,6 @@ module.exports = {
   elasticsearch : require('./models/elasticsearch'),
   records : require('./models/records'),
   esClient : require('./lib/esClient'),
+  FinAC : require('./lib/fin-ac/index.js'),
   seo : require('./lib/seo')
 }
