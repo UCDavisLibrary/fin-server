@@ -654,9 +654,9 @@ class TransformService {
    */
   setForwardedHeader(headers) {
     headers.host = FIN_URL.host;
-    headers.forwarded = `host=${FIN_URL.host}; proto=${FIN_URL.protocol.replace(/:/, '')}`;
-    headers['x-forwarded-host'] = FIN_URL.host;
-    headers['x-forwarded-proto'] = FIN_URL.protocol.replace(/:/, '');
+    // headers.forwarded = `host=${FIN_URL.host}; proto=${FIN_URL.protocol.replace(/:/, '')}`;
+    // headers['x-forwarded-host'] = FIN_URL.host;
+    // headers['x-forwarded-proto'] = FIN_URL.protocol.replace(/:/, '');
   }
 
 }

@@ -126,6 +126,7 @@ class ServiceProxy {
     // this container from the fcrepo link headers
     await this.setContainerInfo(req);
     if( !req.finContainer.access ) {
+      console.log(req.finContainer.response.data);
       res.status(req.finContainer.response.data.statusCode).send(req.finContainer.response.body);
       return false;
     }
@@ -169,6 +170,7 @@ class ServiceProxy {
    */
   async setContainerInfo(req) {
     let headOpts = {
+      directAccess : false,
       host : config.gateway.host,
       path : req.finServiceInfo.fcPath.replace(api.getConfig().fcBasePath, ''),
     }

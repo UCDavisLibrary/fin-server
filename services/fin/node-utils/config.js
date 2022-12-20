@@ -83,8 +83,12 @@ module.exports = {
   },
 
   finac : {
-    agent : 'finac',
-    publicAgent : 'public',
+    agents : {
+      admin : 'admin',
+      discover : 'discover',
+      protected : 'protected',
+      public : 'public'
+    },
     defaultAccessTime : 60 * 60 * 3 // 3 hours
   },
 

@@ -7,14 +7,14 @@ class FinAc {
     pg.connect();
   }
 
-  async setProtectedPath(path, isPublic=false) {
-    await fcrepo.setProtectedPath(path);
-    await pg.setProtectedPath(path, isPublic=false);
+  async setProtectedPath(path, agent) {
+    await fcrepo.setProtectedPath(path, agent);
+    // await pg.setProtectedPath(path, isPublic=false);
   }
 
   async removeProtectPath(path) {
-    await fcrepo.removeProtectPath(path);
-    await pg.removeProtectPath(path);
+    await fcrepo.removeProtectPath(path, agent);
+    // await pg.removeProtectPath(path);
   }
 
   async grantAgentRole(agent, role, expire) {
@@ -32,10 +32,14 @@ class FinAc {
   }
 
   async getAccess(path) {
-    return Object.assign(
-      (await pg.getProtected(path)) || {},
-      {access: await pg.getAccess(path)}
-    );
+    let ac = await pg.getProtected(path);
+    if( !ac ) {
+      return {protected: false};
+    }
+    ac.protected = true;
+    ac.access = await pg.getAccess(path);
+
+    return ac;
   }
 
   async hasAccess(path, agents) {

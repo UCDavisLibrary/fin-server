@@ -26,8 +26,8 @@ app.get(/\/.*/, async (req, res) => {
 app.post(/\/.*/, async (req, res) => {
   try {
     let path = cleanPath(req.path);
-    let public = (req.body && req.body.public ? req.body.public : req.query.public)+'';
-    await model.setProtectedPath(path, public === 'true');
+    let agent = (req.body && req.body.agent ? req.body.agent : req.query.agent)+'';
+    await model.setProtectedPath(path, agent);
 
     // see if we were given grants
     if( req.body && req.body.access && Array.isArray(req.body.access) ) {
@@ -48,7 +48,7 @@ app.post(/\/.*/, async (req, res) => {
 
 app.delete(/\/.*/, async (req, res) => {
   try {
-    res.json(await model.removeProtectedPath({path: cleanPath(req.path)}));
+    res.json(await model.removeProtectedPath(cleanPath(req.path)));
   } catch(e) {
     res.status(500).json({
       error: true,
@@ -66,7 +66,7 @@ app.put(/\/.*/, async (req, res) => {
   try {
     await model.grantAccess(agent, path, expire);
 
-    res.json(await model.getAccess({path}));
+    res.json(await model.getAccess(path));
   } catch(e) {
     res.status(500).json({
       error: true,
@@ -78,7 +78,7 @@ app.put(/\/.*/, async (req, res) => {
 
 app.delete(/\/.*/, async (req, res) => {
   try {
-    res.json(await model.removeProtectedPath({path: cleanPath(req.path)}));
+    res.json(await model.removeProtectedPath(cleanPath(req.path)));
   } catch(e) {
     res.status(500).json({
       error: true,

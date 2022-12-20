@@ -53,7 +53,12 @@ class ReindexCrawler {
 
     if( crawled.has(path) ) return;
     
-    let graph = await api.metadata({path});
+    let graph = await api.metadata({
+      path,
+      host: config.fcrepo.host,
+      directAccess: true,
+      superuser : true
+    });
 
     // we might have accessed fcr:metadata
     path = this.cleanPath(graph.data.request.url);

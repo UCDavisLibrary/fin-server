@@ -83,7 +83,6 @@ class JwtUtils {
    * @return {Boolean|Object} returns false if invalid or token payload if valid.
    */
   async validate(token) {
-    
     // TODO: fix this!
     // we need service accounts and never allow secret below
     if( config.jwt.jwksUri ) {
@@ -92,17 +91,9 @@ class JwtUtils {
       } catch(e) {}
     }
 
+    // todo: user issuer to check for this.
     try {
       token = jwt.verify(token, config.jwt.secret);
-      var issuer = token.iss;
-      if( issuer !== config.jwt.issuer ) {
-        logger.debug('Invalid JWT Token:', `Invalid issuer: ${issuer}/${config.jwt.issuer}`);
-        return false;
-      }
-      if( !token.username ) {
-        logger.debug('Invalid JWT Token:', `No username provided`);
-        return false;
-      }
     } catch(e) {
       logger.debug('Invalid JWT Token:', e.message);
       return false;
@@ -116,7 +107,7 @@ class JwtUtils {
       jwt.verify(token, this._getSigningKey, {}, function(err, decoded) {
         if( err ) {
           logger.debug('Invalid JWT Token: '+err.message);
-          resolve(false);
+          reject(false);
         } else {
           resolve(decoded);
         }
@@ -125,8 +116,12 @@ class JwtUtils {
   }
 
   _getSigningKey(header, callback) {
-    if( this.signingKey ) callback(null, this.signingKey);
-
+    console.log('header', header);
+    if( this.signingKey ) {
+      console.log('cached', this.signingKey);
+      callback(null, this.signingKey);
+    }
+    
     this.jwksClient.getSigningKey(header.kid, (err, key) => {
       if( err ) {
         return callback(err);

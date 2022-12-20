@@ -8,11 +8,11 @@ require('./lib/model');
 api.setConfig({
   host: config.gateway.host,
   basePath : config.fcrepo.root,
-  jwt : jwt.create('essync', [config.finac.agent])
+  jwt : jwt.create('essync', [config.finac.agents.discover, config.finac.agents.protected])
 });
 setInterval(() => {
   api.setConfig({
-    jwt: jwt.create('essync', [config.finac.agent])
+    jwt: jwt.create('essync', [config.finac.agents.discover, config.finac.agents.protected])
   });
 }, 1000);
 

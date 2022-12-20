@@ -214,10 +214,13 @@ class ProxyModel {
     req.headers['x-fin-principal'] = 'fedoraUser';
     try {
       user = await jwt.getUserFromRequest(req);
+
       // TODO: handle admins
       // See fcrepo.properties for this value
       if( user ) {
-        let roles = [user.username];
+        let roles = ['fedoraUser'];
+
+        if( user.username ) roles.push(user.username);
 
         if( user.roles && Array.isArray(user.roles) ) {
           roles = [...roles, ...user.roles];
@@ -225,7 +228,7 @@ class ProxyModel {
 
         // now see if the user has a finac role
         let hasFinacGrant = await finac.hasAccess(path, roles);
-        if( hasFinacGrant ) {
+        if( hasFinacGrant && !roles.includes(config.finac.agent) ) {
           roles.push(config.finac.agent);
         }
 

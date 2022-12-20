@@ -258,7 +258,6 @@ class EsSync {
     });
 
     response.service = config.server.url+config.fcrepo.root+path+`/svc:${svc}`;
-
     return response;
   }
 

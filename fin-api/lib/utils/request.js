@@ -12,23 +12,33 @@ async function request(options) {
   if( !options.headers ) options.headers = {};
 
   let authUsed = false;
-  if( options.jwt || config.jwt && config.directAccess === false ) {
+
+  let directAccess = options.directAccess !== undefined ? options.directAccess : config.directAccess;
+  if( (options.jwt || config.jwt) && directAccess === false ) {
     authUsed = true;
     options.headers['Authorization'] = `Bearer ${options.jwt || config.jwt}`;
 
-  } else if( config.directAccess === true ) {
+  } else if( directAccess === true ) {
     authUsed = true;
     let payload = {};
     let principals = [];
 
     if( options.jwt || config.jwt ) {
       payload = auth.getJwtPayload(options.jwt || config.jwt);
-      principals = [payload.username];
 
-      if( payload.admin === true ) principals.push(config.roles.admin); 
+      if( payload.username ) {
+        principals.push(payload.username);
+      }
+
+      (payload.roles || []).forEach(role => {
+        if( !principals.includes(role) ) principals.push(role);
+      });
     }
 
     if( options.superuser === true || config.superuser === true ) {
+      if( !principals.includes(config.roles.admin) ) {
+        principals.push(config.roles.admin);
+      }
       let basicAuth = Buffer.from(config.adminUsername+':'+config.adminPassword).toString('base64');
       options.headers['Authorization'] = `Basic ${basicAuth}`;
     } else {

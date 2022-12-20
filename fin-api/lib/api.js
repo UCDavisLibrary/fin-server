@@ -266,6 +266,8 @@ class FinApi {
       encoding : options.encoding,
       timeout : options.timeout,
       jwt : options.jwt,
+      directAccess : options.directAccess,
+      superuser : options.superuser,
       writeStream : options.writeStream,
       uri : this.createUrl(options)
     }
