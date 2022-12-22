@@ -29,9 +29,9 @@ When a user queries the LDP, FinAC will grant additional agent roles to user.
  - Any user temporarily promoted to `protected` or `discovery` at a specified path via the `PUT [path]/svc:finac` endpoint will be have the agent assigned to them when making a request to the LDP at the specified path.
  - As a convenience, any user with the `admin` role in their JWT token, will be promoted to `protected` and `discovery` agents, so they can always access FinAC protected containers without the `admin` agent having to be specified as well.
 
-# FinAC Role Cheat Sheet
+# FinAC Agent/Role Cheat Sheet
 
-Here is a list of roles and how they affect various parts of the fin deployment:
+Here is a list of agents/roles and how they affect various parts of the fin deployment:
 
 ## admin
 
@@ -77,4 +77,4 @@ Here is a list of roles and how they affect various parts of the fin deployment:
   - no.  unless the container has been assigned the `protected` or `discovery` agent as well.
 - api access:
   - no.  unless the container has been assigned the `protected` or `discovery` agent as well.  At which point see above.  However, if the `protected` or `discovery` is attached, then any user with the additional role will be able to access the Elastic Search document without the temporary promotion via the `/svc:finac` api, providing a way for permanent grants.
-   - ex: WebAC agents: `protected` and `library`.  Now any user with the `library` role can always access the container via the LDP as well as the search api.
+   - ex: WebAC agents: `protected` and `library`.  Now any user with the `library` role in their JWT Token can always access the container via the LDP as well as the search api.
