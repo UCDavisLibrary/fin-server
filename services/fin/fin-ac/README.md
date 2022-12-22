@@ -27,7 +27,7 @@ When a user queries the discovery layer (fin api), if the user has been temporar
 When a user queries the LDP, FinAC will grant additional agent roles to user.
 
  - Any user temporarily promoted to `protected` or `discovery` at a specified path via the `PUT [path]/svc:finac` endpoint will be have the agent assigned to them when making a request to the LDP at the specified path.
- - As a convenience, any user with the `admin` role in their JWT token, will be promoted to `protected` and `discovery` agents, so they can always access FinAC protected containers with the `admin` agent having to be specified as well.
+ - As a convenience, any user with the `admin` role in their JWT token, will be promoted to `protected` and `discovery` agents, so they can always access FinAC protected containers without the `admin` agent having to be specified as well.
 
 # FinAC Role Cheat Sheet
 
