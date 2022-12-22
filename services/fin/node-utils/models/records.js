@@ -47,15 +47,17 @@ class RecordsModel extends ElasticSearchModel {
         }
       }
     }, {
-      _source_excludes
+      _source_excludes,
+      roles : opts.roles
     });
 
-    if( result.hits.total.value === 1 ) {
+    if( result.hits.total.value >= 1 ) {
       result = result.hits.hits[0]._source;
+
       if( opts.compact ) utils.compactAllTypes(result);
       if( opts.singleNode ) result.node = utils.singleNode(id, result.node);
     } else {
-      result = {};
+      return null;
     }
 
     if( opts.admin === true ) {
@@ -95,6 +97,8 @@ class RecordsModel extends ElasticSearchModel {
         }
       }
     }
+
+    return result;
   }
 
   /**
@@ -285,7 +289,7 @@ class RecordsModel extends ElasticSearchModel {
     //   }
     // }
     let esBody = this.searchDocumentToEsBody(searchDocument, options.noLimit);
-    let esResult = await this.esSearch(esBody);
+    let esResult = await this.esSearch(esBody );
     let result = this.esResultToDamsResult(esResult, searchDocument);
 
     // now we need to fill on 'or' filters facets options
@@ -346,6 +350,15 @@ class RecordsModel extends ElasticSearchModel {
   esSearch(body = {}, options={}) {
     options.index = config.elasticsearch.record.alias;
     options.body = body;
+
+    // enforce acl
+    if( !body.query.bool ) body.query.bool = {};
+    if( !body.query.bool.must ) body.query.bool.must = [];
+    body.query.bool.must.push({
+      terms: {roles: options.roles}
+    });
+    body.query.bool.minimum_should_match = 1;
+    delete options.roles;
 
     if( options._source_excludes === false ) {
       delete options._source_excludes; 

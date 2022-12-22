@@ -108,6 +108,10 @@
 
     "node._.updated" : {
       "type" : "date"
+    },
+
+    "roles" : {
+      "type":  "keyword"
     }
 
   }

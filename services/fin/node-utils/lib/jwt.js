@@ -116,9 +116,7 @@ class JwtUtils {
   }
 
   _getSigningKey(header, callback) {
-    console.log('header', header);
     if( this.signingKey ) {
-      console.log('cached', this.signingKey);
       callback(null, this.signingKey);
     }
     

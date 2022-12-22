@@ -76,8 +76,16 @@ class FinAcPg {
     return result.rows;
   }
 
-  async getAgentsAccess(path, agents) {
-    let result = await pg.query(`SELECT * FROM ${SCHEMA}.current_access WHERE path = $1 AND agent = ANY($2)`, [path, agents]);
+  async getAgentsAccess(agents, path) {
+    let params = [agents];
+    let pathQuery = '';
+
+    if( path ) {
+      params.push(path);
+      pathQuery = 'AND path = $2';
+    }
+
+    let result = await pg.query(`SELECT * FROM ${SCHEMA}.current_access WHERE agent = ANY($1) ${pathQuery}`, params);
     return result.rows;
   }
 

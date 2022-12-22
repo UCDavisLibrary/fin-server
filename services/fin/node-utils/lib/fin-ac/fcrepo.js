@@ -4,10 +4,12 @@ const config = require('../../config.js');
 const AGENT = 'http://www.w3.org/ns/auth/acl#agent';
 const ACL_TYPE = 'http://fedora.info/definitions/v4/webac#Acl';
 const AUTHORIZATION_TYPE = 'http://www.w3.org/ns/auth/acl#Authorization';
+const ACCESS_TO = 'http://www.w3.org/ns/auth/acl#accessTo';
+const MODE = 'http://www.w3.org/ns/auth/acl#mode';
 
 class FinAcFcrepo {
 
-  async getAccess(path, finAcOnly=true) {
+  async getProtected(path, finAcOnly=true) {
     let webac = await this._getAcl(path);
     return this.getReadAuthorizations(webac, path, finAcOnly);
   }
@@ -29,7 +31,7 @@ class FinAcFcrepo {
       'acl:default' : [{'@id': '.'}]
     });
 
-    response = await api.put({
+    let response = await api.put({
       path: path+'/fcr:acl',
       headers : {'content-type': api.RDF_FORMATS.JSON_LD},
       content : JSON.stringify(webac)
@@ -80,7 +82,7 @@ class FinAcFcrepo {
     });
 
     let webac = [];
-    if( response.last && response.last.body ) {
+    if( response.last &&  response.last.statusCode === 200 && response.last.body ) {
       webac = JSON.parse(response.last.body);
       if( webac['@graph'] ) webac = webac['@graph'];
       if( !Array.isArray(webac) ) webac = [webac]

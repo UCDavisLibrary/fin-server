@@ -139,52 +139,7 @@ class ElasticSearchModel {
     if( !jsonld._ ) jsonld._ = {};
     jsonld._.updated = new Date();
 
-    let roles = [];
-
-    // get webac roles
-    let webac = await api.get({
-      host: config.fcrepo.host,
-      path: jsonld._.esId+'/fcr:acl',
-      headers : {
-        accept : api.RDF_FORMATS.JSON_LD
-      },
-      directAccess: true,
-      superuser: true,
-      jwt: null
-    });
-    let authorizations = this.getReadAuthorizations(webac.data.body, jsonld._.esId);
-
-
-
-    // get roles based on finac
-    // let finacAccess = await finac.getAccess(jsonld._.esId);
-    if( authorizations.length ) { // some form of access control
-      authorizations.forEach(item => {
-        if( !item.mode.includes('read') ) return;
-        item.agent.forEach(agent => {
-          if( config.finac.agents[agent] ) return;
-          roles.push(agent);
-        });
-      })
-
-      roles.push(config.finac.agents.discover+'-'+jsonld._.esId);
-      
-      // add collection access roles
-      if( jsonld.isPartOf ) {
-        let isPartOf = jsonld.isPartOf;
-        if( !Array.isArray(isPartOf) ) {
-          isPartOf = [isPartOf];
-        }
-
-        isPartOf.forEach(item => {
-          if( item['@id'] && item['@id'].match(/\/collection\//) ) {
-            roles.push(config.finac.agents.discover+'-'+item['@id']);
-          }
-        });
-      }
-    } else { // not protected by finac
-      roles.push(config.finac.agents.public);
-    }
+    let roles = await this.getEsRoles(jsonld);
 
     // only index binary and collections
     if ( this.isCollection(jsonld['@id']) ) {
@@ -282,6 +237,49 @@ class ElasticSearchModel {
     } 
     
     // logger.info(`ES Indexer ignoring container: ${id}`, jsonld['@type']);
+  }
+
+  async getEsRoles(jsonld) {
+    let roles = [];
+    let acl = await finac.getAccess(jsonld._.esId, false)
+    if( acl.protected === true ) {
+      acl.readAuthorizations.forEach(role => {
+        if( !config.finac.agents[role] ) {
+          roles.push(role);
+          return;
+        }
+
+        // discover role is public metadata access
+        if( role === config.finac.agents.discover ) {
+          roles.push(config.finac.agents.public);
+          return;
+        }
+
+        // protected is only accessible by agents with promoted role
+        if( role === config.finac.agents.protected ) {
+          roles.push(config.finac.agents.protected+'-'+jsonld._.esId);
+          
+          // add collection access roles
+          if( jsonld.isPartOf ) {
+            let isPartOf = jsonld.isPartOf;
+            if( !Array.isArray(isPartOf) ) {
+              isPartOf = [isPartOf];
+            }
+
+            isPartOf.forEach(item => {
+              if( item['@id'] && item['@id'].match(/\/collection\//) ) {
+                roles.push(config.finac.agents.protected+'-'+item['@id']);
+              }
+            });
+          }
+        }
+
+      });
+    } else { // not protected by finac
+      roles.push(config.finac.agents.public);
+    }
+
+    return roles;
   }
 
   /**
@@ -442,34 +440,6 @@ class ElasticSearchModel {
 
   setIndex(indexName, alias) {
     return this.esClient.indices.putAlias({index: indexName, name: alias});
-  }
-
-  getReadAuthorizations(webac, id) {
-    if( typeof webac === 'string' ) {
-      webac = JSON.parse(webac);
-    }
-    if( webac['@graph'] ) webac = webac['@graph'];
-
-    let authorizations = [];
-    for( let node of webac ) {
-      if( !node['@type'] ) continue;
-      if( !node['@type'].includes(AUTHORIZATION_TYPE) ) continue;
-
-      authorizations.push({
-        accessTo : (node[ACCESS_TO] || [])
-          .map(item => item['@id'] || item['@value'])
-          .map(item => item.split(api.getConfig().fcBasePath)[1]),
-        agent : (node[AGENT] || [])
-          .map(item => item['@id'] || item['@value']),
-        mode : (node[MODE] || [])
-          .map(item => item['@id'] || item['@value'])
-          .map(item => item.replace(/.*#/, '').toLowerCase())
-      });
-    }
-
-    return authorizations.filter(item => {
-      return item.accessTo.includes(id);
-    });
   }
  
 }

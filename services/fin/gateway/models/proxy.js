@@ -232,6 +232,16 @@ class ProxyModel {
           roles.push(config.finac.agent);
         }
 
+        // promote admins to fin-ac roles
+        if( roles.includes('admin') ) {
+          if( !roles.includes(config.finac.agents.discovery) ) {
+            roles.push(config.finac.agents.discovery);
+          }
+          if( !roles.includes(config.finac.agents.protected) ) {
+            roles.push(config.finac.agents.protected);
+          }
+        }
+
         req.headers['x-fin-principal'] = roles.join(',');
       }
     } catch(e) {}

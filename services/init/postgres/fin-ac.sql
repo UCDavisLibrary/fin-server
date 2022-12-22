@@ -1,14 +1,6 @@
 create schema if not exists finac;
 set search_path=finac,public;
 
-CREATE TABLE IF NOT EXISTS protected (
-  protected_id SERIAL PRIMARY KEY,
-  created timestamp NOT NULL DEFAULT NOW(),
-  public_metadata BOOLEAN NOT NULL,
-  path TEXT NOT NULL UNIQUE
-);
-CREATE INDEX IF NOT EXISTS protected_path_idx ON protected (path);
-
 CREATE TABLE IF NOT EXISTS "grant" (
   grant_id SERIAL PRIMARY KEY,
   created timestamp NOT NULL DEFAULT NOW(),
@@ -32,7 +24,7 @@ CREATE TABLE IF NOT EXISTS grant_history (
 CREATE OR REPLACE FUNCTION create_grant_history() 
 RETURNS TRIGGER AS $$
     BEGIN
-      INSERT INTO grant_history (created, expire, agent, role)
+      INSERT INTO finac.grant_history (created, expire, agent, role)
       VALUES (OLD.created, OLD.expire, OLD.agent, OLD.role);
       
       RETURN OLD;
@@ -72,7 +64,7 @@ CREATE TABLE IF NOT EXISTS access_history (
 CREATE OR REPLACE FUNCTION create_access_history() 
 RETURNS TRIGGER AS $$
     BEGIN
-      INSERT INTO access_history (created, expire, path, agent)
+      INSERT INTO finac.access_history (created, expire, path, agent)
       VALUES (OLD.created, OLD.expire, OLD.path, OLD.agent);
       
       RETURN OLD;

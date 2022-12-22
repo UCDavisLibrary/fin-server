@@ -19,6 +19,7 @@ class EsSync {
 
     this.BINARY_CONTAINER = 'http://fedora.info/definitions/v4/repository#Binary';
     this.FIN_IO_INDIRECT_CONTAINER = 'http://digital.ucdavis.edu/schema#FinIoIndirectReference';
+    this.WEBAC_CONTAINER = 'http://fedora.info/definitions/v4/webac#Acl';
 
     postgres.connect()
       .then(() => indexer.isConnected())
@@ -88,6 +89,23 @@ class EsSync {
     // update elasticsearch
     try {
 
+      // hack.  on delete fedora doesn't send the types.  so we have to sniff from path
+      if( e.container_types.includes(this.WEBAC_CONTAINER) || e.path.match(/\/fcr:acl$/) ) {
+        let rootPath = e.path.replace(/\/fcr:acl$/, '');
+        let containerTypes = await this.getContainerTypes(rootPath);
+        
+        logger.info('ACL '+e.path+' updated, sending rendex event for: '+rootPath);
+
+        // send a reindex event for root container
+        await activemq.sendMessage(
+          {
+            '@id' : rootPath,
+            '@type' : containerTypes
+          },
+          {'edu.ucdavis.library.eventType' : 'Reindex'}
+        );
+      }
+
       // check update_type is delete.
       if( this.isDelete(e) ) {
         logger.info('Container '+e.path+' was removed from LDP, removing from index');
@@ -110,6 +128,16 @@ class EsSync {
         return;
       }
 
+      // check for acl
+      if( e.container_types.includes(this.WEBAC_CONTAINER) ) {
+        logger.info('Ignoring container '+e.path+'.  webac container');
+
+        e.action = 'ignored';
+        e.message = 'webac container';
+        await postgres.updateStatus(e);
+        return;
+      }
+
       // check for fin io container
       if( e.container_types.includes(this.FIN_IO_INDIRECT_CONTAINER) ) {
         logger.info('Ignoring container '+e.path+'.  fin io indirect container');
@@ -122,16 +150,7 @@ class EsSync {
       }
 
       if( !e.container_types ) {
-        e.container_types = [];
-
-        let response = await api.head({path});
-        if( response.data.statusCode === 200 ) {
-          var link = response.last.headers['link'];
-          if( link ) {
-            link = api.parseLinkHeader(link);
-            e.container_types = link.type || [];
-          }
-        }
+        e.container_types = await this.getContainerTypes(e.path);
       }
 
       let response = await this.getTransformedContainer(e.path, e.container_types);
@@ -205,6 +224,25 @@ class EsSync {
     }
   }
 
+  async getContainerTypes(path) {
+    let response = await api.head({
+      path,
+      directAccess : true,
+      superuser : true,
+      host: config.fcrepo.host
+    });
+
+    if( response.data.statusCode === 200 ) {
+      var link = response.last.headers['link'];
+      if( link ) {
+        link = api.parseLinkHeader(link);
+        return link.type || [];
+      }
+    }
+
+    return [];
+  }
+
   /**
    * @method isDotPath
    * @description given a path string from getPath, does any section of the path start
@@ -240,9 +278,7 @@ class EsSync {
    * @returns {Promise}
    */
   async getTransformedContainer(path='', types=[], jwt) {
-    if( path.match(/fcr:metadata$/) ) {
-      path = path.replace(/\/fcr:metadata$/, '');
-    }
+    path = path.replace(/\/fcr:(metadata|acl)$/, '');
 
     let svc = '';
     if( indexer.isCollection(path) ) svc = config.essync.transformServices.collection;

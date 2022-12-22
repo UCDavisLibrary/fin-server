@@ -27,6 +27,7 @@ app.post(/\/.*/, async (req, res) => {
   try {
     let path = cleanPath(req.path);
     let agent = (req.body && req.body.agent ? req.body.agent : req.query.agent)+'';
+    if( !agent ) throw new Error('Agent Required');
     await model.setProtectedPath(path, agent);
 
     // see if we were given grants

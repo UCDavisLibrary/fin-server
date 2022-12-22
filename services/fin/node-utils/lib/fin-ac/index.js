@@ -12,8 +12,8 @@ class FinAc {
     // await pg.setProtectedPath(path, isPublic=false);
   }
 
-  async removeProtectPath(path) {
-    await fcrepo.removeProtectPath(path, agent);
+  async removeProtectedPath(path) {
+    await fcrepo.removeProtectedPath(path);
     // await pg.removeProtectPath(path);
   }
 
@@ -31,19 +31,32 @@ class FinAc {
     return pg.getGrants(query);
   }
 
-  async getAccess(path) {
-    let ac = await pg.getProtected(path);
-    if( !ac ) {
+  async getAccess(path, finAcOnly=true) {
+    let ac = await fcrepo.getProtected(path, finAcOnly);
+    if( !ac.length ) {
       return {protected: false};
     }
-    ac.protected = true;
-    ac.access = await pg.getAccess(path);
 
+    ac = {
+      protected: true,
+      readAuthorizations: ac
+    }
+
+    ac.access = (await pg.getAccess(path))
+      .map(item => ({
+        created : item.created,
+        expire : item.expire,
+        agent : item.agent
+      }));
     return ac;
   }
 
+  getAgentsAccess(agents, path) {
+    return pg.getAgentsAccess(agents, path);
+  }
+
   async hasAccess(path, agents) {
-    let result = await pg.getAgentsAccess(path, agents);
+    let result = await pg.getAgentsAccess(agents, path);
     if( result.length > 0 ) return true;
     return false;
   }
