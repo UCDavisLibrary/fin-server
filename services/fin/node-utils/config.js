@@ -2,21 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const env = process.env;
 
-let defaultServices = [];
-if( fs.existsSync('/etc/fin') ) {
-  fs.readdirSync('/etc/fin')
-    .forEach(file => {
-      if( file.match(/.*-services.js$/) ) {
-        let serviceDef = require(path.join('/etc/fin', file));
-        if( Array.isArray(serviceDef) ) {
-          defaultServices = defaultServices.concat(serviceDef);
-        } else {
-          defaultServices.push(serviceDef);
-        }
-      }
-    });
-}
-
 var fcrepoHostname = process.env.FCREPO_HOST || 'fcrepo';
 var esHostname = process.env.ES_HOST || 'elasticsearch';
 var esPort = process.env.ES_PORT || 9200;
@@ -38,8 +23,6 @@ module.exports = {
   gateway : {
     host : 'http://gateway:3001'
   },
-
-  defaultServices : defaultServices,
 
   cas : {
     url : process.env.CAS_URL || 'https://cas.ucdavis.edu/cas'
@@ -80,6 +63,8 @@ module.exports = {
     clientId : env.OIDC_CLIENT_ID,
     baseUrl : env.OIDC_BASE_URL,
     secret : env.OIDC_SECRET,
+    scopes : env.OIDC_SCOPES || 'roles openid profile email acr',
+    finLdpServiceName : env.OIDC_FIN_LDP_SERVICE_NAME || 'keycloak-oidc'
   },
 
   finac : {

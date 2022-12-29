@@ -256,8 +256,10 @@ class ElasticSearchModel {
         }
 
         // protected is only accessible by agents with promoted role
+        // as well as admins
         if( role === config.finac.agents.protected ) {
           roles.push(config.finac.agents.protected+'-'+jsonld._.esId);
+          roles.push(config.finac.agents.admin);
           
           // add collection access roles
           if( jsonld.isPartOf ) {
