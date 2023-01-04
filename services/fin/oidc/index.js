@@ -1,47 +1,34 @@
 const express = require('express');
 const { auth } = require('express-openid-connect');
-const {config} = require('@ucd-lib/fin-service-utils');
+const {config, keycloak} = require('@ucd-lib/fin-service-utils');
 const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 const app = express();
 
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  console.log(req.originalUrl);
+  console.log(req.originalUrl, req.headers);
   next();
 })
 
 // always set long hashes as secret:
 // openssl rand -base64 512 | tr -d '\n'
+// add policy to expire secret after one year.
 app.post('/auth/'+config.oidc.finLdpServiceName+'/service-account/token', async (req, res) => {
-  let apiResp = await fetch(config.oidc.baseUrl+'/protocol/openid-connect/token', {
-    method: 'POST',
-    headers:{
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },    
-    body: new URLSearchParams({
-      grant_type : 'password',
-      client_id : config.oidc.clientId,
-      client_secret : config.oidc.secret,
-      username : req.body.username,
-      password : req.body.secret,
-      scope : config.oidc.scopes
-    })
-  });
-
-  let json = await apiResp.json();
+  let loginResp = await keycloak.loginServiceAccount(
+    req.body.username, req.body.secret
+  );
 
   // strip id_token, don't have 3rd party users bother with this.
-  if( apiResp.status === 200 ) {
-    delete json.id_token;
+  if( loginResp.status === 200 ) {
+    delete loginResp.body.id_token;
   }
 
   res
-    .status(apiResp.status)
-    .json(json);
+    .status(loginResp.status)
+    .json(loginResp.body);
 });
 
 app.use(auth({
@@ -62,7 +49,7 @@ app.use(auth({
   },
   idpLogout: true,
   afterCallback : (req, res, session, decodedState) => {
-    res.set('X-FIN-AUTHORIZED-TOKEN', session.id_token);
+    res.set('X-FIN-AUTHORIZED-TOKEN', session.access_token);
     return session
   }
 }));

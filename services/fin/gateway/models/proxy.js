@@ -1,6 +1,6 @@
 const {URL} = require('url');
 const api = require('@ucd-lib/fin-api');
-const {logger, config, jwt, FinAC} = require('@ucd-lib/fin-service-utils');
+const {logger, config, jwt, keycloak, FinAC} = require('@ucd-lib/fin-service-utils');
 const serviceModel = require('./services');
 const proxy = require('../lib/http-proxy');
 const serviceProxy = require('./service-proxy');
@@ -55,6 +55,8 @@ class ProxyModel {
    * @param {Object} app express instance
    */
   bind(app) {
+    app.use(keycloak.setUser);
+
     // handle ALL /fcrepo requests
     app.use('/fcrepo', this._fcRepoPathResolver.bind(this));
 
@@ -213,36 +215,35 @@ class ProxyModel {
     let user;
     req.headers['x-fin-principal'] = 'fedoraUser';
     try {
-      user = await jwt.getUserFromRequest(req);
+      user = req.user;
 
       // TODO: handle admins
       // See fcrepo.properties for this value
       if( user ) {
-        let roles = ['fedoraUser'];
+        let roles = new Set();
+        roles.add('fedoraUser');
 
-        if( user.username ) roles.push(user.username);
+        if( user.username ) roles.add(user.username);
+        if( user.preferred_username ) roles.add(user.preferred_username);
 
         if( user.roles && Array.isArray(user.roles) ) {
-          roles = [...roles, ...user.roles];
-        }
-
-        // now see if the user has a finac role
-        let hasFinacGrant = await finac.hasAccess(path, roles);
-        if( hasFinacGrant && !roles.includes(config.finac.agent) ) {
-          roles.push(config.finac.agent);
+          user.roles.forEach(role => roles.add(role));
         }
 
         // promote admins to fin-ac roles
-        if( roles.includes('admin') ) {
-          if( !roles.includes(config.finac.agents.discovery) ) {
-            roles.push(config.finac.agents.discovery);
-          }
-          if( !roles.includes(config.finac.agents.protected) ) {
-            roles.push(config.finac.agents.protected);
+        if( roles.has(config.finac.agents.admin) ) {
+          roles.add(config.finac.agents.discovery);
+          roles.add(config.finac.agents.protected);
+        } else {
+          // see if the user has a temp finac access
+          let hasFinacGrant = await finac.hasAccess(path, Array.from(roles));
+          if( hasFinacGrant ) {
+            roles.add(config.finac.agents.discovery);
+            roles.add(config.finac.agents.protected);
           }
         }
 
-        req.headers['x-fin-principal'] = roles.join(',');
+        req.headers['x-fin-principal'] = Array.from(roles).join(',');
       }
     } catch(e) {}
 

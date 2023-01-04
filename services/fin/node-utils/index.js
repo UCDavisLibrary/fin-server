@@ -13,5 +13,6 @@ module.exports = {
   records : require('./models/records'),
   esClient : require('./lib/esClient'),
   FinAC : require('./lib/fin-ac/index.js'),
-  seo : require('./lib/seo')
+  seo : require('./lib/seo'),
+  keycloak : require('./lib/keycloak.js')
 }

@@ -35,8 +35,7 @@ module.exports = (app) => {
     isRoot : true,
     appRoutes : config.server.appRoutes,
     getConfig : async (req, res, next) => {
-      let user = await authUtils.getUserFromRequest(req);
-
+      let user = req.user;
       if( user ) {
         let result = {
           loggedIn : true,

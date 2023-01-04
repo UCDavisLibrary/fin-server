@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const serviceModel = require('../models/services');
 const middleware = require('./middleware');
-const {jwt} = require('@ucd-lib/fin-service-utils');
+const {keycloak} = require('@ucd-lib/fin-service-utils');
 const path = require('path');
 const fs = require('fs-extra');
 
@@ -84,11 +84,9 @@ router.delete('/service/:id', middleware.admin, async (req, res) => {
 // });
 
 
-router.get('/user', async ( req, res ) => {
-  let user = await jwt.getUserFromRequest(req);
-
-  if( user ) {
-    res.json(user);
+router.get('/user', keycloak.setUser, async ( req, res ) => {
+  if( req.user ) {
+    res.json(req.user);
   } else {
     res.json({loggedIn: false});
   }
@@ -103,17 +101,6 @@ router.get('/logout', (req, res) => {
   
   if( req.session ) req.session.destroy();
   res.redirect('/');
-});
-
-router.get('/mint', middleware.admin, (req, res) => {
-  var username = req.query.username;
-  var isAdmin = req.query.admin ? true : false;
-
-  res.json({
-    jwt : jwt.create(username, isAdmin),
-    username : username,
-    admin : isAdmin
-  });
 });
 
 router.get('/login-shell', async (req, res) => {

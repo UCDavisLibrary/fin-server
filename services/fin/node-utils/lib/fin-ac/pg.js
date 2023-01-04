@@ -9,20 +9,20 @@ class FinAcPg {
     return pg.connect();
   }
 
-  setProtectedPath(path, isPublic) {
-    return pg.query(`INSERT INTO ${SCHEMA}.protected (path, public_metadata) VALUES ($1, $2)`, [path, isPublic]);
-  }
+  // setProtectedPath(path, isPublic) {
+  //   return pg.query(`INSERT INTO ${SCHEMA}.protected (path, public_metadata) VALUES ($1, $2)`, [path, isPublic]);
+  // }
 
-  async removeProtectedPath(path) {
-    await pg.query(`DELETE FROM ${SCHEMA}.protected WHERE path = $1`, [path]);
-    await pg.query(`DELETE FROM ${SCHEMA}.access WHERE path = $1`, [path]);
-  }
+  // async removeProtectedPath(path) {
+  //   await pg.query(`DELETE FROM ${SCHEMA}.protected WHERE path = $1`, [path]);
+  //   await pg.query(`DELETE FROM ${SCHEMA}.access WHERE path = $1`, [path]);
+  // }
 
-  async getProtected(path) {
-    let result = await pg.query(`SELECT * FROM ${SCHEMA}.protected WHERE path = $1`, [path]);
-    if( !result.rows.length ) return null;
-    return result.rows[0]
-  }
+  // async getProtected(path) {
+  //   let result = await pg.query(`SELECT * FROM ${SCHEMA}.protected WHERE path = $1`, [path]);
+  //   if( !result.rows.length ) return null;
+  //   return result.rows[0]
+  // }
 
   async grantAgentRole(agent, role, expire) {
     if( !expire ) expire = config.finac.defaultAccessTime;

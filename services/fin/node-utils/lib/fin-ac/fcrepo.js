@@ -72,6 +72,33 @@ class FinAcFcrepo {
     });
   }
 
+  /**
+   * @method getFinAcPath
+   * @description Only want to set and control finac from ArchivalGroup level.  Fin
+   * 
+   * @param {String} path 
+   */
+  async getFinAcPath(path) {
+    let response = await api.head({
+      path: path,
+      headers : {accept: api.RDF_FORMATS.JSON_LD},
+      directAccess : true,
+      superuser : true,
+      host : config.fcrepo.host
+    });
+
+    if( response.error || response.last.statusCode !== 200 ) {
+      return path;
+    }
+
+    let links = api.parseLinkHeader(response.last.headers.link);
+    if( links['archival-group'] && links['archival-group'].length ) {
+      return links['archival-group'][0].url.split(api.getConfig().fcBasePath)[1];
+    }
+
+    return path;
+  }
+
   async _getAcl(path) {
     let response = await api.get({
       path: path+'/fcr:acl',
@@ -84,6 +111,7 @@ class FinAcFcrepo {
     let webac = [];
     if( response.last &&  response.last.statusCode === 200 && response.last.body ) {
       webac = JSON.parse(response.last.body);
+      console.log(path, webac);
       if( webac['@graph'] ) webac = webac['@graph'];
       if( !Array.isArray(webac) ) webac = [webac]
     }

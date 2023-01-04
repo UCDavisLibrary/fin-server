@@ -13,9 +13,11 @@ The FinAC provides a service layer (`/svc:finac`) for:
  - DELETE: convince for removing all FinAC agents from the WebAC container
  - PUT: Temporarily promote users to FinAC agent role for a specified path (and only for that specified path)
 
+All endpoints will modify the contains root `ArchivalGroup` container if it exists.  Otherwise the specified path will be used. 
+
 ## Elastic Search Roles  
 
-When `Essync` queries the LDP for container metadata, the query uses the defined FinAC agents.  So only public containers, or containers protected with specified FinAC agents will be added to elastic search.  There are two roles the `Essync` will use:
+When `Essync` queries the LDP for container metadata, the query uses the defined FinAC agents.  So only public containers, or containers protected with specified FinAC agents will be added to elastic search.  There are two agents the `Essync` will use:
 
  - `discovery`: this agent will allow `Essync` to access the container.  The Elastic Search document will be given the role of `public`, allowing anyone to discover the container metadata via the Fin API.
  - `protected`: this agent will allow `Essync` to access the container.  The Elastic Search document will be given the role of `protected-[pathname]` where `[pathname]` is the uri path of the container minus `/fcrepo/rest` (Fin standard practice).  Additionally, the `admin` role will be added to the elastic search document.
@@ -45,7 +47,7 @@ Here is a list of agents/roles and how they affect various parts of the Fin depl
 ## protected
 
 - LDP Access:
-  - If a user has been temporarily granted `protected` access to the specified path via FinAC PUT, the user will be promoted to the `protected` agent.
+  - If a user has been temporarily granted access to the specified path via FinAC PUT, the user will be promoted to the `protected` agent.
 - Essync access:
   - yes.  This container will be accessible via `Essync` and therefore the search API.
 - API access:
@@ -54,7 +56,7 @@ Here is a list of agents/roles and how they affect various parts of the Fin depl
 ## discovery
 
 - LDP Access
-  - If a user has been temporarily granted `discovery` access to the specified path via FinAC PUT, the user will be promoted to the `discovery` agent.
+  - If a user has been temporarily granted access to the specified path via FinAC PUT, the user will be promoted to the `discovery` agent.
 - Essync access:
   - yes.  This container will be accessible via `Essync` and therefore the search API.
 - API access:

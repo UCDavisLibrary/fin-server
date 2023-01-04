@@ -52,6 +52,17 @@ require('./lib/startupCheck')(() => {
   // }));
   app.use(cookieParser(config.server.cookieSecret)); 
 
+  // strip all x-headers 
+  app.use((req, res, next) => {
+    for( let key in req.headers ) {
+      if( key.match(/^x-/i) ) {
+        delete req.headers[key];
+      }
+    }
+
+    next();
+  });
+
   // setup simple http logging
   app.use((req, res, next) => {
     let userAgent = req.get('User-Agent') || 'no-user-agent';

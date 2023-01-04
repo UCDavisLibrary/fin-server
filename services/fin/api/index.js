@@ -1,7 +1,7 @@
 global.LOGGER_NAME = 'api';
 
 const express = require('express');
-const {logger} = require('@ucd-lib/fin-service-utils');
+const {logger, keycloak} = require('@ucd-lib/fin-service-utils');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
@@ -27,6 +27,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json req body
 app.use(bodyParser.json());
+
+app.use(keycloak.setUser);
 
 /**
  * Register Controllers

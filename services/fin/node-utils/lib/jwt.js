@@ -1,18 +1,49 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 const logger = require('./logger');
-var jwksClient = require('jwks-rsa');
-
+const jwksClient = require('jwks-rsa');
+const fetch = require('node-fetch');
 
 class JwtUtils {
 
   constructor() {
     if( config.jwt.jwksUri ) {
       this.jwksClient = jwksClient({
-        jwksUri: config.jwt.jwksUri 
+        cache: false,
+        jwksUri: config.jwt.jwksUri,
+        getKeysInterceptor: () => {
+          if( this.signingKey ) {
+            return this.signingKey.keys;
+          }
+          return null;
+        }
       });
+      
       this._getSigningKey = this._getSigningKey.bind(this);
-      setTimeout(() => this.signingKey = null, 1000);
+      this.getSigningKey(config.jwt.jwksUri);
+      setInterval(() => this.getSigningKey(config.jwt.jwksUri), 1000*60);
+    }
+  }
+
+  async getSigningKey(url) {
+    try {
+      let resp = await fetch(url);
+      this.signingKey = await resp.json();
+
+      this.signingKeyFail = false;
+    } catch(e) {
+      // no need to keep loging failures
+      if( this.signingKeyFail === true && this.signingKey === null ) {
+        return;
+      }
+
+      if( this.signingKeyFail === false ) {
+        logger.warn('Failed to fetch signing key.  First attempt', e);
+        this.signingKeyFail = true;
+      } else {
+        logger.warn('Failed to fetch signing key.  Final attempt, invalidating key', e);
+        this.signingKey = null;
+      }
     }
   }
 
@@ -115,17 +146,12 @@ class JwtUtils {
     });
   }
 
-  _getSigningKey(header, callback) {
-    if( this.signingKey ) {
-      callback(null, this.signingKey);
-    }
-    
+  _getSigningKey(header, callback) {    
     this.jwksClient.getSigningKey(header.kid, (err, key) => {
       if( err ) {
         return callback(err);
       }
-      this.signingKey = key.publicKey || key.rsaPublicKey;
-      callback(null, this.signingKey);
+      callback(null, key.publicKey || key.rsaPublicKey);
     });
   }
 }
