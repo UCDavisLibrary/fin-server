@@ -1,7 +1,12 @@
+import { html } from 'lit';
+
+export default function render() {
+return html`
+
 <style>
   :host {
     display: block;
-    background: black;
+    /* background: black; */
     padding: 20px 0;
     /* position: relative; */
     box-sizing: border-box;
@@ -30,10 +35,12 @@
   }
 </style>
 
-<div id="loading" hidden$="[[!loading]]">
-  <paper-spinner-lite active$="[[loading]]"></paper-spinner-lite>
+<div id="loading" ?hidden="${!this.loading}">
+  <paper-spinner-lite ?active="${this.loading}"></paper-spinner-lite>
 </div>
 
-<div class="layout" hidden$="[[loading]]" style="line-height: 0">
+<div class="layout" ?hidden="${this.loading}" style="line-height: 0">
   <img id="img" />
 </div>
+
+`;}

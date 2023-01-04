@@ -148,14 +148,11 @@ class Utils {
   }
 
   organizeMediaList(mediaListArray) {
-    mediaListArray.map(item => item.position = item.position ? parseInt(item.position) : 0)
-      .sort((a, b) => {
-        if(a.position > b.position) return 1;
-        if(a.position < b.position) return -1;
-        return 1;
-      });
-    
-    return mediaListArray;
+    return mediaListArray.sort((a, b) => {
+      if(a.position > b.position) return 1;
+      if(a.position < b.position) return -1;
+      return 1;
+    });
   }
 
 }

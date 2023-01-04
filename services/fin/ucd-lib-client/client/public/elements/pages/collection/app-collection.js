@@ -3,6 +3,7 @@ import render from "./app-collection.tpl.js";
 import JSONFormatter from 'json-formatter-js'
 
 import "../../components/cards/dams-item-card";
+import '../../components/citation';
 
 class AppCollection extends Mixin(LitElement) 
     .with(LitCorkUtils) {
@@ -13,7 +14,7 @@ class AppCollection extends Mixin(LitElement)
       adminRendered : { type : Boolean },
       description : { type : String },
       title : { type : String },
-      thumbnailImg : { type : String },
+      thumbnailUrl : { type : String },
       callNumber : { type : String },
       keywords : { type : Array },    
       items : { type : Array }, 
@@ -32,7 +33,7 @@ class AppCollection extends Mixin(LitElement)
     this.adminRendered = false;
     this.description = '';
     this.title = '';
-    this.thumbnailImg = '';
+    this.thumbnailUrl = '';
     this.callNumber = '';
     this.keywords = [];    
     this.items = [];
@@ -78,7 +79,7 @@ class AppCollection extends Mixin(LitElement)
     this.collectionId = e.payload.results.id;
     this.description = e.payload.results.description
     this.title = e.payload.results.title;
-    this.thumbnailImg = e.payload.results.thumbnailImg;
+    this.thumbnailUrl = e.payload.results.thumbnailUrl;
     this.callNumber = e.payload.results.callNumber;
     this.keywords = e.payload.results.keywords;
     // this.items = e.payload.results.items[0];

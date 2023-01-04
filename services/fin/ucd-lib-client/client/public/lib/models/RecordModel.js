@@ -42,51 +42,62 @@ class RecordModel extends ElasticSearchModel {
     let result = await this.get(id);
 
     // item view controller event vs stuff below?
-    debugger;
 
-
+    
+ 
+    // debugger;
     // only trigger a change if the root record changed.
     if( result.id !== this.currentRecordId ) {
       this.currentRecordId = result.id;
       AppStateModel.setSelectedRecord(result.payload);
+      // debugger;
+      AppStateModel.setSelectedRecordMedia(Object.values(result.payload.index).filter(r => r.image && parseInt(r.position) === 1)[0]);
+      //
+      // result.payload.index[result.payload.clientMedia.id]
+      // if( result.payload.clientMedia.id === result.payload.root.id ) then need to render image with position 1
+
+      // if( result.payload.clientMedia.id === result.payload.root.id ) {
+      // } else {
+      // }
+
     }
 
     // selected media can be any child
-    if( this.currentMediaId === id ) return;
-    this.currentMediaId = id;
+    // if( this.currentMediaId === id ) return;
+    // this.currentMediaId = id;
 
-    // select the current media based on url id
-    for( let type in result.payload.media ) {
-      let mediaGroup = result.payload.media[type];
-      for( let media of mediaGroup ) {
-        if( type === 'imageList' ) {
-          for( let image of media.hasPart ) {
-            if( image['@id'] === id ) {
-              AppStateModel.setSelectedRecordMedia(image);
-              return;
-            }
-          }
-        } else if( media['@id'] === id ) {
-          AppStateModel.setSelectedRecordMedia(media);
-          return;
-        }
-      }
-    }
+    // // select the current media based on url id
+    // for( let type in result.payload.media ) {
+    //   let mediaGroup = result.payload.media[type];
+    //   for( let media of mediaGroup ) {
+    //     if( type === 'imageList' ) {
+    //       for( let image of media.hasPart ) {
+    //         if( image['@id'] === id ) {
+    //           AppStateModel.setSelectedRecordMedia(image);
+    //           return;
+    //         }
+    //       }
+    //     } else if( media['@id'] === id ) {
+    //       AppStateModel.setSelectedRecordMedia(media);
+    //       return;
+    //     }
+    //   }
+    // }
 
-    // default, nothing currently selected
-    if (result.payload.media.imageList && result.payload.media.imageList[0].hasPart.length ) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.imageList[0].hasPart[0]);
-    } else if (result.payload.media.video) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.video[0]);
-    } else if (result.payload.media.audio) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.audio[0]);
-    } else if (result.payload.media.image) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.image[0]);
-    } else if (result.payload.media.bagOfFiles ) {
-      AppStateModel.setSelectedRecordMedia(result.payload.media.bagOfFiles[0]);
-    } else {
-      AppStateModel.setSelectedRecordMedia(null);
-    }
+    // // default, nothing currently selected
+    // if (result.payload.media.imageList && result.payload.media.imageList[0].hasPart.length ) {
+    //   AppStateModel.setSelectedRecordMedia(result.payload.media.imageList[0].hasPart[0]);
+    // } else if (result.payload.media.video) {
+    //   AppStateModel.setSelectedRecordMedia(result.payload.media.video[0]);
+    // } else if (result.payload.media.audio) {
+    //   AppStateModel.setSelectedRecordMedia(result.payload.media.audio[0]);
+    // } else if (result.payload.media.image) {
+    //   AppStateModel.setSelectedRecordMedia(result.payload.media.image[0]);
+    // } else if (result.payload.media.bagOfFiles ) {
+    //   AppStateModel.setSelectedRecordMedia(result.payload.media.bagOfFiles[0]);
+    // } else {
+    //   AppStateModel.setSelectedRecordMedia(null);
+    // }
 
   }
 
@@ -152,13 +163,6 @@ class RecordModel extends ElasticSearchModel {
     let searchDocument = this.emptySearchDocument();
 
     this.appendKeywordFilter(searchDocument, 'node.isPartOf.@id', collectionId, 'and');
-    // searchDocument.filters['node.isPartOf.@id'] = {
-    //     type: 'keyword',
-    //     value: [
-    //       collectionId
-    //     ],
-    //     op: 'and'
-    // };
     searchDocument.limit = 6;
 
     await this.service.defaultSearch(storeId, searchDocument, compact, singleNode);

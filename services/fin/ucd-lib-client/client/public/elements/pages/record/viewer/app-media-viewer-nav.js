@@ -1,92 +1,62 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
-import template from "./app-media-viewer-nav.html"
+import { LitElement } from 'lit';
+import render from "./app-media-viewer-nav.tpl.js"
 
-import AppStateInterface from "../../../interfaces/AppStateInterface"
-import MediaInterface from "../../../interfaces/MediaInterface"
-
-import "@polymer/paper-icon-button"
+// import "@polymer/paper-icon-button"
 import "../../../utils/app-share-btn"
 import utils from "../../../../lib/utils"
+import "@ucd-lib/theme-elements/ucdlib/ucdlib-icon/ucdlib-icon";
+import '../../../utils/app-icons';
 
-export default class AppMediaViewerNav extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface, MediaInterface) {
 
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
-  }
+export default class AppMediaViewerNav extends Mixin(LitElement)
+  .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      // thumbnail width w/ border and margin
-      totalThumbnailWidth : {
-        type : Number,
-        value : 64,
-      },
-      icon: {
-        type: String,
-        value: ''
-      },
-      iconWidth : {
-        type : Number,
-        value : 40
-      },
-      thumbnails : {
-        type : Array,
-        value : () => []
-      },
-      thumbnailsPerFrame : {
-        type : Number,
-        value : 10
-      },
-      leftMostThumbnail : {
-        type : Number,
-        value : 0
-      },
-      breakControls : {
-        type : Boolean,
-        value : false,
-        reflect: true,
-        notify : true
-      },
-      showNavLeft : {
-        type : Boolean,
-        value : false
-      },
-      showNavRight : {
-        type : Boolean,
-        value : false
-      },
-      isLightbox : {
-        type : Boolean,
-        value : false
-      },
-      singleImage : {
-        type : Boolean,
-        value : false,
-        reflectToAttribute: true
-      },
-      mediaList : {
-        type : Array,
-        value : () => []
-      },
-      showOpenLightbox : {
-        type: Boolean,
-        value : false
-      }
+      totalThumbnailWidth : { type : Number }, // thumbnail width w/ border and margin
+      icon: { type: String },
+      iconWidth : { type : Number },
+      thumbnails : { type : Array },
+      thumbnailsPerFrame : { type : Number },
+      leftMostThumbnail : { type : Number },
+      breakControls : { type : Boolean },
+      showNavLeft : { type : Boolean },
+      showNavRight : { type : Boolean },
+      isLightbox : { type : Boolean },
+      singleImage : { type : Boolean },
+      mediaList : { type : Array },
+      showOpenLightbox : { type: Boolean }
     }
   }
 
   constructor() {
     super();
+    this.render = render.bind(this);
     this.active = true;
+
+    this.totalThumbnailWidth = 64;
+    this.icon = '';
+    this.iconWidth = 40;
+    
+    this.thumbnails = [{},{},{},{},{},{},{},{}];
+
+    this.thumbnailsPerFrame = 10;
+    this.leftMostThumbnail = 0;
+    this.breakControls = true;
+    this.showNavLeft = false;
+    this.showNavRight = false;
+    this.isLightbox = false;
+    this.singleImage = false;
+    this.mediaList = [];
+    this.showOpenLightbox = false;
 
     window.addEventListener('resize', () => this._resize());
     window.addEventListener('touchend', (e) => this._onTouchEnd(e));
     window.addEventListener('touchcancel', (e) => this._onTouchEnd(e));
     window.addEventListener('touchmove', (e) => this._onTouchMove(e));
     this.addEventListener('touchstart', (e) => this._onTouchStart(e));
+
+    this._injectModel('AppStateModel', 'MediaModel', 'RecordVcModel');
   }
 
   connectedCallback() {
@@ -94,8 +64,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     this._resize();
   }
 
-  async ready() {
-    super.ready();
+  async firstUpdated() {
     let selectedRecord = await this.AppStateModel.getSelectedRecord();
     if( selectedRecord ) {
       this._onSelectedRecordUpdate(selectedRecord);
@@ -185,9 +154,12 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
       if( this.isLightbox ) iconsWidth += this.iconWidth * 2;
     }
 
-    let availableThumbSpace = Math.min(w - iconsWidth, 512);
+    let availableThumbSpace = Math.min(w - iconsWidth, w * .42);
     this.thumbnailsPerFrame = Math.max(Math.floor(availableThumbSpace / this.totalThumbnailWidth), 1);
-    this.$.thumbnails.style.width = (this.thumbnailsPerFrame*this.totalThumbnailWidth)+'px';
+    let thumbnailContainer = this.shadowRoot.querySelector('#thumbnails');
+    if( !thumbnailContainer ) return;
+    
+    thumbnailContainer.style.width = (this.thumbnailsPerFrame * this.totalThumbnailWidth)+'px';
 
     this.showNavLeft = (this.leftMostThumbnail !== 0);
     this.showNavRight = !this._showingLastThumbFrame();
@@ -235,11 +207,11 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
 
   _updateThumbnailContainerPos() {
     // that +1 is a hack, what am I missing !?
-    this.$.thumbnailInnerContainer.style.marginLeft = (-1 * this.leftMostThumbnail * (this.totalThumbnailWidth + 1)) + 'px';
+    this.shadowRoot.querySelector('#thumbnailInnerContainer').style.marginLeft = (-1 * this.leftMostThumbnail * (this.totalThumbnailWidth + 1)) + 'px';
 
     let lastThumb = this.leftMostThumbnail + this.thumbnailsPerFrame;
     this.thumbnails.forEach((thumbnail, index) => {
-      this.set(`thumbnails.${index}.disabled`, (index < this.leftMostThumbnail || index >= lastThumb));
+      // thumbnail.disabled = (index < this.leftMostThumbnail || index >= lastThumb);
     });
   }
 
@@ -251,19 +223,25 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    */
   _onSelectedRecordUpdate(record) {
     this.leftMostThumbnail = 0;
+    // if( !record ) {
+    //   this.singleImage = true;
+    //   return;
+    // }
 
-    if( !record ) {
-      this.singleImage = true;
-      return;
-    }
+    // sort thumbnails, and add each mediaGroup into mediaList
+    let mediaList = [];
+    record.clientMedia.mediaGroups.forEach(mg => {
+      let nodes = mg.display.hasPart.map(item => record.index[item['@id']]);
+      mediaList.push(...utils.organizeMediaList(nodes));
+    });
+    this.mediaList = mediaList;
     
-    if (utils.countMediaItems(record.media) === 1) {
-      this.singleImage = true;
-      return;
-    }
-
-    this.mediaList = utils.flattenMediaList(record.media);
-    this.mediaList = utils.organizeMediaList(this.mediaList);
+    // if (this.mediaList.length === 1) {
+    //   this.singleImage = true;
+    //   return;
+    // }
+    // this.mediaList = utils.flattenMediaList(record.media);
+    // this.mediaList = utils.organizeMediaList(this.mediaList);
 
     this.thumbnails = this.mediaList.map(media => {
       let {fileType, iconType} = this._getFileAndIconType(media);
@@ -310,7 +288,7 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
     if( !media ) return;
 
     this.thumbnails.forEach((thumbnail, index) => {
-      this.set(`thumbnails.${index}.selected`, (this.media['@id'] === thumbnail.id));
+      // this.set(`thumbnails.${index}.selected`, (this.media['@id'] === thumbnail.id));
     });
 
     let {fileType, iconType} = this._getFileAndIconType(media);
@@ -349,6 +327,8 @@ export default class AppMediaViewerNav extends Mixin(PolymerElement)
    * @param {Object} e HTML click event
    */
   _onThumbnailClicked(e) {
+    this.shadowRoot.querySelectorAll('#thumbnailInnerContainer > button').forEach(btn => btn.removeAttribute('selected'));
+    e.currentTarget.setAttribute('selected', '');
     let id = e.currentTarget.getAttribute('media-id');
     this.AppStateModel.setLocation(id);
   }

@@ -26,7 +26,8 @@ class RecordService extends BaseService {
       onLoading : request => this.store.setRecordLoading(id, request),
       onLoad : result => {
         let rg = new RecordGraph(result.body);
-        rg.clientMedia = new ClientMedia(id, result.body.node);
+        // get clientMedia for entire collection, even if viewing a single item
+        rg.clientMedia = new ClientMedia(id.split('/media')[0], result.body.node);
         this.store.setRecordLoaded(id, rg);
       },
       onError : e => this.store.setRecordError(id, e)

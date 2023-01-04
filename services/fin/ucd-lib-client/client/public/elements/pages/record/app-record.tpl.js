@@ -1,24 +1,60 @@
 import { html } from 'lit';
+
+import linksCss from "@ucd-lib/theme-sass/1_base_html/_links.css";
+import buttonsCss from "@ucd-lib/theme-sass/2_base_class/_buttons.css";
+import headingsCss from "@ucd-lib/theme-sass/2_base_class/_headings.css";
+
+
 export default function render() {
   return html`
   <style include="shared-styles">
+    ${linksCss}
+    ${buttonsCss}
+    ${headingsCss}
+
     :host {
       display: block;
       background-color: var(--super-light-background-color);
     }
 
-    /*
-    app-media-viewer {
-      position: relative;
-    }
-    */
+    [hidden] { display: none !important; }
 
-    .container.top {
+    .container {
+      width: 60%;
+      margin: auto;
+    }
+
+    .container h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--color-black-60);
+      margin-bottom: .5rem;
+    }
+
+    .copyright {
+      text-align: center;
+      color: var(--color-aggie-blue-80);
+    }
+
+    .copyright span {
+      font-size: 1.25rem;
+      vertical-align: middle;
+      font-weight: bold;
+    }
+
+    .copyright-text {
+      font-size: 0.875rem;
+      text-decoration: underline;
+      display: inline;
+    }
+
+    /* .container.top {
       padding: 20px 0;
       background-color: var(--light-background-color);
-    }
+    } */
 
-    input {
+    /* input {
       padding: 0 0 0 5px;
       display: block;
       border: none;
@@ -49,8 +85,9 @@ export default function render() {
 
     h3 {
       margin: 0 0 10px 0;
-      /* color: var(--default-primary-color); */
     }
+
+    */
 
     .label {
       font-weight: var(--fw-bold);
@@ -66,6 +103,7 @@ export default function render() {
       border-bottom: 1px dashed var(--medium-background-color);
     }
 
+    /*
     .overview {
       display: flex; 
       width: 100%;
@@ -78,7 +116,6 @@ export default function render() {
 
     .type-date-collection {
       display: flex;
-      /* align-items: center; */
     }
 
     .resource-type {
@@ -104,21 +141,26 @@ export default function render() {
       width: 100%;
       box-sizing: border-box;
     }
+    */
 
-    .metadata-row {
-      display: flex;
+    .metadata-row, 
+    .download-section {
+       display: flex;
       margin: 30px 20px;
     }
-    .metadata-row .attr {
+    .metadata-row .attr,
+    .download-section .label {
       flex: 0.25;
       color: var(--default-primary-color);
       font-weight: var(--fw-bold); 
     }
-    .metadata-row .value {
+    .metadata-row .value,
+    .download-section .download-options {
       flex: 0.75;
       word-break: break-word;
     }
-
+    
+    /*
     .cite-container {
       padding: 15px 0;
       margin: 0 15px;
@@ -182,16 +224,55 @@ export default function render() {
       .type-date-collection > div {
         margin: 15px 5px;
       }
+    } */
+
+    .part-of {
+      background-image: url(/images/watercolors/blue--1.webp);
+      background-size: cover;
+      display: flex;
+      height: 12rem;
+      margin: 3rem 0;
     }
+
+    .part-of img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .part-of div {
+      margin: 2rem;
+      flex: 1;
+    }
+
+    .part-of div:nth-child(1) {
+      text-align: center;
+    }
+
+    .part-of .collection-info {
+      flex: 2;
+      margin: auto 0;
+    }
+    
+    .part-of .collection-info h4 {
+      margin: .3rem 0;
+    }
+    
+    .part-of .collection-info p {
+      margin: 0;
+    }
+
+    .part-of .collection-info a {
+      font-weight: 800;
+      text-decoration: none;
+    }
+
   </style>
 
   <app-media-viewer></app-media-viewer>
 
-  <div class="container top">
+  <!-- <div class="container top">
     <div class="overview">
       <div>
-        <h3>${this.name}</h3>
-        
         <div ?hidden="${!this.alternativeHeadline}" class="section">
           <div style="font-weight: bold;">${this.alternativeHeadline}</div>
         </div>
@@ -226,81 +307,68 @@ export default function render() {
         </div>
 
       </div>
-    </div><!-- end overview -->
-  </div>
+    </div>
+  </div> -->
 
+  
   <div class="container" style="padding-bottom: 50px">
-    <app-record-metadata-layout>
-      <div slot="left">
-        <div class="metadata-row">
-          <div class="attr">Collection</div>
-          <div class="value" id="collectionValue"></div>
-        </div>
 
-        <div class="metadata-row">
-          <div class="attr">Date</div>
-          <div class="value" id="dateValue"></div>
-        </div>
+    <h3>${this.name}</h3>
+    <div class="copyright"><span>&copy;</span> <a href="http://rightsstatements.org/vocab/InC-NC/1.0/" class="copyright-text">In Copyright - Non-Commercial Use Permitted</a></div>
 
-        <div class="metadata-row" id="publisher">
-          <div class="attr">Publisher</div>
-          <div class="value" id="publisherValue"></div>
-        </div>
 
-        <div class="metadata-row" id="subject">
-          <div class="attr">Subject</div>
-          <div class="value" id="subjectValue"></div>
-        </div>
-
-        <div class="metadata-row" id="description">
-          <div class="attr">Description</div>
-          <div class="value" id="descriptionValue"></div>
-        </div>
-
-        <div class="metadata-row" id="callNumber">
-          <div class="attr">Call Number</div>
-          <div class="value" id="callNumberValue"></div>
-        </div>
-
-        <div class="metadata-row" id="identifier">
-          <div class="attr">ARK / DOI</div>
-          <div class="value" id="identifierValue"></div>
-        </div>
-
-        <div class="metadata-row" id="creator">
-          <div class="attr">Creator</div>
-          <div class="value" id="creatorValue"></div>
-        </div>
-
-        <div class="metadata-row">
-          <div class="attr">Fedora Link</div>
-          <div class="value" id="fedoraValue"></div>
-        </div>
+    <div class="part-of">
+      <div><img src="${this.collectionImg}" alt="" /></div>
+      <div class="collection-info">
+        <p style="font-style: italic;">part of digital collection</p>
+        <h4>${this.collectionName}</h4>
+        <a href="">42 items</a>
       </div>
       
-      <div slot="right">
-        <div class="cite-container">
-          <div class="label">MLA</div>
-          <div class="text">
-            <app-copy-cite id="mla"></app-copy-cite>
-          </div>
-        </div>
+    </div>
 
-        <div class="cite-container">
-          <div class="label">APA</div>
-          <div class="text">
-            <app-copy-cite id="apa"></app-copy-cite>
-          </div>
-        </div>
 
-        <div class="cite-container">
-          <div class="label">Chicago</div>
-          <div class="text">
-            <app-copy-cite id="chicago"></app-copy-cite>
-          </div>
-        </div>
-        
+    <div class="download-section">
+      <div class="label">Download</div>
+      <div class="download-options">
+        <app-media-download id="download" ?hidden="${this.isBagOfFiles}"></app-media-download>
+        <app-fs-media-download id="download" ?hidden="${!this.isBagOfFiles}"></app-fs-media-download>
       </div>
-    </app-record-metadata-layout>
+    </div>
+
+    <div class="metadata-row">
+      <div class="attr">Date</div>
+      <div class="value" id="dateValue">${this.date}</div>
+    </div>
+
+    <div class="metadata-row" id="publisher">
+      <div class="attr">Publisher</div>
+      <div class="value" id="publisherValue">${this.publisher}</div>
+    </div>
+
+    <div class="metadata-row" id="subject">
+      <div class="attr">Subjects</div>
+      <div class="value" id="subjectValue">
+        ${this.keywords.map((item, index) => html`${index > 0 ? ', ' : ''}<a href="">${item}</a>`)}
+      </div>
+    </div>
+
+    <div class="metadata-row" id="callNumber">
+      <div class="attr">Call Number</div>
+      <div class="value" id="callNumberValue">${this.callNumber}</div>
+    </div>
+
+    <div class="metadata-row" id="identifier">
+      <div class="attr">ARK / DOI</div>
+      <div class="value" id="identifierValue"></div>
+    </div>
+
+    <div class="metadata-row">
+      <div class="attr">Fedora Link</div>
+      <div class="value" id="fedoraValue"></div>
+    </div>
+
   </div>
-  `;}
+
+  <app-citation></app-citation>
+`;}

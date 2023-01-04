@@ -148,7 +148,7 @@ export default function render() {
       margin: 1rem 0 3rem;
     }
 
-    .citation {
+    /* .citation {
       background-color: var(--color-aggie-blue-30);
       display: flex;
       width: 100vw;
@@ -205,7 +205,7 @@ export default function render() {
 
     .cite-collection p {
       margin-bottom: 3rem;
-    }
+    } */
 
     .admin-heading {
       margin-top: 5rem;
@@ -273,9 +273,10 @@ export default function render() {
   
     <div class="title-section">
       <div class="image-overlay">
-        <img class="watercolor-bg" src="/images/watercolors/collection-watercolor-thiebaud-icing-back.png" width="100%" alt="something" />
-        <img class="featured-image" src="${this.thumbnailImg}" width="60%" alt="something" />
-        <img class="watercolor-fg" src="/images/watercolors/collection-watercolor-thiebaud-icing-front.png" width="100%" alt="something" />
+        <img class="watercolor-bg" src="/images/watercolors/collection-watercolor-thiebaud-icing-back.png" width="100%" alt="watercolor background" />
+        <!-- <img class="featured-image" src="${this.thumbnailUrl}" width="60%" alt="something" /> -->
+        <img class="featured-image" src="/fcrepo/rest/item/ark:/87287/d7dw8t/media/images/d7dw8t-001.jpg" width="45%" alt="collection featured image" />
+        <img class="watercolor-fg" src="/images/watercolors/collection-watercolor-thiebaud-icing-front.png" width="100%" alt="watercolor foreground" />
       </div>
       <div class="collection-header">
         <h1>${this.title}</h1>
@@ -324,7 +325,7 @@ export default function render() {
 
     </div>
 
-    <div class="citation">
+    <!-- <div class="citation">
       <div class="cite-graphic">
         <img src="/images/watercolors/citation-watercolor-800px-square.png" width="100%" alt="cite this collection image" />
       </div>
@@ -344,7 +345,8 @@ export default function render() {
         <a href="" class="btn btn-copy">Copy Text</a>
 
       </div>
-    </div>
+    </div> -->
+    <app-citation></app-citation>
 
     <h2 class="admin-heading">Admin ${this.collectionId}</h2>
     <div class="admin-content">
