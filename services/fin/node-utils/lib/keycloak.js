@@ -1,4 +1,3 @@
-const { auth } = require('express-openid-connect');
 const fetch = require('node-fetch');
 const config = require('../config.js');
 const logger = require('./logger.js');

@@ -8,11 +8,6 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  console.log(req.originalUrl, req.headers);
-  next();
-})
-
 // always set long hashes as secret:
 // openssl rand -base64 512 | tr -d '\n'
 // add policy to expire secret after one year.
@@ -53,10 +48,6 @@ app.use(auth({
     return session
   }
 }));
-
-app.get('/', (req, res) => {
-  res.json({test:1});
-});
 
 app.listen(3000, () => {
   console.log('listening on port 3000');

@@ -10,7 +10,6 @@ const utils = require('./utils.js');
 const transform = seo.recordTransform;
 const graphConcat = seo.transform;
 
-const FILL_ATTRIBUTES = config.elasticsearch.fields.fill;
 const pg = new PG();
 pg.connect();
 
@@ -125,52 +124,6 @@ class RecordsModel extends ElasticSearchModel {
 
     return (result.hits.hits || []).map(item => item._source);
   }
-
-  /**
-   * @function getByArk
-   * @description request record from elasticsearch with given
-   * identifier (doi or ark)
-   * 
-   * @param {String} id doi or ark
-   * 
-   * @returns {Object|null}
-   */
-  // async getByArk(id) {
-  //   let result = await es.search({
-  //     index: config.elasticsearch.record.alias,
-  //     body : {
-  //       query : {
-  //         bool : {
-  //           filter : [
-  //             {term : {'identifier.raw' : id}},
-  //             {term : {isRootRecord : true}}
-  //           ]
-  //         }
-  //       }
-  //     },
-  //     _source_excludes : config.elasticsearch.fields.exclude,
-  //   });
-
-  //   // see if its a collection
-  //   if( result.hits.total === 0 )  {
-  //     result = await es.search({
-  //       index : config.elasticsearch.collection.alias,
-  //       body : {
-  //         query : {
-  //           bool : {
-  //             filter : [
-  //               {term : {'identifier.raw' : id}},
-  //             ]
-  //           }
-  //         }
-  //       },
-  //       _source_excludes : config.elasticsearch.fields.exclude
-  //     });
-  //   }
-
-  //   if( result.hits.total === 0 ) return null;
-  //   return result.hits.hits[0]._source;
-  // }
 
   /**
    * @method _fillGraphRecord
@@ -371,20 +324,7 @@ class RecordsModel extends ElasticSearchModel {
     return es.search(options);
   }
 
-  /**
-   * @method esScroll
-   * @description croll a search request (retrieve the next set of results) after specifying the scroll parameter in a search() call.
-   * https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll
-   * 
-   * @param {Object} options
-   * @param {String} options.scrollId current scroll id
-   * @param {String} options.scroll time to keep open
-   * 
-   * @returns {Promise} resolves to elasticsearch result
-   */
-  esScroll(options={}) {
-    return es.scroll(options);
-  }
+
 
   /**
    * @method esGet

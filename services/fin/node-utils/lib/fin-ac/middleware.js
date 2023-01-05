@@ -1,18 +1,20 @@
-const {jwt, FinAC, config} = require('@ucd-lib/fin-service-utils');
+const config = require('../../config.js');
+const FinAC = require('./index.js');
 const finac = new FinAC();
 
-async function roles(req, res, next) {
-  let user = await jwt.getUserFromRequest(req);
+async function esRoles(req, res, next) {
+  let user = req.user;
   if( !user ) {
     req.esRoles = [config.finac.agents.public];
     return next();
   }
 
-  req.user = user;
 
-  let agents = [];
-  if( user.username || user.preferred_username ) agents.push(user.username || user.preferred_username);
-  (user.roles || []).forEach(role => agents.push(role));
+  let agents = new Set();
+  if( user.username ) agents.add(user.username);
+  if( user.preferred_username ) agents.add(user.preferred_username);
+  (user.roles || []).forEach(role => agents.add(role));
+  agents = Array.from(agents);
 
   // now add finac grants
   let access = (await finac.getAgentsAccess(agents))
@@ -29,4 +31,4 @@ async function roles(req, res, next) {
   next();
 }
 
-module.exports = {roles};
+module.exports = {esRoles};

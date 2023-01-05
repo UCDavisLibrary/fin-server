@@ -1,11 +1,7 @@
 const router = require('express').Router();
-const {collections} = require('@ucd-lib/fin-service-utils');
-const utils = require('./utils');
-const cors = require('cors');
+const utils = require('../utils.js');
+const model = require('./model.js');
 
-const model = collections;
-
-router.use(cors());
 
 // all record
 router.get('/', async (req, res) => {

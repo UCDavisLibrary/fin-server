@@ -1,15 +1,9 @@
 const router = require('express').Router();
-const {records} = require('@ucd-lib/fin-service-utils');
-const utils = require('./utils');
-const cors = require('cors');
-const {roles} = require('../lib/middleware.js');
+const {middleware} = require('@ucd-lib/fin-service-utils');
+const model = require('./model.js');
 
-const model = records;
 
-let idRegExp = /(ark|doi):\/?[a-zA-Z0-9\.]+\/[a-zA-Z0-9\.]+/;
-router.use(cors());
-
-router.post('/', roles, async (req, res) => {
+router.post('/', middleware.finac.esRoles, async (req, res) => {
   if( !req.body ) {
     return res.json({error: true, message: 'no body sent'});
   }
@@ -26,17 +20,7 @@ router.post('/', roles, async (req, res) => {
   }
 });
 
-
-// router.get('/files/*', async (req, res) => {
-//   try {
-//     let id = req.path.replace(/^\/files/, '');
-//     res.json(await model.getFiles(id));
-//   } catch(e) {
-//     res.json(utils.errorResponse(e, 'Error with search query'));
-//   }
-// });
-
-router.get('/*', roles, async (req, res) => {
+router.get('/*', middleware.finac.esRoles, async (req, res) => {
   let id = '/item'+decodeURIComponent(req.path);
 
   if( !id ) {

@@ -92,11 +92,6 @@ module.exports = async function(path, graph, headers, utils) {
 
   item.applicationId = item['@id'].split('/').splice(0, 3).join('/');
 
-  // set direct parent
-  item.directParent = item['@id'].split('/');
-  item.directParent.pop();
-  item.directParent = item.directParent.join('/');
-
 
 
   return item;

@@ -9,10 +9,14 @@ module.exports = {
   waitUntil : require('./lib/wait-until'),
   collections : require('./models/collections'),
   applications : require('./models/applications'),
-  elasticsearch : require('./models/elasticsearch'),
+  ElasticSearchModel : require('./models/elastic-search/index.js'),
+  esClient : require('./lib/elastic-search/client.js'),
   records : require('./models/records'),
-  esClient : require('./lib/esClient'),
   FinAC : require('./lib/fin-ac/index.js'),
+  middleware : {
+    finac : require('./lib/fin-ac/middleware.js')
+  },
   seo : require('./lib/seo'),
-  keycloak : require('./lib/keycloak.js')
+  keycloak : require('./lib/keycloak.js'),
+  models : require('./lib/models.js')
 }

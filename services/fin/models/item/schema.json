@@ -71,10 +71,6 @@
       "type" : "keyword"
     },
 
-    "node.directParent" : {
-      "type" : "keyword"
-    },
-
     "node.filename": {
       "type": "text",
       "analyzer": "autocomplete", 

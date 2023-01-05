@@ -30,12 +30,12 @@ class ReindexCrawler {
    * 
    * @returns {Array}
    */
-  async reindex() {
+  async reindex(writeIndex) {
     let crawled = new Set();
     this.crawled = crawled;
 
-    logger.info('Starting reindex of: '+this.rootPath);
-    await this.crawl(this.rootPath, crawled);
+    logger.info('Starting reindex of: '+this.rootPath+(writeIndex ? ' into index'+writeIndex : ''));
+    await this.crawl(this.rootPath, crawled, writeIndex);
     return Array.from(crawled);
   }
 
@@ -48,7 +48,7 @@ class ReindexCrawler {
    * @param {String} path 
    * @param {Set} crawled 
    */
-  async crawl(path, crawled) {
+  async crawl(path, crawled, writeIndex) {
     path = this.cleanPath(path);
 
     if( crawled.has(path) ) return;
@@ -88,14 +88,14 @@ class ReindexCrawler {
       mainNode['@type'].splice(mainNode['@type'].indexOf(BINARY), 1);
     }
 
-    this.sendReindexEvent(mainNode);
+    this.sendReindexEvent(mainNode, writeIndex);
 
     for( let followProp of this.options.follow ) {
       let prop = mainNode[followProp];
       if( !prop ) continue;
       
       for( let val of prop ) {
-        await this.crawl(val['@id'] || val['@value'], crawled);
+        await this.crawl(val['@id'] || val['@value'], crawled, writeIndex);
       }
     }
   }
@@ -110,14 +110,22 @@ class ReindexCrawler {
    * @param {Object} msg
    * @param {String} node.@id
    * @param {Array} node.@type
+   * @param {String} writeIndex Optional.  Index to write to. mostly used for reindex
    */
   sendReindexEvent(node) {
+    let headers = {
+      'edu.ucdavis.library.eventType' : 'Reindex'
+    };
+    if( writeIndex ) {
+      headers['edu.ucdavis.library.writeIndex'] = writeIndex;
+    }
+
     activemq.sendMessage(
       {
         '@id' : this.cleanPath(node['@id']),
         '@type' : node['@type'] || []
       },
-      {'edu.ucdavis.library.eventType' : 'Reindex'}
+      headers
     );
   }
 }

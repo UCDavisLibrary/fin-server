@@ -1,27 +1,22 @@
-global.LOGGER_NAME = 'fin-server';
-
 const express = require('express');
-const {logger, jwt, config} = require('@ucd-lib/fin-service-utils');
+const {logger, config, keycloak} = require('@ucd-lib/fin-service-utils');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const api = require('@ucd-lib/fin-api');
-const path = require('path');
+const compression = require('compression');
 
-// used for JWT
-const SERVER_USERNAME = 'fin-gateway';
 
 // global catch alls for errors
 process.on('uncaughtException', (e) => logger.fatal(e));
 process.on('unhandledRejection', (e) => logger.fatal(e));
 
 
-// wire up fin api for server
+// wire up fin api for direct server
 api.setConfig({
   host: config.fcrepo.host,
   basePath : config.fcrepo.root,
   directAccess : true,
   superuser : true
-  // jwt : jwt.create(SERVER_USERNAME, true)
 });
 
 // models like the service model and auth model require access
@@ -36,20 +31,7 @@ require('./lib/startupCheck')(() => {
 
   // create express instance
   const app = express();
-  // Set up an Express session, which is required for CASAuthentication. 
-  // const RedisStore = require('connect-redis')(session); 
-  // app.use(session({
-  //   name : 'fin-sid',
-  //   store: new RedisStore({
-  //     host : 'redis'
-  //   }),
-  //   cookie : {
-  //     maxAge          : config.server.cookieMaxAge,
-  //   },
-  //   secret            : config.server.cookieSecret,
-  //   resave            : false,
-  //   saveUninitialized : true
-  // }));
+
   app.use(cookieParser(config.server.cookieSecret)); 
 
   // strip all x-headers 
@@ -78,10 +60,8 @@ require('./lib/startupCheck')(() => {
     next();
   });
 
-  // rotate jwt token every six hours
-  setInterval(() => {
-    api.setConfig({jwt: jwt.create(SERVER_USERNAME, true)})
-  }, 6*60*60*1000);
+  // setup user decoding
+  app.use(keycloak.setUser);
 
   /**
    * Wire up main proxy

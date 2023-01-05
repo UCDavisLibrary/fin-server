@@ -78,14 +78,6 @@ module.exports = {
   },
 
   elasticsearch : {
-    record : {
-      alias : 'fcrepo-records',
-      schemaType : 'fcrepo-record'
-    },
-    collection : {
-      alias : 'fcrepo-collections',
-      schemaType : 'fcrepo-collection',
-    },
     host : esHostname,
     port : esPort,
     username : process.env.ELASTIC_USERNAME || 'elastic',
@@ -94,21 +86,20 @@ module.exports = {
       return `http://${this.host}:${this.port}`
     }, 
     log : process.env.ES_LOG_LEVEL || 'error',
-    application : {
-      alias : 'fin-applications',
-      schemaType : 'fin-applications'
-    },
     compactTypeInclude : [
       new RegExp('http://digital.ucdavis.edu/schema#'),
       new RegExp('http://schema.org/')
     ],
     fields : {
-      exclude : ['node.indexableContent', 'node.indexableContents', 
-      'node.createdBy', 'node.lastModifiedBy', 'node.directParent', 'node._', 'node.textIndexable'],
-      excludeCompact : ['node.indexableContent', 'node.indexableContents', 
-      'node.createdBy', 'node.lastModifiedBy', 'node.directParent', 'node._',
-      'node.image', 'node.textIndexable', 'node.lastModified'],
-      fill : ['hasPart', 'associatedMedia', 'caption', 'transcript']
+      exclude : [
+        'node.indexableContent', 
+        'node.createdBy', 'node.lastModifiedBy', 'node._', 'node.textIndexable'
+      ],
+      excludeCompact : [
+        'node.indexableContent', 
+        'node.createdBy', 'node.lastModifiedBy', 'node._',
+        'node.image', 'node.textIndexable', 'node.lastModified'
+      ]
     }
   },
 
@@ -122,6 +113,10 @@ module.exports = {
     enabled : (env.DATA_BACKUPS === 'true'),
     cron : env.BACKUP_CRON || '0 4 * * *',
     env : env.DATA_ENV
+  },
+
+  models : {
+    rootDir : env.FIN_MODEL_ROOT || '/fin/services/models'
   },
 
   google : {serviceAccountExists, serviceAccountFile},

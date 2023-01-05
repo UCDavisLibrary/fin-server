@@ -1,6 +1,6 @@
 global.LOGGER_NAME = 'essync';
 
-const {config, logger, activemq, records} = require('@ucd-lib/fin-service-utils');
+const {config, logger, activemq, models} = require('@ucd-lib/fin-service-utils');
 const api = require('@ucd-lib/fin-api');
 const indexer = require('./elasticsearch');
 const postgres = require('./postgres');
@@ -277,23 +277,39 @@ class EsSync {
    * 
    * @returns {Promise}
    */
-  async getTransformedContainer(path='', types=[], jwt) {
+  async getTransformedContainer(path='', types=[]) {
     path = path.replace(/\/fcr:(metadata|acl)$/, '');
 
-    let svc = '';
-    if( indexer.isCollection(path) ) svc = config.essync.transformServices.collection;
-    else if( indexer.isRecord(path) ) svc = config.essync.transformServices.record;
-    else if( indexer.isApplication(path) ) svc = config.essync.transformServices.application;
+    let headers = {};
+    let found = false;
+
+    let modelNames = models.names();
+    for( let name of modelNames ) {
+      let model = models.get(name).model;
+
+      if( model.is(path, types) ) {
+        if( model.transformService ) {
+          path = path+`/svc:${model.transformService}`;
+        } else {
+          headers = {
+            accept : api.GET_JSON_ACCEPT.COMPACTED
+          }
+        }
+
+        found = true;
+        break;
+      }
+    }
 
     // we don't have a frame service for this
-    if( !svc ) return null;
+    if( found === false ) return null;
 
     var response = await api.get({
       host : config.gateway.host,
-      path : path+`/svc:${svc}`
+      path, headers
     });
 
-    response.service = config.server.url+config.fcrepo.root+path+`/svc:${svc}`;
+    response.service = config.server.url+config.fcrepo.root+path;
     return response;
   }
 
@@ -325,6 +341,7 @@ class EsSync {
     
 
     // ask elastic search for all child paths
+    // TODO: needs to be generic wrapper
     let children = await records.getChildren(path);
 
     for( let child of children ) {

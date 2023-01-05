@@ -1,18 +1,15 @@
-global.LOGGER_NAME = 'api';
-
 const express = require('express');
 const {logger, keycloak} = require('@ucd-lib/fin-service-utils');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const compression = require('compression');
-// const config = require('./config');
+const cors = require('cors');
 
 // create express instance
 const app = express();
 
-// parse cookies and add compression
+// parse cookies
 app.use(cookieParser()); 
-app.use(compression());
+app.use(cors());
 
 // setup simple http logging
 app.use((req, res, next) => {

@@ -1,8 +1,7 @@
 
 /**
- * Base class for records and collection
  */
-class ElasticSearchModel {
+class FinSearch {
 
   constructor() {
     this.DEFAULT_OFFSET = 0;
@@ -295,4 +294,4 @@ class ElasticSearchModel {
 
 }
 
-module.exports = ElasticSearchModel;
+module.exports = new FinSearch();
