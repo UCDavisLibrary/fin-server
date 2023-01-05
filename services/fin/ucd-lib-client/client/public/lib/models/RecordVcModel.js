@@ -33,7 +33,10 @@ class RecordVcModel extends BaseModel {
         date : e.root.yearPublished,
         publisher : e.root.publisher.name,
         keywords : ['?'],
-        callNumber : '?',
+
+        callNumber : e.root.identifier[0].split(';')[1].trim(),
+        // .filter(id => id.match(/^.*,.*box:.*,.*folder:.*$/i)
+
         arkDoi : ['?'],
         fedoraLinks : ['?'],
         citationText : '?',

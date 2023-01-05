@@ -366,7 +366,8 @@ class AppSearchResultsPanel extends Mixin(LitElement)
    */
    _onSearchVcUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this.collectionResults = e.payload.searchVcResults.filter(c => c.collection);
+    // debugger;
+    this.collectionResults = [... new Set(e.payload.results.map(c => c.collectionId['@id']))]; // e.payload.results.filter(c => c.collection);
   }
 
   /**

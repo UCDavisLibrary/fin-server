@@ -327,6 +327,7 @@ export default class AppMediaViewerNav extends Mixin(LitElement)
    * @param {Object} e HTML click event
    */
   _onThumbnailClicked(e) {
+    debugger;
     this.shadowRoot.querySelectorAll('#thumbnailInnerContainer > button').forEach(btn => btn.removeAttribute('selected'));
     e.currentTarget.setAttribute('selected', '');
     let id = e.currentTarget.getAttribute('media-id');

@@ -261,7 +261,6 @@ export default class AppMediaDownload extends Mixin(LitElement)
    * @param {Object} e 
    */
   _onChangeDownloadOptions(e) {
-    debugger
     let source = this.downloadOptions[parseInt(e.currentTarget.value)];
 
     if( source.type === 'image' ) {

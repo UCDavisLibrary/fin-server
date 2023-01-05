@@ -29,7 +29,9 @@ class AppRecord extends Mixin(LitElement)
       size : {type: String},
       rights : {type: Object},
       metadata : {type: Array},
-      isBagOfFiles : {type: Boolean}
+      isBagOfFiles : {type: Boolean},
+      arkDoi : {type: Array},
+      fedoraLinks : {type: Array}
     }
   }
 
@@ -52,6 +54,8 @@ class AppRecord extends Mixin(LitElement)
     this.rights = {};
     this.metadata = [];
     this.isBagOfFiles = false;    
+    this.arkDoi = [];
+    this.fedoraLinks = [];
 
     this._injectModel('AppStateModel', 'RecordModel', 'CollectionModel', 'RecordVcModel');
   }
@@ -118,7 +122,41 @@ class AppRecord extends Mixin(LitElement)
     this.publisher = this.record.publisher;
     this.keywords = this.record.keywords;
     this.callNumber = this.record.callNumber;
+    // this.callNumber = record.root.identifier[0].split(';')[1].trim();
     this.collectionImg = this.record.collectionImg;
+
+    this._updateLinks(this.AppStateModel.locationElement.location, record);
+
+    // debugger;
+    // if( this.AppStateModel.locationElement.location.pathname.split('/media').length < 2 ) {
+    //   // pull image with position 1
+
+    //   //    pathname + record.root.image.url for second links in ark/fedora
+    //   // record.data.node.filter(r => parseInt(r.position) === 1 && r.image)[0].id === /item/bla
+    //   // record.data.node.filter(r => parseInt(r.position) === 1 && r.image)[0].image.url === /fcrepo/bla
+    //   this.arkDoi = [
+    //     this.AppStateModel.locationElement.location.pathname.split('/media')[0],
+    //     record.data.node.filter(r => parseInt(r.position) === 1 && r.image)[0].id,
+    //   ];
+  
+    //   this.fedoraLinks = [
+    //     '/fcrepo/rest' + this.AppStateModel.locationElement.location.pathname.split('/media')[0],
+    //     record.data.node.filter(r => parseInt(r.position) === 1 && r.image)[0].image.url + '/fcr:metadata',
+    //   ]; 
+  
+    // } else {
+    //   this.arkDoi = [
+    //     this.AppStateModel.locationElement.location.pathname.split('/media')[0],
+    //     this.AppStateModel.locationElement.location.pathname,
+    //   ];
+  
+    //   this.fedoraLinks = [
+    //     '/fcrepo/rest' + this.AppStateModel.locationElement.location.pathname.split('/media')[0],
+    //     '/fcrepo/rest' + this.AppStateModel.locationElement.location.pathname + '/fcr:metadata',
+    //   ];
+    // }
+
+
     // this.size = '?'
     // this.rights = {'?': '?'}
     // this.metadata = ['?'],
@@ -204,6 +242,49 @@ class AppRecord extends Mixin(LitElement)
   }
 
   /**
+   * @method _onAppStateUpdate
+   * @description AppStateInterface
+   */
+  _onAppStateUpdate(e) {
+    this._updateLinks(e.location);
+  }
+
+  /**
+   * @method _updateLinks
+   * @description update ark/fedora links
+   * 
+   * @param {Object} location location element
+   * @param {Object} record selected record
+   */
+  _updateLinks(location, record) {
+    if( location.pathname.split('/media').length < 2 ) {
+      if( !record ) return;
+
+      // pull image with position 1
+      this.arkDoi = [
+        location.pathname.split('/media')[0],
+        record.data.node.filter(r => parseInt(r.position) === 1 && r.image)[0].id,
+      ];
+  
+      this.fedoraLinks = [
+        '/fcrepo/rest' + location.pathname.split('/media')[0],
+        record.data.node.filter(r => parseInt(r.position) === 1 && r.image)[0].image.url + '/fcr:metadata',
+      ]; 
+  
+    } else {
+      this.arkDoi = [
+        location.pathname.split('/media')[0],
+        location.pathname,
+      ];
+  
+      this.fedoraLinks = [
+        '/fcrepo/rest' + location.pathname.split('/media')[0],
+        '/fcrepo/rest' + location.pathname + '/fcr:metadata',
+      ];
+    }
+  }
+
+  /**
    * @method _onRecordVcUpdate
    * @description from RecordVcModel, called when a record is selected
    * 
@@ -213,41 +294,41 @@ class AppRecord extends Mixin(LitElement)
   //   debugger;
   // }
 
-  _renderFcLink(record, media) {
-    let metadataPart = record['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
-    let link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
-    let html = `<a href="${link}">${record['@id']}</a>`;
+  // _renderFcLink(record, media) {
+  //   let metadataPart = record['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
+  //   let link = this._getHost()+'fcrepo/rest'+record['@id']+metadataPart;
+  //   let html = `<a href="${link}">${record['@id']}</a>`;
 
-    if( media && record['@id'] !== media['@id'] ) {
-      metadataPart = media['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
-      link = this._getHost()+'fcrepo/rest'+media['@id']+metadataPart;
-      html += `<div class="fc-break"></div><div><a href="${link}">${media['@id']}</a></div>`;
-    }
+  //   if( media && record['@id'] !== media['@id'] ) {
+  //     metadataPart = media['@type'].find(type => type.match(/binary/i)) ? '/fcr:metadata' : '';
+  //     link = this._getHost()+'fcrepo/rest'+media['@id']+metadataPart;
+  //     html += `<div class="fc-break"></div><div><a href="${link}">${media['@id']}</a></div>`;
+  //   }
 
-    this.$.fedoraValue.innerHTML = html;
-  }
+  //   this.$.fedoraValue.innerHTML = html;
+  // }
 
-  _renderSelectedMedia() {
-    let imageList = this._getImageMediaList(this.record);
-    if( this.record.associatedMedia ) { 
-      if( imageList.length ) {
+  // _renderSelectedMedia() {
+  //   let imageList = this._getImageMediaList(this.record);
+  //   if( this.record.associatedMedia ) { 
+  //     if( imageList.length ) {
 
-        // see if url has selected an image
-        let selected = imageList[0];
-        for( let img of imageList ) {
-          if( img['@id'] === window.location.pathname ) {
-            selected = img;
-          }
-        }
+  //       // see if url has selected an image
+  //       let selected = imageList[0];
+  //       for( let img of imageList ) {
+  //         if( img['@id'] === window.location.pathname ) {
+  //           selected = img;
+  //         }
+  //       }
 
-        this._setSelectedRecordMedia(selected);
-      } else {
-        this._setSelectedRecordMedia(this.record);
-      }
-    } else {
-      this._setSelectedRecordMedia(this.record);
-    }
-  }
+  //       this._setSelectedRecordMedia(selected);
+  //     } else {
+  //       this._setSelectedRecordMedia(this.record);
+  //     }
+  //   } else {
+  //     this._setSelectedRecordMedia(this.record);
+  //   }
+  // }
 
   /**
    * @method _renderCreators
@@ -255,27 +336,27 @@ class AppRecord extends Mixin(LitElement)
    * 
    * @param {Object} record
    */
-  _renderCreators(record) {
-    // filter to those w/ labels
-    let creators = utils.asArray(record, 'creators');
+  // _renderCreators(record) {
+  //   // filter to those w/ labels
+  //   let creators = utils.asArray(record, 'creators');
 
-    if( creators.length === 0 ) {
-      return this.$.creator.classList.add('hidden');
-    }
+  //   if( creators.length === 0 ) {
+  //     return this.$.creator.classList.add('hidden');
+  //   }
 
-    // TODO: label is under creator.name
-    this.$.creatorValue.innerHTML = creators 
-      .map(creator => {
-        let searchDoc = this.RecordModel.emptySearchDocument();
-        this.RecordModel.appendKeywordFilter(searchDoc, 'creators', creator);
-        this.RecordModel.appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
-        let link = this._getHost()+'search/'+this.RecordModel.searchDocumentToUrl(searchDoc);
-        return `<a href="${link}">${creator}</a>`;
-      })
-      .join(', ');
+  //   // TODO: label is under creator.name
+  //   this.$.creatorValue.innerHTML = creators 
+  //     .map(creator => {
+  //       let searchDoc = this.RecordModel.emptySearchDocument();
+  //       this.RecordModel.appendKeywordFilter(searchDoc, 'creators', creator);
+  //       this.RecordModel.appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
+  //       let link = this._getHost()+'search/'+this.RecordModel.searchDocumentToUrl(searchDoc);
+  //       return `<a href="${link}">${creator}</a>`;
+  //     })
+  //     .join(', ');
 
-    this.$.creator.classList.remove('hidden');
-  }
+  //   this.$.creator.classList.remove('hidden');
+  // }
 
   /**
    * @method _renderSubjects
@@ -283,29 +364,29 @@ class AppRecord extends Mixin(LitElement)
    * 
    * @param {Object} record
    */
-  _renderSubjects(record) {
-    // filter to those w/ labels
-    let subjects = utils.asArray(record, 'abouts');
-    // .filter(subject => subject.name ? true : false);
+  // _renderSubjects(record) {
+  //   // filter to those w/ labels
+  //   let subjects = utils.asArray(record, 'abouts');
+  //   // .filter(subject => subject.name ? true : false);
 
-    if( subjects.length === 0 ) {
-      return this.$.subject.classList.add('hidden');
-    }
+  //   if( subjects.length === 0 ) {
+  //     return this.$.subject.classList.add('hidden');
+  //   }
 
-    // TODO: label is under creator.name
-    this.$.subjectValue.innerHTML = subjects 
-      .map(subject => {
-        // subject = subject.name;
-        let searchDoc = this.RecordModel.emptySearchDocument();
-        this.RecordModel.appendKeywordFilter(searchDoc, 'abouts.raw', subject);
-        this.RecordModel.appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
-        let link = this._getHost()+'search/'+this.RecordModel.searchDocumentToUrl(searchDoc);
-        return `<a href="${link}">${subject}</a>`;
-      })
-      .join(', ');
+  //   // TODO: label is under creator.name
+  //   this.$.subjectValue.innerHTML = subjects 
+  //     .map(subject => {
+  //       // subject = subject.name;
+  //       let searchDoc = this.RecordModel.emptySearchDocument();
+  //       this.RecordModel.appendKeywordFilter(searchDoc, 'abouts.raw', subject);
+  //       this.RecordModel.appendKeywordFilter(searchDoc, 'isPartOf.@id', record.collectionId);
+  //       let link = this._getHost()+'search/'+this.RecordModel.searchDocumentToUrl(searchDoc);
+  //       return `<a href="${link}">${subject}</a>`;
+  //     })
+  //     .join(', ');
 
-    this.$.subject.classList.remove('hidden');
-  }
+  //   this.$.subject.classList.remove('hidden');
+  // }
 
   /**
    * @method _renderPublisher
@@ -313,21 +394,21 @@ class AppRecord extends Mixin(LitElement)
    * 
    * @param {Object} record
    */
-  _renderPublisher(record) {
-    // filter to those w/ labels
-    let publishers = utils.asArray(record, 'publisher')
-      .filter(publisher => publisher.name ? true : false);
+  // _renderPublisher(record) {
+  //   // filter to those w/ labels
+  //   let publishers = utils.asArray(record, 'publisher')
+  //     .filter(publisher => publisher.name ? true : false);
 
-    if( publishers.length === 0 ) {
-      return this.$.publisher.classList.add('hidden');
-    }
+  //   if( publishers.length === 0 ) {
+  //     return this.$.publisher.classList.add('hidden');
+  //   }
 
-    this.$.publisherValue.innerHTML = publishers 
-      .map(publisher => publisher.name)
-      .join(', ');
+  //   this.$.publisherValue.innerHTML = publishers 
+  //     .map(publisher => publisher.name)
+  //     .join(', ');
 
-    this.$.publisher.classList.remove('hidden');
-  }
+  //   this.$.publisher.classList.remove('hidden');
+  // }
 
   /**
    * @method _renderIdentifier
@@ -335,44 +416,44 @@ class AppRecord extends Mixin(LitElement)
    * 
    * @param {Object} record 
    */
-  _renderIdentifier(record, media) {
-    if( !record.identifier ) {
-      return this.$.identifier.classList.add('hidden');
-    }
+  // _renderIdentifier(record, media) {
+  //   if( !record.identifier ) {
+  //     return this.$.identifier.classList.add('hidden');
+  //   }
 
-    let ids = Array.isArray(record.identifier) ? record.identifier : [record.identifier];
-    let arks = ids.filter(id => id.match(/^(ark|doi)/) ? true : false);
+  //   let ids = Array.isArray(record.identifier) ? record.identifier : [record.identifier];
+  //   let arks = ids.filter(id => id.match(/^(ark|doi)/) ? true : false);
 
-    if( arks.length ) {
+  //   if( arks.length ) {
 
-      // if we are passed a selected media, append identifiers as well
-      if( media && media.identifier ) {
-        let mediaIds = Array.isArray(media.identifier) ? media.identifier : [media.identifier];
-        mediaIds = mediaIds.filter(id => id.match(/^(ark|doi)/) ? true : false);
-        for( let id of mediaIds ) {
-          if( arks.indexOf(id) === -1 ) arks.push(id);
-        }
-      }
+  //     // if we are passed a selected media, append identifiers as well
+  //     if( media && media.identifier ) {
+  //       let mediaIds = Array.isArray(media.identifier) ? media.identifier : [media.identifier];
+  //       mediaIds = mediaIds.filter(id => id.match(/^(ark|doi)/) ? true : false);
+  //       for( let id of mediaIds ) {
+  //         if( arks.indexOf(id) === -1 ) arks.push(id);
+  //       }
+  //     }
 
-      this.$.identifier.classList.remove('hidden');
-      this.$.identifierValue.innerHTML = arks.map(id => `<div><a href="${this._getHost()}${id}">${id}</a></div>`).join('')
-    } else {
-      this.$.identifier.classList.add('hidden');
-    }
+  //     this.$.identifier.classList.remove('hidden');
+  //     this.$.identifierValue.innerHTML = arks.map(id => `<div><a href="${this._getHost()}${id}">${id}</a></div>`).join('')
+  //   } else {
+  //     this.$.identifier.classList.add('hidden');
+  //   }
 
-    if( !record.identifiers ) {
-      return this.$.libLocation.classList.add('hidden');
-    }
+  //   if( !record.identifiers ) {
+  //     return this.$.libLocation.classList.add('hidden');
+  //   }
 
-    let callNumber = Array.isArray(record.identifiers) ? record.identifiers : [record.identifiers];
-    callNumber = callNumber.filter(id => id.match(/^.*,.*box:.*,.*folder:.*$/i) ? true : false);
-    if( callNumber.length ) {
-      this.$.callNumberValue.innerHTML = callNumber.map(id => `<div>${id}</div>`).join('')
-      this.$.callNumber.classList.remove('hidden');
-    } else {
-      this.$.callNumber.classList.add('hidden');
-    }
-  }
+  //   let callNumber = Array.isArray(record.identifiers) ? record.identifiers : [record.identifiers];
+  //   callNumber = callNumber.filter(id => id.match(/^.*,.*box:.*,.*folder:.*$/i) ? true : false);
+  //   if( callNumber.length ) {
+  //     this.$.callNumberValue.innerHTML = callNumber.map(id => `<div>${id}</div>`).join('')
+  //     this.$.callNumber.classList.remove('hidden');
+  //   } else {
+  //     this.$.callNumber.classList.add('hidden');
+  //   }
+  // }
 
   /**
    * @method _getHost

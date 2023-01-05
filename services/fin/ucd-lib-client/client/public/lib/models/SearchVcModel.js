@@ -30,9 +30,11 @@ class SearchVcModel extends BaseModel {
         //   collectionItemsCount += media.hasPart ? media.hasPart.length : 0;
         // });
 
+        // todo could belong to multiple collections.. which should be listed? or collectionIds as array type?
+        // also this index0 sometimes is oac and not /collection/*
         let collectionId;
         if( Array.isArray(result.root.isPartOf) ) {
-          collectionId = result.root.isPartOf[0]['@id']; 
+          collectionId = result.root.isPartOf.filter(c => c['@id'].indexOf('/collection') > -1)[0]; //result.root.isPartOf[0]['@id']; 
         } else {
           collectionId = result.root.isPartOf['@id'];
         }

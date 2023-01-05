@@ -266,6 +266,11 @@ export default function render() {
       text-decoration: none;
     }
 
+    #identifierValue a,
+    #fedoraValue a {
+      display: block;
+    }
+
   </style>
 
   <app-media-viewer></app-media-viewer>
@@ -360,12 +365,16 @@ export default function render() {
 
     <div class="metadata-row" id="identifier">
       <div class="attr">ARK / DOI</div>
-      <div class="value" id="identifierValue"></div>
+      <div class="value" id="identifierValue">
+        ${this.arkDoi.map(link => html`<a href="${link}">${link}</a>`)}
+      </div>
     </div>
 
     <div class="metadata-row">
       <div class="attr">Fedora Link</div>
-      <div class="value" id="fedoraValue"></div>
+      <div class="value" id="fedoraValue">
+        ${this.fedoraLinks.map(link => html`<a href="${link}">${link}</a>`)}
+      </div>
     </div>
 
   </div>

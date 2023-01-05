@@ -37,8 +37,6 @@ export default class AppImageViewer extends Mixin(LitElement)
   }
 
   _onAppStateUpdate(e) {
-    // debugger;
-
     if( e.selectedRecord.index[e.location.pathname] !== e.selectedRecordMedia && e.selectedRecord.root['@id'] !== e.location.pathname ) {
       let selectedRecordMedia = e.selectedRecord.index[e.location.pathname];
       this._onSelectedRecordMediaUpdate(selectedRecordMedia);
@@ -52,7 +50,6 @@ export default class AppImageViewer extends Mixin(LitElement)
    * @param {Object} media 
    */
   _onSelectedRecordMediaUpdate(media) {
-    debugger;
     if( !media ) return;
     let getMediaType = utils.getMediaType(media);
     if (getMediaType !== 'ImageList' && getMediaType !== 'ImageObject') return;
