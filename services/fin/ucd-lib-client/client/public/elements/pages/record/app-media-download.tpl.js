@@ -90,7 +90,7 @@ export default function render() {
     }
 
     .layout.btns > * {
-      width: 25%
+      max-width: 30%
     }
 
     .radio {
@@ -100,7 +100,7 @@ export default function render() {
     #downloadBtn {
       padding: 0.75rem 0;
       font-size: .9rem;
-      width: 15%;
+      min-width: 6rem;
       text-transform: none;
     }
 

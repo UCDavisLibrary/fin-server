@@ -105,6 +105,20 @@ return html`
       margin-top: 0;
     }
 
+    @media (max-width: 600px) {
+      .citation {
+        display: block;
+      }
+
+      .cite-graphic {
+        width: 70%;
+      }
+
+      .cite-collection {
+        padding-top: 0;
+      }
+    }
+
 </style>
 <div class="citation">
   <div class="cite-graphic">

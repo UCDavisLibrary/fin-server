@@ -80,7 +80,7 @@ export default class AppImageViewer extends Mixin(LitElement)
     
     img.onload = () => {
       this.loading = false;
-      this.shadowRoot.querySelector('#img').style.height = '600px';
+      this.shadowRoot.querySelector('#img').style.maxHeight = '600px';
     };
     img.src = url;
 

@@ -276,6 +276,23 @@ export default function render() {
       padding-bottom: 1rem;
     }
 
+    @media (max-width: 756px) {
+      .container {
+        width: 85%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 95%;
+      }
+      
+      .metadata-row, 
+      .download-section {
+        display: block;
+      }
+    }
+
   </style>
 
   <app-media-viewer></app-media-viewer>
