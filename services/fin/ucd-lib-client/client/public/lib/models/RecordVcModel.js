@@ -40,6 +40,7 @@ class RecordVcModel extends BaseModel {
         arkDoi : ['?'],
         fedoraLinks : ['?'],
         citationText : '?',
+        root : e.root
       }
 
       // todo save translated data to store

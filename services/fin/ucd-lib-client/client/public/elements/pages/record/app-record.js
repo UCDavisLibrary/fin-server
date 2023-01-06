@@ -31,7 +31,8 @@ class AppRecord extends Mixin(LitElement)
       metadata : {type: Array},
       isBagOfFiles : {type: Boolean},
       arkDoi : {type: Array},
-      fedoraLinks : {type: Array}
+      fedoraLinks : {type: Array},
+      // citations : {type: Array}
     }
   }
 
@@ -40,6 +41,7 @@ class AppRecord extends Mixin(LitElement)
     this.render = render.bind(this);
     this.active = true;
 
+    this.record = {};
     this.currentRecordId = '';
     this.name = 'Yuletide Vintage of Values 1968';
     this.collectionName = '';
@@ -56,6 +58,7 @@ class AppRecord extends Mixin(LitElement)
     this.isBagOfFiles = false;    
     this.arkDoi = [];
     this.fedoraLinks = [];
+    // this.citations = [];
 
     this._injectModel('AppStateModel', 'RecordModel', 'CollectionModel', 'RecordVcModel');
   }
@@ -234,6 +237,21 @@ class AppRecord extends Mixin(LitElement)
     // this._setTarHref();
 
     // render citations.. this might need to load library, do it last
+    // debugger;
+    // this.citations.push({
+    //   type : 'mla',
+    //   text : await citations.renderEsRecord(this.record.root, 'mla')
+    // });
+    // this.citations.push({
+    //   type : 'apa',
+    //   text : await citations.renderEsRecord(this.record.root, 'apa')
+    // });
+    // this.citations.push({
+    //   type : 'chicago',
+    //   text : await citations.renderEsRecord(this.record.root, 'chicago')
+    // });
+    
+
     // this.$.mla.text = await citations.renderEsRecord(this.record, 'mla');
     // this.$.apa.text = await citations.renderEsRecord(this.record, 'apa');
     // this.$.chicago.text = await citations.renderEsRecord(this.record, 'chicago');

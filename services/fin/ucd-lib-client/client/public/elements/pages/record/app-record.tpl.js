@@ -271,6 +271,11 @@ export default function render() {
       display: block;
     }
 
+    #identifierValue a:nth-child(1),
+    #fedoraValue a:nth-child(1) {
+      padding-bottom: 1rem;
+    }
+
   </style>
 
   <app-media-viewer></app-media-viewer>
@@ -379,5 +384,5 @@ export default function render() {
 
   </div>
 
-  <app-citation></app-citation>
+  <app-citation .record="${this.record.root}"></app-citation>
 `;}
