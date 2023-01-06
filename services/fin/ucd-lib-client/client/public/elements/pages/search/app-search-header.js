@@ -59,8 +59,8 @@ class AppSearchHeader extends Mixin(LitElement)
     this.drawerOpen = e.filtersDrawerOpen ? true : false;
     this.appState = e;
     if( 
-      e.location.path[0] !== 'search' &&
-      e.location.path[0] !== 'collection'
+      e.location.path[0] !== 'search' // &&
+      // e.location.path[0] !== 'collection' // todo this may change, for now the collection page is no longer a search page
     ) return;
     this._searchFromAppState();
   }
@@ -103,7 +103,7 @@ class AppSearchHeader extends Mixin(LitElement)
     if( this.lastQuery === query ) return;
     this.lastQuery = query;
 
-    this.RecordModel.search(query);
+    this.RecordModel.search(query, true, true, true);
   }
 
   /**

@@ -36,11 +36,11 @@ class RecordsModel extends ElasticSearchModel {
     if( opts.admin ) _source_excludes = false;
     else if( opts.compact ) _source_excludes = 'compact';
 
-console.log([
-  {term : {'node.identifier.raw' : id.replace(/^\/item\//, '')}},
-  {term: {'node.@id': id}}
-]);
-
+    console.log([
+      {term : {'node.identifier.raw' : id.replace(/^\/item\//, '')}},
+      {term: {'node.@id': id}}
+    ]);
+    
     let result = await this.esSearch({
       from: 0,
       size: 1,
@@ -56,7 +56,7 @@ console.log([
       _source_excludes
     });
 
-    if( result.hits.total.value === 1 ) {
+    if( result.hits.total.value >= 1 ) {
       result = result.hits.hits[0]._source;
       if( opts.compact ) utils.compactAllTypes(result);
       if( opts.singleNode ) result.node = utils.singleNode(id, result.node);
@@ -315,7 +315,7 @@ console.log([
       result.aggregations.facets[filter] = tmpResult.aggregations.facets[filter];
     }
 
-    result.results = result.results.forEach(item => {
+    result.results.forEach(item => {      
       if( options.compact ) utils.compactAllTypes(item);
       if( options.singleNode ) item.node = utils.singleNode(item.id, item.node);
     });

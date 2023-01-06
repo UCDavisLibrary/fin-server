@@ -21,12 +21,13 @@ class RecordService extends BaseService {
 
   get(id) {
     return this.request({
-      url : `${this.baseUrl}${id}?root=true`,
+      url : `${this.baseUrl}${id.replace(/^\/item/, '')}?root=true`,
       checkCached : () => this.store.getRecord(id),
       onLoading : request => this.store.setRecordLoading(id, request),
       onLoad : result => {
         let rg = new RecordGraph(result.body);
-        rg.clientMedia = new ClientMedia(id, result.body.node);
+        // get clientMedia for entire collection, even if viewing a single item
+        rg.clientMedia = new ClientMedia(id.split('/media')[0], result.body.node);
         this.store.setRecordLoaded(id, rg);
       },
       onError : e => this.store.setRecordError(id, e)
@@ -41,7 +42,7 @@ class RecordService extends BaseService {
    * 
    * @returns {Promise}
    */
-  search(searchDocument = {}, debug=true) {
+  search(searchDocument = {}, debug=true, compact=false, singleNode=false, ignoreClientMedia=false) {
     if( !searchDocument.textFields ) {
       searchDocument.textFields = config.elasticSearch.textFields.record;
     }
@@ -52,8 +53,13 @@ class RecordService extends BaseService {
       return this.store.getSearch();
     }
 
+    let params = [];
+    if( debug ) params.push('debug=true');
+    if( compact ) params.push('compact=true');
+    if( singleNode ) params.push('single-node=true');
+    
     return this.request({
-      url : `${this.baseUrl}${debug ? '?debug=true' : ''}`,
+      url : `${this.baseUrl}${params.length ? '?' + params.join('&') : ''}`,
       fetchOptions : {
         method : 'POST',
         headers : {
@@ -66,12 +72,16 @@ class RecordService extends BaseService {
         if( result.body.results ) {
           result.body.results = result.body.results.map(record => {
             let rg = new RecordGraph(record);
-            rg.clientMedia = new ClientMedia(record.id, record);
+            if( !ignoreClientMedia ) {
+              rg.clientMedia = new ClientMedia(record.id, record);
+            }
             return rg;
           });
+          if( !ignoreClientMedia ) {
+            result.body.results.map(item => item.getChildren(item.root));
+          }
+          this.store.setSearchLoaded(searchDocument, result.body);
         }
-        result.body.results.map(item => item.getChildren(item.root))
-        this.store.setSearchLoaded(searchDocument, result.body)
       },
       onError : e => this.store.setSearchError(searchDocument, e)
     });
@@ -119,9 +129,9 @@ class RecordService extends BaseService {
    * @param {Object} searchDocument elastic search query parameters
    * @returns {Promise}
    */
-  defaultSearch(id, searchDocument = {}) {
+  defaultSearch(id, searchDocument = {}, compact=false, singleNode=false) {
     return this.request({
-      url : `${this.baseUrl}?debug=true`,
+      url : `${this.baseUrl}?debug=true${compact ? '&compact=true' : ''}${singleNode ? '&single-node=true' : ''}`,
       fetchOptions : {
         method : 'POST',
         headers : {
@@ -130,7 +140,14 @@ class RecordService extends BaseService {
         body : JSON.stringify(searchDocument)
       },
       onLoading : promise => this.store.setDefaultSearchLoading(id, searchDocument, promise),
-      onLoad : result => this.store.setDefaultSearchLoaded(id, searchDocument, result.body),
+      onLoad : result => {
+        if( result.body.results ) {
+          result.body.results = result.body.results.map(record => new RecordGraph(record));
+          result.body.results.map(item => item.getChildren(item.root))
+          this.store.setDefaultSearchLoaded(id, searchDocument, result.body)
+        }        
+      },
+
       onError : e => this.store.setDefaultSearchError(id, searchDocument, e)
     });
   }

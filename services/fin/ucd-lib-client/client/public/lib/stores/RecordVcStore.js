@@ -1,7 +1,7 @@
 const {BaseStore} = require('@ucd-lib/cork-app-utils');
 const clone = require('clone');
 
-class RecordStore extends BaseStore {
+class RecordVcStore extends BaseStore {
 
   constructor() {
     super();
@@ -16,9 +16,7 @@ class RecordStore extends BaseStore {
     }
 
     this.events = {
-      RECORD_UPDATE : 'record-update',
-      RECORD_SEARCH_UPDATE : 'record-search-update',
-      DEFAULT_RECORD_SEARCH_UPDATE : 'default-record-search-update'
+      COLLECTION_VC_UPDATE : 'collection-vc-update',
     }
 
   }
@@ -46,8 +44,8 @@ class RecordStore extends BaseStore {
   setRecordLoaded(id, payload) {
     this._setRecordState({
       state: this.STATE.LOADED,
-      id,
-      payload, payload
+      rootId : payload.id,
+      payload, id
     });
   }
 
@@ -60,9 +58,9 @@ class RecordStore extends BaseStore {
 
   _setRecordState(state) {
     this.data.byId[state.id] = state;
-    // if( state.rootId ) {
-    //   this.data.byId[state.rootId] = state;
-    // }
+    if( state.rootId ) {
+      this.data.byId[state.rootId] = state;
+    }
     this.emit(this.events.RECORD_UPDATE, state);
   }
 
@@ -93,7 +91,7 @@ class RecordStore extends BaseStore {
 
   _setSearchState(state) {
     this.data.search = state;
-    this.emit(this.events.RECORD_SEARCH_UPDATE, state);
+    this.emit(this.events.COLLECTION_VC_UPDATE, state);
   }
 
   getSearch() {
@@ -133,9 +131,9 @@ class RecordStore extends BaseStore {
 
   _setDefaultSearchState(state) {
     this.data.defaultSearch[state.id] = state;
-    this.emit(this.events.DEFAULT_RECORD_SEARCH_UPDATE, this.data.defaultSearch[state.id]);
+    this.emit(this.events.DEFAULT_SEARCH_UPDATE, this.data.defaultSearch[state.id]);
   }
 
 }
 
-module.exports = new RecordStore();
+module.exports = new RecordVcStore();

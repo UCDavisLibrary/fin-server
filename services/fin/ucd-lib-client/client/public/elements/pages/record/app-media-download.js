@@ -1,5 +1,5 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
-import template from "./app-media-download.html"
+import { LitElement } from 'lit';
+import render from "./app-media-download.tpl.js"
 
 import CollectionInterface from "../../interfaces/CollectionInterface"
 import MediaInterface from "../../interfaces/MediaInterface"
@@ -9,68 +9,45 @@ import utils from "../../../lib/utils"
 import bytes from "bytes"
 
 
-export default class AppMediaDownload extends Mixin(PolymerElement)
-      .with(EventInterface, CollectionInterface, MediaInterface) {
-
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
-  }
+export default class AppMediaDownload extends Mixin(LitElement)
+      .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      defaultImage: {
-        type : Boolean,
-        value : true
-      },
-      formats : {
-        type : Array,
-        value : () => []
-      },
-      href : {
-        type : String,
-        value : ''
-      },
-      imageSizes : {
-        type : Array,
-        value : () => []
-      },
-      hasMultipleDownloadMedia: {
-        type: Boolean,
-        value: false
-      },
-      selectedMediaHasSources : {
-        type : Boolean,
-        value : false
-      },
-      fullSetCount : {
-        type : Boolean,
-        value : 0
-      },
-      fullSetSelected: {
-        type : Boolean,
-        value : false
-      },
-      downloadOptions: {
-        type: Array,
-        value: () => []
-      },
-      showImageFormats : {
-        type : Boolean,
-        value : false
-      }
+      defaultImage: { type : Boolean },
+      formats : { type : Array },
+      href : { type : String },
+      imageSizes : { type : Array },
+      hasMultipleDownloadMedia: { type: Boolean },
+      selectedMediaHasSources : { type : Boolean },
+      fullSetCount : { type : Boolean },
+      fullSetSelected: { type : Boolean },
+      downloadOptions: { type: Array },
+      showImageFormats : { type : Boolean }
     }
   }
 
   constructor() {
     super();
+
+    this.render = render.bind(this);
     this.active = true;
-    this._injectModel('AppStateModel', 'MediaModel');
+
+    this.defaultImage = true;
+    this.formats = [];
+    this.href = '';
+    this.imageSizes = [];
+    this.hasMultipleDownloadMedia = false;
+    this.selectedMediaHasSources = true;
+    this.fullSetCount = 0;
+    this.fullSetSelected = false;
+    this.downloadOptions =  [];
+    this.showImageFormats = true;
+    
+    this._injectModel('AppStateModel', 'MediaModel', 'CollectionModel', 'RecordVcModel');
   }
 
-  async ready() {
-    super.ready();
+  async firstUpdated() {
     let selectedRecord = await this.AppStateModel.getSelectedRecord();
     if( selectedRecord ) {
       this._onSelectedRecordUpdate(selectedRecord);
@@ -80,11 +57,13 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   }
 
   _onSelectedRecordUpdate(record) {
-    this.rootRecord = record;
     if( !record ) return;
+    // let vcRecord = this.RecordVcModel.translateMedia(record);
+
+    this.rootRecord = record;
 
     // find out if the number of download options is greater than 1
-    let sourceCount = 0;
+    let sourceCount = 42;
     for( let type in record.media ) {
       for( let media of record.media[type] ) {
         if( type === 'imageList' ) {
@@ -102,8 +81,8 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
     this.hasMultipleDownloadMedia = (sourceCount > 1);
     if( this.hasMultipleDownloadMedia ) {
-      this.$.single.checked = true;
-      this.$.fullset.checked = false;
+      this.shadowRoot.querySelector('#single').checked = true;
+      this.shadowRoot.querySelector('#fullset').checked = false;
     }
 
     this.fullSetSelected = false;
@@ -125,10 +104,10 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
 
     this.allSources = sources;
     this.downloadOptions = sources;
-    this.$.downloadOptions.innerHTML = sources
+    this.shadowRoot.querySelector('#downloadOptions').innerHTML = sources
       .map((item, index) => `<option value="${index}" ${index === 0 ? 'selected' : ''}>${item.label}</option>`)
       .join()
-    this.$.downloadOptions.value = '0';
+    this.shadowRoot.querySelector('#downloadOptions').value = '0';
 
     this._setDownloadHref(sources[0]);
   }
@@ -167,7 +146,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
   _setDownloadHref(source) {
     let href = source.src;
     if( source.type === 'image' ) {
-      let format = this.$.format.value;
+      let format = this.shadowRoot.querySelector('#format').value;
       if( source.originalFormat !== format || source.imageType !== 'FR' ) {
         href += source.service+format;
       }
@@ -285,7 +264,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     let source = this.downloadOptions[parseInt(e.currentTarget.value)];
 
     if( source.type === 'image' ) {
-      this._renderImgFormats(source.record, this.$.format.value, source.imageType);
+      this._renderImgFormats(source.record, this.shadowRoot.querySelector('#format').value, source.imageType);
     }
 
     this._setDownloadHref(source);
@@ -308,7 +287,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
     }
 
     this.formats = formats;
-    this.$.format.innerHTML = '';
+    this.shadowRoot.querySelector('#format').innerHTML = '';
 
     this.formats.forEach(format => {
       let option = document.createElement('option');
@@ -319,7 +298,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
         option.setAttribute('selected', 'selected');
       }
       
-      this.$.format.appendChild(option);
+      this.shadowRoot.querySelector('#format').appendChild(option);
     });
   }
 
@@ -343,8 +322,8 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    * @description when a format is selected, render the download button.
    */
   _onFormatSelected() {
-    let selectedFormat = this.$.format.value.replace(/ .*/, '');
-    let source = this.downloadOptions[parseInt(this.$.downloadOptions.value)];
+    let selectedFormat = this.shadowRoot.querySelector('#format').value.replace(/ .*/, '');
+    let source = this.downloadOptions[parseInt(this.shadowRoot.querySelector('#downloadOptions').value)];
     this._renderImgFormats(source.record, selectedFormat, source.imageType);
     this._setDownloadHref(source);
   }
@@ -354,7 +333,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    * @description bound to radio buttons click event
    */
   _toggleMultipleDownload() {
-    this.fullSetSelected = this.$.fullset.checked ? true : false;
+    this.fullSetSelected = this.shadowRoot.querySelector('#fullset').checked ? true : false;
     this._setZipPaths();
   }
 
@@ -364,7 +343,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    */
   _setZipPaths() {
     let urls = {};
-    this.zipName = this.rootRecord.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+    this.zipName = this.rootRecord.root.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
 
     let sources = this._getAllNativeDownloadSources();
 
@@ -372,7 +351,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
       urls[source.filename] = source.src;
     }
 
-    this.$.zipPaths.value = JSON.stringify(urls);
+    this.shadowRoot.querySelector('#zipPaths').value = JSON.stringify(urls);
   }
 
   /**
@@ -398,7 +377,7 @@ export default class AppMediaDownload extends Mixin(PolymerElement)
    * @description bound to download set button click event
    */
   _onDownloadFullSetClicked() {
-    this.$.downloadZip.submit();
+    this.shadowRoot.querySelector('#downloadZip').submit();
 
     let path = this.rootRecord['@id'].replace(config.fcrepoBasePath, '');
     gtag('event', 'download', {

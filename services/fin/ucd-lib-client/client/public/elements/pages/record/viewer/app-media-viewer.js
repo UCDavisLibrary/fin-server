@@ -54,30 +54,38 @@ export default class AppMediaViewer extends Mixin(LitElement)
     }
 
     _onAppStateUpdate(e) {
-      if( !e.selectedRecordMedia ) {
-        this.selectedRecordMediaId = '';
-        return this.mediaType = '';
-      }
-      if( e.selectedRecordMedia['@id'] === this.selectedRecordMediaId ) {
-        return;
+
+      if( e.selectedRecord.index[e.location.pathname] !== e.selectedRecordMedia && e.selectedRecord.root['@id'] !== e.location.pathname ) {
+        let selectedRecordMedia = e.selectedRecord.index[e.location.pathname];
+        this.selectedRecordMediaId = selectedRecordMedia.id;
+        // }
+        // if( !e.selectedRecordMedia ) {
+        //   this.selectedRecordMediaId = '';
+        //   return this.mediaType = '';
+        // }
+        // if( e.selectedRecordMedia['@id'] === this.selectedRecordMediaId ) {
+        //   return;
+        // }
+  
+        // this.selectedRecordMediaId = e.selectedRecordMedia['@id'];
+  
+        let mediaType = utils.getMediaType(selectedRecordMedia).toLowerCase().replace(/object/i, '');
+        if ( mediaType === "imagelist" ) {
+          mediaType = "image";
+        } else if ( mediaType === "streamingvideo" ){
+          mediaType = "video";
+        }
+  
+        if( mediaType === 'bagoffiles' && selectedRecordMedia.thumbnailUrl ) {
+          this.bagOfFilesImage = selectedRecordMedia.thumbnailUrl;
+        } else {
+          this.bagOfFilesImage = '';
+        }
+  
+        this.mediaType = mediaType;
+        this.AppStateModel.setSelectedRecordMedia(selectedRecordMedia);
       }
 
-      this.selectedRecordMediaId = e.selectedRecordMedia['@id'];
-
-      let mediaType = utils.getMediaType(e.selectedRecordMedia).toLowerCase().replace(/object/i, '');
-      if ( mediaType === "imagelist" ) {
-        mediaType = "image";
-      } else if ( mediaType === "streamingvideo" ){
-        mediaType = "video";
-      }
-
-      if( mediaType === 'bagoffiles' && e.selectedRecordMedia.thumbnailUrl ) {
-        this.bagOfFilesImage = e.selectedRecordMedia.thumbnailUrl;
-      } else {
-        this.bagOfFilesImage = '';
-      }
-
-      this.mediaType = mediaType;
     }
 
 

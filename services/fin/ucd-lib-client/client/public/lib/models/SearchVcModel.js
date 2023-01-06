@@ -23,16 +23,18 @@ class SearchVcModel extends BaseModel {
       // translate RecordGraph's to ui model
       const matchedRecords = [];
       e.payload.results.forEach(result => {
-        const associatedMedia = result.getChildren(result.data.id).associatedMedia;
+        // const associatedMedia = result.getChildren(result.data.id).associatedMedia;
 
-        let collectionItemsCount = 0;
-        associatedMedia.forEach(media => {
-          collectionItemsCount += media.hasPart ? media.hasPart.length : 0;
-        });
+        // let collectionItemsCount = 0;
+        // associatedMedia.forEach(media => {
+        //   collectionItemsCount += media.hasPart ? media.hasPart.length : 0;
+        // });
 
+        // todo could belong to multiple collections.. which should be listed? or collectionIds as array type?
+        // also this index0 sometimes is oac and not /collection/*
         let collectionId;
         if( Array.isArray(result.root.isPartOf) ) {
-          collectionId = result.root.isPartOf[0]['@id']; 
+          collectionId = result.root.isPartOf.filter(c => c['@id'].indexOf('/collection') > -1)[0]; //result.root.isPartOf[0]['@id']; 
         } else {
           collectionId = result.root.isPartOf['@id'];
         }
@@ -43,7 +45,7 @@ class SearchVcModel extends BaseModel {
           title : result.root.name,              // different for collections? might need to loop over nodes
           thumbnailUrl : result.root.thumbnailUrl,  // main image to show
           mediaType : null,                      // todo for media type icon, not sure on variety of icons
-          collectionItemsCount,
+          // collectionItemsCount,
           collection : result.root.publisher ? result.root.publisher.name : '', // for detail display
           creator : result.root.creator ? result.root.creator.name : '',    // for detail display
           date : result.root.yearPublished,      // for detail display
@@ -56,7 +58,7 @@ class SearchVcModel extends BaseModel {
         });
       });
 
-      e.payload.searchVcResults = matchedRecords;
+      e.payload.results = matchedRecords;
 
       // todo save translated data to store
       // todo this really will emit from this.store.setRecordSearchState() or similar

@@ -8,7 +8,6 @@ return html`
     display: block;
     position: relative;
     box-sizing: border-box;
-    background: black;
   }
 
   .wrapper {

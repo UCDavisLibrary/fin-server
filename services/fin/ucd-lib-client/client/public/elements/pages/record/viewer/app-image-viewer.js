@@ -1,56 +1,46 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
+// import {PolymerElement} from "@polymer/polymer/polymer-element"
+import { LitElement } from "lit"
 import "@polymer/paper-spinner/paper-spinner-lite"
-import template from "./app-image-viewer.html"
+import render from "./app-image-viewer.tpl.js"
 
 import utils from "../../../../lib/utils"
 
-import AppStateInterface from "../../../interfaces/AppStateInterface"
-import MediaInterface from "../../../interfaces/MediaInterface"
-
-export default class AppImageViewer extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface, MediaInterface) {
+export default class AppImageViewer extends Mixin(LitElement)
+  .with(LitCorkUtils) {
   
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
-  }
-
   static get properties() {
     return {
-      record : {
-        type : Object,
-        value : () => {}
-      },
-      media : {
-        type : Object,
-        value : () => {}
-      },
-      loading: {
-        type : Boolean,
-        value : false
-      },
-      height : {
-        type : Number,
-        value : 600
-      },
-      hasMultipleImages : {
-        type : Boolean,
-        value : false
-      },
+      record : { type : Object },
+      media : { type : Object },
+      loading: { type : Boolean },
+      height : { type : Number },
+      hasMultipleImages : { type : Boolean },
     }
   }
 
   constructor() {
     super();
     this.active = true;
+    this.render = render.bind(this);
+    this._injectModel('AppStateModel', 'MediaModel');
+
+    this.record = {};
+    this.media = {};
+    this.loading = false;
+    this.height = 600;
+    this.hasMultipleImages = false;
   }
 
-  async ready() {
-    super.ready();
-
+  async firstUpdated() {
     let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
     if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+  }
+
+  _onAppStateUpdate(e) {
+    if( e.selectedRecord.index[e.location.pathname] !== e.selectedRecordMedia && e.selectedRecord.root['@id'] !== e.location.pathname ) {
+      let selectedRecordMedia = e.selectedRecord.index[e.location.pathname];
+      this._onSelectedRecordMediaUpdate(selectedRecordMedia);
+    }
   }
 
   /**
@@ -73,11 +63,8 @@ export default class AppImageViewer extends Mixin(PolymerElement)
       this.media.image = this.media.hasPart[0].image;
     }
 
-    // TODO: Justin please review.  Fixes the problem w/the height being too large since 
-    //       the problem seems to originate in this.height 
-    //       being set to 600 in this component's properties.
     if ( this.media.image.width < this.height) this.height = this.media.image.width;
-    let url = this._getImgUrl(this.media.image.url, '', this.height);
+    let url = this.MediaModel.getImgUrl(this.media.image.url, '', this.height);
     let r = 600 / this.media.image.height;
     let w = this.media.image.width * r;
 
@@ -89,16 +76,16 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     let img = new Image();
     this.loading = true;
     
-    this.$.loading.style.height = startHeight+'px';
+    this.shadowRoot.querySelector('#loading').style.height = startHeight+'px';
     
     img.onload = () => {
       this.loading = false;
-      this.$.img.style.height = 'auto';
+      this.shadowRoot.querySelector('#img').style.height = '600px';
     };
     img.src = url;
 
-    this.$.img.style.maxWidth = w + 'px';
-    this.$.img.src = url;
+    this.shadowRoot.querySelector('#img').style.maxWidth = w + 'px';
+    this.shadowRoot.querySelector('#img').src = url;
   }
 }
 

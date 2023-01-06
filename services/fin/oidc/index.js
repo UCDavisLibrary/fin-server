@@ -19,7 +19,7 @@ app.use(auth({
   },
   authorizationParams: {
     response_type: 'code',
-    scope : 'idp roles openid profile email acr'
+    scope : 'roles openid profile email acr'
   },
   idpLogout: true,
   afterCallback : (req, res, session, decodedState) => {

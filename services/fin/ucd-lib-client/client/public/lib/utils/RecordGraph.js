@@ -20,7 +20,7 @@ class RecordGraph {
       }
 
       // clean uri's from type names
-      item['@type'] = (item['@type'] || []).map(uri => uri.replace(/.*#/, '').replace(/.*\//, ''))
+      item['@shortType'] = (item['@type'] || []).map(uri => uri.replace(/.*#/, '').replace(/.*\//, ''))
 
       // create a quick lookup index by node URI
       this.index[item['@id']] = item;

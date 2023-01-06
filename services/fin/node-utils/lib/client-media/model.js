@@ -31,8 +31,8 @@ class ClientMedia {
       let nodes = this.mediaGroups[i];
 
       // filter out nodes that don't have displayType or fileType
-      let displayNodes = nodes.filter(node => node._.displayTypeIndex != -1 && node._.fileTypeIndex != -1);
-        
+      let displayNodes = nodes.filter(node => node._.clientMedia.displayTypeIndex != -1 && node._.clientMedia.fileTypeIndex != -1);
+      
       displayNodes.sort((a, b) => {
         let aCm = a._.clientMedia;
         let bCm = b._.clientMedia;
@@ -47,7 +47,7 @@ class ClientMedia {
       });
 
       let mediaGroup = {
-        nodes,
+        nodes : displayNodes,
         display : null,
         downloads : [],
         indexedDownloads : [],        
@@ -58,16 +58,17 @@ class ClientMedia {
         mediaGroup.display = displayNodes[0];
       }
 
-      nodes.forEach(node => {
+      displayNodes.forEach(node => {
         if( node._.clientMedia.displayType.match(/list$/i) ) {
           mediaGroup.indexedDownloads.push(node);
-        } else {
-          mediaGroup.downloads.push(node);
         }
+        mediaGroup.downloads.push(node);
       });
 
     }
 
+    // filter out entire mediaGroup if it doesn't have displayType or fileType
+    this.mediaGroups = this.mediaGroups.filter(m => m.display);
   }
 
   getNode(node) {

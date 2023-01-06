@@ -50,7 +50,7 @@ html {
   --layout-sm               : 768px;
   --grid-cell-width         : 250px;
 
-  --default-outline         : 2px dotted var(--default-secondary-color);
+  --default-outline         : 0px dotted var(--default-secondary-color);
 
   --paper-icon-button-ink-color : transparent;
 
