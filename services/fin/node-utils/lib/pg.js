@@ -6,20 +6,19 @@ const {Pool} = pg;
 
 class PG {
 
-  // TODO: add opts for Client instead of pool
-  // make sure to wrap end
-  constructor(searchPath) {
-    if( !searchPath ) searchPath = ['public'];
-    if( typeof searchPath === 'string' ) {
-      searchPath = [searchPath];
-    }
+  constructor() {
+    this.pgLib = pg;
+  }
+
+  _initClient() {
+    if( this.client ) return;
 
     this.client = new Pool({
       host : config.pg.host, 
       user : config.pg.user, 
       port : config.pg.port,
       database : config.pg.database,
-      options : '--search_path='+searchPath.join(','),
+      options : '--search_path='+config.pg.searchPath.join(','),
       max : 3
     });
 
@@ -37,6 +36,8 @@ class PG {
     if( this.connecting ) {
       await this.connecting;
     } else {
+      this._initClient();
+
       logger.info('Connecting to postgresql');
       this.connecting = this.client.connect();
       this._client = await this.connecting;
@@ -60,4 +61,4 @@ class PG {
   }
 }
 
-module.exports = PG;
+module.exports = new PG();

@@ -1,13 +1,13 @@
 const api = require('@ucd-lib/fin-api');
-const {PG, logger} = require('@ucd-lib/fin-service-utils');
+const {pg, logger} = require('@ucd-lib/fin-service-utils');
 const crypto = require('crypto');
 
-let pg = new PG('label_service');
 pg.connect();
 
 class LabelService {
 
   constructor() {
+    this.schema = 'label_service';
     this.TYPES = [
       'http://schema.org/name',
       'http://www.w3.org/2000/01/rdf-schema#label'
@@ -46,7 +46,7 @@ class LabelService {
         if( !node[type] ) continue;
 
         await pg.query(
-          `INSERT INTO label_service.label (container, subject, predicate, object) values ($1, $2, $3, $4)`,
+          `INSERT INTO ${this.schema}.label (container, subject, predicate, object) values ($1, $2, $3, $4)`,
           [containerPath, node['@id'], type, JSON.stringify(node[type])]
         );
       }
@@ -61,7 +61,7 @@ class LabelService {
    * @param {Object} opts 
    */
   async render(uri, opts={}) {
-    let resp = await pg.query('SELECT * FROM label_service.label WHERE subject = $1', [uri]);
+    let resp = await pg.query(`SELECT * FROM ${this.schema}.label WHERE subject = $1`, [uri]);
     resp.rows.forEach(item => {
       item.object = JSON.parse(item.object);
     });
@@ -69,7 +69,7 @@ class LabelService {
   }
 
   async checkSha(uri, sha) {
-    let resp = await pg.query('SELECT * FROM label_service.label_container WHERE uri = $1', [uri]);
+    let resp = await pg.query(`SELECT * FROM ${this.schema}.label_container WHERE uri = $1`, [uri]);
     if( !resp.rows.length ) {
       await this.cleanContainer(uri, sha);
       return false;
@@ -85,9 +85,9 @@ class LabelService {
   }
 
   async cleanContainer(uri, sha) {
-    await pg.query('DELETE FROM label_service.label WHERE container = $1', [uri]);
-    await pg.query('DELETE FROM label_service.label_container WHERE uri = $1', [uri]);
-    await pg.query('INSERT INTO label_service.label_container (uri, sha) VALUES ($1, $2)', [uri, sha]);
+    await pg.query(`DELETE FROM ${this.schema}.label WHERE container = $1`, [uri]);
+    await pg.query(`DELETE FROM ${this.schema}.label_container WHERE uri = $1`, [uri]);
+    await pg.query(`INSERT INTO ${this.schema}.label_container (uri, sha) VALUES ($1, $2)`, [uri, sha]);
   }
 
 }

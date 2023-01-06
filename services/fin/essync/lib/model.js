@@ -1,5 +1,3 @@
-global.LOGGER_NAME = 'essync';
-
 const {config, logger, activemq, models} = require('@ucd-lib/fin-service-utils');
 const api = require('@ucd-lib/fin-api');
 const indexer = require('./elasticsearch');
@@ -16,10 +14,6 @@ class EsSync {
       UPDATE : ['Create', 'Update'],
       DELETE : ['Delete', 'Purge']
     }
-
-    this.BINARY_CONTAINER = 'http://fedora.info/definitions/v4/repository#Binary';
-    this.FIN_IO_INDIRECT_CONTAINER = 'http://digital.ucdavis.edu/schema#FinIoIndirectReference';
-    this.WEBAC_CONTAINER = 'http://fedora.info/definitions/v4/webac#Acl';
 
     postgres.connect()
       .then(() => indexer.isConnected())
@@ -116,37 +110,24 @@ class EsSync {
         return;
       }
 
-      // check for binary
-      if( e.container_types.includes(this.BINARY_CONTAINER) ) {
-        logger.info('Ignoring container '+e.path+'.  binary container');
+      // check for ignore types
+      for( let type of config.essync.ignoreTypes ) {
+        // check for binary
+        if( e.container_types.includes(type) ) {
+          logger.info('Ignoring container '+e.path+'. Is of ignored type: '+type);
 
-        e.action = 'ignored';
-        e.message = 'binary container';
-        await postgres.updateStatus(e);
-        // JM - Not removing path, as the /fcr:metadata container is also mapped to this path
-        // return indexer.remove(e.path);   
-        return;
-      }
+          e.action = 'ignored';
+          e.message = type+' container';
+          await postgres.updateStatus(e);
 
-      // check for acl
-      if( e.container_types.includes(this.WEBAC_CONTAINER) ) {
-        logger.info('Ignoring container '+e.path+'.  webac container');
+          if( !e.path.match(/\/fcr:[a-z]+/) ) {
+            await indexer.remove(e.path);
+          }
 
-        e.action = 'ignored';
-        e.message = 'webac container';
-        await postgres.updateStatus(e);
-        return;
-      }
-
-      // check for fin io container
-      if( e.container_types.includes(this.FIN_IO_INDIRECT_CONTAINER) ) {
-        logger.info('Ignoring container '+e.path+'.  fin io indirect container');
-
-        e.action = 'ignored';
-        e.message = 'fin io indirect container';
-        await indexer.remove(e.path);
-        await postgres.updateStatus(e);
-        return;   
+          // JM - Not removing path, as the /fcr:metadata container is also mapped to this path
+          // return indexer.remove(e.path);   
+          return;
+        }
       }
 
       if( !e.container_types ) {
@@ -283,25 +264,26 @@ class EsSync {
     let headers = {};
     let found = false;
 
-    let modelNames = models.names();
+    let modelNames = await models.names();
     for( let name of modelNames ) {
-      let model = models.get(name).model;
+      let {model} = await models.get(name);
 
-      if( model.is(path, types) ) {
-        if( model.transformService ) {
-          path = path+`/svc:${model.transformService}`;
-        } else {
-          headers = {
-            accept : api.GET_JSON_ACCEPT.COMPACTED
-          }
+      if( model.syncMethod !== 'essync' ) continue;
+      // if( !(await model.is(path, types)) ) continue;
+
+      if( model.transformService ) {
+        path = path+`/svc:${model.transformService}`;
+      } else {
+        headers = {
+          accept : api.GET_JSON_ACCEPT.COMPACTED
         }
-
-        found = true;
-        break;
       }
+
+      found = true;
+      break;
     }
 
-    // we don't have a frame service for this
+    // we don't have a essync model for this container
     if( found === false ) return null;
 
     var response = await api.get({

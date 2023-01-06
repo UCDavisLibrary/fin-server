@@ -1,9 +1,5 @@
-const {activemq, logger, config} = require('@ucd-lib/fin-service-utils');
+const {activemq, logger, config, RDF_URIS} = require('@ucd-lib/fin-service-utils');
 const api = require('@ucd-lib/fin-api');
-
-const SCHEMA_ORG = 'http://schema.org/';
-const CONTAINS = 'http://www.w3.org/ns/ldp#contains';
-const BINARY = 'http://fedora.info/definitions/v4/repository#Binary';
 
 const FC_BASE_RE = new RegExp('^'+api.getConfig().fcBasePath);
 const FC_HOST_RE = new RegExp('^'+config.fcrepo.host+api.getConfig().fcBasePath);
@@ -18,8 +14,8 @@ class ReindexCrawler {
 
     if( !options.follow ) options.follow = [];
 
-    options.follow = options.follow.map(prop => SCHEMA_ORG+prop);
-    options.follow.push(CONTAINS);
+    options.follow = options.follow.map(prop => RDF_URIS.SCHEMA_BASE.SCHEMA_ORG+prop);
+    options.follow.push(RDF_URIS.PROPERTIES.CONTAINS);
 
     this.options = options;
   }
@@ -83,9 +79,9 @@ class ReindexCrawler {
     mainNode['@type'] = Array.from(types);
 
     // hack events for binary containers.
-    if( mainNode['@type'] && mainNode['@type'].includes(BINARY) ) {
+    if( mainNode['@type'] && mainNode['@type'].includes(RDF_URIS.TYPES.BINARY) ) {
       mainNode['@id'] = mainNode['@id'] + '/fcr:metadata';
-      mainNode['@type'].splice(mainNode['@type'].indexOf(BINARY), 1);
+      mainNode['@type'].splice(mainNode['@type'].indexOf(RDF_URIS.TYPES.BINARY), 1);
     }
 
     this.sendReindexEvent(mainNode, writeIndex);
@@ -112,7 +108,7 @@ class ReindexCrawler {
    * @param {Array} node.@type
    * @param {String} writeIndex Optional.  Index to write to. mostly used for reindex
    */
-  sendReindexEvent(node) {
+  sendReindexEvent(node, writeIndex) {
     let headers = {
       'edu.ucdavis.library.eventType' : 'Reindex'
     };

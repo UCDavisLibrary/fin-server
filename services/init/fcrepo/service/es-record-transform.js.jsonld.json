@@ -5,8 +5,8 @@
     "http://digital.ucdavis.edu/schema#TransformService"
   ],
   "description": "Used for updating Elastic Search indexes when fedora updates",
-  "identifier": "es-record-transform",
-  "title": "Elastic Search - Record Record Transform",
+  "identifier": "es-item-transform",
+  "title": "Elastic Search - Item Transform",
   "@context": {
     "hasMessageDigest": {
       "@id": "http://www.loc.gov/premis/rdf/v1#hasMessageDigest",

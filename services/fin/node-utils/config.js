@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const env = process.env;
+const COMMON_URI = require('./lib/common-rdf-uris');
 
 var fcrepoHostname = process.env.FCREPO_HOST || 'fcrepo';
 var esHostname = process.env.ES_HOST || 'elasticsearch';
@@ -24,10 +25,6 @@ module.exports = {
     host : 'http://gateway:3001'
   },
 
-  cas : {
-    url : process.env.CAS_URL || 'https://cas.ucdavis.edu/cas'
-  },
-
   rdf : {
     baseUrl : 'http://digital.ucdavis.edu/schema#',
     prefix : 'ucdlib'
@@ -47,7 +44,8 @@ module.exports = {
     host : env.PG_HOST || 'postgres',
     port : env.PG_PORT || 5432,
     user : env.PG_USER || 'postgres',
-    database : env.PG_DATABASE || 'fcrepo'
+    database : env.PG_DATABASE || 'fcrepo',
+    searchPath : ['public', 'essync', 'label_service', 'finac']
   },
 
   jwt : {
@@ -75,6 +73,25 @@ module.exports = {
       public : 'public'
     },
     defaultAccessTime : 60 * 60 * 3 // 3 hours
+  },
+
+  essync : {
+    ignoreTypes : [
+      COMMON_URI.TYPES.BINARY,
+      COMMON_URI.TYPES.FIN_IO_INDIRECT,
+      COMMON_URI.TYPES.WEBAC
+    ],
+    
+    // if these attributes exist, the ISO 8601 date will be stripped for
+    // everything but the year and a new attribute created with the name
+    // of the given key in the hash
+    dateToYear : {
+      datePublished : 'yearPublished'
+    },
+
+    bagOfFiles : {
+      type : 'http://digital.ucdavis.edu/schema#BagOfFiles'
+    }
   },
 
   elasticsearch : {

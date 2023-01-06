@@ -6,19 +6,47 @@ const config = require('../config.js');
  */
 class FinModelLoader {
 
-  constructor() {
-    this.load();
-  }
-
+  /**
+   * @method load
+   * @description load all models.  models might (and often do) use
+   * the service utils library, so this call ALWAYS needs to be async.
+   */
   load() {
-    this.models = require(config.models.rootDir);
+    if( this.models ) return;
+    return new Promise((resolve, reject) => {
+      setImmediate(() => {
+        try {
+          this.models = require(config.models.rootDir);
+          resolve();
+        } catch(e) {
+          reject(e);
+        }
+      });
+    });
   }
 
-  names() {
+  /**
+   * @method names
+   * @description return list of all model names 
+   * 
+   * @returns {Promise<Array>}
+   */
+  async names() {
+    await this.load();
     return Object.keys(this.models);
   }
 
-  get(model) {
+
+  /**
+   * @method get
+   * @description return a model 
+   * 
+   * @param {String} model name of model
+   * @returns 
+   */
+  async get(model) {
+    await this.load();
+
     if( !this.models[model] ) {
       throw new Error('Unknown model: '+model);
     }

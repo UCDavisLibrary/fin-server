@@ -1,7 +1,7 @@
-const PG = require('../pg');
+const pg = require('../pg');
 const config = require('../../config.js');
 const SCHEMA = 'finac';
-const pg = new PG();
+
 
 class FinAcPg {
 

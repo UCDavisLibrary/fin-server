@@ -7,37 +7,37 @@ const fs = require('fs-extra');
 
 const ASSETS_DIR = path.resolve(__dirname, '..', 'assets');
 
-router.get('/service/:id', middleware.admin, async (req, res) => {
-  try {
-    res.set(serviceModel.SIGNATURE_HEADER, serviceModel.createServiceSignature(req.params.id));
-    res.status(200).send('Service secret verification');
-  } catch(e) {
-    res.status(400).send(e.message);
-  }
-});
+// router.get('/service/:id', middleware.admin, async (req, res) => {
+//   try {
+//     res.set(serviceModel.SIGNATURE_HEADER, serviceModel.createServiceSignature(req.params.id));
+//     res.status(200).send('Service secret verification');
+//   } catch(e) {
+//     res.status(400).send(e.message);
+//   }
+// });
 
-router.post('/service/:id', middleware.admin, async (req, res) => {
-  let secret = req.body;
-  if( !secret ) {
-    return res.status(400).send('Service id and secret required');
-  }
+// router.post('/service/:id', middleware.admin, async (req, res) => {
+//   let secret = req.body;
+//   if( !secret ) {
+//     return res.status(400).send('Service id and secret required');
+//   }
 
-  try {
-    await serviceModel.setServiceSecret(req.params.id, secret);
-    res.status(201).send('Success.  Secret set for '+req.params.id);
-  } catch(e) {
-    res.status(400).send(e.message);
-  }
-});
+//   try {
+//     await serviceModel.setServiceSecret(req.params.id, secret);
+//     res.status(201).send('Success.  Secret set for '+req.params.id);
+//   } catch(e) {
+//     res.status(400).send(e.message);
+//   }
+// });
 
-router.delete('/service/:id', middleware.admin, async (req, res) => {
-  try {
-    await serviceModel.deleteServiceSecret(req.params.id);
-    res.status(204).send('Success.  Removed secret for '+req.params.id);
-  } catch(e) {
-    res.status(400).send(e.message);
-  }
-});
+// router.delete('/service/:id', middleware.admin, async (req, res) => {
+//   try {
+//     await serviceModel.deleteServiceSecret(req.params.id);
+//     res.status(204).send('Success.  Removed secret for '+req.params.id);
+//   } catch(e) {
+//     res.status(400).send(e.message);
+//   }
+// });
 
 // router.get('/token/create', middleware.block, async (req, res) => {
 //   var username = req.query.username;

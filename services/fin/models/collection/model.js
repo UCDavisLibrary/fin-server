@@ -4,6 +4,12 @@ class CollectionsModel extends ElasticSearchModel {
 
   constructor() {
     super('collection');
+    this.transformService = 'es-collection-transform';
+  }
+
+  is(id, types=[]) {
+    if( id.match(/^\/collection\//) ) return true;
+    return false;
   }
 
 }

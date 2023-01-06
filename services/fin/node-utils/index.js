@@ -4,14 +4,12 @@ module.exports = {
   jwt : require('./lib/jwt'),
   logger : require('./lib/logger'),
   activemq : require('./lib/activemq'),
-  PG : require('./lib/pg'),
+  pg : require('./lib/pg'),
   utils : require('./lib/utils'),
   waitUntil : require('./lib/wait-until'),
-  collections : require('./models/collections'),
-  applications : require('./models/applications'),
-  ElasticSearchModel : require('./models/elastic-search/index.js'),
+  RDF_URIS : require('./lib/common-rdf-uris.js'),
+  ElasticSearchModel : require('./lib/elastic-search/index.js'),
   esClient : require('./lib/elastic-search/client.js'),
-  records : require('./models/records'),
   FinAC : require('./lib/fin-ac/index.js'),
   middleware : {
     finac : require('./lib/fin-ac/middleware.js')

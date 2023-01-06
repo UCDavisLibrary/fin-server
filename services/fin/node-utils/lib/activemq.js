@@ -10,7 +10,7 @@ var connectOptions = {
     host : '/',
     login : 'fedoraAdmin',
     passcode : 'fedoraAdmin',
-    'heart-beat': '5000,5000'
+    'heart-beat': '10000,10000'
   }
 };
 

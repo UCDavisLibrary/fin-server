@@ -3,6 +3,7 @@ const config = require('../config');
 const logger = require('./logger');
 const jwksClient = require('jwks-rsa');
 const fetch = require('node-fetch');
+const waitUntil = require('./wait-until');
 
 class JwtUtils {
 
@@ -19,6 +20,7 @@ class JwtUtils {
         }
       });
       
+      this.signingKeyFail = false;
       this._getSigningKey = this._getSigningKey.bind(this);
       this.getSigningKey(config.jwt.jwksUri);
       setInterval(() => this.getSigningKey(config.jwt.jwksUri), 1000*60);
@@ -26,9 +28,20 @@ class JwtUtils {
   }
 
   async getSigningKey(url) {
+    logger.debug('Fetching rsa signing key from: '+url);
+
+    let parts = new URL(url);
+    await waitUntil(parts.hostname, parts.port || 80);
+
     try {
       let resp = await fetch(url);
+
+      let hasSigningKey = this.signingKey ? true : false;
       this.signingKey = await resp.json();
+
+      if( hasSigningKey === false ) {
+        logger.info('Successfully fetched rsa signing key when none was present from: '+url);
+      }
 
       this.signingKeyFail = false;
     } catch(e) {
