@@ -3,6 +3,7 @@ const assert = require('assert');
 const jsonld = require('jsonld').promises;
 const processContext = require('jsonld').processContext;
 const uuid = require('uuid/v4');
+const isURI = require('validate.io-uri');
 
 const CONTAINER_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
@@ -12,7 +13,7 @@ const CONTAINER_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 class TransformUtils {
 
   async turtleToJsonLd(turtle, compacted=false) {
-    let {prefixes, triples} = await this._getTurtleTriples(turtle); 
+    let {prefixes, triples} = await this._getTurtleTriples(turtle);
     return finalizeJsonLd(prefixes, triples, compacted);
   }
 
@@ -34,12 +35,25 @@ class TransformUtils {
     return turtle;
   }
 
+  async expandJsonld(json) {
+    if( typeof json === 'string' ) {
+      json = JSON.parse(json);
+    }
+
+    let expanded = await jsonld.expand(json,
+                                       {keepFreeFloatingNodes:false,
+                                        access:["http","https"],
+                                        base:null
+                                       });
+    return expanded;
+  }
+
   /**
    * @method diffToSparql
    * @description takes two turtle files and returns a sparql update of the diff
    */
   async diffToSparql(turtleSrc, turtleDst, options={}) {
-    let src = await this._getTurtleTriples(turtleSrc); 
+    let src = await this._getTurtleTriples(turtleSrc);
     let dst = await this._getTurtleTriples(turtleDst);
 
     let deletes = [];
@@ -65,7 +79,7 @@ class TransformUtils {
     } else {
       deletes = '';
     }
-    
+
     let sparql = `DELETE {
   ${deletes}
 }
@@ -85,7 +99,7 @@ WHERE {}`;
     return new Promise((resolve, reject) => {
       parser.parse(turtle, function (err, triple, foo, bar) {
         if( err ) return reject(err);
-        
+
         if( triple ) {
           triples.push({
               subject: term(triple.subject),
@@ -152,7 +166,7 @@ function finalizeJsonLd(prefixes, triples, compacted) {
     }
 
     array.push(subject);
-  } 
+  }
 
   return array;
 }
@@ -165,7 +179,7 @@ function ntToTurtle(dataset, namespaces) {
   return new Promise((resolve, reject) => {
     parser.parse(dataset, (parseErr, triple) => {
       if (parseErr) return reject (parseErr);
-      
+
       if( triple ) {
         writer.addTriple(triple);
       } else {
@@ -263,7 +277,7 @@ function ensureRootIds(json, ids={}) {
 
 function ensureRootId(json, ids=[]) {
   if( json['@id'] === undefined || json['@id'] === null ) return;
-  if( json['@id'].match(/^http:\/\//) ) return;
+  if (isURI(json['@id'])) return;
 
   let id = 'http://'+uuid()+'.com';
   ids[id] = json['@id'];
