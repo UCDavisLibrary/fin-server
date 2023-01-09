@@ -1,1 +1,0 @@
-CSL/Language files come from: https://github.com/citation-style-language/styles

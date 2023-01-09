@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS update_status (
   event_timestamp timestamp NOT NULL,
   action TEXT NOT NULL,
   transform_service TEXT,
+  model TEXT,
   message TEXT,
   es_response JSONB,
   gitsource JSONB

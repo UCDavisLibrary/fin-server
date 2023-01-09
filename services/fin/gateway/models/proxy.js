@@ -55,8 +55,6 @@ class ProxyModel {
    * @param {Object} app express instance
    */
   bind(app) {
-    app.use(keycloak.setUser);
-
     // handle ALL /fcrepo requests
     app.use('/fcrepo', this._fcRepoPathResolver.bind(this));
 

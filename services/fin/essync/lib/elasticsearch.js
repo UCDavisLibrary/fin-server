@@ -103,7 +103,7 @@ class ElasticSearchModel {
       return model.update(jsonld, index);
     }
 
-    logger.warn(`ES Indexer note updating ${jsonld['@id']}, no model found`);
+    logger.warn(`ES Indexer not updating ${jsonld['@id']}, no model found`);
   }
 
   /**
@@ -120,11 +120,11 @@ class ElasticSearchModel {
       let {model} = await models.get(name);
       if( !await model.is(path) ) continue;
 
-      logger.info(`ES Indexer remove ${name} container: ${id} from es index: ${index || model.writeIndexAlias}`);
+      logger.info(`ES Indexer remove ${name} container: ${path} from es index: ${index || model.writeIndexAlias}`);
       return model.remove(path, index);
     }
 
-    logger.warn(`ES Indexer note updating ${jsonld['@id']}, no model found`);
+    logger.warn(`ES Indexer not removing ${path}, no model found`);
   }
 
   /**
@@ -156,6 +156,31 @@ class ElasticSearchModel {
 
   setAlias(indexName, alias) {
     return this.esClient.indices.putAlias({index: indexName, name: alias});
+  }
+
+  /**
+   * @method getChildren
+   * @description child from fcrepo path
+   * 
+   * @param {String} id record id
+
+   * 
+   * @return {Promise} resolves to record
+   */
+  async getChildren(id) {
+    let result = await this.esSearch({
+      from: 0,
+      size: 10000,
+      query: {
+        wildcard : {
+          'node.@id' : {
+            value : id+'/*'
+          }
+        }
+      }
+    });
+
+    return (result.hits.hits || []).map(item => item._source);
   }
  
 }

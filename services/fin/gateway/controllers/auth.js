@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const serviceModel = require('../models/services');
-const middleware = require('./middleware');
 const {keycloak} = require('@ucd-lib/fin-service-utils');
 const path = require('path');
 const fs = require('fs-extra');

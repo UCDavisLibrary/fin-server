@@ -224,7 +224,7 @@ class ElasticSearchModel {
 
     // ensure the base recoder exists
     try {
-      await this.esClient.index({
+      await this.client.index({
         index,
         op_type : 'create',
         id : jsonld._.esId,
@@ -277,7 +277,7 @@ class ElasticSearchModel {
       }
     };
 
-    let response = await this.esClient.search({
+    let response = await this.client.search({
       index,
       body
     });
@@ -292,7 +292,7 @@ class ElasticSearchModel {
     for( let doc of hits ) {
       logger.info(`ES Indexer removing ${type} container: ${path} from ${doc._id}`);
         
-      await this.esClient.update({
+      await this.client.update({
         index,
         id : doc._id,
         script : {
@@ -302,7 +302,7 @@ class ElasticSearchModel {
       });
 
       // now see if document is empty
-      response = await this.esClient.get({
+      response = await this.client.get({
         index,
         id : doc._id
       });
@@ -310,7 +310,7 @@ class ElasticSearchModel {
       // if the document is empty, remove
       if( response._source && response._source.node && response._source.node.length === 0 ) {
         logger.info(`ES Indexer removing ${this.moduleName} document: ${doc._id}.  No nodes left in graph`);
-        await this.esClient.delete({
+        await this.client.delete({
           index,
           id : doc._id
         });
@@ -399,6 +399,8 @@ class ElasticSearchModel {
       }
     }
   }
+
+
 
 }
 

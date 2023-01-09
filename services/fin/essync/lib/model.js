@@ -137,10 +137,10 @@ class EsSync {
       let response = await this.getTransformedContainer(e.path, e.container_types);
 
       if( !response ) {
-        logger.info('Container '+e.path+' did not have a know transform type');
+        logger.info('Container '+e.path+' did not have a registered model, ignoring');
 
         e.action = 'ignored';
-        e.message = 'unknown transform type'
+        e.message = 'no model for container'
         await indexer.remove(e.path);
         await postgres.updateStatus(e);
         return;
@@ -148,6 +148,7 @@ class EsSync {
 
       // set transform service used.
       e.tranformService = response.service;
+      e.model = response.model;
 
       // under this condition, the acl may have been updated.  Remove item and any 
       // child items in elastic search.  We need to do it here so we can mark PG why we
@@ -192,7 +193,7 @@ class EsSync {
         updateType : e.update_types
       }
 
-      let result = await indexer.update(e.path, jsonld);
+      let result = await indexer.update(jsonld);
 
       e.action = 'updated';
       e.response = JSON.stringify(result.response);
@@ -263,13 +264,14 @@ class EsSync {
 
     let headers = {};
     let found = false;
+    let modelName = '';
 
     let modelNames = await models.names();
     for( let name of modelNames ) {
       let {model} = await models.get(name);
 
       if( model.syncMethod !== 'essync' ) continue;
-      // if( !(await model.is(path, types)) ) continue;
+      if( !(await model.is(path, types)) ) continue;
 
       if( model.transformService ) {
         path = path+`/svc:${model.transformService}`;
@@ -278,6 +280,8 @@ class EsSync {
           accept : api.GET_JSON_ACCEPT.COMPACTED
         }
       }
+
+      modelName = name;
 
       found = true;
       break;
@@ -291,6 +295,7 @@ class EsSync {
       path, headers
     });
 
+    response.model = modelName;
     response.service = config.server.url+config.fcrepo.root+path;
     return response;
   }
@@ -324,7 +329,7 @@ class EsSync {
 
     // ask elastic search for all child paths
     // TODO: needs to be generic wrapper
-    let children = await records.getChildren(path);
+    let children = await indexer.getChildren(path);
 
     for( let child of children ) {
       for( let node of child.node ) {

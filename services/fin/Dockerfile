@@ -42,17 +42,9 @@ COPY ${FIN_REPO_API_ROOT}/index.js .
 COPY ${FIN_REPO_API_ROOT}/lib lib
 COPY ${FIN_REPO_API_ROOT}/cli cli
 
-# Client Code
+# Services Code
 WORKDIR ${FIN_SERVICE_ROOT}
-COPY ${FIN_REPO_SERVICE_ROOT}/ucd-lib-client ucd-lib-client
-RUN cd ucd-lib-client/client/public && \
-  npm install && \
-  ln -s node_modules/\@ucd-lib/cork-app-load/lib loader
-# RUN npm run client-dist
-
-# Services Cpde
 COPY ${FIN_REPO_SERVICE_ROOT}/api api
-COPY ${FIN_REPO_SERVICE_ROOT}/cas cas
 COPY ${FIN_REPO_SERVICE_ROOT}/essync essync
 COPY ${FIN_REPO_SERVICE_ROOT}/gateway gateway
 COPY ${FIN_REPO_SERVICE_ROOT}/node-utils node-utils
