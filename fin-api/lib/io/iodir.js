@@ -8,18 +8,18 @@ const git = require('./git.js');
 class IoDir {
 
   /**
-   * 
-   * @param {String} fsroot 
-   * @param {String} subPath for child directories 
+   *
+   * @param {String} fsroot
+   * @param {String} subPath for child directories
    * @param {Object} config
-   * @param {Object} config.fcrepoPathType id or subpath. 
-   * @param {IoDir} archivalGroup reference to IoDir object for ArchivalGroup 
+   * @param {Object} config.fcrepoPathType id or subpath.
+   * @param {IoDir} archivalGroup reference to IoDir object for ArchivalGroup
    * @param {Array} archivalGroups list of all known ArchivalGroups
    */
   constructor(fsroot, subPath='', config={}, archivalGroup, archivalGroups=[]) {
     if( process.stdout && process.stdout.clearLine ) {
       process.stdout.clearLine();
-      process.stdout.cursorTo(0); 
+      process.stdout.cursorTo(0);
       process.stdout.write('Crawling: '+subPath);
     }
 
@@ -89,8 +89,8 @@ class IoDir {
 
         // if this is a .ttl file and there is a directory of same name, skip.
         let childFileInfo = path.parse(child);
-        if( this.isContainerGraphFile(child) && 
-            children.includes(childFileInfo.name) && 
+        if( this.isContainerGraphFile(child) &&
+            children.includes(childFileInfo.name) &&
             fs.statSync(path.join(this.fsfull, childFileInfo.name)) ) {
           continue;
         }
@@ -135,7 +135,7 @@ class IoDir {
       }
 
       child = new IoDir(
-        this.fsroot, 
+        this.fsroot,
         path.join(this.subPath, child),
         this.config,
         this.archivalGroup,
@@ -155,8 +155,8 @@ class IoDir {
    * @method setHasPart
    * @description given a path, create the 'virtual' fin io indirect
    * reference hasPart/isPartOf root containers
-   * 
-   * @param {*} cPath 
+   *
+   * @param {*} cPath
    */
   async setHasPart(cPath) {
     let containerGraph = await this.getContainerGraph(cPath);
@@ -200,7 +200,7 @@ class IoDir {
    * @description call after dir has been crawled.  Will return all finio file objects,
    * both containers and binaries, for a given dir. These file objects will be ready for
    * insert by `fin io import`.
-   * 
+   *
    * @returns {Object}
    */
   async getFiles() {
@@ -267,7 +267,7 @@ class IoDir {
         if( containerFiles[name+ext] ) {
           delete containerFiles[name+ext];
         }
-      })
+      }) ;
     }
 
     // for all container (.ttl, jsonld.json) files, create binary file container objects
@@ -281,8 +281,8 @@ class IoDir {
 
       let fileObject = {
         localpath : path.join(this.fsfull, name),
-        fcrepoPath: fcpath, 
-        id, 
+        fcrepoPath: fcpath,
+        id,
         parentPath : parentFcPath,
         containerFile : containerGraph.filePath,
         mainGraphNode : containerGraph.mainNode,
@@ -294,7 +294,7 @@ class IoDir {
     }
 
     return {
-      containers: this.containers, 
+      containers: this.containers,
       binaries: this.binaries
     };
   }
@@ -303,8 +303,8 @@ class IoDir {
    * @method isContainerGraphFile
    * @description is the given file path a special container graph (metadata) file
    * type
-   * 
-   * @param {String} filePath 
+   *
+   * @param {String} filePath
    * @returns {Boolean}
    */
   isContainerGraphFile(filePath) {
@@ -318,7 +318,6 @@ class IoDir {
 
     // special check for directories
     if( fs.lstatSync(filePath).isDirectory() ) {
-
       // check for container graph file one folder up
       for( let ext of utils.CONTAINER_FILE_EXTS ) {
         let jsonldPath = path.resolve(filePath, '..', path.parse(filePath).base + ext);
@@ -358,11 +357,11 @@ class IoDir {
    * @method getFcrepoPath
    * @description given the subpath of the crawl, container id
    * and fileObject, return the correct fcrepo path
-   * 
-   * @param {*} subPath 
-   * @param {*} id 
-   * @param {*} fileObject 
-   * @returns 
+   *
+   * @param {*} subPath
+   * @param {*} id
+   * @param {*} fileObject
+   * @returns
    */
   getFcrepoPath(subPath, id, fileObject) {
     if( fileObject === undefined ) fileObject = this;
@@ -402,7 +401,7 @@ class IoDir {
 
     let ids = graphNode[utils.PROPERTIES.SCHEMA.IDENTIFIER];
     if( ids && ids.length ) {
-      
+
         // attempt to find ark
       let ark = ids
         .find(item => (item['@id'] || item['@value']).match(/^ark:\//) );
@@ -420,16 +419,16 @@ class IoDir {
 
   /**
    * @method handleArchivalGroup
-   * @description handle ldp:ArchivalGroup nodes. this method checks if node is of 
+   * @description handle ldp:ArchivalGroup nodes. this method checks if node is of
    * correct ldp:ArchivalGroup type. If so, sets the gitInfo for the node, and sets
    * the correct fcrepo root path based on container type.
-   * 
-   * @param {*} fileObject 
+   *
+   * @param {*} fileObject
    */
   async handleArchivalGroup(fileObject) {
     if( fileObject === undefined ) fileObject = this;
 
-    if( fileObject.mainGraphNode && fileObject.mainGraphNode['@type'] && 
+    if( fileObject.mainGraphNode && fileObject.mainGraphNode['@type'] &&
       fileObject.mainGraphNode['@type'].includes(utils.TYPES.ARCHIVAL_GROUP) ) {
       fileObject.archivalGroup = fileObject;
 
