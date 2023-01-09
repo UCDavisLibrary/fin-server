@@ -21,14 +21,14 @@ class ImportCollection {
 
   /**
    * @method run
-   * 
+   *
    * @param {Object} options
    * @param {String} options.fsPath local file system path
    * @param {Boolean} options.forceMetadataUpdate
    * @param {Boolean} options.ignoreRemoval skip container removal where fc containers that do not exist on disk are removed.
    * @param {Boolean} options.dryRun do not download the files
    * @param {String} options.agImportStrategy
-   * 
+   *
    */
   async run(options) {
     if( options.ignoreRemoval !== true ) options.ignoreRemoval = false;
@@ -52,7 +52,7 @@ class ImportCollection {
 
     // parse the ./.fin/config.yaml file
     // let config = this.parseConfig(options.fsPath);
-    
+
     console.log('IMPORT OPTIONS:');
     console.log(options);
 
@@ -90,7 +90,7 @@ class ImportCollection {
           if( bUpdate || mUpdate ) agUpdates++;
           continue;
         }
-  
+
         // recursively add all containers for archival group
         if( await this.putAGContainers(ag, rootDir) ) {
           agUpdates++;
@@ -98,7 +98,7 @@ class ImportCollection {
       }
     }
 
-    
+
 
     console.log('Filesytem import completed.');
     console.log(` - ArchivalGroup Collections: ${collections.length}`);
@@ -138,7 +138,7 @@ class ImportCollection {
         hash.update(JSON.stringify(indirectContainers));
         indirectContainerSha = hash.digest('hex');
 
-        if( response.equal === true ) { 
+        if( response.equal === true ) {
           if( !fcrManifest[dir.fcrepoPath].indirectSha ) {
             response = {equal:false, message: 'No indirect reference sha found: '+dir.fcrepoPath};
           } else if( indirectContainerSha !== fcrManifest[dir.fcrepoPath].indirectSha ) {
@@ -186,7 +186,7 @@ class ImportCollection {
         }
       }
     }
-    
+
     // are we a directory?
     // if not quit, otherwise add dir containers and binary files
     if( !dir.getFiles ) {
@@ -225,15 +225,15 @@ class ImportCollection {
   /**
    * @method putContainer
    * @description PUT rdf container
-   * 
-   * @param {Object} container 
+   *
+   * @param {Object} container
    * @returns {Promise}
    */
   async putContainer(container) {
     let containerPath = container.fcrepoPath;
     let localpath = container.localpath || container.containerFile;
 
-    console.log(`PUT CONTAINER: ${containerPath}\n -> ${localpath}`);      
+    console.log(`PUT CONTAINER: ${containerPath}\n -> ${localpath}`);
 
     let headers = {
       'content-type' : api.RDF_FORMATS.JSON_LD,
@@ -256,9 +256,9 @@ class ImportCollection {
     let finIoNode = container.finIoNode || this.createFinIoNode();
 
     // check if d exists and if there is the ucd metadata sha.
-    if( this.options.forceMetadataUpdate !== true && 
+    if( this.options.forceMetadataUpdate !== true &&
         response.data.statusCode === 200 && localpath !== '_virtual_' ) {
-      
+
       let jsonld = JSON.parse(response.last.body);
       if( await this.isMetaShaMatch(jsonld, finIoNode, localpath ) ) {
         console.log(` -> IGNORING (sha match)`);
@@ -296,7 +296,7 @@ class ImportCollection {
   async putBinary(binary) {
     let fullfcpath = binary.fcrepoPath;
     console.log(`PUT BINARY: ${fullfcpath}\n -> ${binary.localpath}`);
-    
+
     let response = await api.get({
       path: pathutils.joinUrlPath(fullfcpath, 'fcr:metadata'),
       headers : {
@@ -324,7 +324,7 @@ class ImportCollection {
         }
       }
     }
-    
+
     // attempt to set mime type
     let customHeaders = {};
     let ext = path.parse(binary.localpath).ext.replace(/^\./, '');
@@ -347,7 +347,7 @@ class ImportCollection {
       if( response.last.statusCode === 410 ) {
         console.log(' -> tombstone found, removing')
         response = await api.delete({
-          path: fullfcpath, 
+          path: fullfcpath,
           permanent: true
         });
         console.log(' -> tombstone request: '+response.last.statusCode);
@@ -420,7 +420,7 @@ class ImportCollection {
       if( response.last.statusCode === 410 ) {
         console.log(' -> tombstone found, removing')
         response = await api.delete({
-          path: containerPath.replace(/\/fcr:metadata/, ''), 
+          path: containerPath.replace(/\/fcr:metadata/, ''),
           permanent: true
         });
         console.log(' -> tombstone request: '+response.last.statusCode);
@@ -447,10 +447,10 @@ class ImportCollection {
    * @description given a list of ldp:ArchivalGroup nodes (from the root dir crawled)
    * create the virual 'hasPart', 'isPartOf' root containers and their child containers
    * based on all of the item AG's found in the crawl
-   * 
+   *
    * @param {IoDir} rootDir the root dir for the crawl
-   * @param {IoDir} ag the collection AG 
-   * @returns 
+   * @param {IoDir} ag the collection AG
+   * @returns
    */
   getIndirectContainerList(rootDir, ag) {
     let containers = [];
@@ -502,7 +502,7 @@ class ImportCollection {
         mainGraphNode : {
           '@id' : '',
           [utils.PROPERTIES.SCHEMA.IS_PART_OF] : [{
-            '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
+            '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath)
           }]
         }
       });
@@ -513,7 +513,7 @@ class ImportCollection {
         mainGraphNode : {
           '@id' : '',
           [utils.PROPERTIES.SCHEMA.HAS_PART] : [{
-            '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
+            '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath)
           }]
         }
       });
@@ -535,8 +535,8 @@ class ImportCollection {
   /**
    * @method createGitNode
    * @description given a gitInfo object (created in git.js), turn it into rdf graph node
-   * 
-   * @param {Object} gitInfo 
+   *
+   * @param {Object} gitInfo
    * @returns {Object}
    */
   createGitNode(gitInfo) {
@@ -551,9 +551,9 @@ class ImportCollection {
 
   /**
    * @method createFinIoNode create the base FinIo graph node
-   * 
-   * @param {Array} additionalTypes optional additional types to add to node 
-   * @returns 
+   *
+   * @param {Array} additionalTypes optional additional types to add to node
+   * @returns
    */
   createFinIoNode(additionalTypes=[]) {
     return {
@@ -566,9 +566,9 @@ class ImportCollection {
    * @method getRootGraphNode
    * @description fetch the main graph node for container.  Mostly a helper for
    * createArchivalGroupFcrManifest()
-   * 
+   *
    * @param {String} path fcrepo path without fedora:info stuffs
-   * @returns 
+   * @returns
    */
   async getRootGraphNode(path) {
     let response = await api.metadata({path});
@@ -640,7 +640,7 @@ class ImportCollection {
         metadataSha :  await api.sha(dir.containerFile)
       }
     }
-    
+
     if( !dir.getFiles ) return manifest;
 
     let files = await dir.getFiles();
@@ -702,7 +702,7 @@ class ImportCollection {
     let localSha = await api.sha(file);
     if(currentSha === localSha ) {
       return true;
-    }    
+    }
 
     // if not match, set value on new finIoNode
     let newFinIoNode = utils.getGraphNode(newJsonld, utils.GRAPH_NODES.FIN_IO);

@@ -8,8 +8,8 @@ class IoUtils {
 
     // if you want to add additional container graph file types, make sure
     // to updates this arrays as well as add a parser to parseContainerGraphFile
-    this.CONTAINER_FILE_EXTS = ['.ttl', '.jsonld.json'];
-    this.CONTAINER_FILE_EXTS_REGEX = /(\.ttl|\.jsonld\.json)$/;
+    this.CONTAINER_FILE_EXTS = ['.ttl', '~fcr-desc.json','.jsonld.json'];
+    this.CONTAINER_FILE_EXTS_REGEX = /(\.ttl|\.jsonld\.json|\~fcr-desc\.json)$/;
 
     this.GIT_SOURCE_PROPERTY_BASE = 'http://digital.ucdavis.edu/schema#git/';
     this.LDP_SCHEMA = 'http://www.w3.org/ns/ldp#';
@@ -72,22 +72,25 @@ class IoUtils {
 
   /**
    * @method parseContainerGraphFile
-   * @description extension specific loading of container files. If you want
-   * to add additional container graph files, do it hear
-   * 
+   * @description extension specific loading of container files. If you want to
+   * add additional container graph files, do it here.  fin only works with
+   * jsonld in it's expanded form, so expand the data out here as well.
+   *
    * @param {String} filePath
-   * @returns {Object|null} 
+   * @returns {Object|null}
    */
   async parseContainerGraphFile(filePath) {
     let content = fs.readFileSync(filePath, 'utf-8');
     let jsonld = null;
 
+    console.error(`file: ${filePath}`)
     if( path.parse(filePath).ext === '.ttl' ) {
       jsonld = await transform.turtleToJsonLd(content);
     } else if( filePath.match(/\.jsonld\.json$/) ) {
       jsonld = JSON.parse(content);
+    } else if( filePath.match(/\~fcr-desc.json$/) ) {
+      jsonld = await transform.expandJsonld(content);
     }
-
     return jsonld
   }
 
@@ -129,9 +132,9 @@ class IoUtils {
   /**
    * @method getMainGraphNode
    * @description a hacky lookup for the 'main' graph node that will be represented for the container.
-   * 
-   * @param {*} graph 
-   * @param {*} id 
+   *
+   * @param {*} graph
+   * @param {*} id
    */
   getMainGraphNode(graph, id) {
     if( graph['@graph'] ) graph = graph['@graph'];
@@ -142,11 +145,11 @@ class IoUtils {
       mainNode = this.getGraphNode(graph, id);
       if( mainNode) return mainNode;
     }
-    
+
     // look for empty id node
     mainNode = graph.find(item => item['@id'] !== undefined && item['@id'].trim() === '');
     if( mainNode ) return mainNode;
-    
+
     // finally, do we have an ark node?
     return graph.find(item => item['@id'] && item['@id'].match(/^ark:\//));
   }
@@ -161,19 +164,19 @@ class IoUtils {
    * @method getGraphNode
    * @descript this is a hack function.  use with caution.  Given
    * a graph return the first property value for the first node the
-   * property is found in.  Purpose.  Binary containers graph only 
+   * property is found in.  Purpose.  Binary containers graph only
    * have one node, so the gitsource and finio nodes are merged.  This
-   * simplifies lookup of properties without caring about graph structure. 
-   * 
-   * @param {Array} graph 
-   * @param {String} prop 
+   * simplifies lookup of properties without caring about graph structure.
+   *
+   * @param {Array} graph
+   * @param {String} prop
    */
   getGraphValue(graph, prop) {
     if( !Array.isArray(graph) ) graph = [graph];
     for( let node of graph ) {
       if( node[prop] && node[prop].length ) {
         return node[prop][0]['@value'];
-      } 
+      }
     }
     return null;
   }
