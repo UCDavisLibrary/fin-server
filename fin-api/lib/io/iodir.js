@@ -31,7 +31,7 @@ class IoDir {
 
     this.archivalGroup = archivalGroup;
     this.archivalGroups = archivalGroups;
-    this.hasParts = [];
+    this.hasRelations = []; // virtualIndirectContainers defined on disk
     this.fsroot = fsroot;
     this.subPath = subPath;
     this.fcrepoPath = '';
@@ -125,8 +125,8 @@ class IoDir {
 
         // TODO: need to check for hasPart/isPartOf and add inverse
         // perhaps on the crawl?  check collection AG and dir hasPart?
-        if( this.archivalGroup && utils.COLLECTION_PART_FOLDERS.includes(this.id) ) {
-          await this.setHasPart(p)
+        if( this.archivalGroup && this.typeConfig && this.typeConfig.virtualIndirectContainers ) {
+          await this.setHasRelation(p)
           // continue;
         }
 
@@ -152,22 +152,26 @@ class IoDir {
   }
 
   /**
-   * @method setHasPart
+   * @method setHasRelation
    * @description given a path, create the 'virtual' fin io indirect
-   * reference hasPart/isPartOf root containers
+   * reference has/is relation root containers
    * 
    * @param {*} cPath 
    */
-  async setHasPart(cPath) {
+  async setHasRelation(cPath) {
     let containerGraph = await this.getContainerGraph(cPath);
     let id = path.parse(cPath).name;
 
+    let vIdCConfig = this.typeConfig.virtualIndirectContainers;
+    let hasRelation = vIdCConfig.links[utils.PROPERTIES.LDP.HAS_MEMBER_RELATION];
+    let isRelation = vIdCConfig.links[utils.PROPERTIES.LDP.IS_MEMBER_OF_RELATION];
+
     let mainNode = containerGraph.mainNode;
 
-    let ref = mainNode[utils.PROPERTIES.SCHEMA.HAS_PART];
-    if( !ref ) ref = mainNode[utils.PROPERTIES.SCHEMA.IS_PART_OF];
+    let ref = mainNode[hasRelation];
+    if( !ref ) ref = mainNode[isRelation];
 
-    let part = {
+    let relationDef = {
       id,
       fsroot : this.fsroot,
       localpath : cPath,
@@ -175,24 +179,24 @@ class IoDir {
       containerFile : containerGraph.filePath
     }
 
-    let hasPart = Object.assign({}, part);
-    hasPart.fcrepoPath = this.archivalGroup.fcrepoPath +'/hasPart/'+id,
-    hasPart.mainGraphNode = {
+    let has = Object.assign({}, relationDef);
+    has.fcrepoPath = this.archivalGroup.fcrepoPath +'/'+vIdCConfig.hasFolder+'/'+id,
+    has.mainGraphNode = {
       '@id' : '',
-      [utils.PROPERTIES.SCHEMA.HAS_PART] : ref
+      [hasRelation] : ref
     };
-    hasPart.containerGraph = [hasPart.mainGraphNode];
-    this.archivalGroup.hasParts.push(hasPart);
+    has.containerGraph = [has.mainGraphNode];
+    this.archivalGroup.hasRelations.push(has);
 
-    let isPartOf = Object.assign({}, part);
-    isPartOf.fcrepoPath = this.archivalGroup.fcrepoPath +'/isPartOf/'+id,
-    isPartOf.mainGraphNode = {
+    let is = Object.assign({}, relationDef);
+    is.fcrepoPath = this.archivalGroup.fcrepoPath +'/'+vIdCConfig.isFolder+'/'+id,
+    is.mainGraphNode = {
       '@id' : '',
       '@type' : [utils.TYPES.FIN_IO_INDIRECT_REFERENCE],
-      [utils.PROPERTIES.SCHEMA.IS_PART_OF] : ref
+      [isRelation] : ref
     };
-    isPartOf.containerGraph = [isPartOf.mainGraphNode];
-    this.archivalGroup.hasParts.push(isPartOf);
+    is.containerGraph = [is.mainGraphNode];
+    this.archivalGroup.hasRelations.push(is);
   }
 
   /**
@@ -438,18 +442,36 @@ class IoDir {
       fileObject.gitInfo.file = fileObject.containerFile.replace(fileObject.gitInfo.rootDir, '');
       fileObject.gitInfo.rootDir = this.fsfull.replace(fileObject.gitInfo.rootDir, '');
 
-      if( fileObject.mainGraphNode['@type'].includes(utils.TYPES.COLLECTION) ) {
-        fileObject.isCollection = true;
-        fileObject.localpath = fileObject.containerFile;
-        fileObject.fcrepoPath = utils.ROOT_FCREPO_PATHS.COLLECTION;
-      } else {
-        fileObject.fcrepoPath = utils.ROOT_FCREPO_PATHS.ITEM;
+      if( this.config.instanceConfig ) {
+        fileObject.typeConfig = this.config.instanceConfig.typeMappers.find(item => {
+          for( let type of item.types ) {
+            if( fileObject.mainGraphNode['@type'].includes(type) ) return true;
+          }
+          return false;
+        });
+
+        if( !fileObject.typeConfig && this.config.instanceConfig.default ) {
+          fileObject.typeConfig = this.config.instanceConfig.default;
+        }
       }
+
+      if( fileObject.typeConfig ) {
+        fileObject.fcrepoPath = fileObject.typeConfig.basePath;
+      }
+
+      // if( fileObject.mainGraphNode['@type'].includes(utils.TYPES.COLLECTION) ) {
+      //   fileObject.isCollection = true;
+      //   fileObject.localpath = fileObject.containerFile;
+      //   fileObject.fcrepoPath = utils.ROOT_FCREPO_PATHS.COLLECTION;
+      // } else {
+      //   fileObject.fcrepoPath = utils.ROOT_FCREPO_PATHS.ITEM;
+      // }
 
       fileObject.id = this.getIdentifier(fileObject.mainGraphNode) || fileObject.id;
       fileObject.fcrepoPath = this.getFcrepoPath(fileObject.subPath, fileObject.id, fileObject);
     }
   }
+
 
 }
 

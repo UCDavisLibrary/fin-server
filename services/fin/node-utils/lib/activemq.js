@@ -82,7 +82,7 @@ class MessageConsumer {
 
     setTimeout(() => {
       let logOpts = Object.assign({}, connectOptions);
-      logOpts.password = '******';
+      logOpts.connectHeaders.passcode = '******';
       logger.info('STOMP attempting connection', logOpts);
 
       stompit.connect(connectOptions, (error, client) => {

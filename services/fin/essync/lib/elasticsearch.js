@@ -99,7 +99,7 @@ class ElasticSearchModel {
       let {model} = await models.get(name);
       if( !await model.is(jsonld['@id'], jsonld['@type']) ) continue;
 
-      logger.info(`ES Indexer updating ${name} container: ${jsonld['@id']} in es index: ${index|| model.readIndexAlias}`);
+      logger.info(`ES Indexer updating ${name} container: ${jsonld['@id']} in es index: ${index|| model.writeIndexAlias}`);
       return model.update(jsonld, index);
     }
 
@@ -167,14 +167,17 @@ class ElasticSearchModel {
    * 
    * @return {Promise} resolves to record
    */
-  async getChildren(id) {
-    let result = await this.esSearch({
-      from: 0,
-      size: 10000,
-      query: {
-        wildcard : {
-          'node.@id' : {
-            value : id+'/*'
+  async getChildren(id, index) {
+    let result = await this.esClient({
+      index,
+      body : {
+        from: 0,
+        size: 10000,
+        query: {
+          wildcard : {
+            'node.@id' : {
+              value : id+'/*'
+            }
           }
         }
       }

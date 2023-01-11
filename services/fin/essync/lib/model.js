@@ -166,6 +166,11 @@ class EsSync {
 
       jsonld = JSON.parse(response.data.body);
 
+      // TODO: move search for root node instead of first node
+      if( jsonld['@graph'] ) {
+        jsonld = jsonld['@graph'][0];
+      }
+
       // store gitsource if we have it
       if( !jsonld._ ) jsonld._ = {};
       e.gitsource = jsonld._.gitsource;

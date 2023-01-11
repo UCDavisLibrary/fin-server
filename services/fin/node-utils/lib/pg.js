@@ -1,6 +1,7 @@
 const pg = require('pg');
 const logger = require('./logger.js');
 const config = require('../config.js');
+const waitUntil = require('./wait-until.js');
 
 const {Pool} = pg;
 
@@ -33,16 +34,22 @@ class PG {
   async connect() {
     if( this.connected ) return;
 
-    if( this.connecting ) {
+    if( this.connecting || this.wait ) {
+      await this.wait;
       await this.connecting;
     } else {
       this._initClient();
 
+      this.wait = waitUntil(config.pg.host, config.pg.port);
+      await this.wait;
+
       logger.info('Connecting to postgresql');
+
       this.connecting = this.client.connect();
       this._client = await this.connecting;
       logger.info('Connected to postgresql');
       this.connecting = null;
+      this.wait = null;
       this.connected = true;
     }
   }

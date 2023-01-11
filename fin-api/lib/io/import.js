@@ -1,19 +1,14 @@
 const IoDir = require('./iodir');
-const config = require('../config');
-const fs = require('fs-extra');
 const path = require('path');
-const ignore = require('ignore');
-const yaml = require('js-yaml');
 const crypto = require('crypto');
 const mime = require('mime');
 const pathutils = require('../utils/path');
-const transform = require('../utils/transform');
 const utils = require('./utils');
 
 let api;
 
 
-class ImportCollection {
+class FinIoImport {
 
   constructor(_api) {
     api = _api;
@@ -56,12 +51,37 @@ class ImportCollection {
     console.log('IMPORT OPTIONS:');
     console.log(options);
 
+    let response = await api.get({
+      path: '/finio/config.json',
+    });
+
+    this.instanceConfig = null;
+    if( response.last.statusCode === 200 ) {
+      this.instanceConfig = JSON.parse(response.last.body);
+      if( !this.instanceConfig.typeMappers ) this.instanceConfig.typeMappers = [];
+      this.instanceConfig.typeMappers.forEach(item => {
+        if( item.virtualIndirectContainers && !item.virtualIndirectContainers.hasFolder ) {
+          item.virtualIndirectContainers.hasFolder = item.virtualIndirectContainers.links['http://www.w3.org/ns/ldp#hasMemberRelation'].replace(/.*[#\/]/, '');
+        }
+        if( item.virtualIndirectContainers && !item.virtualIndirectContainers.isFolder ) {
+          item.virtualIndirectContainers.isFolder = item.virtualIndirectContainers.links['http://www.w3.org/ns/ldp#isMemberOfRelation'].replace(/.*[#\/]/, '');
+        }
+      })
+
+      console.log('INSTANCE FINIO CONFIG:');
+      console.log(JSON.stringify(this.instanceConfig, null, 2));
+    } else {
+      console.log('No instance config found');
+    }
+
+
     // IoDir object for root fs path, crawl repo
     let rootDir = new IoDir(options.fsPath, '/', {
       dryRun : options.dryRun,
       fcrepoPath : options.fcrepoPath,
       fcrepoPathType : options.fcrepoPathType,
-      importFromRoot : options.importFromRoot
+      importFromRoot : options.importFromRoot,
+      instanceConfig : this.instanceConfig
     });
 
     // crawl user suppied director f
@@ -73,10 +93,23 @@ class ImportCollection {
       console.log('');
     }
 
-    let collections = rootDir.archivalGroups.filter(item => item.isCollection);
-    if( collections.length > 1 ) {
-      throw new Error('More than one collection found: ', collections.map(item => item.localpath).join(', '));
-    }
+    let counts = {};
+    rootDir.archivalGroups.forEach(item => {
+      let typeConfig = item.typeConfig || {};
+      if( !counts[typeConfig.id] ) counts[typeConfig.id] = 0;
+      counts[typeConfig.id]++;
+      // if there is more than one of a type defined with virtualIndirectContainers
+      // we need to error out. This would cause assignment to ALL containers of that type.
+      if( counts[typeConfig.id] > 1 && typeConfig.virtualIndirectContainers ) {
+        throw new Error('More than one '+typeConfig.id+' found during import which defines virtualIndirectContainers');
+      }
+    });
+
+    // let collections = rootDir.archivalGroups.filter(item => item.isCollection);
+    // if( collections.length > 1 ) {
+    //   throw new Error('More than one collection found: ', collections.map(item => item.localpath).join(', '));
+    // }
+
     let agUpdates = 0;
 
     if( options.importFromRoot ) {
@@ -98,11 +131,10 @@ class ImportCollection {
       }
     }
 
-    
-
     console.log('Filesytem import completed.');
-    console.log(` - ArchivalGroup Collections: ${collections.length}`);
-    console.log(` - ArchivalGroup Items: ${rootDir.archivalGroups.length-collections.length}`);
+    for( let key in counts ) {
+      console.log(` - ArchivalGroup ${key}s: ${counts[key]}`);
+    }
     console.log(` - Total ArchivalGroups updated: ${agUpdates}`);
   }
 
@@ -117,6 +149,7 @@ class ImportCollection {
     let isArchivalGroup = (dir.archivalGroup === dir);
     let indirectContainers = null;
     let indirectContainerSha = null;
+    let forceRootUpdate = false;
 
     // check for changes
     if( isArchivalGroup ) {
@@ -128,12 +161,10 @@ class ImportCollection {
       let response = this.checkArchivalGroupManifest(fcrManifest, dirManifest);
 
       // maybe required below
-      if( dir.isCollection ) {
+      if( dir.typeConfig && dir.typeConfig.virtualIndirectContainers ) {
         indirectContainers = this.getIndirectContainerList(rootDir, dir);
-      }
-
-      // if collection, we need to check if the indirect references as changed
-      if( dir.isCollection ) {
+      
+        // if collection, we need to check if the indirect references as changed
         let hash = crypto.createHash('sha256');
         hash.update(JSON.stringify(indirectContainers));
         indirectContainerSha = hash.digest('hex');
@@ -142,7 +173,7 @@ class ImportCollection {
           if( !fcrManifest[dir.fcrepoPath].indirectSha ) {
             response = {equal:false, message: 'No indirect reference sha found: '+dir.fcrepoPath};
           } else if( indirectContainerSha !== fcrManifest[dir.fcrepoPath].indirectSha ) {
-            response = {equal:false, message: 'indirect reference sha missmatch: '+dir.fcrepoPath};
+            response = {equal:false, message: 'indirect reference sha mismatch: '+dir.fcrepoPath};
           }
         }
 
@@ -164,24 +195,28 @@ class ImportCollection {
       } else {
         throw new Error('Invalid ArchivalGroup strategy provided');
       }
+
+      if( response.equal === false ) {
+        forceRootUpdate = true;
+      }
     }
 
     // does the archive group need a container?
     if( isArchivalGroup || dir.containerGraph) {
-      await this.putContainer(dir);
+      await this.putContainer(dir, forceRootUpdate);
     }
 
     // if this is an archival group collection, add all 'virtual'
     // indirect container references
-    if( isArchivalGroup && dir.isCollection ) {
+    if( isArchivalGroup && dir.typeConfig && dir.typeConfig.virtualIndirectContainers ) {
       // add all indirect containers
       for( let container of indirectContainers ) {
         await this.putContainer(container, rootDir);
       }
 
-      // where there hardcoded collection hasParts?
-      if( dir.hasParts ) {
-        for( let container of dir.hasParts ) {
+      // where there hardcoded collection hasRelations?
+      if( dir.hasRelations ) {
+        for( let container of dir.hasRelations ) {
           await this.putContainer(container);
         }
       }
@@ -229,7 +264,7 @@ class ImportCollection {
    * @param {Object} container 
    * @returns {Promise}
    */
-  async putContainer(container) {
+  async putContainer(container, force=false) {
     let containerPath = container.fcrepoPath;
     let localpath = container.localpath || container.containerFile;
 
@@ -256,7 +291,8 @@ class ImportCollection {
     let finIoNode = container.finIoNode || this.createFinIoNode();
 
     // check if d exists and if there is the ucd metadata sha.
-    if( this.options.forceMetadataUpdate !== true && 
+    let forceUpdate = this.options.forceMetadataUpdate || force;
+    if( !forceUpdate && 
         response.data.statusCode === 200 && localpath !== '_virtual_' ) {
       
       let jsonld = JSON.parse(response.last.body);
@@ -449,15 +485,18 @@ class ImportCollection {
    * based on all of the item AG's found in the crawl
    * 
    * @param {IoDir} rootDir the root dir for the crawl
-   * @param {IoDir} ag the collection AG 
+   * @param {IoDir} ag the AG we are working with
    * @returns 
    */
   getIndirectContainerList(rootDir, ag) {
     let containers = [];
+    let vIdCConfig = ag.typeConfig.virtualIndirectContainers;
+    let hasRelation = vIdCConfig.links[utils.PROPERTIES.LDP.HAS_MEMBER_RELATION];
+    let isRelation = vIdCConfig.links[utils.PROPERTIES.LDP.IS_MEMBER_OF_RELATION];
 
-    // root hasPart
+    // root has relaction (ex: hasPart)
     containers.push({
-      fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'hasPart'),
+      fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, vIdCConfig.hasFolder),
       localpath : '_virtual_',
       mainGraphNode : {
         '@id' : '',
@@ -466,17 +505,17 @@ class ImportCollection {
           '@id':  pathutils.joinUrlPath('info:fedora', ag.fcrepoPath)
         }],
         [utils.PROPERTIES.LDP.HAS_MEMBER_RELATION] : [{
-          '@id': utils.PROPERTIES.SCHEMA.HAS_PART
+          '@id': hasRelation
         }],
         [utils.PROPERTIES.LDP.INSERTED_CONTENT_RELATION] : [{
-          '@id': utils.PROPERTIES.SCHEMA.HAS_PART
+          '@id': hasRelation
         }]
       }
     });
 
-    // root isPartOf
+    // root is relation (ex: isPartOf)
     containers.push({
-      fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'isPartOf'),
+      fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, vIdCConfig.isFolder),
       localpath : '_virtual_',
       mainGraphNode : {
         '@id' : '',
@@ -485,34 +524,35 @@ class ImportCollection {
           '@id':  pathutils.joinUrlPath('info:fedora', ag.fcrepoPath)
         }],
         [utils.PROPERTIES.LDP.IS_MEMBER_OF_RELATION] : [{
-          '@id': utils.PROPERTIES.SCHEMA.IS_PART_OF
+          '@id': isRelation
         }],
         [utils.PROPERTIES.LDP.INSERTED_CONTENT_RELATION] : [{
-          '@id': utils.PROPERTIES.SCHEMA.IS_PART_OF
+          '@id': isRelation
         }]
       }
     });
 
     for( let item of rootDir.archivalGroups ) {
-      if( item.isCollection ) continue;
+      if( !item.typeConfig ) continue;
+      if( item.typeConfig.id !== vIdCConfig.type ) continue;
 
       containers.push({
-        fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'isPartOf', item.id),
+        fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, vIdCConfig.isFolder, item.id),
         localpath : '_virtual_',
         mainGraphNode : {
           '@id' : '',
-          [utils.PROPERTIES.SCHEMA.IS_PART_OF] : [{
+          [isRelation] : [{
             '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
           }]
         }
       });
 
       containers.push({
-        fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, 'hasPart', item.id),
+        fcrepoPath : pathutils.joinUrlPath(ag.fcrepoPath, vIdCConfig.hasFolder, item.id),
         localpath : '_virtual_',
         mainGraphNode : {
           '@id' : '',
-          [utils.PROPERTIES.SCHEMA.HAS_PART] : [{
+          [hasRelation] : [{
             '@id': pathutils.joinUrlPath(api.getConfig().fcBasePath, item.fcrepoPath) 
           }]
         }
@@ -688,11 +728,11 @@ class ImportCollection {
       }
 
       if( fcrManifest[path].binarySha !== dirManifest[path].binarySha ) {
-        return {equal: false, message: 'binary sha missmatch: '+path};
+        return {equal: false, message: 'binary sha mismatch: '+path};
       }
 
       if( fcrManifest[path].metadataSha !== dirManifest[path].metadataSha ) {
-        return {equal: false, message: 'metadata sha missmatch: '+path};
+        return {equal: false, message: 'metadata sha mismatch: '+path};
       }
     }
 
@@ -726,4 +766,4 @@ class ImportCollection {
 
 }
 
-module.exports = ImportCollection;
+module.exports = FinIoImport;

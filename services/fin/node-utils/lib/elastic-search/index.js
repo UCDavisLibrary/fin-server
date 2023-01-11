@@ -2,6 +2,7 @@ const es = require('./client.js');
 const config = require('../../config.js');
 const finSearch = require('./fin-search.js');
 const pg = require('../pg.js');
+const logger = require('../logger.js');
 const api = require('@ucd-lib/fin-api');
 const utils = require('./utils.js');
 const FinAC = require('../fin-ac/index.js');
@@ -290,7 +291,7 @@ class ElasticSearchModel {
     if( !hits.length ) return;
 
     for( let doc of hits ) {
-      logger.info(`ES Indexer removing ${type} container: ${path} from ${doc._id}`);
+      logger.info(`ES Indexer removing ${this.moduleName} container: ${id} from ${doc._id}`);
         
       await this.client.update({
         index,
@@ -399,8 +400,6 @@ class ElasticSearchModel {
       }
     }
   }
-
-
 
 }
 

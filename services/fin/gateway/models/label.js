@@ -78,7 +78,7 @@ class LabelService {
     let currentSha = resp.rows[0].sha;
     if( currentSha === sha ) return true;
 
-    // run cleanup after sha missmatch
+    // run cleanup after sha mismatch
     await this.cleanContainer(uri, sha);
 
     return false;
