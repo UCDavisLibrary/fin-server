@@ -112,6 +112,19 @@ export default function render() {
       font-weight: bold;
       padding: 0 1rem;
     }
+
+    @media( max-width: 600px ) {
+      .layout.btns > * {
+        width: 33%;
+        max-width: 33%;
+      }
+      #downloadBtn {
+        min-width: auto;
+        text-overflow: clip;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
   </style>
 
 
@@ -131,7 +144,7 @@ export default function render() {
   <div ?hidden="${this.fullSetSelected}">
     <div class="layout btns" style="margin-bottom: 5px;" ?hidden="${!this.selectedMediaHasSources}">
       <select id="downloadOptions" @change="${this._onChangeDownloadOptions}"></select>
-      <select id="format" @change="_onFormatSelected" ?hidden="${!this.showImageFormats}"></select>
+      <select id="format" @change="${this._onFormatSelected}" ?hidden="${!this.showImageFormats}"></select>
       <a id="downloadBtn" href="${this.href}" 
         @click="${this._onDownloadClicked}" 
         download 

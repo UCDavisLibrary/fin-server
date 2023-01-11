@@ -32,7 +32,7 @@ html {
 
   --medium-background-color : #B2BDCF !important;
   --light-background-color : #D6DCE6 !important;
-  --super-light-background-color: #f3f3f3 !important;
+  --super-light-background-color: #ffffff !important;
 
   --text-primary-color      : var(--color-dams-text) !important;
   --primary-text-color      : var(--color-dams-text) !important;

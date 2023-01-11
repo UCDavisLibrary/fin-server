@@ -30,6 +30,8 @@ export default class AppMediaViewer extends Mixin(LitElement)
     constructor() {
       super();
       this.render = render.bind(this);
+      this.active = true;
+
       this._injectModel('AppStateModel', 'RecordModel');
       this.mediaType = 'image';
       this.bagOfFilesImage = '';

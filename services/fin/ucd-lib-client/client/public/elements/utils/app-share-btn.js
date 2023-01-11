@@ -1,5 +1,5 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
-import template from "./app-share-btn.html"
+import { LitElement } from 'lit';
+import render from "./app-share-btn.tpl.js"
 
 import AppStateInterface from "../interfaces/AppStateInterface"
 import MediaInterface from "../interfaces/MediaInterface"
@@ -11,90 +11,49 @@ const BASE_SHARE_LINKS = {
   pinterest : 'https://pinterest.com/pin/create/button/'
 }
 
-export default class AppShareBtn extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface, MediaInterface) {
-
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = template;
-    return tag;
-  }
+export default class AppShareBtn extends Mixin(LitElement)
+  .with(LitCorkUtils) {
 
   static get properties() {
     return {
-      visible : {
-        type : Boolean,
-        value : false
-      }
+      visible : { type : Boolean }
     }
   }
 
   constructor() {
     super();
+    this.render = render.bind(this);
     this.active = true;
-  }
 
-  ready() {
-    super.ready();
-
-    // handle outside clicks
-    window.addEventListener('click', () => {
-      if( this.visible ) this.hide();
-    });
-    this.addEventListener('keyup', (e) => {
-      if( this.visible && e.which === 27 ) {
-        this.hide();
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    });
-
-    this.$.popup.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    });
-  }
-
-  _onAppStateUpdate() {
-    setTimeout(() => {
-      this.$.link.value = window.location.href;
-    }, 100);
-  }
-
-  /**
-   * @method hide
-   * @description hide popup
-   */
-  hide() {
     this.visible = false;
-    this.$.popup.style.display = 'none';
+    this._injectModel('AppStateModel', 'MediaModel');
   }
 
   /**
-   * @method _onBtnClicked
+   * @method _onShareSelected
    * @description bound to main icon, toggles popup when clicked
    * 
    * @param {Object} e HTML click event
    */
-  _onBtnClicked(e) {
+  _onShareSelected(e) {
     this.visible = !this.visible;
-    this.$.popup.style.display = this.visible ? 'block' : 'none';
-    
-    setTimeout(() => this.$.facebook.focus(), 100);
     e.preventDefault();
     e.stopPropagation();
   }
 
   /**
-   * @method _onSelectedRecordUpdate
-   * @description from AppStateInterface, called when a record is selected
+   * @method _onCopyLink
+   * @description bound to share icon copy link button
    * 
-   * @param {Object} record selected record
+   * @param {Object} e HTML click event 
    */
-  // _onSelectedRecordMediaUpdate(record) {
-  //   console.log(record);
-  //   this.record = record;
-  // }
+  async _onCopyLink(e) {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+    } catch (err) {
+      console.error('Failed to copy url: ', err);
+    }
+  }
 
   /**
    * @method _onSocialIconClick
@@ -114,9 +73,9 @@ export default class AppShareBtn extends Mixin(PolymerElement)
     let name = (media.name || media.title || record.name || record.title);
 
     if( id === 'pinterest' ) {  
-      let path = this._getImgPath(media);
+      let path = this.MediaModel.getImgPath(media)
       if( path ) {
-        qso.media = window.location.protocol+'//'+window.location.host+this._getImgUrl(path);
+        qso.media = window.location.protocol+'//'+window.location.host+this.MediaModel.getImgUrl(path);
       }
       qso.description = name;
       qso.url = window.location.href;
@@ -154,16 +113,16 @@ export default class AppShareBtn extends Mixin(PolymerElement)
    */
   _copyLink() {
     // this.$.link.select();
-    this.$.link.focus();
-    this.$.link.setSelectionRange(0, 9999);
+    this.shadowRoot.querySelector('#link').focus();
+    this.shadowRoot.querySelector('#link').setSelectionRange(0, 9999);
     document.execCommand("Copy");
 
-    this.$.copyIcon.icon = 'check';
-    this.$.copyButton.setAttribute('active', 'active');
+    this.shadowRoot.querySelector('#copyIcon').icon = 'check';
+    this.shadowRoot.querySelector('#copyButton').setAttribute('active', 'active');
 
     setTimeout(() => {
-      this.$.copyIcon.icon = 'content-copy';
-      this.$.copyButton.removeAttribute('active', 'active');
+      this.shadowRoot.querySelector('#copyIcon').icon = 'content-copy';
+      this.shadowRoot.querySelector('#copyButton').removeAttribute('active', 'active');
     }, 3000);
   }
 

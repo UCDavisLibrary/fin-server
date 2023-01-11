@@ -22,10 +22,11 @@ export default class AppMediaViewerNav extends Mixin(LitElement)
       breakControls : { type : Boolean },
       showNavLeft : { type : Boolean },
       showNavRight : { type : Boolean },
-      isLightbox : { type : Boolean },
+      isLightbox : { attribute: 'is-lightbox', type : Boolean },
       singleImage : { type : Boolean },
       mediaList : { type : Array },
-      showOpenLightbox : { type: Boolean }
+      showOpenLightbox : { type : Boolean },
+      searchingText : { type : Boolean }
     }
   }
 
@@ -49,6 +50,7 @@ export default class AppMediaViewerNav extends Mixin(LitElement)
     this.singleImage = false;
     this.mediaList = [];
     this.showOpenLightbox = false;
+    this.searchingText = false;
 
     window.addEventListener('resize', () => this._resize());
     window.addEventListener('touchend', (e) => this._onTouchEnd(e));
@@ -156,6 +158,7 @@ export default class AppMediaViewerNav extends Mixin(LitElement)
 
     let availableThumbSpace = Math.min(w - iconsWidth, w * .42);
     this.thumbnailsPerFrame = Math.max(Math.floor(availableThumbSpace / this.totalThumbnailWidth), 1);
+    if( this.isLightbox ) this.thumbnailsPerFrame *= 2;
     let thumbnailContainer = this.shadowRoot.querySelector('#thumbnails');
     if( !thumbnailContainer ) return;
     
@@ -327,7 +330,6 @@ export default class AppMediaViewerNav extends Mixin(LitElement)
    * @param {Object} e HTML click event
    */
   _onThumbnailClicked(e) {
-    debugger;
     this.shadowRoot.querySelectorAll('#thumbnailInnerContainer > button').forEach(btn => btn.removeAttribute('selected'));
     e.currentTarget.setAttribute('selected', '');
     let id = e.currentTarget.getAttribute('media-id');
@@ -352,6 +354,16 @@ export default class AppMediaViewerNav extends Mixin(LitElement)
    */
   _onZoomOutClicked(e) {
     this.dispatchEvent(new CustomEvent('zoom-out'));
+  }
+
+  /**
+   * @method _onSearchClicked
+   * @description bound to search icon click event
+   * 
+   * @param {Object} e HTML click event
+   */
+  _onSearchClicked(e) {
+    this.searchingText = !this.searchingText;
   }
 
   /**

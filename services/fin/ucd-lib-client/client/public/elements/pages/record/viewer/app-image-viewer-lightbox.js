@@ -1,65 +1,49 @@
-import {PolymerElement} from "@polymer/polymer/polymer-element"
-import template from "./app-image-viewer-lightbox.html"
+import { LitElement} from 'lit';
+import render from "./app-image-viewer-lightbox.tpl.js"
 
 import "@polymer/paper-spinner/paper-spinner-lite"
 import "leaflet"
-import leafletCss from "leaflet/dist/leaflet.css"
 
-import AppStateInterface from "../../../interfaces/AppStateInterface"
-import MediaInterface from "../../../interfaces/MediaInterface"
-import config from "../../../../lib/config"
-
-export default class AppImageViewer extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface, MediaInterface) {
-
-  static get template() {
-    let tag = document.createElement('template');
-    tag.innerHTML = `<style>${leafletCss}</style>${template}`;
-    return tag;
-  }
+export default class AppImageViewer extends Mixin(LitElement)
+  .with(LitCorkUtils) {
 
   properties() {
     return {
-      bounds : {
-        type : Array,
-        value : null
-      },
-      maxImageSize : {
-        type : Number,
-        value : 2048
-      },
-      media : {
-        type : Object,
-        value : () => {}
-      },
-      visible : {
-        type : Boolean,
-        value : false
-      },
-      loading : {
-        type : Boolean,
-        value : false
-      }
+      bounds : { type : Array },
+      maxImageSize : { type : Number },
+      media : { type : Object },
+      visible : { type : Boolean },
+      loading : { type : Boolean }
     }
   }
 
   constructor() {
     super();
     this.active = true;
+    this.render = render.bind(this);
+
+    this.bounds = null;
+    this.maxImageSize = 2048;
+    this.media = {};
+    this.visible = false;
+    this.loading = false;
 
     window.addEventListener('keyup', (e) => {
       if( this.visible && e.which === 27 ) this.hide();
     });
+
+    this._injectModel('AppStateModel', 'MediaModel');
   }
 
-  async ready() {
-    super.ready();
-    
+  async firstUpdated() {
     this.parentElement.removeChild(this);
     document.body.appendChild(this);
 
-    this.shadowRoot.removeChild(this.$.safeCover);
-    document.body.appendChild(this.$.safeCover);
+    const safeCoverNode = this.shadowRoot.querySelector('#safeCover');
+    if( safeCoverNode ) {
+      this.shadowRoot.removeChild(safeCoverNode);
+      document.body.appendChild(safeCoverNode);
+    }
 
     let selectedRecordMedia = await this.AppStateModel.getSelectedRecordMedia();
     if( selectedRecordMedia ) this._onSelectedRecordMediaUpdate(selectedRecordMedia);
@@ -85,26 +69,27 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   _onSelectedRecordMediaUpdate(media) {
     this.media = media;
-    if( this.visible ) this.render();
+    if( this.visible ) this.renderCanvas();
   }
 
   /**
    * @method show
    */
   async show() {
+    debugger;
     this.visible = true;
     this.style.display = 'block';
-    this.$.safeCover.style.display = 'block';
+    // this.shadowRoot.querySelector('#safeCover').style.display = 'block';
 
     document.querySelector('fin-app').style.display = 'none';
     document.body.style.overflow = 'hidden';
     window.scrollTo(0,0);
 
-    this.render();
+    this.renderCanvas();
 
     setTimeout(() => {
-      this.$.nav._resize();
-      this.$.nav.setFocus();
+      this.shadowRoot.querySelector('#nav')._resize();
+      this.shadowRoot.querySelector('#nav').setFocus();
     }, 25);
   }
 
@@ -113,8 +98,9 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    */
   async hide() {
     this.visible = false;
+    this.AppStateModel.set({showLightbox: false});
     this.style.display = 'none';
-    this.$.safeCover.style.display = 'none';
+    // this.shadowRoot.querySelector('#safeCover').style.display = 'none';
     document.body.style.overflow = 'auto';
     document.querySelector('fin-app').style.display = 'block';
   }
@@ -142,20 +128,20 @@ export default class AppImageViewer extends Mixin(PolymerElement)
   }
 
   /**
-   * @method render
+   * @method renderCanvas
    * @description render leaflet canvas based on fedora id
    * 
    */
-  async render() {
+  async renderCanvas() {
     if( this.renderedMedia === this.media ) return;
-
     this.renderedMedia = this.media;
     let id = this.renderedMedia['@id'];
-    if ( this.renderedMedia.associatedMedia && this.renderedMedia.media.imageList ) {
-      id = this.renderedMedia.image.url;
-    }
+    // if ( this.renderedMedia.associatedMedia && this.renderedMedia.media.imageList ) {
+    //   id = this.renderedMedia.image.url;
+    // }
     
-    let url = this._getImgUrl(id, '', '');
+    let url = this.MediaModel.getImgUrl(id, '', '');
+    // let url = this.media.thumbnailUrl; 
 
     // used to check state below
     this.loadingUrl = url;
@@ -180,7 +166,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
     this.loading = false;
 
     if( !this.viewer ) {
-      this.viewer = L.map(this.$.viewer, {
+      this.viewer = L.map(this.shadowRoot.querySelector('#viewer'), {
         crs: L.CRS.Simple,
         minZoom: -4,
         zoomControl : false
@@ -198,6 +184,7 @@ export default class AppImageViewer extends Mixin(PolymerElement)
    * @description bound to view nav close event
    */
   _onCloseClicked() {
+    // this.showLightbox = false;
     this.AppStateModel.set({showLightbox: false});
   }
 

@@ -20,7 +20,7 @@ class RecordVcModel extends BaseModel {
   // _onSelectedRecordUpdate(e) {
   translate(e) {
     if( e && e.clientMedia ) {
-
+      // debugger;
       // translate collection and related nodes/items to ui model
       const item = {
         id : e.root['@id'],

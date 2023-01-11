@@ -36,6 +36,7 @@ return html`
       padding: .3rem;
       background-color: var(--color-aggie-gold);
       cursor: pointer;
+      border: none;
     }
 
     .citation .btn-copy:hover {
