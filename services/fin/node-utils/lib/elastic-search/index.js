@@ -12,6 +12,7 @@ const finac = new FinAC();
 class ElasticSearchModel {
 
   constructor(modelName) {
+    this.id = modelName;
     this.modelName = modelName;
     this.pathRegex = new RegExp('^/'+modelName+'/');
 
@@ -23,6 +24,14 @@ class ElasticSearchModel {
     this.pg = pg;
     this.client = es;
     this.pg.connect();
+  }
+
+  hasSyncMethod(method) {
+    let methods = this.syncMethod;
+    if( !Array.isArray(methods) ) {
+      methods = [methods];
+    }
+    return methods.includes(method);
   }
 
   /**

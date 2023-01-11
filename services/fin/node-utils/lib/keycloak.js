@@ -108,7 +108,7 @@ class KeycloakUtils {
   async setUser(req, res, next) {
     if( req.headers['x-fin-user'] ) {
       req.user = JSON.parse(req.headers['x-fin-user']);
-      if( !resp.user.roles ) resp.user.roles = [];
+      if( !req.user.roles ) req.user.roles = [];
 
       return next();
     }
@@ -126,7 +126,7 @@ class KeycloakUtils {
     next();
   }
 
-  async protect(roles=[]) {
+  protect(roles=[]) {
     if( !Array.isArray(roles) ) {
       roles = [];
     }
@@ -141,8 +141,8 @@ class KeycloakUtils {
           return next();
         }
 
-        for( let role in roles ) {
-          if( user.roles.includes(role) ) {
+        for( let role of roles ) {
+          if( req.user.roles.includes(role) ) {
             return next();
           }
         }
@@ -152,7 +152,7 @@ class KeycloakUtils {
     };
 
     authorize = authorize.bind(this);
-    return authorize();
+    return authorize;
   }
 
 }

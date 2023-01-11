@@ -141,10 +141,10 @@ class ElasticSearchModel {
     var results = [];
 
     try {
-      var resp = await indexer.esClient.cat.indices({v: true, format: 'json'});
+      var resp = await this.esClient.cat.indices({v: true, format: 'json'});
       resp.forEach((i) => {
         if( i.index.match(re) ) {
-          results.push(i.index);
+          results.push(i);
         }
       })
     } catch(e) {
@@ -156,6 +156,18 @@ class ElasticSearchModel {
 
   setAlias(indexName, alias) {
     return this.esClient.indices.putAlias({index: indexName, name: alias});
+  }
+
+  async getAlias(alias) {
+    alias = await this.esClient.indices.getAlias({name: alias});
+    if( alias ) return Object.keys(alias)[0];
+    return null;
+  }
+
+  async getIndex(index) {
+    let def = await this.esClient.indices.get({index});
+    if( def ) return def[index];
+    return null;
   }
 
   /**

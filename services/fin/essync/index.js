@@ -1,29 +1,32 @@
 const express = require('express');
-const {config, logger, jwt} = require('@ucd-lib/fin-service-utils');
+const bodyParser = require('body-parser');
+const {config, logger, keycloak, models} = require('@ucd-lib/fin-service-utils');
 const ReindexCrawler = require('./lib/reindex-crawler.js');
 const api = require('@ucd-lib/fin-api');
 const elasticsearch = require('./lib/elasticsearch.js');
 require('./lib/model');
 
 api.setConfig({
-  host: config.gateway.host,
-  basePath : config.fcrepo.root,
-  jwt : jwt.create('essync', [config.finac.agents.discover, config.finac.agents.protected])
+  host: config.fcrepo.host,
+  superuser : true,
+  directAccess : true
+  // jwt : jwt.create('essync', [config.finac.agents.discover, config.finac.agents.protected])
 });
-setInterval(() => {
-  api.setConfig({
-    jwt: jwt.create('essync', [config.finac.agents.discover, config.finac.agents.protected])
-  });
-}, 1000);
+// setInterval(() => {
+//   api.setConfig({
+//     jwt: jwt.create('essync', [config.finac.agents.discover, config.finac.agents.protected])
+//   });
+// }, 1000);
 
 
 // simple, in mem, for now
 let statusCache = {};
 
 const app = express();
+app.use(bodyParser.text({type: '*/*'}));
 
 // TODO: add admin check
-app.get(/^\/reindex\/.*/, async (req, res) => {
+app.get(/^\/reindex\/.*/, keycloak.protect(['admin']), async (req, res) => {
   let path = req.path.replace( /^\/reindex\//, '/');
   let cache = statusCache[path];
 
@@ -63,15 +66,154 @@ app.get(/^\/reindex\/.*/, async (req, res) => {
   }
 });
 
-app.get('/rebuild-index', async (req, res) => {
-  try {
-    let crawler = new ReindexCrawler('/collection', {
-      follow : 'hasPart'
+function ensureRootPath(req, res, next) {
+  let path = req.headers['x-fin-original-url'].match(/\/fcrepo\/rest\/(.*)\/svc:elastic-search/)[1];
+  let cmd = req.headers['x-fin-original-url'].match(/\/svc:elastic-search\/(.*)/)[1];
+  path = path.split('/');
+
+  // TODO: get svc id from headers
+  if( path.length > 1 ) {
+    return res.status(400).json({
+      error: true,
+      message : 'the /svc:elastic-search endpoint only works at the root of models path',
+      correctUrl : config.server.url+'/fcrepo/rest/'+path[0]+'/svc:elastic-search/'+cmd
     });
-    crawler.reindex();
-  } catch(e) {
-    onError(res, e);
   }
+
+  req.modelName = path[0];
+  req.cmd = cmd;
+
+  next();
+}
+
+// list all indexes
+app.get(/^\/elastic-search\/.*\/index$/, keycloak.protect(['admin']), ensureRootPath, async (req, res) => {
+  try {
+    let modelName = req.modelName;
+
+    // make sure this is a known model
+    let {model} = await models.get(modelName);
+    if( !model.hasSyncMethod('essync') ) {
+      throw new Error('The model '+model.id+' does not use essync')
+    }
+
+    res.json({
+      model : model.id,
+      indexes : await elasticsearch.getCurrentIndexes(model.id),
+      readAlias : {
+        name : model.readIndexAlias,
+        index : await elasticsearch.getAlias(model.readIndexAlias)
+      },
+      writeAlias : {
+        name : model.writeIndexAlias,
+        index : await elasticsearch.getAlias(model.writeIndexAlias)
+      }
+    })
+
+  } catch(e) {
+    res.status(500).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+});
+
+// get information about an index
+app.get(/^\/elastic-search\/.*\/index\/.+/, keycloak.protect(['admin']), ensureRootPath, async (req, res) => {
+  try {
+    let modelName = req.modelName;
+    let indexName = req.path.split('/').pop();
+
+    // make sure this is a known model
+    let {model} = await models.get(modelName);
+    if( !model.hasSyncMethod('essync') ) {
+      throw new Error('The model '+model.id+' does not use essync')
+    }
+
+    res.json({
+      model : model.id,
+      index : indexName,
+      definition: await elasticsearch.getIndex(indexName)
+    });
+
+  } catch(e) {
+    res.status(500).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+});
+
+// get information about an index
+app.post(/^\/elastic-search\/.*\/index(\/)?$/, keycloak.protect(['admin']), ensureRootPath, async (req, res) => {
+  try {
+    let modelName = req.modelName;
+
+    // make sure this is a known model
+    let {model} = await models.get(modelName);
+    if( !model.hasSyncMethod('essync') ) {
+      throw new Error('The model '+model.id+' does not use essync')
+    }
+
+    let indexName = await elasticsearch.createIndex(modelName);
+
+    res.json({
+      model : model.id,
+      index : indexName,
+      definition: await elasticsearch.getIndex(indexName)
+    });
+
+  } catch(e) {
+    res.status(500).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+});
+
+// set alias to an index
+app.put(/^\/elastic-search\/.*\/index\/.+$/, keycloak.protect(['admin']), ensureRootPath, async (req, res) => {
+  try {
+    let modelName = req.modelName;
+    let indexName = req.path.split('/').pop();
+
+    let aliasName = req.body;
+    console.log(req.body);
+    if( typeof aliasName === 'object' ) {
+      aliasName = req.query.alias;
+    }
+
+    if( !aliasName ) throw new Error('You must supply an alias either as the request body or via ?alias=[name] query parameter');
+    aliasName = modelName+'-'+aliasName.replace(/.*-/, '');
+
+    // make sure this is a known model
+    let {model} = await models.get(modelName);
+    if( !model.hasSyncMethod('essync') ) {
+      throw new Error('The model '+model.id+' does not use essync')
+    }
+
+    await elasticsearch.setAlias(indexName, aliasName);
+
+    res.json({
+      model : model.id,
+      index : indexName,
+      definition: await elasticsearch.getIndex(indexName)
+    });
+
+  } catch(e) {
+    res.status(500).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
 });
 
 app.get('/alias', async (req, res) => {
