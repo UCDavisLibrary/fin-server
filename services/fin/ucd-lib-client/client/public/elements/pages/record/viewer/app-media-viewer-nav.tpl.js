@@ -328,9 +328,10 @@ export default function render() {
     </div>  
   </div>
   <div id="buttonWrapper" style="white-space: nowrap" ?hidden="${!this.isLightbox}">
-    <div class="${this.searchingText ? 'text-search' : ''}">
+    <!-- functionality not built yet for text search of images -->
+    <div class="${this.searchingText ? 'text-search' : ''}" style="display: none;">
       <ucdlib-icon icon="ucdlib-dams:fa-magnifying-glass" @click="${this._onSearchClicked}"></ucdlib-icon>
-    </div>  
+    </div>
     <div>
       <ucdlib-icon icon="ucdlib-dams:fa-minus" @click="${this._onZoomOutClicked}"></ucdlib-icon>
     </div>  
