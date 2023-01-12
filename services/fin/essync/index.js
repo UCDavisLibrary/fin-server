@@ -75,7 +75,7 @@ function ensureRootPath(req, res, next) {
   if( path.length > 1 ) {
     return res.status(400).json({
       error: true,
-      message : 'the /svc:elastic-search endpoint only works at the root of models path',
+      message : 'the /svc:elastic-search endpoint only works at the root of models path: /'+path[0],
       correctUrl : config.server.url+'/fcrepo/rest/'+path[0]+'/svc:elastic-search/'+cmd
     });
   }
@@ -111,11 +111,7 @@ app.get(/^\/elastic-search\/.*\/index$/, keycloak.protect(['admin']), ensureRoot
     })
 
   } catch(e) {
-    res.status(500).json({
-      error: true,
-      message : e.message,
-      stack : e.stack
-    });
+    onError(res, e);
   }
 
 });
@@ -139,11 +135,7 @@ app.get(/^\/elastic-search\/.*\/index\/.+/, keycloak.protect(['admin']), ensureR
     });
 
   } catch(e) {
-    res.status(500).json({
-      error: true,
-      message : e.message,
-      stack : e.stack
-    });
+    onError(res, e);
   }
 
 });
@@ -168,11 +160,40 @@ app.post(/^\/elastic-search\/.*\/index(\/)?$/, keycloak.protect(['admin']), ensu
     });
 
   } catch(e) {
-    res.status(500).json({
-      error: true,
-      message : e.message,
-      stack : e.stack
+    onError(res, e);
+  }
+
+});
+
+// remove index
+app.delete(/^\/elastic-search\/.*\/index\/.+$/, keycloak.protect(['admin']), ensureRootPath, async (req, res) => {
+  try {
+    let modelName = req.modelName;
+    let indexName = req.path.split('/').pop();
+
+    // make sure this is a known model
+    let {model} = await models.get(modelName);
+    if( !model.hasSyncMethod('essync') ) {
+      throw new Error('The model '+model.id+' does not use essync')
+    }
+
+    // check if index has aliases
+    let index = await elasticsearch.getIndex(indexName);
+    if( index.aliases && Object.keys(index.aliases).length ) {
+      let aliases = Object.keys(index.aliases).join(', ')
+      throw new Error(`Index ${indexName} still has the following aliases pointing to it: ${aliases}`);
+    }
+
+    let response = await elasticsearch.deleteIndex(indexName);
+
+    res.json({
+      model : model.id,
+      index : indexName,
+      response 
     });
+
+  } catch(e) {
+    onError(res, e);
   }
 
 });
@@ -184,7 +205,6 @@ app.put(/^\/elastic-search\/.*\/index\/.+$/, keycloak.protect(['admin']), ensure
     let indexName = req.path.split('/').pop();
 
     let aliasName = req.body;
-    console.log(req.body);
     if( typeof aliasName === 'object' ) {
       aliasName = req.query.alias;
     }
@@ -207,38 +227,43 @@ app.put(/^\/elastic-search\/.*\/index\/.+$/, keycloak.protect(['admin']), ensure
     });
 
   } catch(e) {
-    res.status(500).json({
-      error: true,
-      message : e.message,
-      stack : e.stack
+    onError(res, e);
+  }
+
+});
+
+// get information about an index
+app.post(/^\/elastic-search\/.*\/recreate-index\/.+$/, keycloak.protect(['admin']), ensureRootPath, async (req, res) => {
+  try {
+    let modelName = req.modelName;
+    let indexSource = req.path.split('/').pop();
+
+    // make sure this is a known model
+    let {model} = await models.get(modelName);
+    if( !model.hasSyncMethod('essync') ) {
+      throw new Error('The model '+model.id+' does not use essync')
+    }
+
+    let {response, destination} = await elasticsearch.recreateIndex(indexSource);
+
+    res.json({
+      model : model.id,
+      source : indexSource,
+      destination,
+      response
     });
-  }
 
-});
-
-app.get('/alias', async (req, res) => {
-  try {
-    let aliases = await elasticsearch.getCurrentIndexes(req.query.alias);
-    res.json(aliases);
   } catch(e) {
     onError(res, e);
   }
+
 });
 
-app.put('/alias', async (req, res) => {
+// get information about an index
+app.get(/^\/elastic-search\/.*\/task-status\/.+$/, keycloak.protect(['admin']), async (req, res) => {
   try {
-    let resp = await elasticsearch.getCurrentIndexes(req.query.indexName, req.query.alias);
-    resp.state = await elasticsearch.getCurrentIndexes(req.query.alias);
-    res.json(resp);
-  } catch(e) {
-    onError(res, e);
-  }
-});
-
-app.delete('/index/:indexName', async (req, res) => {
-  try {
-    let resp = await elasticsearch.deleteIndex(req.params.indexName);
-    res.json(resp);
+    let id = req.path.split('/').pop();
+    res.json(await elasticsearch.esClient.tasks.get({task_id: id}));
   } catch(e) {
     onError(res, e);
   }

@@ -154,13 +154,23 @@ class ElasticSearchModel {
     return results;
   }
 
-  setAlias(indexName, alias) {
+  async setAlias(indexName, alias) {
+    // remove all current pointers
+    let exits = await this.esClient.indices.existsAlias({name: alias});
+    if( exits ) {
+      let currentAliases = await this.esClient.indices.getAlias({name: alias});
+      for( let index in currentAliases ) {
+        console.log('Removing: ', {index, name: alias})
+        await this.esClient.indices.deleteAlias({index, name: alias});
+      }
+    }
+
     return this.esClient.indices.putAlias({index: indexName, name: alias});
   }
 
   async getAlias(alias) {
     alias = await this.esClient.indices.getAlias({name: alias});
-    if( alias ) return Object.keys(alias)[0];
+    if( alias ) return Object.keys(alias);
     return null;
   }
 
@@ -168,6 +178,31 @@ class ElasticSearchModel {
     let def = await this.esClient.indices.get({index});
     if( def ) return def[index];
     return null;
+  }
+
+  async deleteIndex(index) {
+    return this.esClient.indices.delete({index});
+  }
+
+  async recreateIndex(indexSource) {
+    let modelName = indexSource.replace(/-.*/, '');
+
+    // create new index
+    let indexDest = await this.createIndex(modelName);
+    
+    // set new index as new write source
+    await this.setAlias(indexDest, modelName+'-write');
+
+    // now copy over source indexes data
+    let response = this.esClient.reindex({ 
+      wait_for_completion : false,
+      body: { 
+        source: { index: indexSource }, 
+        dest: { index: indexDest }
+      }
+    });
+
+    return {destination: indexDest, response}
   }
 
   /**
